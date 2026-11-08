@@ -106,6 +106,7 @@ Residuals, since the guard stops accidents, not a bypass:
 - cmd's own handling of a bare carriage return is not modelled. There was no cmd host to measure it.
 - File-operation extraction does not know typographic quotes (DYD-661). In PowerShell, `echo 'a’; Remove-Item notes.md; ’b'` deletes `notes.md` (measured), but no delete is extracted, and a protected path in typographic quotes, such as `Remove-Item ‘dydo/index.md’`, is not matched.
 - The command string `iex` or `Invoke-Expression` runs is not searched for file operations (DYD-666), so `iex 'Remove-Item dydo/index.md'` is allowed.
+- The bash reading's backslash-CRLF continuation, above, can hide a command on the next line from the guard (DYD-898). A PR merge there is not refused. A protected-file delete in that shape is still refused.
 
 For command-nudge body relief, each expansion retains its own completed token, child execution and source origin. The parent is checked at the expansion's insertion site, with child code kept separate from parent quoting. Closing and reopening a Bash quote or appending an invalid PowerShell here-string suffix cannot acquire relief from a harmless inner body. Every selected representation must be accounted for, including normalized words, stdin, extracted scripts and captures; an unknown consumer or host remains unknown through recursive analysis. These checks do not change the separate file-operation and embedded-newline diagnostics above.
 

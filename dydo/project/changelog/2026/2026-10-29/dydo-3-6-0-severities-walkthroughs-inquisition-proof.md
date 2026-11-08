@@ -6,11 +6,10 @@ date: 2026-10-29
 
 # dydo 3.6.0 - Review severities, safe feature merges, statecharts and guard fixes
 
-<!-- Release candidate, refreshed for the 2026-11-07 landing against feature/dydo-3-6-0. Items
-marked `pending: DYD-xxx` describe work still landing before the 17:30Z freeze; drop the marker
-once it is merged, or drop the item if it moves to 3.7.0. Before tagging: bump the version pins
-listed in .github/workflows/release.yml, point DynaDocs.csproj PackageReleaseNotes at this entry,
-and add the "Align runtime and npm versions" line under Changed. -->
+<!-- Release candidate, refreshed for the 2026-11-07 landing against feature/dydo-3-6-0. Before
+tagging: bump the version pins listed in .github/workflows/release.yml, point DynaDocs.csproj
+PackageReleaseNotes at this entry, and add the "Align runtime and npm versions" line under
+Changed. -->
 
 ## Summary
 
@@ -31,7 +30,7 @@ A process and guard release built from a retro of ten days of dydo and LC agent 
   return, typographic quotes and a caret in PowerShell as pwsh 7.6.9 does, bounds how long and how
   much memory reading one command can take, and refuses a Python program on stdin. A new default
   nudge warns before an agent installs a library or tool, so the install waits for the user's
-  permission. Known gaps the 3.6.0 inquisition found are listed under Known guard gaps.
+  permission. Known gaps are listed under Known guard gaps.
 - **Officers.** Under T3, officers dispatch captains, crew and reviewers with `delegate_task`. A
   captain watches its PR through CI and review bots. The admiral keeps a lane ledger with a
   20-minute check-in, and `dydo survey` prints a read-only digest of a Project's lanes.
@@ -217,12 +216,13 @@ upgrade the .NET runtime before the tool; see Upgrade steps.
   tool: `pnpm`, `npm`, `yarn` or `bun` `add` or `install <package>`, `npx -y`, `uv add`, `pip
   install`, `pipx`, `dotnet add` or `dotnet tool install`, and `apt`, `brew`, `cargo` or `gem
   install`, among others. It also fires behind `sudo`, `env` or leading assignments, through a path
-  to `pip` or `uv`, and after options such as `pnpm -C <dir>`. Restoring locked dependencies (`pnpm install --frozen-lockfile`, `npm ci`,
-  `uv sync --frozen`, `dotnet restore`, a bare `pnpm install` or `npm install`) never triggers it.
-  The agent retries the same command only with the user's permission, given in the conversation or
-  in the approved plan or ticket that names the install; otherwise it stops and asks. It is
-  best-effort, not a lock. `dydo init` ships it, and `dydo adopt` adds it once to an existing project
-  at 3.6.0 (DYD-499, [Guard System](../../../../understand/guard-system.md#layer-3-nudges)).
+  to `pip` or `uv`, and after options such as `pnpm -C <dir>`. Restoring locked dependencies
+  (`pnpm install --frozen-lockfile`, `npm ci`, `uv sync --frozen`, `dotnet restore`, a bare `pnpm
+  install` or `npm install`) never triggers it. The agent retries the same command only with the
+  user's permission, given in the conversation or in the approved plan or ticket that names the
+  install; otherwise it stops and asks. It is best-effort, not a lock. `dydo init` ships it, and
+  `dydo adopt` adds it once to an existing project at 3.6.0 (DYD-499,
+  [Guard System](../../../../understand/guard-system.md#layer-3-nudges)).
 - A command nudge no longer fires on a comment or a literal heredoc or here-string body, or on four
   recorded quoted search patterns (`rg -n '...'`, `git grep -n -E '...'`, `grep -iE "..."` and a
   `Where-Object` `-match` operand on `$_.CommandLine`). Every other unquoted or unknown quoted match
@@ -331,9 +331,6 @@ These change dydo's own repository and CI, not what a project runs.
   the call, so a protected delete or a push to the default branch inside that substitution ran.
   Now the reader reads the substitution, the guard judges the command inside it, and an unclosed
   backtick fails the reading instead of throwing (DYD-881).
-- <!-- pending: DYD-887 --> From a ticket branch, one line that switches to the default branch,
-  merges and runs a bare `git push` is refused. Before, the guard judged that push by the branch
-  checked out before the switch, so it allowed a push to the default branch.
 
 ### Guard refusals that were missing
 
@@ -347,8 +344,8 @@ These change dydo's own repository and CI, not what a project runs.
   mutations, a `git push` that updates `master`, `main` or the `origin/HEAD` branch, and a
   default-branch change. Each refusal names `dydo merge`
   ([DYD-425](../2026-11-04/dyd-425-guard-merge-blocks.md), DYD-576). A Codex session and a Claude
-  session got the same allow or block outcome for the merge command matrix (DYD-426). Two push
-  routes to `main` still pass; see [Known guard gaps](#known-guard-gaps).
+  session got the same allow or block outcome for the merge command matrix (DYD-426). Some push and
+  merge routes to `main` still pass; see [Known guard gaps](#known-guard-gaps).
 
 ### CLI
 
@@ -427,10 +424,10 @@ These were in 3.6.0's scope and did not land by the freeze. They continue in the
 
 ## Known guard gaps
 
-The 3.6.0 inquisition (DYD-431) found these gaps in what the guard reads. 3.6.0 ships with them;
-each has a fix planned for 3.7.0, and none of those fixes is in this release. The guard stops
-accidents, not a determined agent. Balazs marked DYD-865, DYD-879 and DYD-882 as must-fix for
-3.7.0.
+These are the known gaps in what the guard reads, most of them found by the 3.6.0 inquisition
+(DYD-431). 3.6.0 ships with them; each has a fix planned for 3.7.0, and none of those fixes is in
+this release. The guard stops accidents, not a determined agent. Balazs marked DYD-865, DYD-879
+and DYD-882 as must-fix for 3.7.0.
 
 - A git global option placed before `push`, or a combined short flag, can hide a force push or a
   remote branch deletion (DYD-865).
@@ -438,11 +435,19 @@ accidents, not a determined agent. Balazs marked DYD-865, DYD-879 and DYD-882 as
   working directory (Claude's `cwd`, Codex's `workdir`), so a relative delete of a protected file
   can be allowed (DYD-882).
 - Gaps in 3.6.0's new merge-route protection, which earlier releases did not have at all, so
-  neither is a regression:
+  none is a regression:
   - A push run after a `cd` that comes mid-line or inside a subshell, into a worktree on `main`, is
     allowed and updates `main` (DYD-879).
   - A push whose destination names `main` in a shortened ref form updates `main` without a refusal
     (DYD-880).
+  - From a ticket branch, one line that switches to the default branch, merges and then pushes
+    with no destination named is not refused yet. The guard judges that push by the branch checked
+    out before the switch (DYD-887).
+  - When a line ends in a backslash before a CRLF, the guard's bash reading joins it to the next
+    line, but bash runs that next line as its own command. So a PR merge on the next line is not
+    refused (DYD-898).
+  - A push whose destination is a command substitution is never resolved, so the push can update
+    `main` (DYD-901).
 - Protected-file deletes and writes the guard does not see:
   - A delete inside compound shell syntax: conditionals, loops, subshells, brace groups, a
     background `&` or PowerShell blocks (DYD-866).
