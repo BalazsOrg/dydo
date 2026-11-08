@@ -6,11 +6,6 @@ date: 2026-10-29
 
 # dydo 3.6.0 - Review severities, safe feature merges, statecharts and guard fixes
 
-<!-- Release candidate, refreshed for the 2026-11-07 landing against feature/dydo-3-6-0. Before
-tagging: bump the version pins listed in .github/workflows/release.yml, point DynaDocs.csproj
-PackageReleaseNotes at this entry, and add the "Align runtime and npm versions" line under
-Changed. -->
-
 ## Summary
 
 A process and guard release built from a retro of ten days of dydo and LC agent sessions
@@ -291,6 +286,8 @@ These change dydo's own repository and CI, not what a project runs.
   separator (DYD-258), and the host canaries pre-warm the Claude guard hook
   ([DYD-545](../2026-11-05/dyd-545-canary-fingerprint.md)).
 - The viewer's refresh tests wait for the `refresh-removed` marker (DYD-378).
+- Align runtime and npm versions to 3.6.0, point the package release notes at this entry, and
+  permit publication only on the exact v3.6.0 tag.
 
 ## Fixed
 
@@ -625,7 +622,7 @@ By area; each linked entry above lists its own files.
 - Assurance: `DynaDocs.Tests/`, `.github/workflows/` (`ci.yml`, `release.yml`,
   `guard-performance-proofs.yml` and the provisioning scripts), the viewer's tests and e2e specs.
 
-<!-- pending: version bump --> `DynaDocs.csproj`, `npm/package.json`,
+Version bump: `DynaDocs.csproj`, `npm/package.json`,
 `.github/workflows/release.yml`, `DynaDocs.Tests/EndToEnd/CliEndToEndTests.cs`,
 `DynaDocs.Tests/Workflow/ReleaseWorkflowTests.cs`.
 
