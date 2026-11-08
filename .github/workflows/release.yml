@@ -3,8 +3,8 @@
 #      npm/package.json version, the `refs/tags/vX.Y.Z` gates on the release, nuget
 #      and npm jobs below, the version assertions in
 #      DynaDocs.Tests/EndToEnd/CliEndToEndTests.cs, the tag-guard constant in
-#      DynaDocs.Tests/Workflow/ReleaseWorkflowTests.cs, and the csproj
-#      PackageReleaseNotes link.
+#      DynaDocs.Tests/Workflow/ReleaseWorkflowTests.cs, the `release` field in
+#      Resources/Statechart/payload.json, and the csproj PackageReleaseNotes link.
 #   2. Run `update-dydo` on a scratch copy of a real downstream project (LC) with the
 #      release-candidate CLI built from the release branch, never on the real
 #      checkout. Replay that project's own hook tests through `dydo guard`.
@@ -236,7 +236,7 @@ jobs:
           if-no-files-found: warn
 
   release:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/tags/v3.5.1' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/tags/v3.6.0' }}
     needs: [build, validation]
     runs-on: ubuntu-latest
     permissions:
@@ -265,7 +265,7 @@ jobs:
           prerelease: false
 
   nuget:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/tags/v3.5.1' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/tags/v3.6.0' }}
     needs: [build, validation]
     runs-on: ubuntu-latest
     permissions:
@@ -310,7 +310,7 @@ jobs:
         run: dotnet nuget push nupkg/dydo.${{ steps.version.outputs.VERSION }}.nupkg --api-key "${{ steps.nuget-login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
   npm:
-    if: ${{ github.event_name == 'push' && github.ref == 'refs/tags/v3.5.1' }}
+    if: ${{ github.event_name == 'push' && github.ref == 'refs/tags/v3.6.0' }}
     needs: [build, validation, release]
     runs-on: ubuntu-latest
     permissions:

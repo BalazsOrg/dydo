@@ -2,7 +2,7 @@
   "schema": 1,
   "protocol": 1,
   "sourceBase": "7ba426604d7870f6596b2946c3255d1604618bfe",
-  "release": "3.5.1",
+  "release": "3.6.0",
   "upstream": "1ba91fc25c0977741dd0e267849e6234b037ed0a",
   "dependencyLockSha256": "3ad231072bddc04588d0f2cf1b61a3e62fc38b4ff400ccea5c3b5d41409575ab",
   "supportedLegacyAdaptersRetained": true,
