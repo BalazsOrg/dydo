@@ -476,6 +476,21 @@ and no fix is in this release.
 - A `dydo mode set` whose write fails partway can leave the mode store empty, so a previous `on`
   value is lost and then reads back as `off` (DYD-893).
 
+### `dydo merge` checks gate (fix planned for 3.7.0)
+
+[`dydo merge`](../../../../reference/dydo-commands.md#dydo-merge) refuses a PR in two setups, and
+3.6.0 has no setting to change this:
+
+- The PR head has no GitHub checks, for example because the repo's CI runs only on push. The
+  refusal reads
+  `no checks reported on <sha>; wait for CI, or this repo runs no CI for PRs into <target>`.
+  It ignores only an unfinished `blacksmith-sh` suite with no runs, an exception hard-coded for
+  that one app.
+- Some checks fail on purpose, such as specimen checks. Every check on the head must finish green.
+
+Until the fix lands, merge such a PR yourself, or keep CI in the repo that reports on PRs. The fix
+is planned for 3.7.0 and is not in this release (DYD-932).
+
 ### Verification and tooling gaps (fixes planned for 3.7.0)
 
 - Hosted CI runs no Node coverage gate, and its viewer coverage step skips the viewer's HCRAP
