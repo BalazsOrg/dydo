@@ -624,7 +624,7 @@ By area; each linked entry above lists its own files.
 
 Version bump: `DynaDocs.csproj`, `npm/package.json`,
 `.github/workflows/release.yml`, `DynaDocs.Tests/EndToEnd/CliEndToEndTests.cs`,
-`DynaDocs.Tests/Workflow/ReleaseWorkflowTests.cs`.
+`DynaDocs.Tests/Workflow/ReleaseWorkflowTests.cs`, `Resources/Statechart/payload.json`.
 
 ## Related
 
