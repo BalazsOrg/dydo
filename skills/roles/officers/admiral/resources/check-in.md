@@ -37,7 +37,7 @@ running: <who>`, `admiral owes <decision or dispatch>`, `needs the user: <Questi
 - [ ] A survey is still running: consume it; dispatch no second one. A failed or lost survey is not running.
 - [ ] Otherwise dispatch one fresh surveyor on the smallest adequate model with the fixed dispatch below.
 - [ ] Carry out every action it returns, in its order.
-- [ ] Aim for four moving lanes, normally 2–3 main lanes plus one `Filler` lane for shoulds and nits; go past four when more captains are justified, and leave a lane empty when nothing reasonable is pickable.
+- [ ] Strive to keep four lanes occupied: core tickets first, `Filler` when the next core ticket is blocked, and more or fewer lanes when the work calls for it.
 - [ ] `INCOMPLETE`: read what it could not, or record the gap on the Project.
 - [ ] Rewrite the ledger if anything changed; otherwise end the tick in one line.
 
