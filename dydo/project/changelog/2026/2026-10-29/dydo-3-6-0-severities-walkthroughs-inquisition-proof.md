@@ -353,8 +353,7 @@ These change dydo's own repository and CI, not what a project runs.
   line is `@AGENTS.md`. `dydo init codex` leaves `.codex/rules/dydo.rules` alone when only its line
   endings differ, so a CRLF checkout no longer shows it modified (DYD-403).
 - A `dydo mode set` whose mode store cannot be written prints one stderr line naming the store path
-  and the cause and exits 2, leaving the stored state as it was, instead of a .NET stack trace
-  (DYD-644).
+  and the cause and exits 2 instead of a .NET stack trace (DYD-644).
 - Packing the tool from source fails with viewer build instructions when the map viewer bundle is
   missing, so a source build no longer ships a CLI without the viewer (DYD-687; see
   [Install from source](./dydo-3-6-0-safe-merge-command.md#install-from-source)).
