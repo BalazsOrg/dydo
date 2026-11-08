@@ -462,6 +462,19 @@ and DYD-882 as must-fix for 3.7.0.
     backslash paths on Linux pwsh (DYD-883).
   - A delete inside an escaped backtick substitution nested in another backtick substitution
     (DYD-888).
+  - A protected path written with a doubled path separator, or with empty quotes splitting a name
+    in it, is not matched as protected, so a write or delete of that file is allowed. This gap
+    predates 3.6.0 (DYD-896).
+
+## Known issues
+
+3.6.0 also ships with these mode-store bugs, which predate it. Each has a fix planned for 3.7.0,
+and no fix is in this release.
+
+- `dydo mode show` prints a successful `overnight: off` when the mode store is unreadable or
+  corrupt, instead of reporting the state as unknown (DYD-889).
+- A `dydo mode set` whose write fails partway can leave the mode store empty, so a previous `on`
+  value is lost and then reads back as `off` (DYD-893).
 
 ## Upgrade steps
 
