@@ -209,6 +209,9 @@ upgrade the .NET runtime before the tool; see Upgrade steps.
 - `what-would-balazs-do` counts the user's walkthrough verdicts, findings and skips as his own
   words (DYD-399). The code-writer and admiral advance completed work and test a review's strongest
   counterexample against a fix (DYD-438).
+- The admiral's check-in treats four occupied lanes as a goal to strive for, not a cap: core
+  tickets come first, `Filler` takes a lane when the next core ticket is blocked rather than holding
+  a reserved lane, and the admiral runs more or fewer lanes when the work calls for it (DYD-945).
 
 ### Guard
 

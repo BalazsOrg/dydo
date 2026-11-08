@@ -25,8 +25,8 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 - **Sub-ticket** - optional decomposition when child tickets need independent tracking.
 - **Lane** - an ordered run of tickets one owner moves forward in a Project, tracked in the admiral's
   lane ledger; it serves the Project's deliverables. Distinct from a Lane Sub-ticket, a captain's parallel child ticket.
-- **Filler** - small, ready work, such as review `should` tickets, that the admiral takes into a free
-  lane slot while main lanes wait, under a cap of four moving lanes per Project unless the user sets another.
+- **Filler** - small, ready work, such as review `should` tickets, that the admiral takes into a lane
+  when the next core ticket is blocked, toward a goal of four occupied lanes per Project, not a cap.
 - **Cycle** - an optional team capacity timebox, orthogonal to Projects.
 - **Label** - restrained cross-cutting routing metadata, never a shadow work-type hierarchy.
 
