@@ -353,8 +353,8 @@ These change dydo's own repository and CI, not what a project runs.
   line is `@AGENTS.md`. `dydo init codex` leaves `.codex/rules/dydo.rules` alone when only its line
   endings differ, so a CRLF checkout no longer shows it modified (DYD-403).
 - A `dydo mode set` whose mode store cannot be written prints one stderr line naming the store path
-  and the cause and exits 2, leaving the stored state as it was, instead of a .NET stack trace
-  (DYD-644).
+  and the cause and exits 2 instead of a .NET stack trace (DYD-644). A write that hits a file-size
+  limit is not caught yet and still ends in a stack trace with exit 1 (DYD-872).
 - Packing the tool from source fails with viewer build instructions when the map viewer bundle is
   missing, so a source build no longer ships a CLI without the viewer (DYD-687; see
   [Install from source](./dydo-3-6-0-safe-merge-command.md#install-from-source)).
@@ -462,6 +462,39 @@ and DYD-882 as must-fix for 3.7.0.
     backslash paths on Linux pwsh (DYD-883).
   - A delete inside an escaped backtick substitution nested in another backtick substitution
     (DYD-888).
+  - A protected path written with a doubled path separator, or with empty quotes splitting a name
+    in it, is not matched as protected, so a write or delete of that file is allowed. This gap
+    predates 3.6.0 (DYD-896).
+
+## Known issues
+
+3.6.0 also ships with these mode-store bugs, which predate it. Each has a fix planned for 3.7.0,
+and no fix is in this release.
+
+- `dydo mode show` prints a successful `overnight: off` when the mode store is unreadable or
+  corrupt, instead of reporting the state as unknown (DYD-889).
+- A `dydo mode set` whose write fails partway can leave the mode store empty, so a previous `on`
+  value is lost and then reads back as `off` (DYD-893).
+
+### Verification and tooling gaps (fixes planned for 3.7.0)
+
+- Hosted CI runs no Node coverage gate, and its viewer coverage step skips the viewer's HCRAP
+  limit, though the testing strategy says hosted CI requires whole-stack coverage (DYD-873).
+- The `verify-dydo` driver runs only on Windows, so a release journey on Linux or macOS needs a
+  hand-built harness (DYD-875).
+- The `verify-dydo` feature map still reports the statechart journey as blocked on an absent
+  prerequisite, though the 3.6.0 CLI runs a real statechart check end to end (DYD-884).
+- A focused `gap_check.py test --stack node` run whose filter selects no test reports `PASSED`.
+  The CI and release gates pass no filter, so none of them is affected (DYD-885).
+- `release_proof.py verify` can stamp an earlier candidate's TRX as a pass for the current HEAD.
+  No CI job or gate runs `verify`; the opt-in guard performance workflow runs
+  `release_proof.py run` (DYD-892).
+- The shipped `reference/about-dynadocs.md` says to copy `skills/` and run `node setup-skills.mjs`,
+  but `dydo statechart` refuses a statechart skill installed that way, because dydo wrote no
+  receipt for it. Use `dydo statechart install-skill --root <project>` for that skill instead
+  (DYD-894).
+- On Linux, `dydo statechart` with an unwritable `TMPDIR` fails with only `Permission denied` and
+  `Missing statechart POSIX reservations.`, naming neither the directory nor a remedy (DYD-897).
 
 ## Upgrade steps
 
