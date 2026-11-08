@@ -209,9 +209,9 @@ upgrade the .NET runtime before the tool; see Upgrade steps.
 - `what-would-balazs-do` counts the user's walkthrough verdicts, findings and skips as his own
   words (DYD-399). The code-writer and admiral advance completed work and test a review's strongest
   counterexample against a fix (DYD-438).
-- The admiral's check-in treats four lanes as a pace to aim for, not a cap: normally 2–3 main lanes
-  plus one should/nit lane, more when more captains are justified, none filled with invented work
-  (DYD-945).
+- The admiral's check-in treats four moving lanes as a pace to aim for, not a cap: normally 2–3
+  main lanes plus one `Filler` lane for shoulds and nits, past four when more captains are
+  justified, and a lane left empty when nothing reasonable is pickable (DYD-945).
 
 ### Guard
 
