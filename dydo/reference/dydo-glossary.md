@@ -23,6 +23,10 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 - **Task** - the role a captain-held ticket plays on a Wayfinder map; a name for that role, not a
   separate Linear Type.
 - **Sub-ticket** - optional decomposition when child tickets need independent tracking.
+- **Lane** - an ordered run of tickets one owner moves forward in a Project, tracked in the admiral's
+  lane ledger; it serves the Project's deliverables. Distinct from a Lane Sub-ticket, a captain's parallel child ticket.
+- **Filler** - small, ready work, such as review `should` tickets, that the admiral takes into a lane
+  when the next core ticket is blocked, toward a goal of four occupied lanes per Project, not a cap.
 - **Cycle** - an optional team capacity timebox, orthogonal to Projects.
 - **Label** - restrained cross-cutting routing metadata, never a shadow work-type hierarchy.
 
@@ -80,7 +84,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   when an officer briefs an agent it dispatches).
 - **User command** - a skill only the user invokes by name, never reached for by a model:
   grill-me, bro, improve-codebase-architecture, create-verification-skill,
-  create-formal-verification-skill, update-dydo.
+  create-formal-verification-skill, statechart, update-dydo.
 - **Rubric** - the one named standard a reviewer judges a candidate against: code, docs,
   project-plan, spec, or merge.
 

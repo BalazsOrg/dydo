@@ -86,8 +86,9 @@ Both also get narrow allow rules for `dydo clean` and `dydo merge`:
 the merge rule matching `[["dydo", "dydo.exe"], "merge"]` because a Windows session may write
 either. Each command refuses in code what it must not do, so the narrow rule is safe, and both hosts
 must reach the same allow or block outcome. The Claude bash/Codex PowerShell parity gate is planned,
-pending in DYD-426; writing allow rules does not establish parity. The guard hard blocks for raw merge
-paths, pushes to the default branch and default-branch changes are planned, pending in DYD-425
+pending in DYD-426; writing allow rules or shipping guard blocks does not establish parity. The
+merge-route hard blocks shipped in DYD-425; see [Guard System](../understand/guard-system.md#also-enforced)
+for the blocked routes and accepted residuals
 ([DR 061](../project/decisions/061-agents-merge-only-into-feature-branches.md)).
 
 The `PreToolUse` hook sends matched tool calls to `dydo guard`. Exit `0` with empty stdout allows
@@ -157,6 +158,8 @@ Each nudge has a regular-expression `pattern`, a `message`, a `severity` (`notic
 and blocks reject the action. Nudges enforce project process; they do not create or update work records.
 The pattern is matched case-insensitively, and `$1`, `$2` and so on in the message take the
 matching capture groups.
+
+A `warn` on a command is passed by retrying the same command: its pass-through marker names the pattern and the command with whitespace runs collapsed, so a different command matching the same nudge is warned on its own. See [Layer 3: Nudges](../understand/guard-system.md#layer-3-nudges).
 
 An optional `match` picks what the pattern is matched against:
 
