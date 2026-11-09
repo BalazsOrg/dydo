@@ -1,0 +1,6 @@
+[agents]
+max_depth = 3
+max_concurrent_threads_per_session = 16
+
+[features]
+memories = false
