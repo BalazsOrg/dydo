@@ -38,7 +38,11 @@ Run this in the user's own top-level session, never a sub-agent: the guard denie
    copies; `git grep` at each tag finds them. The reference shows where each lands.
 4. **Bases.** The merge set is every file a tag up to new tells a project to copy in its
    `README.md`, or holds among its sources, paired with the project file where the README or the
-   reference puts it. Each file's base is the upstream text it derives from: match each revision in
+   reference puts it, except every upstream skill's **test tree**: a `test` or `tests` folder
+   inside a `skills/<category>/<name>/` folder the clone holds at new. dydo keeps and runs those
+   upstream; a project-only skill's tests stay the project's.
+
+   Each file's base is the upstream text it derives from: match each revision in
    its project history (`git log --follow`), line endings normalised, against that upstream file
    at each tag, moves followed, templates rendered as `init` does. An exact match proves its tag;
    similarity is not ancestry.
@@ -90,6 +94,7 @@ Run this in the user's own top-level session, never a sub-agent: the guard denie
    - Project deleted a file upstream changed: ask the user.
    - Either deletion an Upgrade step of a release after the file's base settles (it retires, moves
      or deletes the file): follow the step instead of asking, and list it.
+   - A test tree (step 4) the project tracks: `git rm -r` it, edited or not, and list it.
    - Remove directories the deletions leave empty.
    - A skill, or a doc under the docs root, that only the project has: leave it alone.
 
@@ -123,6 +128,8 @@ Run this in the user's own top-level session, never a sub-agent: the guard denie
    - every skill the new release added (rename targets included) and every project-only skill is
      linked in each of those folders;
    - every skill the entry file names, backticked or in prose, exists under `skills/`;
+   - every file `git ls-files ":(glob)skills/**/test/**" ":(glob)skills/**/tests/**"` lists lies
+     in a project-only skill: the project tracks no upstream test tree;
    - each protected file the user applied equals its merge result, line endings aside;
    - every Upgrade step step 5 kept is applied or listed for the user;
    - `dydo check` exits 0; warnings are fine;
@@ -134,7 +141,7 @@ Run this in the user's own top-level session, never a sub-agent: the guard denie
 9. **Report** to the user: old, new and CLI versions; files taken from upstream; files merged with
    both sides' edits; files with base unknown, to reconcile; protected files they applied;
    protected and off-limits files for them to handle; renamed skills moved and references renamed;
-   files left for them to decide; leftovers to delete; upgrade steps applied; project tweaks kept;
+   files left for them to decide; leftovers to delete; test trees removed; upgrade steps applied; project tweaks kept;
    checkouts step 7 deferred, each with what to run there; dydo defects found; the step 8 output.
    Name the machine-local files, the git-ignored ones `init` and `setup-skills.mjs` write
    (`.gitignore`, the reference install): after pulling, each teammate needs a CLI at new or
@@ -182,8 +189,9 @@ asking, and report each such case as a dydo defect with its repro.
 - Entry file: where the reference writes it; step 7's `init` warnings name others for the user.
 - Codex hook trust: the user confirms Codex trusted the changed hooks.
 
-**Skills.** In the clone, `git diff --no-renames --name-status <oldest base> <new> -- skills/`
-lists added and removed files; step 6's rename rule says which are moves. `skills/` at new
+**Skills.** In the clone,
+`git diff --no-renames --name-status <oldest base> <new> -- skills/ ":(exclude,glob)skills/**/test/**" ":(exclude,glob)skills/**/tests/**"`
+lists added and removed files, test trees left out; step 6's rename rule says which are moves. `skills/` at new
 against the project's shows the project-local ones.
 
 **Linear workspace.** Through whatever Linear connection the session has, read the team's label

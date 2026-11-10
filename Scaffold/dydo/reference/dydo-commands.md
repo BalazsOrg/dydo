@@ -76,7 +76,18 @@ Claude Code 2.1.281 or later reads `AGENTS.md` when no `CLAUDE.md` is in the way
 dydo does not compile or install skills, and none ship with the package. A skill is one folder under
 `skills/<category>/<name>/`: copy `skills/`, `setup-skills.mjs` and `THIRD-PARTY-NOTICES.md` (the
 MIT notices of the adapted skills travel with them) from the dydo repository into the project root,
-commit them, and run `node setup-skills.mjs` to create the host discovery links. The script always
+leaving out each skill's test tree, any `test` or `tests` folder inside a skill folder, which dydo
+keeps and runs in its repository. With the repository cloned outside the project, run from the
+project root, `<tag>` being the release to install:
+
+```bash
+git clone https://github.com/bodnarbalazs/dydo <clone>
+git -C <clone> archive -o dydo-skills.tar <tag> -- skills setup-skills.mjs THIRD-PARTY-NOTICES.md ":(exclude,glob)skills/**/test/**" ":(exclude,glob)skills/**/tests/**"
+tar -xf <clone>/dydo-skills.tar
+```
+
+A skill only the project has keeps its own tests. Commit the files and run `node setup-skills.mjs`
+to create the host discovery links. The script always
 creates both `.claude/skills/` and `.agents/skills/`, and init always gitignores both (the
 `.gitignore` rows above), in every mode including `none`.
 
