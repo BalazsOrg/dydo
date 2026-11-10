@@ -174,7 +174,19 @@ is one plain `skills/<category>/<name>/` folder in the [dydo repository](https:/
 Before the first agent session:
 
 1. Copy `skills/`, `setup-skills.mjs` and `THIRD-PARTY-NOTICES.md` from the dydo repository into
-   the project root. The notices carry the MIT licences of the adapted skills and travel with them.
+   the project root, leaving out each skill's test tree. The notices carry the MIT licences of the
+   adapted skills and travel with them. Clone the repository outside the project, then run from
+   the project root, `<tag>` being the release to install:
+
+   ```bash
+   git clone https://github.com/bodnarbalazs/dydo <clone>
+   git -C <clone> archive -o dydo-skills.tar <tag> -- skills setup-skills.mjs THIRD-PARTY-NOTICES.md ":(exclude,glob)skills/**/test/**" ":(exclude,glob)skills/**/tests/**"
+   tar -xf <clone>/dydo-skills.tar
+   ```
+
+   A skill's test tree is any `test` or `tests` folder inside its `skills/<category>/<name>/`
+   folder. dydo keeps the trees of its own skills in its repository and runs them there; a skill
+   only the project has keeps its own tests.
 2. Commit them. They are the project's own from then on: edit them in place. To update them
    later, load the `update-dydo` skill.
 3. Run `node setup-skills.mjs`. It links every skill folder, flat, into `.claude/skills/` and

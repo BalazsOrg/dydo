@@ -49,7 +49,18 @@ another runtime or machine into an existing project.
 The skills do not come with this package, and `dydo init` does not write them. Before the first
 agent session, copy `skills/`, `setup-skills.mjs` and `THIRD-PARTY-NOTICES.md` (the MIT notices of
 the adapted skills travel with them) from the
-[dydo repository](https://github.com/bodnarbalazs/dydo) into the project root, commit them, and run
+[dydo repository](https://github.com/bodnarbalazs/dydo) into the project root, leaving out each
+skill's test tree: any `test` or `tests` folder inside a `skills/<category>/<name>/` folder, which
+dydo keeps and runs in its repository. With the repository cloned outside the project, run from the
+project root, `<tag>` being the release to install:
+
+```bash
+git clone https://github.com/bodnarbalazs/dydo <clone>
+git -C <clone> archive -o dydo-skills.tar <tag> -- skills setup-skills.mjs THIRD-PARTY-NOTICES.md ":(exclude,glob)skills/**/test/**" ":(exclude,glob)skills/**/tests/**"
+tar -xf <clone>/dydo-skills.tar
+```
+
+A skill only the project has keeps its own tests. Commit the files, and run
 `node setup-skills.mjs`. The script always creates both `.claude/skills/` and `.agents/skills/`, and
 `dydo init` and every `--join` add both to `.gitignore` in every mode. Edit the
 canonical `skills/<category>/<name>/` folder directly; there is no compile step or automatic
