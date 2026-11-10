@@ -37,6 +37,16 @@ So I suggest you cherry pick ideas, fork the project, point your agent at it, st
 You can use it as is (as I use it), but it will reflect MY values and not necessarily yours.
 It is built to be customizable, but only to a degree. If you still want to give it a try as is point your agent to [Getting Started](https://github.com/bodnarbalazs/dydo/blob/master/dydo/guides/getting-started.md) and follow their instructions.
 
+## Axioms
+Everything in Dydo follows from seven axioms, and every change is judged against them ([the full page](dydo/understand/axioms.md)):
+1. I can't scale; agents can.
+2. Align intent: the system is an extension of my will, values and taste.
+3. An agent's context is finite.
+4. Everything evolves, so the system stays modular and light.
+5. Efficiency: the best result for the time and tokens spent.
+6. Agents are set up for success: the easy path is the right path.
+7. Agents can verify their own work, so by the time a PR reaches me I have very high confidence it's correct.
+
 ## Overview
 So how does dydo work in practice?
 

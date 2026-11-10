@@ -13,6 +13,7 @@ This folder answers "What IS this?" - the foundational context that agents need 
 
 ## Contents
 
+- **axioms.md** - The seven axioms every dydo rule follows from, and every change is judged against
 - **about.md** - Project overview, purpose, and scope
 - **architecture.md** - Technical structure and key components
 - **guard-system.md** - Hook enforcement: off-limits, dangerous bash, nudges
