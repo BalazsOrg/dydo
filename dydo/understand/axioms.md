@@ -6,7 +6,7 @@ type: context
 # Axioms
 
 dydo rests on seven axioms. Every rule in the skills and docs follows from at least one of them, and
-every change is judged against them. A rule that serves no axiom is bureaucracy: cut it.
+every change is judged against them.
 
 ## The seven
 
@@ -26,11 +26,11 @@ every change is judged against them. A rule that serves no axiom is bureaucracy:
 
 | Rule | From |
 |---|---|
-| Ask the user only what only he can decide, and make his turns visible at a glance. | 1, 2 |
-| Elicit intent before building it: grilling, co-thinking, walkthroughs, Decision Records. | 2 |
+| Ask the user only what only he can decide, and make it clear whether he is needed. | 1, 2 |
+| Bureaucracy is right-sized: too much and things get slow, too little and agents aren't autonomous enough. | 4, 5 |
 | A ticket is a unit of work, sized to what one agent can handle within its context. One agent keeps related work when the shared context is worth more than the split. | 3, 5 |
 | A role skill carries its own level in full and a summary of the levels below it. Deeper detail is linked from the failure path, and its sources are named so agents never have to guess where to look. | 3, 6 |
-| Constrain outcomes and checks, not methods. | 4, 6 |
+| Constrain outcomes, not methods. | 4, 6 |
 | Build on what the hosts provide rather than rebuilding it. | 4, 5 |
 | Use the right agent for the right task. | 5 |
 | Review where work merges, not at every hop. When a round finds no blocker, the officer decides whether another round is needed. | 5, 7 |
@@ -43,3 +43,8 @@ every change is judged against them. A rule that serves no axiom is bureaucracy:
 
 Linear (live work), Git (durable knowledge), T3 Code (threads and dispatch) and `dydo map` are how
 dydo implements the axioms today. They aren't axioms, and they can be replaced (axiom 4).
+
+## Related
+
+- [About This Project](./about.md) - what dydo is and does
+- [Understand](./_understand.md) - the folder's hub

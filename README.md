@@ -38,7 +38,7 @@ You can use it as is (as I use it), but it will reflect MY values and not necess
 It is built to be customizable, but only to a degree. If you still want to give it a try as is point your agent to [Getting Started](https://github.com/bodnarbalazs/dydo/blob/master/dydo/guides/getting-started.md) and follow their instructions.
 
 ## Axioms
-Everything in Dydo follows from seven axioms, and every change is judged against them ([the full page](dydo/understand/axioms.md)):
+Everything in Dydo follows from seven axioms, and every change is judged against them ([the full page](https://github.com/bodnarbalazs/dydo/blob/master/dydo/understand/axioms.md)):
 1. I can't scale; agents can.
 2. Align intent: the system is an extension of my will, values and taste.
 3. An agent's context is finite.
