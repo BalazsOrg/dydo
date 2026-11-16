@@ -583,7 +583,7 @@
     {
       "id": "overnight.report-block-per-project",
       "kind": "overnight",
-      "rule": "Copy the admiral report block once per Project; settle the calls before proceeding.",
+      "rule": "Copy the admiral report block once per Project.",
       "actors": [
         "chief-of-staff"
       ],
@@ -759,20 +759,6 @@
       ],
       "statements": [
         "L2-297"
-      ],
-      "drift": [],
-      "principle": null,
-      "group": "K6"
-    },
-    {
-      "id": "overnight.survey-incomplete-or-no-action",
-      "kind": "overnight",
-      "rule": "Resolve `INCOMPLETE` inspection gaps; a complete `NO_ACTION` ends the tick.",
-      "actors": [
-        "chief-of-staff"
-      ],
-      "statements": [
-        "L2-249"
       ],
       "drift": [],
       "principle": null,
@@ -1237,10 +1223,6 @@
         "L7-006"
       ],
       "drift": [
-        {
-          "type": "action",
-          "note": "L2-136 closes the Project `Completed`; L5-088 and L7-006 add that the map holder commissions spec retirement (L5-088 names `dydo/reference/feature-spec-convention.md`); L2-136 does not."
-        },
         {
           "type": "wording",
           "note": "L7-006 defines Completed as destination landed and the landing walkthrough found nothing more; the others describe the closing act."
@@ -1771,14 +1753,25 @@
     {
       "id": "project.survey-incomplete",
       "kind": "project",
-      "rule": "On `INCOMPLETE`, read what the survey could not, or record the gap on the Project.",
+      "rule": "On an `INCOMPLETE` survey, read what it could not or record the gap on the Project.",
       "actors": [
-        "admiral"
+        "admiral",
+        "chief-of-staff"
       ],
       "statements": [
-        "L2-167"
+        "L2-167",
+        "L2-249"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-167 binds the admiral on the board survey; L2-249 binds the chief of staff overnight."
+        },
+        {
+          "type": "action",
+          "note": "L2-167 reads the gap or records it on the Project; L2-249 says resolve the gaps and offers no recording."
+        }
+      ],
       "principle": null,
       "group": "K6"
     },
@@ -1857,7 +1850,7 @@
     {
       "id": "project.user-tells-admiral",
       "kind": "project",
-      "rule": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells the admiral, who reads the board again.",
+      "rule": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells the admiral.",
       "actors": [
         "admiral",
         "user"
@@ -1984,7 +1977,7 @@
       "drift": [
         {
           "type": "action",
-          "note": "L2-135 requires confirmation for another inquisition; L5-087 says another landing/walkthrough."
+          "note": "L5-087 adds that the fixes are followed by another landing or walkthrough; L2-135 does not say so."
         }
       ],
       "principle": null,
@@ -2379,6 +2372,32 @@
         "L7-194",
         "L7-195",
         "L5-283"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.complete-no-action-ends-the-tick",
+      "kind": "overnight",
+      "rule": "A complete `NO_ACTION` ends the tick.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-337"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.settle-calls-before-proceeding",
+      "kind": "overnight",
+      "rule": "Settle the calls before proceeding.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-338"
       ],
       "drift": [],
       "principle": null

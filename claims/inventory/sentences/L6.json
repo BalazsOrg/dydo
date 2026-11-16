@@ -857,7 +857,25 @@
         {
           "id": "L6-042",
           "kind": "worktree",
-          "rule": "Proof work (a proof-only brief or an Inquisition's Break phase) proves before editing that HEAD is on the proof branch its brief names, cut from the pinned SHA (the audit SHA for Break), that the worktree is clean, and that every path it touches is a test path.",
+          "rule": "Proof work (a proof-only brief or an Inquisition's Break phase) proves before editing that HEAD is on the proof branch its brief names, cut from the pinned SHA (the audit SHA for Break).",
+          "actors": [
+            "code-writer",
+            "inquisitor"
+          ]
+        },
+        {
+          "id": "L6-182",
+          "kind": "worktree",
+          "rule": "Proof work (a proof-only brief or an Inquisition's Break phase) proves before editing that the worktree is clean.",
+          "actors": [
+            "code-writer",
+            "inquisitor"
+          ]
+        },
+        {
+          "id": "L6-183",
+          "kind": "worktree",
+          "rule": "Proof work (a proof-only brief or an Inquisition's Break phase) proves before editing that every path it touches is a test path.",
           "actors": [
             "code-writer",
             "inquisitor"

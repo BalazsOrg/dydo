@@ -247,7 +247,31 @@
         {
           "id": "L3-015",
           "kind": "merge",
-          "rule": "A merge hop proves the pins in merge.md; a proof-only hop proves HEAD is on its brief's child branch off the brief's pinned source SHA, the worktree is clean and only the brief's test path is touched.",
+          "rule": "A merge hop proves the pins in merge.md.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-239",
+          "kind": "worktree",
+          "rule": "A proof-only hop proves HEAD is on its brief's child branch off the brief's pinned source SHA.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-240",
+          "kind": "worktree",
+          "rule": "A proof-only hop proves the worktree is clean.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-241",
+          "kind": "worktree",
+          "rule": "A proof-only hop proves only the brief's test path is touched.",
           "actors": [
             "code-writer"
           ]

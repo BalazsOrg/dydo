@@ -1102,7 +1102,7 @@
     {
       "id": "linear.project-status-planned",
       "kind": "linear",
-      "rule": "Project status Planned means the user approved the charted route and any repository plan passed independent review; the map holder commissions the first Ticket Captain.",
+      "rule": "Project status Planned means the user approved the charted route and any repository plan passed independent review.",
       "actors": [
         "map-holder"
       ],
@@ -1896,7 +1896,7 @@
     {
       "id": "release.blocker-takeover-dying-session",
       "kind": "release",
-      "rule": "On a blocker the captain cannot clear or a user takeover (or dying session), push the branch, post the resume SHA, clean the worktrees the captain or its crew made with dydo clean, set the parent Todo, unassign, wire any blocker, and return released <key>: <reason>.",
+      "rule": "On a blocker the captain cannot clear or a user takeover (or dying session), push the branch, post the resume SHA, set the parent Todo, unassign, wire any blocker, and return released <key>: <reason>.",
       "actors": [
         "ticket-captain"
       ],

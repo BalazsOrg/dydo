@@ -766,7 +766,7 @@
         {
           "id": "L4-043",
           "kind": "worktree",
-          "rule": "Prove three worktree checks and return a failure to the captain instead of working around it.",
+          "rule": "Return a failed worktree check to the captain instead of working around it.",
           "actors": [
             "inquisitor"
           ]
@@ -796,7 +796,7 @@
         {
           "id": "L4-045",
           "kind": "worktree",
-          "rule": "The worktree is clean.",
+          "rule": "Before editing, Break proves the worktree is clean.",
           "actors": [
             "inquisitor"
           ]
@@ -1982,17 +1982,9 @@
       "text": "**Prove what reading proves.**",
       "rules": [
         {
-          "id": "L4-097",
+          "id": "L4-202",
           "kind": "evidence",
-          "rule": "Quote both passages at `file:line` for an intent, decision, standard, comment or prose finding; each such finding carries its proof or is dropped as refuted.",
-          "actors": [
-            "inquisitor"
-          ]
-        },
-        {
-          "id": "L4-195",
-          "kind": "evidence",
-          "rule": "For an unused member, run the reference search over the whole repository at the audit SHA and quote the command and its output; the finding carries that proof or is dropped as refuted.",
+          "rule": "Each finding made by reading carries its proof or is dropped as refuted.",
           "actors": [
             "inquisitor"
           ]
@@ -2005,7 +1997,12 @@
       "text": "Quote both passages at `file:line` for an intent, decision, standard, comment or prose finding.",
       "rules": [
         {
-          "id": "L4-097"
+          "id": "L4-097",
+          "kind": "evidence",
+          "rule": "Quote both passages at `file:line` for an intent, decision, standard, comment or prose finding.",
+          "actors": [
+            "inquisitor"
+          ]
         }
       ],
       "notRule": null
@@ -2015,7 +2012,12 @@
       "text": "For an unused member, run the reference search over the whole repository at the audit SHA and quote the command and its output.",
       "rules": [
         {
-          "id": "L4-195"
+          "id": "L4-195",
+          "kind": "evidence",
+          "rule": "For an unused member, run the reference search over the whole repository at the audit SHA and quote the command and its output.",
+          "actors": [
+            "inquisitor"
+          ]
         }
       ],
       "notRule": null
@@ -2025,10 +2027,7 @@
       "text": "Done when each such finding carries its proof or is dropped as refuted.",
       "rules": [
         {
-          "id": "L4-097"
-        },
-        {
-          "id": "L4-195"
+          "id": "L4-202"
         }
       ],
       "notRule": null

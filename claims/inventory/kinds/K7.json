@@ -298,7 +298,7 @@
     {
       "id": "decision.factual-claim-check",
       "kind": "decision",
-      "rule": "A factual claim names its check; the other two members run it independently and report confirmed, refuted or inconclusive.",
+      "rule": "A factual claim names its check.",
       "actors": [
         "officer"
       ],
@@ -775,7 +775,7 @@
     {
       "id": "wayfinding.after-resolution-map-update",
       "kind": "wayfinding",
-      "rule": "After a resolution, add newly surfaced tickets (create then wire), graduate fog the answer made specifiable and clear it from Not yet specified, and update or cancel tickets the resolution invalidates.",
+      "rule": "After a resolution, add newly surfaced tickets (create then wire, a Project's Task into its Milestone) and update or cancel tickets the resolution invalidates.",
       "actors": [
         "map-holder"
       ],
@@ -1151,7 +1151,7 @@
     {
       "id": "wayfinding.pull-discoveries-to-project-map",
       "kind": "wayfinding",
-      "rule": "Discoveries that are shared, Project-wide or cross-ticket are moved back onto the Project map, while a captain's local course correction is accepted where it stands.",
+      "rule": "Discoveries that are shared, Project-wide or cross-ticket are moved back onto the Project map.",
       "actors": [
         "admiral"
       ],
@@ -1162,7 +1162,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L2-030 covers shared or Project-wide discoveries; L2-109 adds cross-ticket discoveries and the acceptance of local course corrections."
+          "note": "L2-030 covers shared or Project-wide discoveries; L2-109 adds cross-ticket discoveries."
         }
       ],
       "principle": null,

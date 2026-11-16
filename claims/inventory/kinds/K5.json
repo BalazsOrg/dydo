@@ -167,20 +167,6 @@
       "group": "K5"
     },
     {
-      "id": "docs.authored-source-and-navigation",
-      "kind": "docs",
-      "rule": "Navigation pages are authored when the docs need them; skills/<category>/<name>/ is the only editable skill source and host discovery paths are setup projections.",
-      "actors": [
-        "docs-writer"
-      ],
-      "statements": [
-        "L3-121"
-      ],
-      "drift": [],
-      "principle": null,
-      "group": "K5"
-    },
-    {
       "id": "docs.claim-needs-witness",
       "kind": "docs",
       "rule": "Every sentence written is a claim needing a witness in the repository (code, configuration, or governing intent); where the witness is missing the gap is returned instead of the claim written, and the code, configuration and decisions are read until every claim has one.",
@@ -270,7 +256,7 @@
     {
       "id": "docs.frontmatter-and-links-per-writing-docs",
       "kind": "docs",
-      "rule": "A dydo document takes its frontmatter and links from writing-docs.md, and an agent-facing document is written by the writing-for-agents skill; a frontmatter, naming or link broken against dydo/reference/writing-docs.md is a finding.",
+      "rule": "A dydo document takes its frontmatter and links from dydo/reference/writing-docs.md; a frontmatter, naming or link broken against it is a finding.",
       "actors": [
         "docs-writer",
         "reviewer"
@@ -413,7 +399,7 @@
     {
       "id": "docs.review-verify-from-source",
       "kind": "docs",
-      "rule": "The reviewer verifies from source: opens the paths, runs the commands, reads the code, checks the stage exact-candidate gate evidence (dydo check among it) and reruns a gate only on a doubt it states.",
+      "rule": "The reviewer verifies from source: opens the paths, runs the commands, reads the code and checks the stage exact-candidate gate evidence (dydo check among it).",
       "actors": [
         "reviewer"
       ],
@@ -1147,7 +1133,7 @@
     {
       "id": "inquisition.parent-merges-group-registers",
       "kind": "inquisition",
-      "rule": "When the groups close the parent merges their registers into its own, joins duplicates across groups as sightings, closes a duplicate Bug as Duplicate of the one kept, runs the record step over the merged register and delivers the one record; grouping is done when every area belongs to one group and each register is merged.",
+      "rule": "When the groups close the parent merges their registers into its own; grouping is done when every area belongs to one group and each group's register is merged into the parent's.",
       "actors": [
         "ticket-captain"
       ],
@@ -1176,7 +1162,7 @@
     {
       "id": "inquisition.patch-code-writer-brief",
       "kind": "inquisition",
-      "rule": "The patch is briefed to a code-writer in Bug mode on the Bug own branch <BUG-KEY>-<slug>, cut from the audit SHA, with base SHA and owned paths posted; proofs stay with the Break inquisitor.",
+      "rule": "The patch is briefed to a code-writer in Bug mode on the Bug own branch <BUG-KEY>-<slug>, cut from the audit SHA, with base SHA and owned paths posted.",
       "actors": [
         "ticket-captain",
         "code-writer"
@@ -2126,6 +2112,19 @@
       ],
       "statements": [
         "L6-181"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.author-navigation-pages-when-needed",
+      "kind": "docs",
+      "rule": "Navigation pages are authored when the docs need them.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-121"
       ],
       "drift": [],
       "principle": null

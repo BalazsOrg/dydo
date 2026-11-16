@@ -5,7 +5,7 @@
     {
       "id": "capacity.budget-native-capacity",
       "kind": "capacity",
-      "rule": "Budget open native capacity before commissioning or resuming a captain (the captain does the same for its crew, running necessary stages serially).",
+      "rule": "Budget open native capacity before commissioning or resuming a captain (the captain does the same for its crew).",
       "actors": [
         "admiral",
         "ticket-captain"
@@ -208,7 +208,7 @@
         },
         {
           "type": "scope",
-          "note": "L1-209 and L2-117 put the cap in the Inquisition commission (L2-117 as a question to the user, together with the 110k context limit); the others bind any brief."
+          "note": "L1-209 and L2-117 put the cap in the Inquisition commission (L2-117 as a question to the user); the others bind any brief."
         }
       ],
       "principle": null
@@ -363,10 +363,20 @@
       "rule": "The crew context limit is 110k tokens unless the commission set another; the brief states it.",
       "actors": [
         "ticket-captain",
-        "inquisitor"
+        "inquisitor",
+        "admiral"
       ],
       "combined": true,
       "prose": {
+        "admiral": [
+          {
+            "text": "Once the feature is integrated, file an Inquisition in `Backlog` with its feature SHA and cost, and put the commission question to the user: a provider and model for each phase (Read, Break, Drive), the swarm width, the Codex cap (start about 8 at once, toward 16 while runs stay clean, back off on a 429), and the crew context limit, 110k tokens by default.",
+            "source": "skills/roles/officers/admiral/SKILL.md:160",
+            "unit": "skills/roles/officers/admiral/SKILL.md#L160.2",
+            "statement": "L2-336",
+            "combined": true
+          }
+        ],
         "inquisitor": [
           {
             "text": "The limit is 110k tokens unless the commission set another, and your brief states it.",
@@ -386,7 +396,16 @@
           }
         ]
       },
-      "drift": [],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-210 and L4-065 say \"unless the commission set another\"; L2-117 says \"by default\"."
+        },
+        {
+          "type": "scope",
+          "note": "L1-210 and L2-117 put the limit in the Inquisition commission (L2-117 as a question to the user); L4-065 binds the inquisitor and adds that the brief states it."
+        }
+      ],
       "principle": null
     },
     {
@@ -3358,7 +3377,7 @@
     {
       "id": "decision.factual-claim-check",
       "kind": "decision",
-      "rule": "A factual claim names its check; the other two members run it independently and report confirmed, refuted or inconclusive.",
+      "rule": "A factual claim names its check.",
       "actors": [
         "officer"
       ],
@@ -4629,7 +4648,7 @@
     {
       "id": "dispatch.dispatch-fresh-surveyor",
       "kind": "dispatch",
-      "rule": "The admiral dispatches one fresh surveyor on the smallest adequate model with the fixed dispatch brief to read the board and return actions; the admiral acts on them.",
+      "rule": "The admiral dispatches one fresh surveyor on the smallest adequate model with the fixed dispatch brief to read the board and return actions.",
       "actors": [
         "admiral"
       ],
@@ -6495,9 +6514,9 @@
       "principle": null
     },
     {
-      "id": "docs.authored-source-and-navigation",
+      "id": "docs.author-navigation-pages-when-needed",
       "kind": "docs",
-      "rule": "Navigation pages are authored when the docs need them; skills/<category>/<name>/ is the only editable skill source and host discovery paths are setup projections.",
+      "rule": "Navigation pages are authored when the docs need them.",
       "actors": [
         "docs-writer"
       ],
@@ -6672,7 +6691,7 @@
     {
       "id": "docs.frontmatter-and-links-per-writing-docs",
       "kind": "docs",
-      "rule": "A dydo document takes its frontmatter and links from writing-docs.md, and an agent-facing document is written by the writing-for-agents skill; a frontmatter, naming or link broken against dydo/reference/writing-docs.md is a finding.",
+      "rule": "A dydo document takes its frontmatter and links from dydo/reference/writing-docs.md; a frontmatter, naming or link broken against it is a finding.",
       "actors": [
         "docs-writer",
         "reviewer"
@@ -6921,7 +6940,7 @@
     {
       "id": "docs.review-verify-from-source",
       "kind": "docs",
-      "rule": "The reviewer verifies from source: opens the paths, runs the commands, reads the code, checks the stage exact-candidate gate evidence (dydo check among it) and reruns a gate only on a doubt it states.",
+      "rule": "The reviewer verifies from source: opens the paths, runs the commands, reads the code and checks the stage exact-candidate gate evidence (dydo check among it).",
       "actors": [
         "reviewer"
       ],
@@ -8647,7 +8666,7 @@
     {
       "id": "evidence.inherited-failure-attribution",
       "kind": "evidence",
-      "rule": "Attribute a reported inherited or infrastructure failure by the testing strategy's Evidence and inherited failures, record its owner and route, and never convert it into a pass.",
+      "rule": "Attribute a reported inherited or infrastructure failure by the testing strategy's Evidence and inherited failures and record its owner and route.",
       "actors": [
         "ticket-captain",
         "admiral",
@@ -9108,15 +9127,15 @@
       "actors": [
         "inquisitor"
       ],
-      "combined": true,
+      "combined": false,
       "prose": {
         "inquisitor": [
           {
-            "text": "**Prove what reading proves.** Quote both passages at `file:line` for an intent, decision, standard, comment or prose finding. Done when each such finding carries its proof or is dropped as refuted.",
+            "text": "Quote both passages at `file:line` for an intent, decision, standard, comment or prose finding.",
             "source": "skills/roles/crew/inquisitor/resources/read.md:31",
-            "unit": "skills/roles/crew/inquisitor/resources/read.md#L31.1",
+            "unit": "skills/roles/crew/inquisitor/resources/read.md#L31.2",
             "statement": "L4-097",
-            "combined": true
+            "combined": false
           }
         ]
       },
@@ -9300,6 +9319,28 @@
           "note": "L2-009 binds the admiral to one section (Evidence and inherited failures) and only when a captain reports such failures; L1-010, L3-005, L3-107 and L3-165 name the sections the role reads up front."
         }
       ],
+      "principle": null
+    },
+    {
+      "id": "evidence.reading-finding-carries-proof-or-is-dropped",
+      "kind": "evidence",
+      "rule": "Each finding made by reading carries its proof or is dropped as refuted.",
+      "actors": [
+        "inquisitor"
+      ],
+      "combined": false,
+      "prose": {
+        "inquisitor": [
+          {
+            "text": "**Prove what reading proves.** Done when each such finding carries its proof or is dropped as refuted.",
+            "source": "skills/roles/crew/inquisitor/resources/read.md:31",
+            "unit": "skills/roles/crew/inquisitor/resources/read.md#L31.1",
+            "statement": "L4-202",
+            "combined": false
+          }
+        ]
+      },
+      "drift": [],
       "principle": null
     },
     {
@@ -9761,7 +9802,7 @@
         "code-writer",
         "inquisitor"
       ],
-      "combined": true,
+      "combined": false,
       "prose": {
         "code-writer": [
           {
@@ -9795,11 +9836,11 @@
             "combined": false
           },
           {
-            "text": "**Prove what reading proves.** For an unused member, run the reference search over the whole repository at the audit SHA and quote the command and its output. Done when each such finding carries its proof or is dropped as refuted.",
-            "source": "skills/roles/crew/inquisitor/resources/read.md:31",
-            "unit": "skills/roles/crew/inquisitor/resources/read.md#L31.1",
+            "text": "For an unused member, run the reference search over the whole repository at the audit SHA and quote the command and its output.",
+            "source": "skills/roles/crew/inquisitor/resources/read.md:32",
+            "unit": "skills/roles/crew/inquisitor/resources/read.md#L32.1",
             "statement": "L4-195",
-            "combined": true
+            "combined": false
           }
         ]
       },
@@ -10179,7 +10220,7 @@
     {
       "id": "identity.cos-staff-not-line",
       "kind": "identity",
-      "rule": "The chief of staff cuts across every stage of the map and owns none of it: it triages, prepares and reports, the user keeps every approval, and delivery belongs to whoever owns it.",
+      "rule": "The chief of staff cuts across every stage of the map and owns none of it (staff, not line): it triages, prepares and reports.",
       "actors": [
         "chief-of-staff"
       ],
@@ -10663,12 +10704,7 @@
           }
         ]
       },
-      "drift": [
-        {
-          "type": "scope",
-          "note": "L4-077 adds that on a project with nothing to run Drive does not apply and the map row says so."
-        }
-      ],
+      "drift": [],
       "principle": null
     },
     {
@@ -12210,7 +12246,7 @@
     {
       "id": "inquisition.parent-merges-group-registers",
       "kind": "inquisition",
-      "rule": "When the groups close the parent merges their registers into its own, joins duplicates across groups as sightings, closes a duplicate Bug as Duplicate of the one kept, runs the record step over the merged register and delivers the one record; grouping is done when every area belongs to one group and each register is merged.",
+      "rule": "When the groups close the parent merges their registers into its own; grouping is done when every area belongs to one group and each group's register is merged into the parent's.",
       "actors": [
         "ticket-captain"
       ],
@@ -12305,7 +12341,7 @@
     {
       "id": "inquisition.patch-code-writer-brief",
       "kind": "inquisition",
-      "rule": "The patch is briefed to a code-writer in Bug mode on the Bug own branch <BUG-KEY>-<slug>, cut from the audit SHA, with base SHA and owned paths posted; proofs stay with the Break inquisitor.",
+      "rule": "The patch is briefed to a code-writer in Bug mode on the Bug own branch <BUG-KEY>-<slug>, cut from the audit SHA, with base SHA and owned paths posted.",
       "actors": [
         "ticket-captain",
         "code-writer"
@@ -14896,7 +14932,7 @@
     {
       "id": "linear.project-status-planned",
       "kind": "linear",
-      "rule": "Project status Planned means the user approved the charted route and any repository plan passed independent review; the map holder commissions the first Ticket Captain.",
+      "rule": "Project status Planned means the user approved the charted route and any repository plan passed independent review.",
       "actors": [
         "map-holder"
       ],
@@ -16432,6 +16468,38 @@
       "principle": null
     },
     {
+      "id": "merge.captain-sets-ready-to-merge",
+      "kind": "merge",
+      "rule": "The captain sets Ready to Merge, which means a reviewed PR is offered.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "combined": true,
+      "prose": {
+        "admiral": [
+          {
+            "text": "A captain's `done <key>: PR ready` leaves its ticket `Ready to Merge` with a reviewed PR; its captain rechecked the gate before setting it.",
+            "source": "skills/roles/officers/admiral/SKILL.md:116",
+            "unit": "skills/roles/officers/admiral/SKILL.md#L116.2",
+            "statement": "L2-083",
+            "combined": true
+          }
+        ],
+        "ticket-captain": [
+          {
+            "text": "Then set `Ready to Merge`, and return `done <key>: PR ready`.",
+            "source": "skills/roles/officers/ticket-captain/SKILL.md:174",
+            "unit": "skills/roles/officers/ticket-captain/SKILL.md#L174.1",
+            "statement": "L1-145",
+            "combined": true
+          }
+        ]
+      },
+      "drift": [],
+      "principle": null
+    },
+    {
       "id": "merge.conflict-free-merge-uses-dydo-merge",
       "kind": "merge",
       "rule": "A conflict-free merge of the reviewed PR into its feature branch is performed by the Merge code-writer with dydo merge; any other merge, a conflicted one included, stays local with the resolutions applied.",
@@ -16471,7 +16539,7 @@
       "drift": [
         {
           "type": "action",
-          "note": "L3-079 adds the merge-commit requirement and the flags --match-head-commit <reviewed SHA> --match-base-commit <target tip>."
+          "note": "L3-079 adds the flags --match-head-commit <reviewed SHA> --match-base-commit <target tip>."
         }
       ],
       "principle": null
@@ -17360,38 +17428,6 @@
       "principle": null
     },
     {
-      "id": "merge.set-ready-to-merge-after-gate",
-      "kind": "merge",
-      "rule": "After the gate is rechecked the captain sets Ready to Merge, which means a reviewed PR is offered.",
-      "actors": [
-        "ticket-captain",
-        "admiral"
-      ],
-      "combined": true,
-      "prose": {
-        "admiral": [
-          {
-            "text": "A captain's `done <key>: PR ready` leaves its ticket `Ready to Merge` with a reviewed PR; its captain rechecked the gate before setting it.",
-            "source": "skills/roles/officers/admiral/SKILL.md:116",
-            "unit": "skills/roles/officers/admiral/SKILL.md#L116.2",
-            "statement": "L2-083",
-            "combined": true
-          }
-        ],
-        "ticket-captain": [
-          {
-            "text": "Then set `Ready to Merge`, and return `done <key>: PR ready`.",
-            "source": "skills/roles/officers/ticket-captain/SKILL.md:174",
-            "unit": "skills/roles/officers/ticket-captain/SKILL.md#L174.1",
-            "statement": "L1-145",
-            "combined": true
-          }
-        ]
-      },
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "merge.stay-silent-when-unchanged",
       "kind": "merge",
       "rule": "Stay silent when nothing changed.",
@@ -17515,7 +17551,7 @@
       "actors": [
         "code-writer"
       ],
-      "combined": false,
+      "combined": true,
       "prose": {
         "code-writer": [
           {
@@ -17523,7 +17559,7 @@
             "source": "skills/roles/crew/code-writer/SKILL.md:38",
             "unit": "skills/roles/crew/code-writer/SKILL.md#L38.1",
             "statement": "L3-015",
-            "combined": false
+            "combined": true
           },
           {
             "text": "Pin source and target branches at their SHAs, the source's PASS, the governing contract and the combined gates; read both sides before naming a resolution.",
@@ -17546,11 +17582,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L3-015 also states the proof-only pins (see worktree.proof-work-pre-edit-checks); L6-040 lists the merge pins in full, L3-015 only points to merge.md."
-        },
-        {
-          "type": "scope",
-          "note": "L3-015 also states the proof-only pre-edit checks, which L6-042 and L4-044 to L4-046 state in worktree.proof-work-pre-edit-checks; L6-040 adds \"instead of the five checks\"; L3-074 adds \"read both sides\"."
+          "note": "L6-040 adds \"instead of the five checks\"; L3-074 adds \"read both sides\"."
         }
       ],
       "principle": null
@@ -17842,6 +17874,28 @@
             "unit": "skills/productivity/overnight-mode/resources/transition-preflight.md#L27.1",
             "statement": "L5-063",
             "combined": false
+          }
+        ]
+      },
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.complete-no-action-ends-the-tick",
+      "kind": "overnight",
+      "rule": "A complete `NO_ACTION` ends the tick.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "combined": true,
+      "prose": {
+        "chief-of-staff": [
+          {
+            "text": "Resolve `INCOMPLETE` inspection gaps; a complete `NO_ACTION` ends the tick.",
+            "source": "skills/roles/officers/chief-of-staff/SKILL.md:86",
+            "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L86.1",
+            "statement": "L2-337",
+            "combined": true
           }
         ]
       },
@@ -18738,11 +18792,11 @@
     {
       "id": "overnight.report-block-per-project",
       "kind": "overnight",
-      "rule": "Copy the admiral report block once per Project; settle the calls before proceeding.",
+      "rule": "Copy the admiral report block once per Project.",
       "actors": [
         "chief-of-staff"
       ],
-      "combined": false,
+      "combined": true,
       "prose": {
         "chief-of-staff": [
           {
@@ -18750,7 +18804,7 @@
             "source": "skills/roles/officers/chief-of-staff/resources/muster.md:39",
             "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L39.1",
             "statement": "L2-285",
-            "combined": false
+            "combined": true
           }
         ]
       },
@@ -18802,6 +18856,28 @@
             "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L15.1",
             "statement": "L2-273",
             "combined": false
+          }
+        ]
+      },
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.settle-calls-before-proceeding",
+      "kind": "overnight",
+      "rule": "Settle the calls before proceeding.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "combined": true,
+      "prose": {
+        "chief-of-staff": [
+          {
+            "text": "Copy once per Project; settle the calls before proceeding.",
+            "source": "skills/roles/officers/chief-of-staff/resources/muster.md:39",
+            "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L39.1",
+            "statement": "L2-338",
+            "combined": true
           }
         ]
       },
@@ -19042,28 +19118,6 @@
             "source": "skills/roles/officers/chief-of-staff/resources/night-survey.md:14",
             "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L14.1",
             "statement": "L2-297",
-            "combined": false
-          }
-        ]
-      },
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "overnight.survey-incomplete-or-no-action",
-      "kind": "overnight",
-      "rule": "Resolve `INCOMPLETE` inspection gaps; a complete `NO_ACTION` ends the tick.",
-      "actors": [
-        "chief-of-staff"
-      ],
-      "combined": false,
-      "prose": {
-        "chief-of-staff": [
-          {
-            "text": "Resolve `INCOMPLETE` inspection gaps; a complete `NO_ACTION` ends the tick.",
-            "source": "skills/roles/officers/chief-of-staff/SKILL.md:86",
-            "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L86.1",
-            "statement": "L2-249",
             "combined": false
           }
         ]
@@ -19927,10 +19981,6 @@
         ]
       },
       "drift": [
-        {
-          "type": "action",
-          "note": "L2-136 closes the Project `Completed`; L5-088 and L7-006 add that the map holder commissions spec retirement (L5-088 names `dydo/reference/feature-spec-convention.md`); L2-136 does not."
-        },
         {
           "type": "wording",
           "note": "L7-006 defines Completed as destination landed and the landing walkthrough found nothing more; the others describe the closing act."
@@ -20970,11 +21020,12 @@
     {
       "id": "project.survey-incomplete",
       "kind": "project",
-      "rule": "On `INCOMPLETE`, read what the survey could not, or record the gap on the Project.",
+      "rule": "On an `INCOMPLETE` survey, read what it could not or record the gap on the Project.",
       "actors": [
-        "admiral"
+        "admiral",
+        "chief-of-staff"
       ],
-      "combined": false,
+      "combined": true,
       "prose": {
         "admiral": [
           {
@@ -20984,9 +21035,27 @@
             "statement": "L2-167",
             "combined": false
           }
+        ],
+        "chief-of-staff": [
+          {
+            "text": "Resolve `INCOMPLETE` inspection gaps; a complete `NO_ACTION` ends the tick.",
+            "source": "skills/roles/officers/chief-of-staff/SKILL.md:86",
+            "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L86.1",
+            "statement": "L2-249",
+            "combined": true
+          }
         ]
       },
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-167 binds the admiral on the board survey; L2-249 binds the chief of staff overnight."
+        },
+        {
+          "type": "action",
+          "note": "L2-167 reads the gap or records it on the Project; L2-249 says resolve the gaps and offers no recording."
+        }
+      ],
       "principle": null
     },
     {
@@ -21139,7 +21208,7 @@
     {
       "id": "project.user-tells-admiral",
       "kind": "project",
-      "rule": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells the admiral, who reads the board again.",
+      "rule": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells the admiral.",
       "actors": [
         "admiral",
         "user"
@@ -21206,7 +21275,7 @@
     {
       "id": "release.blocker-takeover-dying-session",
       "kind": "release",
-      "rule": "On a blocker the captain cannot clear or a user takeover (or dying session), push the branch, post the resume SHA, clean the worktrees the captain or its crew made with dydo clean, set the parent Todo, unassign, wire any blocker, and return released <key>: <reason>.",
+      "rule": "On a blocker the captain cannot clear or a user takeover (or dying session), push the branch, post the resume SHA, set the parent Todo, unassign, wire any blocker, and return released <key>: <reason>.",
       "actors": [
         "ticket-captain"
       ],
@@ -22549,10 +22618,20 @@
       "kind": "return",
       "rule": "If a later merge depends on the defective source work, a following fix ticket is filed instead of reverting.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "reviewer"
       ],
-      "combined": false,
+      "combined": true,
       "prose": {
+        "reviewer": [
+          {
+            "text": "Distinguish integration defects from defects in the source work so the Captain can route a fix here, or a revert and source rework; a later dependent merge requires a following fix ticket.",
+            "source": "skills/roles/crew/reviewer/resources/merge.md:36",
+            "unit": "skills/roles/crew/reviewer/resources/merge.md#L36.1",
+            "statement": "L4-199",
+            "combined": true
+          }
+        ],
         "ticket-captain": [
           {
             "text": "If a later merge depends on it, file a following fix ticket instead of reverting.",
@@ -22572,7 +22651,16 @@
           }
         ]
       },
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-182 and L6-107 bind the ticket-captain, who files the ticket; L4-199 is the merge reviewer's statement of the same rule, inside its duty to distinguish integration defects from source-work defects."
+        },
+        {
+          "type": "wording",
+          "note": "L1-182 says \"instead of reverting\" and L6-107 \"depends on a reverted source\"; L4-199 says only \"a later dependent merge requires a following fix ticket\"."
+        }
+      ],
       "principle": null
     },
     {
@@ -22617,7 +22705,7 @@
       "drift": [
         {
           "type": "action",
-          "note": "L3-131 lists SHA, files, witness, checks, gaps and evidence for the docs-writer; L7-165 lists hop/candidate, behavior, proof, blocker; L3-058 adds proof carrying red lines and gate exits."
+          "note": "L3-131 lists SHA, files, witness, checks, gaps and evidence for the docs-writer; L7-165 lists hop/candidate, behavior, proof, blocker."
         },
         {
           "type": "scope",
@@ -24585,28 +24673,6 @@
       "principle": null
     },
     {
-      "id": "review.later-dependent-merge-requires-following-fix-ticket",
-      "kind": "review",
-      "rule": "A later dependent merge requires a following fix ticket.",
-      "actors": [
-        "reviewer"
-      ],
-      "combined": true,
-      "prose": {
-        "reviewer": [
-          {
-            "text": "Distinguish integration defects from defects in the source work so the Captain can route a fix here, or a revert and source rework; a later dependent merge requires a following fix ticket.",
-            "source": "skills/roles/crew/reviewer/resources/merge.md:36",
-            "unit": "skills/roles/crew/reviewer/resources/merge.md#L36.1",
-            "statement": "L4-199",
-            "combined": true
-          }
-        ]
-      },
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "review.later-rounds-reviewer-choice",
       "kind": "review",
       "rule": "Later review rounds take the model and vendor the captain chooses, cross-vendor preferred.",
@@ -26306,7 +26372,7 @@
       "drift": [
         {
           "type": "action",
-          "note": "L2-135 requires confirmation for another inquisition; L5-087 says another landing/walkthrough."
+          "note": "L5-087 adds that the fixes are followed by another landing or walkthrough; L2-135 does not say so."
         }
       ],
       "principle": null
@@ -26890,7 +26956,7 @@
     {
       "id": "wayfinding.after-resolution-map-update",
       "kind": "wayfinding",
-      "rule": "After a resolution, add newly surfaced tickets (create then wire), graduate fog the answer made specifiable and clear it from Not yet specified, and update or cancel tickets the resolution invalidates.",
+      "rule": "After a resolution, add newly surfaced tickets (create then wire, a Project's Task into its Milestone) and update or cancel tickets the resolution invalidates.",
       "actors": [
         "map-holder"
       ],
@@ -27840,7 +27906,7 @@
     {
       "id": "wayfinding.pull-discoveries-to-project-map",
       "kind": "wayfinding",
-      "rule": "Discoveries that are shared, Project-wide or cross-ticket are moved back onto the Project map, while a captain's local course correction is accepted where it stands.",
+      "rule": "Discoveries that are shared, Project-wide or cross-ticket are moved back onto the Project map.",
       "actors": [
         "admiral"
       ],
@@ -27866,7 +27932,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L2-030 covers shared or Project-wide discoveries; L2-109 adds cross-ticket discoveries and the acceptance of local course corrections."
+          "note": "L2-030 covers shared or Project-wide discoveries; L2-109 adds cross-ticket discoveries."
         }
       ],
       "principle": null
@@ -28491,9 +28557,10 @@
       "rule": "Before the first edit, the worktree is clean.",
       "actors": [
         "code-writer",
-        "docs-writer"
+        "docs-writer",
+        "inquisitor"
       ],
-      "combined": false,
+      "combined": true,
       "prose": {
         "code-writer": [
           {
@@ -28501,6 +28568,22 @@
             "source": "skills/roles/crew/code-writer/SKILL.md:35",
             "unit": "skills/roles/crew/code-writer/SKILL.md#L35.1",
             "statement": "L3-013",
+            "combined": false
+          },
+          {
+            "text": "Merge proves the pins in [merge](resources/merge.md); proof-only, `HEAD` on its brief's child branch off the brief's pinned source SHA, a clean worktree and only the brief's test path touched.",
+            "source": "skills/roles/crew/code-writer/SKILL.md:38",
+            "unit": "skills/roles/crew/code-writer/SKILL.md#L38.1",
+            "statement": "L3-240",
+            "combined": true
+          }
+        ],
+        "inquisitor": [
+          {
+            "text": "The worktree is clean.",
+            "source": "skills/roles/crew/inquisitor/resources/break.md:11",
+            "unit": "skills/roles/crew/inquisitor/resources/break.md#L11.1",
+            "statement": "L4-045",
             "combined": false
           }
         ],
@@ -28511,10 +28594,22 @@
             "unit": "dydo/guides/working-tree-standard.md#L70.1",
             "statement": "L6-038",
             "combined": false
+          },
+          {
+            "text": "Proof work, a proof-only brief or an Inquisition's Break phase, proves three things: `HEAD` is on the proof branch its brief names, cut from that SHA (the audit SHA for Break); the worktree is clean; and every path it touches is a test path.",
+            "source": "dydo/guides/working-tree-standard.md:75",
+            "unit": "dydo/guides/working-tree-standard.md#L75.1",
+            "statement": "L6-182",
+            "combined": true
           }
         ]
       },
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-013 and L6-038 bind the writer on an implement or fix hop (L6-038 names the docs-writer too); L4-045 binds the Break inquisitor; L3-240 and L6-182 state it for proof work."
+        }
+      ],
       "principle": null
     },
     {
@@ -29405,37 +29500,79 @@
       "principle": null
     },
     {
-      "id": "worktree.proof-work-pre-edit-checks",
+      "id": "worktree.proof-work-head-on-proof-branch",
       "kind": "worktree",
-      "rule": "Before editing, proof work proves HEAD is on the proof branch its brief names, cut from the pinned SHA (audit SHA for Break), the worktree is clean, and every path touched is a test path.",
+      "rule": "Before editing, proof work proves HEAD is on the proof branch its brief names, cut from the pinned SHA (the audit SHA for Break).",
       "actors": [
         "inquisitor",
         "code-writer"
       ],
-      "combined": false,
+      "combined": true,
       "prose": {
-        "inquisitor": [
+        "code-writer": [
           {
-            "text": "Prove three things and return a failure to the captain instead of working around it:",
-            "source": "skills/roles/crew/inquisitor/resources/break.md:8",
-            "unit": "skills/roles/crew/inquisitor/resources/break.md#L8.1",
-            "statement": "L4-043",
-            "combined": false
-          },
+            "text": "Merge proves the pins in [merge](resources/merge.md); proof-only, `HEAD` on its brief's child branch off the brief's pinned source SHA, a clean worktree and only the brief's test path touched.",
+            "source": "skills/roles/crew/code-writer/SKILL.md:38",
+            "unit": "skills/roles/crew/code-writer/SKILL.md#L38.1",
+            "statement": "L3-239",
+            "combined": true
+          }
+        ],
+        "inquisitor": [
           {
             "text": "`HEAD` is on the proof branch your brief names, `proof/<KEY>-<area>-<n>`, cut from the audit SHA.",
             "source": "skills/roles/crew/inquisitor/resources/break.md:10",
             "unit": "skills/roles/crew/inquisitor/resources/break.md#L10.1",
             "statement": "L4-044",
             "combined": false
-          },
+          }
+        ],
+        "working-tree-standard": [
           {
-            "text": "The worktree is clean.",
-            "source": "skills/roles/crew/inquisitor/resources/break.md:11",
-            "unit": "skills/roles/crew/inquisitor/resources/break.md#L11.1",
-            "statement": "L4-045",
-            "combined": false
-          },
+            "text": "Proof work, a proof-only brief or an Inquisition's Break phase, proves three things: `HEAD` is on the proof branch its brief names, cut from that SHA (the audit SHA for Break); the worktree is clean; and every path it touches is a test path.",
+            "source": "dydo/guides/working-tree-standard.md:75",
+            "unit": "dydo/guides/working-tree-standard.md#L75.1",
+            "statement": "L6-042",
+            "combined": true
+          }
+        ]
+      },
+      "drift": [
+        {
+          "type": "value",
+          "note": "L4-044 names the branch proof/<KEY>-<area>-<n> cut from the audit SHA; L6-042 says the branch the brief names, cut from the pinned SHA."
+        },
+        {
+          "type": "scope",
+          "note": "L6-042 covers proof-only briefs and Break; L4-044 covers the inquisitor only; L3-239 states the proof-only variant for the code-writer."
+        },
+        {
+          "type": "wording",
+          "note": "L3-239 says \"its brief's child branch off the brief's pinned source SHA\"; L6-042 says \"the proof branch its brief names, cut from the pinned SHA\"; L4-044 names the branch and the audit SHA."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "worktree.proof-work-touches-test-paths-only",
+      "kind": "worktree",
+      "rule": "Before editing, proof work proves every path it will touch is a test path (a test project, folder or file); a proof-only hop touches only the brief's test path.",
+      "actors": [
+        "inquisitor",
+        "code-writer"
+      ],
+      "combined": true,
+      "prose": {
+        "code-writer": [
+          {
+            "text": "Merge proves the pins in [merge](resources/merge.md); proof-only, `HEAD` on its brief's child branch off the brief's pinned source SHA, a clean worktree and only the brief's test path touched.",
+            "source": "skills/roles/crew/code-writer/SKILL.md:38",
+            "unit": "skills/roles/crew/code-writer/SKILL.md#L38.1",
+            "statement": "L3-241",
+            "combined": true
+          }
+        ],
+        "inquisitor": [
           {
             "text": "Every path you will touch is a test path: a test project, a test folder or a test file.",
             "source": "skills/roles/crew/inquisitor/resources/break.md:12",
@@ -29449,23 +29586,19 @@
             "text": "Proof work, a proof-only brief or an Inquisition's Break phase, proves three things: `HEAD` is on the proof branch its brief names, cut from that SHA (the audit SHA for Break); the worktree is clean; and every path it touches is a test path.",
             "source": "dydo/guides/working-tree-standard.md:75",
             "unit": "dydo/guides/working-tree-standard.md#L75.1",
-            "statement": "L6-042",
-            "combined": false
+            "statement": "L6-183",
+            "combined": true
           }
         ]
       },
       "drift": [
         {
-          "type": "value",
-          "note": "L4-044 names the branch proof/<KEY>-<area>-<n> cut from the audit SHA; L6-042 says the branch the brief names, cut from the pinned SHA."
+          "type": "wording",
+          "note": "L4-046 says \"a test project, a test folder or a test file\"; L3-241 says \"only the brief's test path\"."
         },
         {
           "type": "scope",
-          "note": "L6-042 covers proof-only briefs and Break; L4-044, L4-045 and L4-046 cover the inquisitor only; L3-015 states the proof-only variant for the code-writer."
-        },
-        {
-          "type": "wording",
-          "note": "L4-043 says Break proves \"the three worktree checks\" and returns a failure to the captain; L4-044 to L4-046 and L6-042 name the three checks."
+          "note": "L4-046 binds the Break inquisitor; L3-241 the proof-only code-writer; L6-183 both."
         }
       ],
       "principle": null
@@ -29518,10 +29651,11 @@
     {
       "id": "worktree.prove-checks-before-first-edit",
       "kind": "worktree",
-      "rule": "Before the first edit of an implement or fix hop, the writer proves the working-tree checks and returns a failure to its Ticket Captain instead of working around it.",
+      "rule": "Before the first edit of an implement or fix hop, the writer proves the working-tree checks and returns a failure to its Ticket Captain instead of working around it (an Inquisition's Break inquisitor returns a failed check the same way).",
       "actors": [
         "code-writer",
-        "docs-writer"
+        "docs-writer",
+        "inquisitor"
       ],
       "combined": true,
       "prose": {
@@ -29531,6 +29665,15 @@
             "source": "skills/roles/crew/code-writer/SKILL.md:29",
             "unit": "skills/roles/crew/code-writer/SKILL.md#L29.1",
             "statement": "L3-009",
+            "combined": false
+          }
+        ],
+        "inquisitor": [
+          {
+            "text": "Prove three things and return a failure to the captain instead of working around it:",
+            "source": "skills/roles/crew/inquisitor/resources/break.md:8",
+            "unit": "skills/roles/crew/inquisitor/resources/break.md#L8.1",
+            "statement": "L4-043",
             "combined": false
           }
         ],
@@ -29552,6 +29695,10 @@
         {
           "type": "wording",
           "note": "L3-009 \"the working-tree standard's checks, stop\"; L6-034 \"all five checks\"."
+        },
+        {
+          "type": "scope",
+          "note": "L4-043 binds the Break inquisitor, who returns a failed proof-work check to the captain; L3-009 and L6-034 bind the writer on an implement or fix hop."
         }
       ],
       "principle": null
@@ -30034,7 +30181,7 @@
         "return.merge-review-distinguishes-defects",
         "return.following-fix-ticket-if-dependent"
       ],
-      "note": "L4-166 states the following-fix-ticket rule inside the reviewer's duty; L1-182 and L6-107 state it for the captain."
+      "note": "L4-199 states the following-fix-ticket rule in the merge reviewer's duty to distinguish integration from source-work defects (L4-166 holds the distinguishing); L1-182 and L6-107 state it for the captain."
     },
     {
       "group": "K3",
@@ -30186,7 +30333,7 @@
       "group": "K4",
       "type": "drift",
       "claims": [
-        "worktree.proof-work-pre-edit-checks",
+        "worktree.proof-work-head-on-proof-branch",
         "worktree.inquisition-proof-branch",
         "worktree.proof-only-branch"
       ],

@@ -1264,7 +1264,7 @@
     {
       "id": "evidence.inherited-failure-attribution",
       "kind": "evidence",
-      "rule": "Attribute a reported inherited or infrastructure failure by the testing strategy's Evidence and inherited failures, record its owner and route, and never convert it into a pass.",
+      "rule": "Attribute a reported inherited or infrastructure failure by the testing strategy's Evidence and inherited failures and record its owner and route.",
       "actors": [
         "ticket-captain",
         "admiral",
@@ -1818,13 +1818,22 @@
       "rule": "Before the first edit, the worktree is clean.",
       "actors": [
         "code-writer",
-        "docs-writer"
+        "docs-writer",
+        "inquisitor"
       ],
       "statements": [
         "L3-013",
-        "L6-038"
+        "L6-038",
+        "L6-182",
+        "L3-240",
+        "L4-045"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-013 and L6-038 bind the writer on an implement or fix hop (L6-038 names the docs-writer too); L4-045 binds the Break inquisitor; L3-240 and L6-182 state it for proof work."
+        }
+      ],
       "principle": null,
       "group": "K4"
     },
@@ -2264,38 +2273,6 @@
       "group": "K4"
     },
     {
-      "id": "worktree.proof-work-pre-edit-checks",
-      "kind": "worktree",
-      "rule": "Before editing, proof work proves HEAD is on the proof branch its brief names, cut from the pinned SHA (audit SHA for Break), the worktree is clean, and every path touched is a test path.",
-      "actors": [
-        "inquisitor",
-        "code-writer"
-      ],
-      "statements": [
-        "L4-044",
-        "L4-045",
-        "L4-046",
-        "L6-042",
-        "L4-043"
-      ],
-      "drift": [
-        {
-          "type": "value",
-          "note": "L4-044 names the branch proof/<KEY>-<area>-<n> cut from the audit SHA; L6-042 says the branch the brief names, cut from the pinned SHA."
-        },
-        {
-          "type": "scope",
-          "note": "L6-042 covers proof-only briefs and Break; L4-044, L4-045 and L4-046 cover the inquisitor only; L3-015 states the proof-only variant for the code-writer."
-        },
-        {
-          "type": "wording",
-          "note": "L4-043 says Break proves \"the three worktree checks\" and returns a failure to the captain; L4-044 to L4-046 and L6-042 name the three checks."
-        }
-      ],
-      "principle": null,
-      "group": "K4"
-    },
-    {
       "id": "worktree.prototype-branch",
       "kind": "worktree",
       "rule": "A Prototype Ticket branches from its feature branch (else main) as prototype/<name>, has no PR target and never merges.",
@@ -2327,14 +2304,16 @@
     {
       "id": "worktree.prove-checks-before-first-edit",
       "kind": "worktree",
-      "rule": "Before the first edit of an implement or fix hop, the writer proves the working-tree checks and returns a failure to its Ticket Captain instead of working around it.",
+      "rule": "Before the first edit of an implement or fix hop, the writer proves the working-tree checks and returns a failure to its Ticket Captain instead of working around it (an Inquisition's Break inquisitor returns a failed check the same way).",
       "actors": [
         "code-writer",
-        "docs-writer"
+        "docs-writer",
+        "inquisitor"
       ],
       "statements": [
         "L3-009",
-        "L6-034"
+        "L6-034",
+        "L4-043"
       ],
       "drift": [
         {
@@ -2344,6 +2323,10 @@
         {
           "type": "wording",
           "note": "L3-009 \"the working-tree standard's checks, stop\"; L6-034 \"all five checks\"."
+        },
+        {
+          "type": "scope",
+          "note": "L4-043 binds the Break inquisitor, who returns a failed proof-work check to the captain; L3-009 and L6-034 bind the writer on an implement or fix hop."
         }
       ],
       "principle": null,
@@ -2771,6 +2754,73 @@
       ],
       "drift": [],
       "principle": null
+    },
+    {
+      "id": "evidence.reading-finding-carries-proof-or-is-dropped",
+      "kind": "evidence",
+      "rule": "Each finding made by reading carries its proof or is dropped as refuted.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-202"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "worktree.proof-work-head-on-proof-branch",
+      "kind": "worktree",
+      "rule": "Before editing, proof work proves HEAD is on the proof branch its brief names, cut from the pinned SHA (the audit SHA for Break).",
+      "actors": [
+        "inquisitor",
+        "code-writer"
+      ],
+      "statements": [
+        "L4-044",
+        "L6-042",
+        "L3-239"
+      ],
+      "drift": [
+        {
+          "type": "value",
+          "note": "L4-044 names the branch proof/<KEY>-<area>-<n> cut from the audit SHA; L6-042 says the branch the brief names, cut from the pinned SHA."
+        },
+        {
+          "type": "scope",
+          "note": "L6-042 covers proof-only briefs and Break; L4-044 covers the inquisitor only; L3-239 states the proof-only variant for the code-writer."
+        },
+        {
+          "type": "wording",
+          "note": "L3-239 says \"its brief's child branch off the brief's pinned source SHA\"; L6-042 says \"the proof branch its brief names, cut from the pinned SHA\"; L4-044 names the branch and the audit SHA."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "worktree.proof-work-touches-test-paths-only",
+      "kind": "worktree",
+      "rule": "Before editing, proof work proves every path it will touch is a test path (a test project, folder or file); a proof-only hop touches only the brief's test path.",
+      "actors": [
+        "inquisitor",
+        "code-writer"
+      ],
+      "statements": [
+        "L4-046",
+        "L6-183",
+        "L3-241"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L4-046 says \"a test project, a test folder or a test file\"; L3-241 says \"only the brief's test path\"."
+        },
+        {
+          "type": "scope",
+          "note": "L4-046 binds the Break inquisitor; L3-241 the proof-only code-writer; L6-183 both."
+        }
+      ],
+      "principle": null
     }
   ],
   "findings": [
@@ -2822,7 +2872,7 @@
     {
       "type": "drift",
       "claims": [
-        "worktree.proof-work-pre-edit-checks",
+        "worktree.proof-work-head-on-proof-branch",
         "worktree.inquisition-proof-branch",
         "worktree.proof-only-branch"
       ],

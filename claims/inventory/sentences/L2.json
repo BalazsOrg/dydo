@@ -1948,7 +1948,15 @@
         {
           "id": "L2-117",
           "kind": "capacity",
-          "rule": "The Codex cap starts at about 8 at once, toward 16 while runs stay clean, backing off on a 429; the crew context limit is 110k tokens by default.",
+          "rule": "The Codex cap starts at about 8 at once, toward 16 while runs stay clean, backing off on a 429.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-336",
+          "kind": "capacity",
+          "rule": "The crew context limit is 110k tokens by default.",
           "actors": [
             "admiral"
           ]
@@ -4061,8 +4069,16 @@
       "rules": [
         {
           "id": "L2-249",
+          "kind": "project",
+          "rule": "Resolve `INCOMPLETE` inspection gaps.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-337",
           "kind": "overnight",
-          "rule": "Resolve `INCOMPLETE` inspection gaps; a complete `NO_ACTION` ends the tick.",
+          "rule": "A complete `NO_ACTION` ends the tick.",
           "actors": [
             "chief-of-staff"
           ]
@@ -4611,7 +4627,15 @@
         {
           "id": "L2-285",
           "kind": "overnight",
-          "rule": "Copy the admiral report block once per Project; settle the calls before proceeding.",
+          "rule": "Copy the admiral report block once per Project.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-338",
+          "kind": "overnight",
+          "rule": "Settle the calls before proceeding.",
           "actors": [
             "chief-of-staff"
           ]

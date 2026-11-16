@@ -76,7 +76,7 @@
       "drift": [
         {
           "type": "action",
-          "note": "L3-079 adds the merge-commit requirement and the flags --match-head-commit <reviewed SHA> --match-base-commit <target tip>."
+          "note": "L3-079 adds the flags --match-head-commit <reviewed SHA> --match-base-commit <target tip>."
         }
       ],
       "principle": null,
@@ -541,11 +541,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L3-015 also states the proof-only pins (see worktree.proof-work-pre-edit-checks); L6-040 lists the merge pins in full, L3-015 only points to merge.md."
-        },
-        {
-          "type": "scope",
-          "note": "L3-015 also states the proof-only pre-edit checks, which L6-042 and L4-044 to L4-046 state in worktree.proof-work-pre-edit-checks; L6-040 adds \"instead of the five checks\"; L3-074 adds \"read both sides\"."
+          "note": "L6-040 adds \"instead of the five checks\"; L3-074 adds \"read both sides\"."
         }
       ],
       "principle": null,
@@ -983,13 +979,24 @@
       "kind": "return",
       "rule": "If a later merge depends on the defective source work, a following fix ticket is filed instead of reverting.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "reviewer"
       ],
       "statements": [
         "L1-182",
-        "L6-107"
+        "L6-107",
+        "L4-199"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-182 and L6-107 bind the ticket-captain, who files the ticket; L4-199 is the merge reviewer's statement of the same rule, inside its duty to distinguish integration defects from source-work defects."
+        },
+        {
+          "type": "wording",
+          "note": "L1-182 says \"instead of reverting\" and L6-107 \"depends on a reverted source\"; L4-199 says only \"a later dependent merge requires a following fix ticket\"."
+        }
+      ],
       "principle": null,
       "group": "K3"
     },
@@ -1010,7 +1017,7 @@
       "drift": [
         {
           "type": "action",
-          "note": "L3-131 lists SHA, files, witness, checks, gaps and evidence for the docs-writer; L7-165 lists hop/candidate, behavior, proof, blocker; L3-058 adds proof carrying red lines and gate exits."
+          "note": "L3-131 lists SHA, files, witness, checks, gaps and evidence for the docs-writer; L7-165 lists hop/candidate, behavior, proof, blocker."
         },
         {
           "type": "scope",
@@ -2889,21 +2896,6 @@
       "principle": null
     },
     {
-      "id": "merge.set-ready-to-merge-after-gate",
-      "kind": "merge",
-      "rule": "After the gate is rechecked the captain sets Ready to Merge, which means a reviewed PR is offered.",
-      "actors": [
-        "ticket-captain",
-        "admiral"
-      ],
-      "statements": [
-        "L1-145",
-        "L2-083"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "merge.officer-watches-captain-pr",
       "kind": "merge",
       "rule": "The owning officer (the top-level thread in T3) watches a delegated captain's PR and wakes the captain on news.",
@@ -3000,19 +2992,6 @@
       ],
       "statements": [
         "L6-156"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "review.later-dependent-merge-requires-following-fix-ticket",
-      "kind": "review",
-      "rule": "A later dependent merge requires a following fix ticket.",
-      "actors": [
-        "reviewer"
-      ],
-      "statements": [
-        "L4-199"
       ],
       "drift": [],
       "principle": null
@@ -3154,6 +3133,21 @@
       ],
       "drift": [],
       "principle": null
+    },
+    {
+      "id": "merge.captain-sets-ready-to-merge",
+      "kind": "merge",
+      "rule": "The captain sets Ready to Merge, which means a reviewed PR is offered.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-145",
+        "L2-083"
+      ],
+      "drift": [],
+      "principle": null
     }
   ],
   "findings": [
@@ -3194,7 +3188,7 @@
         "return.merge-review-distinguishes-defects",
         "return.following-fix-ticket-if-dependent"
       ],
-      "note": "L4-166 states the following-fix-ticket rule inside the reviewer's duty; L1-182 and L6-107 state it for the captain."
+      "note": "L4-199 states the following-fix-ticket rule in the merge reviewer's duty to distinguish integration from source-work defects (L4-166 holds the distinguishing); L1-182 and L6-107 state it for the captain."
     },
     {
       "type": "drift",

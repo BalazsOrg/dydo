@@ -10,7 +10,7 @@
     {
       "id": "capacity.budget-native-capacity",
       "kind": "capacity",
-      "rule": "Budget open native capacity before commissioning or resuming a captain (the captain does the same for its crew, running necessary stages serially).",
+      "rule": "Budget open native capacity before commissioning or resuming a captain (the captain does the same for its crew).",
       "actors": [
         "admiral",
         "ticket-captain"
@@ -90,7 +90,7 @@
         },
         {
           "type": "scope",
-          "note": "L1-209 and L2-117 put the cap in the Inquisition commission (L2-117 as a question to the user, together with the 110k context limit); the others bind any brief."
+          "note": "L1-209 and L2-117 put the cap in the Inquisition commission (L2-117 as a question to the user); the others bind any brief."
         }
       ],
       "principle": null,
@@ -192,13 +192,24 @@
       "rule": "The crew context limit is 110k tokens unless the commission set another; the brief states it.",
       "actors": [
         "ticket-captain",
-        "inquisitor"
+        "inquisitor",
+        "admiral"
       ],
       "statements": [
         "L1-210",
-        "L4-065"
+        "L4-065",
+        "L2-336"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-210 and L4-065 say \"unless the commission set another\"; L2-117 says \"by default\"."
+        },
+        {
+          "type": "scope",
+          "note": "L1-210 and L2-117 put the limit in the Inquisition commission (L2-117 as a question to the user); L4-065 binds the inquisitor and adds that the brief states it."
+        }
+      ],
       "principle": null,
       "group": "K1"
     },
@@ -513,7 +524,7 @@
     {
       "id": "dispatch.dispatch-fresh-surveyor",
       "kind": "dispatch",
-      "rule": "The admiral dispatches one fresh surveyor on the smallest adequate model with the fixed dispatch brief to read the board and return actions; the admiral acts on them.",
+      "rule": "The admiral dispatches one fresh surveyor on the smallest adequate model with the fixed dispatch brief to read the board and return actions.",
       "actors": [
         "admiral"
       ],
@@ -1464,7 +1475,7 @@
     {
       "id": "identity.cos-staff-not-line",
       "kind": "identity",
-      "rule": "The chief of staff cuts across every stage of the map and owns none of it: it triages, prepares and reports, the user keeps every approval, and delivery belongs to whoever owns it.",
+      "rule": "The chief of staff cuts across every stage of the map and owns none of it (staff, not line): it triages, prepares and reports.",
       "actors": [
         "chief-of-staff"
       ],
@@ -1723,12 +1734,7 @@
         "L4-077",
         "L4-085"
       ],
-      "drift": [
-        {
-          "type": "scope",
-          "note": "L4-077 adds that on a project with nothing to run Drive does not apply and the map row says so."
-        }
-      ],
+      "drift": [],
       "principle": null,
       "group": "K1"
     },
