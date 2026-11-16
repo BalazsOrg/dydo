@@ -74,6 +74,8 @@ class ControlDydoContractTests(unittest.TestCase):
         payload = json.loads(data)
         command = payload["tool_input"]["command"]
         verdict, reason = "deny", "blocked"
+        if "agent_id" in payload or command.startswith("dydo init"):
+            return self.dydo_hook(command, "agent_id" in payload)
         if "mode set" in command:
             reason = "Run this only if you are the chief of staff readying overnight mode or ending it; otherwise stop."
             if command in self.warned_commands:
@@ -82,6 +84,21 @@ class ControlDydoContractTests(unittest.TestCase):
             self.warned_commands.add(command)
         return json.dumps({"hookSpecificOutput": {
             "permissionDecision": verdict, "permissionDecisionReason": reason}})
+
+    WORKER_ALLOWED = ["check", "fix", "gap-check", "graph", "validate", "mode", "clean", "pr-ready", "merge",
+                      "survey", "statechart", "help", "version"]
+    TOP_LEVEL_ONLY = ["init", "adopt", "index", "guard", "map", "completions", "_complete"]
+
+    def dydo_hook(self, command, sub_agent):
+        """The worker lane's answer: a sub-agent passes its allowed words; the refusal prints both lists."""
+        word = command.split()[1]
+        if not sub_agent or word in self.WORKER_ALLOWED or word.startswith("-"):
+            return ""
+        reason = ("BLOCKED: Sub-agents may run only these dydo commands: " + ", ".join(self.WORKER_ALLOWED)
+                  + " (plus -h/--help/--version).\n  Not allowed here: dydo " + word
+                  + "\n  These belong to the top-level session that spawned you: "
+                  + ", ".join(self.TOP_LEVEL_ONLY) + ".")
+        return json.dumps({"hookSpecificOutput": {"permissionDecision": "deny", "permissionDecisionReason": reason}})
 
     def invoke(self, verb, journey=None):
         arguments = [verb, "--run", str(self.run)]
@@ -277,6 +294,31 @@ class ControlDydoContractTests(unittest.TestCase):
         self.assertEqual("retain this file\n", (project / "keep.txt").read_text())
         for call in self.child.call_args_list:
             self.assertNotIn("rm", call.args[0])
+
+    def test_worker_lane_sends_sub_agent_calls_allows_skill_commands_and_refuses_top_level_only_ones(self):
+        self.ready()
+        self.assertEqual(0, self.invoke("drive", "worker-lane"))
+        receipts = [json.loads(path.read_text()) for path in (self.run / "evidence").glob("guard-*.json")]
+        sub_agent = [row for row in receipts if "agent_id" in row["stdin"]]
+        self.assertEqual(len(control.SKILL_COMMANDS) + len(self.TOP_LEVEL_ONLY) + 1, len(sub_agent))
+        verdicts = json.loads((self.run / "evidence/worker-lane-verdicts.json").read_text())
+        for command in control.SKILL_COMMANDS:
+            self.assertEqual("allow", verdicts["verdicts"][command])
+        for word in self.TOP_LEVEL_ONLY:
+            self.assertEqual("deny", verdicts["verdicts"][f"dydo {word}"])
+        self.assertEqual("allow", verdicts["verdicts"]["dydo init claude (top-level session)"])
+        self.assertEqual(self.WORKER_ALLOWED, verdicts["allowed"])
+        self.assertFalse(verdicts["payload_executed"])
+        for call in self.child.call_args_list:
+            self.assertNotIn("survey", call.args[0])
+            self.assertNotIn("statechart", call.args[0])
+
+    def test_worker_lane_fails_when_the_guard_refuses_a_command_a_skill_names(self):
+        self.ready()
+        self.WORKER_ALLOWED.remove("survey")
+        self.addCleanup(self.WORKER_ALLOWED.append, "survey")
+        with self.assertRaisesRegex(ValueError, "does not list 'survey' as worker-allowed"):
+            self.invoke("drive", "worker-lane")
 
     def test_activation_records_both_directions_and_host_independent_retry_without_executing_setter(self):
         self.ready()

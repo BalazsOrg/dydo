@@ -652,11 +652,8 @@ public static partial class GuardCommand
         if (workerBlocked == null)
             return null;
 
-        Console.Error.WriteLine("BLOCKED: Sub-agents may run only these dydo commands: "
-            + string.Join(", ", WorkerAllowedDydoSubcommands) + " (plus -h/--help/--version).");
-        Console.Error.WriteLine($"  Not allowed here: dydo {workerBlocked}");
-        Console.Error.WriteLine("  Setup, generation and hook commands (init, adopt, index, guard, map, completions, _complete)");
-        Console.Error.WriteLine("  belong to the top-level session that spawned you.");
+        foreach (var line in WorkerRefusalLines(workerBlocked))
+            Console.Error.WriteLine(line);
         return ExitCodes.ToolError;
     }
 
@@ -1136,20 +1133,6 @@ public static partial class GuardCommand
             return false;
         }
     }
-
-    /// <summary>
-    /// dydo subcommands a sub-agent may run: the documentation and coverage gates (check, fix,
-    /// gap-check), read-only inspection (graph, validate), help/version and the machine mode every agent
-    /// reads (mode); mode set still meets its nudge; clean is what Ticket Captains run on close-out,
-    /// pr-ready before they open a PR, merge what a Merge Sub-ticket's code-writer runs to integrate a
-    /// reviewed PR into its feature branch. Setup, generation and hook commands stay with the top-level
-    /// session.
-    /// </summary>
-    internal static readonly string[] WorkerAllowedDydoSubcommands =
-        ["check", "fix", "gap-check", "graph", "validate", "mode", "clean", "pr-ready", "merge", "help", "version"];
-
-    private static readonly HashSet<string> WorkerAllowedDydoWords =
-        new([.. WorkerAllowedDydoSubcommands, "-h", "--help", "--version"], StringComparer.Ordinal);
 
     /// <summary>
     /// Returns the first word a sub-agent may not pass to dydo, or null when the command is allowed.

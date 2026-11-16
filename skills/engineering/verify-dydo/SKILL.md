@@ -76,6 +76,7 @@ again. Another checkout, an unknown run, a concurrent drive or a symlink/junctio
 ```text
 python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --journey init-docs
 python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --journey guard
+python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --journey worker-lane
 python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --journey activation
 ```
 
@@ -93,7 +94,8 @@ Each command's adjacent directory retains raw streams and `result.json`: root id
 descendant handles, job accounting, failure category and cleanup confirmation. Timeout/interruption
 receipts point to these partial streams. Abrupt owner termination closes its job, but cannot promise
 a final receipt or scratch cleanup; inspect retained evidence before recovery. Init checks generated-file hashes and proves
-a broken link fails then passes after restoration. Guard checks a sentinel survives. Activation
+a broken link fails then passes after restoration. Guard checks a sentinel survives. Worker-lane records each sub-agent verdict in
+`worker-lane-verdicts.json`. Activation
 records its protocol-only limit; parser seam readback belongs to the separately named .NET tests.
 
 Keep RUN/evidence and the candidate source SHA together in the handoff. The retained
