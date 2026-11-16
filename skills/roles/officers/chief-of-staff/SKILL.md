@@ -16,7 +16,7 @@ When the user calls overnight mode, load `overnight-mode`.
 2. From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other specific standard sections on demand when their fields or status rules are needed.
 3. From the repository root, read `dydo/understand/about.md`.
 4. From the repository root, read `dydo/understand/architecture.md`.
-5. From the repository root, read `dydo/guides/working-tree-contract.md`.
+5. From the repository root, read `dydo/guides/working-tree-standard.md`.
 
 ## Boundary
 
@@ -32,7 +32,7 @@ sight, and hand back every judgement call with a recommendation.
   (`parent_not_active`); on it, ask the user to dispatch it. Never `t3_thread_launch` or
   `create_threads` for crew: top-level threads are the user's, only for HITL work or when the user
   asks. Needing the user while work runs, ask through the host's question tool; the Linear Question
-  ticket stays the record. Full rule: working-tree contract.
+  ticket stays the record. Full rule: working-tree standard.
 
 ## Method
 

@@ -227,7 +227,7 @@ public sealed class CanonicalSkillAssertionTests
     {
         var root = RepositoryRoot();
         var skill = File.ReadAllText(Path.Combine(root, "skills", "roles", "crew", "code-writer", "SKILL.md"));
-        var contract = File.ReadAllText(Path.Combine(root, "dydo", "guides", "working-tree-contract.md"));
+        var contract = File.ReadAllText(Path.Combine(root, "dydo", "guides", "working-tree-standard.md"));
         var standard = File.ReadAllText(Path.Combine(root, "dydo", "reference", "linear-workspace-standard.md"));
 
         var checks = NumberedItemsUnder(contract, "## Before the first edit");

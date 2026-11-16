@@ -78,7 +78,7 @@ DYD-397).
    user directly.
 
 The rule lives in the Delegation section of the
-[working-tree contract](../../guides/working-tree-contract.md) and its Scaffold copy; each
+[working-tree contract](../../guides/working-tree-standard.md) and its Scaffold copy; each
 officer's Dispatch line briefs it and points there.
 
 ### Not doing
@@ -107,7 +107,7 @@ and is not edited.
 
 ## Related
 
-- [Working-Tree Contract](../../guides/working-tree-contract.md#delegation) - The Delegation rule
+- [Working-Tree Contract](../../guides/working-tree-standard.md#delegation) - The Delegation rule
 - [DR 037 - Cross-Vendor Dispatch](./037-cross-vendor-dispatch-same-vendor-default.md) - The
   same-vendor default this narrows under T3
 - [dydo 3.5.0](../changelog/2026/2026-10-23/dydo-3-5-0-dispatch-decisions-overnight-mode.md) - The

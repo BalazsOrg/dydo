@@ -1,6 +1,6 @@
 # Reviewing a Project Plan
 
-Target: one committed Project plan the map holder wrote for a cross-cutting architecture contract,
+Target: one committed Project plan the map holder wrote for a cross-cutting architecture plan,
 proposed for human approval, or an amendment to it, judged in the shape below at the plan's
 candidate commit. PASS means the plan can reach human approval and open the first work; it certifies
 a starting route, not a complete one.

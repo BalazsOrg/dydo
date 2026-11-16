@@ -140,7 +140,7 @@ posted Spec and Plan are retired.
 - [Work Model](../../understand/work-model.md)
 - [Linear Issue Lifecycle](../../understand/task-lifecycle.md)
 - [dydo Glossary](../../reference/dydo-glossary.md)
-- [Working-Tree Contract](../../guides/working-tree-contract.md)
+- [Working-Tree Contract](../../guides/working-tree-standard.md)
 - [Coding Standards](../../guides/coding-standards.md)
 - [Testing Strategy](../../guides/testing-strategy.md)
 - [Writing Good Briefs](../../guides/writing-good-briefs.md)

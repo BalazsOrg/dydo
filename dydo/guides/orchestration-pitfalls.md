@@ -151,7 +151,7 @@ embedded catalog to go stale.
 
 ## Related
 
-- [Working-Tree Contract](./working-tree-contract.md) - the procedure most of these rules point at
+- [Working-Tree Standard](./working-tree-standard.md) - the procedure most of these rules point at
 - [Writing Good Briefs](./writing-good-briefs.md) - the contract a ticket or a crew member starts from
 - [Testing Strategy](./testing-strategy.md) - what the gates are worth
 - [DR 045 - Flow Map, Hats and Workers, Review Tiers, and the Working-Tree Contract](../project/decisions/045-flow-map-hats-review-tiers-and-working-tree-contract.md)

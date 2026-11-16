@@ -225,5 +225,5 @@ are authorized by this documentation correction.
 ## Related
 
 - [Testing strategy](../../../../guides/testing-strategy.md) - canonical policy and current facade.
-- [Working-tree contract](../../../../guides/working-tree-contract.md) - delivery and evidence custody.
+- [Working-tree contract](../../../../guides/working-tree-standard.md) - delivery and evidence custody.
 - [Linear workspace standard](../../../../reference/linear-workspace-standard.md) - exact gate contracts.

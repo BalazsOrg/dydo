@@ -62,7 +62,7 @@ Input → Processing → Durable output
 | *[Type of code]* | `path/` |
 | Live work and current execution state | Linear |
 | Durable design rationale | `dydo/project/decisions/` |
-| Reviewed architecture contracts | `dydo/project/plans/` |
+| Reviewed architecture plans | `dydo/project/plans/` |
 | Temporary shared feature intent | `dydo/reference/working-specs/<project-slug>/` |
 
 ---

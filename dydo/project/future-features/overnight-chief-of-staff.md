@@ -133,4 +133,4 @@ command.
 - [Routine Admiral](./routine-admiral.md) - The cadence-driven admiral this mode would supervise
 - [DR 050 - Officers, Crew and Skills: Hats Retired](../decisions/050-officers-crew-and-skills-hats-retired.md) - Where officer roles such as the chief of staff sit
 - [DR 051 - Captains by Default, the Admiral on Invocation](../decisions/051-captains-by-default-admiral-on-invocation.md) - How admirals and captains are started
-- [Working-Tree Contract](../../guides/working-tree-contract.md) - Branch and worktree rules that every overnight agent still follows
+- [Working-Tree Contract](../../guides/working-tree-standard.md) - Branch and worktree rules that every overnight agent still follows

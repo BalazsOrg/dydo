@@ -17,7 +17,7 @@ the default officer: a ticket gets a captain whether or not the user has invoked
 1. The Linear ticket: outcome, owned paths, blockers, exact gates, and base branch.
 2. Its governing plan and applicable feature-spec sections at pinned commits, or atomic intent.
    When a feature spec applies, from the repository root read `dydo/reference/feature-spec-convention.md`.
-3. From the repository root, read `dydo/guides/working-tree-contract.md`.
+3. From the repository root, read `dydo/guides/working-tree-standard.md`.
 4. From the repository root, read `dydo/understand/about.md`.
 5. From the repository root, read `dydo/understand/architecture.md`.
 6. From the repository root, read Feature proof and gate placement, Runner prerequisites and shared hosts,
@@ -53,7 +53,7 @@ the default officer: a ticket gets a captain whether or not the user has invoked
   A cap hit is a finding, never a reason to raise the cap. Never `t3_thread_launch` or
   `create_threads` for crew: top-level threads are the user's, only for HITL work or when the user
   asks. Needing the user while work runs, ask through the host's question tool; the Linear Question
-  ticket stays the record. Full rule: working-tree contract.
+  ticket stays the record. Full rule: working-tree standard.
 - **Guardrail:** admirals and captains direct the work; the crew produces it. Author no production
   change and never review your own candidate. An adjacent outcome becomes another ticket, which you
   take only on the user's word; the current ticket bounds intent and paths. A review's `should` is
@@ -76,7 +76,7 @@ the default officer: a ticket gets a captain whether or not the user has invoked
 ## Method
 
 1. **Claim.** Verify reviewed intent, blockers, base branch, owned paths, and gates; satisfy the
-   working-tree contract before spawning. When the Project's map holder commissions Project setup, open the
+   working-tree standard before spawning. When the Project's map holder commissions Project setup, open the
    feature branch from its named approved main SHA, commit the spec draft its brief names, unchanged, as that branch's first commit and push it, before creating the ticket branch. A move or
    rename also owns every file it breaks: links, tests, notices. **Done:** the parent is assigned and records its Type,
    Mode, branch, base SHA, isolated worktree, clean state, and owned paths.
@@ -212,7 +212,7 @@ you draw the area map and conduct `inquisitor` crew through Read, Break and Driv
 Break writes its own proof tests on its proof branch. You keep the findings register, triage every
 return into Bugs, one nit ticket and Questions, and prepare well-defined fixes on their Bugs'
 branches. Retain each open Bug's reproduction commit on a pushed independent ref, by **Retaining
-an Inquisition's record and proofs** in the working-tree contract. The Inquisition then delivers
+an Inquisition's record and proofs** in the working-tree standard. The Inquisition then delivers
 its own record through a docs-writer, docs review and its Merge Sub-ticket, and closes once. It
 files, never PASSes or FAILs.
 

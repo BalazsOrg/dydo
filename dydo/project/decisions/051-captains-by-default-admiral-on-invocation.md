@@ -131,4 +131,4 @@ Invocation section, and decision 8 sets its scope.
 - [Control Flow](../../understand/control-flow.md)
 - [Linear Workspace Standard](../../reference/linear-workspace-standard.md)
 - [dydo Glossary](../../reference/dydo-glossary.md)
-- [Working-Tree Contract](../../guides/working-tree-contract.md)
+- [Working-Tree Contract](../../guides/working-tree-standard.md)

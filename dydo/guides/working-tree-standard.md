@@ -3,11 +3,11 @@ area: guides
 type: guide
 ---
 
-# Working-Tree Contract
+# Working-Tree Standard
 
 The bird's-eye view of how a Project moves through branches and worktrees. A Project's map holder,
 the user or an invoked admiral, uses it to know what to expect from Ticket Captains and their lane
-crew; Ticket Captains use it to know what they own and what they hand back. The `chief-of-staff` audits failures of this contract, not routine cleanup.
+crew; Ticket Captains use it to know what they own and what they hand back. The `chief-of-staff` audits failures of this standard, not routine cleanup.
 
 ## Invariants
 
@@ -52,7 +52,7 @@ provide the ticket worktree; otherwise place it beside the repository at
 | Open a parallel lane | `ticket-captain` | The Sub-ticket carries the parent's Type and Mode, its own chain, status and evidence, a disjoint owned-path subset, exact gates, child-key branch, parent-branch base SHA and isolated worktree. |
 | Build and prove | crew | Changes stay inside owned paths; exact gates pass; each hop ends on a commit `<KEY> <hop>: <what>`, the hop being `implement`, `fix` after a FAIL, `merge`, or `proof`, which commits as `<KEY> proof: <hypothesis>`; review evidence stays on the work item reviewed; every return comes back to the Ticket Captain. |
 | Review and offer | `ticket-captain` | Passed lane branches are integrated into the parent ticket branch; combined gates pass; a fresh parent ticket-review PASS block is on the ticket and in the PR; the branch is pushed and the PR targets the branch in the table above. |
-| Integrate a Project ticket | `ticket-captain` | Its final Merge Sub-ticket runs a code-writer - conflicts and combined gates mapped, the merge performed, a resolution that refactored leaving its code no worse than either side - then a fresh merge reviewer, preserving the merge commit and hop SHAs; the map holder wires the order and may advance an independent ready PR. Parent stays `Ready to Merge` until merge PASS, then both close `Done`. |
+| Integrate a Project ticket | `ticket-captain` | Its final Merge Sub-ticket runs a code-writer - conflicts and combined gates mapped, the merge performed (a conflict-free merge of the reviewed PR into its feature branch is `dydo merge`, whose merge SHA is the candidate for the combined gates and merge review; a conflicted merge stays the local merge), a resolution that refactored leaving its code no worse than either side - then a fresh merge reviewer, preserving the merge commit and hop SHAs; the map holder wires the order and may advance an independent ready PR. Parent stays `Ready to Merge` until merge PASS, then both close `Done`. |
 | Integrate an atomic ticket | `ticket-captain` | No Merge Sub-ticket: the PR into main carries its reviewer PASS, the captain confirms CI green and sets `Ready to Merge`, and the user clicks the merge. The captain then closes the ticket `Done` and cleans up. |
 | Land the Project | user | The landing Merge Ticket prepares main into feature and obtains acceptance PASS; the user clicks feature into main as a merge commit, never squash. |
 
@@ -209,8 +209,12 @@ close `Done` and return `done <key>: merged`.
 | Prototype branch | `ticket-captain`, tracked by the map holder | Keep the winning code linked as delivery-spec input; delete when that delivery ticket is Done or with feature cleanup. |
 | Inquisition audit and proof branches | `ticket-captain` | Delete the audit branch at Done after the record and retention checks above, and the group audit branches at the parent's Done, and name any proof branch no open Bug needs; never merge them or delete the independently retained Bug refs. |
 
+`dydo clean` deletes a local branch only once origin's default branch holds it. Deleting a branch here means the local branch. GitHub deletes a merged PR's remote branch on merge,
+and the guard blocks agents from deleting remote branches, so the accountable officer names any
+other remote branch due for deletion on its record for the user.
+
 The `chief-of-staff` compares `git worktree list` and merged branches with Linear during board hygiene.
-Anything it finds is a contract failure to clear or route with its owner named, not normal cleanup
+Anything it finds is a standard failure to clear or route with its owner named, not normal cleanup
 delegated to staff.
 
 ## Related

@@ -77,7 +77,7 @@ sits only on a ticket born from a finding.
 | `Walkthrough` | map holder | primary only | The user walks the whole product as it stands: the feature branch at a Milestone, or main at the landing. The emphasis is on what changed since the last walkthrough and what needs the most careful look. The tour also covers where to look, how to try it, and what reviewers left open. There's one per Milestone, prepared even if he skips it, and the landing's comes last. | his verdict quoted on the ticket, or his skip recorded; findings filed as tickets | `#C69C6D` |
 
 A captain-held ticket normally uses one author - `code-writer`, or `docs-writer` for a documentation
-change - and review at the working-tree contract's [Delivery scale](../guides/working-tree-contract.md#delivery-scale-and-evidence). A spec review of the contract before any
+change - and review at the working-tree standard's [Delivery scale](../guides/working-tree-standard.md#delivery-scale-and-evidence). A spec review of the contract before any
 code needs one short concrete risk reason, recorded in the contract; persistence, migrations, permissions and uncertain native
 interfaces are examples of such a risk. Required G/M, integration and release gates remain. The captain records one compact
 acceptance contract and points to its evidence. A map-holder-held ticket is run
@@ -139,7 +139,7 @@ files a `Question` only when judgment remains.
 | `Research` | `Todo` → `In Progress` → `Done` |
 | `Grilling`, `Walkthrough` | `Todo` → `In Progress` → `Done` |
 | `Question` | `Todo` → `Done` |
-| `Inquisition` | `Backlog` → `Todo`, the user's confirmation → `In Progress`, the commission inputs, area map, phases, triage and patch lane → `Implementing` → `In Review` → `Ready to Merge` → `Done`, its record's docs chain. It releases to `Todo` with `released <key>: verification skill first`, resuming once the skill exists, or with `released <key>: groups <keys>`, resuming `In Progress` once its group Sub-tickets, each `Todo` → `In Progress` → `Done`, close; follow the [working-tree contract](../guides/working-tree-contract.md#retaining-an-inquisitions-record-and-proofs) |
+| `Inquisition` | `Backlog` → `Todo`, the user's confirmation → `In Progress`, the commission inputs, area map, phases, triage and patch lane → `Implementing` → `In Review` → `Ready to Merge` → `Done`, its record's docs chain. It releases to `Todo` with `released <key>: verification skill first`, resuming once the skill exists, or with `released <key>: groups <keys>`, resuming `In Progress` once its group Sub-tickets, each `Todo` → `In Progress` → `Done`, close; follow the [working-tree standard](../guides/working-tree-standard.md#retaining-an-inquisitions-record-and-proofs) |
 | captain-held default, subject to the Type exceptions | `Todo` → `Implementing` → `In Review` → `Ready to Merge` → `Done`, with `In Progress` while lanes run |
 | Merge Sub-ticket | `Todo` → `Implementing` → `In Review` → `Done`; it merges, it is never merged |
 
@@ -277,5 +277,5 @@ Linear.
 
 ## Related
 
-- [Working-Tree Contract](../guides/working-tree-contract.md) - Branches, hops, review and merge ownership.
+- [Working-Tree Standard](../guides/working-tree-standard.md) - Branches, hops, review and merge ownership.
 - [dydo Glossary](./dydo-glossary.md) - Locked definitions for the Linear-native work model.

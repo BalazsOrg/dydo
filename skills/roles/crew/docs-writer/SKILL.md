@@ -13,7 +13,7 @@ Make one documentation change true.
    commits, and on a fix hop the FAIL block that sent you.
 2. From the repository root, read `dydo/reference/writing-docs.md`.
 3. From the repository root, read `dydo/understand/about.md`.
-4. From the repository root, read `dydo/guides/working-tree-contract.md`.
+4. From the repository root, read `dydo/guides/working-tree-standard.md`.
 5. From the repository root, read Feature proof and gate placement in `dydo/guides/testing-strategy.md`.
 6. From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; do not preload the whole standard.
 

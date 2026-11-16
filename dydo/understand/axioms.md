@@ -5,7 +5,7 @@ type: context
 
 # Axioms
 
-dydo rests on seven axioms. Every rule in the skills and docs follows from at least one of them, and
+dydo rests on seven axioms. Every principle in the skills and docs follows from at least one of them, and
 every change is judged against them.
 
 ## The seven
@@ -22,9 +22,9 @@ every change is judged against them.
 7. **Agents can verify their own work.** Consequence: by the time a PR reaches the user, he has very high
    confidence it is correct, because the problems were caught along the way.
 
-## Rules that follow
+## Principles that follow
 
-| Rule | From |
+| Principle | From |
 |---|---|
 | Ask the user only what only he can decide, and make it clear whether he is needed. | 1, 2 |
 | Bureaucracy is right-sized: too much and things get slow, too little and agents aren't autonomous enough. | 4, 5 |

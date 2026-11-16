@@ -52,4 +52,4 @@ exactly one Linear Initiative, Project, or ticket.
 
 - [DR 045 - Flow Map, Hats, Review Tiers, and the Working-Tree Contract](../decisions/045-flow-map-hats-review-tiers-and-working-tree-contract.md) - The admiral's stage, the review tiers, and the user's gates
 - [DR 050 - Officers, Crew and Skills: Hats Retired](../decisions/050-officers-crew-and-skills-hats-retired.md) - The admiral as an officer role and its place in the skill tree
-- [Working-Tree Contract](../../guides/working-tree-contract.md) - Branch, worktree and cleanup rules a routine admiral still obeys
+- [Working-Tree Contract](../../guides/working-tree-standard.md) - Branch, worktree and cleanup rules a routine admiral still obeys

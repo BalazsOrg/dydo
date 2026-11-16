@@ -121,4 +121,4 @@ Amended by [DR 051](./051-captains-by-default-admiral-on-invocation.md) (2026-09
 - [Control Flow](../../understand/control-flow.md)
 - [Architecture Overview](../../understand/architecture.md)
 - [Customizing Roles](../../guides/customizing-roles.md)
-- [Working-Tree Contract](../../guides/working-tree-contract.md)
+- [Working-Tree Contract](../../guides/working-tree-standard.md)
