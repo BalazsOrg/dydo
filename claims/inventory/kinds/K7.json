@@ -355,9 +355,15 @@
       ],
       "statements": [
         "L5-261",
-        "L5-263"
+        "L5-263",
+        "L5-244"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-244 is the dispatch step (send each judge the brief with the case file); L5-261 limits what the judge gets from the officer's session to the listed brief items; L5-263 is the brief's opening line to the judge."
+        }
+      ],
       "principle": null
     },
     {
@@ -780,19 +786,6 @@
       "principle": null
     },
     {
-      "id": "wayfinding.assignment-is-claim",
-      "kind": "wayfinding",
-      "rule": "Assign the ticket first, before any work, so concurrent sessions skip it.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L5-112"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "wayfinding.captain-local-fog-loop",
       "kind": "wayfinding",
       "rule": "When delivery exposes new local fog, the ticket-captain pauses the affected work, charts it as a direct Wayfinding Sub-ticket (loading wayfinder), records the resolution on it, links it from the parent delivery ticket, and only then resumes production.",
@@ -804,7 +797,8 @@
         "L1-087",
         "L5-095",
         "L5-107",
-        "L5-185"
+        "L5-185",
+        "L7-108"
       ],
       "drift": [
         {
@@ -814,6 +808,10 @@
         {
           "type": "wording",
           "note": "L1-054 says \"Wayfinding Tickets\" and L5-107 \"a direct Wayfinding Sub-ticket\"; L5-095 says \"may chart\" where the others say do."
+        },
+        {
+          "type": "scope",
+          "note": "L7-108 calls the Sub-ticket map-holder-held and bounds it to blocking only its parent or a lane inside the approved destination; L5-107 and L5-095 have the captain create and resolve a direct Wayfinding Sub-ticket itself."
         }
       ],
       "principle": null
@@ -887,36 +885,6 @@
       "principle": null
     },
     {
-      "id": "wayfinding.facts-before-question",
-      "kind": "wayfinding",
-      "rule": "Settle fog with facts first: search the governing records and use Research, Prototype, Grilling or Enablement where they can clear it, and create a human-facing Question only when human judgment still remains.",
-      "actors": [
-        "ticket-captain",
-        "map-holder",
-        "any-agent",
-        "officer"
-      ],
-      "statements": [
-        "L1-055",
-        "L5-124",
-        "L5-143",
-        "L5-144",
-        "L5-145",
-        "L5-199"
-      ],
-      "drift": [
-        {
-          "type": "scope",
-          "note": "L1-055 is the ticket-captain; L5-124 the map holder; L5-143/144/145 any agent; L5-199 an officer deciding a call."
-        },
-        {
-          "type": "action",
-          "note": "L5-143 lists the sources to search (Decision Records, plan, specs, docs, standards, code, tests, prior answers); L1-055 and L5-199 name only Research or \"the facts\"; L5-124 says Research when authoritative evidence inside or outside the repository can settle it."
-        }
-      ],
-      "principle": null
-    },
-    {
       "id": "wayfinding.fog-or-ticket-test",
       "kind": "wayfinding",
       "rule": "Whether something is fog or a ticket depends on whether the question can be stated precisely now: a sharp question becomes a ticket even if blocked, and a question not yet phrased that sharply goes in Not yet specified.",
@@ -984,19 +952,6 @@
       ],
       "statements": [
         "L5-121"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "wayfinding.inline-vs-wayfinding-ticket",
-      "kind": "wayfinding",
-      "rule": "Small discovery is done inline; a Wayfinding Ticket is created when the investigation needs its own status, owner, blocker or evidence.",
-      "actors": [
-        "admiral"
-      ],
-      "statements": [
-        "L2-105"
       ],
       "drift": [],
       "principle": null
@@ -1195,32 +1150,6 @@
       "principle": null
     },
     {
-      "id": "wayfinding.question-ticket-content",
-      "kind": "wayfinding",
-      "rule": "A Question ticket carries the homework, credible options, trade-offs and a recommendation.",
-      "actors": [
-        "map-holder"
-      ],
-      "statements": [
-        "L5-130"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "wayfinding.read-communication-section-only",
-      "kind": "wayfinding",
-      "rule": "For a communication protocol, read only the Communication and evidence section of the Linear workspace standard from the repository root, not the whole standard.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L5-096"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "wayfinding.reread-linear-before-mutation",
       "kind": "wayfinding",
       "rule": "Other sessions may work unblocked tickets in parallel, so re-read Linear before every claim or map mutation.",
@@ -1258,12 +1187,17 @@
       ],
       "statements": [
         "L3-157",
-        "L5-184"
+        "L5-184",
+        "L5-114"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "L3-157 gives closing and map update to the map holder; L5-184 addresses any agent."
+        },
+        {
+          "type": "wording",
+          "note": "L5-114 names the DECIDED form of the communication protocol; L5-184 says \"resolution comment\", marks Done and appends a pointer to Resolutions so far; L3-157 has the map holder close the ticket and update the map."
         }
       ],
       "principle": null
@@ -1372,15 +1306,24 @@
     {
       "id": "wayfinding.ticket-vs-dr-division",
       "kind": "wayfinding",
-      "rule": "The ticket carries the question and its working resolution, the Decision Record carries the durable decision, and the two are linked rather than copied into each other.",
+      "rule": "Linear records the decision-making work and dydo records the qualifying decision: the ticket carries the question and its working resolution, the Decision Record the durable decision and its rationale, and the two are linked, never copied into each other.",
       "actors": [
-        "map-holder"
+        "map-holder",
+        "any-agent"
       ],
       "statements": [
         "L5-150",
-        "L5-151"
+        "L5-151",
+        "L7-188",
+        "L7-189",
+        "L7-190"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-190 forbids copying the rationale into Linear; L5-151 forbids copying either way; L7-189 adds linking the record back when it has a Linear origin."
+        }
+      ],
       "principle": null
     },
     {

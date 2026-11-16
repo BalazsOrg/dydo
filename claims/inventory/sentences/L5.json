@@ -1594,7 +1594,7 @@
       "rules": [
         {
           "id": "L5-094",
-          "kind": "project",
+          "kind": "identity",
           "rule": "A Project's map holder is the user, driving the map in his own session, or an admiral the user invoked, until the user takes the map back; the Project description names the current holder.",
           "actors": [
             "map-holder"
@@ -1624,7 +1624,7 @@
       "rules": [
         {
           "id": "L5-096",
-          "kind": "wayfinding",
+          "kind": "contract",
           "rule": "For a communication protocol, read only the Communication and evidence section of `dydo/reference/linear-workspace-standard.md` from the repository root, not the whole standard.",
           "actors": [
             "any-agent"
@@ -1900,7 +1900,7 @@
       "rules": [
         {
           "id": "L5-112",
-          "kind": "wayfinding",
+          "kind": "linear",
           "rule": "Assignment is the claim: assign the ticket first, before any work, so concurrent sessions skip it.",
           "actors": [
             "any-agent"
@@ -1939,7 +1939,7 @@
       "rules": [
         {
           "id": "L5-114",
-          "kind": "linear",
+          "kind": "wayfinding",
           "rule": "A Wayfinding Ticket's resolution is recorded as a named evidence comment using the `DECIDED` form in the communication protocol.",
           "actors": [
             "any-agent"
@@ -2016,7 +2016,7 @@
       "rules": [
         {
           "id": "L5-119",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "The standard owns the full Type set and status/priority rules: read `dydo/reference/linear-workspace-standard.md` from the repository root.",
           "actors": [
             "any-agent"
@@ -2110,7 +2110,7 @@
       "rules": [
         {
           "id": "L5-124",
-          "kind": "wayfinding",
+          "kind": "escalation",
           "rule": "Use Research when authoritative evidence, inside or outside the repository, can settle the fact.",
           "actors": [
             "map-holder"
@@ -2218,7 +2218,7 @@
       "rules": [
         {
           "id": "L5-130",
-          "kind": "wayfinding",
+          "kind": "escalation",
           "rule": "A Question ticket carries the homework, credible options, trade-offs, and recommendation.",
           "actors": [
             "map-holder"
@@ -2468,7 +2468,7 @@
       "rules": [
         {
           "id": "L5-143",
-          "kind": "wayfinding",
+          "kind": "escalation",
           "rule": "Before creating a Question, search the governing Decision Records, Project plan, specifications, documentation, standards, code, tests, and prior answers first.",
           "actors": [
             "any-agent"
@@ -2483,7 +2483,7 @@
       "rules": [
         {
           "id": "L5-144",
-          "kind": "wayfinding",
+          "kind": "escalation",
           "rule": "Use Research, Prototype, Grilling, or Enablement where they can clear the fog.",
           "actors": [
             "any-agent"
@@ -2498,7 +2498,7 @@
       "rules": [
         {
           "id": "L5-145",
-          "kind": "wayfinding",
+          "kind": "escalation",
           "rule": "Question is the last rung: create it only when human judgment still remains.",
           "actors": [
             "any-agent"
@@ -3417,7 +3417,7 @@
       "rules": [
         {
           "id": "L5-199",
-          "kind": "decision",
+          "kind": "escalation",
           "rule": "Research first: a call the facts settle is no Question.",
           "actors": [
             "officer"
@@ -4115,7 +4115,7 @@
       "rules": [
         {
           "id": "L5-244",
-          "kind": "dispatch",
+          "kind": "decision",
           "rule": "Send each judge the judge brief with the case file.",
           "actors": [
             "officer"

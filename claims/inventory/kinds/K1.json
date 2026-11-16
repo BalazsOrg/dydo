@@ -60,19 +60,6 @@
       "principle": null
     },
     {
-      "id": "capacity.captain-conducts-about-10-areas",
-      "kind": "capacity",
-      "rule": "One captain conducts about 10 areas.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-227"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "capacity.codex-concurrency-cap",
       "kind": "capacity",
       "rule": "Every brief that sends out Codex agents names a concurrency cap: about 8 at once, toward 16 only while runs stay clean, fewer or back off on 429 turn_rate_limit_exceeded.",
@@ -307,12 +294,17 @@
       "statements": [
         "L4-017",
         "L4-064",
-        "L4-071"
+        "L4-071",
+        "L4-004"
       ],
       "drift": [
         {
           "type": "action",
           "note": "L4-064 adds handing the rest of the area back once past the limit."
+        },
+        {
+          "type": "wording",
+          "note": "L4-004 names only \"the command you run after each work item\"; L4-017, L4-064 and L4-071 name the context-size resource and say \"never once at the start\"."
         }
       ],
       "principle": null
@@ -403,26 +395,6 @@
         "L4-022"
       ],
       "drift": [],
-      "principle": null
-    },
-    {
-      "id": "dispatch.bounded-refusal-no-blind-retry",
-      "kind": "dispatch",
-      "rule": "On a bounded refusal, preserve the record or state and do not retry blindly.",
-      "actors": [
-        "admiral",
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-017",
-        "L2-020"
-      ],
-      "drift": [
-        {
-          "type": "action",
-          "note": "L1-017 preserves record, candidate, hop SHA and brief and forbids broadening the brief; L2-020 adds established lifecycle handling, then escalate or release the concrete limitation."
-        }
-      ],
       "principle": null
     },
     {
@@ -606,32 +578,6 @@
           "note": "L1-249 gives both reasons; L4-067 only that crew outlive the captain's turn."
         }
       ],
-      "principle": null
-    },
-    {
-      "id": "dispatch.lane-is-direct-subticket",
-      "kind": "dispatch",
-      "rule": "Each independently trackable parallel lane is a direct Sub-ticket of the captain's ticket.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L6-081"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "dispatch.lanes-one-level",
-      "kind": "dispatch",
-      "rule": "Lanes have one level; the only other permitted children are the Bug stages, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L6-082"
-      ],
-      "drift": [],
       "principle": null
     },
     {
@@ -982,9 +928,15 @@
         "ticket-captain"
       ],
       "statements": [
-        "L6-041"
+        "L6-041",
+        "L3-026"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-041 and L3-026 state the same three items; L5-259 (decision.proof-only-experiment) repeats them inside its combined sentence."
+        }
+      ],
       "principle": null
     },
     {
@@ -1003,7 +955,7 @@
     {
       "id": "dispatch.requested-value-effective-identity-by-telemetry",
       "kind": "dispatch",
-      "rule": "State or brief the requested model/effort value so the signature is truthful, and claim an effective identity only where telemetry shows it; dydo compiles no model, effort or capability table.",
+      "rule": "State the requested model/effort value so the signature is truthful, claim an effective identity only where trustworthy runtime information or telemetry shows it, and otherwise qualify a family or a requested/configured value; dydo compiles no model, effort or capability table.",
       "actors": [
         "ticket-captain",
         "any-agent"
@@ -1011,12 +963,18 @@
       "statements": [
         "L1-091",
         "L1-092",
-        "L2-079"
+        "L2-079",
+        "L7-181",
+        "L7-182"
       ],
       "drift": [
         {
           "type": "action",
           "note": "L1-091 has the captain brief the requested value to the crew member; L2-079 has the agent state it in its own signature; L1-092 states only the telemetry limit."
+        },
+        {
+          "type": "wording",
+          "note": "L7-181 and L7-182 say \"runtime information exposes it\" and \"qualify a family or requested/configured value\"; L1-091, L1-092 and L2-079 say \"telemetry shows it\" and \"state the requested value in your signature\"."
         }
       ],
       "principle": null
@@ -1126,32 +1084,6 @@
       "statements": [
         "L1-090",
         "L2-078"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "dispatch.send-judge-brief-with-case-file",
-      "kind": "dispatch",
-      "rule": "Send each judge the judge brief with the case file.",
-      "actors": [
-        "officer"
-      ],
-      "statements": [
-        "L5-244"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "dispatch.split-lane-into-siblings",
-      "kind": "dispatch",
-      "rule": "If a lane needs splitting, replace it with sibling lanes under the parent ticket.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L6-083"
       ],
       "drift": [],
       "principle": null
@@ -1432,21 +1364,6 @@
       "principle": null
     },
     {
-      "id": "identity.cos-audits-working-tree-failures",
-      "kind": "identity",
-      "rule": "The chief of staff audits failures of the working-tree standard, not routine cleanup: it compares git worktree list and merged branches with Linear, and treats what it finds as a standard failure to clear or route with its owner named.",
-      "actors": [
-        "chief-of-staff"
-      ],
-      "statements": [
-        "L6-001",
-        "L6-133",
-        "L6-134"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "identity.cos-fix-mechanical-hand-back-judgement",
       "kind": "identity",
       "rule": "The chief of staff fixes mechanical fields and broken links on sight and hands back every judgement call with a recommendation.",
@@ -1455,19 +1372,6 @@
       ],
       "statements": [
         "L2-209"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "identity.cos-owns-intervention",
-      "kind": "identity",
-      "rule": "Intervention belongs to the chief of staff.",
-      "actors": [
-        "chief-of-staff"
-      ],
-      "statements": [
-        "L2-292"
       ],
       "drift": [],
       "principle": null
@@ -1613,9 +1517,16 @@
         "map-holder"
       ],
       "statements": [
-        "L7-087"
+        "L7-087",
+        "L5-094",
+        "L7-088"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-094 adds \"driving the map in his own session\" and \"until the user takes the map back\"; L7-087 adds \"the captain for a ticket\"; L7-088 and L5-094 add that the Project description names the current holder."
+        }
+      ],
       "principle": null
     },
     {
@@ -1844,19 +1755,6 @@
       "principle": null
     },
     {
-      "id": "other.admiral-reads-map-contract-evidence-only",
-      "kind": "other",
-      "rule": "The admiral reads only the Linear Project's metadata-first map, each current active contract, and named evidence.",
-      "actors": [
-        "admiral"
-      ],
-      "statements": [
-        "L2-004"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "other.leave-no-worse",
       "kind": "other",
       "rule": "Leave what you touched no worse than you found it.",
@@ -1891,96 +1789,6 @@
       ],
       "statements": [
         "L2-005"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "other.read-about-md",
-      "kind": "other",
-      "rule": "Read dydo/understand/about.md from the repository root.",
-      "actors": [
-        "admiral",
-        "chief-of-staff",
-        "inquisitor"
-      ],
-      "statements": [
-        "L2-007",
-        "L2-204",
-        "L4-005"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "other.read-architecture-md",
-      "kind": "other",
-      "rule": "Read dydo/understand/architecture.md from the repository root.",
-      "actors": [
-        "admiral",
-        "chief-of-staff",
-        "inquisitor"
-      ],
-      "statements": [
-        "L2-008",
-        "L2-205",
-        "L4-006"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "other.read-coding-standards",
-      "kind": "other",
-      "rule": "Read dydo/guides/coding-standards.md from the repository root.",
-      "actors": [
-        "inquisitor"
-      ],
-      "statements": [
-        "L4-007"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "other.read-linear-standard-communication-section",
-      "kind": "other",
-      "rule": "Read only the Communication and evidence section of dydo/reference/linear-workspace-standard.md for the communication protocol; read other standard sections on demand when their fields or status rules are needed.",
-      "actors": [
-        "admiral",
-        "chief-of-staff"
-      ],
-      "statements": [
-        "L2-010",
-        "L2-203"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "other.read-testing-strategy-inherited-failures",
-      "kind": "other",
-      "rule": "When a captain reports inherited or infrastructure failures, read Evidence and inherited failures in dydo/guides/testing-strategy.md.",
-      "actors": [
-        "admiral"
-      ],
-      "statements": [
-        "L2-009"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "other.read-working-tree-standard",
-      "kind": "other",
-      "rule": "Read dydo/guides/working-tree-standard.md from the repository root.",
-      "actors": [
-        "admiral",
-        "chief-of-staff"
-      ],
-      "statements": [
-        "L2-006",
-        "L2-206"
       ],
       "drift": [],
       "principle": null
@@ -2054,7 +1862,7 @@
     {
       "type": "homeless",
       "claims": [
-        "identity.cos-owns-intervention"
+        "overnight.surveyor-inspects-cos-acts"
       ],
       "note": "L2-292 is stated only in the night-survey resource that the surveyor reads, not where the chief of staff acts; the chief of staff never reads it as an instruction to itself."
     },

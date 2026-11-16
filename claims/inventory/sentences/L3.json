@@ -246,7 +246,7 @@
       "rules": [
         {
           "id": "L3-015",
-          "kind": "worktree",
+          "kind": "merge",
           "rule": "A merge hop proves the pins in merge.md; a proof-only hop proves HEAD is on its brief's child branch off the brief's pinned source SHA, the worktree is clean and only the brief's test path is touched.",
           "actors": [
             "code-writer"
@@ -420,7 +420,7 @@
       "rules": [
         {
           "id": "L3-026",
-          "kind": "contract",
+          "kind": "dispatch",
           "rule": "A proof-only brief names the commissioning captain, the pinned source SHA and the test path.",
           "actors": [
             "ticket-captain"
@@ -1813,7 +1813,7 @@
       "rules": [
         {
           "id": "L3-114",
-          "kind": "docs",
+          "kind": "review",
           "rule": "Prefer the edit that deletes or narrows; review never grows the change.",
           "actors": [
             "docs-writer"

@@ -30,22 +30,15 @@
       "statements": [
         "L1-152",
         "L6-031",
-        "L6-099"
+        "L6-099",
+        "L6-014"
       ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "merge.audit-merge-path",
-      "kind": "merge",
-      "rule": "An audit of main offers its PR and Merge Sub-ticket into the feature as any Project ticket does, and merges its record as an atomic ticket does.",
-      "actors": [
-        "ticket-captain"
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L6-014 adds the branch from main as <KEY>-<slug> and the PR target; L6-031, L6-099 and L1-152 add the captain's steps (confirm CI green, set Ready to Merge, close Done, clean up, return done <key>: merged)."
+        }
       ],
-      "statements": [
-        "L1-296"
-      ],
-      "drift": [],
       "principle": null
     },
     {
@@ -146,19 +139,6 @@
       "principle": null
     },
     {
-      "id": "merge.landing-cleanup-after-user-lands",
-      "kind": "merge",
-      "rule": "When the user says the Project landed, the landing captain is resumed to close and clean up the merged feature branch (dydo clean --dry-run <worktree>, then dydo clean <worktree>, run from outside that tree).",
-      "actors": [
-        "admiral"
-      ],
-      "statements": [
-        "L2-132"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "merge.landing-prerequisites",
       "kind": "merge",
       "rule": "The landing Merge Ticket is filed blocked by its unresolved prerequisites (delivery, each confirmed Inquisition round, required fixes, every should-ticket a review or inquisition filed) and excludes the landing itself and later or deferred work.",
@@ -191,13 +171,15 @@
       "rule": "The landing (one Project at a time) and an atomic ticket wait in Ready to Merge for the user's merge-commit click; the user alone lands the feature on the default branch.",
       "actors": [
         "ticket-captain",
-        "user"
+        "user",
+        "map-holder"
       ],
       "statements": [
         "L1-151",
         "L2-131",
         "L6-011",
-        "L7-025"
+        "L7-025",
+        "L6-032"
       ],
       "drift": [
         {
@@ -207,6 +189,10 @@
         {
           "type": "wording",
           "note": "L1-151 and L2-131 say merge-commit click; L7-025 and L6-011 say click or lands."
+        },
+        {
+          "type": "scope",
+          "note": "L6-032 adds that the landing Merge Ticket prepares main into feature and obtains acceptance PASS and that the merge is \"never squash\"; L2-131 says \"as a merge commit, one Project at a time\"; L6-011 says \"integrate serially\"."
         }
       ],
       "principle": null
@@ -233,20 +219,6 @@
       ],
       "statements": [
         "L1-153"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "merge.merge-subticket-never-ready-to-merge",
-      "kind": "merge",
-      "rule": "A Merge Sub-ticket never enters Ready to Merge: its status path is Todo, Implementing, In Review, Done; it merges and is never merged.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L7-031",
-        "L7-099"
       ],
       "drift": [],
       "principle": null
@@ -541,14 +513,25 @@
     {
       "id": "merge.writer-pins-and-reads-both-sides",
       "kind": "merge",
-      "rule": "The merge writer pins source and target branches at their SHAs, the source's PASS, the governing contract and the combined gates, and reads both sides before naming a resolution.",
+      "rule": "A merge hop pins source and target branches at their SHAs, the source's PASS, the governing contract and the combined gates (proved before the first edit in place of the five working-tree checks) and reads both sides before naming a resolution.",
       "actors": [
         "code-writer"
       ],
       "statements": [
-        "L3-074"
+        "L3-074",
+        "L3-015",
+        "L6-040"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-015 also states the proof-only pins (see worktree.proof-work-pre-edit-checks); L6-040 lists the merge pins in full, L3-015 only points to merge.md."
+        },
+        {
+          "type": "scope",
+          "note": "L3-015 also states the proof-only pre-edit checks, which L6-042 and L4-044 to L4-046 state in worktree.proof-work-pre-edit-checks; L6-040 adds \"instead of the five checks\"; L3-074 adds \"read both sides\"."
+        }
+      ],
       "principle": null
     },
     {
@@ -1115,19 +1098,6 @@
       ],
       "statements": [
         "L4-166"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "return.merge-verdict-on-merge-ticket",
-      "kind": "return",
-      "rule": "The merge verdict goes on the Merge Ticket in the review block, naming the merge commit and every gate result.",
-      "actors": [
-        "reviewer"
-      ],
-      "statements": [
-        "L4-165"
       ],
       "drift": [],
       "principle": null
@@ -1901,12 +1871,19 @@
       "kind": "review",
       "rule": "A fix hop prefers the change that deletes or narrows code; review never grows the PR.",
       "actors": [
-        "code-writer"
+        "code-writer",
+        "docs-writer"
       ],
       "statements": [
-        "L3-062"
+        "L3-062",
+        "L3-114"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-062 binds the code-writer's fix hop and says \"review never grows the PR\"; L3-114 binds the docs-writer and says \"review never grows the change\"."
+        }
+      ],
       "principle": null
     },
     {
@@ -2328,19 +2305,6 @@
       "principle": null
     },
     {
-      "id": "review.project-review-block-is-project-update",
-      "kind": "review",
-      "rule": "The review block of a Project is a Project update.",
-      "actors": [
-        "admiral"
-      ],
-      "statements": [
-        "L2-062"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "review.prototype-review-is-user-verdict",
       "kind": "review",
       "rule": "The user's verdict is a prototype's review.",
@@ -2388,19 +2352,6 @@
       ],
       "statements": [
         "L2-101"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "review.review-gates-stay-where-required",
-      "kind": "review",
-      "rule": "Review gates stay where their workflows require.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L7-161"
       ],
       "drift": [],
       "principle": null
@@ -2668,19 +2619,6 @@
       "principle": null
     },
     {
-      "id": "review.spec-review-returns-implementing",
-      "kind": "review",
-      "rule": "A spec review returns the record to Implementing on either verdict.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L7-022"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "review.spec-review-target",
       "kind": "review",
       "rule": "The spec review targets the contract text on the ticket before any code and is invoked when the Ticket Captain has bought one.",
@@ -2703,19 +2641,6 @@
       "statements": [
         "L4-183",
         "L4-190"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "review.ticket-fifth-fail-stop",
-      "kind": "review",
-      "rule": "A review is done when each fix has its own commit and a fresh review; the fifth consecutive FAIL stops the loop, records the findings and wires a prepared Question through the scope rule.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-119"
       ],
       "drift": [],
       "principle": null
@@ -2754,19 +2679,6 @@
           "note": "L6-043 also states the default crew (one author plus a fresh whole-change review)."
         }
       ],
-      "principle": null
-    },
-    {
-      "id": "review.verification-gap-is-should",
-      "kind": "review",
-      "rule": "A verification gap is a should.",
-      "actors": [
-        "inquisitor"
-      ],
-      "statements": [
-        "L4-035"
-      ],
-      "drift": [],
       "principle": null
     },
     {
@@ -2823,7 +2735,7 @@
       "type": "drift",
       "claims": [
         "review.plan-second-fail-to-user",
-        "review.ticket-fifth-fail-stop"
+        "escalation.fifth-consecutive-fail"
       ],
       "note": "The FAIL loop stops at the second FAIL for a Project plan (L2-063, L4-176) and at the fifth for a ticket (L1-119); neither statement says which applies to other review types (docs, merge)."
     },
@@ -2861,7 +2773,7 @@
     {
       "type": "gap",
       "claims": [
-        "review.spec-review-returns-implementing"
+        "linear.set-implementing-on-author-spawn"
       ],
       "note": "L7-022 returns the record to Implementing on either spec verdict; no statement says who moves it on to the next status after a PASS."
     },
@@ -2915,7 +2827,7 @@
       "type": "drift",
       "claims": [
         "review.severity-definitions",
-        "review.verification-gap-is-should"
+        "inquisition.verification-gap-is-should"
       ],
       "note": "Only the inquisitor (L4-035) states that a verification gap is a should; the reviewer copies (L3-185, L3-186) do not, so a reviewer could label it a nit."
     },

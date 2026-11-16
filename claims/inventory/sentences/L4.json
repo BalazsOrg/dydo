@@ -83,7 +83,7 @@
       "rules": [
         {
           "id": "L4-004",
-          "kind": "evidence",
+          "kind": "capacity",
           "rule": "An inquisitor runs the context-size command after each work item.",
           "actors": [
             "inquisitor"
@@ -98,7 +98,7 @@
       "rules": [
         {
           "id": "L4-005",
-          "kind": "identity",
+          "kind": "contract",
           "rule": "An inquisitor reads dydo/understand/about.md from the repository root.",
           "actors": [
             "inquisitor"
@@ -113,7 +113,7 @@
       "rules": [
         {
           "id": "L4-006",
-          "kind": "identity",
+          "kind": "contract",
           "rule": "An inquisitor reads dydo/understand/architecture.md from the repository root.",
           "actors": [
             "inquisitor"
@@ -128,7 +128,7 @@
       "rules": [
         {
           "id": "L4-007",
-          "kind": "identity",
+          "kind": "contract",
           "rule": "An inquisitor reads dydo/guides/coding-standards.md from the repository root.",
           "actors": [
             "inquisitor"
@@ -501,7 +501,7 @@
       "rules": [
         {
           "id": "L4-030",
-          "kind": "evidence",
+          "kind": "inquisition",
           "rule": "A nit needs no proof.",
           "actors": [
             "inquisitor"
@@ -586,7 +586,7 @@
       "rules": [
         {
           "id": "L4-035",
-          "kind": "review",
+          "kind": "inquisition",
           "rule": "A verification gap is a should.",
           "actors": [
             "inquisitor"
@@ -765,7 +765,7 @@
       "rules": [
         {
           "id": "L4-043",
-          "kind": "inquisition",
+          "kind": "worktree",
           "rule": "Prove three worktree checks and return a failure to the captain instead of working around it.",
           "actors": [
             "inquisitor"
@@ -3520,7 +3520,7 @@
       "rules": [
         {
           "id": "L4-165",
-          "kind": "return",
+          "kind": "linear",
           "rule": "The merge verdict goes on the Merge Ticket in the review block, naming the merge commit and every gate result.",
           "actors": [
             "reviewer"

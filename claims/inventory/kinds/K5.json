@@ -195,19 +195,6 @@
       "principle": null
     },
     {
-      "id": "docs.decision-rationale-stays-in-dydo",
-      "kind": "docs",
-      "rule": "The Decision Record is canonical: its rationale is kept in dydo rather than copied into Linear.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L7-190"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "docs.docs-work-done",
       "kind": "docs",
       "rule": "Docs work is done when each claim has one canonical home, repeated meanings are pointers, and every added claim has its witness.",
@@ -313,19 +300,6 @@
           "note": "L3-116 instructs the docs-writer; L4-135 and L4-136 make the violation a reviewer finding."
         }
       ],
-      "principle": null
-    },
-    {
-      "id": "docs.prefer-edit-that-deletes",
-      "kind": "docs",
-      "rule": "Prefer the edit that deletes or narrows; review never grows the change.",
-      "actors": [
-        "docs-writer"
-      ],
-      "statements": [
-        "L3-114"
-      ],
-      "drift": [],
       "principle": null
     },
     {
@@ -516,25 +490,6 @@
       "principle": null
     },
     {
-      "id": "inquisition.audit-branch-deletion",
-      "kind": "inquisition",
-      "rule": "Only after post-merge verification the captain deletes the audit branch (and as parent every group audit branch), names their remotes and any proof branch no open Bug needs on the record for the user, and never merges them or deletes the retained Bug refs.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L6-122",
-        "L6-129"
-      ],
-      "drift": [
-        {
-          "type": "wording",
-          "note": "L6-122 places deletion before closing Done; L6-129 says at Done."
-        }
-      ],
-      "principle": null
-    },
-    {
       "id": "inquisition.audit-without-project",
       "kind": "inquisition",
       "rule": "An audit with no Project files a team ticket, base main, with no landing relation.",
@@ -543,19 +498,6 @@
       ],
       "statements": [
         "L1-265"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "inquisition.branch-from-feature-sha",
-      "kind": "inquisition",
-      "rule": "An Inquisition gets its branch inquisition/<slug> from the integrated feature SHA.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-172"
       ],
       "drift": [],
       "principle": null
@@ -677,19 +619,6 @@
       "principle": null
     },
     {
-      "id": "inquisition.break-worktree-checks",
-      "kind": "inquisition",
-      "rule": "Break proves the three worktree checks and returns a failure to the captain instead of working around it.",
-      "actors": [
-        "inquisitor"
-      ],
-      "statements": [
-        "L4-043"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "inquisition.bug-filing-fields",
       "kind": "inquisition",
       "rule": "A proven blocker or should is filed as a Bug: Mode AFK, Severity matching the finding, in the Project, base the feature branch, ## Reproduction holding its proof, linked to the Inquisition.",
@@ -763,20 +692,6 @@
       ],
       "statements": [
         "L4-040"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "inquisition.cleanup-keeps-retained-refs",
-      "kind": "inquisition",
-      "rule": "Audit cleanup never deletes the retained Bug refs; they remain input to each Bug normal chain.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-291",
-        "L6-117"
       ],
       "drift": [],
       "principle": null
@@ -1056,12 +971,17 @@
       ],
       "statements": [
         "L1-228",
-        "L2-121"
+        "L2-121",
+        "L1-227"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "L1-228 is the captain map cut; L2-121 adds width and Codex shares per group and the parent resuming for cross-group triage."
+        },
+        {
+          "type": "wording",
+          "note": "L1-227 states the capacity (\"one captain conducts about 10 areas\"); L1-228 states the cut above it; L2-121 adds the admiral's commission of one captain per group."
         }
       ],
       "principle": null
@@ -1084,12 +1004,19 @@
       "kind": "inquisition",
       "rule": "A nit is one line on this round nit ticket with its file:line and the wrong outcome; it needs no proof.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "inquisitor"
       ],
       "statements": [
-        "L1-271"
+        "L1-271",
+        "L4-030"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L4-030 is the inquisitor's severity-table cell \"a nit needs no proof\"; L1-271 adds one line on the round's nit ticket with file:line and the wrong outcome."
+        }
+      ],
       "principle": null
     },
     {
@@ -1408,12 +1335,18 @@
         "L1-293",
         "L6-109",
         "L6-118",
-        "L6-119"
+        "L6-119",
+        "L1-296",
+        "L6-019"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "L6-119 adds that an audit of main merges its record as an atomic ticket, where no feature tip exists (L1-293)."
+        },
+        {
+          "type": "scope",
+          "note": "L6-019 gives the branch table row (cut from the feature tip, main for an audit of main, target and merge route); L1-296 and L6-119 state the merge route in prose; L1-293 and L6-118 name the ticket branch <KEY>-<slug>."
         }
       ],
       "principle": null
@@ -1756,9 +1689,15 @@
       ],
       "statements": [
         "L1-270",
-        "L4-082"
+        "L4-082",
+        "L4-035"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L4-035 states only \"a verification gap is a should\"; L1-270 and L4-082 add that its Bug names maintain-verification-skill as owner and method."
+        }
+      ],
       "principle": null
     },
     {
@@ -1987,7 +1926,7 @@
       "type": "drift",
       "claims": [
         "inquisition.close-done-when-verified",
-        "inquisition.audit-branch-deletion"
+        "worktree.delete-inquisition-audit-branches"
       ],
       "note": "L6-122 deletes branches and names remotes before closing Done; L6-129 deletes the audit branch at Done; L1-300 and L7-050 give close conditions without the deletion step."
     },

@@ -124,19 +124,6 @@
       "principle": null
     },
     {
-      "id": "contract.body-question-ticket",
-      "kind": "contract",
-      "rule": "A Question ticket body has the four items listed above.",
-      "actors": [
-        "map-holder"
-      ],
-      "statements": [
-        "L7-139"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "contract.body-research-ticket",
       "kind": "contract",
       "rule": "A Research ticket body has Question and Destination for the cited report.",
@@ -198,12 +185,17 @@
       ],
       "statements": [
         "L1-166",
-        "L6-088"
+        "L6-088",
+        "L7-115"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "L6-088 adds the Merge Sub-ticket per integration; L1-166 adds the chain."
+        },
+        {
+          "type": "scope",
+          "note": "L7-115 adds that each Bug stage keeps the parent's Type and Mode; L1-166 and L6-088 add that every actual integration has a Merge Sub-ticket."
         }
       ],
       "principle": null
@@ -217,9 +209,21 @@
       ],
       "statements": [
         "L1-162",
-        "L1-165"
+        "L1-165",
+        "L6-086",
+        "L6-087",
+        "L7-113"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-087 adds that shared paths transfer only after reproduction closes with evidence; L7-113 frames the Bug template as an exception to parallel lanes."
+        },
+        {
+          "type": "wording",
+          "note": "L1-162 and L1-165 say the captain \"may keep\" direct Bug Sub-tickets and both carry the parent's Mode; L6-086, L6-087 and L7-113 say it \"may retain\" the Type template's ordered stages and frame the Bug as a narrow exception to parallel lanes."
+        }
+      ],
       "principle": null
     },
     {
@@ -230,9 +234,16 @@
         "ticket-captain"
       ],
       "statements": [
-        "L1-164"
+        "L1-164",
+        "L6-089",
+        "L7-117"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-164 adds \"recording why\"; L6-089 and L7-117 say \"close the unused records Canceled with the reason\" without a separate recording step."
+        }
+      ],
       "principle": null
     },
     {
@@ -266,12 +277,19 @@
       "kind": "contract",
       "rule": "Enablement uses wizard for the steps only the user can perform.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "any-agent"
       ],
       "statements": [
-        "L1-171"
+        "L1-171",
+        "L7-048"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-048 sits in the Type table row for any actor; L1-171 binds the ticket-captain."
+        }
+      ],
       "principle": null
     },
     {
@@ -323,14 +341,23 @@
     {
       "id": "contract.lane-needing-split-becomes-siblings",
       "kind": "contract",
-      "rule": "A lane needing another split becomes siblings; the Bug stages, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets are the other permitted children.",
+      "rule": "A captain's Sub-tickets are one level deep: a lane needing another split is replaced by sibling lanes under the parent, and the only other permitted children are the Bug stages, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets.",
       "actors": [
         "ticket-captain"
       ],
       "statements": [
-        "L1-077"
+        "L1-077",
+        "L6-082",
+        "L6-083",
+        "L7-109",
+        "L7-106"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L6-082 and L1-077 list the permitted other children; L7-106 also says each lane carries its parent's Type and Mode and states the atomic-merge exception; L7-109 and L1-077 say \"siblings\"; L6-083 says \"sibling lanes under the parent ticket\"."
+        }
+      ],
       "principle": null
     },
     {
@@ -439,7 +466,8 @@
         "L1-074",
         "L6-005",
         "L6-026",
-        "L6-027"
+        "L6-027",
+        "L6-081"
       ],
       "drift": [
         {
@@ -453,6 +481,10 @@
         {
           "type": "scope",
           "note": "L6-026 combines lane naming, disjoint paths and Sub-ticket creation in one sentence."
+        },
+        {
+          "type": "wording",
+          "note": "L6-081 says a lane \"is\" a direct Sub-ticket of the captain's ticket with no contract fields; L6-005 says \"may become\"; L1-073 says \"open them in Todo\"; L6-026 and L6-027 add the contract fields."
         }
       ],
       "principle": null
@@ -466,22 +498,15 @@
       ],
       "statements": [
         "L1-072",
-        "L1-168"
+        "L1-168",
+        "L7-118"
       ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "contract.proof-only-brief-contents",
-      "kind": "contract",
-      "rule": "A proof-only brief names the commissioning captain, the pinned source SHA and the test path.",
-      "actors": [
-        "ticket-captain"
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-118 states it for a staged Bug only; L1-072 covers ordinary sequential work and joining scenarios and sets the Bug exception apart; L1-168 sits in the Bug section."
+        }
       ],
-      "statements": [
-        "L3-026"
-      ],
-      "drift": [],
       "principle": null
     },
     {
@@ -506,16 +531,27 @@
         "docs-writer",
         "research",
         "reviewer",
-        "scout"
+        "scout",
+        "admiral",
+        "chief-of-staff",
+        "inquisitor"
       ],
       "statements": [
         "L1-008",
         "L3-105",
         "L3-136",
         "L3-162",
-        "L3-207"
+        "L3-207",
+        "L2-007",
+        "L2-204",
+        "L4-005"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "Copies bind ticket-captain, code-writer, docs-writer, reviewer, scout, admiral, chief-of-staff and inquisitor; each is the same path and instruction."
+        }
+      ],
       "principle": null
     },
     {
@@ -526,15 +562,26 @@
         "ticket-captain",
         "research",
         "reviewer",
-        "scout"
+        "scout",
+        "admiral",
+        "chief-of-staff",
+        "inquisitor"
       ],
       "statements": [
         "L1-009",
         "L3-137",
         "L3-163",
-        "L3-208"
+        "L3-208",
+        "L2-008",
+        "L2-205",
+        "L4-006"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "Copies bind ticket-captain, code-writer, reviewer, scout, admiral, chief-of-staff and inquisitor; each is the same path and instruction."
+        }
+      ],
       "principle": null
     },
     {
@@ -543,16 +590,22 @@
       "rule": "Read dydo/guides/coding-standards.md from the repository root.",
       "actors": [
         "code-writer",
-        "reviewer"
+        "reviewer",
+        "inquisitor"
       ],
       "statements": [
         "L3-003",
-        "L3-164"
+        "L3-164",
+        "L4-007"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "Only the code-writer and reviewer lists carry it; the captain, docs-writer, research and scout lists do not."
+        },
+        {
+          "type": "scope",
+          "note": "L4-007 binds the inquisitor, L3-003 the code-writer and L3-164 the reviewer; same path and instruction."
         }
       ],
       "principle": null
@@ -606,16 +659,34 @@
     {
       "id": "contract.read-linear-standard-communication-only",
       "kind": "contract",
-      "rule": "Read only the Communication and evidence section of dydo/reference/linear-workspace-standard.md for the communication protocol; do not preload the whole standard.",
+      "rule": "Read only the Communication and evidence section of dydo/reference/linear-workspace-standard.md from the repository root for the communication protocol, and other sections on demand when their fields or status rules are needed; do not preload the whole standard.",
       "actors": [
-        "crew"
+        "crew",
+        "admiral",
+        "chief-of-staff",
+        "ticket-captain",
+        "any-agent"
       ],
       "statements": [
         "L3-108",
         "L3-138",
-        "L3-166"
+        "L3-166",
+        "L2-010",
+        "L2-203",
+        "L1-011",
+        "L5-119",
+        "L5-096"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-011 limits the ticket-captain to the Communication and evidence section plus others on demand; L5-119 says the standard owns the full Type set and status/priority rules, without a section limit."
+        },
+        {
+          "type": "scope",
+          "note": "L5-119 says the standard owns the full Type set and status/priority rules and tells the wayfinder to read it without the \"only\" restriction; L1-011, L2-010 and L2-203 add \"other sections on demand\"; L3-108, L3-138, L3-166 and L5-096 say \"do not preload the whole standard\"."
+        }
+      ],
       "principle": null
     },
     {
@@ -1057,7 +1128,8 @@
       "rule": "Final-candidate gates apply at offer, and combined-merge, integration, release and final G/M gates stay mandatory at their boundaries (delivery scale or scaled review never weakens them, skipped native proof is never runtime proof), with exact-candidate reuse only where permitted.",
       "actors": [
         "ticket-captain",
-        "reviewer"
+        "reviewer",
+        "any-agent"
       ],
       "statements": [
         "L1-127",
@@ -1066,12 +1138,17 @@
         "L3-196",
         "L6-046",
         "L6-049",
-        "L7-060"
+        "L7-060",
+        "L7-161"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "L3-195 and L3-196 are reviewer checklist items by review type (merge review, final release review); L3-190 also restates meaningful-code test obligations."
+        },
+        {
+          "type": "wording",
+          "note": "L7-161 says only \"review gates stay where their workflows require\"; the other copies name the final-candidate, combined-merge, integration and release gates and the exact-candidate reuse limit."
         }
       ],
       "principle": null
@@ -1179,19 +1256,6 @@
       "principle": null
     },
     {
-      "id": "evidence.inquisitor-context-size-command",
-      "kind": "evidence",
-      "rule": "An inquisitor runs the context-size command after each work item.",
-      "actors": [
-        "inquisitor"
-      ],
-      "statements": [
-        "L4-004"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "evidence.keep-historical-originals",
       "kind": "evidence",
       "rule": "Keep existing historical originals accessible.",
@@ -1239,19 +1303,6 @@
       ],
       "statements": [
         "L3-033"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "evidence.nit-needs-no-proof",
-      "kind": "evidence",
-      "rule": "A nit needs no proof.",
-      "actors": [
-        "inquisitor"
-      ],
-      "statements": [
-        "L4-030"
       ],
       "drift": [],
       "principle": null
@@ -1464,13 +1515,15 @@
         "ticket-captain",
         "code-writer",
         "docs-writer",
-        "reviewer"
+        "reviewer",
+        "admiral"
       ],
       "statements": [
         "L1-010",
         "L3-005",
         "L3-107",
-        "L3-165"
+        "L3-165",
+        "L2-009"
       ],
       "drift": [
         {
@@ -1480,6 +1533,10 @@
         {
           "type": "wording",
           "note": "L1-010 and L3-005 say \"from the repository root\"; L3-005, L3-107, L3-165 omit it."
+        },
+        {
+          "type": "scope",
+          "note": "L2-009 binds the admiral to one section (Evidence and inherited failures) and only when a captain reports such failures; L1-010, L3-005, L3-107 and L3-165 name the sections the role reads up front."
         }
       ],
       "principle": null
@@ -1677,20 +1734,6 @@
       "principle": null
     },
     {
-      "id": "worktree.atomic-ticket-branch",
-      "kind": "worktree",
-      "rule": "An atomic ticket branches from main as <KEY>-<slug>, its PR targets main, and the user merges it once the PR has a reviewer PASS and green CI; it has no Merge Sub-ticket.",
-      "actors": [
-        "ticket-captain",
-        "user"
-      ],
-      "statements": [
-        "L6-014"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "worktree.base-sha-ancestor-of-head",
       "kind": "worktree",
       "rule": "Before the first edit, the posted base SHA is an ancestor of HEAD.",
@@ -1781,9 +1824,22 @@
         "ticket-captain"
       ],
       "statements": [
-        "L1-299"
+        "L1-299",
+        "L6-122",
+        "L6-129",
+        "L1-291",
+        "L6-117"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-122 places deletion before closing Done; L6-129 says at Done."
+        },
+        {
+          "type": "action",
+          "note": "L1-299 says \"delete locally\"; L6-122 and L6-129 gate the deletion on the record and retention checks and add closing Done and returning \"done <key>: merged\"; L6-129, L6-117 and L1-291 add that cleanup never deletes the retained Bug refs."
+        }
+      ],
       "principle": null
     },
     {
@@ -1912,12 +1968,22 @@
       ],
       "statements": [
         "L1-183",
-        "L6-009"
+        "L6-009",
+        "L1-082",
+        "L6-097"
       ],
       "drift": [
         {
           "type": "wording",
           "note": "L1-183 \"every operation preserves the hop SHAs\" does not name squash or rewrite; L6-009 names both."
+        },
+        {
+          "type": "wording",
+          "note": "L6-097 adds that the record holds the detail."
+        },
+        {
+          "type": "scope",
+          "note": "L1-082 and L6-097 say only that the captain posts each crew hop's SHA; L6-009 and L1-183 add that the return names it and that hop SHAs are preserved (branch unsquashed, unrewritten)."
         }
       ],
       "principle": null
@@ -1932,12 +1998,17 @@
       ],
       "statements": [
         "L1-214",
-        "L6-016"
+        "L6-016",
+        "L1-172"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "L1-214 says \"in your isolated worktree\"; L6-016 also defines the audit SHA and the group naming."
+        },
+        {
+          "type": "wording",
+          "note": "L1-172 says the branch comes from \"the integrated feature SHA\" where L1-214 and L6-016 say \"the audit SHA\"; L1-214 adds \"in your isolated worktree\"; L6-016 adds the group branch name and \"no PR target\"."
         }
       ],
       "principle": null
@@ -1982,19 +2053,6 @@
       "principle": null
     },
     {
-      "id": "worktree.inquisition-record-branch",
-      "kind": "worktree",
-      "rule": "An Inquisition record branches from the feature tip (main for an audit of main) as <KEY>-<slug>, targets its feature branch, and merges through its Merge Sub-ticket, or as an atomic ticket for an audit of main.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L6-019"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "worktree.key-in-branch-names",
       "kind": "worktree",
       "rule": "Use the ticket's key in branch names so Linear attaches the branch and PR.",
@@ -2003,19 +2061,6 @@
       ],
       "statements": [
         "L6-022"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "worktree.landing-cleanup-commission",
-      "kind": "worktree",
-      "rule": "On the map holder's landing-cleanup commission, remove the merged feature branch locally and report completion.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-160"
       ],
       "drift": [],
       "principle": null
@@ -2042,26 +2087,13 @@
       ],
       "statements": [
         "L1-158",
-        "L6-102"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "worktree.merge-hop-pins",
-      "kind": "worktree",
-      "rule": "A merge hop proves the pins of the merge resource (source and target at their SHAs, the source's PASS, the governing contract and the combined gates) instead of the five checks.",
-      "actors": [
-        "code-writer"
-      ],
-      "statements": [
-        "L3-015",
-        "L6-040"
+        "L6-102",
+        "L1-191"
       ],
       "drift": [
         {
-          "type": "scope",
-          "note": "L3-015 also states the proof-only pins (see worktree.proof-work-pre-edit-checks); L6-040 lists the merge pins in full, L3-015 only points to merge.md."
+          "type": "wording",
+          "note": "L1-191 says \"the worktree the thread runs in\" inside the release procedure; L1-158 and L6-102 say the captain's thread worktree in the cleanup context."
         }
       ],
       "principle": null
@@ -2112,19 +2144,6 @@
       ],
       "statements": [
         "L6-023"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "worktree.post-branch-base-worktree-before-first-edit",
-      "kind": "worktree",
-      "rule": "Branch, base SHA and worktree path are posted on the relevant ticket or Sub-ticket before the first edit.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L6-010"
       ],
       "drift": [],
       "principle": null
@@ -2194,7 +2213,8 @@
         "L4-044",
         "L4-045",
         "L4-046",
-        "L6-042"
+        "L6-042",
+        "L4-043"
       ],
       "drift": [
         {
@@ -2204,6 +2224,10 @@
         {
           "type": "scope",
           "note": "L6-042 covers proof-only briefs and Break; L4-044, L4-045 and L4-046 cover the inquisitor only; L3-015 states the proof-only variant for the code-writer."
+        },
+        {
+          "type": "wording",
+          "note": "L4-043 says Break proves \"the three worktree checks\" and returns a failure to the captain; L4-044 to L4-046 and L6-042 name the three checks."
         }
       ],
       "principle": null
@@ -2265,13 +2289,22 @@
       "rule": "Read dydo/guides/working-tree-standard.md from the repository root.",
       "actors": [
         "ticket-captain",
-        "docs-writer"
+        "docs-writer",
+        "admiral",
+        "chief-of-staff"
       ],
       "statements": [
         "L1-007",
-        "L3-106"
+        "L3-106",
+        "L2-006",
+        "L2-206"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "Copies bind ticket-captain, docs-writer, admiral and chief-of-staff; same path and instruction."
+        }
+      ],
       "principle": null
     },
     {
@@ -2316,19 +2349,6 @@
       "principle": null
     },
     {
-      "id": "worktree.spec-draft-first-commit-on-feature-branch",
-      "kind": "worktree",
-      "rule": "The first captain commits the spec draft unchanged directly on feature/<project-slug> as its first commit, pushes it and posts the SHA before cutting its ticket branch.",
-      "actors": [
-        "admiral"
-      ],
-      "statements": [
-        "L2-196"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "worktree.stage-owned-paths-by-name",
       "kind": "worktree",
       "rule": "Each writer stages owned paths by name, never a whole-tree add.",
@@ -2344,14 +2364,22 @@
     {
       "id": "worktree.sweep-orphans",
       "kind": "worktree",
-      "rule": "The chief-of-staff sweeps orphans: worktrees and branches a merge should have retired, inquisition/<slug> branches past their ticket's Done (group branches once the parent Inquisition is Done) and prototype/<name> past the delivery ticket's Done.",
+      "rule": "The chief of staff audits failures of the working-tree standard, not routine cleanup: it compares git worktree list and merged branches with Linear and sweeps orphans (worktrees and branches a merge should have retired, inquisition/<slug> branches past their ticket's Done, prototype/<name> past the delivery ticket's Done), treating each finding as a standard failure to clear or route with its owner named.",
       "actors": [
         "chief-of-staff"
       ],
       "statements": [
-        "L2-231"
+        "L2-231",
+        "L6-001",
+        "L6-133",
+        "L6-134"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L6-134 says a finding is a standard failure to route with its owner named, not routine cleanup for staff; L2-231 lists what to sweep and when an inquisition or prototype branch is orphaned."
+        }
+      ],
       "principle": null
     }
   ],
@@ -2376,7 +2404,7 @@
       "type": "gap",
       "claims": [
         "worktree.prove-checks-before-first-edit",
-        "worktree.post-branch-base-worktree-before-first-edit"
+        "linear.claim-done-criteria"
       ],
       "note": "L3-012/L6-037 rely on a \"posted\" base SHA; only L6-010 says the captain posts branch, base SHA and worktree path, and no captain-side skill statement of kind worktree/contract repeats it."
     },
@@ -2386,13 +2414,6 @@
         "worktree.prove-checks-before-first-edit"
       ],
       "note": "The five pre-edit checks are listed only in the code-writer skill and the working-tree standard; docs-writer L3-106 says only \"read the standard\", with no statement of its own pre-edit proof (L6-034 names docs-writer)."
-    },
-    {
-      "type": "gap",
-      "claims": [
-        "contract.body-question-ticket"
-      ],
-      "note": "L7-139 says \"the four items listed above\" but no statement defines the four items."
     },
     {
       "type": "gap",
@@ -2436,7 +2457,7 @@
     {
       "type": "homeless",
       "claims": [
-        "evidence.inquisitor-context-size-command"
+        "capacity.read-context-size-after-each-item"
       ],
       "note": "L4-004 names \"the context-size command\" with no statement defining it."
     },

@@ -795,9 +795,15 @@
       ],
       "statements": [
         "L2-247",
-        "L5-036"
+        "L5-036",
+        "L2-292"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L2-292 says only \"intervention belongs to the chief of staff\" in the surveyor's resource; L2-247 and L5-036 add that the surveyor result is inspection and the chief of staff performs the nudge, escalation or intervention."
+        }
+      ],
       "principle": null
     },
     {
@@ -1181,7 +1187,8 @@
       "statements": [
         "L1-060",
         "L2-068",
-        "L6-024"
+        "L6-024",
+        "L2-196"
       ],
       "drift": [
         {
@@ -1191,6 +1198,10 @@
         {
           "type": "wording",
           "note": "L1-060 says the spec draft is committed unchanged and pushed as the first commit; L6-024 says \"when handed one\"; L2-068 does not mention the spec."
+        },
+        {
+          "type": "action",
+          "note": "L2-196 and L1-060 require the spec draft unchanged as the branch's first commit, pushed, with the SHA posted before the ticket branch is cut; L2-068 and L6-024 say commit the working spec \"when handed one\" and report both."
         }
       ],
       "principle": null
@@ -1286,20 +1297,6 @@
       "principle": null
     },
     {
-      "id": "project.land-by-merge-commit",
-      "kind": "project",
-      "rule": "To land the Project, the landing Merge Ticket prepares main into feature and obtains acceptance PASS, and the user clicks feature into main as a merge commit, never squash.",
-      "actors": [
-        "user",
-        "map-holder"
-      ],
-      "statements": [
-        "L6-032"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "project.landing-blockers-and-shoulds-query",
       "kind": "project",
       "rule": "At landing no open `blocker` or `should` ticket remains in the Project unless the user explicitly deferred it; the check is a query of the Project's open tickets by Severity label.",
@@ -1330,12 +1327,18 @@
       ],
       "statements": [
         "L2-138",
-        "L6-127"
+        "L6-127",
+        "L2-132",
+        "L1-160"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "L2-138 gives the admiral the confirmation; L6-127 gives deletion to the landing Captain and accountability for the merged feature branch to the map holder."
+        },
+        {
+          "type": "action",
+          "note": "L2-132 names dydo clean --dry-run then dydo clean from outside the tree; L1-160 says \"remove the merged feature branch locally\"; L6-127 makes the map holder accountable and the landing captain delete it; L2-138 has the admiral confirm."
         }
       ],
       "principle": null
@@ -1431,20 +1434,6 @@
         "L5-101",
         "L5-102",
         "L5-105"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "project.map-holder-named",
-      "kind": "project",
-      "rule": "A Project's map holder is the user in his own session, or an admiral the user invoked, until the user takes the map back; the Project description names the current holder.",
-      "actors": [
-        "map-holder"
-      ],
-      "statements": [
-        "L5-094",
-        "L7-088"
       ],
       "drift": [],
       "principle": null
@@ -1618,25 +1607,6 @@
         "L2-173"
       ],
       "drift": [],
-      "principle": null
-    },
-    {
-      "id": "project.scope-changes-to-map-holder",
-      "kind": "project",
-      "rule": "A cross-ticket scope matter or a change to acceptance, scope, destination or architecture goes to the Project's map holder.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-097",
-        "L1-118"
-      ],
-      "drift": [
-        {
-          "type": "scope",
-          "note": "L1-097 covers the cross-ticket scope of one failure; L1-118 covers any change to acceptance, scope, destination or architecture and names the outcome (a map or plan amendment)."
-        }
-      ],
       "principle": null
     },
     {

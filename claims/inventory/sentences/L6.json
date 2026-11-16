@@ -29,7 +29,7 @@
       "rules": [
         {
           "id": "L6-001",
-          "kind": "identity",
+          "kind": "worktree",
           "rule": "The chief-of-staff audits failures of the working-tree standard, not routine cleanup.",
           "actors": [
             "chief-of-staff"
@@ -165,7 +165,7 @@
       "rules": [
         {
           "id": "L6-010",
-          "kind": "worktree",
+          "kind": "linear",
           "rule": "Branch, base SHA and worktree path are posted on the relevant ticket or Sub-ticket before the first edit.",
           "actors": [
             "ticket-captain"
@@ -227,7 +227,7 @@
       "rules": [
         {
           "id": "L6-014",
-          "kind": "worktree",
+          "kind": "merge",
           "rule": "An atomic ticket branches from main as <KEY>-<slug>, its PR targets main, and the user merges it by clicking once the PR carries a reviewer PASS and CI is green; it has no Merge Sub-ticket.",
           "actors": [
             "ticket-captain",
@@ -304,7 +304,7 @@
       "rules": [
         {
           "id": "L6-019",
-          "kind": "worktree",
+          "kind": "inquisition",
           "rule": "An Inquisition record branches from the feature tip (main for an audit of main) as the Inquisition's <KEY>-<slug>, targets its feature branch (main for an audit of main), and merges through its captain-directed Merge Sub-ticket, or as an atomic ticket for an audit of main.",
           "actors": [
             "ticket-captain"
@@ -505,7 +505,7 @@
       "rules": [
         {
           "id": "L6-032",
-          "kind": "project",
+          "kind": "merge",
           "rule": "To land the Project, the landing Merge Ticket prepares main into feature and obtains acceptance PASS, and the user clicks feature into main as a merge commit, never squash.",
           "actors": [
             "user",
@@ -635,7 +635,7 @@
       "rules": [
         {
           "id": "L6-040",
-          "kind": "worktree",
+          "kind": "merge",
           "rule": "Merge work proves instead the pins of the code-writer's merge resource: source and target at their SHAs, the source's PASS, the governing contract and the combined gates.",
           "actors": [
             "code-writer"
@@ -1256,7 +1256,7 @@
       "rules": [
         {
           "id": "L6-081",
-          "kind": "dispatch",
+          "kind": "contract",
           "rule": "Each independently trackable parallel lane is a direct Sub-ticket of the captain's ticket.",
           "actors": [
             "ticket-captain"
@@ -1271,7 +1271,7 @@
       "rules": [
         {
           "id": "L6-082",
-          "kind": "dispatch",
+          "kind": "contract",
           "rule": "Lanes have one level; the only other permitted children are the Bug stages, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets.",
           "actors": [
             "ticket-captain"
@@ -1286,7 +1286,7 @@
       "rules": [
         {
           "id": "L6-083",
-          "kind": "dispatch",
+          "kind": "contract",
           "rule": "If a lane needs splitting, replace it with sibling lanes under the parent ticket.",
           "actors": [
             "ticket-captain"
@@ -1331,7 +1331,7 @@
       "rules": [
         {
           "id": "L6-086",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "A Bug may retain its Type template's ordered reproduce-or-identify and fix Sub-tickets.",
           "actors": [
             "ticket-captain"
@@ -1346,7 +1346,7 @@
       "rules": [
         {
           "id": "L6-087",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "On a Bug, Fix is natively blocked by reproduction; shared paths transfer only after the reproduction closes with its evidence recorded.",
           "actors": [
             "ticket-captain"
@@ -1376,7 +1376,7 @@
       "rules": [
         {
           "id": "L6-089",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "A simple Bug collapses the placeholder stages into parent hops and closes the unused records Canceled with the reason.",
           "actors": [
             "ticket-captain"
@@ -1496,7 +1496,7 @@
       "rules": [
         {
           "id": "L6-097",
-          "kind": "linear",
+          "kind": "worktree",
           "rule": "The record holds the detail; the captain posts each crew hop's SHA.",
           "actors": [
             "ticket-captain"
@@ -1797,7 +1797,7 @@
       "rules": [
         {
           "id": "L6-117",
-          "kind": "inquisition",
+          "kind": "worktree",
           "rule": "Audit cleanup never deletes the retained Bug refs; they remain input to each Bug's normal chain.",
           "actors": [
             "ticket-captain"
@@ -1873,7 +1873,7 @@
       "rules": [
         {
           "id": "L6-122",
-          "kind": "inquisition",
+          "kind": "worktree",
           "rule": "Only after that verification does the captain delete the audit branch and, as parent, every group's audit branch, name their remotes and any proof branch no open Bug needs on the record for the user, close Done and return \"done <key>: merged\".",
           "actors": [
             "ticket-captain"
@@ -1980,7 +1980,7 @@
       "rules": [
         {
           "id": "L6-129",
-          "kind": "inquisition",
+          "kind": "worktree",
           "rule": "The ticket-captain deletes the audit branch at Done after the record and retention checks, and the group audit branches at the parent's Done, names any proof branch no open Bug needs, and never merges them or deletes the independently retained Bug refs.",
           "actors": [
             "ticket-captain"
@@ -2040,7 +2040,7 @@
       "rules": [
         {
           "id": "L6-133",
-          "kind": "identity",
+          "kind": "worktree",
           "rule": "The chief-of-staff compares git worktree list and merged branches with Linear during board hygiene.",
           "actors": [
             "chief-of-staff"
@@ -2055,7 +2055,7 @@
       "rules": [
         {
           "id": "L6-134",
-          "kind": "identity",
+          "kind": "worktree",
           "rule": "Anything the chief-of-staff finds is a standard failure to clear or route with its owner named, not normal cleanup delegated to staff.",
           "actors": [
             "chief-of-staff"

@@ -189,7 +189,7 @@
       "rules": [
         {
           "id": "L1-011",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "Read only the Communication and evidence section of dydo/reference/linear-workspace-standard.md for the communication protocol, and other sections of it on demand when their fields or status rules are needed.",
           "actors": [
             "ticket-captain"
@@ -279,7 +279,7 @@
       "rules": [
         {
           "id": "L1-017",
-          "kind": "dispatch",
+          "kind": "escalation",
           "rule": "On a bounded refusal, preserve the record, candidate, hop SHA and brief; do not broaden the brief or retry blindly.",
           "actors": [
             "ticket-captain"
@@ -796,7 +796,7 @@
       "rules": [
         {
           "id": "L1-055",
-          "kind": "wayfinding",
+          "kind": "escalation",
           "rule": "Prefer Research when facts can settle the fog; use human-facing tickets only when necessary.",
           "actors": [
             "ticket-captain"
@@ -1202,7 +1202,7 @@
         },
         {
           "id": "L1-082",
-          "kind": "linear",
+          "kind": "worktree",
           "rule": "Post each hop's commit SHA on the record.",
           "actors": [
             "ticket-captain"
@@ -1406,7 +1406,7 @@
         },
         {
           "id": "L1-097",
-          "kind": "project",
+          "kind": "escalation",
           "rule": "Raise cross-ticket scope of such a failure to the map holder.",
           "actors": [
             "ticket-captain"
@@ -1695,7 +1695,7 @@
       "rules": [
         {
           "id": "L1-118",
-          "kind": "project",
+          "kind": "escalation",
           "rule": "A change to acceptance, scope, destination or architecture goes to the Project's map holder for a map or plan amendment.",
           "actors": [
             "ticket-captain"
@@ -1710,7 +1710,7 @@
       "rules": [
         {
           "id": "L1-119",
-          "kind": "review",
+          "kind": "escalation",
           "rule": "Review is done when each fix has its own commit and fresh review; the fifth consecutive FAIL stops the loop, records the findings and wires a prepared Question through the scope rule.",
           "actors": [
             "ticket-captain"
@@ -2274,7 +2274,7 @@
       "rules": [
         {
           "id": "L1-160",
-          "kind": "worktree",
+          "kind": "project",
           "rule": "On the map holder's landing-cleanup commission, remove the merged feature branch locally and report completion.",
           "actors": [
             "ticket-captain"
@@ -2440,7 +2440,7 @@
       "rules": [
         {
           "id": "L1-172",
-          "kind": "inquisition",
+          "kind": "worktree",
           "rule": "An Inquisition gets inquisition/<slug> from the integrated feature SHA.",
           "actors": [
             "ticket-captain"
@@ -2704,7 +2704,7 @@
       "rules": [
         {
           "id": "L1-191",
-          "kind": "release",
+          "kind": "worktree",
           "rule": "The worktree your thread runs in belongs to T3: leave it.",
           "actors": [
             "ticket-captain"
@@ -3286,7 +3286,7 @@
       "rules": [
         {
           "id": "L1-227",
-          "kind": "capacity",
+          "kind": "inquisition",
           "rule": "One captain conducts about 10 areas.",
           "actors": [
             "ticket-captain"
@@ -4208,7 +4208,7 @@
         },
         {
           "id": "L1-291",
-          "kind": "inquisition",
+          "kind": "worktree",
           "rule": "Audit cleanup never deletes those retained refs.",
           "actors": [
             "ticket-captain"
@@ -4276,7 +4276,7 @@
         },
         {
           "id": "L1-296",
-          "kind": "merge",
+          "kind": "inquisition",
           "rule": "Then offer the PR and its Merge Sub-ticket into the feature as any Project ticket does; an audit of main merges its record as an atomic ticket does.",
           "actors": [
             "ticket-captain"

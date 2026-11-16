@@ -311,7 +311,7 @@
         },
         {
           "id": "L7-022",
-          "kind": "review",
+          "kind": "linear",
           "rule": "A spec review returns the record to `Implementing` on either verdict.",
           "actors": [
             "ticket-captain"
@@ -418,7 +418,7 @@
         },
         {
           "id": "L7-031",
-          "kind": "merge",
+          "kind": "linear",
           "rule": "A Merge Sub-ticket never enters `Ready to Merge`: it runs the chain and closes.",
           "actors": [
             "ticket-captain"
@@ -645,7 +645,7 @@
         },
         {
           "id": "L7-048",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "`wizard` guides the steps of an Enablement that only the user can do.",
           "actors": [
             "any-agent"
@@ -1198,7 +1198,7 @@
         },
         {
           "id": "L7-088",
-          "kind": "project",
+          "kind": "identity",
           "rule": "The Project description names the Project's current holder.",
           "actors": [
             "map-holder"
@@ -1335,7 +1335,7 @@
       "rules": [
         {
           "id": "L7-099",
-          "kind": "merge",
+          "kind": "linear",
           "rule": "A Merge Sub-ticket's status path is `Todo` -> `Implementing` -> `In Review` -> `Done`; it merges and is never merged.",
           "actors": [
             "ticket-captain"
@@ -1426,7 +1426,7 @@
       "rules": [
         {
           "id": "L7-106",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "A captain creates Sub-tickets one level deep: lanes for separate work that can run at the same time, each carrying its parent's Type and Mode.",
           "actors": [
             "ticket-captain"
@@ -1442,7 +1442,7 @@
         },
         {
           "id": "L7-108",
-          "kind": "linear",
+          "kind": "wayfinding",
           "rule": "A captain creates a map-holder-held Sub-ticket for fog that blocks only its parent or a lane and stays inside the approved Project destination and ticket outcome.",
           "actors": [
             "ticket-captain"
@@ -1457,7 +1457,7 @@
       "rules": [
         {
           "id": "L7-109",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "A lane that needs splitting is replaced by sibling lanes.",
           "actors": [
             "ticket-captain"
@@ -1510,7 +1510,7 @@
       "rules": [
         {
           "id": "L7-113",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "The Bug Type template is a narrow exception to parallel delivery lanes: its captain may retain ordered reproduce-or-identify and fix Sub-tickets, with fix natively blocked by reproduction.",
           "actors": [
             "ticket-captain"
@@ -1533,7 +1533,7 @@
       "rules": [
         {
           "id": "L7-115",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "Each Bug stage keeps the parent's Type and Mode and has its own contract, chain, branch and worktree.",
           "actors": [
             "ticket-captain"
@@ -1556,7 +1556,7 @@
       "rules": [
         {
           "id": "L7-117",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "For a simple Bug, collapse the staged placeholders into parent hops and close the unused records `Canceled` with the reason.",
           "actors": [
             "ticket-captain"
@@ -1571,7 +1571,7 @@
       "rules": [
         {
           "id": "L7-118",
-          "kind": "linear",
+          "kind": "contract",
           "rule": "Joining acceptance and final review of a staged Bug stay on the parent.",
           "actors": [
             "ticket-captain"
@@ -1893,7 +1893,7 @@
       "rules": [
         {
           "id": "L7-139",
-          "kind": "contract",
+          "kind": "escalation",
           "rule": "A `Question` ticket body has the four items listed above.",
           "actors": [
             "map-holder"
@@ -2209,7 +2209,7 @@
       "rules": [
         {
           "id": "L7-161",
-          "kind": "review",
+          "kind": "evidence",
           "rule": "Review gates stay where their workflows require.",
           "actors": [
             "any-agent"
@@ -2488,7 +2488,7 @@
       "rules": [
         {
           "id": "L7-181",
-          "kind": "linear",
+          "kind": "dispatch",
           "rule": "State the effective model identity when trustworthy runtime information exposes it.",
           "actors": [
             "any-agent"
@@ -2503,7 +2503,7 @@
       "rules": [
         {
           "id": "L7-182",
-          "kind": "linear",
+          "kind": "dispatch",
           "rule": "When the effective identity is not exposed, qualify a family or a requested/configured value.",
           "actors": [
             "any-agent"
@@ -2631,7 +2631,7 @@
       "rules": [
         {
           "id": "L7-188",
-          "kind": "linear",
+          "kind": "wayfinding",
           "rule": "Linear records the decision-making work; dydo records a qualifying decision.",
           "actors": [
             "any-agent"
@@ -2646,7 +2646,7 @@
       "rules": [
         {
           "id": "L7-189",
-          "kind": "linear",
+          "kind": "wayfinding",
           "rule": "Link the Question or Grilling Ticket to its repository Decision Record, and link the record back when it has a Linear origin.",
           "actors": [
             "any-agent"
@@ -2661,7 +2661,7 @@
       "rules": [
         {
           "id": "L7-190",
-          "kind": "docs",
+          "kind": "wayfinding",
           "rule": "The Decision Record is canonical: keep its rationale in dydo rather than copying it into Linear.",
           "actors": [
             "any-agent"

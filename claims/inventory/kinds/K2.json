@@ -63,7 +63,7 @@
     {
       "id": "escalation.cross-ticket-answers-to-map-holder",
       "kind": "escalation",
-      "rule": "When a Question's answer could affect other tickets, a shared contract, or the Project destination, scope, acceptance criteria or governing architecture or map, the captain prepares the packet and the map holder creates and wires the Project-level ticket.",
+      "rule": "Anything that could affect other tickets, a shared contract, or the Project's destination, scope, acceptance criteria, architecture or map goes to the Project's map holder: for a Question the captain prepares the packet and the map holder creates and wires the Project-level ticket.",
       "actors": [
         "ticket-captain",
         "map-holder"
@@ -72,7 +72,9 @@
         "L1-187",
         "L5-108",
         "L7-110",
-        "L7-111"
+        "L7-111",
+        "L1-097",
+        "L1-118"
       ],
       "drift": [
         {
@@ -82,6 +84,14 @@
         {
           "type": "scope",
           "note": "L1-187 limits to answers reaching other tickets or the destination; L7-110 lists shared contract, scope, acceptance criteria and architecture."
+        },
+        {
+          "type": "scope",
+          "note": "L1-097 covers the cross-ticket scope of one failure; L1-118 covers any change to acceptance, scope, destination or architecture and names the outcome (a map or plan amendment)."
+        },
+        {
+          "type": "scope",
+          "note": "L1-118 sends a change to acceptance, scope, destination or architecture to the map holder \"for a map or plan amendment\"; L1-097 sends the cross-ticket scope of an inherited failure; L1-187, L5-108, L7-110 and L7-111 speak of a Question's answer."
         }
       ],
       "principle": null
@@ -89,12 +99,13 @@
     {
       "id": "escalation.discovery-before-question",
       "kind": "escalation",
-      "rule": "Discovery comes before a Question: search authoritative sources first, and create the Question only when they leave the user's judgment needed; if they settle it, no Question exists.",
+      "rule": "Discovery comes before a Question: search the authoritative sources first (governing records, plan, specifications, documentation, standards, code, tests, prior answers), use Research, Prototype, Grilling or Enablement where they can clear it, and create a Question only when the user's judgment is still needed; if the sources settle it, no Question exists.",
       "actors": [
         "ticket-captain",
         "research",
         "any-agent",
-        "map-holder"
+        "map-holder",
+        "officer"
       ],
       "statements": [
         "L1-184",
@@ -102,7 +113,13 @@
         "L7-120",
         "L7-121",
         "L7-122",
-        "L7-123"
+        "L7-123",
+        "L1-055",
+        "L5-124",
+        "L5-143",
+        "L5-144",
+        "L5-145",
+        "L5-199"
       ],
       "drift": [
         {
@@ -112,6 +129,18 @@
         {
           "type": "wording",
           "note": "L7-121 lists sources (Decision Records, plan, specs, docs, standards, code, tests); L1-184 and L7-120 do not."
+        },
+        {
+          "type": "scope",
+          "note": "L1-055 is the ticket-captain; L5-124 the map holder; L5-143/144/145 any agent; L5-199 an officer deciding a call."
+        },
+        {
+          "type": "action",
+          "note": "L5-143 lists the sources to search (Decision Records, plan, specs, docs, standards, code, tests, prior answers); L1-055 and L5-199 name only Research or \"the facts\"; L5-124 says Research when authoritative evidence inside or outside the repository can settle it."
+        },
+        {
+          "type": "scope",
+          "note": "The wayfinder copies (L5-124, L5-143 to L5-145, L5-199) name the tools that clear fog and the sources to search; L1-184 and L7-120 to L7-123 state the order and the standard's homework."
         }
       ],
       "principle": null
@@ -138,9 +167,15 @@
         "admiral"
       ],
       "statements": [
-        "L2-041"
+        "L2-041",
+        "L1-119"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-119 bundles the completion test (each fix has its own commit and a fresh review) with the stop and also wires the prepared Question through the scope rule; L2-041 states the stop, the ticket record and the wired Question without the completion test."
+        }
+      ],
       "principle": null
     },
     {
@@ -236,12 +271,18 @@
       ],
       "statements": [
         "L1-188",
-        "L7-125"
+        "L7-125",
+        "L5-130",
+        "L7-139"
       ],
       "drift": [
         {
           "type": "wording",
           "note": "L1-188 says \"the packet and all evidence\"; L7-125 lists four body items."
+        },
+        {
+          "type": "scope",
+          "note": "L5-130 lists homework, credible options, trade-offs and a recommendation; L7-125 lists four items including the named work it blocks and the sources searched; L7-139 only points to \"the four items above\"; L1-188 says put the packet and all evidence on the record."
         }
       ],
       "principle": null
@@ -285,11 +326,14 @@
       "rule": "Safety, provenance and review stops and bounded refusals are preserved with their record, candidate, hop SHA and brief, and are not retried blindly or in loops.",
       "actors": [
         "admiral",
-        "any-agent"
+        "any-agent",
+        "ticket-captain"
       ],
       "statements": [
         "L2-111",
-        "L6-074"
+        "L6-074",
+        "L1-017",
+        "L2-020"
       ],
       "drift": [
         {
@@ -299,6 +343,14 @@
         {
           "type": "scope",
           "note": "L2-111 binds the admiral; L6-074 any-agent."
+        },
+        {
+          "type": "action",
+          "note": "L1-017 preserves record, candidate, hop SHA and brief and forbids broadening the brief; L2-020 adds established lifecycle handling, then escalate or release the concrete limitation."
+        },
+        {
+          "type": "action",
+          "note": "L2-020 adds \"use established lifecycle handling, then escalate or release the concrete limitation\"; L1-017 and L6-074 add \"do not broaden the brief\" and name the record, candidate, hop SHA and brief; L2-111 covers safety, provenance and review stops and says \"prepare their owned disposition\"."
         }
       ],
       "principle": null
@@ -392,12 +444,17 @@
       ],
       "statements": [
         "L6-002",
-        "L7-035"
+        "L7-035",
+        "L5-112"
       ],
       "drift": [
         {
           "type": "wording",
           "note": "L6-002 states only that assignment is the claim; L7-035 adds the pickable condition."
+        },
+        {
+          "type": "wording",
+          "note": "L5-112 adds \"assign it first, before any work, so concurrent sessions skip it\"; L7-035 defines assigned as taken and unassigned, Todo and unblocked as pickable; L6-002 states only the claim."
         }
       ],
       "principle": null
@@ -411,65 +468,6 @@
       ],
       "statements": [
         "L1-045"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "linear.bug-joining-acceptance-on-parent",
-      "kind": "linear",
-      "rule": "Joining acceptance and final review of a staged Bug stay on the parent.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L7-118"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "linear.bug-stage-keeps-type-mode",
-      "kind": "linear",
-      "rule": "Each Bug stage keeps the parent's Type and Mode and has its own contract, chain, branch and worktree.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L7-115"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "linear.bug-staged-subtickets",
-      "kind": "linear",
-      "rule": "A Bug may retain its Type template's ordered reproduce-or-identify and fix Sub-tickets, with fix natively blocked by reproduction.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L6-086",
-        "L6-087",
-        "L7-113"
-      ],
-      "drift": [
-        {
-          "type": "wording",
-          "note": "L6-087 adds that shared paths transfer only after reproduction closes with evidence; L7-113 frames the Bug template as an exception to parallel lanes."
-        }
-      ],
-      "principle": null
-    },
-    {
-      "id": "linear.captain-map-holder-subticket-for-fog",
-      "kind": "linear",
-      "rule": "A captain creates a map-holder-held Sub-ticket for fog that blocks only its parent or a lane and stays inside the approved Project destination and ticket outcome.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L7-108"
       ],
       "drift": [],
       "principle": null
@@ -545,7 +543,8 @@
       ],
       "statements": [
         "L1-062",
-        "L6-025"
+        "L6-025",
+        "L6-010"
       ],
       "drift": [
         {
@@ -555,6 +554,10 @@
         {
           "type": "action",
           "note": "L6-025 also says the captain sets Implementing when it spawns the author."
+        },
+        {
+          "type": "scope",
+          "note": "L6-010 states only posting branch, base SHA and worktree path before the first edit; L1-062 and L6-025 also require assignment, Type, Mode, clean state, owned paths and an existing branch and worktree."
         }
       ],
       "principle": null
@@ -614,20 +617,6 @@
       ],
       "statements": [
         "L5-116"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "linear.decision-records-linked",
-      "kind": "linear",
-      "rule": "Linear records the decision-making work and dydo records a qualifying decision; the Question or Grilling Ticket and its repository Decision Record link to each other.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L7-188",
-        "L7-189"
       ],
       "drift": [],
       "principle": null
@@ -803,32 +792,6 @@
       "principle": null
     },
     {
-      "id": "linear.lane-needing-split-replaced-by-siblings",
-      "kind": "linear",
-      "rule": "A lane that needs splitting is replaced by sibling lanes.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L7-109"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "linear.lanes-one-level-deep",
-      "kind": "linear",
-      "rule": "A captain creates Sub-tickets one level deep; lanes are for separate work that can run at the same time, each carrying its parent's Type and Mode.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L7-106"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "linear.merge-operation-closes-done",
       "kind": "linear",
       "rule": "The merge operation and its source ticket close Done.",
@@ -850,9 +813,16 @@
       ],
       "statements": [
         "L1-150",
-        "L6-098"
+        "L6-098",
+        "L7-031",
+        "L7-099"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-099 adds the Merge Sub-ticket status path Todo, Implementing, In Review, Done and \"it merges and is never merged\"; L7-031 gives the reason \"it runs the chain and closes\"."
+        }
+      ],
       "principle": null
     },
     {
@@ -1005,25 +975,6 @@
       "principle": null
     },
     {
-      "id": "linear.post-each-hop-sha",
-      "kind": "linear",
-      "rule": "The captain posts each crew hop's commit SHA on the record.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-082",
-        "L6-097"
-      ],
-      "drift": [
-        {
-          "type": "wording",
-          "note": "L6-097 adds that the record holds the detail."
-        }
-      ],
-      "principle": null
-    },
-    {
       "id": "linear.priority-high",
       "kind": "linear",
       "rule": "Priority High is set when clearing the ticket lets a top-level ticket, or a Project's next step, run AFK.",
@@ -1154,19 +1105,6 @@
       "principle": null
     },
     {
-      "id": "linear.qualify-unexposed-identity",
-      "kind": "linear",
-      "rule": "When the effective identity is not exposed, qualify a family or a requested/configured value.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L7-182"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "linear.question-in-todo-is-user-turn",
       "kind": "linear",
       "rule": "A Question in Todo carries judgment the user must supply and is the user's turn.",
@@ -1199,30 +1137,17 @@
       "kind": "linear",
       "rule": "Use metadata first: read only the current active contract and named evidence.",
       "actors": [
-        "any-agent"
+        "any-agent",
+        "admiral"
       ],
       "statements": [
-        "L7-147"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "linear.read-standard-sections",
-      "kind": "linear",
-      "rule": "Read the Linear workspace standard from the repository root; the Communication and evidence section for the communication protocol, other sections on demand.",
-      "actors": [
-        "ticket-captain",
-        "any-agent"
-      ],
-      "statements": [
-        "L1-011",
-        "L5-119"
+        "L7-147",
+        "L2-004"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L1-011 limits the ticket-captain to the Communication and evidence section plus others on demand; L5-119 says the standard owns the full Type set and status/priority rules, without a section limit."
+          "note": "L2-004 binds the admiral and names the Project's metadata-first map, each current active contract and named evidence; L7-147 binds any agent and names the current active contract and named evidence."
         }
       ],
       "principle": null
@@ -1272,12 +1197,21 @@
       "kind": "linear",
       "rule": "The invoker records the review block on the work judged: a Project update for a project-plan review, the Merge Ticket for a merge review, otherwise the ticket.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "admiral",
+        "reviewer"
       ],
       "statements": [
-        "L3-198"
+        "L3-198",
+        "L2-062",
+        "L4-165"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-062 states only the Project case; L4-165 adds that the merge verdict names the merge commit and every gate result; L3-198 adds the PR body under ## Independent review."
+        }
+      ],
       "principle": null
     },
     {
@@ -1319,7 +1253,8 @@
         "L1-081",
         "L1-117",
         "L1-295",
-        "L7-019"
+        "L7-019",
+        "L7-022"
       ],
       "drift": [
         {
@@ -1329,6 +1264,10 @@
         {
           "type": "wording",
           "note": "L1-295 combines Implementing then In Review for a docs reviewer in one sentence."
+        },
+        {
+          "type": "scope",
+          "note": "L7-022 states the spec-review case as a return to Implementing on either verdict; L7-019, L1-066, L1-081 and L1-117 speak of spawning the author, a fix hop included."
         }
       ],
       "principle": null
@@ -1410,50 +1349,29 @@
       "principle": null
     },
     {
-      "id": "linear.simple-bug-collapses-placeholders",
-      "kind": "linear",
-      "rule": "A simple Bug collapses the staged placeholders into parent hops and closes the unused records Canceled with the reason.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L6-089",
-        "L7-117"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "linear.small-work-stays-on-ticket",
       "kind": "linear",
       "rule": "Small lookups, conversations and setup stay on the ticket that needs them; a map-holder-held ticket is created only when the work needs independent tracking or blocks other work.",
       "actors": [
         "any-agent",
-        "map-holder"
+        "map-holder",
+        "admiral"
       ],
       "statements": [
         "L7-065",
-        "L7-066"
+        "L7-066",
+        "L2-105"
       ],
       "drift": [
         {
           "type": "scope",
           "note": "L7-065 binds any-agent; L7-066 binds the map holder."
+        },
+        {
+          "type": "wording",
+          "note": "L2-105 says \"inline\" and names a Wayfinding Ticket created when the investigation needs its own status, owner, blocker or evidence; L7-065 and L7-066 say \"stay on the ticket that needs them\" and a map-holder-held ticket needs independent tracking or blocks other work."
         }
       ],
-      "principle": null
-    },
-    {
-      "id": "linear.state-effective-model-identity",
-      "kind": "linear",
-      "rule": "State the effective model identity when trustworthy runtime information exposes it.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L7-181"
-      ],
-      "drift": [],
       "principle": null
     },
     {
@@ -1853,19 +1771,6 @@
       "principle": null
     },
     {
-      "id": "linear.wayfinding-resolution-decided-comment",
-      "kind": "linear",
-      "rule": "A Wayfinding Ticket's resolution is recorded as a named evidence comment in the DECIDED form of the communication protocol.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L5-114"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
       "id": "linear.withdraw-only-obsolete-questions",
       "kind": "linear",
       "rule": "Withdraw only Questions made obsolete by discovered facts or completed work; keep tribunal-decided Questions awaiting ratification.",
@@ -1874,19 +1779,6 @@
       ],
       "statements": [
         "L5-034"
-      ],
-      "drift": [],
-      "principle": null
-    },
-    {
-      "id": "linear.wizard-guides-user-only-enablement-steps",
-      "kind": "linear",
-      "rule": "wizard guides the Enablement steps that only the user can do.",
-      "actors": [
-        "any-agent"
-      ],
-      "statements": [
-        "L7-048"
       ],
       "drift": [],
       "principle": null
@@ -2073,19 +1965,6 @@
       ],
       "drift": [],
       "principle": null
-    },
-    {
-      "id": "release.thread-worktree-belongs-to-t3",
-      "kind": "release",
-      "rule": "The worktree the thread runs in belongs to T3: leave it.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-191"
-      ],
-      "drift": [],
-      "principle": null
     }
   ],
   "findings": [
@@ -2144,7 +2023,7 @@
       "type": "drift",
       "claims": [
         "linear.keep-attempts-on-existing-record",
-        "linear.post-each-hop-sha"
+        "worktree.hop-sha-preserved-and-posted"
       ],
       "note": "L1-086 and L1-082 hold in one skill; L6-084 repeats the first in the working-tree standard with no statement of who posts evidence for agents other than the captain."
     },

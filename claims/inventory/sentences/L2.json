@@ -98,7 +98,7 @@
       "rules": [
         {
           "id": "L2-004",
-          "kind": "other",
+          "kind": "linear",
           "rule": "Read only the Linear Project's metadata-first map, each current active contract, and named evidence.",
           "actors": [
             "admiral"
@@ -128,7 +128,7 @@
       "rules": [
         {
           "id": "L2-006",
-          "kind": "other",
+          "kind": "worktree",
           "rule": "Read `dydo/guides/working-tree-standard.md` from the repository root.",
           "actors": [
             "admiral"
@@ -143,7 +143,7 @@
       "rules": [
         {
           "id": "L2-007",
-          "kind": "other",
+          "kind": "contract",
           "rule": "Read `dydo/understand/about.md` from the repository root.",
           "actors": [
             "admiral"
@@ -158,7 +158,7 @@
       "rules": [
         {
           "id": "L2-008",
-          "kind": "other",
+          "kind": "contract",
           "rule": "Read `dydo/understand/architecture.md` from the repository root.",
           "actors": [
             "admiral"
@@ -173,7 +173,7 @@
       "rules": [
         {
           "id": "L2-009",
-          "kind": "other",
+          "kind": "evidence",
           "rule": "When a captain reports inherited or infrastructure failures, read Evidence and inherited failures in `dydo/guides/testing-strategy.md`.",
           "actors": [
             "admiral"
@@ -188,7 +188,7 @@
       "rules": [
         {
           "id": "L2-010",
-          "kind": "other",
+          "kind": "contract",
           "rule": "Read only the Communication and evidence section of `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other standard sections on demand when their fields or status rules are needed.",
           "actors": [
             "admiral",
@@ -339,7 +339,7 @@
       "rules": [
         {
           "id": "L2-020",
-          "kind": "capacity",
+          "kind": "escalation",
           "rule": "On a bounded refusal, preserve state and avoid blind retries; use established lifecycle handling, then escalate or release the concrete limitation when captain-owned work cannot run.",
           "actors": [
             "admiral"
@@ -1001,7 +1001,7 @@
       "rules": [
         {
           "id": "L2-062",
-          "kind": "review",
+          "kind": "linear",
           "rule": "The review block is a Project update.",
           "actors": [
             "admiral"
@@ -1628,7 +1628,7 @@
       "rules": [
         {
           "id": "L2-105",
-          "kind": "wayfinding",
+          "kind": "linear",
           "rule": "Do small discovery inline; create a Wayfinding Ticket when the investigation needs its own status, owner, blocker or evidence.",
           "actors": [
             "admiral"
@@ -2032,7 +2032,7 @@
       "rules": [
         {
           "id": "L2-132",
-          "kind": "merge",
+          "kind": "project",
           "rule": "When the user says the Project landed, resume the landing captain to close and clean up the merged feature branch (`dydo clean --dry-run <worktree>`, then `dydo clean <worktree>`, run from outside that tree)",
           "actors": [
             "admiral"
@@ -2992,7 +2992,7 @@
       "rules": [
         {
           "id": "L2-196",
-          "kind": "worktree",
+          "kind": "project",
           "rule": "Brief the first captain to commit the spec draft, unchanged, directly on `feature/<project-slug>` as its first commit, push it and post the SHA on its ticket, before it cuts its ticket branch.",
           "actors": [
             "admiral"
@@ -3115,7 +3115,7 @@
       "rules": [
         {
           "id": "L2-203",
-          "kind": "other",
+          "kind": "contract",
           "rule": "Read only the Communication and evidence section of `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other standard sections on demand when their fields or status rules are needed.",
           "actors": [
             "chief-of-staff"
@@ -3130,7 +3130,7 @@
       "rules": [
         {
           "id": "L2-204",
-          "kind": "other",
+          "kind": "contract",
           "rule": "Read `dydo/understand/about.md` from the repository root.",
           "actors": [
             "chief-of-staff"
@@ -3145,7 +3145,7 @@
       "rules": [
         {
           "id": "L2-205",
-          "kind": "other",
+          "kind": "contract",
           "rule": "Read `dydo/understand/architecture.md` from the repository root.",
           "actors": [
             "chief-of-staff"
@@ -3160,7 +3160,7 @@
       "rules": [
         {
           "id": "L2-206",
-          "kind": "other",
+          "kind": "worktree",
           "rule": "Read `dydo/guides/working-tree-standard.md` from the repository root.",
           "actors": [
             "chief-of-staff"
@@ -4499,7 +4499,7 @@
       "rules": [
         {
           "id": "L2-292",
-          "kind": "identity",
+          "kind": "overnight",
           "rule": "Intervention belongs to the chief of staff.",
           "actors": [
             "chief-of-staff"
