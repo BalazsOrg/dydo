@@ -230,7 +230,9 @@ def refusal_lists(reason):
 
 
 def worker_lane(run):
-    """Synthetic hook protocol: a sub-agent's call (agent_id) to the real guard; nothing is executed."""
+    """Synthetic hook protocol: a native sub-agent's call (agent_id) to the real guard; nothing is executed.
+
+    A T3 delegate_task child carries no agent_id and reads as top-level (DYD-1072): never proof here."""
     hook = installed_hook(run)
     session = uuid.uuid4().hex
     reason = guard(run, "dydo init claude", hook, "deny", session, sub_agent=True)

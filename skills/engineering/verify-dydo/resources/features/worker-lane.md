@@ -10,9 +10,19 @@ commands: the admiral check-in's surveyor runs `dydo survey`, crew run `dydo sta
 `dydo merge`. The journey does not claim every shell dialect or nudge; `GuardWorkerLaneTests` covers
 the guard's parsing.
 
+## Which callers this is
+
+The worker lane is for a native in-process sub-agent only (Claude's `Agent` tool, Codex's
+`spawn_agent`), the caller whose hook payload carries `agent_id`. A T3 `delegate_task` child is not
+one: its calls reach the guard as a top-level session's (DYD-1072: a delegated child ran
+`dydo survey --help`, which is not worker-allowed in the base tree, and nothing refused it). So a
+delegated thread's allowed or refused dydo command says nothing about this lane, and this journey
+never uses one as proof, either way. It proves the lane only with a synthetic payload carrying
+`agent_id`.
+
 ## How to get to it (user POV)
 
-A sub-agent runs a dydo command in its shell, and the host's PreToolUse hook, installed by
+A native sub-agent runs a dydo command in its shell, and the host's PreToolUse hook, installed by
 `dydo init claude`, sends the guard the call with the sub-agent's `agent_id`. The driver reads that
 installed marker and sends synthetic hook events to the real guard.
 

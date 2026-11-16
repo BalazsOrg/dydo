@@ -26,8 +26,9 @@ smoke coverage.
 
 ## Classify the command for sub-agents
 
-A call carrying `agent_id` is a sub-agent, and the guard lets it run only the dydo commands on
-`WorkerAllowedDydoSubcommands`. Decide for the new command: a sub-agent may run it (read-only,
+A call carrying `agent_id` is a native in-process sub-agent (Claude's `Agent`, Codex's `spawn_agent`),
+and the guard lets it run only the dydo commands on `WorkerAllowedDydoSubcommands`. A T3 `delegate_task`
+child carries no `agent_id`, so the guard reads it as top-level: never use one to test this lane. Decide for the new command: a sub-agent may run it (read-only,
 or a gate or step its skill hands to crew), or it stays with the top-level session
 (`TopLevelOnlyDydoSubcommands`: setup, generation, the hook, a server). The guard compares the first word
 after `dydo`, so a command's verbs share its decision; check that every verb is one a sub-agent may run

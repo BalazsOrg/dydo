@@ -286,7 +286,8 @@ public static partial class GuardCommand
         var filePath = normalized.FilePath;
         var searchPath = normalized.SearchPath;
 
-        // Calls carrying agent_id come from sub-agents (Decision 024).
+        // Calls carrying agent_id come from native in-process sub-agents (Decision 024); a T3
+        // delegate_task child carries none and reads as top-level (DYD-1072).
         if (!ctx.HasCliArgs && !string.IsNullOrEmpty(ctx.AgentId))
         {
             return HandleWorkerCall(normalized, filePath, searchPath, offLimitsService, bashAnalyzer, env);

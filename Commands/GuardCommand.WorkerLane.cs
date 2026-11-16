@@ -6,6 +6,12 @@ namespace DynaDocs.Commands;
 /// test (every command <see cref="DydoRootCommand"/> registers sits on exactly one list) and the skill
 /// lint (every <c>dydo</c> command in prose addressed to a sub-agent is allowed) all read these lists.
 /// A new command is classified here, or the registry test fails.
+///
+/// <para>Who the worker lane is: a call whose hook payload carries <c>agent_id</c>, which the host
+/// sends only for a native in-process sub-agent (Claude's <c>Agent</c> tool, Codex's
+/// <c>spawn_agent</c>). A T3 <c>delegate_task</c> child is a separate session whose payload carries no
+/// <c>agent_id</c>, so the guard treats it as a top-level call (DYD-1072): it is neither refused by these
+/// lists nor evidence of what they do.</para>
 /// </summary>
 public static partial class GuardCommand
 {
