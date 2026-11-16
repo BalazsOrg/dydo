@@ -296,12 +296,30 @@ class ControlDydoContractTests(unittest.TestCase):
         for call in self.child.call_args_list:
             self.assertNotIn("rm", call.args[0])
 
+    @staticmethod
+    def sent_and_decided(receipt):
+        """The hook event a guard receipt actually sent, and the decision its stdout recorded."""
+        stdout = receipt["stdout"].strip()
+        decision = json.loads(stdout)["hookSpecificOutput"]["permissionDecision"] if stdout else "allow"
+        return json.loads(receipt["stdin"]), decision
+
     def test_worker_lane_sends_sub_agent_calls_allows_skill_commands_and_refuses_top_level_only_ones(self):
+        self.maxDiff = None  # the failure must name the command that was sent or missed
         self.ready()
         self.assertEqual(0, self.invoke("drive", "worker-lane"))
         receipts = [json.loads(path.read_text()) for path in (self.run / "evidence").glob("guard-*.json")]
-        sub_agent = [row for row in receipts if "agent_id" in row["stdin"]]
-        self.assertEqual(len(control.SKILL_COMMANDS) + len(self.TOP_LEVEL_ONLY) + 1, len(sub_agent))
+        sent =[self.sent_and_decided(row) for row in receipts]
+        sub_agent = [(event, decision) for event, decision in sent if "agent_id" in event]
+        for event, _ in sub_agent:
+            self.assertTrue(event["agent_id"], f"empty agent_id sent with {event['tool_input']['command']!r}")
+            self.assertTrue(event.get("agent_type"), f"no agent_type sent with {event['tool_input']['command']!r}")
+        expected = ([("dydo init claude", "deny")] + [(command, "allow") for command in control.SKILL_COMMANDS]
+                    + [(f"dydo {word}", "deny") for word in self.TOP_LEVEL_ONLY])
+        # What was sent, not what the verdict dictionary says: a wrong or truncated command fails here.
+        self.assertEqual(sorted(expected), sorted((event["tool_input"]["command"], decision)
+                                                  for event, decision in sub_agent))
+        top_level = [(event["tool_input"]["command"], decision) for event, decision in sent if "agent_id" not in event]
+        self.assertEqual([("dydo init claude", "allow")], top_level)
         verdicts = json.loads((self.run / "evidence/worker-lane-verdicts.json").read_text())
         for command in control.SKILL_COMMANDS:
             self.assertEqual("allow", verdicts["verdicts"][command])

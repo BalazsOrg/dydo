@@ -50,9 +50,14 @@ the test rather than being guessed at. The driver must bind `SKILL_COMMANDS` exa
 column-0 tuple: a second binding (a reassignment, a rebinding inside a function, a `for` target, an
 import, an assignment-shaped line in a docstring) fails the test, because Python would run a different
 tuple than the one credited. Reads of the name (a default argument included) and comment lines are not
-bindings. The journey must also consume the tuple: the body of `def worker_lane(` has to hold a loop header
-`for <name> in SKILL_COMMANDS:` over `SKILL_COMMANDS` itself, so a second tuple, a slice, a call or a loop in
-another function fails the test instead of leaving the commands credited but never run. The prose is the crew and
+bindings. The journey must also consume the tuple, but the lint only checks a loop header: the body of
+`def worker_lane(` has to hold `for <name> in SKILL_COMMANDS:` over `SKILL_COMMANDS` itself, so a second
+tuple, a slice or a call fails the test. It cannot see what the loop sends: a wrong argument to `guard`
+inside it stays green. `test_control_dydo.py` proves that; it decodes each `guard-*.json` receipt (the
+`stdin` event and the `stdout` decision) and compares them with the expected invocations: `dydo init claude`,
+every `SKILL_COMMANDS` entry and every refused top-level-only word as a sub-agent call (each with
+`agent_id` and `agent_type`), allowed or denied as expected, and one top-level `dydo init claude`.
+A swapped, truncated or non-sub-agent call fails it. The prose is the crew and
 engineering skills and the sub-agent parts of the officer files (a file whose intro says "assume no
 officer role" counts whole, otherwise the section that says it), not these feature maps. This
 protocol drive does not prove a real host sends `agent_id` for every sub-agent, and it runs only where

@@ -582,7 +582,7 @@ public partial class WorkerLaneSkillLintTests
         Assert.Contains("found 2 bindings", failure.Message);
     }
 
-    // The red cases for a read written as a default argument: the tuple is bound once and the journey loops over it.
+    // The accept case for a read written as a default argument: the tuple is bound once and the journey loops over it.
     [Fact]
     public void ConsumedJourneyCommands_AcceptsTheTupleReadAsADefaultArgument()
     {
