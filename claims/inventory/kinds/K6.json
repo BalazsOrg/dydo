@@ -1,0 +1,2240 @@
+{
+  "group": "K6",
+  "kinds": [
+    "overnight",
+    "walkthrough",
+    "project"
+  ],
+  "claims": [
+    {
+      "id": "overnight.admiral-confirms-runnable",
+      "kind": "overnight",
+      "rule": "Activation proceeds only once every included admiral confirms its agreed work is runnable under the night orders, every gap has the user's explicit disposition, and the agreed work and stop line are confirmed.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-281",
+        "L5-013",
+        "L5-056"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.admiral-report-form",
+      "kind": "overnight",
+      "rule": "Each admiral's muster report has the form: Project and thread link; Intent as read (verbatim read-back); Work; Stop line; Your calls; Unblock now; Permissions.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-286"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.admirals-send-no-status",
+      "kind": "overnight",
+      "rule": "Admirals send the chief of staff no status overnight, and the chief of staff never asks for routine STATE since board and threads carry state.",
+      "actors": [
+        "admiral",
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-026",
+        "L5-039"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-026 binds admirals; L5-039 binds the chief of staff."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.already-matched",
+      "kind": "overnight",
+      "rule": "If the mode value already matched before execution, report it as already on/off rather than claiming a new transition.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-064"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.announce-start",
+      "kind": "overnight",
+      "rule": "Announce the verified start to every included admiral.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-020"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.answer-nudge-one-line",
+      "kind": "overnight",
+      "rule": "Answer a chief-of-staff nudge in one line.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-029"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.capture-separately",
+      "kind": "overnight",
+      "rule": "Capture the action, the result and the fresh readback separately.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-063"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.conn-split",
+      "kind": "overnight",
+      "rule": "Between muster and morning brief each admiral keeps the conn of its Project and the chief of staff keeps only the night watch.",
+      "actors": [
+        "admiral",
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-003"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.cross-project-contact",
+      "kind": "overnight",
+      "rule": "Admirals contact the chief of staff for cross-Project trouble: collisions, shared-resource problems, and heads-ups or permission before actions that affect other agents.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L5-027"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.delete-watch-schedule",
+      "kind": "overnight",
+      "rule": "Delete the watch schedule using the complete preserved ID, then list schedules and confirm that exact ID is absent before claiming the watch stopped; report a deletion or verification gap.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-044",
+        "L5-045"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.exclude-or-defer-dependent-work",
+      "kind": "overnight",
+      "rule": "Obtain explicit user agreement to exclude or defer dependent work and settle a runnable alternative; revise the work list.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-279"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.exercise-permissions",
+      "kind": "overnight",
+      "rule": "Exercise needed permissions through safe, authorized operations where supported (admiral contact, each session's Linear writes, feature-branch merge capability) and record actual results.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-274",
+        "L2-275"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.failed-transition-preserve-state",
+      "kind": "overnight",
+      "rule": "On a failed transition, preserve the existing state and evidence.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-066"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.failed-transition-report",
+      "kind": "overnight",
+      "rule": "On refusal, execution failure, missing readback or mismatched value, report the transition incomplete with the actual result and observed state (unknown if unreadable) and the exact recovery action.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-254",
+        "L5-016",
+        "L5-049",
+        "L5-065"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L5-016 adds: keep the user present, do not announce activation, do not say goodnight; L2-254 and L5-049 cover shutdown only."
+        },
+        {
+          "type": "wording",
+          "note": "L2-254 says \"report shutdown incomplete with ... the exact human-terminal action\"; L5-016 says \"exact recovery action\"."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.failed-transition-resolve-and-return",
+      "kind": "overnight",
+      "rule": "Return the blocker to the responsible captain or user with the exact action needed, and resolve it before proceeding; every recovery still needs fresh readback.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-067",
+        "L5-069"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.fill-morning-brief",
+      "kind": "overnight",
+      "rule": "After verified shutdown, fill the `chief-of-staff` morning-brief template in the conversation, writing nothing to the repo.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-250",
+        "L2-255",
+        "L5-051"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.guard-warning-retry-once",
+      "kind": "overnight",
+      "rule": "Follow the preflight's warning/retry for the mode setter: if the guard's reminder applies, retry the same command once.",
+      "actors": [
+        "chief-of-staff",
+        "any-agent"
+      ],
+      "statements": [
+        "L5-014",
+        "L5-047",
+        "L5-059"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-059 addresses any agent; L5-014 and L5-047 the chief of staff."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.handle-incoming-messages",
+      "kind": "overnight",
+      "rule": "Handle incoming messages when received.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-248"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.intent-readback-to-user",
+      "kind": "overnight",
+      "rule": "Show each intent read-back verbatim, separately from work, and obtain the user's corrections.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-271"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.keep-gaps",
+      "kind": "overnight",
+      "rule": "Keep unsupported exercises and unresolved items as gaps.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-278"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.load-triggers",
+      "kind": "overnight",
+      "rule": "Overnight mode is loaded only on the chief of staff's muster or morning-brief announcement, or when the user calls it; between muster and morning brief the admiral loads it and obeys standing plus night orders.",
+      "actors": [
+        "admiral",
+        "chief-of-staff",
+        "any-agent"
+      ],
+      "statements": [
+        "L2-042",
+        "L2-202",
+        "L5-001"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-042 is the admiral (start/end by CoS announcement, load and obey); L2-202 the chief of staff on the user call; L5-001 any agent."
+        },
+        {
+          "type": "action",
+          "note": "L2-042 adds the obligation to obey standing plus night orders."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.mediate-cross-project",
+      "kind": "overnight",
+      "rule": "The chief of staff mediates cross-Project trouble by Method step 4, Mediate a collision, relaying heads-ups down the chain.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-040"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.muster-checklist-complete",
+      "kind": "overnight",
+      "rule": "The chief of staff completes the muster checklist (`resources/muster.md`) with the user before activation.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-266",
+        "L5-011"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.muster-ready-then-activate",
+      "kind": "overnight",
+      "rule": "Muster is ready only when all checklist boxes are complete; then return to `overnight-mode` for activation.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-282",
+        "L2-283"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.muster-tools",
+      "kind": "overnight",
+      "rule": "Decisions at muster use `grilling`; terminal steps, including morning-brief unblockers and transition blockers, use `wizard`, and only for terminal steps.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-012",
+        "L5-052",
+        "L5-068"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L5-012 says \"only\"; L5-052 says \"terminal unblockers only\"; L5-068 says \"when needed\"."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.night-orders-expire-and-win",
+      "kind": "overnight",
+      "rule": "Night orders expire at the morning brief and win over standing orders where the two conflict.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L5-006"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.night-orders-posted-in-form",
+      "kind": "overnight",
+      "rule": "The chief of staff posts each Project's night orders in the template form: date, expiry at morning brief, override of conflicting standing orders; Intent (read-back with corrections); Work; Answered; Unblocked; Permissions; Deferred; Stop line.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-280",
+        "L2-287"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.no-dummy-merge",
+      "kind": "overnight",
+      "rule": "Never perform a dummy merge.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-277"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.nudge-idle-admiral",
+      "kind": "overnight",
+      "rule": "For an idle admiral, or one waiting with nothing in flight and runnable work, send one specific nudge naming the evidence.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-037"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.obey-standing-plus-night-orders",
+      "kind": "overnight",
+      "rule": "Admirals obey the standing orders plus the night orders: one Project update per Project, set at muster.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L5-005"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.only-readback-proves-mode",
+      "kind": "overnight",
+      "rule": "Intent, a watch schedule, message delivery, a warning, a retry, a successful setter exit or a deleted schedule establishes no mode transition; only the verified `dydo mode show` value does.",
+      "actors": [
+        "any-agent",
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-004",
+        "L5-050",
+        "L5-062"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L5-004 says \"only the verified value\"; L5-062 and L5-050 list further non-proofs."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.present-questions",
+      "kind": "overnight",
+      "rule": "Present current and foreseeable questions with context, options and recommendations; record the user's answers and why.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-272"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.project-decisions-admiral",
+      "kind": "overnight",
+      "rule": "Project decisions are the admiral's overnight.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L5-022"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.readback-in-separate-call",
+      "kind": "overnight",
+      "rule": "Wait for the mode setter to return its result, then run `dydo mode show` in a separate later tool call, never in parallel, and require the requested value.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-253",
+        "L5-015",
+        "L5-048",
+        "L5-060"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-253 ties this to shutdown before the morning brief and requires `overnight: off`; L5-048 adds announcing the end to every admiral; L5-015 and L5-060 state it for activation or generally."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.rebuild-after-watch-gap",
+      "kind": "overnight",
+      "rule": "After any gap in the watch, rebuild from Linear and sweep everyone by Method step 5, Sweep the board.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-041"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.relay-down-the-chain",
+      "kind": "overnight",
+      "rule": "The chief of staff relays down the chain admiral to captain to crew.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-028"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.report-block-per-project",
+      "kind": "overnight",
+      "rule": "Copy the admiral report block once per Project; settle the calls before proceeding.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-285"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.request-admiral-reports",
+      "kind": "overnight",
+      "rule": "Request each admiral's report using the muster request block, asking for Intent, Work, Questions, Blockers and Permissions.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-270",
+        "L2-284"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.resolve-blockers-present",
+      "kind": "overnight",
+      "rule": "Resolve operational blockers while the user is present and verify each fix with evidence.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-273"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.settle-pending-survey",
+      "kind": "overnight",
+      "rule": "Settle any pending survey through its host lifecycle so no tick remains in flight.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-046"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.shutdown-done",
+      "kind": "overnight",
+      "rule": "Shutdown is done when the schedule is confirmed absent, pending surveys are settled, mode is off, admirals have the announcement and the user has the brief.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-053"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.shutdown-in-cos-conversation",
+      "kind": "overnight",
+      "rule": "When the user says he's back, shutdown runs in the chief of staff's conversation.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-042"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.skeleton-walkthrough-blocks-nothing",
+      "kind": "overnight",
+      "rule": "In overnight mode the walking skeleton's Walkthrough Ticket blocks nothing; post `DECIDED` on it, carry on, and treat a wrong direction as a revert.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-094",
+        "L5-032",
+        "L7-104"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L7-104 states only that it blocks nothing; L2-094 and L5-032 add posting `DECIDED`, carrying on and treating a wrong direction as a revert."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.skill-resources-self-contained",
+      "kind": "overnight",
+      "rule": "The already-invoked chief of staff uses its own overnight resources, resolved inside the installed `chief-of-staff` skill folder, without reloading its skill or invoking another officer role.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-007",
+        "L5-008"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L5-007 says do not reload; L5-008 says do not invoke another officer role; the two scopes differ slightly."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.startup-done",
+      "kind": "overnight",
+      "rule": "Startup is done when readiness is confirmed, the schedule ID is preserved, mode is on and every included admiral has the announcement.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-021"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.stop-only-at-stop-line",
+      "kind": "overnight",
+      "rule": "One blocker never stops the night: take the next pickable work; stop only at the night orders' stop line or when nothing is pickable.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L5-030",
+        "L5-031"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.survey-check-nudges",
+      "kind": "overnight",
+      "rule": "Check the supplied outstanding nudge evidence and any response.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-296"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.survey-identify-problems",
+      "kind": "overnight",
+      "rule": "Identify idle officers with runnable work, unanswered nudges, blockers needing intervention, conflicting work or departures from night orders.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-297"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.survey-incomplete-or-no-action",
+      "kind": "overnight",
+      "rule": "Resolve `INCOMPLETE` inspection gaps; a complete `NO_ACTION` ends the tick.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-249"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.survey-inspect-threads",
+      "kind": "overnight",
+      "rule": "Where progress or readiness is unclear, inspect the admiral's thread, following captain threads only as needed.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-295"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.survey-no-shadow-board",
+      "kind": "overnight",
+      "rule": "Previous observations are disposable comparison data; maintain no shadow board.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-301"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.survey-quiet-not-stuck",
+      "kind": "overnight",
+      "rule": "An unchanged board or quiet running task alone does not imply stuck work.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-298"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.survey-read-and-compare",
+      "kind": "overnight",
+      "rule": "Read the supplied night orders and every named Project live board, and compare with the previous observation when supplied.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-293",
+        "L2-294"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.surveyor-inspects-cos-acts",
+      "kind": "overnight",
+      "rule": "The surveyor inspects; the chief of staff performs the nudge, escalation or intervention itself.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-247",
+        "L5-036"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.transition-command-only-by-cos",
+      "kind": "overnight",
+      "rule": "Run the transition command only as the chief of staff readying or ending overnight mode; otherwise stop.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-058"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.transition-commands",
+      "kind": "overnight",
+      "rule": "The transition commands are `dydo mode set overnight on` to start and `dydo mode set overnight off` to end.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-057"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.transition-preflight",
+      "kind": "overnight",
+      "rule": "While the user is present, the chief of staff completes the transition preflight for startup and shutdown: read and record the current `dydo mode show` value and prepare the warning, same-command retry and separate later readback.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-241",
+        "L2-267",
+        "L2-268",
+        "L5-009",
+        "L5-010",
+        "L5-043",
+        "L5-054",
+        "L5-055"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-241 places the preflight at the start of muster; L2-267, L5-009, L5-043 and L5-054 cover startup and shutdown."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "overnight.unanswered-nudge-intervene",
+      "kind": "overnight",
+      "rule": "When a nudge goes unanswered, inspect the relevant captain threads and intervene with the owner.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-038"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.unprotected-branch-no-merge-proof",
+      "kind": "overnight",
+      "rule": "An unprotected branch proves no merge permission.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-276"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.verified-readback-before-announce",
+      "kind": "overnight",
+      "rule": "The chief of staff announces start or end only after the readback shows the requested mode (`overnight: on` at muster, `overnight: off` at the morning brief), and activation awaits that readback.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-242",
+        "L2-269",
+        "L5-002",
+        "L5-061"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.watch-schedule-created",
+      "kind": "overnight",
+      "rule": "Create the 30-minute watch schedule, returning to this thread.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-017"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.watch-schedule-failure",
+      "kind": "overnight",
+      "rule": "If scheduling fails, report mode on with watch unavailable and resolve it while the user is present.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-019"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.watch-schedule-id-preserved",
+      "kind": "overnight",
+      "rule": "Preserve the complete watch schedule ID exactly as the host returns it, including any prefix, for deletion at shutdown.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-018"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.watch-tick-survey",
+      "kind": "overnight",
+      "rule": "The chief of staff runs the watch step every 30 minutes, using one fresh surveyor per scheduled tick with the fixed night-survey brief (`resources/night-survey.md`).",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-243",
+        "L5-035"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.admiral-wake-events",
+      "kind": "project",
+      "rule": "An invoked admiral wakes on a captain return, the user wake or its scheduled check-in, and rereads the board (including released and blocker-cleared tickets) or runs the check-in resource.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-043",
+        "L6-105"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-043 names the user wake, check-in tick and `done <key>: merged`; L6-105 names a captain return, the user word and the check-in."
+        },
+        {
+          "type": "action",
+          "note": "L2-043 prescribes running the check-in resource; L6-105 prescribes rereading the board including released and blocker-cleared tickets."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.authority-persists",
+      "kind": "project",
+      "rule": "A stage or turn ending does not revoke existing authority.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-082"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.canceled-records-why",
+      "kind": "project",
+      "rule": "Project status `Canceled` means the destination was consciously abandoned; the map holder records why and commissions spec retirement.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-007"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.captain-return-continuation",
+      "kind": "project",
+      "rule": "On any other captain return, the admiral carries out the authorized continuation or fallback through its captain, or records the specific hold, and updates the ledger.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-044"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.chart-and-approve-done",
+      "kind": "project",
+      "rule": "Chart and approve is done when approval is recorded, any plan is `reviewed`, and the Project is `Planned`.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-067"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.chart-unknown-route",
+      "kind": "project",
+      "rule": "When the route is unknown, the admiral sets the Project `Planning` and charts it with `wayfinder`: map in the Project description naming the admiral its holder, the first pickable tickets, and each Project-level Question in `Todo` wired to every waiter.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-051"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.checkin-delete",
+      "kind": "project",
+      "rule": "When the admiral waits on the user alone, the user takes the map back, or the Project closes, delete the check-in schedule, list schedules and confirm the ID is gone.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-158"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.checkin-id-recorded",
+      "kind": "project",
+      "rule": "The check-in schedule's full ID is recorded on the Project.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-156"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.checkin-reschedule",
+      "kind": "project",
+      "rule": "If the recorded check-in schedule is missing or disabled on a user wake, or new work becomes pickable after it was deleted, schedule the check-in again.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-157",
+        "L2-159"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-157 triggers on a user wake with a missing or disabled ID; L2-159 on new work becoming pickable after deletion."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.checkin-schedule-start",
+      "kind": "project",
+      "rule": "When the Project goes `In Progress` or the admiral takes over an active one, the admiral starts the check-in schedule (every 20 minutes, bound to this thread, with the prescribed prompt) before other opening work.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-071",
+        "L2-155",
+        "L2-195"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L2-071 and L2-195 give no interval or prompt; only L2-155 states 20 minutes and the prompt text."
+        },
+        {
+          "type": "scope",
+          "note": "L2-155 also covers taking over an active Project; L2-071 and L2-195 cover setting In Progress or opening."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.delivery-ticket-one-milestone",
+      "kind": "project",
+      "rule": "Every delivery ticket belongs to one Milestone.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-060",
+        "L7-101"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.delivery-to-map-holder",
+      "kind": "project",
+      "rule": "Delivery belongs to the Project's map holder (an invoked admiral, or the user when none is invoked): stage what the Project needs on the Project and tell the user, whose word wakes an admiral only when one is invoked.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-238"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.dispatch-before-yield",
+      "kind": "project",
+      "rule": "Before yielding, each pickable item is dispatched or has a specific blocker, owner and clearance route.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-081"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.empty-landing-walkthrough-completes",
+      "kind": "project",
+      "rule": "An empty landing walkthrough lets the Project close `Completed`, and the map holder then commissions spec retirement.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-136",
+        "L5-088",
+        "L7-006"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-136 closes the Project `Completed`; L5-088 and L7-006 add that the map holder commissions spec retirement (L5-088 names `dydo/reference/feature-spec-convention.md`); L2-136 does not."
+        },
+        {
+          "type": "wording",
+          "note": "L7-006 defines Completed as destination landed and the landing walkthrough found nothing more; the others describe the closing act."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.first-captain-opens-feature-branch",
+      "kind": "project",
+      "rule": "When a Project is opened, the map holder commissions the first Ticket Captain to open `feature/<project-slug>` from the approved main SHA and commit the Project's working spec on it before the ticket branch or claim.",
+      "actors": [
+        "ticket-captain",
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L1-060",
+        "L2-068",
+        "L6-024"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L6-024 also states the Project-map-in-Linear and per-ticket contract fields (outcome, owned paths, blockers, exact gates, base branch) as conditions for a ticket being pickable, and that the Captain reports both; L1-060 and L2-068 do not."
+        },
+        {
+          "type": "wording",
+          "note": "L1-060 says the spec draft is committed unchanged and pushed as the first commit; L6-024 says \"when handed one\"; L2-068 does not mention the spec."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.first-ticket-blocks-first-lanes",
+      "kind": "project",
+      "rule": "Before any commission, the first ticket is wired as a native Linear blocker of every other first lane, so survey and check-in Tick see those lanes blocked until it is `Done`.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-194"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.flag-stalled-lane",
+      "kind": "project",
+      "rule": "Flag a lane as stalled when its owner or crew ended with work left and no return delivered, or nothing happened since the ledger's time while the owner neither runs, waits on its crew, nor waits on its recorded prerequisite.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-177"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.flag-unnamed-needs-user",
+      "kind": "project",
+      "rule": "Flag each `needs the user` lane that names no Question or recorded gate (approval, landing click, walkthrough).",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-178"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.follow-scaffold-recipe",
+      "kind": "project",
+      "rule": "When creating a Project, or first charting one without a working spec, the admiral follows the scaffold recipe, which commits the Project spec.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-052",
+        "L2-186",
+        "L5-166"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L2-052 says \"scaffold-project recipe\", L2-186 \"scaffold checklist\", L5-166 \"scaffold recipe\": the same artifact is not obviously named."
+        },
+        {
+          "type": "scope",
+          "note": "L2-186 limits the trigger to creating a Project or first charting one with no working spec; L2-052 says any new Project; L5-166 describes the recipe's content and the map-writing step's scope."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.four-lanes",
+      "kind": "project",
+      "rule": "The admiral strives to keep four lanes occupied: core tickets first, `Filler` when the next core ticket is blocked, and more or fewer lanes when the work calls for it.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-166"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.human-holds-remain",
+      "kind": "project",
+      "rule": "Explicit human holds remain while independent authorized work proceeds.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-049"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.land-by-merge-commit",
+      "kind": "project",
+      "rule": "To land the Project, the landing Merge Ticket prepares main into feature and obtains acceptance PASS, and the user clicks feature into main as a merge commit, never squash.",
+      "actors": [
+        "user",
+        "map-holder"
+      ],
+      "statements": [
+        "L6-032"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.landing-blockers-and-shoulds-query",
+      "kind": "project",
+      "rule": "At landing no open `blocker` or `should` ticket remains in the Project unless the user explicitly deferred it; the check is a query of the Project's open tickets by Severity label.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-127",
+        "L7-080"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L2-127 says \"only those the user explicitly deferred may remain open\"; L7-080 says \"unless the user explicitly deferred it\"."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.landing-cleanup",
+      "kind": "project",
+      "rule": "Landing artifacts are cleaned up: the landing Captain deletes the feature branch after the user lands it and reports completion, and the admiral confirms the cleanup.",
+      "actors": [
+        "admiral",
+        "map-holder",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L2-138",
+        "L6-127"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-138 gives the admiral the confirmation; L6-127 gives deletion to the landing Captain and accountability for the merged feature branch to the map holder."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.landing-requires-clean-inquisition",
+      "kind": "project",
+      "rule": "The admiral sequences the should-tickets; the Project lands only when each is `Done` or closed with a reason, and only after an inquisition round that found no blocker and no should.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-128"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.ledger-lane-states",
+      "kind": "project",
+      "rule": "A lane state is one of `moving`, `waiting on <prerequisite>, cleared by <who>`, `blocker-resolution running: <who>`, `admiral owes <decision or dispatch>`, `needs the user: <Question or gate>`, `deferred by the user`, `done`.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-154"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.ledger-row-forms",
+      "kind": "project",
+      "rule": "The ledger has one table row per lane then the `Filler` row; a lane row holds name, issue keys in order, captain thread link, state and who does what or the event awaited; the Filler row holds issue keys next first, no thread, state `ready`, taken when a lane slot is free.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-151",
+        "L2-152",
+        "L2-153"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.ledger-section",
+      "kind": "project",
+      "rule": "A `## Lane ledger - <UTC time>` section in the Project description is rewritten in place whenever it changes, holds only the current state, and its time is that change.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-150"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.map-and-contract-placement",
+      "kind": "project",
+      "rule": "The map goes in the Project description and each contract's base branch and blockers on its ticket.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-069"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.map-complete",
+      "kind": "project",
+      "rule": "The map is complete at the destination, with no open Tasks or unresolved fog.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-099"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.map-description-form",
+      "kind": "project",
+      "rule": "At Project scale the Linear Project description is the whole map at low resolution: it indexes, each Wayfinding Ticket stores its own context and resolution, in the form Map holder line, Destination, Notes, Resolutions so far, Not yet specified, Out of scope.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-101",
+        "L5-102",
+        "L5-105"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.map-holder-named",
+      "kind": "project",
+      "rule": "A Project's map holder is the user in his own session, or an admiral the user invoked, until the user takes the map back; the Project description names the current holder.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-094",
+        "L7-088"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.milestone-shape",
+      "kind": "project",
+      "rule": "The map's Milestones are placed in Linear while charting: few, each a meaningful chunk where a drift from the user's intent would show, the walking skeleton first and the landing last.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-055",
+        "L2-056",
+        "L2-057",
+        "L2-059",
+        "L5-172",
+        "L7-100"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-055..L2-059 carry it as the admiral; L5-172 and L7-100 as the map holder."
+        },
+        {
+          "type": "wording",
+          "note": "L2-057 defines the skeleton as the rough foundation where the user can decide and understand the architecture; no other copy defines it."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.no-invented-work",
+      "kind": "project",
+      "rule": "Dependency-blocked work waits for its named prerequisite; no work is invented to fill idle capacity.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-146"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.plan-is-project-and-tickets",
+      "kind": "project",
+      "rule": "The Project and its tickets are the plan.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-054"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.prepare-destination",
+      "kind": "project",
+      "rule": "Prepare each destination so the user can act without rebuilding the context.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-217"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.read-state-at-arrival",
+      "kind": "project",
+      "rule": "The admiral reads the Project at whatever stage it reaches the admiral, then acts from that state.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-001"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.reconcile-done",
+      "kind": "project",
+      "rule": "Reconcile is done when the ledger matches the latest evidence and every Merge whose turn came is known.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-050"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.relay-rule-to-all-lanes",
+      "kind": "project",
+      "rule": "When relaying a new user rule, send it to every lane owner in the ledger, not only those it seems to affect.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-161"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.repository-plan-amendments",
+      "kind": "project",
+      "rule": "Where a repository plan exists, amendments are committed as dated `## Amendment - <YYYY-MM-DD>` sections.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-099"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.repository-plan-only-if-cross-cutting",
+      "kind": "project",
+      "rule": "Only a cross-cutting architecture plan earns a repository plan: written at `dydo/project/plans/<kebab-case>.md` in the `project-plan` rubric shape, committed, and sent to a fresh `reviewer(project-plan)` with rubric, Contract at the plan SHA, Candidate SHA and Base SHA.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-061"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.route-done",
+      "kind": "project",
+      "rule": "Route is done when everything the chief of staff did not close has a named owner.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-240"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.route-put-to-user",
+      "kind": "project",
+      "rule": "The charted route, with any PASS, is put to the user in the admiral session.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-066"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.run-survey",
+      "kind": "project",
+      "rule": "Run `dydo survey <Project ID>`.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-173"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.scope-changes-to-map-holder",
+      "kind": "project",
+      "rule": "A cross-ticket scope matter or a change to acceptance, scope, destination or architecture goes to the Project's map holder.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-097",
+        "L1-118"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-097 covers the cross-ticket scope of one failure; L1-118 covers any change to acceptance, scope, destination or architecture and names the outcome (a map or plan amendment)."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "project.settle-intent-then-create",
+      "kind": "project",
+      "rule": "The admiral settles the intent with the user (co-think, grilling, `to-project`), then creates the Linear Project or takes the user's, naming the admiral its map holder.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-187"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.sort-arrivals",
+      "kind": "project",
+      "rule": "Sort arrivals: live work on the board, durable knowledge and evidence in Git and dydo, an unscheduled strategic possibility in `FutureFeature` until the user moves it on; sort is done when nothing waiting on the user is unclassified.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-216",
+        "L2-218"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.stalled-first-captain",
+      "kind": "project",
+      "rule": "When the check-in finds a stalled or released first captain, resume or replace it from the draft.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-197"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.survey-finding-to-action",
+      "kind": "project",
+      "rule": "Each survey finding becomes its action (`pickable`/`unblocked` to `commission`; `uncontracted` to `contract`; any on a `Filler` ticket to `fill`; `unlaned`/`stale-row` to `fix ledger`; `started-unassigned` to `message` or `resume`; `question-no-priority` to `prioritize`) and the admiral carries out every returned action in order.",
+      "actors": [
+        "admiral",
+        "crew"
+      ],
+      "statements": [
+        "L2-165",
+        "L2-174"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.survey-incomplete",
+      "kind": "project",
+      "rule": "On `INCOMPLETE`, read what the survey could not, or record the gap on the Project.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-167"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.survey-reads-lane-threads",
+      "kind": "project",
+      "rule": "For each ledger lane, read its owner's thread (`t3_thread_read`) and its ticket's record: last hop SHA, PR state, and crew dispatched and whether each returned.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-175"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.sweep-board",
+      "kind": "project",
+      "rule": "Sweep the board for stale states (working status with no crew running, `Question` without priority, broken blocking relations, missing evidence links, finished work shown active), fix mechanical drift, surface what needs judgement; done when the board reads true and every orphan is cleared or named with the reason it survives.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-230",
+        "L2-235",
+        "L2-237"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.tick-end",
+      "kind": "project",
+      "rule": "Rewrite the ledger if anything changed; otherwise end the tick in one line.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-168"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.tick-returns-first",
+      "kind": "project",
+      "rule": "At each tick the admiral handles every delivered return and receipt first, by Method step 1.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-160"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.triage-user-attention",
+      "kind": "project",
+      "rule": "Triage everything that reaches the user, whose attention is the scarcest resource in the project.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-201"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.user-tells-admiral",
+      "kind": "project",
+      "rule": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells the admiral, who reads the board again.",
+      "actors": [
+        "admiral",
+        "user"
+      ],
+      "statements": [
+        "L2-147"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.wait-after-reconcile",
+      "kind": "project",
+      "rule": "Waiting follows reconciliation: wait for the user's word only when nothing is in flight and no authorized work is pickable.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-145"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.watch-open-prs",
+      "kind": "project",
+      "rule": "On every wake the admiral lists all open PRs (`gh pr list --limit 1000`) and watches each ticket PR not yet watched.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-045"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.admiral-facilitates-last",
+      "kind": "walkthrough",
+      "rule": "The admiral opens the last Milestone's Walkthrough Ticket, loads `walkthrough` itself, and facilitates it in the admiral session.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-133"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.ask-target",
+      "kind": "walkthrough",
+      "rule": "Ask which target to walk when the argument is missing.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-075"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.brief-four-parts",
+      "kind": "walkthrough",
+      "rule": "Brief the user in four parts, newest changes first, marking those needing his careful look (where a drift from his intent costs most or a review left doubt); a Walkthrough covers what changed, where to look, how to try it, and what reviewers left open.",
+      "actors": [
+        "any-agent",
+        "map-holder"
+      ],
+      "statements": [
+        "L5-077",
+        "L7-056"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.brief-medium",
+      "kind": "walkthrough",
+      "rule": "Keep the brief in the terminal, or in a scratch file when the user wants to read it beside the diff.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-089"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.durable-record-stays",
+      "kind": "walkthrough",
+      "rule": "The durable record stays where it already is: the tickets, review blocks and DRs the tour points at.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-090"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.landing-findings-reopen-lap",
+      "kind": "walkthrough",
+      "rule": "Findings at the landing walkthrough are recorded as Project tickets and reopen the lap: the map holder commissions the first fix Captain to re-cut the feature branch from main under the same name, and another inquisition or landing walkthrough follows.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-135",
+        "L5-087"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-135 requires confirmation for another inquisition; L5-087 says another landing/walkthrough."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.landing-nits-reported",
+      "kind": "walkthrough",
+      "rule": "The landing walkthrough also lists every unaddressed `nit` with the ticket record where it sits and every open inquisition nit ticket, for the user to promote any.",
+      "actors": [
+        "admiral",
+        "any-agent"
+      ],
+      "statements": [
+        "L2-134",
+        "L5-082"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.later-tickets-never-block",
+      "kind": "walkthrough",
+      "rule": "Later Milestones' Walkthrough Tickets block nothing; their findings become tickets in the Project as they arrive.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-093",
+        "L7-105"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-093 also states that findings become tickets; L7-105 does not."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.load-triggers",
+      "kind": "walkthrough",
+      "rule": "Load the walkthrough skill only when the user asks, or at the map holder's Milestone or landing step.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-070"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.milestone-findings-become-tickets",
+      "kind": "walkthrough",
+      "rule": "A Milestone's findings become tickets in the same Project as they arrive.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-086"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.milestone-verdict-recorded",
+      "kind": "walkthrough",
+      "rule": "The Walkthrough Ticket carries the user's verdict and findings, in his own words, or the skip.",
+      "actors": [
+        "admiral",
+        "any-agent"
+      ],
+      "statements": [
+        "L2-095",
+        "L5-084"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L2-095 says verdict and findings; L5-084 says verdict in his own words."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.one-ticket-per-milestone",
+      "kind": "walkthrough",
+      "rule": "A Project has one Walkthrough Ticket per Milestone, prepared even if the user skips it, the landing's last.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-072",
+        "L7-057",
+        "L7-102"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.other-tours-ordinary-tickets",
+      "kind": "walkthrough",
+      "rule": "Other (non-Milestone, non-landing) tours route findings through ordinary tickets.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-085"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.part-flagged-or-deferred",
+      "kind": "walkthrough",
+      "rule": "Part four, What reviewers flagged or deferred: in the glossary's Severity terms, each deferred `should` and the ticket where it now lives, as it stands.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-081"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.part-how-to-try",
+      "kind": "walkthrough",
+      "rule": "Part three, How to try it: the exact commands to build it and see the new behaviour, in order, each run once by you.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-080"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.part-what-changed",
+      "kind": "walkthrough",
+      "rule": "Part one, What changed and why: the current state in one paragraph, then changes since the last walkthrough each traced to its ticket and DR, drawn with `show-me` where a tree or diff says it faster.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-078"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.part-where-to-look",
+      "kind": "walkthrough",
+      "rule": "Part two, Where to look first: a route for his file-by-file pass: the careful-look parts, files that drew findings, files with an open crew doubt, then seams the change moved.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-079"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.prepare-after-last-ticket-merges",
+      "kind": "walkthrough",
+      "rule": "When a Milestone's last ticket has merged into the feature branch, prepare its Walkthrough Ticket and offer it to the user; the last Milestone's belongs to the landing.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-090"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.skeleton-ticket-blocks-next-milestone",
+      "kind": "walkthrough",
+      "rule": "The walking skeleton's Walkthrough Ticket, filed with the map, is a native blocker of the next Milestone's delivery tickets until the user's verdict or skip closes it, so nothing is built on the skeleton before then.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-058",
+        "L2-092",
+        "L7-103"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-092 says none of the next Milestone is commissioned until the verdict; L2-058 and L7-103 wire a native blocker on the delivery tickets."
+        },
+        {
+          "type": "scope",
+          "note": "L2-058 excepts overnight mode; L2-092 and L7-103 state no exception."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.target-sha",
+      "kind": "walkthrough",
+      "rule": "At a Milestone walk the feature branch at the SHA its last merge left; at the landing walk main after it landed.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-073"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.tour-ends",
+      "kind": "walkthrough",
+      "rule": "The tour ends when the user has inspected the files and tried the behavior, or skipped it.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-083"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.tour-whole-product",
+      "kind": "walkthrough",
+      "rule": "Give the user a tour of the whole product as it stands, so it makes sense to him even when he is not close in.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-071"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.user-walks-or-skips",
+      "kind": "walkthrough",
+      "rule": "The user walks a Milestone's Walkthrough Ticket with the map holder or skips it; a skip is his verdict to go on.",
+      "actors": [
+        "user",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-091",
+        "L5-074"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-091 names the admiral and the `walkthrough` skill; L5-074 names the map holder."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "walkthrough.walk-target-first",
+      "kind": "walkthrough",
+      "rule": "Walk the target yourself first: the whole state at that SHA, the diff since the last walkthrough and its hops, closed tickets with review blocks, cited DRs and spec sections, and posted crew returns.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-076"
+      ],
+      "drift": [],
+      "principle": null
+    }
+  ],
+  "findings": [
+    {
+      "type": "contradiction",
+      "claims": [
+        "project.no-invented-work",
+        "project.four-lanes"
+      ],
+      "note": "L2-146 forbids inventing work to fill idle capacity; L2-166 says strive to keep four lanes occupied, with `Filler` when the core ticket is blocked. The Filler row is only defined as next-first issue keys, so what counts as invented work is open."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "walkthrough.skeleton-ticket-blocks-next-milestone",
+        "overnight.skeleton-walkthrough-blocks-nothing"
+      ],
+      "note": "L2-058 wires the native blocker \"except in overnight mode\"; L2-092 and L7-103 state the block without that exception, and L7-103 does not mention the overnight carve-out that L7-104 adds."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "project.user-tells-admiral"
+      ],
+      "note": "L2-147 binds the user (\"he tells the admiral\") but sits in the admiral skill, which the user does not read."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "walkthrough.tour-whole-product",
+        "walkthrough.walk-target-first"
+      ],
+      "note": "L5-071, L5-076 and L5-077 to L5-081 carry actor any-agent, but L5-070/L5-074 say the map holder runs the walkthrough; no statement names who loads the skill when the user asks."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "walkthrough.ask-target"
+      ],
+      "note": "L5-075 asks for the target when \"the argument is missing\" but no statement defines the argument or the valid targets beyond Milestone and landing (L5-073, L5-085)."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "project.checkin-schedule-start",
+        "overnight.watch-schedule-created"
+      ],
+      "note": "L2-155 schedules a 20-minute admiral check-in and L5-017 a 30-minute watch; no statement says whether the admiral check-in continues overnight, while L5-026 says admirals send no status."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "walkthrough.landing-findings-reopen-lap",
+        "project.empty-landing-walkthrough-completes"
+      ],
+      "note": "L2-135 and L5-087 reopen the lap with a re-cut feature branch; L7-006 defines Completed as \"landing walkthrough found nothing more\" but nothing defines how the Project is closed otherwise."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "overnight.failed-transition-report",
+        "overnight.fill-morning-brief"
+      ],
+      "note": "L2-254 reports shutdown incomplete; L2-255 fills the brief only after verified shutdown, but no statement says whether a brief is delivered when shutdown stays blocked."
+    }
+  ]
+}
