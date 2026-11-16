@@ -66,23 +66,21 @@
     {
       "id": "escalation.cross-ticket-answers-to-map-holder",
       "kind": "escalation",
-      "rule": "Anything that could affect other tickets, a shared contract, or the Project's destination, scope, acceptance criteria, architecture or map goes to the Project's map holder: for a Question the captain prepares the packet and the map holder creates and wires the Project-level ticket.",
+      "rule": "Anything that could affect other tickets, a shared contract, or the Project's destination, scope, acceptance criteria, architecture or map goes to the Project's map holder; for a Question the captain prepares the packet.",
       "actors": [
-        "ticket-captain",
-        "map-holder"
+        "ticket-captain"
       ],
       "statements": [
         "L1-187",
         "L5-108",
         "L7-110",
-        "L7-111",
         "L1-097",
         "L1-118"
       ],
       "drift": [
         {
           "type": "action",
-          "note": "L1-187 says send the packet to the map holder; L5-108 says escalate to the map holder instead of resolving locally; L7-111 says the map holder creates and wires the ticket."
+          "note": "L1-187 says send the packet to the map holder; L7-110 says the captain prepares the packet; L5-108 says escalate to the map holder instead of resolving locally."
         },
         {
           "type": "scope",
@@ -90,11 +88,7 @@
         },
         {
           "type": "scope",
-          "note": "L1-097 covers the cross-ticket scope of one failure; L1-118 covers any change to acceptance, scope, destination or architecture and names the outcome (a map or plan amendment)."
-        },
-        {
-          "type": "scope",
-          "note": "L1-118 sends a change to acceptance, scope, destination or architecture to the map holder \"for a map or plan amendment\"; L1-097 sends the cross-ticket scope of an inherited failure; L1-187, L5-108, L7-110 and L7-111 speak of a Question's answer."
+          "note": "L1-118 sends a change to acceptance, scope, destination or architecture to the map holder \"for a map or plan amendment\"; L1-097 sends the cross-ticket scope of an inherited failure; L1-187, L5-108 and L7-110 speak of a Question's answer."
         }
       ],
       "principle": null,
@@ -103,7 +97,7 @@
     {
       "id": "escalation.discovery-before-question",
       "kind": "escalation",
-      "rule": "Discovery comes before a Question: search the authoritative sources first (governing records, plan, specifications, documentation, standards, code, tests, prior answers), use Research, Prototype, Grilling or Enablement where they can clear it, and create a Question only when the user's judgment is still needed; if the sources settle it, no Question exists.",
+      "rule": "Discovery comes before a Question: search the authoritative sources first (governing records, plan, specifications, documentation, standards, code, tests, prior answers), use Research, Prototype, Grilling or Enablement where they can clear it, and create a Question only when the user's judgment is still needed; if the sources settle it, record the answer where the work lives and continue, and no Question exists.",
       "actors": [
         "ticket-captain",
         "research",
@@ -512,28 +506,6 @@
       "group": "K2"
     },
     {
-      "id": "linear.captain-sets-status-on-chain-spawn",
-      "kind": "linear",
-      "rule": "Only the ticket-captain sets a delivery ticket status; the record that runs the chain flips status at each chain spawn and nothing else flips it.",
-      "actors": [
-        "ticket-captain",
-        "any-agent"
-      ],
-      "statements": [
-        "L1-043",
-        "L7-010",
-        "L7-011"
-      ],
-      "drift": [
-        {
-          "type": "scope",
-          "note": "L7-011 is stated for any-agent; L1-043 and L7-010 for the ticket-captain."
-        }
-      ],
-      "principle": null,
-      "group": "K2"
-    },
-    {
       "id": "linear.captain-ticket-carries-type-and-mode",
       "kind": "linear",
       "rule": "Every captain-held ticket carries exactly one Type and one Mode (AFK or HITL); new implementation tickets get one Type and one Mode.",
@@ -745,10 +717,6 @@
         {
           "type": "value",
           "note": "L1-213 says In Progress runs from commission through step 10; L1-044 and L1-083 say until its record enters the chain."
-        },
-        {
-          "type": "action",
-          "note": "L1-083 adds that the record then runs the normal docs delivery chain."
         }
       ],
       "principle": null,
@@ -1252,7 +1220,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L2-062 states only the Project case; L4-165 adds that the merge verdict names the merge commit and every gate result; L3-198 adds the PR body under ## Independent review."
+          "note": "L2-062 states only the Project case; L4-165 adds that the merge verdict names the merge commit and every gate result."
         }
       ],
       "principle": null,
@@ -1371,14 +1339,12 @@
     {
       "id": "linear.severity-only-on-finding-tickets",
       "kind": "linear",
-      "rule": "Severity sits only on a ticket born from a finding, by DR 058's names, set by whoever files the ticket; most tickets carry none.",
+      "rule": "Severity sits only on a ticket born from a finding; most tickets carry none.",
       "actors": [
         "any-agent"
       ],
       "statements": [
         "L7-043",
-        "L7-071",
-        "L7-072",
         "L7-073"
       ],
       "drift": [],
@@ -1845,7 +1811,7 @@
         },
         {
           "type": "action",
-          "note": "L1-189 states the rule as \"the answer that frees the most AFK work\"; L2-114 adds that AFK order stays in the map and blockers."
+          "note": "L1-189 states the rule as \"the answer that frees the most AFK work\"; L2-114 adds revisiting; L7-081 re-sets it as blockers change."
         }
       ],
       "principle": null,
@@ -2096,6 +2062,79 @@
           "note": "L1-052 binds the ticket-captain; L2-316 binds any agent."
         }
       ],
+      "principle": null
+    },
+    {
+      "id": "linear.only-captain-sets-delivery-status",
+      "kind": "linear",
+      "rule": "Only the ticket-captain sets a delivery ticket's status.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-043",
+        "L7-010"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-flips-only-on-chain-spawn",
+      "kind": "linear",
+      "rule": "A delivery ticket's status flips on every chain spawn of the record that runs the chain, and nothing else flips it.",
+      "actors": [
+        "any-agent",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-011",
+        "L1-326"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-011 is stated for any agent and adds that nothing else flips it; L1-326 is the captain setting it at each chain spawn."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.map-holder-creates-project-level-ticket",
+      "kind": "escalation",
+      "rule": "The Project's map holder creates and wires the Project-level ticket from the captain's packet.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-111"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.finding-ticket-carries-finding-severity",
+      "kind": "linear",
+      "rule": "A ticket born from a finding carries that finding's severity, by DR 058's names.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-071"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.finding-ticket-filer-sets-severity",
+      "kind": "linear",
+      "rule": "Whoever files a ticket born from a finding sets its Severity.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-072"
+      ],
+      "drift": [],
       "principle": null
     }
   ],

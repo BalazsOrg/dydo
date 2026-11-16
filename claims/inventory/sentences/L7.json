@@ -693,7 +693,15 @@
         {
           "id": "L7-050",
           "kind": "inquisition",
-          "rule": "An Inquisition closes when its record is merged and verified on the feature, Bugs filed and their proof refs retained; a group Sub-ticket closes when its register is final and pushed.",
+          "rule": "An Inquisition closes when its record is merged and verified on the feature, Bugs filed and their proof refs retained.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L7-196",
+          "kind": "inquisition",
+          "rule": "A group Sub-ticket closes when its register is final and pushed.",
           "actors": [
             "ticket-captain"
           ]
@@ -1896,7 +1904,15 @@
         {
           "id": "L7-137",
           "kind": "inquisition",
-          "rule": "The nit ticket is listed at the Project's final walkthrough, where the user decides each nit, and closes `Done` once every nit is fixed or accepted as is.",
+          "rule": "The nit ticket is listed at the Project's final walkthrough, where the user decides each nit.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L7-197",
+          "kind": "inquisition",
+          "rule": "The nit ticket closes `Done` once every nit is fixed or accepted as is.",
           "actors": [
             "map-holder"
           ]

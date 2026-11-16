@@ -203,11 +203,11 @@
       "drift": [
         {
           "type": "wording",
-          "note": "L1-210 and L4-065 say \"unless the commission set another\"; L2-117 says \"by default\"."
+          "note": "L1-210 and L4-065 say \"unless the commission set another\"; L2-336 says \"by default\"."
         },
         {
           "type": "scope",
-          "note": "L1-210 and L2-117 put the limit in the Inquisition commission (L2-117 as a question to the user); L4-065 binds the inquisitor and adds that the brief states it."
+          "note": "L1-210 and L2-336 put the limit in the Inquisition commission (L2-336 as a question to the user); L4-065 binds the inquisitor and adds that the brief states it."
         }
       ],
       "principle": null,
@@ -238,12 +238,19 @@
       "kind": "capacity",
       "rule": "A finished group's share returns to the captain's officer, who may give it to a running group.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "admiral"
       ],
       "statements": [
-        "L1-231"
+        "L1-231",
+        "L2-342"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-231 returns the finished share to the captain's officer, who may give it on; L2-342 has the admiral optionally give it to a running group."
+        }
+      ],
       "principle": null,
       "group": "K1"
     },
@@ -899,12 +906,13 @@
       ],
       "statements": [
         "L1-233",
-        "L2-012"
+        "L2-012",
+        "L2-341"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L2-012 covers pickable tickets, L1-233 one captain per group."
+          "note": "L2-012 covers pickable tickets; L1-233 and L2-341 one captain per Inquisition group, L2-341 adding the group's width and Codex share."
         }
       ],
       "principle": null,
@@ -936,8 +944,7 @@
       "kind": "dispatch",
       "rule": "Only the ticket-captain commissions exact-scope delivery crew.",
       "actors": [
-        "ticket-captain",
-        "research"
+        "ticket-captain"
       ],
       "statements": [
         "L1-015",
@@ -1118,7 +1125,7 @@
     {
       "id": "dispatch.run-disjoint-lanes-concurrently",
       "kind": "dispatch",
-      "rule": "Run disjoint lanes concurrently and keep every attempt on its existing record.",
+      "rule": "Run disjoint lanes concurrently.",
       "actors": [
         "ticket-captain"
       ],
@@ -1189,8 +1196,8 @@
       ],
       "drift": [
         {
-          "type": "action",
-          "note": "L2-076 adds: keep every review and gate at full strength whatever it costs."
+          "type": "scope",
+          "note": "L1-089 is the captain; L2-076 the admiral."
         }
       ],
       "principle": null,
@@ -1267,20 +1274,6 @@
       ],
       "statements": [
         "L5-243"
-      ],
-      "drift": [],
-      "principle": null,
-      "group": "K1"
-    },
-    {
-      "id": "dispatch.validate-native-interface-shapes",
-      "kind": "dispatch",
-      "rule": "Validate uncertain native interface shapes early.",
-      "actors": [
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-094"
       ],
       "drift": [],
       "principle": null,
@@ -1624,13 +1617,12 @@
       ],
       "statements": [
         "L7-087",
-        "L5-094",
-        "L7-088"
+        "L5-094"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L5-094 adds \"driving the map in his own session\" and \"until the user takes the map back\"; L7-087 adds \"the captain for a ticket\"; L7-088 and L5-094 add that the Project description names the current holder."
+          "note": "L5-094 adds \"driving the map in his own session\" and \"until the user takes the map back\"; L7-087 adds \"the captain for a ticket\"."
         }
       ],
       "principle": null,
@@ -1639,13 +1631,12 @@
     {
       "id": "identity.map-holder-held-ticket-run-directly",
       "kind": "identity",
-      "rule": "A map-holder-held ticket is run directly by the map holder whose map it clears and receives no captain, branch, PR or review loop.",
+      "rule": "A map-holder-held ticket is run directly by the map holder whose map it clears.",
       "actors": [
         "map-holder"
       ],
       "statements": [
-        "L7-062",
-        "L7-063"
+        "L7-062"
       ],
       "drift": [],
       "principle": null,
@@ -1676,27 +1667,6 @@
         "L3-050"
       ],
       "drift": [],
-      "principle": null,
-      "group": "K1"
-    },
-    {
-      "id": "identity.officer-no-production-no-self-review",
-      "kind": "identity",
-      "rule": "An admiral or ticket-captain authors no production change and never reviews its own candidate.",
-      "actors": [
-        "admiral",
-        "ticket-captain"
-      ],
-      "statements": [
-        "L1-038",
-        "L2-034"
-      ],
-      "drift": [
-        {
-          "type": "scope",
-          "note": "L1-038 binds the captain only; L2-034 binds both admiral and captain."
-        }
-      ],
       "principle": null,
       "group": "K1"
     },
@@ -2017,14 +1987,21 @@
     {
       "id": "identity.inquisition-proofs-belong-to-break-inquisitor",
       "kind": "identity",
-      "rule": "An Inquisition's proofs belong to its Break-phase inquisitor, not the code-writer.",
+      "rule": "An Inquisition's proofs belong to its Break-phase inquisitor, which writes them on its proof branch.",
       "actors": [
-        "code-writer"
+        "code-writer",
+        "ticket-captain"
       ],
       "statements": [
-        "L3-232"
+        "L3-232",
+        "L1-325"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-232 tells the code-writer the proofs are not its own; L1-325 tells the captain that Break writes them, on its proof branch."
+        }
+      ],
       "principle": null
     },
     {
@@ -2036,6 +2013,53 @@
       ],
       "statements": [
         "L2-335"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.officer-authors-no-production-change",
+      "kind": "identity",
+      "rule": "An admiral or ticket-captain authors no production change.",
+      "actors": [
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-038",
+        "L2-034"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-038 binds the captain only; L2-034 binds both admiral and captain."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "identity.project-description-names-map-holder",
+      "kind": "identity",
+      "rule": "The Project description names the Project's current map holder.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-088",
+        "L5-286"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.map-holder-held-ticket-no-captain-branch-pr-review",
+      "kind": "identity",
+      "rule": "A map-holder-held ticket receives no captain, branch, PR or review loop.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-063"
       ],
       "drift": [],
       "principle": null
@@ -2076,7 +2100,7 @@
         "capacity.crew-context-limit-110k",
         "capacity.commission-provider-model-swarm-width"
       ],
-      "note": "The 110k context limit appears in the commission (L1-210, L2-117) and is stated by the brief (L4-065, L1-250), but no statement says what happens when the swarm width or Codex cap changes mid-run beyond L1-231 handing a finished share back."
+      "note": "The 110k context limit appears in the commission (L1-210, L2-336) and is stated by the brief (L4-065, L1-250), but no statement says what happens when the swarm width or Codex cap changes mid-run beyond L1-231 handing a finished share back."
     },
     {
       "type": "homeless",

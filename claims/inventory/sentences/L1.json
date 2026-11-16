@@ -670,7 +670,7 @@
         {
           "id": "L1-043",
           "kind": "linear",
-          "rule": "Only the ticket-captain sets the ticket's status at each chain spawn.",
+          "rule": "Only the ticket-captain sets the ticket's status.",
           "actors": [
             "ticket-captain"
           ]
@@ -679,6 +679,14 @@
           "id": "L1-044",
           "kind": "linear",
           "rule": "An Inquisition's sweep holds In Progress until its record enters the chain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-326",
+          "kind": "linear",
+          "rule": "The ticket's status flips at each chain spawn.",
           "actors": [
             "ticket-captain"
           ]
@@ -1432,7 +1440,7 @@
       "rules": [
         {
           "id": "L1-094",
-          "kind": "dispatch",
+          "kind": "evidence",
           "rule": "Validate uncertain native interface shapes early.",
           "actors": [
             "ticket-captain"
@@ -2417,7 +2425,15 @@
         {
           "id": "L1-163",
           "kind": "contract",
-          "rule": "Adopt an inquisition's red-test SHA when one exists, and its prepared patch branch when one is attached: verify and review it rather than rebuilding it.",
+          "rule": "Adopt an inquisition's red-test SHA when one exists.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-324",
+          "kind": "inquisition",
+          "rule": "Adopt an inquisition's prepared patch branch when one is attached: verify and review it rather than rebuilding it.",
           "actors": [
             "ticket-captain"
           ]
@@ -2584,7 +2600,15 @@
         {
           "id": "L1-175",
           "kind": "inquisition",
-          "rule": "Run it by resources/inquisition.md: the captain draws the area map and conducts inquisitor crew through Read, Break and Drive on each area; Break writes its own proof tests on its proof branch.",
+          "rule": "Run it by resources/inquisition.md: the captain draws the area map and conducts inquisitor crew through Read, Break and Drive on each area.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-325",
+          "kind": "identity",
+          "rule": "Break writes its own proof tests on its proof branch.",
           "actors": [
             "ticket-captain"
           ]

@@ -277,13 +277,12 @@
     {
       "id": "docs.maintain-feature-intent-spec",
       "kind": "docs",
-      "rule": "Shared feature intent is maintained following dydo/reference/feature-spec-convention.md: when intent changes the spec is updated first, then the affected contracts are reconciled.",
+      "rule": "Shared feature intent is maintained following dydo/reference/feature-spec-convention.md.",
       "actors": [
         "admiral"
       ],
       "statements": [
-        "L2-097",
-        "L2-199"
+        "L2-097"
       ],
       "drift": [],
       "principle": null,
@@ -320,21 +319,6 @@
       ],
       "statements": [
         "L3-117"
-      ],
-      "drift": [],
-      "principle": null,
-      "group": "K5"
-    },
-    {
-      "id": "docs.retire-working-spec",
-      "kind": "docs",
-      "rule": "The working spec is retired on landing or cancellation by the convention Retirement section.",
-      "actors": [
-        "admiral"
-      ],
-      "statements": [
-        "L2-137",
-        "L2-200"
       ],
       "drift": [],
       "principle": null,
@@ -545,19 +529,21 @@
       "kind": "inquisition",
       "rule": "The inquisition, audit, group and proof branches never merge; the Inquisition merges nothing but its own record.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "inquisitor"
       ],
       "statements": [
         "L1-173",
         "L1-287",
         "L6-113",
         "L6-161",
-        "L1-321"
+        "L1-321",
+        "L6-184"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L1-173 names the inquisition branch, L6-113 the audit, group and proof branches, L1-287 says nothing but the record merges; whether the record branch is an exception to L1-173 is not stated."
+          "note": "L1-173 names the inquisition branch, L1-321 and L6-184 the audit branch, L6-113 the audit, group and proof branches, L6-161 the audit and proof branches; L1-287 says nothing but the record merges; whether the record branch is an exception to L1-173 is not stated."
         }
       ],
       "principle": null,
@@ -739,7 +725,7 @@
     {
       "id": "inquisition.close-done-when-verified",
       "kind": "inquisition",
-      "rule": "The Inquisition closes Done when its record is merged and verified on the feature, Bugs filed and their proof refs retained; a group Sub-ticket closes when its register is final and pushed.",
+      "rule": "The Inquisition closes Done when its record is merged and verified on the feature, Bugs filed and their proof refs retained.",
       "actors": [
         "ticket-captain"
       ],
@@ -989,9 +975,15 @@
       ],
       "statements": [
         "L1-235",
-        "L6-111"
+        "L6-111",
+        "L7-196"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-235 and L6-111 also give the group captain its rows and its Bugs' retention; L7-196, from the Type table, states only the close condition."
+        }
+      ],
       "principle": null,
       "group": "K5"
     },
@@ -1026,7 +1018,7 @@
     {
       "id": "inquisition.group-split-threshold",
       "kind": "inquisition",
-      "rule": "Above about 10 areas the captain cuts the map into group Sub-tickets of up to about 10 areas each, seams kept with the areas they join, and the admiral commissions one captain per group.",
+      "rule": "Above about 10 areas the captain cuts the map into group Sub-tickets of up to about 10 areas each, seams kept with the areas they join, and releases the parent with them.",
       "actors": [
         "ticket-captain",
         "admiral"
@@ -1038,12 +1030,12 @@
       ],
       "drift": [
         {
-          "type": "scope",
-          "note": "L1-228 is the captain map cut; L2-121 adds width and Codex shares per group and the parent resuming for cross-group triage."
+          "type": "wording",
+          "note": "L1-227 states the capacity (\"one captain conducts about 10 areas\"); L1-228 states the cut; L2-121 states the release with group Sub-tickets."
         },
         {
-          "type": "wording",
-          "note": "L1-227 states the capacity (\"one captain conducts about 10 areas\"); L1-228 states the cut above it; L2-121 adds the admiral's commission of one captain per group."
+          "type": "scope",
+          "note": "L1-227 and L1-228 are the captain's; L2-121 the admiral's view of the same release."
         }
       ],
       "principle": null,
@@ -1087,13 +1079,12 @@
     {
       "id": "inquisition.nit-ticket-final-walkthrough",
       "kind": "inquisition",
-      "rule": "The map holder lists every open nit ticket at the Project final walkthrough, where the user decides each nit; the nit ticket closes Done once every nit is fixed or accepted as is.",
+      "rule": "The map holder lists every open nit ticket at the Project final walkthrough, where the user decides each nit.",
       "actors": [
         "map-holder"
       ],
       "statements": [
         "L1-273",
-        "L1-274",
         "L7-137"
       ],
       "drift": [],
@@ -1133,15 +1124,22 @@
     {
       "id": "inquisition.parent-merges-group-registers",
       "kind": "inquisition",
-      "rule": "When the groups close the parent merges their registers into its own; grouping is done when every area belongs to one group and each group's register is merged into the parent's.",
+      "rule": "When the groups close the parent resumes and merges their registers into its own; grouping is done when every area belongs to one group and each group's register is merged into the parent's.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "admiral"
       ],
       "statements": [
         "L1-236",
-        "L1-238"
+        "L1-238",
+        "L2-343"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-236 and L1-238 are the parent captain's; L2-343 has the admiral resume the parent for cross-group triage."
+        }
+      ],
       "principle": null,
       "group": "K5"
     },
@@ -1208,14 +1206,13 @@
     {
       "id": "inquisition.patch-lane-bug-assignment",
       "kind": "inquisition",
-      "rule": "A Bug whose fix will be prepared is filed assigned to the captain, naming its patch branch, and stays assigned until the patch is attached, then is unassigned and pickable; any other Bug is filed unassigned and pickable at once.",
+      "rule": "A Bug whose fix will be prepared is filed assigned to the captain, naming its patch branch, and stays assigned until the patch is attached, then is unassigned and pickable.",
       "actors": [
         "ticket-captain",
         "admiral"
       ],
       "statements": [
         "L1-266",
-        "L1-267",
         "L1-284",
         "L2-122"
       ],
@@ -1441,13 +1438,11 @@
     {
       "id": "inquisition.record-done-criteria",
       "kind": "inquisition",
-      "rule": "The inquisition record is done when every claim traces to the register, an empty section explicitly recorded as such, and delivery is done when its merge review passes.",
+      "rule": "The inquisition record is done when every claim traces to the register, an empty section explicitly recorded as such.",
       "actors": [
-        "ticket-captain",
         "docs-writer"
       ],
       "statements": [
-        "L1-297",
         "L3-125"
       ],
       "drift": [],
@@ -1606,7 +1601,7 @@
       "drift": [
         {
           "type": "wording",
-          "note": "L1-175 adds that Break writes its own proof tests on its proof branch; L1-203 adds the swarm and the record delivery."
+          "note": "L1-175 has the captain draw the area map and conduct the crew; L1-203 adds the swarm, the triage of every return and the record delivery."
         }
       ],
       "principle": null,
@@ -1762,13 +1757,12 @@
     {
       "id": "inquisition.unproven-stays-open",
       "kind": "inquisition",
-      "rule": "An unproven finding stays open until its routed phase returns; a refuted finding closes refuted and an inconclusive one stays in the record with its deciding observation.",
+      "rule": "An unproven finding stays open in the register until its routed phase returns.",
       "actors": [
         "ticket-captain"
       ],
       "statements": [
-        "L1-275",
-        "L1-276"
+        "L1-275"
       ],
       "drift": [],
       "principle": null,
@@ -2125,6 +2119,72 @@
       ],
       "statements": [
         "L3-121"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.bug-captain-adopts-prepared-patch",
+      "kind": "inquisition",
+      "rule": "A Bug's captain adopts an inquisition's prepared patch branch when one is attached: it verifies and reviews it rather than rebuilding it.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-324"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.nit-ticket-closes-when-every-nit-decided",
+      "kind": "inquisition",
+      "rule": "A nit ticket closes Done once every nit is fixed or accepted as is.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L1-274",
+        "L7-197"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.other-bug-filed-unassigned-pickable",
+      "kind": "inquisition",
+      "rule": "A Bug whose fix the patch lane will not prepare is filed unassigned and pickable at once.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-267"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.refuted-closes-inconclusive-stays",
+      "kind": "inquisition",
+      "rule": "A refuted finding closes refuted; an inconclusive one stays in the record with its deciding observation.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-276"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.record-delivery-done-on-merge-pass",
+      "kind": "inquisition",
+      "rule": "Inquisition record delivery is done when the record's merge review passes.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-297"
       ],
       "drift": [],
       "principle": null

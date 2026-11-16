@@ -217,7 +217,7 @@
     {
       "id": "decision.dr-grade-away-unanimous-decides",
       "kind": "decision",
-      "rule": "A DR-grade call while the user is away is decided by the tribunal if unanimous, which writes the DR; that verdict is the user's approval, and only an irreversible change waits for his word.",
+      "rule": "A DR-grade call while the user is away is decided by the tribunal if unanimous, which writes the DR; that verdict is the user's approval.",
       "actors": [
         "admiral",
         "officer"
@@ -226,7 +226,12 @@
         "L2-102",
         "L5-205"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-102 is the admiral's scope-change approval; L5-205 any officer's DR-grade call, and it adds that the tribunal writes the DR."
+        }
+      ],
       "principle": null,
       "group": "K7"
     },
@@ -312,7 +317,7 @@
     {
       "id": "decision.incomplete-tribunal-no-decision",
       "kind": "decision",
-      "rule": "An incomplete tribunal decides nothing: the call becomes a prepared Question, and a vendor is never swapped silently.",
+      "rule": "An incomplete tribunal decides nothing: the call becomes a prepared Question.",
       "actors": [
         "officer"
       ],
@@ -350,12 +355,13 @@
       ],
       "statements": [
         "L5-024",
-        "L5-206"
+        "L5-206",
+        "L2-340"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L5-024 is the admiral overnight and also sends other overnight calls to what-would-balazs-do; L5-206 is any officer."
+          "note": "L5-024 is the admiral overnight; L2-340 the admiral approving a scope change while away; L5-206 any officer, present or away, and it adds that the tribunal prepares the Question."
         }
       ],
       "principle": null,
@@ -1508,8 +1514,7 @@
       "kind": "decision",
       "rule": "Crew returns its call to its captain.",
       "actors": [
-        "crew",
-        "chief-of-staff"
+        "crew"
       ],
       "statements": [
         "L5-197"
@@ -1841,6 +1846,19 @@
       ],
       "drift": [],
       "principle": null
+    },
+    {
+      "id": "decision.never-swap-vendor-silently",
+      "kind": "decision",
+      "rule": "Never swap a tribunal vendor silently.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-285"
+      ],
+      "drift": [],
+      "principle": null
     }
   ],
   "findings": [
@@ -1856,9 +1874,10 @@
       "type": "drift",
       "claims": [
         "decision.reversible-call-by-officer",
-        "decision.irreversible-call-is-users"
+        "decision.irreversible-call-is-users",
+        "decision.use-wwbd-trigger"
       ],
-      "note": "L5-023/L5-024 (overnight, admiral) restate the L5-201/L5-206 verdict-table cells with the admiral as sole actor; L5-024 says 'other overnight calls' go to the skill, a wider phrase than 'above the officer's say'."
+      "note": "L5-023/L5-024 (overnight, admiral) restate the L5-201/L5-206 verdict-table cells with the admiral as sole actor; L5-279 sends 'other overnight calls' to the skill, a wider phrase than 'above the officer's say'."
     },
     {
       "type": "drift",

@@ -198,7 +198,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L7-025 covers both landing and atomic tickets; L1-151 and L2-131 the landing; L6-011 states serial feature-branch integration and the user's sole landing."
+          "note": "L7-025 covers both landing and atomic tickets; L1-151 and L2-131 the landing; L6-011 states the user's sole landing on the default branch."
         },
         {
           "type": "wording",
@@ -206,7 +206,7 @@
         },
         {
           "type": "scope",
-          "note": "L6-032 adds that the landing Merge Ticket prepares main into feature and obtains acceptance PASS and that the merge is \"never squash\"; L2-131 says \"as a merge commit, one Project at a time\"; L6-011 says \"integrate serially\"."
+          "note": "L6-032 adds that the landing Merge Ticket prepares main into feature and obtains acceptance PASS and that the merge is \"never squash\"; L2-131 says \"as a merge commit, one Project at a time\"."
         }
       ],
       "principle": null,
@@ -433,7 +433,7 @@
       "drift": [
         {
           "type": "action",
-          "note": "L2-085 lets the admiral resume with merge or commission a fresh captain from the record; L6-096 adds the done merged return after merge PASS and cleanup."
+          "note": "L2-085 lets the admiral resume with merge or commission a fresh captain from the record; L6-096 lets a fresh captain take the record."
         }
       ],
       "principle": null,
@@ -918,9 +918,15 @@
       "statements": [
         "L1-157",
         "L1-301",
-        "L6-159"
+        "L6-159",
+        "L6-185"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-185 names the condition (after merge PASS and cleanup); L1-157, L1-301 and L6-159 state only the return line at the end of their procedures."
+        }
+      ],
       "principle": null,
       "group": "K3"
     },
@@ -1224,8 +1230,7 @@
       "kind": "return",
       "rule": "A delegated captain whose PR awaits checks links the PR, returns PR open <key>, checks pending: <url>, head <SHA> and ends its turn.",
       "actors": [
-        "ticket-captain",
-        "officer"
+        "ticket-captain"
       ],
       "statements": [
         "L1-197",
@@ -1235,7 +1240,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L1-135 and L6-100 name the top-level officer that wakes the captain; L1-197 states only the return line."
+          "note": "L1-135 adds linking the PR and ending the turn until its officer wakes it; L1-197 and L6-100 state only the return line."
         }
       ],
       "principle": null,
@@ -1419,7 +1424,7 @@
     {
       "id": "return.writer-return-carries-red-proof",
       "kind": "return",
-      "rule": "A code-writer's return carries its red proof (or for an unused-member Bug its definition and reference search) in the maintain-verification-skill proof recipe, and a Bug fix claims success only with it.",
+      "rule": "A code-writer's return carries its red proof (or for an unused-member Bug its definition and reference search) and the gates run with their exits, in the maintain-verification-skill proof recipe; a Bug fix claims success only with it.",
       "actors": [
         "code-writer"
       ],
@@ -1431,7 +1436,7 @@
       "drift": [
         {
           "type": "wording",
-          "note": "L3-073 adds \"unchanged behaviour still green\"."
+          "note": "L3-073 adds \"unchanged behaviour still green\"; L3-233 adds the gates run with exits."
         }
       ],
       "principle": null,
@@ -1718,7 +1723,7 @@
     {
       "id": "review.code-standards-axis-binding",
       "kind": "review",
-      "rule": "Standards axis: dydo/guides/coding-standards.md and any stack-specific standard bind, including the anti-slop mandate, with the codebase-design lens on every touched seam; a documented standard beats taste and a tooling-enforced rule is closed.",
+      "rule": "Standards axis: dydo/guides/coding-standards.md and any stack-specific standard bind, including the anti-slop mandate, with the codebase-design lens on every touched seam.",
       "actors": [
         "reviewer"
       ],
@@ -2211,17 +2216,19 @@
       "actors": [
         "ticket-captain",
         "docs-writer",
-        "any-agent"
+        "any-agent",
+        "admiral"
       ],
       "statements": [
         "L1-039",
         "L3-132",
-        "L7-179"
+        "L7-179",
+        "L2-339"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L1-039 forbids the captain reviewing its own candidate; L3-132 and L7-179 say a writer's delivery is never an independent PASS. Different actors named."
+          "note": "L1-039 forbids the captain reviewing its own candidate and L2-339 the admiral or captain; L3-132 and L7-179 say a writer's delivery is never an independent PASS."
         }
       ],
       "principle": null,
@@ -2358,7 +2365,7 @@
     {
       "id": "review.plan-respect-horizon",
       "kind": "review",
-      "rule": "The plan reviewer respects the horizon: wayfinding fog is not a gap.",
+      "rule": "The plan reviewer respects the horizon: later bearings orient without speculative precision, every in-scope outcome (the durable knowledge and integration the destination needs included) is a first ticket, a later bearing, honest fog or a blocking Question Ticket, and the step is done when the map starts the journey without hiding or inventing what comes later.",
       "actors": [
         "reviewer"
       ],
@@ -3157,7 +3164,7 @@
         "merge.officer-watches-captain-pr",
         "merge.unwatch-before-handoff"
       ],
-      "note": "L1-136 has the captain unwatch the PR before handing off, while L1-135/L2-084/L6-100 make the owning officer the watcher; a delegated captain that never watches cannot obey L1-136 as written."
+      "note": "L1-136 has the captain unwatch the PR before handing off, while L1-306/L2-084/L6-136 make the owning officer the watcher; a delegated captain that never watches cannot obey L1-136 as written."
     },
     {
       "type": "drift",
@@ -3225,7 +3232,7 @@
         "review.plan-check-shape",
         "review.spec-review-excludes-wording"
       ],
-      "note": "L4-169 says \"check the shape of the plan\" and L4-173 \"respect the horizon\" with no item list in the statement; the shape is defined outside any statement of this group."
+      "note": "L4-169 says \"check the shape of the plan\" with no item list in the statement; the shape is defined outside any statement of this group."
     },
     {
       "type": "gap",

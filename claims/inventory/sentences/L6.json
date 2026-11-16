@@ -282,7 +282,16 @@
         {
           "id": "L6-016",
           "kind": "worktree",
-          "rule": "An Inquisition audit branches from the audit SHA (the integrated feature commit) as inquisition/<slug> (a group Sub-ticket uses inquisition/<slug>-<group>), has no PR target, and never merges.",
+          "rule": "An Inquisition audit branches from the audit SHA (the integrated feature commit) as inquisition/<slug> (a group Sub-ticket uses inquisition/<slug>-<group>) and has no PR target.",
+          "actors": [
+            "inquisitor",
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-184",
+          "kind": "inquisition",
+          "rule": "An Inquisition audit branch never merges.",
           "actors": [
             "inquisitor",
             "ticket-captain"
@@ -461,8 +470,7 @@
           "kind": "contract",
           "rule": "Independently trackable parallel lanes become direct Sub-tickets.",
           "actors": [
-            "ticket-captain",
-            "code-writer"
+            "ticket-captain"
           ]
         },
         {
@@ -984,9 +992,7 @@
           "kind": "evidence",
           "rule": "The captain pins project-owned commands in Exact gates.",
           "actors": [
-            "ticket-captain",
-            "code-writer",
-            "reviewer"
+            "ticket-captain"
           ]
         },
         {
@@ -1077,8 +1083,7 @@
           "kind": "dispatch",
           "rule": "The captain alone commissions exact-scope delivery crew.",
           "actors": [
-            "ticket-captain",
-            "research"
+            "ticket-captain"
           ]
         },
         {
@@ -1770,7 +1775,15 @@
         {
           "id": "L6-096",
           "kind": "return",
-          "rule": "The captain resumes when its Merge Sub-ticket's native blocker clears, or a fresh captain takes the record, and returns \"done <key>: merged\" after merge PASS and cleanup.",
+          "rule": "The captain resumes when its Merge Sub-ticket's native blocker clears, or a fresh captain takes the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-185",
+          "kind": "return",
+          "rule": "The captain returns \"done <key>: merged\" after merge PASS and cleanup.",
           "actors": [
             "ticket-captain"
           ]
@@ -1832,8 +1845,7 @@
           "kind": "return",
           "rule": "A delegated captain whose PR still awaits checks returns \"PR open <key>, checks pending: <url>, head <SHA>\".",
           "actors": [
-            "ticket-captain",
-            "officer"
+            "ticket-captain"
           ]
         },
         {

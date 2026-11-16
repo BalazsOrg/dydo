@@ -1250,11 +1250,11 @@
       "drift": [
         {
           "type": "wording",
-          "note": "L1-060 says the spec draft is committed unchanged and pushed as the first commit; L6-024 says \"when handed one\"; L2-068 does not mention the spec."
+          "note": "L1-060 says the spec draft is committed unchanged and pushed as the first commit; L6-024 says \"when handed one\"; L2-068 and L7-193 do not mention the spec."
         },
         {
           "type": "action",
-          "note": "L2-196 and L1-060 require the spec draft unchanged as the branch's first commit, pushed, with the SHA posted before the ticket branch is cut; L2-068 and L6-024 say commit the working spec \"when handed one\" and report both."
+          "note": "L2-196 and L1-060 require the spec draft unchanged as the branch's first commit, pushed, with the SHA posted before the ticket branch is cut; L6-024 commits the working spec only when handed one."
         }
       ],
       "principle": null,
@@ -1380,14 +1380,13 @@
     {
       "id": "project.landing-cleanup",
       "kind": "project",
-      "rule": "Landing artifacts are cleaned up: the landing Captain deletes the feature branch after the user lands it and reports completion, and the admiral confirms the cleanup.",
+      "rule": "On the map holder's landing-cleanup commission, the landing Captain deletes the merged feature branch after the user lands it and reports completion.",
       "actors": [
         "admiral",
         "map-holder",
         "ticket-captain"
       ],
       "statements": [
-        "L2-138",
         "L6-127",
         "L2-132",
         "L1-160"
@@ -1395,27 +1394,13 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L2-138 gives the admiral the confirmation; L6-127 gives deletion to the landing Captain and accountability for the merged feature branch to the map holder."
+          "note": "L6-127 also makes the map holder accountable for the merged feature branch; L2-132 has the admiral resume the landing captain for it; L1-160 is the captain acting on the commission."
         },
         {
           "type": "action",
-          "note": "L2-132 names dydo clean --dry-run then dydo clean from outside the tree; L1-160 says \"remove the merged feature branch locally\"; L6-127 makes the map holder accountable and the landing captain delete it; L2-138 has the admiral confirm."
+          "note": "L2-132 names dydo clean --dry-run then dydo clean from outside the tree; L1-160 says \"remove the merged feature branch locally\"."
         }
       ],
-      "principle": null,
-      "group": "K6"
-    },
-    {
-      "id": "project.landing-requires-clean-inquisition",
-      "kind": "project",
-      "rule": "The Project lands only when each should-ticket is `Done` or closed with a reason.",
-      "actors": [
-        "admiral"
-      ],
-      "statements": [
-        "L2-323"
-      ],
-      "drift": [],
       "principle": null,
       "group": "K6"
     },
@@ -1930,7 +1915,12 @@
         "L5-077",
         "L7-056"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-077 has the agent brief in four parts, newest changes first, marking what needs his careful look; L7-056 lists what a Walkthrough covers (what changed, where to look, how to try it, what reviewers left open)."
+        }
+      ],
       "principle": null,
       "group": "K6"
     },
@@ -1965,7 +1955,7 @@
     {
       "id": "walkthrough.landing-findings-reopen-lap",
       "kind": "walkthrough",
-      "rule": "Findings at the landing walkthrough are recorded as Project tickets and reopen the lap: the map holder commissions the first fix Captain to re-cut the feature branch from main under the same name, and another inquisition or landing walkthrough follows.",
+      "rule": "Findings at the landing walkthrough reopen the lap: the map holder commissions the first fix Captain to re-cut the feature branch from main.",
       "actors": [
         "admiral",
         "map-holder"
@@ -1977,7 +1967,11 @@
       "drift": [
         {
           "type": "action",
-          "note": "L5-087 adds that the fixes are followed by another landing or walkthrough; L2-135 does not say so."
+          "note": "L5-087 says the re-cut branch carries the fixes and another landing or walkthrough; L2-135 says the branch keeps the same name."
+        },
+        {
+          "type": "scope",
+          "note": "L2-135 is the admiral; L5-087 the map holder."
         }
       ],
       "principle": null,
@@ -2039,9 +2033,15 @@
       ],
       "statements": [
         "L5-086",
-        "L2-317"
+        "L2-317",
+        "L5-284"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-086 and L2-317 state it for Milestone walkthroughs as findings arrive; L5-284 states it for the landing walkthrough."
+        }
+      ],
       "principle": null,
       "group": "K6"
     },
@@ -2364,16 +2364,28 @@
     {
       "id": "project.map-holder-commissions-spec-retirement",
       "kind": "project",
-      "rule": "The map holder commissions spec retirement when a Project completes or is canceled.",
+      "rule": "The map holder commissions spec retirement, by the feature-spec convention's Retirement section, when a Project completes or is canceled.",
       "actors": [
-        "map-holder"
+        "map-holder",
+        "admiral"
       ],
       "statements": [
         "L7-194",
         "L7-195",
-        "L5-283"
+        "L5-283",
+        "L2-137",
+        "L2-200"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-137 and L2-200 bind the admiral; L5-283, L7-194 and L7-195 the map holder."
+        },
+        {
+          "type": "action",
+          "note": "L2-200 says \"retire the spec\" on landing or cancellation; the others say commission spec retirement; L2-200 and L7-194/L7-195 name the Retirement section."
+        }
+      ],
       "principle": null
     },
     {
@@ -2398,6 +2410,32 @@
       ],
       "statements": [
         "L2-338"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.admiral-confirms-landing-cleanup",
+      "kind": "project",
+      "rule": "The admiral confirms the landing artifact cleanup.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-138"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.landing-requires-should-tickets-closed",
+      "kind": "project",
+      "rule": "The Project lands only when each should-ticket is `Done` or closed with a reason.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-323"
       ],
       "drift": [],
       "principle": null

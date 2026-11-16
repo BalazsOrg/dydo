@@ -1479,7 +1479,15 @@
         {
           "id": "L5-087",
           "kind": "walkthrough",
-          "rule": "At the landing, record findings as tickets in the same Project; the map holder commissions the first fix Captain to re-cut its feature branch from main for fixes and another landing/walkthrough.",
+          "rule": "At the landing the map holder commissions the first fix Captain to re-cut its feature branch from main for fixes and another landing/walkthrough.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L5-284",
+          "kind": "walkthrough",
+          "rule": "At the landing, record findings as tickets in the same Project.",
           "actors": [
             "map-holder"
           ]
@@ -1619,7 +1627,15 @@
         {
           "id": "L5-094",
           "kind": "identity",
-          "rule": "A Project's map holder is the user, driving the map in his own session, or an admiral the user invoked, until the user takes the map back; the Project description names the current holder.",
+          "rule": "A Project's map holder is the user, driving the map in his own session, or an admiral the user invoked, until the user takes the map back.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L5-286",
+          "kind": "identity",
+          "rule": "The Project description names the current holder.",
           "actors": [
             "map-holder"
           ]
@@ -3429,8 +3445,7 @@
           "kind": "decision",
           "rule": "Crew returns its call to its captain.",
           "actors": [
-            "crew",
-            "chief-of-staff"
+            "crew"
           ]
         },
         {
@@ -4437,7 +4452,15 @@
         {
           "id": "L5-258",
           "kind": "decision",
-          "rule": "After the retry the tribunal is incomplete and ends without a decision; never swap a vendor silently.",
+          "rule": "After the retry the tribunal is incomplete and ends without a decision.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L5-285",
+          "kind": "decision",
+          "rule": "Never swap a tribunal vendor silently.",
           "actors": [
             "officer"
           ]

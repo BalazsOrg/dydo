@@ -215,12 +215,11 @@
     {
       "id": "contract.bug-stages-reproduce-then-fix",
       "kind": "contract",
-      "rule": "A Bug normally reproduces or identifies, then fixes; the captain may keep reproduce-or-identify and fix as direct Bug Sub-tickets, fix natively blocked by reproduction, both carrying the parent's Mode.",
+      "rule": "Under the Bug exception the captain may retain ordered reproduce-or-identify and fix Sub-tickets, fix natively blocked by reproduction, both carrying the parent's Mode.",
       "actors": [
         "ticket-captain"
       ],
       "statements": [
-        "L1-162",
         "L1-165",
         "L6-086",
         "L6-087",
@@ -229,11 +228,11 @@
       "drift": [
         {
           "type": "wording",
-          "note": "L1-162 and L1-165 say the captain \"may keep\" direct Bug Sub-tickets and both carry the parent's Mode; L6-086, L6-087 and L7-113 say it \"may retain\" the Type template's ordered stages and frame the Bug as a narrow exception to parallel lanes."
+          "note": "L1-165 says the captain \"may retain\" direct Bug Sub-tickets that carry the parent's Mode; L6-086 and L7-113 say it \"may retain\" the Type template's ordered stages; L6-087 states only that fix is natively blocked by reproduction."
         },
         {
           "type": "wording",
-          "note": "L7-113 frames the Bug template as an exception to parallel lanes."
+          "note": "L7-113 frames the Bug template as a narrow exception to parallel lanes."
         }
       ],
       "principle": null,
@@ -370,7 +369,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L6-082 and L1-077 list the permitted other children; L7-106 also says each lane carries its parent's Type and Mode and states the atomic-merge exception; L7-109 and L1-077 say \"siblings\"; L6-083 says \"sibling lanes under the parent ticket\"."
+          "note": "L6-082 and L1-077 list the permitted other children; L7-106 also says each lane carries its parent's Type and Mode; L7-109 and L1-077 say \"siblings\"; L6-083 says \"sibling lanes under the parent ticket\"."
         }
       ],
       "principle": null,
@@ -463,14 +462,13 @@
       ],
       "statements": [
         "L6-006",
-        "L6-077",
         "L6-080",
         "L6-167"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L6-006 carves out the Bug Type-map serial path transfer; L6-077 adds that crew inherit the ticket contract, owned paths and gates and commit their own hop."
+          "note": "L6-006 carves out the Bug Type-map serial path transfer; L6-167 adds the ticket's feature files and exact gates; L6-080 states only the safety condition."
         }
       ],
       "principle": null,
@@ -481,8 +479,7 @@
       "kind": "contract",
       "rule": "Independently trackable parallel lanes become direct Sub-tickets, each contracted with the parent's Type and Mode, bounded outcome, a disjoint owned-path subset, exact gates, a child-key branch off the parent branch and an isolated worktree.",
       "actors": [
-        "ticket-captain",
-        "code-writer"
+        "ticket-captain"
       ],
       "statements": [
         "L1-073",
@@ -571,7 +568,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "Copies bind ticket-captain, code-writer, docs-writer, reviewer, scout, admiral, chief-of-staff and inquisitor; each is the same path and instruction."
+          "note": "Copies bind ticket-captain, docs-writer, research, reviewer, scout, admiral, chief-of-staff and inquisitor; each is the same path and instruction."
         }
       ],
       "principle": null,
@@ -602,7 +599,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "Copies bind ticket-captain, code-writer, reviewer, scout, admiral, chief-of-staff and inquisitor; each is the same path and instruction."
+          "note": "Copies bind ticket-captain, research, reviewer, scout, admiral, chief-of-staff and inquisitor; each is the same path and instruction."
         }
       ],
       "principle": null,
@@ -625,7 +622,7 @@
       "drift": [
         {
           "type": "scope",
-          "note": "Only the code-writer and reviewer lists carry it; the captain, docs-writer, research and scout lists do not."
+          "note": "Only the code-writer, reviewer and inquisitor lists carry it; the captain, docs-writer, research and scout lists do not."
         },
         {
           "type": "scope",
@@ -915,7 +912,12 @@
         "L3-018",
         "L3-072"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L3-018 starts from the red reproduction; L3-072 starts from the fix."
+        }
+      ],
       "principle": null,
       "group": "K4"
     },
@@ -1106,12 +1108,8 @@
       ],
       "drift": [
         {
-          "type": "action",
-          "note": "L1-163 also adopts the inquisition's prepared patch branch and says to verify and review it rather than rebuild; L3-031 and L3-068 only treat the failing test as the red."
-        },
-        {
           "type": "scope",
-          "note": "L1-163 is the captain, L3-031 and L3-068 the writer; L3-031 is stated generally, L3-068 under Bug."
+          "note": "L1-163 is the captain adopting an inquisition's red-test SHA; L3-031 and L3-068 the writer, L3-031 stated generally and L3-068 under Bug."
         }
       ],
       "principle": null,
@@ -1199,7 +1197,7 @@
         },
         {
           "type": "wording",
-          "note": "L7-161 says only \"review gates stay where their workflows require\"; the other copies name the final-candidate, combined-merge, integration and release gates and the exact-candidate reuse limit."
+          "note": "L7-161 says only \"review gates stay where their workflows require\"; the other copies name combined-merge, integration, release, landing or final G/M gates."
         }
       ],
       "principle": null,
@@ -1412,9 +1410,7 @@
       "kind": "evidence",
       "rule": "The captain pins project-owned selection, commands and stages in the contract's Exact gates by the testing strategy, binding it to real project commands.",
       "actors": [
-        "ticket-captain",
-        "code-writer",
-        "reviewer"
+        "ticket-captain"
       ],
       "statements": [
         "L1-069",
@@ -1517,13 +1513,12 @@
     {
       "id": "evidence.raw-proof-once-in-durable-artifact",
       "kind": "evidence",
-      "rule": "Put new full raw proof and native gate logs once in a durable, linked Git or document artifact, never dumped into PRs or comments.",
+      "rule": "Put new full raw proof and native gate logs once in a durable, linked Git or document artifact.",
       "actors": [
         "any-agent"
       ],
       "statements": [
-        "L7-153",
-        "L7-154"
+        "L7-153"
       ],
       "drift": [],
       "principle": null,
@@ -1787,12 +1782,19 @@
       "kind": "evidence",
       "rule": "Validate uncertain native interface shapes early.",
       "actors": [
-        "any-agent"
+        "any-agent",
+        "ticket-captain"
       ],
       "statements": [
-        "L6-051"
+        "L6-051",
+        "L1-094"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-094 binds the ticket-captain; L6-051 any agent."
+        }
+      ],
       "principle": null,
       "group": "K4"
     },
@@ -2044,7 +2046,7 @@
     {
       "id": "worktree.inquisition-audit-branch",
       "kind": "worktree",
-      "rule": "An Inquisition audit branch is cut from the audit SHA as inquisition/<slug> (a group Sub-ticket uses inquisition/<slug>-<group>), has no PR target and never merges.",
+      "rule": "An Inquisition audit branch is cut from the audit SHA as inquisition/<slug> (a group Sub-ticket uses inquisition/<slug>-<group>) and has no PR target.",
       "actors": [
         "ticket-captain",
         "inquisitor"
@@ -2515,6 +2517,10 @@
         {
           "type": "wording",
           "note": "L1-183 \"every operation preserves the hop SHAs\" does not name squash or rewrite; L6-142 names both."
+        },
+        {
+          "type": "scope",
+          "note": "L3-230 is the merge writer keeping both parents and every hop SHA in a merge commit; L6-152 preserves the merge commit and hop SHAs at integration."
         }
       ],
       "principle": null
@@ -2602,14 +2608,20 @@
     {
       "id": "contract.reconcile-affected-contracts",
       "kind": "contract",
-      "rule": "Reconcile the affected contracts when shared feature intent changes.",
+      "rule": "When shared feature intent changes, the spec is updated first and then the affected contracts are reconciled.",
       "actors": [
         "admiral"
       ],
       "statements": [
-        "L2-320"
+        "L2-320",
+        "L2-199"
       ],
-      "drift": [],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-199 orders the spec update before the reconciliation; L2-320 states only the reconciliation."
+        }
+      ],
       "principle": null
     },
     {
@@ -2820,6 +2832,45 @@
           "note": "L4-046 binds the Break inquisitor; L3-241 the proof-only code-writer; L6-183 both."
         }
       ],
+      "principle": null
+    },
+    {
+      "id": "contract.bug-reproduce-or-identify-then-fix",
+      "kind": "contract",
+      "rule": "A Bug normally reproduces or identifies, then fixes.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-162"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.no-raw-logs-in-prs-or-comments",
+      "kind": "evidence",
+      "rule": "Do not dump full raw proof or gate logs into PRs or comments.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-154"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "contract.crew-inherit-contract-and-commit-own-hop",
+      "kind": "contract",
+      "rule": "Crew inherit the relevant ticket or Sub-ticket contract, owned paths and gates, and commit their own hop.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L6-077"
+      ],
+      "drift": [],
       "principle": null
     }
   ],

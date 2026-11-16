@@ -601,7 +601,16 @@
         {
           "id": "L2-034",
           "kind": "identity",
-          "rule": "Neither admiral nor captain authors production changes or reviews its own candidate.",
+          "rule": "Neither admiral nor captain authors production changes.",
+          "actors": [
+            "admiral",
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L2-339",
+          "kind": "review",
+          "rule": "Neither admiral nor captain reviews its own candidate.",
           "actors": [
             "admiral",
             "ticket-captain"
@@ -1695,7 +1704,15 @@
         {
           "id": "L2-102",
           "kind": "decision",
-          "rule": "A unanimous away `what-would-balazs-do` verdict is that approval, and only an irreversible change waits for the user's word.",
+          "rule": "A unanimous away `what-would-balazs-do` verdict is the human approval a scope change needs.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-340",
+          "kind": "decision",
+          "rule": "Only an irreversible change waits for the user's word.",
           "actors": [
             "admiral"
           ]
@@ -2011,7 +2028,31 @@
         {
           "id": "L2-121",
           "kind": "inquisition",
-          "rule": "Above about 10 areas the Inquisition's captain releases with group Sub-tickets: commission one captain per group with the share of width and Codex its Sub-ticket carries, optionally give a finished group's share to a running group, and resume the parent when its groups close for cross-group triage.",
+          "rule": "Above about 10 areas the Inquisition's captain releases with group Sub-tickets.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-341",
+          "kind": "dispatch",
+          "rule": "Commission one captain per group with the share of width and Codex its Sub-ticket carries.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-342",
+          "kind": "capacity",
+          "rule": "Optionally give a finished group's share to a running group.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-343",
+          "kind": "inquisition",
+          "rule": "Resume the parent when its groups close, for cross-group triage.",
           "actors": [
             "admiral"
           ]
@@ -2269,7 +2310,7 @@
         },
         {
           "id": "L2-137",
-          "kind": "docs",
+          "kind": "project",
           "rule": "Commission spec retirement under `dydo/reference/feature-spec-convention.md`",
           "actors": [
             "admiral"
@@ -3229,7 +3270,7 @@
       "rules": [
         {
           "id": "L2-199",
-          "kind": "docs",
+          "kind": "contract",
           "rule": "When intent changes, update the spec first, then reconcile the affected contracts.",
           "actors": [
             "admiral"
@@ -3244,7 +3285,7 @@
       "rules": [
         {
           "id": "L2-200",
-          "kind": "docs",
+          "kind": "project",
           "rule": "On landing or cancellation, retire the spec by the convention's Retirement section.",
           "actors": [
             "admiral"

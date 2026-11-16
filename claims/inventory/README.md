@@ -97,11 +97,16 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 ### Counts
 
 - Files 35; sentences (units) 1798; not-a-rule 163 (framing 87, description 46, rationale 12, example 9,
-  pointer 8, other 1); rule statements 1765.
-- Claims 1010: 979 after phase 2, then 51 cross-group merge sets removed 63 claims and moved 89 statements into
+  pointer 8, other 1); rule statements 1780.
+- Claims 1024: 979 after phase 2, then 51 cross-group merge sets removed 63 claims and moved 89 statements into
   another group (the survivor's kind now owns them), leaving 916; the un-bundling pass then added 99 claims and
-  retired 7 (1008); the narrowing pass added 7 and retired 5. Claims with 2+ statements 402; with copies in 2+
-  carriers 263.
+  retired 7 (1008); the narrowing pass added 7 and retired 5 (1010); the sweep pass added 19 and retired 5.
+  Claims with 2+ statements 403; with copies in 2+ carriers 269.
+- Sweep pass: every sentence carrying 2+ rule entries (199, now 204) was read with its sibling statements, with every
+  claim holding one of their statements and every claim that received copies in phase 3 or a fix pass. 15 statements
+  were added, 14 rewritten to their own obligation and 5 cut back to their own actors; 26 claim rules were rewritten
+  to state only what their statements carry, 4 statements regrouped into the claim holding their other copies, and `docs.retire-working-spec` and
+  `dispatch.validate-native-interface-shapes` folded into the claims that held the same rule.
 - Narrowing pass: 27 claims kept after the un-bundling had their rule, drift or actors narrowed to the obligation
   their statements still hold (102 claims audited); 9 statements were added, the L4-199 copy joined its other copies in
   `return.following-fix-ticket-if-dependent`, and the proof-work pre-edit checks became three claims (proof branch,
@@ -109,7 +114,7 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 - Un-bundling pass: 96 sentences, each stating several independent obligations, carry one rule entry per obligation
   (their rendered prose is `combined`); 93 statements were narrowed to their own obligation; 138 statements were
   added; 24 claims were split into one claim per rule.
-- Claims with drift 209 (a claim may carry several types): scope 133, action 58, wording 67, value 13.
+- Claims with drift 221 (a claim may carry several types): scope 144, action 58, wording 69, value 13.
 - Findings 75: drift 25, gap 28, homeless 15, contradiction 7.
 
 ### R1 to R4, as found
@@ -128,7 +133,7 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 
 - `escalation.path-crew-captain-admiral-user`: the admiral is in the path only when invoked (L1-056) or always (L2-039).
 - `linear.captain-ticket-carries-type-and-mode` / `linear.status-futurefeature-meaning`: every ticket carries one Type (L7-041), a FutureFeature has none (L7-012).
-- `merge.officer-watches-captain-pr` / `merge.unwatch-before-handoff`: the captain unwatches the PR (L1-136) but the owning officer is the watcher (L1-135, L2-084, L6-100).
+- `merge.officer-watches-captain-pr` / `merge.unwatch-before-handoff`: the captain unwatches the PR (L1-136) but the owning officer is the watcher (L1-306, L2-084, L6-136).
 - `evidence.captain-rerun-is-proof-of-record` / `evidence.rerun-only-on-concern`: the captain reruns every proof (L1-128) while others rerun only on a stated concern (L1-121, L1-122, L3-172).
 - `inquisition.record-delivered-through-docs-chain` / `inquisition.bug-filing-fields`: the record branch and Bugs assume a feature branch (L1-293, L1-263); an audit of main has none (L1-265, L6-119).
 - `project.no-invented-work` / `project.four-lanes`: no work invented to fill capacity (L2-146) versus keep four lanes occupied (L2-166).
@@ -150,9 +155,9 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 ### Rules their actor never reads
 
 Computed from `claims.json` (role actors admiral, chief-of-staff, ticket-captain, code-writer, docs-writer, reviewer,
-inquisitor, research, scout; group actors excluded): of 784 claims with a role actor, 107 have no carrier among their
-actors' own skills. By actor: ticket-captain 57, chief-of-staff 29, admiral 13, reviewer 7, code-writer 4, inquisitor 1
-(a claim counts once per actor). 33 of the 107 are `overnight.*` rules reached only by loading `overnight-mode`. Ten others:
+inquisitor, research, scout; group actors excluded): of 790 claims with a role actor, 105 have no carrier among their
+actors' own skills. By actor: ticket-captain 57, chief-of-staff 28, admiral 12, reviewer 7, code-writer 4, inquisitor 1
+(a claim counts once per actor). 33 of the 105 are `overnight.*` rules reached only by loading `overnight-mode`. Ten others:
 
 - `dispatch.native-captain-no-codex-reviewer` (ticket-captain): working-tree standard only.
 - `identity.mutation-testing-is-reviewers` (reviewer): code-writer skill only.
