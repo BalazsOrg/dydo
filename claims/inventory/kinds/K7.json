@@ -1,0 +1,1546 @@
+{
+  "group": "K7",
+  "kinds": [
+    "wayfinding",
+    "decision"
+  ],
+  "claims": [
+    {
+      "id": "decision.away-definition",
+      "kind": "decision",
+      "rule": "Away means dydo mode show reports overnight on; off or unreadable, the user is present.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-200"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.ballot-names-one-exact-action",
+      "kind": "decision",
+      "rule": "Each tribunal member's ballot names one exact, written action, picked verbatim from the ballot, which lists every option still standing as one exact action quoted from the final positions, and the ballot is tallied by the verdict table.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-219",
+        "L5-254",
+        "L5-255",
+        "L5-256"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.below-dr-away-tribunal",
+      "kind": "decision",
+      "rule": "A call above the officer's say but below DR-grade, while the user is away, is decided by the tribunal; where his intent is unclear, the most reversible option, flagged.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-203"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.below-dr-present-plain-question",
+      "kind": "decision",
+      "rule": "A call above the officer's say but below DR-grade, while the user is present, is a plain Question without the skill.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-202"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.below-dr-vote-majority",
+      "kind": "decision",
+      "rule": "For a call below DR-grade a decision needs two members naming the same text; with three different actions, the most reversible option, flagged.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-221"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.case-file",
+      "kind": "decision",
+      "rule": "Research the case law (sending research sparingly) and write the case file in the given form; the phase is done when it holds every option, unranked.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-239",
+        "L5-240",
+        "L5-241"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.citation-quotes-words",
+      "kind": "decision",
+      "rule": "A citation quotes the user's words with the reason behind them.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-217"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.concession-quotes",
+      "kind": "decision",
+      "rule": "A concession quotes the evidence or restates the argument it yields to.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-249"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.cos-answer-needed-grilling",
+      "kind": "decision",
+      "rule": "On request, the chief of staff takes the Answer needed list one ticket at a time with grilling, pressing until both the answer and its reasoning are sharp and recording both on the ticket, which closes Done; grilling is done when every question is answered on its ticket or parked there in the user's words.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-226",
+        "L2-227"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.cos-mediation",
+      "kind": "decision",
+      "rule": "When two workstreams contradict, the chief of staff establishes the facts, names the trade-off and proposes the smallest resolution that frees both; mediation is done when the resolution is on the ticket, or the one call above its authority is a Question on the Answer needed list with a recommendation.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-228",
+        "L2-229"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.decide-as-balazs-would",
+      "kind": "decision",
+      "rule": "Make the call the way the user would, or prepare it with the answer he would give, tested by a tribunal of three against his own words; a judge answers as he would, in the spirit of his words, citing why he decided.",
+      "actors": [
+        "officer",
+        "any-agent"
+      ],
+      "statements": [
+        "L5-191",
+        "L5-192",
+        "L5-265"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.decide-in-his-spirit",
+      "kind": "decision",
+      "rule": "Case law is evidence of intent, not a rulebook: read why he decided (DRs, core docs, project purpose, common sense) and decide in that spirit, and when a recorded decision goes against his spirit or no longer fits, the position names it and why and the call becomes DR-grade, or at least flagged.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-214",
+        "L5-215",
+        "L5-216"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.decided-block",
+      "kind": "decision",
+      "rule": "When the tribunal decides, post the DECIDED block (by what-would-balazs-do tribunal, unratified; result, vote, log, undo, next), leave the Question in Todo unwired, and let work resume with any required review still running.",
+      "actors": [
+        "officer",
+        "any-agent"
+      ],
+      "statements": [
+        "L5-226",
+        "L7-127",
+        "L7-167"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L7-127 says the Question stays in Todo unwired also when decided on the user's own invocation; L5-226 does not name Todo; L7-127 does not name the DECIDED fields."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "decision.dispatch-done",
+      "kind": "decision",
+      "rule": "The dispatch phase is done when both judges return sealed positions and their results show the model and effort asked for.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-245"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.dr-grade-away-unanimous-decides",
+      "kind": "decision",
+      "rule": "A DR-grade call while the user is away is decided by the tribunal if unanimous, which writes the DR; that verdict is the user's approval, and only an irreversible change waits for his word.",
+      "actors": [
+        "admiral",
+        "officer"
+      ],
+      "statements": [
+        "L2-102",
+        "L5-205"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.dr-grade-present-prepared-question",
+      "kind": "decision",
+      "rule": "A DR-grade call while the user is present, and any call while he is present without invoking the skill, ends as a tribunal-prepared Question carrying the predicted answer and any dissent.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-204",
+        "L5-222"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-204 is DR-grade calls; L5-222 covers any result while he is present and has not invoked the skill, including below-DR calls, which L5-202 sends to a plain Question without the skill."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "decision.dr-grade-vote-unanimous",
+      "kind": "decision",
+      "rule": "For a DR-grade call a decision needs all three members naming the same text; otherwise no decision and a prepared Question.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-220"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.dr-graduation-criteria",
+      "kind": "decision",
+      "rule": "An answer graduates to a Decision Record only when it is hard to reverse, surprising later and the result of a real trade-off.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-149"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.dr-lifecycle",
+      "kind": "decision",
+      "rule": "A DR-grade decision writes the repo DR with status proposed and ratification pending, linking the log; ratified it becomes accepted, overturned it becomes deprecated or superseded and the affected work reopens, and either way ratification is dropped.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-227",
+        "L5-231",
+        "L5-232",
+        "L5-233"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.factual-claim-check",
+      "kind": "decision",
+      "rule": "A factual claim names its check; the other two members run it independently and report confirmed, refuted or inconclusive.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-250"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.incomplete-tribunal-no-decision",
+      "kind": "decision",
+      "rule": "An incomplete tribunal decides nothing: the call becomes a prepared Question, and a vendor is never swapped silently.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-223",
+        "L5-258"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.invoked-follows-away-column",
+      "kind": "decision",
+      "rule": "The user may invoke the skill on any call; when invoked it follows the away column: reversible calls are decided by the Verdict rules, and only an irreversible call or one the tribunal cannot decide waits for his word.",
+      "actors": [
+        "user",
+        "officer"
+      ],
+      "statements": [
+        "L5-207",
+        "L5-208"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.irreversible-call-is-users",
+      "kind": "decision",
+      "rule": "An irreversible call is the user's alone, present or away, and the tribunal prepares the Question; overnight irreversible calls are always a Question.",
+      "actors": [
+        "admiral",
+        "officer"
+      ],
+      "statements": [
+        "L5-024",
+        "L5-206"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-024 is the admiral overnight and also sends other overnight calls to what-would-balazs-do; L5-206 is any officer."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "decision.judge-brief",
+      "kind": "decision",
+      "rule": "A judge gets the judge brief and nothing else from the raising officer's session, and the brief tells it that it is a judge on a what-would-balazs-do tribunal.",
+      "actors": [
+        "officer",
+        "any-agent"
+      ],
+      "statements": [
+        "L5-261",
+        "L5-263"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.judge-duties",
+      "kind": "decision",
+      "rule": "A judge goes straight to the Tribunal section, may send research subagents, returns its sealed position by the brief's deadline, answers each queued round with one turn, uses the Sealed position form and phases 4-7 as a member (phases 1-3, clerk duties and the ballot list are the clerk's), and never dispatches judges.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-195",
+        "L5-266",
+        "L5-267",
+        "L5-268",
+        "L5-269",
+        "L5-270"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.later-word-outranks",
+      "kind": "decision",
+      "rule": "A later word of the user outranks an earlier one.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-211"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.own-sealed-position-first",
+      "kind": "decision",
+      "rule": "Write and log your own sealed position before any judge starts.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-242"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.own-turn-before-reading",
+      "kind": "decision",
+      "rule": "Write your own turn before reading the others'.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-247"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.phase-deadlines",
+      "kind": "decision",
+      "rule": "Set every tribunal phase's deadline when opening the case file.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-237"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.precedent-is-his-words",
+      "kind": "decision",
+      "rule": "Only the user's own words are precedent (Decision Records, docs, answered Questions and grillings, Walkthrough verdicts, findings and skips, past conversations); search the current project unless pointed elsewhere, and a tribunal's output is never precedent until he ratifies it.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-209",
+        "L5-210",
+        "L5-212",
+        "L5-213"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.prepared-question",
+      "kind": "decision",
+      "rule": "When a call is prepared or not decided, post no DECIDED; the Question's body carries the prediction, any dissent, the stop reason and the log link, and it is wired as a blocker of every waiter.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-228",
+        "L5-229"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.proof-only-experiment",
+      "kind": "decision",
+      "rule": "An experiment goes to a proof-only code-writer in an isolated worktree with effects contained, its brief naming the commissioning captain, the pinned source SHA and the test path; tribunal members otherwise only read.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-259",
+        "L5-260"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.ratify-or-overturn",
+      "kind": "decision",
+      "rule": "The user answers a tribunal-decided Question with RATIFIED or OVERTURNED; the officer posts that block quoting his words verbatim and moves the Question to Done.",
+      "actors": [
+        "officer",
+        "user",
+        "any-agent"
+      ],
+      "statements": [
+        "L5-230",
+        "L7-128",
+        "L7-168",
+        "L7-169"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-230 is the officer posting the block; L7-128 is the user answering; L7-168 and L7-169 give the block forms."
+        },
+        {
+          "type": "wording",
+          "note": "L7-168 and L7-169 name different fields (RATIFIED: record, next; OVERTURNED: record, reopened, next)."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "decision.read-before-deciding",
+      "kind": "decision",
+      "rule": "Before deciding, read the Question Tickets and Communication and evidence sections of the Linear workspace standard and dydo/project/decisions/_decisions.md from the repository root.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-193",
+        "L5-194"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.reframe",
+      "kind": "decision",
+      "rule": "A reframe states exactly what it changes, and the judges may object.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-251"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.reversible-call-by-officer",
+      "kind": "decision",
+      "rule": "An easily reversible call is decided by the officer without the skill, present or away; overnight it is recorded DECIDED.",
+      "actors": [
+        "admiral",
+        "officer"
+      ],
+      "statements": [
+        "L5-023",
+        "L5-201"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L5-023 adds recording DECIDED for overnight reversible calls; L5-201 does not mention a record."
+        },
+        {
+          "type": "scope",
+          "note": "L5-023 is the admiral overnight; L5-201 any officer."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "decision.round-bundle",
+      "kind": "decision",
+      "rule": "Each round, send every member the same bundle (the sealed positions and the last round's turns), always queued, never steered.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-246"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.round-stop",
+      "kind": "decision",
+      "rule": "Stop the rounds when a round changes nothing and no claim is pending, and after at most 4 rounds, evidence rounds and reframes included.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-253"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.sealed-position-form",
+      "kind": "decision",
+      "rule": "A sealed position has the form: the member's own class, the call in its own words, an option the file did not list or why none exists, the premises checked and findings, its answer with any recorded decision it overrides, and what would change its mind.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-262"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.stalled-member-one-retry",
+      "kind": "decision",
+      "rule": "A missing or stalled tribunal member gets one retry.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-257"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.strictest-class-stands",
+      "kind": "decision",
+      "rule": "No class is lowered over an unresolved objection: the strictest class stands.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-252"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.tribunal-call-is-question-ticket",
+      "kind": "decision",
+      "rule": "Every call the tribunal takes is a Question ticket in Todo with the tribunal log attached as a Linear Document; a call decided without the skill needs no record here.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-224",
+        "L5-225"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.tribunal-composition",
+      "kind": "decision",
+      "rule": "The tribunal has three members, each position standing only while it survives the strongest challenge; the raising officer is a full member and also the mechanical clerk, whose view enters only through its own turns.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-234",
+        "L5-235",
+        "L5-236"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.tribunal-log",
+      "kind": "decision",
+      "rule": "Keep the tribunal log as a Linear Document \"Tribunal log - <KEY>\" attached to the Question, with the sections Case file, Dispatch, Sealed positions, Round n, Claims, Ballot, Verdict; append each finished phase and round, checkpointing Dispatch, so a fresh clerk can resume.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-238",
+        "L5-271",
+        "L5-272",
+        "L5-273"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.tribunal-procedure-file",
+      "kind": "decision",
+      "rule": "Run the tribunal by resources/tribunal.md; judges load the skill and follow the same file.",
+      "actors": [
+        "officer",
+        "any-agent"
+      ],
+      "statements": [
+        "L5-218",
+        "L5-264"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.turn-content",
+      "kind": "decision",
+      "rule": "Each turn raises the strongest material objection to another member's position, or says why none exists, and answers the strongest outstanding challenge to its own.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-248"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "decision.use-wwbd-trigger",
+      "kind": "decision",
+      "rule": "A call above the deciding agent's say goes through what-would-balazs-do when it is DR-grade or irreversible, or when the user is away (or asks for it on any call), and the result sets the Question's wiring.",
+      "actors": [
+        "ticket-captain",
+        "admiral",
+        "officer"
+      ],
+      "statements": [
+        "L1-185",
+        "L2-107",
+        "L5-190"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-185 is the ticket-captain, L2-107 the admiral, L5-190 any officer; L5-190 adds that the user may ask for it on any call and speaks of preparing DR-grade or irreversible calls."
+        },
+        {
+          "type": "wording",
+          "note": "L1-185 and L2-107 say \"above the captain's/admiral's say\"; L5-190 says \"must decide a call while he is away\"."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "decision.who-runs-the-skill",
+      "kind": "decision",
+      "rule": "Only officers run the skill, each inside its own remit (a captain on calls inside its ticket contract, the map holder on scope, destination, architecture and cross-ticket calls); crew return their call to the captain, the chief of staff never runs it, and a vote never widens a remit.",
+      "actors": [
+        "officer",
+        "crew",
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-196",
+        "L5-197",
+        "L5-198"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.admiral-routine-decisions",
+      "kind": "wayfinding",
+      "rule": "Within existing authority the admiral resolves routine decisions and commissions bounded engineering blocker diagnosis through the responsible captain.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-104"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.admiral-uses-wayfinder-and-rechart",
+      "kind": "wayfinding",
+      "rule": "As discovery clears fog the admiral uses wayfinder to settle the visible route and recharts: creates, splits, drops or resequences tickets and records the discoveries on the Project.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-028",
+        "L2-096"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-028 only says to use wayfinder to settle the route; L2-096 lists create, split, drop, resequence and recording on the Project."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.after-resolution-map-update",
+      "kind": "wayfinding",
+      "rule": "After a resolution, add newly surfaced tickets (create then wire), graduate fog the answer made specifiable and clear it from Not yet specified, and update or cancel tickets the resolution invalidates.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-186",
+        "L5-188"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.assignment-is-claim",
+      "kind": "wayfinding",
+      "rule": "Assign the ticket first, before any work, so concurrent sessions skip it.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-112"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.captain-local-fog-loop",
+      "kind": "wayfinding",
+      "rule": "When delivery exposes new local fog, the ticket-captain pauses the affected work, charts it as a direct Wayfinding Sub-ticket (loading wayfinder), records the resolution on it, links it from the parent delivery ticket, and only then resumes production.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-054",
+        "L1-087",
+        "L5-095",
+        "L5-107",
+        "L5-185"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-054 and L5-107 say to create Wayfinding Tickets/Sub-ticket; L1-087 adds pausing the affected work and completing the loop before production resumes; L5-185 says to link the resolution from the parent and that the record is the whole report; L5-095 only permits charting inside one approved delivery outcome."
+        },
+        {
+          "type": "wording",
+          "note": "L1-054 says \"Wayfinding Tickets\" and L5-107 \"a direct Wayfinding Sub-ticket\"; L5-095 says \"may chart\" where the others say do."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.captains-deliver-tasks",
+      "kind": "wayfinding",
+      "rule": "Ticket Captains deliver clear Tasks; Wayfinding Tickets clear the fog blocking what comes next.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L5-097"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.clear-fog-done",
+      "kind": "wayfinding",
+      "rule": "Clearing fog is done when every visible unknown is resolved or has the right owner, record and blocker.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-113"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.create-then-wire",
+      "kind": "wayfinding",
+      "rule": "Create the specifiable tickets (Tasks and Wayfinding Tickets) first and wire blocking edges in a second pass.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-170"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.do-not-chart-the-unseen",
+      "kind": "wayfinding",
+      "rule": "The map is deliberately incomplete: do not chart or pre-slice what cannot yet be seen, and defer later decisions until delivery reveals the facts they need.",
+      "actors": [
+        "any-agent",
+        "map-holder"
+      ],
+      "statements": [
+        "L5-098",
+        "L5-134",
+        "L5-141"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.enablement-resolution",
+      "kind": "wayfinding",
+      "rule": "Enablement is resolved when the work is done, and the answer records what was done and any facts later tickets depend on.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-133"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.facts-before-question",
+      "kind": "wayfinding",
+      "rule": "Settle fog with facts first: search the governing records and use Research, Prototype, Grilling or Enablement where they can clear it, and create a human-facing Question only when human judgment still remains.",
+      "actors": [
+        "ticket-captain",
+        "map-holder",
+        "any-agent",
+        "officer"
+      ],
+      "statements": [
+        "L1-055",
+        "L5-124",
+        "L5-143",
+        "L5-144",
+        "L5-145",
+        "L5-199"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-055 is the ticket-captain; L5-124 the map holder; L5-143/144/145 any agent; L5-199 an officer deciding a call."
+        },
+        {
+          "type": "action",
+          "note": "L5-143 lists the sources to search (Decision Records, plan, specs, docs, standards, code, tests, prior answers); L1-055 and L5-199 name only Research or \"the facts\"; L5-124 says Research when authoritative evidence inside or outside the repository can settle it."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.fog-or-ticket-test",
+      "kind": "wayfinding",
+      "rule": "Whether something is fog or a ticket depends on whether the question can be stated precisely now: a sharp question becomes a ticket even if blocked, and a question not yet phrased that sharply goes in Not yet specified.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-138",
+        "L5-139",
+        "L5-140"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.grill-breadth-first",
+      "kind": "wayfinding",
+      "rule": "Grill again breadth-first: fan out across the whole space, surfacing open questions and the first steps takeable now.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-163"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.grilling-default-type",
+      "kind": "wayfinding",
+      "rule": "Grilling is the default Wayfinding Ticket type, and a Grilling ticket always loads both grilling and domain-modeling.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-128",
+        "L5-129"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.hand-raise-routing",
+      "kind": "wayfinding",
+      "rule": "The map holder creates and wires fog tickets while charting or as delivery clears Project fog; crew return a prepared hand-raise to the Ticket Captain, who creates a local Sub-ticket or escalates a Project-level packet to the map holder.",
+      "actors": [
+        "map-holder",
+        "crew",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L5-146",
+        "L5-147",
+        "L5-148"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.hitl-live-exchange",
+      "kind": "wayfinding",
+      "rule": "A HITL ticket resolves only through the live exchange with the user; the agent never stands in for the user's side.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-121"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.inline-vs-wayfinding-ticket",
+      "kind": "wayfinding",
+      "rule": "Small discovery is done inline; a Wayfinding Ticket is created when the investigation needs its own status, owner, blocker or evidence.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-105"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.link-assets",
+      "kind": "wayfinding",
+      "rule": "Assets created while resolving a ticket, including a Prototype, are linked from the ticket, not pasted in.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-115",
+        "L5-126"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.load-map-then-zoom",
+      "kind": "wayfinding",
+      "rule": "Load the map (the low-resolution view), not every ticket body, and fetch a related or closed ticket in full on demand by the methods the map's Notes block names.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-177",
+        "L5-182"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.map-holder-charts",
+      "kind": "wayfinding",
+      "rule": "The map holder charts with wayfinder (and grills) before dividing the work.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-093",
+        "L7-090"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L5-093 says \"charts and grills\"; L7-090 says \"charts with wayfinder before dividing\" and gives the ordering."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.map-holder-pre-clears-fog",
+      "kind": "wayfinding",
+      "rule": "The Project's map holder clears most Project fog and captures the relevant answers in the ticket contract before delivery starts, so the parent Task serves as the captain's local map.",
+      "actors": [
+        "map-holder",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-053",
+        "L5-106"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-053 says the map holder \"should have cleared most\" fog and captured answers in the contract; L5-106 says the same and adds that the parent Task is the local map."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.no-map-needed",
+      "kind": "wayfinding",
+      "rule": "If charting surfaces no fog (the way is clear and the journey fits one session), no map is needed.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-164"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.not-yet-specified-section",
+      "kind": "wayfinding",
+      "rule": "The map's Not yet specified section records the dim view (suspected question, area to revisit), as loosely or fully as the view allows, and excludes what is resolved, what is already a live ticket and what is out of scope.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-136",
+        "L5-137",
+        "L5-142"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.open-tickets-via-linear",
+      "kind": "wayfinding",
+      "rule": "Open tickets are found through Linear queries and are not listed in the map.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-104"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.out-of-scope-existing-ticket",
+      "kind": "wayfinding",
+      "rule": "When an existing ticket sits past the destination, mark it Canceled and leave one line in Out of scope with the gist, why, and a link to the ticket.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-156",
+        "L5-187"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L5-187 says only to rule it out of scope; L5-156 prescribes Canceled and the one-line entry."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.out-of-scope-section",
+      "kind": "wayfinding",
+      "rule": "Work beyond the destination is out of scope, not fog: it gets its own Out of scope section on the map, is decided by scope not sharpness, stays out of Not yet specified and Resolutions so far, and never graduates unless the destination is redrawn, then as a fresh effort.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-152",
+        "L5-153",
+        "L5-154",
+        "L5-155",
+        "L5-157"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.pick-next-ticket",
+      "kind": "wayfinding",
+      "rule": "Working starts from a Project or parent delivery ticket: use a named frontier ticket if given, otherwise take the first pickable frontier ticket in Todo without asking the user to choose.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-175",
+        "L5-176",
+        "L5-178",
+        "L5-179"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.prototype-ticket",
+      "kind": "wayfinding",
+      "rule": "A Prototype ticket (HITL) makes a cheap, rough, concrete artifact to react to via the prototype skill, and is used when \"how should it look\" or \"how should it behave\" is the key question.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-125",
+        "L5-127"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.pull-discoveries-to-project-map",
+      "kind": "wayfinding",
+      "rule": "Discoveries that are shared, Project-wide or cross-ticket are moved back onto the Project map, while a captain's local course correction is accepted where it stands.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-030",
+        "L2-109"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-030 covers shared or Project-wide discoveries; L2-109 adds cross-ticket discoveries and the acceptance of local course corrections."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.question-ticket-content",
+      "kind": "wayfinding",
+      "rule": "A Question ticket carries the homework, credible options, trade-offs and a recommendation.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-130"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.read-communication-section-only",
+      "kind": "wayfinding",
+      "rule": "For a communication protocol, read only the Communication and evidence section of the Linear workspace standard from the repository root, not the whole standard.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-096"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.reread-linear-before-mutation",
+      "kind": "wayfinding",
+      "rule": "Other sessions may work unblocked tickets in parallel, so re-read Linear before every claim or map mutation.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-189"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.research-ticket-subagent",
+      "kind": "wayfinding",
+      "rule": "A Research Ticket is resolved by a subagent that loads research; after charting, each new unassigned, Todo, unblocked Research Ticket is claimed and given a subagent whose cited findings are recorded as a comment, and the charting session then stops.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-123",
+        "L5-173",
+        "L5-174"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.resolution-record",
+      "kind": "wayfinding",
+      "rule": "When the Type's outcome is reached, post the answer as a resolution comment, mark the ticket Done, append a context pointer to Resolutions so far, and the map holder closes the ticket and updates the map.",
+      "actors": [
+        "map-holder",
+        "any-agent"
+      ],
+      "statements": [
+        "L3-157",
+        "L5-184"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-157 gives closing and map update to the map holder; L5-184 addresses any agent."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.resolve-by-type-rules",
+      "kind": "wayfinding",
+      "rule": "Resolve the ticket following its Type's rules.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-183"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.route-one-ticket-at-a-time",
+      "kind": "wayfinding",
+      "rule": "Wayfinding charts the visible route as Wayfinding Tickets and resolves them one at a time, graduating what becomes specifiable into fresh tickets, until the destination is reached; it finds the route and does not charge at the destination.",
+      "actors": [
+        "any-agent",
+        "map-holder"
+      ],
+      "statements": [
+        "L5-091",
+        "L5-092",
+        "L5-135"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.scaffold-chart-and-approval",
+      "kind": "wayfinding",
+      "rule": "Chart the Project and get approval by Method step 2.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-192"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.session-ticket-limit",
+      "kind": "wayfinding",
+      "rule": "A session the user drives resolves at most one Wayfinding Ticket (Research Tickets excepted); an invoked admiral is exempt, and Tasks may run concurrently under separate Ticket Captains.",
+      "actors": [
+        "user",
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L5-158",
+        "L5-159",
+        "L5-160"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.settle-destination-first",
+      "kind": "wayfinding",
+      "rule": "Use grilling and domain-modeling to pin down what the map is finding its way to (spec, Decision Record, or change), settling the destination first since it fixes the scope.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-161",
+        "L5-162"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.shared-anchor-and-sections",
+      "kind": "wayfinding",
+      "rule": "For shared behavior or decisions needing one current anchor, choose or create a reviewed plan or feature spec (under feature-spec-convention), commit and make it reachable before linking it, keep atomic intent in the ticket, and derive affected Tasks from the anchor's relevant sections, linking those sections in their contracts.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-053",
+        "L5-103",
+        "L5-167",
+        "L5-168",
+        "L5-169",
+        "L5-171"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-053 is the admiral recording the anchor and contracting tickets before commissioning; L5-103 to L5-171 are the map holder."
+        },
+        {
+          "type": "action",
+          "note": "L5-168 adds committing a new spec under the map holder's custody and recording the anchor as unresolved when it is unreachable; L2-053 says only \"record the shared anchor choice\"."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.ticket-vs-dr-division",
+      "kind": "wayfinding",
+      "rule": "The ticket carries the question and its working resolution, the Decision Record carries the durable decision, and the two are linked rather than copied into each other.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-150",
+        "L5-151"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.type-holders",
+      "kind": "wayfinding",
+      "rule": "Each Wayfinding Ticket type has a holder: the map holder (admiral when invoked) holds Research, Grilling and Question, a ticket-captain holds Enablement and Prototype, and the holder claims the ticket before work.",
+      "actors": [
+        "admiral",
+        "ticket-captain",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-029",
+        "L2-106",
+        "L5-131",
+        "L5-132",
+        "L5-180",
+        "L5-181"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-029 has the admiral hold Walkthrough as well and commission captains for Prototype and Enablement; L5-132 says Prototype \"also has a captain\" while L2-106 says Prototype is used in its captain's session."
+        },
+        {
+          "type": "action",
+          "note": "L5-131 says a captain drives Enablement alone (AFK) and uses wizard in a top-level HITL session for human-only steps; L2-106 only says commission Enablement; L5-181 adds that a Question still waits for the user's answer."
+        },
+        {
+          "type": "wording",
+          "note": "L2-106 says present one prepared Question \"only when judgment remains\"; L5-181 says a Question \"waits for the user's answer\"."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.wayfind-done-map-matches",
+      "kind": "wayfinding",
+      "rule": "Wayfinding is done when the Project map matches the work in flight.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-103"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.wire-blockers-before-commissioning",
+      "kind": "wayfinding",
+      "rule": "Every blocker is wired and what is visible is settled before the affected delivery ticket is commissioned.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-108"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "wayfinding.write-the-map",
+      "kind": "wayfinding",
+      "rule": "Write the map with Destination and Notes filled in, Resolutions so far empty, and the fog sketched into Not yet specified.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L5-165"
+      ],
+      "drift": [],
+      "principle": null
+    }
+  ],
+  "findings": [
+    {
+      "type": "contradiction",
+      "claims": [
+        "decision.below-dr-present-plain-question",
+        "decision.dr-grade-present-prepared-question"
+      ],
+      "note": "L5-202 sends a below-DR call above the officer's say to a plain Question without the skill while the user is present; L5-222 says that while he is present and has not invoked the skill the result is always a prepared Question."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "decision.reversible-call-by-officer",
+        "decision.irreversible-call-is-users"
+      ],
+      "note": "L5-023/L5-024 (overnight, admiral) restate the L5-201/L5-206 verdict-table cells with the admiral as sole actor; L5-024 says 'other overnight calls' go to the skill, a wider phrase than 'above the officer's say'."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "decision.ratify-or-overturn",
+        "decision.dr-lifecycle"
+      ],
+      "note": "L5-232 says an overturned DR becomes deprecated, or superseded by the record his answer calls for; L5-231 says a ratified DR becomes accepted. L7-168/L7-169 name no DR status change, so the standard and the skill split the RATIFIED/OVERTURNED effects."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "decision.round-stop"
+      ],
+      "note": "L5-253 caps rounds at 4 including evidence rounds and reframes but does not say what happens when the cap is reached with claims still pending (ballot is implied by L5-254)."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "decision.incomplete-tribunal-no-decision",
+        "decision.stalled-member-one-retry"
+      ],
+      "note": "L5-257/L5-258 cover a missing or stalled member; no statement covers a judge whose result shows the wrong model or effort (L5-245 requires them but names no consequence)."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "decision.use-wwbd-trigger",
+        "decision.who-runs-the-skill"
+      ],
+      "note": "L1-185 and L2-107 apply the trigger to captain and admiral; L5-196 excludes the chief of staff, and L2-229 gives the chief of staff its own above-authority call a Question on Answer needed, with no statement saying how a chief-of-staff DR-grade call is handled."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "decision.judge-duties"
+      ],
+      "note": "L5-195 and L5-264 to L5-270 are judge rules (actor any-agent) stated in the skill and tribunal.md; a judge only reads them after loading the skill, so the brief (L5-263) must carry the pointer."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "wayfinding.scaffold-chart-and-approval"
+      ],
+      "note": "L2-192 'Chart and get approval by Method step 2' is a step reference inside the Project scaffold with no named actor besides the admiral, and Method step 2 is not defined by any statement of these kinds."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "wayfinding.type-holders",
+        "wayfinding.hand-raise-routing"
+      ],
+      "note": "L2-029 and L5-132 split Prototype between the admiral and a captain; L5-125 marks Prototype HITL while L5-131 says captains drive Enablement AFK; no statement says who holds a Prototype when the map holder is the user."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "wayfinding.session-ticket-limit",
+        "wayfinding.research-ticket-subagent"
+      ],
+      "note": "L5-158 limits a user-driven session to one Wayfinding Ticket except Research Tickets; L5-174 says charting resolves nothing itself, and L5-173 starts Research subagents in the charting session, so the exception sits in two places."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "wayfinding.map-holder-charts",
+        "wayfinding.captain-local-fog-loop"
+      ],
+      "note": "L1-054 tells the captain to load wayfinder and use Wayfinding Tickets, L5-095 permits it and L5-107 prescribes a direct Wayfinding Sub-ticket; L1-087 requires pausing, which L5-107 does not."
+    }
+  ]
+}
