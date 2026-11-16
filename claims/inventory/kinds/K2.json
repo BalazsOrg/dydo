@@ -1,0 +1,2160 @@
+{
+  "group": "K2",
+  "kinds": [
+    "linear",
+    "escalation",
+    "release"
+  ],
+  "claims": [
+    {
+      "id": "escalation.afk-unexpected-choice-becomes-question",
+      "kind": "escalation",
+      "rule": "On an AFK ticket an unexpected choice for the user becomes a blocking Question, and the parent stays AFK.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-068"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.answer-determines-ticket-resolve-first",
+      "kind": "escalation",
+      "rule": "If a Question's answer determines which implementation ticket should exist, resolve the Question first.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-126"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.crew-questions-go-to-captain",
+      "kind": "escalation",
+      "rule": "Crew questions go back to the captain with what was searched and never directly to the user.",
+      "actors": [
+        "code-writer",
+        "docs-writer",
+        "inquisitor",
+        "crew"
+      ],
+      "statements": [
+        "L3-007",
+        "L3-112",
+        "L4-012",
+        "L6-073"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-007 binds code-writer, L3-112 docs-writer, L4-012 inquisitor, L6-073 all crew."
+        },
+        {
+          "type": "action",
+          "note": "L3-007 and L4-012 require reporting what was searched; L3-112 and L6-073 do not."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.cross-ticket-answers-to-map-holder",
+      "kind": "escalation",
+      "rule": "When a Question's answer could affect other tickets, a shared contract, or the Project destination, scope, acceptance criteria or governing architecture or map, the captain prepares the packet and the map holder creates and wires the Project-level ticket.",
+      "actors": [
+        "ticket-captain",
+        "map-holder"
+      ],
+      "statements": [
+        "L1-187",
+        "L5-108",
+        "L7-110",
+        "L7-111"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-187 says send the packet to the map holder; L5-108 says escalate to the map holder instead of resolving locally; L7-111 says the map holder creates and wires the ticket."
+        },
+        {
+          "type": "scope",
+          "note": "L1-187 limits to answers reaching other tickets or the destination; L7-110 lists shared contract, scope, acceptance criteria and architecture."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.discovery-before-question",
+      "kind": "escalation",
+      "rule": "Discovery comes before a Question: search authoritative sources first, and create the Question only when they leave the user's judgment needed; if they settle it, no Question exists.",
+      "actors": [
+        "ticket-captain",
+        "research",
+        "any-agent",
+        "map-holder"
+      ],
+      "statements": [
+        "L1-184",
+        "L3-139",
+        "L7-120",
+        "L7-121",
+        "L7-122",
+        "L7-123"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-139 binds research, L7-123 the map holder, others ticket-captain or any-agent."
+        },
+        {
+          "type": "wording",
+          "note": "L7-121 lists sources (Decision Records, plan, specs, docs, standards, code, tests); L1-184 and L7-120 do not."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.escalate-only-concrete-missing",
+      "kind": "escalation",
+      "rule": "Escalate concrete missing authority, access or scope, not routine work.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-112"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.fifth-consecutive-fail",
+      "kind": "escalation",
+      "rule": "A fifth consecutive review FAIL on one review loop escalates; record it on the ticket and wire a prepared Question as blocker.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L2-041"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.judgment-call-is-a-question",
+      "kind": "escalation",
+      "rule": "A judgment call is filed as a Question for the user, prepared by the standard's Question Tickets rules.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-277"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.local-question-in-todo-wired",
+      "kind": "escalation",
+      "rule": "A Question is created in Todo, wired as a blocker of everything that waits, with its homework recorded.",
+      "actors": [
+        "ticket-captain",
+        "map-holder"
+      ],
+      "statements": [
+        "L1-186",
+        "L4-175",
+        "L7-124"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-186 binds the ticket-captain for a local Question Sub-ticket; L4-175 and L7-124 bind the map holder."
+        },
+        {
+          "type": "action",
+          "note": "L4-175 adds that the Question records its homework and sets priority by the standard."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.merge-product-choice-to-captain",
+      "kind": "escalation",
+      "rule": "A new product choice in a merge goes back to the captain.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-077"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.parent-not-active-hand-dispatch-up",
+      "kind": "escalation",
+      "rule": "On parent_not_active, hand the dispatch up to your officer.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L6-065"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.path-crew-captain-admiral-user",
+      "kind": "escalation",
+      "rule": "Escalation runs crew, then Ticket Captain, then admiral, then user.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L1-056",
+        "L2-039"
+      ],
+      "drift": [
+        {
+          "type": "value",
+          "note": "L1-056 includes the admiral only when one is invoked; L2-039 includes the admiral unconditionally."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.question-packet-and-body",
+      "kind": "escalation",
+      "rule": "A Question carries a packet of the one question, the named work it blocks, the sources searched and facts found, and the credible options with a recommendation when evidence supports one, all on the record.",
+      "actors": [
+        "ticket-captain",
+        "map-holder"
+      ],
+      "statements": [
+        "L1-188",
+        "L7-125"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-188 says \"the packet and all evidence\"; L7-125 lists four body items."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.reach-user-only-for",
+      "kind": "escalation",
+      "rule": "Reach the user only for a DR conflict, live state the agents cannot coordinate, or missing authority.",
+      "actors": [
+        "any-agent",
+        "admiral"
+      ],
+      "statements": [
+        "L1-057",
+        "L2-040"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-057 binds any-agent; L2-040 binds the admiral."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.remaining-gates-to-captain",
+      "kind": "escalation",
+      "rule": "A docs-writer hands any remaining project-declared gates to the captain.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-129"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.stops-preserved-not-retried",
+      "kind": "escalation",
+      "rule": "Safety, provenance and review stops and bounded refusals are preserved with their record, candidate, hop SHA and brief, and are not retried blindly or in loops.",
+      "actors": [
+        "admiral",
+        "any-agent"
+      ],
+      "statements": [
+        "L2-111",
+        "L6-074"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-111 says prepare the owned disposition; L6-074 says do not broaden the brief."
+        },
+        {
+          "type": "scope",
+          "note": "L2-111 binds the admiral; L6-074 any-agent."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "escalation.unmeetable-target-not-lowered",
+      "kind": "escalation",
+      "rule": "A stated target the design cannot meet is redesigned or returned to the captain, never lowered.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-008"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.unresolved-attribution-to-captain",
+      "kind": "escalation",
+      "rule": "Unresolved failure attribution or missing support goes to the captain.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-048"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "escalation.user-asked-through-host-question-tool",
+      "kind": "escalation",
+      "rule": "An officer that needs the user while work runs asks through the host's question tool, and the Linear Question ticket stays the record.",
+      "actors": [
+        "ticket-captain",
+        "officer"
+      ],
+      "statements": [
+        "L1-036",
+        "L2-027",
+        "L2-215",
+        "L6-071",
+        "L6-072"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L6-071 adds that T3 lifts the thread into the user's queue."
+        },
+        {
+          "type": "scope",
+          "note": "L1-036 binds the ticket-captain, L2-027, L2-215 and L6-071 officers."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.admiral-owns-board-statuses",
+      "kind": "linear",
+      "rule": "The admiral owns Project and map-holder-held ticket statuses; delivery captains own theirs.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-031"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.afk-tickets-carry-no-priority",
+      "kind": "linear",
+      "rule": "AFK tickets carry no priority; the plan order and native blockers carry their sequence.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-086"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.assignment-is-the-claim",
+      "kind": "linear",
+      "rule": "Linear assignment is the claim on a ticket: assigned means taken; unassigned, Todo and unblocked means pickable.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L6-002",
+        "L7-035"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-002 states only that assignment is the claim; L7-035 adds the pickable condition."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.board-inbox-and-resume-point",
+      "kind": "linear",
+      "rule": "The Linear board is the captain's inbox and each hop's SHA its resume point.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-045"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.bug-joining-acceptance-on-parent",
+      "kind": "linear",
+      "rule": "Joining acceptance and final review of a staged Bug stay on the parent.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-118"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.bug-stage-keeps-type-mode",
+      "kind": "linear",
+      "rule": "Each Bug stage keeps the parent's Type and Mode and has its own contract, chain, branch and worktree.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-115"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.bug-staged-subtickets",
+      "kind": "linear",
+      "rule": "A Bug may retain its Type template's ordered reproduce-or-identify and fix Sub-tickets, with fix natively blocked by reproduction.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-086",
+        "L6-087",
+        "L7-113"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-087 adds that shared paths transfer only after reproduction closes with evidence; L7-113 frames the Bug template as an exception to parallel lanes."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.captain-map-holder-subticket-for-fog",
+      "kind": "linear",
+      "rule": "A captain creates a map-holder-held Sub-ticket for fog that blocks only its parent or a lane and stays inside the approved Project destination and ticket outcome.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-108"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.captain-relay-keeps-identity",
+      "kind": "linear",
+      "rule": "A captain relay preserves the original author or reviewer identity and distinguishes the captain's posting identity.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-185"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.captain-sets-status-on-chain-spawn",
+      "kind": "linear",
+      "rule": "Only the ticket-captain sets a delivery ticket status; the record that runs the chain flips status at each chain spawn and nothing else flips it.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-043",
+        "L7-010",
+        "L7-011"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-011 is stated for any-agent; L1-043 and L7-010 for the ticket-captain."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.captain-ticket-carries-type-and-mode",
+      "kind": "linear",
+      "rule": "Every captain-held ticket carries exactly one Type and one Mode (AFK or HITL); new implementation tickets get one Type and one Mode.",
+      "actors": [
+        "ticket-captain",
+        "admiral",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-042",
+        "L2-100",
+        "L5-120",
+        "L7-041",
+        "L7-042"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-041 binds every ticket for Type, while L1-042, L5-120 and L7-042 bind captain-held tickets (Mode sits on every Type a captain holds); L2-100 binds the admiral for new implementation tickets."
+        },
+        {
+          "type": "action",
+          "note": "L2-100 also sets the new ticket to Todo, which the other copies do not say."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.claim-done-criteria",
+      "kind": "linear",
+      "rule": "A claim is done when the ticket is assigned, its branch and isolated worktree exist, and branch, base SHA and worktree path are recorded on the ticket.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-062",
+        "L6-025"
+      ],
+      "drift": [
+        {
+          "type": "value",
+          "note": "L1-062 lists Type, Mode, branch, base SHA, isolated worktree, clean state and owned paths; L6-025 lists branch, base SHA and worktree path only."
+        },
+        {
+          "type": "action",
+          "note": "L6-025 also says the captain sets Implementing when it spawns the author."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.comment-signs-role-and-model",
+      "kind": "linear",
+      "rule": "Every agent-authored Linear comment identifies its acting role and truthful model identity.",
+      "actors": [
+        "crew",
+        "any-agent"
+      ],
+      "statements": [
+        "L3-057",
+        "L7-180"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L3-057 binds crew and names the form code-writer/model; L7-180 is general."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.conflict-raise-and-override-back",
+      "kind": "linear",
+      "rule": "Raise a conflict found in the record, and write a live instruction that overrides the record back to the record.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-051",
+        "L1-052",
+        "L2-038"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-051 and L1-052 bind the ticket-captain only; L2-038 binds any-agent."
+        },
+        {
+          "type": "wording",
+          "note": "L1-051 and L1-052 are two sentences-halves; L2-038 states both in one line, so the statements are one rule across both copies."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.contracts-are-tickets-or-subtickets",
+      "kind": "linear",
+      "rule": "For the Project's map holder, contracts are tickets under the Project; for a captain they are Sub-tickets under its ticket.",
+      "actors": [
+        "map-holder",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L5-116"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.decision-records-linked",
+      "kind": "linear",
+      "rule": "Linear records the decision-making work and dydo records a qualifying decision; the Question or Grilling Ticket and its repository Decision Record link to each other.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-188",
+        "L7-189"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.filter-tool-output",
+      "kind": "linear",
+      "rule": "Filter tool output before it enters model context.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-150"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.futurefeature-only-user-promotes",
+      "kind": "linear",
+      "rule": "Only the user promotes a FutureFeature.",
+      "actors": [
+        "user"
+      ],
+      "statements": [
+        "L7-013",
+        "L7-036"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.futurefeature-project-grain-promotion",
+      "kind": "linear",
+      "rule": "At Project or Initiative grain, promoting a FutureFeature creates and links that record and marks the FutureFeature Done.",
+      "actors": [
+        "user"
+      ],
+      "statements": [
+        "L7-038"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.futurefeature-rejected-canceled",
+      "kind": "linear",
+      "rule": "A rejected FutureFeature becomes Canceled with the reason recorded.",
+      "actors": [
+        "user"
+      ],
+      "statements": [
+        "L7-039"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.futurefeature-ticket-grain-promotion",
+      "kind": "linear",
+      "rule": "At ticket grain, promoting a FutureFeature gives it a Type and moves it to Backlog or Todo on the same record.",
+      "actors": [
+        "user"
+      ],
+      "statements": [
+        "L7-037"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.historical-comments-untouched",
+      "kind": "linear",
+      "rule": "Historical comments stay untouched.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-187"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.in-progress-status-meaning",
+      "kind": "linear",
+      "rule": "In Progress is the status of a record not running the chain itself, such as a parent while its lanes run, a wayfinding ticket or an Inquisition sweep.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-076",
+        "L7-018"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-076 covers a Shape parent while lanes run; L7-018 lists parent, wayfinding ticket and Inquisition sweep."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.inquisition-sweep-holds-in-progress",
+      "kind": "linear",
+      "rule": "An Inquisition ticket stays In Progress through its sweep (map, phases, proofs, triage, patch lane) until its own record enters the chain.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-044",
+        "L1-083",
+        "L1-213"
+      ],
+      "drift": [
+        {
+          "type": "value",
+          "note": "L1-213 says In Progress runs from commission through step 10; L1-044 and L1-083 say until its record enters the chain."
+        },
+        {
+          "type": "action",
+          "note": "L1-083 adds that the record then runs the normal docs delivery chain."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.keep-attempts-on-existing-record",
+      "kind": "linear",
+      "rule": "Every attempt and agent invocation is recorded as comments and evidence on the existing ticket or Sub-ticket, never as another child; successive agents may work through the same record.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-086",
+        "L6-084",
+        "L6-085"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-086 binds the ticket-captain; L6-084 and L6-085 bind any-agent."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.keep-blockers-answers-evidence-true",
+      "kind": "linear",
+      "rule": "Blockers, answers and evidence are kept true to the work.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-032"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.keep-contract-in-description",
+      "kind": "linear",
+      "rule": "Keep the stable current contract and state in the ticket description.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-148"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.lane-needing-split-replaced-by-siblings",
+      "kind": "linear",
+      "rule": "A lane that needs splitting is replaced by sibling lanes.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-109"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.lanes-one-level-deep",
+      "kind": "linear",
+      "rule": "A captain creates Sub-tickets one level deep; lanes are for separate work that can run at the same time, each carrying its parent's Type and Mode.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-106"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.merge-operation-closes-done",
+      "kind": "linear",
+      "rule": "The merge operation and its source ticket close Done.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-154"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.merge-subticket-never-ready-to-merge",
+      "kind": "linear",
+      "rule": "A Merge Sub-ticket never enters Ready to Merge.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-150",
+        "L6-098"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.mode-afk",
+      "kind": "linear",
+      "rule": "Mode AFK: the captain reaches reviewed completion without a live conversation.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-067"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.mode-hitl",
+      "kind": "linear",
+      "rule": "Mode HITL: the user and the captain work the ticket together in a session the user opened.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-069"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.name-project-and-ticket-by-title-key-url",
+      "kind": "linear",
+      "rule": "Every Project and ticket is named by its title with its Linear key and URL inside that name.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-100",
+        "L5-110"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-100 binds everything the user reads and includes Projects; L5-110 states that each ticket has a name, key and URL."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.native-blocker-relations",
+      "kind": "linear",
+      "rule": "Blocking uses Linear's native dependency relationship, connecting every waiting record to what it waits on.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-113",
+        "L7-112"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L5-113 gives the reason (frontier renders in Linear); L7-112 states the connection for every waiting record."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.never-infer-alias-parent-effort",
+      "kind": "linear",
+      "rule": "Never infer an alias resolution, parent model or effort.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-183"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.no-at-mention-unless-delegating",
+      "kind": "linear",
+      "rule": "Name an agent without its @ unless delegating, because an @mention starts that agent's session.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-151"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.no-blocked-status",
+      "kind": "linear",
+      "rule": "Do not add a Blocked status; it can drift from Linear's dependency graph.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-034"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.no-second-status-board",
+      "kind": "linear",
+      "rule": "Linear stays the live truth, so the repository holds no second status board.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-236"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.open-blocker-means-blocked",
+      "kind": "linear",
+      "rule": "A ticket with an open native blocker is blocked in any status and cannot be picked up.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-016",
+        "L7-033"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-016 speaks of Todo tickets and pickup; L7-033 of any status."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.parent-stays-ready-to-merge",
+      "kind": "linear",
+      "rule": "The parent stays Ready to Merge while its own Merge Sub-ticket runs.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-149",
+        "L7-024"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.post-each-hop-sha",
+      "kind": "linear",
+      "rule": "The captain posts each crew hop's commit SHA on the record.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-082",
+        "L6-097"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-097 adds that the record holds the detail."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.priority-high",
+      "kind": "linear",
+      "rule": "Priority High is set when clearing the ticket lets a top-level ticket, or a Project's next step, run AFK.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-083"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.priority-low",
+      "kind": "linear",
+      "rule": "Priority Low is set when nothing runs AFK on clearing but the user must clear it anyway.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-085"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.priority-medium",
+      "kind": "linear",
+      "rule": "Priority Medium is set when clearing the ticket lets a lane run AFK.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-084"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.priority-never-severity",
+      "kind": "linear",
+      "rule": "Priority keeps its meaning and never carries severity.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-079"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.priority-urgent",
+      "kind": "linear",
+      "rule": "Priority Urgent means an emergency and is never set by default.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-082"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.project-status-backlog",
+      "kind": "linear",
+      "rule": "Project status Backlog means a possible Project retained for later that no one has started charting.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-002"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.project-status-in-progress",
+      "kind": "linear",
+      "rule": "Project status In Progress means the map holder is working the map through Ticket Captains toward the destination.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-005"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.project-status-planned",
+      "kind": "linear",
+      "rule": "Project status Planned means the user approved the charted route and any repository plan passed independent review; the map holder commissions the first Ticket Captain.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-004"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.project-status-planning",
+      "kind": "linear",
+      "rule": "Project status Planning means the map holder is charting the first low-resolution map with wayfinder and any repository plan runs its review loop.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-003"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.projects-carry-no-labels",
+      "kind": "linear",
+      "rule": "A Project carries no canonical labels; its status and ticket graph carry the information.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-008"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.qualify-unexposed-identity",
+      "kind": "linear",
+      "rule": "When the effective identity is not exposed, qualify a family or a requested/configured value.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-182"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.question-in-todo-is-user-turn",
+      "kind": "linear",
+      "rule": "A Question in Todo carries judgment the user must supply and is the user's turn.",
+      "actors": [
+        "ticket-captain",
+        "user"
+      ],
+      "statements": [
+        "L1-048",
+        "L7-017"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.read-comments-only-for-named-fact",
+      "kind": "linear",
+      "rule": "Read comments only for a named missing fact or binding review; comments have no assumed order.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-149"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.read-metadata-first",
+      "kind": "linear",
+      "rule": "Use metadata first: read only the current active contract and named evidence.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-147"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.read-standard-sections",
+      "kind": "linear",
+      "rule": "Read the Linear workspace standard from the repository root; the Communication and evidence section for the communication protocol, other sections on demand.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-011",
+        "L5-119"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-011 limits the ticket-captain to the Communication and evidence section plus others on demand; L5-119 says the standard owns the full Type set and status/priority rules, without a section limit."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.ready-to-merge-meaning",
+      "kind": "linear",
+      "rule": "Ready to Merge means the PR carries its PASS block and waits for its merge turn.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-023"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.ready-to-merge-scope",
+      "kind": "linear",
+      "rule": "Ready to Merge holds for a lane into its parent, a primary into the feature branch, and an atomic ticket or the landing into main.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-030"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.record-is-live-truth",
+      "kind": "linear",
+      "rule": "The Linear record is the default truth for live work, and its latest word wins.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L1-050",
+        "L2-037"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.review-block-recorded-on-judged-work",
+      "kind": "linear",
+      "rule": "The invoker records the review block on the work judged: a Project update for a project-plan review, the Merge Ticket for a merge review, otherwise the ticket.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L3-198"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.reviewer-block-is-signature",
+      "kind": "linear",
+      "rule": "The reviewer field in a reviewer block is its signature; no second or conflicting one is added.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L7-186"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.same-types-statuses-chain-both-levels",
+      "kind": "linear",
+      "rule": "The same Types, statuses and chain hold for Project-level and delivery-level contracts.",
+      "actors": [
+        "map-holder",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L5-117"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.set-implementing-on-author-spawn",
+      "kind": "linear",
+      "rule": "The captain sets Implementing when the author of the change (code-writer or docs-writer), including a fix hop after a FAIL, is spawned, and after a spec review of either verdict.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-066",
+        "L1-081",
+        "L1-117",
+        "L1-295",
+        "L7-019"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-066 sets Implementing after a spec review verdict, L1-117 on sending a FAIL block, L1-081 and L7-019 on each author spawn, L1-295 for the Inquisition record before In Review."
+        },
+        {
+          "type": "wording",
+          "note": "L1-295 combines Implementing then In Review for a docs reviewer in one sentence."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.set-in-review-on-reviewer-spawn",
+      "kind": "linear",
+      "rule": "In Review is set when any reviewer is spawned, and In Review on the board always means a reviewer is running.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-101",
+        "L7-020",
+        "L7-032"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-020 includes the optional spec review of the contract; L1-101 states it for briefing a reviewer."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.severity-blocker-carriers",
+      "kind": "linear",
+      "rule": "Severity blocker (the intended case is wrong) is carried by each blocker Bug an inquisition files.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-074"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.severity-nit-carriers",
+      "kind": "linear",
+      "rule": "Severity nit (everything else) is carried by each inquisition round's nit ticket.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-076"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.severity-only-on-finding-tickets",
+      "kind": "linear",
+      "rule": "Severity sits only on a ticket born from a finding, by DR 058's names, set by whoever files the ticket; most tickets carry none.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-043",
+        "L7-071",
+        "L7-072",
+        "L7-073"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.severity-should-carriers",
+      "kind": "linear",
+      "rule": "Severity should (a real bug callers will hit, inside the intent) is carried by each should ticket filed from a review and each should Bug an inquisition files.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-075"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.simple-bug-collapses-placeholders",
+      "kind": "linear",
+      "rule": "A simple Bug collapses the staged placeholders into parent hops and closes the unused records Canceled with the reason.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-089",
+        "L7-117"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.small-work-stays-on-ticket",
+      "kind": "linear",
+      "rule": "Small lookups, conversations and setup stay on the ticket that needs them; a map-holder-held ticket is created only when the work needs independent tracking or blocks other work.",
+      "actors": [
+        "any-agent",
+        "map-holder"
+      ],
+      "statements": [
+        "L7-065",
+        "L7-066"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-065 binds any-agent; L7-066 binds the map holder."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.state-effective-model-identity",
+      "kind": "linear",
+      "rule": "State the effective model identity when trustworthy runtime information exposes it.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-181"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.state-effort-only-when-known",
+      "kind": "linear",
+      "rule": "State effort only when it is known and useful.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-184"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-backlog-meaning",
+      "kind": "linear",
+      "rule": "Status Backlog holds a ticket retained with a Type, unscheduled and waiting to become Todo.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-014"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-canceled-meaning",
+      "kind": "linear",
+      "rule": "Status Canceled means the ticket will not be completed; the record says why.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-028"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-done-meaning",
+      "kind": "linear",
+      "rule": "Status Done means merged, or the outcome the Type names reached, with its evidence.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-027"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-duplicate-meaning",
+      "kind": "linear",
+      "rule": "Status Duplicate means another ticket owns the outcome; the record links to it.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-029"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-futurefeature-meaning",
+      "kind": "linear",
+      "rule": "Status FutureFeature is an unscheduled strategic possibility with no Type yet.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-012"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-path-captain-default",
+      "kind": "linear",
+      "rule": "A captain-held ticket's default status path, subject to Type exceptions, is Todo, Implementing, In Review, Ready to Merge, Done, with In Progress while lanes run.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-098"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-path-grilling-walkthrough",
+      "kind": "linear",
+      "rule": "A Grilling or Walkthrough ticket's normal status path is Todo, In Progress, Done.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-093"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-path-question",
+      "kind": "linear",
+      "rule": "A Question ticket's normal status path is Todo, Done.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-094"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-path-research",
+      "kind": "linear",
+      "rule": "A Research ticket's normal status path is Todo, In Progress, Done.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-092"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.status-set-order",
+      "kind": "linear",
+      "rule": "Primary tickets and Sub-tickets share one set of ten statuses, kept in the listed order within Linear's categories.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-001",
+        "L7-009"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L7-001 gives the reason (Linear draws status circles by position); L7-009 states the count and shared set."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.status-todo-meaning",
+      "kind": "linear",
+      "rule": "Status Todo is the incoming list of contracted tickets to be started soon.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-015"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.task-names-role-not-label",
+      "kind": "linear",
+      "rule": "Task names the captain-held ticket's role on a map; it is not a label.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-064"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.three-label-groups",
+      "kind": "linear",
+      "rule": "Tickets use three label groups, Type, Mode and Severity, one label per group.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-040"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.ticket-body-one-outcome-one-session",
+      "kind": "linear",
+      "rule": "A ticket's body carries one outcome sized to one agent session.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-111"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.ticket-template-from-body",
+      "kind": "linear",
+      "rule": "Create a Linear ticket template from the body given where the connected tools or UI permit.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-129"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-bug",
+      "kind": "linear",
+      "rule": "Type Bug is held by a captain at any level: restore intended behaviour; it closes on the behaviour restored.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-045"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-enablement",
+      "kind": "linear",
+      "rule": "Type Enablement is held by a captain at any level: access, environment, credentials or material other work needs; it closes on the condition true, with evidence.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-047"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-feature",
+      "kind": "linear",
+      "rule": "Type Feature is held by a captain at any level: add, improve, refactor or document an outcome to build; it closes on the outcome merged.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-044"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-grilling",
+      "kind": "linear",
+      "rule": "Type Grilling is held by the map holder at any level: a tree of intent or specification choices resolved with the user; it closes on shared understanding recorded, with its Decision Records linked.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-054"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-inquisition",
+      "kind": "linear",
+      "rule": "Type Inquisition is held by a captain on a primary ticket, with group Sub-tickets above about 10 areas: one round of audit of the integrated feature, each round starting from zero.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-049"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-merge",
+      "kind": "linear",
+      "rule": "Type Merge is held by a captain at any level (the landing is the only primary one): one merge operation; it closes on the merge review PASS.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-046"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-prototype",
+      "kind": "linear",
+      "rule": "Type Prototype is held by a captain at any level: a design question raised to fidelity the user can react to; it closes on the user's verdict on the ticket.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-051"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-question",
+      "kind": "linear",
+      "rule": "Type Question is held by the map holder at any level: one prepared, discrete question whose answer blocks named work; it closes on the user's answer on the ticket.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-052"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-research",
+      "kind": "linear",
+      "rule": "Type Research is held by the map holder at any level: a factual answer whose investigation needs its own owner, status or evidence; it closes on cited findings on the ticket.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-053"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.type-walkthrough",
+      "kind": "linear",
+      "rule": "Type Walkthrough is held by the map holder on a primary ticket only: the user walks the whole product as it stands; it closes on the user's verdict quoted or skip recorded, findings filed as tickets.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-055"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.use-available-capabilities",
+      "kind": "linear",
+      "rule": "Agents read the standard and the ticket contract, then use the capabilities actually available; template listing or retrieval is not a required connector capability.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-130"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.user-gate-approval-not-hitl",
+      "kind": "linear",
+      "rule": "The user's approval or inspection at a universal gate does not make a ticket HITL.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-070"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.waiter-priority-set-by-standard",
+      "kind": "linear",
+      "rule": "Priority is set on every ticket that waits on the user (a Question or a HITL ticket) by the standard's guide and re-set as blockers change.",
+      "actors": [
+        "ticket-captain",
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L1-189",
+        "L2-114",
+        "L7-081"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-189 binds the ticket-captain for Question tickets, L2-114 the admiral for every human waiter, L7-081 the map holder for every waiter."
+        },
+        {
+          "type": "action",
+          "note": "L1-189 states the rule as \"the answer that frees the most AFK work\"; L2-114 adds that AFK order stays in the map and blockers."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.wayfinding-resolution-decided-comment",
+      "kind": "linear",
+      "rule": "A Wayfinding Ticket's resolution is recorded as a named evidence comment in the DECIDED form of the communication protocol.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L5-114"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.withdraw-only-obsolete-questions",
+      "kind": "linear",
+      "rule": "Withdraw only Questions made obsolete by discovered facts or completed work; keep tribunal-decided Questions awaiting ratification.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L5-034"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.wizard-guides-user-only-enablement-steps",
+      "kind": "linear",
+      "rule": "wizard guides the Enablement steps that only the user can do.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-048"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.write-for-reader-who-wasnt-there",
+      "kind": "linear",
+      "rule": "Write every Question and DECIDED for a reader who was not there.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L5-033"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "linear.writer-precode-comment-only-when-split",
+      "kind": "linear",
+      "rule": "Before code, a code-writer posts one comment only when the work splits into disjoint lanes or the contract is inexact, then stops.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-056"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "release.blocker-takeover-dying-session",
+      "kind": "release",
+      "rule": "On a blocker the captain cannot clear or a user takeover (or dying session), push the branch, post the resume SHA, clean the worktrees the captain or its crew made with dydo clean, set the parent Todo, unassign, wire any blocker, and return released <key>: <reason>.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-190",
+        "L6-101"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-190 includes a dying session as a release trigger; L6-101 names uncleared blocker or user takeover."
+        },
+        {
+          "type": "action",
+          "note": "L6-101 adds returning \"released <key>: <reason>\"; L1-190 does not state the return line."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "release.dead-session-treated-as-release",
+      "kind": "release",
+      "rule": "A dead session is treated as a release from its last recorded hop, without assuming a final push.",
+      "actors": [
+        "map-holder",
+        "admiral",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-193",
+        "L2-140",
+        "L6-103"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-193 binds the map holder, L2-140 the admiral, L6-103 any-agent."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "release.fresh-commission-is-portable-floor",
+      "kind": "release",
+      "rule": "A fresh commission from the record is the portable floor; a host that can resume the same captain may do so.",
+      "actors": [
+        "any-agent",
+        "admiral"
+      ],
+      "statements": [
+        "L1-194",
+        "L2-142",
+        "L6-104"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L2-142 names one-word resume and transcript steering as host conveniences; L6-104 says it works on both hosts."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "release.inquisition-two-release-cases",
+      "kind": "release",
+      "rule": "An Inquisition releases in two cases only: released <key>: verification skill first when a project with a runnable surface has no verification skill, and released <key>: groups <keys> when its area map is cut into group Sub-tickets, resuming once the skill exists or once every group closes.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-212",
+        "L6-110",
+        "L7-096"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-212 states only the verification-skill-first case; L6-110 and L7-096 state both."
+        },
+        {
+          "type": "value",
+          "note": "L7-096 releases to Todo; L1-212 and L6-110 do not say the status."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "release.lifecycle-handling-then-return-or-release",
+      "kind": "release",
+      "rule": "Use established lifecycle handling, then return or release the concrete limitation when captain-owned work cannot run.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-018",
+        "L6-075"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-075 scopes it to a bounded refusal; L1-018 does not."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "release.next-captain-resumes-from-record",
+      "kind": "release",
+      "rule": "The next captain reads the record and resumes at the stage the record proves, from the branch.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-192",
+        "L2-047"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-192 binds the ticket-captain; L2-047 the admiral."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "release.released-line-points-to-record",
+      "kind": "release",
+      "rule": "A released <key>: <reason> points to the record's resume SHA, blocker and prepared packet.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-139"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "release.takeover-goes-through-release",
+      "kind": "release",
+      "rule": "A takeover always goes through release before a top-level captain resumes.",
+      "actors": [
+        "any-agent",
+        "admiral"
+      ],
+      "statements": [
+        "L1-195",
+        "L2-141"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "release.thread-worktree-belongs-to-t3",
+      "kind": "release",
+      "rule": "The worktree the thread runs in belongs to T3: leave it.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-191"
+      ],
+      "drift": [],
+      "principle": null
+    }
+  ],
+  "findings": [
+    {
+      "type": "contradiction",
+      "claims": [
+        "escalation.path-crew-captain-admiral-user"
+      ],
+      "note": "L1-056 says the admiral is in the path only when one is invoked; L2-039 puts the admiral in the path unconditionally."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "linear.inquisition-sweep-holds-in-progress"
+      ],
+      "note": "L1-213 refers to \"step 10\" of the inquisition procedure; no statement of this group defines which step that is."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "linear.set-implementing-on-author-spawn",
+        "linear.status-path-captain-default"
+      ],
+      "note": "L7-019 and L7-098 describe the Implementing status without the Inquisition path where L7-095 (not this group) sets Implementing after In Progress."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "release.inquisition-two-release-cases"
+      ],
+      "note": "L1-212 is stated in inquisition.md only for the ticket-captain, while L6-110 and L7-096 sit in files the inquisition procedure reader may not open."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "escalation.fifth-consecutive-fail"
+      ],
+      "note": "L2-041 binds ticket-captain and admiral but no statement of this group says who counts the FAILs or where the count is recorded."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "escalation.crew-questions-go-to-captain",
+        "escalation.merge-product-choice-to-captain"
+      ],
+      "note": "L3-007 (open crossroads returns to captain) and L3-077 (new product choice in a merge goes back to captain) state overlapping cases in separate claims."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "release.dead-session-treated-as-release"
+      ],
+      "note": "L1-193 gives the dead-session rule to the map holder, while L2-140 gives it to the admiral and L6-103 to any-agent; no statement names one owner."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "linear.keep-attempts-on-existing-record",
+        "linear.post-each-hop-sha"
+      ],
+      "note": "L1-086 and L1-082 hold in one skill; L6-084 repeats the first in the working-tree standard with no statement of who posts evidence for agents other than the captain."
+    },
+    {
+      "type": "contradiction",
+      "claims": [
+        "linear.captain-ticket-carries-type-and-mode",
+        "linear.status-futurefeature-meaning"
+      ],
+      "note": "L7-041 says every ticket carries exactly one Type, while L7-012 says a FutureFeature has no Type yet."
+    }
+  ]
+}
