@@ -1,0 +1,2041 @@
+{
+  "group": "K5",
+  "kinds": [
+    "inquisition",
+    "research",
+    "docs"
+  ],
+  "claims": [
+    {
+      "id": "docs.agent-docs-anchor-and-tagline",
+      "kind": "docs",
+      "rule": "An anchor missing or doubled, or a tagline that changes nothing, is an agent-docs finding; the no-op test grades against the model default and a failing line is deleted rather than softened.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-142",
+        "L4-143"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-cross-references",
+      "kind": "docs",
+      "rule": "A cross-reference missing or extra against the exact set its brief binds is an agent-docs finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-148"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-description-is-trigger",
+      "kind": "docs",
+      "rule": "An agent-doc description that is not a trigger is a finding; a crew role spawned by name may state its job in trigger form.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-140",
+        "L4-141"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-glossary-vocabulary",
+      "kind": "docs",
+      "rule": "Vocabulary off the dydo glossary (a retired word anywhere, or a Linear noun away from a real handoff) is an agent-docs finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-149"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-governed-by-writing-for-agents",
+      "kind": "docs",
+      "rule": "writing-for-agents governs agent-facing writing; the reviewer agent-docs list is that method turned into verdicts.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-139"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-off-the-map",
+      "kind": "docs",
+      "rule": "An agent doc off the map is a finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-147"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-prohibition-steering",
+      "kind": "docs",
+      "rule": "Steering by prohibition where the positive target would carry it is an agent-docs finding; a guardrail states both.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-150"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-return-shape-parsable",
+      "kind": "docs",
+      "rule": "A return shape its consumer cannot parse (the review block, or a crew return to the Captain) is an agent-docs finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-153"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-shape",
+      "kind": "docs",
+      "rule": "Broken shape is an agent-docs finding; a section order the user set for a role stands in place of Method, while Must-Reads, Boundary, Return and a completion criterion wherever steps exist still bind.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-144",
+        "L4-145"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-sprawl",
+      "kind": "docs",
+      "rule": "Sprawl, a document longer than its reader path needs, is an agent-docs finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-151"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.agent-docs-upstream-unaltered",
+      "kind": "docs",
+      "rule": "Methods keep their upstream shape; upstream text altered without a binding reason is an agent-docs finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-146",
+        "L4-152"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.authored-source-and-navigation",
+      "kind": "docs",
+      "rule": "Navigation pages are authored when the docs need them; skills/<category>/<name>/ is the only editable skill source and host discovery paths are setup projections.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-121"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.claim-needs-witness",
+      "kind": "docs",
+      "rule": "Every sentence written is a claim needing a witness in the repository (code, configuration, or governing intent); where the witness is missing the gap is returned instead of the claim written, and the code, configuration and decisions are read until every claim has one.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-109",
+        "L3-110",
+        "L3-115"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.cut-what-code-states",
+      "kind": "docs",
+      "rule": "Cut whatever the code already states plainly.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-119"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.decision-rationale-stays-in-dydo",
+      "kind": "docs",
+      "rule": "The Decision Record is canonical: its rationale is kept in dydo rather than copied into Linear.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-190"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.docs-work-done",
+      "kind": "docs",
+      "rule": "Docs work is done when each claim has one canonical home, repeated meanings are pointers, and every added claim has its witness.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-120"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.drift-is-finding",
+      "kind": "docs",
+      "rule": "Drift is a finding: a claim the tree no longer supports, an environment restated in prose (directory layout, --help, config) where a pointer would not go stale, or agent-facing drift from the canonical source.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-129",
+        "L4-154"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.dydo-check-left-failing",
+      "kind": "docs",
+      "rule": "dydo check or a ticket gate left failing on the touched tree is a human-docs finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-137"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.edits-in-authored-source-done",
+      "kind": "docs",
+      "rule": "Docs work is done when every edit is in its authored source and required regeneration is verified in scope or handed to the integration owner with its source paths and command.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-122"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.frontmatter-and-links-per-writing-docs",
+      "kind": "docs",
+      "rule": "A dydo document takes its frontmatter and links from writing-docs.md, and an agent-facing document is written by the writing-for-agents skill; a frontmatter, naming or link broken against dydo/reference/writing-docs.md is a finding.",
+      "actors": [
+        "docs-writer",
+        "reviewer"
+      ],
+      "statements": [
+        "L3-118",
+        "L4-134"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L3-118 names writing-docs.md without a path; L4-134 names dydo/reference/writing-docs.md."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "docs.maintain-feature-intent-spec",
+      "kind": "docs",
+      "rule": "Shared feature intent is maintained following dydo/reference/feature-spec-convention.md: when intent changes the spec is updated first, then the affected contracts are reconciled.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-097",
+        "L2-199"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.one-home-per-claim",
+      "kind": "docs",
+      "rule": "Each claim is written in its one home (concepts in understand/, procedures in guides/, exact contracts in reference/, temporary specs under reference/working-specs/, delivery history under project/) and a meaning another document owns is a link.",
+      "actors": [
+        "docs-writer",
+        "reviewer"
+      ],
+      "statements": [
+        "L3-116",
+        "L4-135",
+        "L4-136"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L3-116 instructs the docs-writer; L4-135 and L4-136 make the violation a reviewer finding."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "docs.prefer-edit-that-deletes",
+      "kind": "docs",
+      "rule": "Prefer the edit that deletes or narrows; review never grows the change.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-114"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.readme-outside-dydo-points-only",
+      "kind": "docs",
+      "rule": "A README outside dydo/ only points to the dydo doc that owns its folder; skill-owned resources are exempt.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-117"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.retire-working-spec",
+      "kind": "docs",
+      "rule": "The working spec is retired on landing or cancellation by the convention Retirement section.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-137",
+        "L2-200"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.reusable-knowledge-assimilated",
+      "kind": "docs",
+      "rule": "A reusable decision, invariant, pitfall or explanation left only in execution evidence instead of assimilated into dydo is a human-docs finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-138"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.review-findings-labelled-with-severity",
+      "kind": "docs",
+      "rule": "Every review item below is a finding when it holds, labelled with its severity.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-130"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.review-resolve-contract",
+      "kind": "docs",
+      "rule": "The reviewer resolves the contract: ticket description as of the brief Linear updatedAt, and the governing plan and feature-spec sections at pinned commits.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-131"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.review-sort-changed-files",
+      "kind": "docs",
+      "rule": "The reviewer sorts every changed file into one of the two lists (human docs, agent docs), then works that list entire.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-132"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.review-verify-from-source",
+      "kind": "docs",
+      "rule": "The reviewer verifies from source: opens the paths, runs the commands, reads the code, checks the stage exact-candidate gate evidence (dydo check among it) and reruns a gate only on a doubt it states.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-133"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.working-spec-draft",
+      "kind": "docs",
+      "rule": "The admiral drafts the working spec at dydo/reference/working-specs/<project-slug>/<project-slug>.md with the convention headings; it holds what the user agreed (problem, behavior, decisions, out of scope, acceptance checks) in the user words where they matter.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-188",
+        "L2-189",
+        "L2-190"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.working-spec-draft-in-project-description",
+      "kind": "docs",
+      "rule": "The spec draft is put in the Project description under ## Working spec draft.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-191"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.working-spec-link-and-delete-draft",
+      "kind": "docs",
+      "rule": "Once the spec is on the remote it is linked from the Project description and the draft deleted.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-198"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.area-map-done",
+      "kind": "inquisition",
+      "rule": "The map is done when every changed path sits in exactly one area, every seam is an area, and every cell holds yes or a one-line reason.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-226"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.area-map-from-diff",
+      "kind": "inquisition",
+      "rule": "The area map is drawn from git diff --stat <landing base>..<audit SHA> and the file layout, never from the feature list or an earlier round map.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-217"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.area-map-posted-as-table",
+      "kind": "inquisition",
+      "rule": "The area map is posted on the ticket as a table.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-218"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.areas-small",
+      "kind": "inquisition",
+      "rule": "Areas are kept small: one file can be an area and tiny areas merge at map time.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-219",
+        "L1-220",
+        "L1-221"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.audit-branch-deletion",
+      "kind": "inquisition",
+      "rule": "Only after post-merge verification the captain deletes the audit branch (and as parent every group audit branch), names their remotes and any proof branch no open Bug needs on the record for the user, and never merges them or deletes the retained Bug refs.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-122",
+        "L6-129"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-122 places deletion before closing Done; L6-129 says at Done."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.audit-without-project",
+      "kind": "inquisition",
+      "rule": "An audit with no Project files a team ticket, base main, with no landing relation.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-265"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.branch-from-feature-sha",
+      "kind": "inquisition",
+      "rule": "An Inquisition gets its branch inquisition/<slug> from the integrated feature SHA.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-172"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.branch-step-done",
+      "kind": "inquisition",
+      "rule": "The branch step is done when branch, audit SHA and worktree path are on the ticket and the register first commit is pushed.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-216"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.branches-never-merge",
+      "kind": "inquisition",
+      "rule": "The inquisition, audit, group and proof branches never merge; the Inquisition merges nothing but its own record.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-173",
+        "L1-287",
+        "L6-113"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-173 names the inquisition branch, L6-113 the audit, group and proof branches, L1-287 says nothing but the record merges; whether the record branch is an exception to L1-173 is not stated."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.break-discard-unconfirmed-tests",
+      "kind": "inquisition",
+      "rule": "For a not-reproduced or inconclusive hypothesis the test is discarded and the observation (the deciding one when inconclusive) is noted.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-054",
+        "L4-056"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.break-hypothesis-list",
+      "kind": "inquisition",
+      "rule": "Break lists its own hypotheses plus every register entry tagged testable; each names the suspected failure, the seam, the input or state, the expected observation and the test that would refute it.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-048",
+        "L4-049"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.break-own-tests",
+      "kind": "inquisition",
+      "rule": "Break forms hypotheses about how the area fails and decides each with one test it writes itself on its proof branch, in the project own test framework, through the public seam where one exists, running only that test.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-042",
+        "L4-050"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.break-read-for-failure",
+      "kind": "inquisition",
+      "rule": "Break reads the area for how it fails: inputs, states, error paths, boundaries, concurrency and seams it calls through.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-047"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.break-verdict-mapping",
+      "kind": "inquisition",
+      "rule": "A test red for the stated reason means confirmed, a green test means not reproduced, and a test red for another reason or undecidable means inconclusive.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-051",
+        "L4-053",
+        "L4-055"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.break-verdict-step-done",
+      "kind": "inquisition",
+      "rule": "The verdict step is done when every hypothesis has one verdict and every confirmed one has its commit.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-058"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.break-worktree-checks",
+      "kind": "inquisition",
+      "rule": "Break proves the three worktree checks and returns a failure to the captain instead of working around it.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-043"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.bug-filing-fields",
+      "kind": "inquisition",
+      "rule": "A proven blocker or should is filed as a Bug: Mode AFK, Severity matching the finding, in the Project, base the feature branch, ## Reproduction holding its proof, linked to the Inquisition.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-263"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.bug-fix-may-merge-mid-round",
+      "kind": "inquisition",
+      "rule": "A Bug fix may merge into the feature mid-round; the audit is pinned to its SHA.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-268"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.bug-status-and-landing-block",
+      "kind": "inquisition",
+      "rule": "A blocker Bug goes to Todo, a should Bug to Backlog, natively blocking the Project landing Merge Ticket when it exists.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-264"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.captain-never-hunts",
+      "kind": "inquisition",
+      "rule": "The captain never hunts for bugs itself; reading code for bugs is the crew work.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-204"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.captain-register-and-triage",
+      "kind": "inquisition",
+      "rule": "The captain keeps the findings register, triages every return into Bugs, one nit ticket and Questions, and prepares well-defined fixes on their Bugs branches.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-176"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.clean-area-reports-nothing",
+      "kind": "inquisition",
+      "rule": "A clean area reports nothing.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-040"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.cleanup-keeps-retained-refs",
+      "kind": "inquisition",
+      "rule": "Audit cleanup never deletes the retained Bug refs; they remain input to each Bug normal chain.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-291",
+        "L6-117"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.close-done-when-verified",
+      "kind": "inquisition",
+      "rule": "The Inquisition closes Done when its record is merged and verified on the feature, Bugs filed and their proof refs retained; a group Sub-ticket closes when its register is final and pushed.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-300",
+        "L7-050"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.commission-inputs",
+      "kind": "inquisition",
+      "rule": "The commission inputs (provider and model per phase, swarm width, Codex cap, crew context limit) are put to the user and recorded in the ticket ## Scope; the commission step is done when they are recorded.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-207",
+        "L2-116"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-116 has the admiral ask the user; L1-207 has the captain check the ticket ## Scope; L1-207 list (in its code unit) may name inputs L2-116 does not."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.dispatch-done",
+      "kind": "inquisition",
+      "rule": "Dispatch is done when every applicable phase of every area has returned.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-253"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.disposition-vocabulary",
+      "kind": "inquisition",
+      "rule": "A disposition is a Bug key, patch <SHA> on its Bug, the nit ticket, a Question key, or refuted with the observation.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-242"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.drive-each-journey-via-skill",
+      "kind": "inquisition",
+      "rule": "Drive runs each journey through the verification skill and the API endpoints, following the skill launch model: health-check the instance before trusting it and clean every drive residue.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-080"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.drive-journeys-like-a-user",
+      "kind": "inquisition",
+      "rule": "Drive takes the running app through the area journeys and edge cases the way a user would.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-076"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.drive-judge-journey",
+      "kind": "inquisition",
+      "rule": "Drive judges each journey: the observed result against the expected one from the intent, feature map and register entry.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-081"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.drive-list-journeys",
+      "kind": "inquisition",
+      "rule": "Drive lists the journeys: every feature of the area a user can reach through the app or API, each with edge cases (empty, invalid, boundary, repeated, interrupted, concurrent where a user can cause it).",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-079"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.drive-load-verification-skill",
+      "kind": "inquisition",
+      "rule": "Drive loads the verification skill the brief names.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-078"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.drive-not-applicable-without-runnable-surface",
+      "kind": "inquisition",
+      "rule": "A project with nothing to run records that Drive does not apply; Break and Drive apply wherever the landing changed behaviour.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-225",
+        "L2-119"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-225 puts it in the map cells (Drive says nothing to run); L2-119 says the project records it."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.file-after-integration",
+      "kind": "inquisition",
+      "rule": "Once the feature is integrated, an Inquisition is filed in Backlog with its feature SHA and cost.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-115"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.files-outcomes-no-verdict",
+      "kind": "inquisition",
+      "rule": "An Inquisition files outcomes and never PASSes or FAILs.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-179",
+        "L1-205"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.finding-ids",
+      "kind": "inquisition",
+      "rule": "A new finding gets a row with the next ID F-01, F-02 and so on; a group qualifies its IDs with its group, as G2-F-07.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-240",
+        "L1-254"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.finding-new-or-preexisting",
+      "kind": "inquisition",
+      "rule": "The inquisitor says whether a finding is new or pre-existing; work that merely exposed an older defect is worth reporting.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-038"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.finding-reachable-and-concrete",
+      "kind": "inquisition",
+      "rule": "A finding must be reachable and concrete: under X this returns or corrupts Y, a sequence someone hits.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-037"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.follow-up-brief-items-only",
+      "kind": "inquisition",
+      "rule": "On a follow-up or hand-back brief the inquisitor works only the items it names.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-015"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.group-captain-run-and-close",
+      "kind": "inquisition",
+      "rule": "A group captain runs the Inquisition steps on its rows, owns its Bugs retention, and closes Done with its register final and pushed; the parent rechecks retention over the merged register before its record.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-235",
+        "L6-111"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.group-nits-to-parent-ticket",
+      "kind": "inquisition",
+      "rule": "Group captains add their nits to the parent nit ticket.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-234"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.group-release-wiring",
+      "kind": "inquisition",
+      "rule": "The parent is wired blocked by every group, this round nit ticket is opened, then the parent is released with released <key>: groups <keys>.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-232"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.group-split-threshold",
+      "kind": "inquisition",
+      "rule": "Above about 10 areas the captain cuts the map into group Sub-tickets of up to about 10 areas each, seams kept with the areas they join, and the admiral commissions one captain per group.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-228",
+        "L2-121"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-228 is the captain map cut; L2-121 adds width and Codex shares per group and the parent resuming for cross-group triage."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.group-subticket-contents",
+      "kind": "inquisition",
+      "rule": "Each group Sub-ticket carries the Inquisition Type, the parent Mode and commission, its map rows and its own inquisition/<slug>-<group> branch from the same audit SHA.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-229"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.nit-is-one-line",
+      "kind": "inquisition",
+      "rule": "A nit is one line on this round nit ticket with its file:line and the wrong outcome; it needs no proof.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-271"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.nit-ticket-final-walkthrough",
+      "kind": "inquisition",
+      "rule": "The map holder lists every open nit ticket at the Project final walkthrough, where the user decides each nit; the nit ticket closes Done once every nit is fixed or accepted as is.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L1-273",
+        "L1-274",
+        "L7-137"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.nit-ticket-opening",
+      "kind": "inquisition",
+      "rule": "The nit ticket is opened with the first nit: Type Feature, Mode AFK, Severity nit, Backlog, held by the map holder, linked to the Inquisition.",
+      "actors": [
+        "ticket-captain",
+        "map-holder"
+      ],
+      "statements": [
+        "L1-272",
+        "L7-136"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.no-hypothesis-quota",
+      "kind": "inquisition",
+      "rule": "The captain sets no quota of hypotheses or journeys.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-248"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.parent-merges-group-registers",
+      "kind": "inquisition",
+      "rule": "When the groups close the parent merges their registers into its own, joins duplicates across groups as sightings, closes a duplicate Bug as Duplicate of the one kept, runs the record step over the merged register and delivers the one record; grouping is done when every area belongs to one group and each register is merged.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-236",
+        "L1-237",
+        "L1-238"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.patch-cherry-pick-red-test",
+      "kind": "inquisition",
+      "rule": "The patch code-writer cherry-picks the finding red-test commit first, then commits the fix that turns it green.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L1-283"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.patch-code-writer-brief",
+      "kind": "inquisition",
+      "rule": "The patch is briefed to a code-writer in Bug mode on the Bug own branch <BUG-KEY>-<slug>, cut from the audit SHA, with base SHA and owned paths posted; proofs stay with the Break inquisitor.",
+      "actors": [
+        "ticket-captain",
+        "code-writer"
+      ],
+      "statements": [
+        "L1-282",
+        "L3-029"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.patch-eligibility",
+      "kind": "inquisition",
+      "rule": "A patch is prepared now only for a blocker or should that Break proved with a red test and whose fix is well-defined (one obvious fix, inside one area, small, touching no contract, Decision Record or public interface); any doubt means no patch and nits are never patched.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-279",
+        "L1-280",
+        "L1-281"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.patch-failure-unassign",
+      "kind": "inquisition",
+      "rule": "When the patch lane fails, the fix is not well-defined after all, or the code-writer returns blocked, the reason is recorded on the Bug and it is unassigned without a patch.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-286"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.patch-lane-bug-assignment",
+      "kind": "inquisition",
+      "rule": "A Bug whose fix will be prepared is filed assigned to the captain, naming its patch branch, and stays assigned until the patch is attached, then is unassigned and pickable; any other Bug is filed unassigned and pickable at once.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-266",
+        "L1-267",
+        "L1-284",
+        "L2-122"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.patch-reviewed-once-in-bug-chain",
+      "kind": "inquisition",
+      "rule": "The Bug captain verifies and reviews the patch once, in the Bug own chain.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-285"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.patching-done",
+      "kind": "inquisition",
+      "rule": "Patching is done when every Bug filed for the lane is unassigned with its patch attached or its reason recorded.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-288"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.phases-as-pipeline",
+      "kind": "inquisition",
+      "rule": "The phases run as a pipeline across areas, never in waves: an area Break starts when its Read returns, its Drive when its Break returns.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-245"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.post-merge-verification",
+      "kind": "inquisition",
+      "rule": "After the record merges, the captain verifies on the feature the record at its path, every Bug filed and wired and every retained ref live; a record only on an unmerged branch does not satisfy it.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-298",
+        "L6-121"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.proofless-bug-has-no-ref",
+      "kind": "inquisition",
+      "rule": "A prose Bug carries its quoted passages, an unused-member Bug its definition and reference search, and a drive Bug its rerunnable drive steps in the body, with no ref to retain.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-292",
+        "L6-115"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.prose-area-read-only",
+      "kind": "inquisition",
+      "rule": "A plain skill or doc area gets Read only; its Break and Drive cells say prose.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-224"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.push-break-proof-branch",
+      "kind": "inquisition",
+      "rule": "Break proof branch is pushed; its red-test SHAs are reproductions.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-260"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.read-find-intent",
+      "kind": "inquisition",
+      "rule": "Read finds the intent: the ticket contracts, plan sections and Decision Records the brief names for the area, and any DR the area files cite.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-087"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.read-pin-area",
+      "kind": "inquisition",
+      "rule": "Read pins the area: in the brief worktree at the audit SHA open every file in the area map row whole, not only diff hunks.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-086"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.read-prose-area-questions",
+      "kind": "inquisition",
+      "rule": "In a prose area the Read questions are intent, decisions and contradiction (two passages claiming different things about one fact).",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-096"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.read-question-checklist",
+      "kind": "inquisition",
+      "rule": "Read asks every question of every file, relentlessly: intent, decisions, comments and docs, standards, security, dead code and, in a seam area, what each side assumes of the other.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-088",
+        "L4-089",
+        "L4-090",
+        "L4-091",
+        "L4-092",
+        "L4-093",
+        "L4-094",
+        "L4-095"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.record-content",
+      "kind": "inquisition",
+      "rule": "The inquisition record is written at dydo/project/inquisitions/<YYYY-MM-DD>-<slug>.md from the pushed register, naming the audit SHA, the commission, the area map with each phase run or its reason, every finding with severity, sightings and disposition, the Bugs and patches filed, the nit ticket and the Questions, an empty section recorded as such.",
+      "actors": [
+        "ticket-captain",
+        "docs-writer"
+      ],
+      "statements": [
+        "L1-294",
+        "L3-124"
+      ],
+      "drift": [
+        {
+          "type": "value",
+          "note": "L1-294 also names every unreachable journey with its disposition; L3-124 omits it and adds that Bugs and patches carry their proof; L3-124 names the writing branch."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.record-delivered-through-docs-chain",
+      "kind": "inquisition",
+      "rule": "The Inquisition delivers its own record as its last step through a docs-writer, a fresh docs review and its Merge Sub-ticket on its own ticket branch <KEY>-<slug> cut from the feature tip, and closes once.",
+      "actors": [
+        "ticket-captain",
+        "docs-writer"
+      ],
+      "statements": [
+        "L1-178",
+        "L1-293",
+        "L6-109",
+        "L6-118",
+        "L6-119"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L6-119 adds that an audit of main merges its record as an atomic ticket, where no feature tip exists (L1-293)."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.record-done-criteria",
+      "kind": "inquisition",
+      "rule": "The inquisition record is done when every claim traces to the register, an empty section explicitly recorded as such, and delivery is done when its merge review passes.",
+      "actors": [
+        "ticket-captain",
+        "docs-writer"
+      ],
+      "statements": [
+        "L1-297",
+        "L3-125"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.record-written-on-handover",
+      "kind": "inquisition",
+      "rule": "When the Inquisition captain hands over its pushed findings register, the docs-writer writes the inquisition record.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-123"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.register-file-at-root",
+      "kind": "inquisition",
+      "rule": "The captain creates inquisition-register.md at the root of the audit branch, one row per finding in the register table shape.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-215",
+        "L1-239"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.register-push-after-return",
+      "kind": "inquisition",
+      "rule": "The register is committed and pushed after every return, before the next dispatch; the register step is done when every return is in it and pushed.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-243",
+        "L1-244",
+        "L6-112"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.release-before-generic-commissioning",
+      "kind": "inquisition",
+      "rule": "The admiral processes an Inquisition release through step 7 before generic pickable commissioning.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-048"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.retain-reproduction-ref",
+      "kind": "inquisition",
+      "rule": "Before the sweep closes, every open Bug with a reproduction commit keeps its SHA reachable from a pushed named ref independent of the audit branch (its proof or patch branch), linked on the Bug; retention is done when all phases returned, every row has a final disposition and register and proof branches are pushed.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-177",
+        "L1-289",
+        "L6-114"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.retention-ownership",
+      "kind": "inquisition",
+      "rule": "The Inquisition captain owns reproduction retention until each Bug captain records adopting it.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-290",
+        "L6-116"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-116 adds adoption of the cleanup responsibility."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.rounds-start-from-zero",
+      "kind": "inquisition",
+      "rule": "Each Inquisition round starts from zero: a new round never reads the previous round map or findings, and the next round is a fresh Inquisition offered once every blocker and should Bug of the round is fixed.",
+      "actors": [
+        "ticket-captain",
+        "map-holder",
+        "admiral"
+      ],
+      "statements": [
+        "L1-206",
+        "L1-302",
+        "L2-124"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-302 gives the offer to the map holder, L2-124 to the admiral."
+        },
+        {
+          "type": "value",
+          "note": "L2-124 says once every blocker and should of a round is Done; L1-302 says once every blocker and should Bug is fixed."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.route-tagged-finding",
+      "kind": "inquisition",
+      "rule": "The captain routes a tagged finding to the phase that can prove it (testable to Break, drivable to Drive), by a short follow-up agent with only the routed entries when the phase already ran; triage intake is done when every tag has a phase scheduled.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-256",
+        "L1-257",
+        "L1-261"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.run-by-resource-pipeline",
+      "kind": "inquisition",
+      "rule": "The captain runs an Inquisition by resources/inquisition.md: map the landed work into small areas, run Read, Break and Drive on each through inquisitor crew, triage every return, then deliver the record.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-175",
+        "L1-203"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-175 adds that Break writes its own proof tests on its proof branch; L1-203 adds the swarm and the record delivery."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.seam-is-own-area",
+      "kind": "inquisition",
+      "rule": "Where two areas meet through a call, a shared type, a file format or a protocol, the seam is its own area.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-223"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.severity-checked-against-source",
+      "kind": "inquisition",
+      "rule": "Each finding severity is checked against the source, not the crew label, and any change is recorded with its reason in the row.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-262"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.should-deferred-by-user-only",
+      "kind": "inquisition",
+      "rule": "Only the user defers an inquisition should, at the end of the Project.",
+      "actors": [
+        "user"
+      ],
+      "statements": [
+        "L2-129"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.sighting-adds-reproduction",
+      "kind": "inquisition",
+      "rule": "A later sighting of a Bug, even a fixed one, adds a reproduction to it.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-269"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.sighting-not-new-row",
+      "kind": "inquisition",
+      "rule": "A finding matching an existing register row is a sighting on that row, never a new row: one bug, one finding, the sighting added with where seen and proof under the register ID.",
+      "actors": [
+        "ticket-captain",
+        "inquisitor"
+      ],
+      "statements": [
+        "L1-255",
+        "L4-039"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-255 has the captain add the sighting; L4-039 has the inquisitor report it."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.start-on-user-confirmation",
+      "kind": "inquisition",
+      "rule": "An Inquisition starts only after the user confirms it; the confirmation moves the ticket on and the captain sets it In Progress.",
+      "actors": [
+        "ticket-captain",
+        "admiral",
+        "user"
+      ],
+      "statements": [
+        "L1-174",
+        "L1-201",
+        "L2-120"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-174 sets In Progress on confirmation; L2-120 has the user move the ticket to Todo and tell the admiral, who then commissions it; L1-201 states only that nothing starts before confirmation."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.status-path",
+      "kind": "inquisition",
+      "rule": "An Inquisition ticket moves Backlog, Todo (the user confirmation), In Progress (commission inputs, area map, phases, triage, patch lane), Implementing, In Review, Ready to Merge, Done, the last stages being its record docs chain.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-095"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.tag-unproven-findings",
+      "kind": "inquisition",
+      "rule": "A finding seen but not provable in the phase is tagged testable (for Break), drivable (for Drive) or both, and stays tagged until a phase proves or refutes it.",
+      "actors": [
+        "ticket-captain",
+        "inquisitor"
+      ],
+      "statements": [
+        "L1-241",
+        "L4-031",
+        "L4-098"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.triage-done",
+      "kind": "inquisition",
+      "rule": "Triage is done when every register row has a disposition or a routed phase in flight.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-278"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.unproven-stays-open",
+      "kind": "inquisition",
+      "rule": "An unproven finding stays open until its routed phase returns; a refuted finding closes refuted and an inconclusive one stays in the record with its deciding observation.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-275",
+        "L1-276"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.unreachable-journey",
+      "kind": "inquisition",
+      "rule": "An unreachable journey is a register row with its prerequisite and the route tried, disposed of before that area Drive counts as returned: a follow-up Drive once the prerequisite is met, a verification-gap should, or a Question.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-258",
+        "L1-259"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.verification-gap-is-should",
+      "kind": "inquisition",
+      "rule": "A verification gap (a user can do something the verification skill cannot) is a should whose Bug names maintain-verification-skill as owner and method.",
+      "actors": [
+        "ticket-captain",
+        "inquisitor"
+      ],
+      "statements": [
+        "L1-270",
+        "L4-082"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.verification-skill-first",
+      "kind": "inquisition",
+      "rule": "A project with a runnable surface and no verification skill needs the skill first: the user makes it with create-verification-skill and the Inquisition resumes once it exists.",
+      "actors": [
+        "ticket-captain",
+        "admiral",
+        "user"
+      ],
+      "statements": [
+        "L1-211",
+        "L2-118",
+        "L2-123"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-211 stops the captain at that step; L2-118 has the admiral raise it with the user; L2-123 returns it to the user as released verification skill first."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "inquisition.work-in-order",
+      "kind": "inquisition",
+      "rule": "The inquisitor works the area items in order and runs the phase checklist in order: discovery, then work, then document.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-013",
+        "L4-014"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.work-item-done",
+      "kind": "inquisition",
+      "rule": "A work item is done when its entries for the return are written.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-016"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.follow-claim-to-owning-source",
+      "kind": "research",
+      "rule": "Every claim is followed back to the source that owns it; a doc account of the code is a lead to the code, not a finding.",
+      "actors": [
+        "research",
+        "scout"
+      ],
+      "statements": [
+        "L3-134",
+        "L3-215"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.name-conflicts-and-governing-source",
+      "kind": "research",
+      "rule": "Where sources conflict, name the conflict and which governs, by the order: user live instruction, Decision Record, reviewed architecture plan, feature spec, ticket contract, standards, code.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-151"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.open-cited-passage",
+      "kind": "research",
+      "rule": "Open the cited passage behind every load-bearing claim and confirm it says what the scout said; verification is done when every claim in the answer carries a citation opened or is marked unsettled.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-150",
+        "L3-153"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.question-is-whole-scope",
+      "kind": "research",
+      "rule": "The question given is the whole scope: an adjacent question uncovered is a line in the return, not a second investigation.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-141"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.read-governing-docs-on-default-branch",
+      "kind": "research",
+      "rule": "Governing docs (Decision Records, standards, glossary) are read on the default branch too, since a branch can lag.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-146"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.report-is-only-output",
+      "kind": "research",
+      "rule": "The report under Return is the only thing research creates; everything else is read.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-142"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.restate-question",
+      "kind": "research",
+      "rule": "Restate the question in one sentence, say what would count as an answer and note the destination the invoker named; the question step is done when all three are written down.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-143",
+        "L3-144"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.scout-copy-passages",
+      "kind": "research",
+      "rule": "The scout copies passages, not summaries: for each finding the exact passage, its citation (URL, DOI, or repository path with commit) and one line on how it bears on the question; done when every finding is a quotation the researcher can open.",
+      "actors": [
+        "scout"
+      ],
+      "statements": [
+        "L3-214",
+        "L3-216"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.scout-search-whole-family",
+      "kind": "research",
+      "rule": "The scout searches every place in the family where the answer or a breadcrumb of intent could sit, following references to their end, and is done when it can list what it searched and nothing that could bear on the question is left unopened.",
+      "actors": [
+        "scout"
+      ],
+      "statements": [
+        "L3-212",
+        "L3-213"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.scouting-done",
+      "kind": "research",
+      "rule": "Scouting is done when every family in play has returned passages or an honest nothing here.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-149"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.silent-sources-unsettled",
+      "kind": "research",
+      "rule": "Where sources are silent, mark the point unsettled rather than reasoning to a fact.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-152"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "research.source-families-marked",
+      "kind": "research",
+      "rule": "Consider the source families (governing records and others); the family step is done when every family is marked in or out with a reason.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-145",
+        "L3-147"
+      ],
+      "drift": [],
+      "principle": null
+    }
+  ],
+  "findings": [
+    {
+      "type": "contradiction",
+      "claims": [
+        "inquisition.record-delivered-through-docs-chain",
+        "inquisition.bug-filing-fields"
+      ],
+      "note": "L1-293 cuts the record branch from the feature tip and L1-263 bases Bugs on the feature branch, while L1-265 and L6-119 cover an audit of main with no Project or feature; the feature-less route is stated only for Bugs (base main) and merge, not for the record branch."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "inquisition.close-done-when-verified",
+        "inquisition.audit-branch-deletion"
+      ],
+      "note": "L6-122 deletes branches and names remotes before closing Done; L6-129 deletes the audit branch at Done; L1-300 and L7-050 give close conditions without the deletion step."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "inquisition.start-on-user-confirmation",
+        "inquisition.status-path"
+      ],
+      "note": "L1-174 sets In Progress on confirmation, L2-120 has the user move to Todo and the admiral commission, and L7-095 puts the confirmation at Todo before In Progress; who moves Todo to In Progress is not stated in one place."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "inquisition.nit-ticket-final-walkthrough",
+        "inquisition.audit-without-project"
+      ],
+      "note": "L1-273, L7-136, L7-137 give the nit ticket to the map holder and the final walkthrough, but L1-265 covers an audit with no Project, where no map holder or walkthrough exists."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "inquisition.should-deferred-by-user-only"
+      ],
+      "note": "L2-129 lets only the user defer a should at the end of the Project, but no statement says how the deferral is recorded or which actor presents it."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "inquisition.commission-inputs"
+      ],
+      "note": "L1-207 lists the commission record in a code block while L2-116 lists the inputs asked of the user; no statement says the two lists must match."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "inquisition.record-content",
+        "inquisition.record-done-criteria"
+      ],
+      "note": "L1-294 and L3-124 list different record contents (unreachable journeys, proofs); L3-125 done criterion (every claim traces to the register) is only in the docs-writer carrier."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "inquisition.tag-unproven-findings",
+        "inquisition.route-tagged-finding"
+      ],
+      "note": "L4-098 allows a finding to be both testable and drivable, but L1-256 routes testable to Break and drivable to Drive without saying what happens with both."
+    }
+  ]
+}
