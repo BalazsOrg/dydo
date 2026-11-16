@@ -424,7 +424,7 @@ stands. §2's text is kept as written; this amendment governs where they differ.
 - [Linear Issue Lifecycle](../../understand/task-lifecycle.md)
 - [Linear Workspace Standard](../../reference/linear-workspace-standard.md)
 - [dydo Glossary](../../reference/dydo-glossary.md)
-- [Working-Tree Contract](../../guides/working-tree-contract.md)
+- [Working-Tree Contract](../../guides/working-tree-standard.md)
 - [Harmonize the skill system](../plans/dydo-3-skill-harmonization.md)
 - [DR 045 - Flow Map, Hats and Workers, Review Tiers, and the Working-Tree Contract](./045-flow-map-hats-review-tiers-and-working-tree-contract.md)
 - [DR 046 - Executable Specifications, the Specifier, and Commit-Addressed Hops](./046-executable-specifications-specifier-and-commit-addressed-hops.md)

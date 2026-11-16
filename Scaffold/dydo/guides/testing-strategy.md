@@ -155,5 +155,5 @@ permission to deploy one.
 
 ## Related
 
-- [Working-tree contract](./working-tree-contract.md) - custody, review and integration.
+- [Working-tree standard](./working-tree-standard.md) - custody, review and integration.
 - [Linear workspace standard](../reference/linear-workspace-standard.md) - Exact gates and evidence.

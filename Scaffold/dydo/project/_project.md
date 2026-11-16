@@ -12,7 +12,7 @@ repository records.
 ## Contents
 
 - **decisions/** - accepted technical and product choices
-- **plans/** - reviewed contracts for coordinated, cross-cutting, or architecture-sensitive Linear Projects
+- **plans/** - reviewed plans for coordinated, cross-cutting, or architecture-sensitive Linear Projects
 - **future-features/** - legacy FutureFeature records awaiting migration; a new FutureFeature is a Linear ticket
 - **migrations/** - durable migration evidence and assimilation briefs
 - **inquisitions/** - inquisition records: each round's area map, findings and the Bugs it filed

@@ -36,7 +36,7 @@ Decision Records carry decisions, and the two are linked rather than copied.
 - **Project** - low resolution: the Linear Project and its tickets are the plan, charted by the map
   holder with `wayfinder`: destination, the first pickable tracer-bullet tickets, and fog written
   down in `## Not yet specified`, with blocking Question Tickets instead of a pretended complete
-  route. Only a cross-cutting architecture contract earns a repository plan file, written by the
+  route. Only a cross-cutting architecture plan earns a repository plan file, written by the
   map holder; a fresh reviewer passes it against `project-plan` before user approval, and dated
   amendments return only changes to destination, scope, acceptance criteria, or governing
   architecture for fresh review and user approval. Shared multi-ticket behavior may use a
@@ -51,7 +51,7 @@ Decision Records carry decisions, and the two are linked rather than copied.
 
 Assignment is the claim: nothing else marks a ticket as taken. From there the ticket has one branch and
 one worktree, one writer inside it, and commits that touch only the paths the ticket owns. The
-[Working-Tree Contract](../guides/working-tree-contract.md) is that procedure end to end - how the
+[Working-Tree Standard](../guides/working-tree-standard.md) is that procedure end to end - how the
 branch is named, what goes on the ticket before the first edit, and what is cleaned up after the
 merge.
 
@@ -128,6 +128,6 @@ or poll Linear.
 ## Related
 
 - [Work Model](./work-model.md) - the flow map, ownership, review and inquisition
-- [Working-Tree Contract](../guides/working-tree-contract.md) - branches, worktrees, claims, cleanup
+- [Working-Tree Standard](../guides/working-tree-standard.md) - branches, worktrees, claims, cleanup
 - [Writing Good Briefs](../guides/writing-good-briefs.md) - how a ticket's contract is written
 - [dydo Glossary](../reference/dydo-glossary.md) - the locked vocabulary

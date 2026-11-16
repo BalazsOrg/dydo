@@ -90,4 +90,4 @@ Proof for the current candidate lives on [DYD-415](https://linear.app/bodnar-bal
 
 - [Changelog](../changelog/2026/2026-10-29/dyd-415-statechart.md)
 - [Control flow](../../understand/control-flow.md)
-- [Working-tree contract](../../guides/working-tree-contract.md)
+- [Working-tree contract](../../guides/working-tree-standard.md)

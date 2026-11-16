@@ -46,7 +46,7 @@ review, coordinate, and audit from independently reviewable contracts.
 - Every other skill, `co-thinker` among them, is a plain skill any session loads when the work needs
   it.
 - A fresh agent independently reviews each implementation ticket before the user harmonizes it.
-- The [Working-Tree Contract](../guides/working-tree-contract.md) governs Project integration,
+- The [Working-Tree Standard](../guides/working-tree-standard.md) governs Project integration,
   an Inquisition's audit, proof and record branches, and landing.
 
 Branches, worktrees, sessions, subagents, commits, PRs, and reviewer attempts are execution evidence

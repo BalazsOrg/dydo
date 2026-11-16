@@ -22,7 +22,7 @@ entry file → dydo/index.md → authored navigation → ticket-relevant durable
 5. An invoked skill adds the methodology for the current kind of work.
 
 Linear supplies current ticket/Project state. Repository documents supply durable context and reviewed
-contracts. Copying volatile Linear state into Markdown creates drift and is not part of this model.
+plans. Copying volatile Linear state into Markdown creates drift and is not part of this model.
 
 ## Folder purposes
 

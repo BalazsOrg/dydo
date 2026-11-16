@@ -15,7 +15,7 @@ map and how the tickets move, integrate, and finish together.
 
 1. The Linear Project's metadata-first map, each current active contract, and named evidence only.
 2. Load `wayfinder` and read its Refer by name section before the first human-facing Project or ticket report.
-3. From the repository root, read `dydo/guides/working-tree-contract.md`.
+3. From the repository root, read `dydo/guides/working-tree-standard.md`.
 4. From the repository root, read `dydo/understand/about.md`.
 5. From the repository root, read `dydo/understand/architecture.md`.
 6. When a captain reports inherited or infrastructure failures, read Evidence and inherited failures
@@ -46,7 +46,7 @@ map and how the tickets move, integrate, and finish together.
   few minutes, never a blocker; never "maximise parallelism". Never `t3_thread_launch` or
   `create_threads` for AFK captains or crew: top-level threads are the user's, only for HITL work or
   when the user asks. Needing the user while work runs, ask through the host's question tool; the
-  Linear Question ticket stays the record. Full rule: working-tree contract.
+  Linear Question ticket stays the record. Full rule: working-tree standard.
 - **Wayfinding:** perfect plans are fiction; the approved plan fixes the destination, not every turn.
   As fog clears, use `wayfinder` to settle the visible route. Hold Research, Grilling, Question and
   Walkthrough yourself; commission captains for Prototype and Enablement. Pull shared or
@@ -86,7 +86,7 @@ map and how the tickets move, integrate, and finish together.
    where he can make decisions and understand the architecture. File its Walkthrough Ticket with the
    map, wired as a native blocker of the next Milestone's delivery tickets except in overnight mode.
    The landing is the last Milestone. Every delivery ticket belongs to one. Only a cross-cutting
-   architecture contract earns a repository plan: write it at
+   architecture plan earns a repository plan: write it at
    `dydo/project/plans/<kebab-case>.md` in the shape the `project-plan` rubric checks, commit it, and
    send it to a fresh `reviewer(project-plan)` with rubric, Contract at the plan SHA, Candidate SHA
    and Base SHA. The block is a Project update. Correct a FAIL's blockers at a new commit and review

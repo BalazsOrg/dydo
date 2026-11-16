@@ -49,4 +49,4 @@ Guards stop accidents, not rogue agents. These routes are not read:
 ## Related
 
 - [Guard System](../../../../understand/guard-system.md#also-enforced)
-- [Working-Tree Contract](../../../../guides/working-tree-contract.md#who-does-what)
+- [Working-Tree Contract](../../../../guides/working-tree-standard.md#who-does-what)

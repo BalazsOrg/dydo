@@ -6,7 +6,7 @@ namespace DynaDocs.Tests;
 public static class GuardRetroCommands
 {
     // GS-01, Codex on Windows (PowerShell): a plan read through $p=Get-Content, then sliced.
-    public const string Gs01SlicedRead = "$p=Get-Content dydo/project/plans/ripple-selection.md; $p[210..460]; Get-Content dydo/guides/working-tree-contract.md; Get-Content dydo/understand/about.md; Get-Content dydo/understand/architecture.md; $s=Get-Content dydo/reference/linear-workspace-standard.md; $n=($s|Select-String '^## Communication').LineNumber; $s[($n-1)..([Math]::Min($s.Length-1,$n+85))]; git rev-parse HEAD";
+    public const string Gs01SlicedRead = "$p=Get-Content dydo/project/plans/ripple-selection.md; $p[210..460]; Get-Content dydo/guides/working-tree-standard.md; Get-Content dydo/understand/about.md; Get-Content dydo/understand/architecture.md; $s=Get-Content dydo/reference/linear-workspace-standard.md; $n=($s|Select-String '^## Communication').LineNumber; $s[($n-1)..([Math]::Min($s.Length-1,$n+85))]; git rev-parse HEAD";
 
     // GS-01, Codex on Windows (PowerShell): a standard read through $lines=Get-Content, then Select-String and a slice.
     public const string Gs01SelectStringRead = "Get-Content dydo/understand/about.md; Get-Content dydo/understand/architecture.md; Get-Content dydo/guides/coding-standards.md; $lines=Get-Content dydo/reference/linear-workspace-standard.md; $start=($lines | Select-String '^## Communication and evidence').LineNumber; $lines[($start-1)..($lines.Length-1)]";

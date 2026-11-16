@@ -12,8 +12,8 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 
 - **Initiative** - an optional workspace-level goal spanning independently meaningful Projects.
 - **Project** - a bounded product or technical outcome owned by one Linear team. The Linear Project
-  and its tickets are its plan; a cross-cutting architecture contract links one reviewed repository
-  Project plan.
+  and its tickets are its plan; cross-cutting architecture adds one reviewed repository
+  architecture plan.
 - **Milestone** - a meaningful checkpoint inside a Linear Project, a chunk of work where a drift
   from the user's intent would show. The map holder places few; every delivery ticket belongs to
   one, and each has a Walkthrough Ticket. The first is the **walking skeleton**, the rough
@@ -52,9 +52,10 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   decisions, and the two are linked rather than copied.
 - **Feature spec** - a temporary current anchor for shared multi-ticket behavior under
   `dydo/reference/working-specs/<project-slug>/`; the [spec convention](./feature-spec-convention.md) owns its lifecycle.
-- **Project plan** - a reviewed repository contract the map holder writes only for cross-cutting
+- **Project plan** - a reviewed repository document the map holder writes only for cross-cutting
   architecture work, at low resolution: destination, acceptance, architecture, and a ticket
   map. Its `linear-project` URL is provenance, not synchronization.
+- **Architecture plan** - a Project plan written only for cross-cutting architecture.
 - **FutureFeature** - an unscheduled strategic possibility recorded as a Linear ticket, distinct from
   a generic idea or delivery contract. It stays in `FutureFeature` until the user promotes or cancels it.
 - **Assimilation brief** - the durable account of what changed, what was learned, and what remains.
@@ -158,9 +159,9 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   its ticket; a PR carries the block when one exists.
 - **Evidence** - a commit, PR, test result, review verdict, or audit artifact linked to a ticket; it
   is not another work item.
-- **Working-tree contract** - the shared rules for opening a feature branch, claiming a ticket by
+- **Working-tree standard** - the shared rules for opening a feature branch, claiming a ticket by
   assignment, keeping one writer per worktree, and cleaning up after the merge. It lives in
-  [working-tree-contract.md](../guides/working-tree-contract.md), so no agent invents its own habits.
+  [working-tree-standard.md](../guides/working-tree-standard.md), so no agent invents its own habits.
 - **Worktree** - Git isolation for implementation; the host owns where it lives.
 - **HITL** / **AFK** - whether producing the work requires live human participation. They are not work
   types or acceptance states.
@@ -186,5 +187,5 @@ Feature gave way to the area map, its phases and its own record (DR 059). None o
 
 ## Related
 
-- [Working-Tree Contract](../guides/working-tree-contract.md) - Branches, claims, worktrees, cleanup
+- [Working-Tree Standard](../guides/working-tree-standard.md) - Branches, claims, worktrees, cleanup
 - [Project Glossary](../glossary.md) - This project's domain vocabulary

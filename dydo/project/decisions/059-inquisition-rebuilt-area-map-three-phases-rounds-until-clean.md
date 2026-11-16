@@ -173,5 +173,5 @@ than a PASS or FAIL; all three DRs stay `accepted` otherwise.
 ## Related
 
 - [058 - Review Severities](./058-review-severities-blocker-should-nit.md) - The blocker, should and nit names
-- [Working-Tree Contract](../../guides/working-tree-contract.md) - Audit and proof branches, retention
+- [Working-Tree Contract](../../guides/working-tree-standard.md) - Audit and proof branches, retention
 - [Linear Workspace Standard](../../reference/linear-workspace-standard.md) - The Inquisition Type

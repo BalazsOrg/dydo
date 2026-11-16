@@ -118,13 +118,13 @@ The 12 Bugs (DYD-236 through DYD-247) are listed in the root-findings table abov
 ## Record
 
 This file is the record, delivered through the record-delivery route in the
-[working-tree contract](../../guides/working-tree-contract.md). After DYD-251 merges, the admiral
+[working-tree contract](../../guides/working-tree-standard.md). After DYD-251 merges, the admiral
 resumes DYD-235 for its retention check (verify the filed Bugs and this record's exact content and
 merge reachability) before DYD-235 closes Done.
 
 ## Related
 
-- [Working-Tree Contract](../../guides/working-tree-contract.md) - record-delivery route this file
+- [Working-Tree Contract](../../guides/working-tree-standard.md) - record-delivery route this file
   follows.
 - [DR 047 - Supersymmetry, Hop Statuses, Merge Issues, and the Release Protocol](../decisions/047-supersymmetry-hop-statuses-merge-issues-and-the-release-protocol.md)
 - [DR 049 - Skills Are the Source: Retire the Compiler](../decisions/049-skills-are-the-source-retire-the-compiler.md)

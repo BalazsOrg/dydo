@@ -152,5 +152,5 @@ records the tip it merged onto.
 
 - [CLI Commands](../../reference/dydo-commands.md#dydo-merge) - The command's exact contract
 - [Configuration](../../reference/configuration.md#hook-configuration) - The allow rules init writes
-- [Working-Tree Contract](../../guides/working-tree-contract.md) - Who integrates a Project ticket
+- [Working-Tree Contract](../../guides/working-tree-standard.md) - Who integrates a Project ticket
 - [DR 056 - Claude Guard in Committed Settings](./056-claude-guard-in-committed-settings.md)

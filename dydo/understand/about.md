@@ -35,4 +35,4 @@ Markdown and JSON are durable local state; Linear remains the external system of
 
 - [Architecture](./architecture.md) - Component and boundary overview
 - [DynaDocs](../reference/about-dynadocs.md) - Product overview and setup
-- [Work Model](./work-model.md) - Linear/Git operating contract
+- [Work Model](./work-model.md) - Linear/Git operating standard

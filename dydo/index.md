@@ -21,5 +21,5 @@ comes after you.
   work graph, fog and question tickets, roles and skills, evidence - and the retired PM terms to avoid.
 - [glossary.md](glossary.md) - this project's own domain vocabulary.
 
-About to write or edit any doc? [Writing docs](reference/writing-docs.md) is the contract it is
+About to write or edit any doc? [Writing docs](reference/writing-docs.md) is the standard it is
 held to.

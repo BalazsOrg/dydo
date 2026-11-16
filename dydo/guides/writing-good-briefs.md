@@ -35,7 +35,7 @@ resolutions are in the [Linear Ticket Lifecycle](../understand/task-lifecycle.md
 
 Owned paths do double duty. They are the brief's scope and the isolation that lets tickets run in
 parallel, so two tickets in flight together own disjoint files or say plainly that they are serial. The
-[working-tree contract](./working-tree-contract.md) turns those two fields - owned paths and base
+[working-tree standard](./working-tree-standard.md) turns those two fields - owned paths and base
 branch - into a branch, a worktree and a claim.
 
 ## The crew brief
@@ -96,7 +96,7 @@ reviewer decide PASS or FAIL from the same text? If either answer is no, the bri
 
 ## Related
 
-- [Working-Tree Contract](./working-tree-contract.md) - base branch, owned paths, and the claim
+- [Working-Tree Standard](./working-tree-standard.md) - base branch, owned paths, and the claim
 - [Orchestration Pitfalls](./orchestration-pitfalls.md) - how briefs fail once several are in flight
 - [Linear Ticket Lifecycle](../understand/task-lifecycle.md) - where a ticket's state lives
 - [Work Model](../understand/work-model.md) - what Linear owns and what Git owns

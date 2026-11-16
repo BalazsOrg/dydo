@@ -26,7 +26,7 @@ target your design cannot meet: redesign or return it, never lower it.
 
 ## Before the first edit
 
-On an `implement` or `fix` hop, prove the working-tree contract's checks; return a failure to the
+On an `implement` or `fix` hop, prove the working-tree standard's checks; return a failure to the
 captain and stop:
 
 1. `HEAD` is on the relevant ticket or Sub-ticket branch.

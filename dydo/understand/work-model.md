@@ -19,7 +19,7 @@ officer never becomes another officer ([Decision 050](../project/decisions/050-o
 | Stage | Who | Output | Gate |
 |---|---|---|---|
 | Think | any session, loading co-thinker | ripe intent, and a Decision Record when the choice earns one | - |
-| Chart and plan a Project | the map holder, the user or an invoked admiral, with wayfinder | the map in the Linear Project, first tickets, Questions; a repository plan only for a cross-cutting architecture contract | project-plan review of that plan, then user approval |
+| Chart and plan a Project | the map holder, the user or an invoked admiral, with wayfinder | the map in the Linear Project, first tickets, Questions; a repository plan only for a cross-cutting architecture plan | project-plan review of that plan, then user approval |
 | Make a ticket exact | ticket-captain, through its compact acceptance contract | a just-in-time contract with no hidden implementation decisions; the route stays the writer's | optional spec review |
 | Implement | ticket-captain | a ticket branch, a PR into the feature branch, or into main for an atomic ticket, evidence on the ticket | reviewer PASS |
 | Coordinate | the map holder, the user or an invoked admiral | captains in flight, wired Merge Sub-tickets, plan amendments | each captain directs its own merge review |
@@ -103,7 +103,7 @@ to a ticket. They are not extra levels in the work graph.
    blockers and shoulds become Bugs, nits go on one nit ticket per round, judgment calls become
    Questions. The Inquisition then delivers its own record through the normal docs chain and
    closes once; see the
-   [working-tree contract](../guides/working-tree-contract.md#retaining-an-inquisitions-record-and-proofs).
+   [working-tree standard](../guides/working-tree-standard.md#retaining-an-inquisitions-record-and-proofs).
    Rounds repeat from zero until one finds no blocker and no should
    ([DR 059](../project/decisions/059-inquisition-rebuilt-area-map-three-phases-rounds-until-clean.md)).
    It catches what got through; it never proves zero defects.
@@ -129,7 +129,7 @@ floor only when a live check establishes its enforcement.
 Use a branch-following GitHub URL for current human navigation, and an exact commit permalink for a
 governing contract or historical proof. The ticket branch carries its Linear ticket key, so Linear's
 GitHub integration attaches branch and PR to the ticket natively; the
-[Working-Tree Contract](../guides/working-tree-contract.md) is the procedure. Durable knowledge
+[Working-Tree Standard](../guides/working-tree-standard.md) is the procedure. Durable knowledge
 discovered during work is extracted to a Decision, guide, Project plan, audit, or assimilation brief
 rather than left in a comment thread or a session transcript.
 
@@ -144,7 +144,7 @@ promotion paths.
 
 - [Control Flow](./control-flow.md) - every handoff drawn: roster, happy path, states, edge contracts, exceptions
 - [Linear Ticket Lifecycle](./task-lifecycle.md) - what a ticket carries, and how it is claimed and merged
-- [Working-Tree Contract](../guides/working-tree-contract.md) - branches, worktrees, claims, cleanup
+- [Working-Tree Standard](../guides/working-tree-standard.md) - branches, worktrees, claims, cleanup
 - [Decision 045 - Flow Map, Hats and Workers, Review Tiers, and the Working-Tree Contract](../project/decisions/045-flow-map-hats-review-tiers-and-working-tree-contract.md)
 - [Decision 044 - Linear-Canonical PM and the dydo Knowledge Boundary](../project/decisions/044-linear-canonical-pm-and-dydo-knowledge-boundary.md)
 - [dydo Glossary](../reference/dydo-glossary.md) - the locked vocabulary

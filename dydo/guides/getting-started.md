@@ -154,7 +154,7 @@ co-thinker, a ripe one becomes a Project through `to-project`, the map holder - 
 or an invoked admiral - reads the Project and acts, captains own tickets, every merge inside a
 Project is a Merge Ticket, and the user acts at the gates,
 clicking an atomic ticket's reviewed PR into main. The
-[Working-Tree Contract](./working-tree-contract.md) says which branch and worktree each of them works
+[Working-Tree Standard](./working-tree-standard.md) says which branch and worktree each of them works
 in.
 
 ## Related

@@ -66,7 +66,7 @@ Git and dydo own architecture, Decisions, reviewed Project plans, temporary
 assimilation briefs, changelog, release tags, and pitfalls. Linear owns FutureFeatures with the rest
 of the work graph. Branches, worktrees, sessions, native sub-agents, commits, pull requests, and
 review passes are execution evidence linked to a Linear ticket, not work-record types. The
-[Work Model](./work-model.md) states the contract; the [Linear Ticket Lifecycle](./task-lifecycle.md)
+[Work Model](./work-model.md) states the standard; the [Linear Ticket Lifecycle](./task-lifecycle.md)
 states how one ticket moves through it.
 
 ## Guard system
@@ -78,7 +78,7 @@ destructive shell patterns, and configurable nudges that notice, warn, or block.
 The host platform owns identity and permissions. A sandbox value in native configuration requests a
 restriction; only observed host behaviour establishes that the runtime enforces it. dydo maintains no
 agent roster, scheduler, queue, or worktree manager: the
-[Working-Tree Contract](../guides/working-tree-contract.md) is a procedure agents follow, not machinery
+[Working-Tree Standard](../guides/working-tree-standard.md) is a procedure agents follow, not machinery
 the CLI runs. See [Guard System](./guard-system.md) for the wire contract.
 
 ## Documentation graph
@@ -98,7 +98,7 @@ rules check titles, links, filenames, and project-specific invariants.
 
 ## Related
 
-- [Work Model](./work-model.md) - Linear/Git operating contract
+- [Work Model](./work-model.md) - Linear/Git operating standard
 - [Scaffold and Customization](./scaffold-and-customization.md) - Authoring and customization
 - [Guard System](./guard-system.md) - Enforcement layers and the hook contract
 - [Configuration](../reference/configuration.md) - Runtime configuration
