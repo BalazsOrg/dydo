@@ -46,7 +46,10 @@ worker-allowed command word that no `SKILL_COMMANDS` entry runs. A skill that ad
 fails there until you add its invocation here, as the prose writes it. The test reads the tuple as
 Python does: a commented-out entry is not run and does not count, and a tuple written in any syntax
 beyond plain quoted strings separated by commas (an f-string, a `+`, two literals with no comma) fails
-the test rather than being guessed at. The prose is the crew and
+the test rather than being guessed at. The driver must bind `SKILL_COMMANDS` exactly once, as that
+column-0 tuple: a second binding (a reassignment, a rebinding inside a function, a `for` target, an
+import, an assignment-shaped line in a docstring) fails the test, because Python would run a different
+tuple than the one credited. Reads of the name and comment lines are not bindings. The prose is the crew and
 engineering skills and the sub-agent parts of the officer files (a file whose intro says "assume no
 officer role" counts whole, otherwise the section that says it), not these feature maps. This
 protocol drive does not prove a real host sends `agent_id` for every sub-agent, and it runs only where

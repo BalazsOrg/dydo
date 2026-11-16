@@ -210,8 +210,7 @@ public partial class WorkerLaneSkillLintTests
     /// <summary>The literals and commas of the tuple, in order, up to its real closing paren; comments and blanks are skipped.</summary>
     private static IEnumerable<(bool IsComma, string Text, int Position)> TupleTokens(string source)
     {
-        var start = JourneyCommandsStartRegex().Match(source);
-        Assert.True(start.Success, "control_dydo.py has no SKILL_COMMANDS tuple");
+        var start = SoleTupleBinding(source);
 
         var position = start.Index + start.Length;
         while (position < source.Length)
@@ -230,6 +229,36 @@ public partial class WorkerLaneSkillLintTests
         }
 
         throw Unsupported(source, source.Length, "a tuple that never closes");
+    }
+
+    /// <summary>
+    /// The driver's one binding of <c>SKILL_COMMANDS</c>, as the <c>SKILL_COMMANDS = (</c> the reader parses. Python
+    /// runs the last binding, so a second one (a reassignment, a rebinding in a function, an assignment-shaped line
+    /// in a docstring) would leave the lint crediting a tuple that never runs: none or several fail closed, naming
+    /// their lines. Reads of the name are not bindings; nor are comments.
+    /// </summary>
+    private static Match SoleTupleBinding(string source)
+    {
+        var bindingLines = source.Split('\n')
+            .Select((line, index) => (Line: line, Number: index + 1))
+            .Where(entry => BindingRegex().IsMatch(WithoutComment(entry.Line)))
+            .Select(entry => entry.Number).ToList();
+        if (bindingLines.Count != 1)
+            throw new FormatException($"SKILL_COMMANDS in control_dydo.py must be bound exactly once, as the tuple this lint reads, or the lint may credit "
+                + $"commands Python never runs; found {bindingLines.Count} bindings (lines {string.Join(", ", bindingLines)}). "
+                + "Remove the others, or teach this reader the new syntax.");
+
+        var start = JourneyCommandsStartRegex().Match(source);
+        if (!start.Success || source.Take(start.Index).Count(c => c == '\n') + 1 != bindingLines[0])
+            throw new FormatException($"The one binding of SKILL_COMMANDS in control_dydo.py is not `SKILL_COMMANDS = (` at the start of a line "
+                + $"(line {bindingLines[0]} of the driver). Rewrite it in that shape, or teach this reader the new syntax.");
+        return start;
+    }
+
+    private static string WithoutComment(string line)
+    {
+        var comment = line.IndexOf('#');
+        return comment < 0 ? line : line[..comment];
     }
 
     private static FormatException Unsupported(string source, int position, string what)
@@ -391,6 +420,73 @@ public partial class WorkerLaneSkillLintTests
         Assert.Contains("SKILL_COMMANDS", failure.Message);
     }
 
+    private const string RealTuple = "SKILL_COMMANDS = (\n    \"dydo check\", \"dydo merge 1\")\n";
+
+    // The red cases for a second binding: Python runs the last one (or the one a function rebinds), so the lint
+    // that credits the first tuple it sees would credit commands that never run. Any second binding fails, naming its line.
+    [Theory]
+    [InlineData(RealTuple + "SKILL_COMMANDS = (\"dydo check\", \"dydo --help\")\n", "1, 3")]
+    [InlineData(RealTuple + "SKILL_COMMANDS = SKILL_COMMANDS[:1]\n", "1, 3")]
+    [InlineData("\"\"\"\nSKILL_COMMANDS = (\"dydo check\", \"dydo merge 1\")\n\"\"\"\nSKILL_COMMANDS = (\n    \"dydo check\", \"dydo --help\")\n", "2, 4")]
+    [InlineData(RealTuple + "\ndef reset():\n    global SKILL_COMMANDS\n    SKILL_COMMANDS = ()\n", "1, 5, 6")]
+    [InlineData(RealTuple + "for SKILL_COMMANDS in range(3):\n    pass\n", "1, 3")]
+    [InlineData(RealTuple + "for index, SKILL_COMMANDS in enumerate(rows):\n    pass\n", "1, 3")]
+    [InlineData(RealTuple + "del SKILL_COMMANDS\n", "1, 3")]
+    [InlineData(RealTuple + "from elsewhere import SKILL_COMMANDS\n", "1, 3")]
+    [InlineData(RealTuple + "import elsewhere as SKILL_COMMANDS\n", "1, 3")]
+    [InlineData(RealTuple + "SKILL_COMMANDS += (\"dydo --help\",)\n", "1, 3")]
+    [InlineData(RealTuple + "SKILL_COMMANDS |= other\n", "1, 3")]
+    [InlineData(RealTuple + "SKILL_COMMANDS: tuple = ()\n", "1, 3")]
+    [InlineData(RealTuple + "if (SKILL_COMMANDS := ()):\n    pass\n", "1, 3")]
+    [InlineData(RealTuple + "control.SKILL_COMMANDS = ()\n", "1, 3")]
+    [InlineData(RealTuple + "def SKILL_COMMANDS():\n    pass\n", "1, 3")]
+    public void JourneyCommands_RejectsAnyBindingBesidesTheTuple(string driver, string lines)
+    {
+        var failure = Assert.Throws<FormatException>(() => JourneyCommands(driver));
+
+        Assert.Contains("SKILL_COMMANDS", failure.Message);
+        Assert.Contains("control_dydo.py", failure.Message);
+        Assert.Contains($"(lines {lines})", failure.Message);
+    }
+
+    // The red cases for a binding the reader would not parse: it is the only one, and still not the tuple it reads.
+    [Theory]
+    [InlineData("x = 1\n", "found 0 bindings")]
+    [InlineData("    SKILL_COMMANDS = (\"dydo check\", \"dydo --help\")\n", "is not `SKILL_COMMANDS = (` at the start of a line (line 1")]
+    [InlineData("SKILL_COMMANDS: tuple = (\"dydo check\", \"dydo --help\")\n", "is not `SKILL_COMMANDS = (` at the start of a line (line 1")]
+    [InlineData("SKILL_COMMANDS = list((\"dydo check\", \"dydo --help\"))\n", "is not `SKILL_COMMANDS = (` at the start of a line (line 1")]
+    public void JourneyCommands_RejectsADriverWhoseOnlyBindingIsNotThePlainTuple(string driver, string found)
+    {
+        var failure = Assert.Throws<FormatException>(() => JourneyCommands(driver));
+
+        Assert.Contains("SKILL_COMMANDS", failure.Message);
+        Assert.Contains(found, failure.Message);
+    }
+
+    // Reads, comments and look-alike names are not bindings: the driver's own loop reads the tuple.
+    [Fact]
+    public void JourneyCommands_DoesNotCountReadsCommentsOrLookAlikeNamesAsBindings()
+    {
+        const string driver = """
+            # SKILL_COMMANDS = ("dydo --help",)
+            SKILL_COMMANDS = (
+                "dydo check", "dydo merge 1")
+            SKILL_COMMANDS_EXTRA = ("dydo --help",)
+            MY_SKILL_COMMANDS = ("dydo --help",)
+
+            def run(control, other):
+                #   SKILL_COMMANDS = ("dydo --help",)
+                for command in SKILL_COMMANDS:
+                    print(command)
+                total = len(control.SKILL_COMMANDS) + len(SKILL_COMMANDS)
+                first = SKILL_COMMANDS[:1]
+                same = SKILL_COMMANDS == other
+                return [c for c in SKILL_COMMANDS if c in other] or (other in SKILL_COMMANDS)
+            """;
+
+        Assert.Equal(["dydo check", "dydo merge 1"], JourneyCommands(driver));
+    }
+
     // The red case for a marker in the intro: the whole file is the sub-agent's, later steps included.
     [Fact]
     public void SubAgentSections_TakesTheWholeFileWhenTheIntroCarriesTheMarker()
@@ -464,6 +560,16 @@ public partial class WorkerLaneSkillLintTests
         Assert.DoesNotContain("dydo init", section);
         Assert.DoesNotContain("dydo adopt", section);
     }
+
+    // A line that binds the name: an assignment or augmented assignment (also `obj.SKILL_COMMANDS =`), a walrus, a
+    // statement-start annotation, `global`/`nonlocal`/`del`/`import`/`def`/`class` naming it, `as NAME`, and a `for`
+    // target (the tempered part stops at `in`, so `for c in SKILL_COMMANDS` is a read).
+    [GeneratedRegex(@"(?<!\w)SKILL_COMMANDS[ \t]*(?::=|(?:[-+*/%&|^@]|//|\*\*|>>|<<)?=(?!=))"
+        + @"|^[ \t]*SKILL_COMMANDS[ \t]*:"
+        + @"|\b(?:global|nonlocal|del|import|def|class)\b[^\n]*?(?<!\w)SKILL_COMMANDS\b"
+        + @"|\bas[ \t]+SKILL_COMMANDS\b"
+        + @"|\bfor[ \t]+(?:(?!\bin\b)[^\n])*?(?<!\w)SKILL_COMMANDS\b")]
+    private static partial Regex BindingRegex();
 
     [GeneratedRegex(@"(?m)^SKILL_COMMANDS = \(")]
     private static partial Regex JourneyCommandsStartRegex();
