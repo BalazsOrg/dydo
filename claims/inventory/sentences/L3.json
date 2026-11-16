@@ -459,7 +459,15 @@
         {
           "id": "L3-029",
           "kind": "inquisition",
-          "rule": "An Inquisition's proofs belong to its Break-phase inquisitor, not the code-writer; its patch lane briefs the code-writer as a Bug.",
+          "rule": "An Inquisition's patch lane briefs the code-writer as a Bug.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-232",
+          "kind": "identity",
+          "rule": "An Inquisition's proofs belong to its Break-phase inquisitor, not the code-writer.",
           "actors": [
             "code-writer"
           ]
@@ -896,7 +904,23 @@
         {
           "id": "L3-058",
           "kind": "return",
-          "rule": "Outside proof-only, return to the Ticket Captain in the standard's form, proof carrying the maintain-verification-skill proof recipe: the red lines, or for an unused-member Bug its definition and reference search, and gates run with exits; a Prototype hop returns runnable-demo evidence and its commit.",
+          "rule": "Outside proof-only, return to the Ticket Captain in the standard's form.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-233",
+          "kind": "return",
+          "rule": "The return's proof carries maintain-verification-skill's proof recipe: the red lines, or for an unused-member Bug its definition and reference search, and gates run with exits.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-234",
+          "kind": "return",
+          "rule": "A Prototype hop returns runnable-demo evidence and its commit.",
           "actors": [
             "code-writer"
           ]
@@ -910,6 +934,12 @@
       "rules": [
         {
           "id": "L3-058"
+        },
+        {
+          "id": "L3-233"
+        },
+        {
+          "id": "L3-234"
         }
       ],
       "notRule": null
@@ -936,7 +966,15 @@
         {
           "id": "L3-060",
           "kind": "review",
-          "rule": "On a fix hop check each finding's severity against the source, not the reviewer's label; a label you change goes in the IMPLEMENTED behaviour with its evidence.",
+          "rule": "A label you change goes in your IMPLEMENTED behaviour with its evidence (file:line, test, output).",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-220",
+          "kind": "review",
+          "rule": "On a fix hop check each finding's severity against the source, not the reviewer's label.",
           "actors": [
             "code-writer"
           ]
@@ -981,7 +1019,47 @@
         {
           "id": "L3-063",
           "kind": "evidence",
-          "rule": "Fix at the root: a gap gets its test first; cut what the contract does not need; split or flatten what is complex; hide what leaks across a seam; a surviving mutant sharpens its test or deletes its code; a surviving example value gets its step wired.",
+          "rule": "Fix at the root: a gap gets its test first.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-225",
+          "kind": "evidence",
+          "rule": "Cut what the contract does not need.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-226",
+          "kind": "evidence",
+          "rule": "Split or flatten what is complex.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-227",
+          "kind": "evidence",
+          "rule": "Hide what leaks across a seam.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-228",
+          "kind": "evidence",
+          "rule": "A surviving mutant sharpens its test or deletes its code.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-229",
+          "kind": "evidence",
+          "rule": "A surviving example value gets its step wired.",
           "actors": [
             "code-writer"
           ]
@@ -1226,7 +1304,15 @@
         {
           "id": "L3-079",
           "kind": "merge",
-          "rule": "Merge with a merge commit that keeps both parents and every hop SHA; a conflict-free merge of the reviewed PR into its feature branch is `dydo merge <pr> --match-head-commit <reviewed SHA> --match-base-commit <target tip>`; any other merge, a conflicted one included, stays local with the resolutions applied.",
+          "rule": "A conflict-free merge of the reviewed PR into its feature branch is `dydo merge <pr> --match-head-commit <reviewed SHA> --match-base-commit <target tip>`; any other merge, a conflicted one included, stays local with the resolutions applied.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-230",
+          "kind": "worktree",
+          "rule": "Merge with a merge commit that keeps both parents and every hop SHA.",
           "actors": [
             "code-writer"
           ]
@@ -1241,7 +1327,15 @@
         {
           "id": "L3-080",
           "kind": "merge",
-          "rule": "Pin the target tip from the branch ref (git ls-remote or gh api), never from the PR's baseRefOid or base.sha; a refusal that the base moved means re-pin and return to the captain.",
+          "rule": "Pin the target tip from the branch ref (git ls-remote or gh api), never from the PR's baseRefOid or base.sha.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-231",
+          "kind": "merge",
+          "rule": "A refusal that the base moved means re-pin and return to the captain.",
           "actors": [
             "code-writer"
           ]
@@ -1649,7 +1743,15 @@
         {
           "id": "L3-103",
           "kind": "contract",
-          "rule": "Read the owning Linear ticket, its governing plan and applicable feature-spec sections at pinned commits, and on a fix hop the FAIL block that sent you.",
+          "rule": "Read the owning Linear ticket, and on a fix hop the FAIL block that sent you.",
+          "actors": [
+            "docs-writer"
+          ]
+        },
+        {
+          "id": "L3-223",
+          "kind": "contract",
+          "rule": "Read its governing plan and applicable feature-spec sections at pinned commits.",
           "actors": [
             "docs-writer"
           ]
@@ -1799,7 +1901,23 @@
         {
           "id": "L3-113",
           "kind": "contract",
-          "rule": "On a fix hop the FAIL block's blockers are the contract: check each finding's severity against the source, close only the blockers, and put a label you change in the IMPLEMENTED behaviour with its evidence.",
+          "rule": "On a fix hop the FAIL block's blockers are the contract: close only the blockers.",
+          "actors": [
+            "docs-writer"
+          ]
+        },
+        {
+          "id": "L3-221",
+          "kind": "review",
+          "rule": "Check each finding's severity against the source, not the reviewer's label.",
+          "actors": [
+            "docs-writer"
+          ]
+        },
+        {
+          "id": "L3-222",
+          "kind": "review",
+          "rule": "Put a label you change in your IMPLEMENTED behaviour with its evidence.",
           "actors": [
             "docs-writer"
           ]
@@ -1892,7 +2010,15 @@
         {
           "id": "L3-118",
           "kind": "docs",
-          "rule": "A dydo document takes its frontmatter and links from writing-docs.md; an agent-facing document is written by the writing-for-agents skill.",
+          "rule": "A dydo document takes its frontmatter and links from writing-docs.md.",
+          "actors": [
+            "docs-writer"
+          ]
+        },
+        {
+          "id": "L3-235",
+          "kind": "docs",
+          "rule": "An agent-facing document is written by the writing-for-agents skill.",
           "actors": [
             "docs-writer"
           ]
@@ -1946,7 +2072,15 @@
         {
           "id": "L3-121",
           "kind": "docs",
-          "rule": "Author navigation pages when the docs need them; skills/<category>/<name>/ is the only editable skill source, and host discovery paths are setup projections.",
+          "rule": "Author navigation pages when the docs need them.",
+          "actors": [
+            "docs-writer"
+          ]
+        },
+        {
+          "id": "L3-236",
+          "kind": "docs",
+          "rule": "skills/<category>/<name>/ is the only editable skill source, and host discovery paths are setup projections.",
           "actors": [
             "docs-writer"
           ]
@@ -2836,7 +2970,15 @@
         {
           "id": "L3-172",
           "kind": "evidence",
-          "rule": "Where a writer produced the candidate, check its IMPLEMENTED line against the pins and its proof against maintain-verification-skill's Proof; rerun its proof only on a doubt you state.",
+          "rule": "Rerun the writer's proof only on a doubt you state.",
+          "actors": [
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L3-237",
+          "kind": "review",
+          "rule": "Where a writer produced the candidate, check its IMPLEMENTED line against the pins and its proof against maintain-verification-skill's Proof.",
           "actors": [
             "reviewer"
           ]
@@ -2866,7 +3008,15 @@
         {
           "id": "L3-174",
           "kind": "capacity",
-          "rule": "Every probe and rerun runs capped with systemd-run (MemoryMax=4G, MemorySwapMax=0, OOMPolicy=continue, timeout 120), a gate at 8G and timeout 3600; a cap hit is a finding, never a reason to raise the cap.",
+          "rule": "Every probe and rerun runs capped with systemd-run (MemoryMax=4G, MemorySwapMax=0, OOMPolicy=continue, timeout 120), a gate at 8G and timeout 3600.",
+          "actors": [
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L3-218",
+          "kind": "capacity",
+          "rule": "A cap hit is a finding, never a reason to raise the cap.",
           "actors": [
             "reviewer"
           ]
@@ -2950,7 +3100,15 @@
         {
           "id": "L3-179",
           "kind": "review",
-          "rule": "Each rubric item ends verified against the source or as a finding, whatever the size of the diff; a clean section never covers another section's finding.",
+          "rule": "Each rubric item ends verified against the source or as a finding, whatever the size of the diff.",
+          "actors": [
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L3-219",
+          "kind": "review",
+          "rule": "A clean section never covers another section's finding.",
           "actors": [
             "reviewer"
           ]
@@ -3004,7 +3162,15 @@
         {
           "id": "L3-182",
           "kind": "evidence",
-          "rule": "Read this exact candidate's command, selection, environment, exit and artifacts; a rerun needs a concrete doubt you state.",
+          "rule": "A rerun needs a concrete doubt you state.",
+          "actors": [
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L3-238",
+          "kind": "evidence",
+          "rule": "Read this exact candidate's command, selection, environment, exit and artifacts.",
           "actors": [
             "reviewer"
           ]
@@ -3133,7 +3299,15 @@
         {
           "id": "L3-190",
           "kind": "evidence",
-          "rule": "Meaningful code changes retain their specified test obligations; combined merge gates and final G/M release obligations remain mandatory at their stages.",
+          "rule": "Combined merge gates and final G/M release obligations remain mandatory at their stages.",
+          "actors": [
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L3-224",
+          "kind": "evidence",
+          "rule": "Meaningful code changes retain their specified test obligations.",
           "actors": [
             "reviewer"
           ]

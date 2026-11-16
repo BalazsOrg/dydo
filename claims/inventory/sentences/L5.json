@@ -399,7 +399,15 @@
         {
           "id": "L5-024",
           "kind": "decision",
-          "rule": "Other overnight calls go to `what-would-balazs-do`, whose trigger map decides it or prepares the Question; irreversible calls are always a Question.",
+          "rule": "Irreversible calls are always a Question.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L5-279",
+          "kind": "decision",
+          "rule": "Other overnight calls go to what-would-balazs-do, whose trigger map decides it or prepares the Question.",
           "actors": [
             "admiral"
           ]
@@ -1175,7 +1183,15 @@
         {
           "id": "L5-069",
           "kind": "overnight",
-          "rule": "Resolve the blocker before proceeding; every recovery still needs fresh readback.",
+          "rule": "Resolve the blocker before proceeding.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L5-280",
+          "kind": "overnight",
+          "rule": "Every recovery still needs fresh readback.",
           "actors": [
             "chief-of-staff"
           ]
@@ -1478,7 +1494,15 @@
         {
           "id": "L5-088",
           "kind": "walkthrough",
-          "rule": "An empty landing walkthrough lets the Project close; the map holder commissions spec retirement following `dydo/reference/feature-spec-convention.md`, read from the repository root.",
+          "rule": "An empty landing walkthrough lets the Project close.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L5-283",
+          "kind": "project",
+          "rule": "The map holder commissions spec retirement following `dydo/reference/feature-spec-convention.md`, read from the repository root.",
           "actors": [
             "map-holder"
           ]
@@ -3129,7 +3153,15 @@
         {
           "id": "L5-181",
           "kind": "wayfinding",
-          "rule": "For a map-holder-held Type, claim it before work; a Question still waits for the user's answer.",
+          "rule": "For a map-holder-held Type, claim it before work.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L5-278",
+          "kind": "wayfinding",
+          "rule": "A Question still waits for the user's answer.",
           "actors": [
             "map-holder"
           ]
@@ -3213,7 +3245,15 @@
         {
           "id": "L5-186",
           "kind": "wayfinding",
-          "rule": "Add newly surfaced tickets (create then wire, a Project's Task into its Milestone); graduate any fog the answer made specifiable, clearing each graduated patch from Not yet specified so it lives only as its new ticket.",
+          "rule": "Add newly surfaced tickets (create then wire, a Project's Task into its Milestone).",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L5-281",
+          "kind": "wayfinding",
+          "rule": "Graduate any fog the answer made specifiable, clearing each graduated patch from Not yet specified so it lives only as its new ticket.",
           "actors": [
             "map-holder"
           ]
@@ -3387,9 +3427,17 @@
         {
           "id": "L5-197",
           "kind": "decision",
-          "rule": "Crew returns its call to its captain; the chief of staff never runs the skill.",
+          "rule": "Crew returns its call to its captain.",
           "actors": [
             "crew",
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L5-274",
+          "kind": "decision",
+          "rule": "The chief of staff never runs the skill.",
+          "actors": [
             "chief-of-staff"
           ]
         }
@@ -3819,7 +3867,23 @@
         {
           "id": "L5-226",
           "kind": "decision",
-          "rule": "When decided, post `DECIDED - by: what-would-balazs-do tribunal, unratified; result: <action>; vote: <n of 3, or split; most reversible>; log: <link>; undo: <steps>; next: <action>.`, leave the Question unwired, and let work resume with any required review still running.",
+          "rule": "When decided, post `DECIDED - by: what-would-balazs-do tribunal, unratified; result: <action>; vote: <n of 3, or split; most reversible>; log: <link>; undo: <steps>; next: <action>.`",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L5-275",
+          "kind": "decision",
+          "rule": "Leave the Question unwired.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L5-276",
+          "kind": "decision",
+          "rule": "Let work resume, with any review the work requires still running.",
           "actors": [
             "officer"
           ]
@@ -4224,7 +4288,15 @@
         {
           "id": "L5-250",
           "kind": "decision",
-          "rule": "A factual claim names its check; the other two members run it independently and report confirmed, refuted or inconclusive.",
+          "rule": "A factual claim names its check.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L5-282",
+          "kind": "decision",
+          "rule": "The other two members run the check independently and report confirmed, refuted or inconclusive.",
           "actors": [
             "officer"
           ]
@@ -4380,7 +4452,15 @@
         {
           "id": "L5-259",
           "kind": "decision",
-          "rule": "An experiment goes to a proof-only `code-writer` in an isolated worktree, its effects contained; its brief names the commissioning captain, the pinned source SHA and the test path.",
+          "rule": "An experiment goes to a proof-only `code-writer` in an isolated worktree, its effects contained.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L5-277",
+          "kind": "dispatch",
+          "rule": "A proof-only brief names the commissioning captain, the pinned source SHA and the test path.",
           "actors": [
             "officer"
           ]

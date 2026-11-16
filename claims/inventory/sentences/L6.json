@@ -150,9 +150,24 @@
         {
           "id": "L6-009",
           "kind": "worktree",
-          "rule": "Every crew hop ends on a commit whose SHA the return names; the Ticket Captain posts it on the record; the ticket branch keeps its hops unsquashed and unrewritten.",
+          "rule": "Every crew hop ends on a commit whose SHA the return names.",
           "actors": [
-            "crew",
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-141",
+          "kind": "worktree",
+          "rule": "The Ticket Captain posts the hop SHA on the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-142",
+          "kind": "worktree",
+          "rule": "The ticket branch keeps its hops unsquashed and unrewritten.",
+          "actors": [
             "ticket-captain"
           ]
         }
@@ -181,10 +196,18 @@
         {
           "id": "L6-011",
           "kind": "merge",
-          "rule": "Project tickets integrate serially through their feature branch; the user alone lands the feature on the repository's default branch.",
+          "rule": "The user alone lands the feature on the repository's default branch.",
           "actors": [
             "ticket-captain",
             "user"
+          ]
+        },
+        {
+          "id": "L6-156",
+          "kind": "merge",
+          "rule": "Project tickets integrate serially through their feature branch.",
+          "actors": [
+            "ticket-captain"
           ]
         }
       ],
@@ -380,7 +403,24 @@
         {
           "id": "L6-024",
           "kind": "project",
-          "rule": "To open a Project, the map holder commissions the first Ticket Captain, who opens the feature branch from the approved main SHA, commits the Project's working spec on it when handed one, and reports both; the Project map is in Linear; every ticket carries outcome, owned paths, blockers, exact gates and base branch; only then is a ticket pickable.",
+          "rule": "To open a Project, the map holder commissions the first Ticket Captain, who opens the feature branch from the approved main SHA and commits the Project's working spec on it when handed one.",
+          "actors": [
+            "map-holder",
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-178",
+          "kind": "project",
+          "rule": "The first Captain reports both.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-179",
+          "kind": "project",
+          "rule": "The Project map is in Linear and every ticket carries outcome, owned paths, blockers, exact gates and base branch; only then is a ticket pickable.",
           "actors": [
             "map-holder",
             "ticket-captain"
@@ -396,7 +436,15 @@
         {
           "id": "L6-025",
           "kind": "linear",
-          "rule": "To claim a ticket, it is assigned, its branch and isolated worktree exist, and branch, base SHA and worktree path are on the ticket; the captain sets Implementing when it spawns the author, a code-writer or a docs-writer.",
+          "rule": "To claim a ticket, it is assigned, its branch and isolated worktree exist, and branch, base SHA and worktree path are on the ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-135",
+          "kind": "linear",
+          "rule": "The captain sets Implementing when it spawns the author, a code-writer or a docs-writer.",
           "actors": [
             "ticket-captain"
           ]
@@ -411,10 +459,34 @@
         {
           "id": "L6-026",
           "kind": "contract",
-          "rule": "The captain's compact acceptance contract names the lanes, or none; when work splits beyond it, the writer's one pre-code comment names them; parallel crew receive disjoint paths (the ticket's feature files among them) and exact gates; independently trackable parallel lanes become direct Sub-tickets.",
+          "rule": "Independently trackable parallel lanes become direct Sub-tickets.",
           "actors": [
             "ticket-captain",
             "code-writer"
+          ]
+        },
+        {
+          "id": "L6-165",
+          "kind": "contract",
+          "rule": "The captain's compact acceptance contract names the lanes, or none.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-166",
+          "kind": "contract",
+          "rule": "When the work splits beyond the contract, the writer's one pre-code comment names the lanes.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-167",
+          "kind": "contract",
+          "rule": "Parallel crew receive disjoint paths (the ticket's feature files among them) and exact gates.",
+          "actors": [
+            "ticket-captain"
           ]
         }
       ],
@@ -442,7 +514,39 @@
         {
           "id": "L6-028",
           "kind": "worktree",
-          "rule": "Crew changes stay inside owned paths, exact gates pass, each hop ends on a commit named <KEY> <hop>: <what> (hop is implement, fix after a FAIL, merge, or proof as <KEY> proof: <hypothesis>), review evidence stays on the work item reviewed, and every return goes to the Ticket Captain.",
+          "rule": "Each hop ends on a commit named <KEY> <hop>: <what> (hop is implement, fix after a FAIL, merge, or proof as <KEY> proof: <hypothesis>).",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-143",
+          "kind": "worktree",
+          "rule": "Crew changes stay inside owned paths.",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-144",
+          "kind": "evidence",
+          "rule": "Exact gates pass.",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-145",
+          "kind": "review",
+          "rule": "Review evidence stays on the work item reviewed.",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-146",
+          "kind": "return",
+          "rule": "Every return comes back to the Ticket Captain.",
           "actors": [
             "crew"
           ]
@@ -457,7 +561,23 @@
         {
           "id": "L6-029",
           "kind": "review",
-          "rule": "To review and offer, passed lane branches are integrated into the parent ticket branch, combined gates pass, a fresh parent ticket-review PASS block is on the ticket and in the PR, the branch is pushed, and the PR targets the branch in the Branches table.",
+          "rule": "Passed lane branches are integrated into the parent ticket branch, combined gates pass, and a fresh parent ticket-review PASS block is on the ticket and in the PR.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-169",
+          "kind": "merge",
+          "rule": "The branch is pushed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-170",
+          "kind": "merge",
+          "rule": "The PR targets the branch in the Branches table.",
           "actors": [
             "ticket-captain"
           ]
@@ -472,12 +592,83 @@
         {
           "id": "L6-030",
           "kind": "merge",
-          "rule": "A Project ticket integrates through its final Merge Sub-ticket: a code-writer maps conflicts and combined gates and performs the merge (a conflict-free merge of the reviewed PR into its feature branch is dydo merge, whose merge SHA is the candidate for combined gates and merge review; a conflicted merge stays the local merge; a refactoring resolution leaves its code no worse than either side), then a fresh merge reviewer judges it, preserving the merge commit and hop SHAs; the map holder wires the order and may advance an independent ready PR; the parent stays Ready to Merge until merge PASS, then both close Done.",
+          "rule": "A Project ticket integrates through its final Merge Sub-ticket.",
           "actors": [
-            "ticket-captain",
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-147",
+          "kind": "merge",
+          "rule": "A code-writer maps conflicts and combined gates and performs the merge.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-148",
+          "kind": "merge",
+          "rule": "A conflict-free merge of the reviewed PR into its feature branch is dydo merge; a conflicted merge stays the local merge.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-149",
+          "kind": "merge",
+          "rule": "The merge SHA of a dydo merge is the candidate for the combined gates and merge review.",
+          "actors": [
             "code-writer",
-            "reviewer",
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L6-150",
+          "kind": "merge",
+          "rule": "A refactoring resolution leaves its code no worse than either side.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-151",
+          "kind": "review",
+          "rule": "A fresh merge reviewer judges the merge.",
+          "actors": [
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L6-152",
+          "kind": "worktree",
+          "rule": "The merge commit and hop SHAs are preserved.",
+          "actors": [
+            "code-writer",
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L6-153",
+          "kind": "merge",
+          "rule": "The map holder wires the merge order and may advance an independent ready PR.",
+          "actors": [
             "map-holder"
+          ]
+        },
+        {
+          "id": "L6-154",
+          "kind": "linear",
+          "rule": "The parent stays Ready to Merge until merge PASS.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-155",
+          "kind": "linear",
+          "rule": "On merge PASS the Merge Sub-ticket and its parent both close Done.",
+          "actors": [
+            "ticket-captain"
           ]
         }
       ],
@@ -682,7 +873,15 @@
         {
           "id": "L6-043",
           "kind": "review",
-          "rule": "The default crew is one author (code-writer, or docs-writer for a documentation change) and a fresh independent whole-change review, whose first round on a candidate seats two reviewers in parallel, one Claude and one Codex, their findings merged into one block that FAILs only on a blocker.",
+          "rule": "A candidate's first review round seats two reviewers in parallel, one Claude and one Codex, their findings merged into one block that FAILs only on a blocker.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-168",
+          "kind": "dispatch",
+          "rule": "The default crew is one author (code-writer, or docs-writer for a documentation change) and a fresh independent whole-change review.",
           "actors": [
             "ticket-captain"
           ]
@@ -727,7 +926,15 @@
         {
           "id": "L6-046",
           "kind": "evidence",
-          "rule": "The delivery-scale rule does not weaken required G/M, integration or release gates, and skipped native proof is never runtime proof.",
+          "rule": "The delivery-scale rule does not weaken required G/M, integration or release gates.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-173",
+          "kind": "evidence",
+          "rule": "Skipped native proof is never runtime proof.",
           "actors": [
             "ticket-captain"
           ]
@@ -757,10 +964,26 @@
         {
           "id": "L6-048",
           "kind": "evidence",
-          "rule": "The captain pins project-owned commands in Exact gates; the writer proves that hop's actual reach and the reviewer judges its record.",
+          "rule": "The captain pins project-owned commands in Exact gates.",
           "actors": [
             "ticket-captain",
             "code-writer",
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L6-171",
+          "kind": "evidence",
+          "rule": "The writer proves that hop's actual reach.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-172",
+          "kind": "evidence",
+          "rule": "The reviewer judges the hop's record.",
+          "actors": [
             "reviewer"
           ]
         }
@@ -834,9 +1057,33 @@
         {
           "id": "L6-053",
           "kind": "dispatch",
-          "rule": "The captain alone commissions exact-scope delivery crew, budgets that capacity and preserves the fresh reviewer obligation; research still sends its own scouts.",
+          "rule": "The captain alone commissions exact-scope delivery crew.",
           "actors": [
             "ticket-captain",
+            "research"
+          ]
+        },
+        {
+          "id": "L6-174",
+          "kind": "capacity",
+          "rule": "The captain budgets that capacity.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-175",
+          "kind": "dispatch",
+          "rule": "The captain preserves the fresh reviewer obligation.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-176",
+          "kind": "dispatch",
+          "rule": "Research still sends its own scouts.",
+          "actors": [
             "research"
           ]
         }
@@ -1226,10 +1473,17 @@
         {
           "id": "L6-079",
           "kind": "merge",
-          "rule": "A captain-directed Merge code-writer performs the specified merge and conflict resolutions; a fresh reviewer judges that integrated candidate.",
+          "rule": "A fresh reviewer judges the integrated merge candidate.",
           "actors": [
-            "code-writer",
             "reviewer"
+          ]
+        },
+        {
+          "id": "L6-180",
+          "kind": "merge",
+          "rule": "A captain-directed Merge code-writer performs the specified merge and conflict resolutions.",
+          "actors": [
+            "code-writer"
           ]
         }
       ],
@@ -1347,7 +1601,15 @@
         {
           "id": "L6-087",
           "kind": "contract",
-          "rule": "On a Bug, Fix is natively blocked by reproduction; shared paths transfer only after the reproduction closes with its evidence recorded.",
+          "rule": "On a Bug, Fix is natively blocked by reproduction.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-163",
+          "kind": "contract",
+          "rule": "Shared paths transfer only after the reproduction closes with its evidence recorded.",
           "actors": [
             "ticket-captain"
           ]
@@ -1362,7 +1624,15 @@
         {
           "id": "L6-088",
           "kind": "contract",
-          "rule": "Each Bug stage has a contract, branch and worktree; every actual integration has a Merge Sub-ticket.",
+          "rule": "Each Bug stage has a contract, branch and worktree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-164",
+          "kind": "merge",
+          "rule": "Every actual integration has a Merge Sub-ticket.",
           "actors": [
             "ticket-captain"
           ]
@@ -1542,10 +1812,26 @@
         {
           "id": "L6-100",
           "kind": "return",
-          "rule": "A delegated captain whose PR still awaits checks returns \"PR open <key>, checks pending: <url>, head <SHA>\"; its officer, the top-level thread that owns the PR in T3, watches the PR and wakes the captain, which rechecks the gate before Ready to Merge.",
+          "rule": "A delegated captain whose PR still awaits checks returns \"PR open <key>, checks pending: <url>, head <SHA>\".",
           "actors": [
             "ticket-captain",
             "officer"
+          ]
+        },
+        {
+          "id": "L6-136",
+          "kind": "merge",
+          "rule": "The officer, the top-level thread that owns the PR in T3, watches the PR and wakes the captain.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L6-137",
+          "kind": "merge",
+          "rule": "The woken captain rechecks the gate before Ready to Merge.",
+          "actors": [
+            "ticket-captain"
           ]
         }
       ],
@@ -1558,7 +1844,15 @@
         {
           "id": "L6-101",
           "kind": "release",
-          "rule": "For an uncleared blocker or user takeover, the captain pushes, posts the resume SHA, cleans the worktrees it or its crew made with dydo clean --dry-run <worktree> then dydo clean <worktree> run from outside that tree, sets the parent Todo, unassigns, wires any blocker, and returns \"released <key>: <reason>\".",
+          "rule": "For an uncleared blocker or user takeover, the captain pushes, posts the resume SHA, sets the parent Todo, unassigns, wires any blocker, and returns \"released <key>: <reason>\".",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-177",
+          "kind": "worktree",
+          "rule": "On release, the captain cleans the worktrees it or its crew made with dydo clean --dry-run <worktree> then dydo clean <worktree>, run from outside that tree.",
           "actors": [
             "ticket-captain"
           ]
@@ -1708,7 +2002,15 @@
         {
           "id": "L6-111",
           "kind": "inquisition",
-          "rule": "Each Inquisition group Sub-ticket owns its own Bugs' retention and closes Done with its findings register final and pushed; the parent rechecks retention over the merged register before its record.",
+          "rule": "Each Inquisition group Sub-ticket owns its own Bugs' retention and closes Done with its findings register final and pushed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-181",
+          "kind": "inquisition",
+          "rule": "The parent rechecks retention over the merged register before its record.",
           "actors": [
             "ticket-captain"
           ]
@@ -1874,7 +2176,31 @@
         {
           "id": "L6-122",
           "kind": "worktree",
-          "rule": "Only after that verification does the captain delete the audit branch and, as parent, every group's audit branch, name their remotes and any proof branch no open Bug needs on the record for the user, close Done and return \"done <key>: merged\".",
+          "rule": "Only after the record and retention verification does the captain delete the audit branch and, as parent, every group's audit branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-157",
+          "kind": "worktree",
+          "rule": "Name the audit branches' remotes and any proof branch no open Bug needs on the record for the user.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-158",
+          "kind": "inquisition",
+          "rule": "After the audit branches are handled the captain closes the Inquisition Done.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-159",
+          "kind": "return",
+          "rule": "The captain returns done <key>: merged.",
           "actors": [
             "ticket-captain"
           ]
@@ -1889,7 +2215,31 @@
         {
           "id": "L6-123",
           "kind": "worktree",
-          "rule": "The ticket-captain cleans every worktree it or its crew made (lanes, merge checkouts, temp checkouts) with dydo clean --dry-run <worktree> then dydo clean <worktree>, run from outside that tree; leaves the worktree its thread runs in to T3; knows worktrees under ~/.t3/worktrees (delegate_task checkouts included) are T3-made and dydo clean skips them; and a spawned Ticket Captain first pushes the parent branch and opens its PR so the work survives its return.",
+          "rule": "The ticket-captain cleans every worktree it or its crew made (lanes, merge checkouts, temp checkouts) with dydo clean --dry-run <worktree> then dydo clean <worktree>, run from outside that tree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-138",
+          "kind": "worktree",
+          "rule": "The worktree the captain's thread runs in belongs to T3: leave it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-139",
+          "kind": "worktree",
+          "rule": "Know that worktrees under ~/.t3/worktrees (delegate_task checkouts included) are T3-made and dydo clean skips them.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-140",
+          "kind": "worktree",
+          "rule": "A spawned Ticket Captain first pushes the parent branch and opens its PR so the work survives its return.",
           "actors": [
             "ticket-captain"
           ]
@@ -1981,7 +2331,31 @@
         {
           "id": "L6-129",
           "kind": "worktree",
-          "rule": "The ticket-captain deletes the audit branch at Done after the record and retention checks, and the group audit branches at the parent's Done, names any proof branch no open Bug needs, and never merges them or deletes the independently retained Bug refs.",
+          "rule": "The ticket-captain deletes the audit branch at Done after the record and retention checks, and the group audit branches at the parent's Done.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-160",
+          "kind": "worktree",
+          "rule": "Name any proof branch no open Bug needs.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-161",
+          "kind": "inquisition",
+          "rule": "The audit and proof branches are never merged.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-162",
+          "kind": "worktree",
+          "rule": "Never delete the independently retained Bug refs.",
           "actors": [
             "ticket-captain"
           ]

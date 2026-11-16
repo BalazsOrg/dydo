@@ -84,7 +84,15 @@
         {
           "id": "L7-004",
           "kind": "linear",
-          "rule": "Project status `Planned` means the user approved the charted route and any repository plan passed independent review; the map holder then commissions the first Ticket Captain to open the feature.",
+          "rule": "Project status `Planned` means the user approved the charted route and any repository plan passed independent review.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L7-193",
+          "kind": "project",
+          "rule": "The map holder then commissions the first Ticket Captain to open the feature.",
           "actors": [
             "map-holder"
           ]
@@ -114,7 +122,15 @@
         {
           "id": "L7-006",
           "kind": "project",
-          "rule": "Project status `Completed` means the destination landed and the landing walkthrough found nothing more; the map holder then commissions spec retirement.",
+          "rule": "Project status `Completed` means the destination landed and the landing walkthrough found nothing more.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L7-194",
+          "kind": "project",
+          "rule": "The map holder then commissions spec retirement.",
           "actors": [
             "map-holder"
           ]
@@ -129,7 +145,15 @@
         {
           "id": "L7-007",
           "kind": "project",
-          "rule": "Project status `Canceled` means the destination was consciously abandoned; the map holder records why and commissions spec retirement.",
+          "rule": "Project status `Canceled` means the destination was consciously abandoned; the map holder records why.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L7-195",
+          "kind": "project",
+          "rule": "The map holder commissions spec retirement.",
           "actors": [
             "map-holder"
           ]
@@ -1726,7 +1750,7 @@
         {
           "id": "L7-127",
           "kind": "decision",
-          "rule": "A Question a `what-would-balazs-do` tribunal decided while the user was away, or on his own invocation, stays in `Todo` unwired, and work proceeds.",
+          "rule": "A Question a `what-would-balazs-do` tribunal decided while the user was away, or on his own invocation, stays in `Todo` unwired.",
           "actors": [
             "any-agent"
           ]
@@ -1737,6 +1761,14 @@
           "rule": "The user answers a tribunal-decided Question with `RATIFIED` or `OVERTURNED`.",
           "actors": [
             "user"
+          ]
+        },
+        {
+          "id": "L7-192",
+          "kind": "decision",
+          "rule": "Work proceeds.",
+          "actors": [
+            "any-agent"
           ]
         }
       ],
@@ -1984,7 +2016,7 @@
         {
           "id": "L7-145",
           "kind": "contract",
-          "rule": "`## Exact gates` names unavailable support and explicitly reconciles older active obligations.",
+          "rule": "`## Exact gates` explicitly reconciles older active obligations.",
           "actors": [
             "ticket-captain"
           ]
@@ -1993,6 +2025,14 @@
           "id": "L7-146",
           "kind": "contract",
           "rule": "No gate is cancelled retrospectively by a new default.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L7-191",
+          "kind": "contract",
+          "rule": "`## Exact gates` names unavailable support.",
           "actors": [
             "ticket-captain"
           ]

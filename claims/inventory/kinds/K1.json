@@ -18,31 +18,36 @@
       "statements": [
         "L1-016",
         "L2-018",
-        "L6-052"
+        "L6-052",
+        "L6-174"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L1-016 binds the captain and adds serial stages and preserving the fresh reviewer obligation; L2-018 and L6-052 bind the admiral before commissioning or resuming a captain."
+          "note": "L1-016 binds the captain; L2-018 and L6-052 bind the admiral before commissioning or resuming a captain; L6-174 states the captain budgets that capacity."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.cap-hit-is-finding",
       "kind": "capacity",
       "rule": "A cap hit is a finding, never a reason to raise the cap.",
       "actors": [
+        "any-agent",
         "crew",
-        "any-agent"
+        "reviewer"
       ],
       "statements": [
         "L1-034",
         "L3-052",
-        "L4-021"
+        "L4-021",
+        "L3-218"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.capacity-429-retry-not-blocker",
@@ -50,14 +55,17 @@
       "rule": "A capacity 429 means retry in a few minutes, never a blocker.",
       "actors": [
         "ticket-captain",
-        "any-agent"
+        "any-agent",
+        "officer"
       ],
       "statements": [
         "L1-027",
-        "L6-069"
+        "L6-069",
+        "L2-313"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.codex-concurrency-cap",
@@ -85,7 +93,8 @@
           "note": "L1-209 and L2-117 put the cap in the Inquisition commission (L2-117 as a question to the user, together with the 110k context limit); the others bind any brief."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.commission-provider-model-swarm-width",
@@ -98,7 +107,8 @@
         "L1-208"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.context-check-unavailable-or-error",
@@ -117,7 +127,8 @@
           "note": "L4-068 says to write the word unavailable; L4-075 says \"say so\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.context-size-for-inquisition-crew-only",
@@ -130,7 +141,8 @@
         "L4-066"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.context-size-script-in-temp-file",
@@ -143,7 +155,8 @@
         "L4-069"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.context-size-temp-dir-quotes",
@@ -156,7 +169,8 @@
         "L4-070"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.crew-brief-names-memory-cap",
@@ -169,7 +183,8 @@
         "L1-029"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.crew-context-limit-110k",
@@ -184,7 +199,8 @@
         "L4-065"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.dotnet-env-prefix",
@@ -203,7 +219,8 @@
         "L4-024"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.finished-group-share-returns-to-officer",
@@ -216,7 +233,8 @@
         "L1-231"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.keep-swarm-width-running",
@@ -229,7 +247,8 @@
         "L1-246"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.never-maximise-parallelism",
@@ -241,10 +260,12 @@
       ],
       "statements": [
         "L1-028",
-        "L6-070"
+        "L6-070",
+        "L2-314"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.omit-slice-where-none",
@@ -263,7 +284,8 @@
         "L4-023"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.past-limit-stop",
@@ -282,7 +304,8 @@
           "note": "L4-018 \"Past your limit\", L4-073 \"Over the limit\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.read-context-size-after-each-item",
@@ -307,7 +330,8 @@
           "note": "L4-004 names only \"the command you run after each work item\"; L4-017, L4-064 and L4-071 name the context-size resource and say \"never once at the start\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.run-commands-memory-capped",
@@ -335,7 +359,8 @@
           "note": "L1-030 binds the captain, L3-051 crew, L3-174 the reviewer, L4-020 the inquisitor."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.split-swarm-width-between-groups",
@@ -348,7 +373,8 @@
         "L1-230"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.surveyor-bulk-reads-in-own-context",
@@ -363,7 +389,8 @@
         "L2-300"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.under-limit-start-next-item",
@@ -376,7 +403,8 @@
         "L4-072"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "capacity.use-session-agent-slice",
@@ -395,7 +423,8 @@
         "L4-022"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.captain-specifies-parent-before-lanes-merge-subtickets",
@@ -408,7 +437,8 @@
         "L5-118"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.channel-follows-where-result-awaited",
@@ -421,7 +451,8 @@
         "L6-055"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.check-in-survey-brief-fixed",
@@ -434,7 +465,8 @@
         "L2-185"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.choose-crew-capability",
@@ -454,7 +486,8 @@
           "note": "L1-088 \"that task's\", L2-075 \"that ticket's\"; L1-088 binds crew briefs, L2-075 admiral commissions."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.consume-running-survey-no-second",
@@ -474,7 +507,8 @@
           "note": "L2-162 binds the admiral; L2-245 the chief of staff and says \"pending\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.dispatch-fresh-surveyor",
@@ -488,7 +522,8 @@
         "L2-164"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.failed-survey-not-running",
@@ -501,7 +536,8 @@
         "L2-163"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.fresh-agent-for-rest-of-area",
@@ -520,7 +556,8 @@
           "note": "L1-251 triggers on a return with work items handed back and briefs those items; L4-074 triggers on the context limit."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.hitl-own-top-level-thread",
@@ -540,7 +577,8 @@
           "note": "L2-073 binds the admiral opening an HITL captain; L1-046 the captain."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.inquisition-agent-brief-contents",
@@ -559,7 +597,8 @@
           "note": "L1-250 also specifies proof/<KEY>-<area>-<n> cut from the audit SHA, the test paths it may touch and the counting of n, and which phases get a worktree at the audit SHA; L4-002 says only \"the proof branch\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.inquisition-crew-own-session-delegate-task",
@@ -578,7 +617,8 @@
           "note": "L1-249 gives both reasons; L4-067 only that crew outlive the captain's turn."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.load-codebase-design",
@@ -591,7 +631,8 @@
         "L3-038"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.load-diagnosing-bugs",
@@ -605,7 +646,8 @@
         "L3-037"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.load-domain-modeling",
@@ -618,7 +660,8 @@
         "L3-039"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.load-prototype",
@@ -631,7 +674,8 @@
         "L3-041"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.load-writing-for-agents",
@@ -644,7 +688,8 @@
         "L3-040"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.native-captain-no-codex-reviewer",
@@ -657,7 +702,8 @@
         "L6-064"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.native-child-cannot-delegate-task",
@@ -684,7 +730,8 @@
           "note": "L1-025 binds the captain, L2-023 the admiral and any-agent, L2-213 the chief of staff."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.native-foreground-only-when-awaited",
@@ -692,14 +739,19 @@
       "rule": "Use a native foreground subagent only for a job the dispatcher waits on within its current turn.",
       "actors": [
         "ticket-captain",
-        "any-agent"
+        "any-agent",
+        "admiral",
+        "chief-of-staff"
       ],
       "statements": [
         "L1-021",
-        "L6-056"
+        "L6-056",
+        "L2-309",
+        "L2-311"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.next-n-for-follow-up-break-agent",
@@ -712,7 +764,8 @@
         "L1-252"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.night-survey-brief-fixed",
@@ -725,7 +778,8 @@
         "L2-308"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.no-native-background-subagents",
@@ -733,14 +787,19 @@
       "rule": "Under T3, never use native background subagents.",
       "actors": [
         "ticket-captain",
-        "any-agent"
+        "any-agent",
+        "admiral",
+        "chief-of-staff"
       ],
       "statements": [
         "L1-022",
-        "L6-059"
+        "L6-059",
+        "L2-310",
+        "L2-312"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.no-polling-delegates",
@@ -760,7 +819,8 @@
           "note": "L2-046 binds the admiral; L2-246 the chief of staff, and adds waiting on native foreground work within the turn."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.no-top-level-threads-for-crew",
@@ -787,7 +847,8 @@
           "note": "L6-058 says \"HITL work the user takes over\"; the others say only \"HITL work\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.one-agent-per-area-per-phase",
@@ -800,7 +861,8 @@
         "L1-247"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.one-area-per-dispatch",
@@ -813,7 +875,8 @@
         "L1-222"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.one-captain-per-pickable-ticket",
@@ -833,7 +896,8 @@
           "note": "L2-012 covers pickable tickets, L1-233 one captain per group."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.one-code-writer-per-parent-or-lane",
@@ -844,7 +908,8 @@
       ],
       "statements": [
         "L1-078",
-        "L7-058"
+        "L7-058",
+        "L6-168"
       ],
       "drift": [
         {
@@ -852,12 +917,13 @@
           "note": "L7-058 also names docs-writer as the author for a documentation change and ties review to the working-tree standard Delivery scale; L1-078 speaks of code-writer per parent or lane."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.only-captain-commissions-crew",
       "kind": "dispatch",
-      "rule": "Only the ticket-captain commissions exact-scope delivery crew; research still sends its own scouts.",
+      "rule": "Only the ticket-captain commissions exact-scope delivery crew.",
       "actors": [
         "ticket-captain",
         "research"
@@ -866,13 +932,9 @@
         "L1-015",
         "L6-053"
       ],
-      "drift": [
-        {
-          "type": "action",
-          "note": "L6-053 also says the captain budgets that capacity and preserves the fresh reviewer obligation, and adds research as the exception; L1-015 states only \"You alone\"."
-        }
-      ],
-      "principle": null
+      "drift": [],
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.other-vendor-model-candidates",
@@ -892,20 +954,24 @@
           "note": "L1-093 adds: weigh them on the same terms as your own."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.outlasting-work-by-delegate-task",
       "kind": "dispatch",
       "rule": "Work that cannot finish inside the turn goes through delegate_task instead.",
       "actors": [
-        "any-agent"
+        "any-agent",
+        "ticket-captain"
       ],
       "statements": [
-        "L6-067"
+        "L6-067",
+        "L1-303"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.peer-of-other-vendor-by-t3-messaging",
@@ -918,26 +984,30 @@
         "L6-060"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.proof-only-brief-names",
       "kind": "dispatch",
       "rule": "A proof-only brief names the commissioning captain, the pinned source SHA and the test path.",
       "actors": [
-        "ticket-captain"
+        "ticket-captain",
+        "officer"
       ],
       "statements": [
         "L6-041",
-        "L3-026"
+        "L3-026",
+        "L5-277"
       ],
       "drift": [
         {
           "type": "wording",
-          "note": "L6-041 and L3-026 state the same three items; L5-259 (decision.proof-only-experiment) repeats them inside its combined sentence."
+          "note": "L6-041 and L3-026 state the same three items; L5-277 states them for a tribunal experiment."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.reconciliation-commissions-afk-tickets",
@@ -950,34 +1020,31 @@
         "L2-072"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.requested-value-effective-identity-by-telemetry",
       "kind": "dispatch",
-      "rule": "State the requested model/effort value so the signature is truthful, claim an effective identity only where trustworthy runtime information or telemetry shows it, and otherwise qualify a family or a requested/configured value; dydo compiles no model, effort or capability table.",
+      "rule": "Claim an effective model identity only where trustworthy runtime information or telemetry shows it, and otherwise qualify a family or a requested/configured value.",
       "actors": [
         "ticket-captain",
         "any-agent"
       ],
       "statements": [
-        "L1-091",
         "L1-092",
-        "L2-079",
         "L7-181",
-        "L7-182"
+        "L7-182",
+        "L2-325"
       ],
       "drift": [
         {
-          "type": "action",
-          "note": "L1-091 has the captain brief the requested value to the crew member; L2-079 has the agent state it in its own signature; L1-092 states only the telemetry limit."
-        },
-        {
           "type": "wording",
-          "note": "L7-181 and L7-182 say \"runtime information exposes it\" and \"qualify a family or requested/configured value\"; L1-091, L1-092 and L2-079 say \"telemetry shows it\" and \"state the requested value in your signature\"."
+          "note": "L7-181 and L7-182 say \"runtime information exposes it\" and \"qualify a family or requested/configured value\"; L1-092 and the telemetry statement of L2-325 say \"telemetry shows it\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.research-one-scout-per-family",
@@ -987,10 +1054,12 @@
         "research"
       ],
       "statements": [
-        "L3-148"
+        "L3-148",
+        "L6-176"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.return-comes-back-to-captain",
@@ -1004,7 +1073,8 @@
         "L1-019"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.return-once-on-dispatch-channel",
@@ -1017,7 +1087,8 @@
         "L6-062"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.route-docs-to-docs-writer",
@@ -1030,7 +1101,8 @@
         "L1-079"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.run-disjoint-lanes-concurrently",
@@ -1043,7 +1115,8 @@
         "L1-085"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.saved-brief-not-admiral-authority",
@@ -1058,7 +1131,8 @@
         "L6-054"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.scout-reads-itself-no-crew",
@@ -1071,7 +1145,8 @@
         "L3-210"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.select-model-and-effort-together",
@@ -1086,7 +1161,8 @@
         "L2-078"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.start-adequate-escalate",
@@ -1106,7 +1182,8 @@
           "note": "L2-076 adds: keep every review and gate at full strength whatever it costs."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.stay-in-turn-while-waiting",
@@ -1126,13 +1203,10 @@
         {
           "type": "scope",
           "note": "L1-024 and L6-066 cover results the agent owns (L6-066 names a reviewer or suite); L2-024 and L2-212 name only a native child."
-        },
-        {
-          "type": "action",
-          "note": "L1-024 also says work that outlasts the turn goes by delegate_task (the rule of dispatch.outlasting-work-by-delegate-task)."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.surveyor-gets-resource-alone",
@@ -1145,7 +1219,8 @@
         "L2-244"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.t3-delegate-task-for-returning-children",
@@ -1167,13 +1242,10 @@
         {
           "type": "scope",
           "note": "L1-020 names crew and reviewers; L2-021 captains and anything returning to the admiral; L2-210 anything returning to the chief of staff; L6-057 captains, crew, reviewers and any agent of another vendor."
-        },
-        {
-          "type": "action",
-          "note": "L1-020, L2-021 and L2-210 also state the native-foreground and no-background rules in the same sentence (see their own claims); L6-057 states them in separate statements."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.two-judges-claude-and-codex",
@@ -1186,7 +1258,8 @@
         "L5-243"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.validate-native-interface-shapes",
@@ -1199,7 +1272,8 @@
         "L1-094"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "dispatch.without-t3-native-subagents",
@@ -1221,7 +1295,8 @@
           "note": "L6-061 adds \"and messaging, or none\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.admiral-accountable-for",
@@ -1234,12 +1309,13 @@
         "L2-011"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.admiral-git-authorship",
       "kind": "identity",
-      "rule": "The admiral's Git authorship covers plans and feature specs; it commissions other operations.",
+      "rule": "The admiral's Git authorship covers plans and feature specs.",
       "actors": [
         "admiral"
       ],
@@ -1247,7 +1323,8 @@
         "L2-035"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.admiral-holds-map",
@@ -1261,7 +1338,8 @@
         "L2-003"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.admiral-project-altitude",
@@ -1276,7 +1354,8 @@
         "L2-016"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.break-touches-test-paths-only",
@@ -1289,7 +1368,8 @@
         "L4-010"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.captain-accountable-for-ticket",
@@ -1315,7 +1395,8 @@
           "note": "L6-093 adds that the captain consumes every crew return; L6-008 adds that crew edits are part of the diff."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.captain-directs-crew",
@@ -1328,7 +1409,8 @@
         "L1-014"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.captain-owns-status-records-integration",
@@ -1348,7 +1430,8 @@
           "note": "L3-006 lists status, records and integration; L3-111 adds review and follow-up work and says the docs-writer owns the words."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.contract-sets-destination",
@@ -1361,7 +1444,8 @@
         "L1-001"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.cos-fix-mechanical-hand-back-judgement",
@@ -1374,7 +1458,8 @@
         "L2-209"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.cos-staff-not-line",
@@ -1388,7 +1473,8 @@
         "L2-208"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.crew-no-branch-pr-merge-self-review",
@@ -1401,7 +1487,8 @@
         "L6-078"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.crew-roles-split",
@@ -1414,7 +1501,8 @@
         "L1-013"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.default-officer",
@@ -1427,7 +1515,8 @@
         "L1-003"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.docs-writer-writes-one-change",
@@ -1441,7 +1530,8 @@
         "L3-102"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.drive-leaves-verification-skill",
@@ -1454,7 +1544,8 @@
         "L4-083"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.inquisition-captain-conducts",
@@ -1467,7 +1558,8 @@
         "L1-202"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.inquisitor-reads-own-phase-checklist",
@@ -1480,7 +1572,8 @@
         "L4-003"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.inquisitor-skill-trigger",
@@ -1493,7 +1586,8 @@
         "L4-001"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.inquisitor-worker-one-return",
@@ -1507,7 +1601,8 @@
         "L4-011"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.map-holder-definition",
@@ -1527,7 +1622,8 @@
           "note": "L5-094 adds \"driving the map in his own session\" and \"until the user takes the map back\"; L7-087 adds \"the captain for a ticket\"; L7-088 and L5-094 add that the Project description names the current holder."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.map-holder-held-ticket-run-directly",
@@ -1541,7 +1637,8 @@
         "L7-063"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.map-holder-runs-fog-tickets",
@@ -1554,7 +1651,8 @@
         "L7-091"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.mutation-testing-is-reviewers",
@@ -1567,7 +1665,8 @@
         "L3-050"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.officer-no-production-no-self-review",
@@ -1587,7 +1686,8 @@
           "note": "L1-038 binds the captain only; L2-034 binds both admiral and captain."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.officers-direct-crew-produces",
@@ -1608,7 +1708,8 @@
           "note": "L1-037 actor is officer, L2-033 names admiral and ticket-captain."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.read-and-drive-change-nothing",
@@ -1628,7 +1729,8 @@
           "note": "L4-077 adds that on a project with nothing to run Drive does not apply and the map row says so."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.research-facts-not-choice",
@@ -1641,7 +1743,8 @@
         "L3-140"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.reviewer-judges-one-candidate",
@@ -1655,7 +1758,8 @@
         "L3-167"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.scout-collects-researcher-concludes",
@@ -1670,7 +1774,8 @@
         "L3-211"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.surveyor-read-only-no-officer-role",
@@ -1691,7 +1796,8 @@
           "note": "L2-169 and L2-170 are the admiral check-in surveyor, L2-288 and L2-289 the chief-of-staff night surveyor; one says \"section\", the other \"resource\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.surveyor-sends-edits-starts-nothing",
@@ -1710,7 +1816,8 @@
           "note": "L2-291 also forbids nudges, making decisions, and names boards, records and files; L2-171 says only \"edit nothing\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.task-owned-by-captain-and-crew",
@@ -1725,7 +1832,8 @@
         "L5-122"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.user-queue-three-lists",
@@ -1738,7 +1846,8 @@
         "L2-223"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "identity.user-work-reaches-ticket-via-captain",
@@ -1752,7 +1861,8 @@
         "L2-017"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "other.leave-no-worse",
@@ -1765,7 +1875,8 @@
         "L3-044"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "other.load-skill-when-trigger-fires",
@@ -1778,7 +1889,8 @@
         "L3-036"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "other.load-wayfinder-before-first-report",
@@ -1791,7 +1903,8 @@
         "L2-005"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K1"
     },
     {
       "id": "other.recurring-friction-to-retro",
@@ -1802,6 +1915,121 @@
       ],
       "statements": [
         "L2-239"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.run-necessary-stages-serially",
+      "kind": "capacity",
+      "rule": "Run necessary stages serially.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-316"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "dispatch.preserve-fresh-reviewer-obligation",
+      "kind": "dispatch",
+      "rule": "Preserve the fresh reviewer obligation.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-317",
+        "L6-175"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "dispatch.state-requested-value-so-signature-is-truthful",
+      "kind": "dispatch",
+      "rule": "State the requested model/effort value so the crew member's or agent's signature is truthful.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-091",
+        "L2-079"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-091 has the captain brief the requested value to the crew member; L2-079 has the agent state it in its own signature."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "dispatch.dydo-compiles-no-capability-table",
+      "kind": "dispatch",
+      "rule": "dydo compiles no model, effort or standing capability table.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-319",
+        "L2-326"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.user-keeps-every-approval",
+      "kind": "identity",
+      "rule": "The user keeps every approval.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-327"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.cos-never-carries-delivery",
+      "kind": "identity",
+      "rule": "Delivery belongs to whoever owns it; the chief of staff never carries it.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-328"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.inquisition-proofs-belong-to-break-inquisitor",
+      "kind": "identity",
+      "rule": "An Inquisition's proofs belong to its Break-phase inquisitor, not the code-writer.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-232"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.admiral-commissions-other-git-operations",
+      "kind": "identity",
+      "rule": "The admiral commissions every other Git operation.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-335"
       ],
       "drift": [],
       "principle": null
@@ -1828,14 +2056,6 @@
         "capacity.run-commands-memory-capped"
       ],
       "note": "Probe timeout is \"short\" in L1-029, L1-030, L3-051, L4-020 but 120 s in L3-174; no statement defines \"short\". The reviewer cap (4G/120) and crew probe cap (4G/short) may differ."
-    },
-    {
-      "type": "drift",
-      "claims": [
-        "capacity.cap-hit-is-finding",
-        "capacity.run-commands-memory-capped"
-      ],
-      "note": "L3-174 embeds the cap-hit rule in the same sentence as the reviewer cap values; the other copies (L1-034, L3-052, L4-021) are standalone, so the reviewer copy is placed with the cap values only."
     },
     {
       "type": "gap",
@@ -1872,14 +2092,6 @@
         "dispatch.native-captain-no-codex-reviewer"
       ],
       "note": "L6-064 is stated only in the working-tree standard; the ticket-captain skill (L1-020..L1-025) never says a native captain cannot reach a Codex reviewer."
-    },
-    {
-      "type": "drift",
-      "claims": [
-        "dispatch.stay-in-turn-while-waiting",
-        "dispatch.outlasting-work-by-delegate-task"
-      ],
-      "note": "L1-024 states both \"stay in your turn\" and \"work that outlasts the turn goes by delegate_task\"; L6-067 states only the second, L2-024 and L2-212 only the first. One sentence carries two rules in L1-024."
     },
     {
       "type": "drift",

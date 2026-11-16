@@ -17,7 +17,8 @@
         "L7-068"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.answer-determines-ticket-resolve-first",
@@ -30,7 +31,8 @@
         "L7-126"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.crew-questions-go-to-captain",
@@ -58,7 +60,8 @@
           "note": "L3-007 and L4-012 require reporting what was searched; L3-112 and L6-073 do not."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.cross-ticket-answers-to-map-holder",
@@ -94,7 +97,8 @@
           "note": "L1-118 sends a change to acceptance, scope, destination or architecture to the map holder \"for a map or plan amendment\"; L1-097 sends the cross-ticket scope of an inherited failure; L1-187, L5-108, L7-110 and L7-111 speak of a Question's answer."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.discovery-before-question",
@@ -143,7 +147,8 @@
           "note": "The wayfinder copies (L5-124, L5-143 to L5-145, L5-199) name the tools that clear fog and the sources to search; L1-184 and L7-120 to L7-123 state the order and the standard's homework."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.escalate-only-concrete-missing",
@@ -156,7 +161,8 @@
         "L2-112"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.fifth-consecutive-fail",
@@ -173,10 +179,11 @@
       "drift": [
         {
           "type": "action",
-          "note": "L1-119 bundles the completion test (each fix has its own commit and a fresh review) with the stop and also wires the prepared Question through the scope rule; L2-041 states the stop, the ticket record and the wired Question without the completion test."
+          "note": "L1-119 also stops the loop and records the findings; L2-041 records the stop on the ticket."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.judgment-call-is-a-question",
@@ -189,7 +196,8 @@
         "L1-277"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.local-question-in-todo-wired",
@@ -214,7 +222,8 @@
           "note": "L4-175 adds that the Question records its homework and sets priority by the standard."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.merge-product-choice-to-captain",
@@ -227,7 +236,8 @@
         "L3-077"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.parent-not-active-hand-dispatch-up",
@@ -240,7 +250,8 @@
         "L6-065"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.path-crew-captain-admiral-user",
@@ -259,7 +270,8 @@
           "note": "L1-056 includes the admiral only when one is invoked; L2-039 includes the admiral unconditionally."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.question-packet-and-body",
@@ -285,7 +297,8 @@
           "note": "L5-130 lists homework, credible options, trade-offs and a recommendation; L7-125 lists four items including the named work it blocks and the sources searched; L7-139 only points to \"the four items above\"; L1-188 says put the packet and all evidence on the record."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.reach-user-only-for",
@@ -305,7 +318,8 @@
           "note": "L1-057 binds any-agent; L2-040 binds the admiral."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.remaining-gates-to-captain",
@@ -318,7 +332,8 @@
         "L3-129"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.stops-preserved-not-retried",
@@ -353,7 +368,8 @@
           "note": "L2-020 adds \"use established lifecycle handling, then escalate or release the concrete limitation\"; L1-017 and L6-074 add \"do not broaden the brief\" and name the record, candidate, hop SHA and brief; L2-111 covers safety, provenance and review stops and says \"prepare their owned disposition\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.unmeetable-target-not-lowered",
@@ -366,7 +382,8 @@
         "L3-008"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.unresolved-attribution-to-captain",
@@ -379,7 +396,8 @@
         "L3-048"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "escalation.user-asked-through-host-question-tool",
@@ -406,7 +424,8 @@
           "note": "L1-036 binds the ticket-captain, L2-027, L2-215 and L6-071 officers."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.admiral-owns-board-statuses",
@@ -419,20 +438,24 @@
         "L2-031"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.afk-tickets-carry-no-priority",
       "kind": "linear",
       "rule": "AFK tickets carry no priority; the plan order and native blockers carry their sequence.",
       "actors": [
-        "any-agent"
+        "any-agent",
+        "admiral"
       ],
       "statements": [
-        "L7-086"
+        "L7-086",
+        "L2-331"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.assignment-is-the-claim",
@@ -457,7 +480,8 @@
           "note": "L5-112 adds \"assign it first, before any work, so concurrent sessions skip it\"; L7-035 defines assigned as taken and unassigned, Todo and unblocked as pickable; L6-002 states only the claim."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.board-inbox-and-resume-point",
@@ -470,7 +494,8 @@
         "L1-045"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.captain-relay-keeps-identity",
@@ -483,7 +508,8 @@
         "L7-185"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.captain-sets-status-on-chain-spawn",
@@ -504,7 +530,8 @@
           "note": "L7-011 is stated for any-agent; L1-043 and L7-010 for the ticket-captain."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.captain-ticket-carries-type-and-mode",
@@ -532,7 +559,8 @@
           "note": "L2-100 also sets the new ticket to Todo, which the other copies do not say."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.claim-done-criteria",
@@ -552,15 +580,12 @@
           "note": "L1-062 lists Type, Mode, branch, base SHA, isolated worktree, clean state and owned paths; L6-025 lists branch, base SHA and worktree path only."
         },
         {
-          "type": "action",
-          "note": "L6-025 also says the captain sets Implementing when it spawns the author."
-        },
-        {
           "type": "scope",
           "note": "L6-010 states only posting branch, base SHA and worktree path before the first edit; L1-062 and L6-025 also require assignment, Type, Mode, clean state, owned paths and an existing branch and worktree."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.comment-signs-role-and-model",
@@ -580,32 +605,8 @@
           "note": "L3-057 binds crew and names the form code-writer/model; L7-180 is general."
         }
       ],
-      "principle": null
-    },
-    {
-      "id": "linear.conflict-raise-and-override-back",
-      "kind": "linear",
-      "rule": "Raise a conflict found in the record, and write a live instruction that overrides the record back to the record.",
-      "actors": [
-        "ticket-captain",
-        "any-agent"
-      ],
-      "statements": [
-        "L1-051",
-        "L1-052",
-        "L2-038"
-      ],
-      "drift": [
-        {
-          "type": "scope",
-          "note": "L1-051 and L1-052 bind the ticket-captain only; L2-038 binds any-agent."
-        },
-        {
-          "type": "wording",
-          "note": "L1-051 and L1-052 are two sentences-halves; L2-038 states both in one line, so the statements are one rule across both copies."
-        }
-      ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.contracts-are-tickets-or-subtickets",
@@ -619,7 +620,8 @@
         "L5-116"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.filter-tool-output",
@@ -632,7 +634,8 @@
         "L7-150"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.futurefeature-only-user-promotes",
@@ -646,7 +649,8 @@
         "L7-036"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.futurefeature-project-grain-promotion",
@@ -659,7 +663,8 @@
         "L7-038"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.futurefeature-rejected-canceled",
@@ -672,7 +677,8 @@
         "L7-039"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.futurefeature-ticket-grain-promotion",
@@ -685,7 +691,8 @@
         "L7-037"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.historical-comments-untouched",
@@ -698,7 +705,8 @@
         "L7-187"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.in-progress-status-meaning",
@@ -718,7 +726,8 @@
           "note": "L1-076 covers a Shape parent while lanes run; L7-018 lists parent, wayfinding ticket and Inquisition sweep."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.inquisition-sweep-holds-in-progress",
@@ -742,7 +751,8 @@
           "note": "L1-083 adds that the record then runs the normal docs delivery chain."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.keep-attempts-on-existing-record",
@@ -763,7 +773,8 @@
           "note": "L1-086 binds the ticket-captain; L6-084 and L6-085 bind any-agent."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.keep-blockers-answers-evidence-true",
@@ -776,7 +787,8 @@
         "L2-032"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.keep-contract-in-description",
@@ -789,7 +801,8 @@
         "L7-148"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.merge-operation-closes-done",
@@ -799,10 +812,12 @@
         "ticket-captain"
       ],
       "statements": [
-        "L1-154"
+        "L1-154",
+        "L6-155"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.merge-subticket-never-ready-to-merge",
@@ -823,7 +838,8 @@
           "note": "L7-099 adds the Merge Sub-ticket status path Todo, Implementing, In Review, Done and \"it merges and is never merged\"; L7-031 gives the reason \"it runs the chain and closes\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.mode-afk",
@@ -836,7 +852,8 @@
         "L7-067"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.mode-hitl",
@@ -849,7 +866,8 @@
         "L7-069"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.name-project-and-ticket-by-title-key-url",
@@ -868,7 +886,8 @@
           "note": "L5-100 binds everything the user reads and includes Projects; L5-110 states that each ticket has a name, key and URL."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.native-blocker-relations",
@@ -887,7 +906,8 @@
           "note": "L5-113 gives the reason (frontier renders in Linear); L7-112 states the connection for every waiting record."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.never-infer-alias-parent-effort",
@@ -900,7 +920,8 @@
         "L7-183"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.no-at-mention-unless-delegating",
@@ -913,7 +934,8 @@
         "L7-151"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.no-blocked-status",
@@ -926,7 +948,8 @@
         "L7-034"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.no-second-status-board",
@@ -939,7 +962,8 @@
         "L2-236"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.open-blocker-means-blocked",
@@ -958,7 +982,8 @@
           "note": "L7-016 speaks of Todo tickets and pickup; L7-033 of any status."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.parent-stays-ready-to-merge",
@@ -969,10 +994,12 @@
       ],
       "statements": [
         "L1-149",
-        "L7-024"
+        "L7-024",
+        "L6-154"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.priority-high",
@@ -985,7 +1012,8 @@
         "L7-083"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.priority-low",
@@ -998,7 +1026,8 @@
         "L7-085"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.priority-medium",
@@ -1011,7 +1040,8 @@
         "L7-084"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.priority-never-severity",
@@ -1024,7 +1054,8 @@
         "L7-079"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.priority-urgent",
@@ -1037,7 +1068,8 @@
         "L7-082"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.project-status-backlog",
@@ -1050,7 +1082,8 @@
         "L7-002"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.project-status-in-progress",
@@ -1063,7 +1096,8 @@
         "L7-005"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.project-status-planned",
@@ -1076,7 +1110,8 @@
         "L7-004"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.project-status-planning",
@@ -1089,7 +1124,8 @@
         "L7-003"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.projects-carry-no-labels",
@@ -1102,7 +1138,8 @@
         "L7-008"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.question-in-todo-is-user-turn",
@@ -1117,7 +1154,8 @@
         "L7-017"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.read-comments-only-for-named-fact",
@@ -1130,7 +1168,8 @@
         "L7-149"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.read-metadata-first",
@@ -1150,7 +1189,8 @@
           "note": "L2-004 binds the admiral and names the Project's metadata-first map, each current active contract and named evidence; L7-147 binds any agent and names the current active contract and named evidence."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.ready-to-merge-meaning",
@@ -1163,7 +1203,8 @@
         "L7-023"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.ready-to-merge-scope",
@@ -1176,7 +1217,8 @@
         "L7-030"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.record-is-live-truth",
@@ -1190,7 +1232,8 @@
         "L2-037"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.review-block-recorded-on-judged-work",
@@ -1212,7 +1255,8 @@
           "note": "L2-062 states only the Project case; L4-165 adds that the merge verdict names the merge commit and every gate result; L3-198 adds the PR body under ## Independent review."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.reviewer-block-is-signature",
@@ -1225,7 +1269,8 @@
         "L7-186"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.same-types-statuses-chain-both-levels",
@@ -1239,7 +1284,8 @@
         "L5-117"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.set-implementing-on-author-spawn",
@@ -1254,7 +1300,8 @@
         "L1-117",
         "L1-295",
         "L7-019",
-        "L7-022"
+        "L7-022",
+        "L6-135"
       ],
       "drift": [
         {
@@ -1262,15 +1309,12 @@
           "note": "L1-066 sets Implementing after a spec review verdict, L1-117 on sending a FAIL block, L1-081 and L7-019 on each author spawn, L1-295 for the Inquisition record before In Review."
         },
         {
-          "type": "wording",
-          "note": "L1-295 combines Implementing then In Review for a docs reviewer in one sentence."
-        },
-        {
           "type": "scope",
           "note": "L7-022 states the spec-review case as a return to Implementing on either verdict; L7-019, L1-066, L1-081 and L1-117 speak of spawning the author, a fix hop included."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.set-in-review-on-reviewer-spawn",
@@ -1283,7 +1327,9 @@
       "statements": [
         "L1-101",
         "L7-020",
-        "L7-032"
+        "L7-032",
+        "L1-305",
+        "L1-315"
       ],
       "drift": [
         {
@@ -1291,7 +1337,8 @@
           "note": "L7-020 includes the optional spec review of the contract; L1-101 states it for briefing a reviewer."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.severity-blocker-carriers",
@@ -1304,7 +1351,8 @@
         "L7-074"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.severity-nit-carriers",
@@ -1317,7 +1365,8 @@
         "L7-076"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.severity-only-on-finding-tickets",
@@ -1333,7 +1382,8 @@
         "L7-073"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.severity-should-carriers",
@@ -1346,7 +1396,8 @@
         "L7-075"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.small-work-stays-on-ticket",
@@ -1372,7 +1423,8 @@
           "note": "L2-105 says \"inline\" and names a Wayfinding Ticket created when the investigation needs its own status, owner, blocker or evidence; L7-065 and L7-066 say \"stay on the ticket that needs them\" and a map-holder-held ticket needs independent tracking or blocks other work."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.state-effort-only-when-known",
@@ -1385,7 +1437,8 @@
         "L7-184"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-backlog-meaning",
@@ -1398,7 +1451,8 @@
         "L7-014"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-canceled-meaning",
@@ -1411,7 +1465,8 @@
         "L7-028"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-done-meaning",
@@ -1424,7 +1479,8 @@
         "L7-027"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-duplicate-meaning",
@@ -1437,7 +1493,8 @@
         "L7-029"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-futurefeature-meaning",
@@ -1450,7 +1507,8 @@
         "L7-012"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-path-captain-default",
@@ -1463,7 +1521,8 @@
         "L7-098"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-path-grilling-walkthrough",
@@ -1476,7 +1535,8 @@
         "L7-093"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-path-question",
@@ -1489,7 +1549,8 @@
         "L7-094"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-path-research",
@@ -1502,7 +1563,8 @@
         "L7-092"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-set-order",
@@ -1521,7 +1583,8 @@
           "note": "L7-001 gives the reason (Linear draws status circles by position); L7-009 states the count and shared set."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.status-todo-meaning",
@@ -1534,7 +1597,8 @@
         "L7-015"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.task-names-role-not-label",
@@ -1547,7 +1611,8 @@
         "L7-064"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.three-label-groups",
@@ -1560,7 +1625,8 @@
         "L7-040"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.ticket-body-one-outcome-one-session",
@@ -1573,7 +1639,8 @@
         "L5-111"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.ticket-template-from-body",
@@ -1586,7 +1653,8 @@
         "L7-129"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-bug",
@@ -1599,7 +1667,8 @@
         "L7-045"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-enablement",
@@ -1612,7 +1681,8 @@
         "L7-047"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-feature",
@@ -1625,7 +1695,8 @@
         "L7-044"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-grilling",
@@ -1638,7 +1709,8 @@
         "L7-054"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-inquisition",
@@ -1651,7 +1723,8 @@
         "L7-049"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-merge",
@@ -1664,7 +1737,8 @@
         "L7-046"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-prototype",
@@ -1677,7 +1751,8 @@
         "L7-051"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-question",
@@ -1690,7 +1765,8 @@
         "L7-052"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-research",
@@ -1703,7 +1779,8 @@
         "L7-053"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.type-walkthrough",
@@ -1716,7 +1793,8 @@
         "L7-055"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.use-available-capabilities",
@@ -1729,7 +1807,8 @@
         "L7-130"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.user-gate-approval-not-hitl",
@@ -1742,7 +1821,8 @@
         "L7-070"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.waiter-priority-set-by-standard",
@@ -1768,7 +1848,8 @@
           "note": "L1-189 states the rule as \"the answer that frees the most AFK work\"; L2-114 adds that AFK order stays in the map and blockers."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.withdraw-only-obsolete-questions",
@@ -1781,7 +1862,8 @@
         "L5-034"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.write-for-reader-who-wasnt-there",
@@ -1794,7 +1876,8 @@
         "L5-033"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "linear.writer-precode-comment-only-when-split",
@@ -1807,7 +1890,8 @@
         "L3-056"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "release.blocker-takeover-dying-session",
@@ -1830,7 +1914,8 @@
           "note": "L6-101 adds returning \"released <key>: <reason>\"; L1-190 does not state the return line."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "release.dead-session-treated-as-release",
@@ -1852,7 +1937,8 @@
           "note": "L1-193 binds the map holder, L2-140 the admiral, L6-103 any-agent."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "release.fresh-commission-is-portable-floor",
@@ -1873,7 +1959,8 @@
           "note": "L2-142 names one-word resume and transcript steering as host conveniences; L6-104 says it works on both hosts."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "release.inquisition-two-release-cases",
@@ -1897,7 +1984,8 @@
           "note": "L7-096 releases to Todo; L1-212 and L6-110 do not say the status."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "release.lifecycle-handling-then-return-or-release",
@@ -1916,7 +2004,8 @@
           "note": "L6-075 scopes it to a bounded refusal; L1-018 does not."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "release.next-captain-resumes-from-record",
@@ -1936,7 +2025,8 @@
           "note": "L1-192 binds the ticket-captain; L2-047 the admiral."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "release.released-line-points-to-record",
@@ -1949,7 +2039,8 @@
         "L2-139"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K2"
     },
     {
       "id": "release.takeover-goes-through-release",
@@ -1964,6 +2055,47 @@
         "L2-141"
       ],
       "drift": [],
+      "principle": null,
+      "group": "K2"
+    },
+    {
+      "id": "linear.raise-conflict-found-in-record",
+      "kind": "linear",
+      "rule": "Raise a conflict you find in the record.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-051",
+        "L2-038"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-051 binds the ticket-captain; L2-038 binds any agent."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "linear.live-instruction-overrides-record-back",
+      "kind": "linear",
+      "rule": "Write a live instruction that overrides the record back to the record.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-052",
+        "L2-316"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-052 binds the ticket-captain; L2-316 binds any agent."
+        }
+      ],
       "principle": null
     }
   ],
@@ -2023,7 +2155,7 @@
       "type": "drift",
       "claims": [
         "linear.keep-attempts-on-existing-record",
-        "worktree.hop-sha-preserved-and-posted"
+        "worktree.captain-posts-hop-sha"
       ],
       "note": "L1-086 and L1-082 hold in one skill; L6-084 repeats the first in the working-tree standard with no statement of who posts evidence for agents other than the captain."
     },

@@ -17,12 +17,13 @@
         "L3-043"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.adjacent-outcome-new-ticket",
       "kind": "contract",
-      "rule": "An adjacent outcome becomes another ticket, taken only on the user's word; the current ticket bounds intent and paths.",
+      "rule": "An adjacent outcome becomes another ticket, taken only on the user's word.",
       "actors": [
         "ticket-captain"
       ],
@@ -30,7 +31,8 @@
         "L1-040"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-bug-ticket",
@@ -43,7 +45,8 @@
         "L7-132"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-enablement-ticket",
@@ -56,7 +59,8 @@
         "L7-134"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-feature-ticket",
@@ -69,7 +73,8 @@
         "L7-131"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-grilling-ticket",
@@ -82,7 +87,8 @@
         "L7-141"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-inquisition-ticket",
@@ -95,7 +101,8 @@
         "L7-135"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-merge-ticket",
@@ -108,7 +115,8 @@
         "L7-133"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-prototype-ticket",
@@ -121,7 +129,8 @@
         "L7-138"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-research-ticket",
@@ -134,7 +143,8 @@
         "L7-140"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.body-walkthrough-ticket",
@@ -147,7 +157,8 @@
         "L7-142"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.bug-shared-paths-transfer-after-reproduction",
@@ -157,10 +168,13 @@
         "ticket-captain"
       ],
       "statements": [
-        "L7-114"
+        "L7-114",
+        "L1-308",
+        "L6-163"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.bug-stage-no-overlapping-lanes",
@@ -174,12 +188,13 @@
         "L7-119"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.bug-stage-own-contract-chain-branch-worktree",
       "kind": "contract",
-      "rule": "Each Bug stage has its own contract, chain, branch and worktree; every actual integration has a Merge Sub-ticket.",
+      "rule": "Each Bug stage keeps the parent's Type and Mode and has its own contract, chain, branch and worktree.",
       "actors": [
         "ticket-captain"
       ],
@@ -191,14 +206,11 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L6-088 adds the Merge Sub-ticket per integration; L1-166 adds the chain."
-        },
-        {
-          "type": "scope",
-          "note": "L7-115 adds that each Bug stage keeps the parent's Type and Mode; L1-166 and L6-088 add that every actual integration has a Merge Sub-ticket."
+          "note": "L1-166 and L7-115 add the chain; L6-088 omits it. L7-115 adds that each Bug stage keeps the parent's Type and Mode."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.bug-stages-reproduce-then-fix",
@@ -217,14 +229,15 @@
       "drift": [
         {
           "type": "wording",
-          "note": "L6-087 adds that shared paths transfer only after reproduction closes with evidence; L7-113 frames the Bug template as an exception to parallel lanes."
+          "note": "L1-162 and L1-165 say the captain \"may keep\" direct Bug Sub-tickets and both carry the parent's Mode; L6-086, L6-087 and L7-113 say it \"may retain\" the Type template's ordered stages and frame the Bug as a narrow exception to parallel lanes."
         },
         {
           "type": "wording",
-          "note": "L1-162 and L1-165 say the captain \"may keep\" direct Bug Sub-tickets and both carry the parent's Mode; L6-086, L6-087 and L7-113 say it \"may retain\" the Type template's ordered stages and frame the Bug as a narrow exception to parallel lanes."
+          "note": "L7-113 frames the Bug template as an exception to parallel lanes."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.collapse-simple-bug-placeholders",
@@ -244,7 +257,8 @@
           "note": "L1-164 adds \"recording why\"; L6-089 and L7-117 say \"close the unused records Canceled with the reason\" without a separate recording step."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.contract-each-ticket-from-spec-sections",
@@ -257,7 +271,8 @@
         "L2-193"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.done-definition",
@@ -270,7 +285,8 @@
         "L1-071"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.enablement-uses-wizard",
@@ -290,7 +306,8 @@
           "note": "L7-048 sits in the Type table row for any actor; L1-171 binds the ticket-captain."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.fix-hop-blockers-are-the-contract",
@@ -304,13 +321,9 @@
         "L3-059",
         "L3-113"
       ],
-      "drift": [
-        {
-          "type": "action",
-          "note": "L3-113 (docs-writer) also has the writer check each finding's severity against the source and put any changed label in the IMPLEMENTED behaviour with its evidence."
-        }
-      ],
-      "principle": null
+      "drift": [],
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.gherkin-marking",
@@ -323,7 +336,8 @@
         "L1-064"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.guard-rule-ticket-disclaimer",
@@ -336,7 +350,8 @@
         "L1-169"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.lane-needing-split-becomes-siblings",
@@ -358,7 +373,8 @@
           "note": "L6-082 and L1-077 list the permitted other children; L7-106 also says each lane carries its parent's Type and Mode and states the atomic-merge exception; L7-109 and L1-077 say \"siblings\"; L6-083 says \"sibling lanes under the parent ticket\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.lowered-target-restored",
@@ -371,7 +387,8 @@
         "L1-067"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.map-holder-writes-contracts-one-level-down",
@@ -384,7 +401,8 @@
         "L7-089"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.move-or-rename-owns-breakage",
@@ -397,7 +415,8 @@
         "L1-061"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.no-retrospective-gate-cancel",
@@ -410,7 +429,8 @@
         "L7-146"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.one-compact-acceptance-contract",
@@ -430,7 +450,8 @@
           "note": "L1-063 says \"on the parent\" and \"link its evidence\"; L6-045 and L7-061 omit the parent; L6-045 says \"copying\", L1-063 \"repeating\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.parallel-crew-disjoint-paths",
@@ -443,7 +464,8 @@
       "statements": [
         "L6-006",
         "L6-077",
-        "L6-080"
+        "L6-080",
+        "L6-167"
       ],
       "drift": [
         {
@@ -451,7 +473,8 @@
           "note": "L6-006 carves out the Bug Type-map serial path transfer; L6-077 adds that crew inherit the ticket contract, owned paths and gates and commit their own hop."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.parallel-lanes-as-subtickets",
@@ -471,23 +494,20 @@
       ],
       "drift": [
         {
-          "type": "action",
-          "note": "L1-073 opens lanes only where the writer's comment names them, in Todo; L6-026 has the captain's contract name the lanes (or none) with the writer's one pre-code comment as the fallback."
-        },
-        {
           "type": "value",
           "note": "L6-027 adds own chain, status and evidence and the parent-branch base SHA; L1-073 lists fewer fields."
         },
         {
-          "type": "scope",
-          "note": "L6-026 combines lane naming, disjoint paths and Sub-ticket creation in one sentence."
-        },
-        {
           "type": "wording",
           "note": "L6-081 says a lane \"is\" a direct Sub-ticket of the captain's ticket with no contract fields; L6-005 says \"may become\"; L1-073 says \"open them in Todo\"; L6-026 and L6-027 add the contract fields."
+        },
+        {
+          "type": "action",
+          "note": "L1-073 opens lanes only where the writer's comment names them, in Todo."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.parent-keeps-sequential-work-and-final-review",
@@ -507,7 +527,8 @@
           "note": "L7-118 states it for a staged Bug only; L1-072 covers ordinary sequential work and joining scenarios and sets the Bug exception apart; L1-168 sits in the Bug section."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.prototype-ticket-closes-on-verdict",
@@ -520,7 +541,8 @@
         "L1-170"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-about",
@@ -552,7 +574,8 @@
           "note": "Copies bind ticket-captain, code-writer, docs-writer, reviewer, scout, admiral, chief-of-staff and inquisitor; each is the same path and instruction."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-architecture",
@@ -582,7 +605,8 @@
           "note": "Copies bind ticket-captain, code-writer, reviewer, scout, admiral, chief-of-staff and inquisitor; each is the same path and instruction."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-coding-standards",
@@ -608,7 +632,8 @@
           "note": "L4-007 binds the inquisitor, L3-003 the code-writer and L3-164 the reviewer; same path and instruction."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-feature-spec-convention",
@@ -621,7 +646,8 @@
         "L1-006"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-glossary",
@@ -634,7 +660,8 @@
         "L3-004"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-governing-plan-and-spec",
@@ -642,11 +669,13 @@
       "rule": "Read the ticket's governing plan and the applicable feature-spec sections at their pinned commits.",
       "actors": [
         "ticket-captain",
-        "code-writer"
+        "code-writer",
+        "docs-writer"
       ],
       "statements": [
         "L1-005",
-        "L3-002"
+        "L3-002",
+        "L3-223"
       ],
       "drift": [
         {
@@ -654,7 +683,8 @@
           "note": "L1-005 allows \"or its atomic intent\" when there is no plan; L3-002 adds \"with their Decisions\" and says \"at the brief's commits\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-linear-standard-communication-only",
@@ -687,7 +717,8 @@
           "note": "L5-119 says the standard owns the full Type set and status/priority rules and tells the wayfinder to read it without the \"only\" restriction; L1-011, L2-010 and L2-203 add \"other sections on demand\"; L3-108, L3-138, L3-166 and L5-096 say \"do not preload the whole standard\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-question-as-stated",
@@ -707,7 +738,8 @@
           "note": "Research L3-135 also reads the destination named for the findings; scout L3-206 reads the one family it owns."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-ticket-and-brief",
@@ -729,13 +761,10 @@
         {
           "type": "scope",
           "note": "L1-004 lists the ticket fields to read (outcome, owned paths, blockers, exact gates, base branch); L3-161 has the reviewer read the contract as the brief pins it plus rubric, Candidate SHA, Base SHA and the writer IMPLEMENTED line; L3-001 and L3-103 name the FAIL block only for a fix hop."
-        },
-        {
-          "type": "scope",
-          "note": "L3-103 bundles ticket, governing plan, feature-spec sections and FAIL block in one sentence, so it also states the plan-and-spec read (see contract.read-governing-plan-and-spec)."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.read-writing-docs",
@@ -748,12 +777,13 @@
         "L3-104"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.reconcile-older-gate-contracts",
       "kind": "contract",
-      "rule": "Reconcile any older active gate contract explicitly before changing its obligations; Exact gates name unavailable support and the reconciliation.",
+      "rule": "Reconcile any older active gate contract explicitly before changing its obligations.",
       "actors": [
         "ticket-captain",
         "reviewer"
@@ -764,13 +794,9 @@
         "L6-050",
         "L7-145"
       ],
-      "drift": [
-        {
-          "type": "scope",
-          "note": "L3-191 is the reviewer's check that the reconciliation happened; L1-070 and L6-050 bind the captain; L7-145 also requires naming unavailable support in the same sentence."
-        }
-      ],
-      "principle": null
+      "drift": [],
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.recontract-carries-user-rulings",
@@ -787,10 +813,11 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L1-068 is the captain re-contracting; L2-098 is the admiral reconciling affected contracts (reconcile plus carry-over in one sentence)."
+          "note": "L1-068 is the captain re-contracting; L2-098 is the admiral reconciling affected contracts."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.scout-question-fixed-family-own",
@@ -803,7 +830,8 @@
         "L3-209"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.source-precedence",
@@ -817,7 +845,8 @@
         "L2-036"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.type-shape-from-workspace-standard",
@@ -830,7 +859,8 @@
         "L1-161"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "contract.verify-at-claim",
@@ -843,7 +873,8 @@
         "L1-058"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.bug-name-expected-observed",
@@ -856,7 +887,8 @@
         "L3-066"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.bug-reproduce-red-at-seam",
@@ -869,7 +901,8 @@
         "L3-067"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.bug-revert-fix-cycle",
@@ -883,7 +916,8 @@
         "L3-072"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.captain-rerun-is-proof-of-record",
@@ -898,7 +932,8 @@
         "L2-089"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.cheap-proof-before-expensive-tests",
@@ -911,7 +946,8 @@
         "L7-156"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.check-successor-before-broad-gates",
@@ -924,7 +960,8 @@
         "L3-064"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.close-every-gate-this-stage-owes",
@@ -938,7 +975,8 @@
         "L3-192"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.delete-test-only-with-required-code-removal",
@@ -951,7 +989,8 @@
         "L3-032"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.direct-done-definition",
@@ -964,7 +1003,8 @@
         "L1-099"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.docs-hop-done",
@@ -977,7 +1017,8 @@
         "L3-130"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.docs-hop-proof",
@@ -990,7 +1031,8 @@
         "L3-127"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.dont-assert-call-counts-or-order",
@@ -1003,7 +1045,8 @@
         "L3-094"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.dont-mock-internal-collaborators",
@@ -1017,7 +1060,8 @@
         "L3-099"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.dont-test-private-methods",
@@ -1030,7 +1074,8 @@
         "L3-093"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.exact-gates-separate-hop-from-final",
@@ -1043,7 +1088,8 @@
         "L7-144"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.existing-red-test-is-the-reproduction",
@@ -1068,7 +1114,8 @@
           "note": "L1-163 is the captain, L3-031 and L3-068 the writer; L3-031 is stated generally, L3-068 under Bug."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.expected-values-not-restating-implementation",
@@ -1081,7 +1128,8 @@
         "L3-097"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.feature-code-and-tests-together",
@@ -1094,7 +1142,8 @@
         "L3-022"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.feature-red-by-stash",
@@ -1107,7 +1156,8 @@
         "L3-023"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.feature-test-cases-before-code",
@@ -1120,38 +1170,40 @@
         "L3-021"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.final-and-landing-gates-stay",
       "kind": "evidence",
-      "rule": "Final-candidate gates apply at offer, and combined-merge, integration, release and final G/M gates stay mandatory at their boundaries (delivery scale or scaled review never weakens them, skipped native proof is never runtime proof), with exact-candidate reuse only where permitted.",
+      "rule": "Combined-merge, integration, release and final G/M gates stay mandatory at their boundaries; delivery scale or scaled review never weakens them.",
       "actors": [
         "ticket-captain",
         "reviewer",
         "any-agent"
       ],
       "statements": [
-        "L1-127",
         "L3-190",
         "L3-195",
         "L3-196",
         "L6-046",
         "L6-049",
         "L7-060",
-        "L7-161"
+        "L7-161",
+        "L1-309"
       ],
       "drift": [
         {
           "type": "scope",
-          "note": "L3-195 and L3-196 are reviewer checklist items by review type (merge review, final release review); L3-190 also restates meaningful-code test obligations."
+          "note": "L3-195 and L3-196 are reviewer checklist items by review type (merge review, final release review)."
         },
         {
           "type": "wording",
           "note": "L7-161 says only \"review gates stay where their workflows require\"; the other copies name the final-candidate, combined-merge, integration and release gates and the exact-candidate reuse limit."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.finding-counts-when-proven",
@@ -1164,20 +1216,8 @@
         "L4-025"
       ],
       "drift": [],
-      "principle": null
-    },
-    {
-      "id": "evidence.fix-at-the-root",
-      "kind": "evidence",
-      "rule": "Fix at the root: a gap gets its test first; cut what the contract does not need; split or flatten complexity; hide what leaks across a seam; a surviving mutant sharpens its test or deletes its code; a surviving example value gets its step wired.",
-      "actors": [
-        "code-writer"
-      ],
-      "statements": [
-        "L3-063"
-      ],
-      "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.fix-hcrap-and-complexity",
@@ -1190,7 +1230,8 @@
         "L3-049"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.gherkin-scenarios",
@@ -1203,7 +1244,8 @@
         "L3-042"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.green-before-code-is-a-finding",
@@ -1216,7 +1258,8 @@
         "L3-030"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.inherited-failure-attribution",
@@ -1240,7 +1283,8 @@
           "note": "L1-096 (captain) verifies attribution and records owner, repair or escalation route and effect on owed gates; L2-110 (admiral) assigns a separate repair owner or escalates the unresolved decision; L3-047 (writer) only attributes; L3-183 (reviewer) checks attribution with the owner disposition and also final Heavy and coverage placement."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.inject-boundary-dependencies",
@@ -1253,7 +1297,8 @@
         "L3-100"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.keep-historical-originals",
@@ -1266,7 +1311,8 @@
         "L7-152"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.meaningful-code-changes-keep-specified-tests",
@@ -1279,7 +1325,8 @@
         "L3-194"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.mock-only-at-system-boundaries",
@@ -1292,7 +1339,8 @@
         "L3-098"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.never-weaken-test-of-kept-behaviour",
@@ -1305,7 +1353,8 @@
         "L3-033"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.no-sleep-or-timeout-in-tests",
@@ -1327,7 +1376,8 @@
           "note": "L3-020 adds the shared-machine and load limits; L4-057 and L3-034 state only the sleep rule and fake timers."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.one-logical-assertion-per-test",
@@ -1340,7 +1390,8 @@
         "L3-090"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.passing-witness-not-a-substitute",
@@ -1353,7 +1404,8 @@
         "L3-065"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.pin-exact-gates-from-testing-strategy",
@@ -1371,15 +1423,12 @@
       ],
       "drift": [
         {
-          "type": "scope",
-          "note": "L6-048 also assigns the writer to prove that hop's actual reach and the reviewer to judge its record (see evidence.reach-includes-every-test-change-reaches)."
-        },
-        {
           "type": "value",
           "note": "L7-143 lists what Exact gates must hold (own/reached features, parent-shared tests, Light/Heavy, prerequisites, stage, static/mutation assurance, final coverage producer/consumer, evidence reuse); L1-069 names only selection, commands and stages."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.platform-specific-code-proved-on-ci-platform",
@@ -1392,7 +1441,8 @@
         "L3-035"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.proof-behaviour-in-code-red-test",
@@ -1405,7 +1455,8 @@
         "L4-026"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.proof-behaviour-through-app-drive",
@@ -1418,7 +1469,8 @@
         "L4-027"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.proof-only-runs-one-deciding-test",
@@ -1431,7 +1483,8 @@
         "L3-027"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.proof-prose-quoted-passages",
@@ -1444,7 +1497,8 @@
         "L4-028"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.prose-only-review-may-have-no-runtime-gate",
@@ -1457,20 +1511,8 @@
         "L3-189"
       ],
       "drift": [],
-      "principle": null
-    },
-    {
-      "id": "evidence.prove-what-reading-proves",
-      "kind": "evidence",
-      "rule": "Prove what reading proves.",
-      "actors": [
-        "inquisitor"
-      ],
-      "statements": [
-        "L4-097"
-      ],
-      "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.raw-proof-once-in-durable-artifact",
@@ -1484,7 +1526,8 @@
         "L7-154"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.reach-includes-every-test-change-reaches",
@@ -1497,7 +1540,8 @@
       "statements": [
         "L3-046",
         "L3-181",
-        "L3-193"
+        "L3-193",
+        "L6-171"
       ],
       "drift": [
         {
@@ -1505,7 +1549,8 @@
           "note": "L3-046 has the writer preflight selection and return the affected-feature Light and static evidence; L3-181 has the reviewer check reach and file omissions as findings; L3-193 is the checklist form."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.read-testing-strategy-sections",
@@ -1539,7 +1584,8 @@
           "note": "L2-009 binds the admiral to one section (Evidence and inherited failures) and only when a captain reports such failures; L1-010, L3-005, L3-107 and L3-165 name the sections the role reads up front."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.record-gate-result-fields",
@@ -1559,7 +1605,8 @@
           "note": "L1-120 binds the captain; L7-155 binds any agent."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.record-only-observed-native-evidence",
@@ -1572,7 +1619,8 @@
         "L6-076"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.reproduction-refutable",
@@ -1585,7 +1633,8 @@
         "L3-071"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.rerun-only-on-concern",
@@ -1601,7 +1650,9 @@
         "L1-122",
         "L3-172",
         "L3-182",
-        "L7-157"
+        "L7-157",
+        "L4-197",
+        "L1-310"
       ],
       "drift": [
         {
@@ -1609,7 +1660,8 @@
           "note": "L3-172 and L3-182 bind the reviewer (rerun only on a stated doubt); L1-121 and L7-157 state the general reuse rule."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.test-through-real-interfaces",
@@ -1624,7 +1676,8 @@
         "L3-096"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.testing-strategy-governs-proof",
@@ -1640,7 +1693,8 @@
         "L1-095",
         "L3-045",
         "L3-180",
-        "L6-047"
+        "L6-047",
+        "L6-172"
       ],
       "drift": [
         {
@@ -1648,7 +1702,8 @@
           "note": "L1-095 is the captain briefing proof including prerequisites and shared-host constraints; L3-045 the writer proving; L3-180 the reviewer applying it to the pinned Exact gates; L6-047 states ownership by any agent."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.tests-cover-behaviour-not-implementation",
@@ -1662,7 +1717,8 @@
         "L3-089"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.tests-not-coupled-to-internals",
@@ -1677,7 +1733,8 @@
         "L3-095"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.unrun-gate-is-not-a-pass",
@@ -1685,14 +1742,17 @@
       "rule": "A follow-up ticket, or a required gate that cannot run, is not a passing gate: name the gate and why, never treat it as passed; real output is evidence.",
       "actors": [
         "ticket-captain",
-        "reviewer"
+        "reviewer",
+        "admiral"
       ],
       "statements": [
         "L1-098",
-        "L3-184"
+        "L3-184",
+        "L2-330"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.unused-member-reproduction",
@@ -1706,7 +1766,8 @@
         "L3-019",
         "L3-069",
         "L3-070",
-        "L4-029"
+        "L4-029",
+        "L4-195"
       ],
       "drift": [
         {
@@ -1718,7 +1779,8 @@
           "note": "L3-019, L3-069 and L3-070 are the writer's reproduction; L4-029 is the inquisitor's proof of a finding (Read)."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "evidence.validate-native-shapes-early",
@@ -1731,7 +1793,8 @@
         "L6-051"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.base-sha-ancestor-of-head",
@@ -1746,7 +1809,8 @@
         "L6-037"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.clean-before-first-edit",
@@ -1761,7 +1825,8 @@
         "L6-038"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.clean-orphaned-worktrees-all",
@@ -1774,7 +1839,8 @@
         "L2-232"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.clean-own-worktrees",
@@ -1785,19 +1851,18 @@
       ],
       "statements": [
         "L1-155",
-        "L6-123"
+        "L6-123",
+        "L1-318",
+        "L6-177"
       ],
       "drift": [
-        {
-          "type": "scope",
-          "note": "L6-123 bundles four rules: this one, leave the thread's worktree to T3, know T3-made worktrees under ~/.t3/worktrees are skipped by dydo clean, and a spawned captain first pushes the parent branch and opens its PR."
-        },
         {
           "type": "wording",
           "note": "L1-155 adds that dydo clean deletes the worktree's own branch once merged."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.commits-touch-owned-paths-only",
@@ -1806,29 +1871,30 @@
       "actors": [
         "code-writer",
         "docs-writer",
-        "any-agent"
+        "any-agent",
+        "crew"
       ],
       "statements": [
         "L3-016",
         "L3-128",
-        "L6-007"
+        "L6-007",
+        "L6-143"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.delete-inquisition-audit-branches",
       "kind": "worktree",
-      "rule": "Delete the audit branch (and as parent every group's audit branch) locally; name their remotes and any proof branch no open Bug needs on the record for the user.",
+      "rule": "Delete the audit branch (and as parent every group's audit branch) locally.",
       "actors": [
         "ticket-captain"
       ],
       "statements": [
         "L1-299",
         "L6-122",
-        "L6-129",
-        "L1-291",
-        "L6-117"
+        "L6-129"
       ],
       "drift": [
         {
@@ -1837,10 +1903,11 @@
         },
         {
           "type": "action",
-          "note": "L1-299 says \"delete locally\"; L6-122 and L6-129 gate the deletion on the record and retention checks and add closing Done and returning \"done <key>: merged\"; L6-129, L6-117 and L1-291 add that cleanup never deletes the retained Bug refs."
+          "note": "L6-122 and L6-129 gate the deletion on the record and retention checks; L1-299 says \"delete locally\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.delete-integrated-ticket-branch",
@@ -1860,7 +1927,8 @@
           "note": "Trigger differs by branch type: L6-124 after review and integration, L6-125 after the merge, L6-126 after the user's click."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.delete-merged-local-branches-no-worktree",
@@ -1880,7 +1948,8 @@
           "note": "L1-156 is the captain's own branches; L2-233 is the chief-of-staff sweep."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.deleting-a-branch-means-local",
@@ -1893,7 +1962,8 @@
         "L6-131"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.dydo-clean-branch-deletion-limit",
@@ -1906,7 +1976,8 @@
         "L6-130"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.every-parent-ticket-isolated-worktree",
@@ -1919,7 +1990,8 @@
         "L6-004"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.head-on-ticket-branch",
@@ -1934,7 +2006,8 @@
         "L6-035"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.hop-ends-on-one-named-commit",
@@ -1953,40 +2026,11 @@
       "drift": [
         {
           "type": "scope",
-          "note": "L4-052 has the inquisitor commit a confirmed test alone with the proof name and note the SHA; L6-028 also bundles owned-path, gate, review-evidence and return-to-captain rules."
+          "note": "L4-052 has the inquisitor commit a confirmed test alone with the proof name and note the SHA."
         }
       ],
-      "principle": null
-    },
-    {
-      "id": "worktree.hop-sha-preserved-and-posted",
-      "kind": "worktree",
-      "rule": "Every crew hop ends on a commit whose SHA the return names; the Ticket Captain posts it, and hop SHAs are preserved (ticket branch unsquashed and unrewritten).",
-      "actors": [
-        "ticket-captain",
-        "crew"
-      ],
-      "statements": [
-        "L1-183",
-        "L6-009",
-        "L1-082",
-        "L6-097"
-      ],
-      "drift": [
-        {
-          "type": "wording",
-          "note": "L1-183 \"every operation preserves the hop SHAs\" does not name squash or rewrite; L6-009 names both."
-        },
-        {
-          "type": "wording",
-          "note": "L6-097 adds that the record holds the detail."
-        },
-        {
-          "type": "scope",
-          "note": "L1-082 and L6-097 say only that the captain posts each crew hop's SHA; L6-009 and L1-183 add that the return names it and that hop SHAs are preserved (branch unsquashed, unrewritten)."
-        }
-      ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.inquisition-audit-branch",
@@ -2011,7 +2055,8 @@
           "note": "L1-172 says the branch comes from \"the integrated feature SHA\" where L1-214 and L6-016 say \"the audit SHA\"; L1-214 adds \"in your isolated worktree\"; L6-016 adds the group branch name and \"no PR target\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.inquisition-follows-retention-rules",
@@ -2024,7 +2069,8 @@
         "L7-097"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.inquisition-patch-branch",
@@ -2037,7 +2083,8 @@
         "L6-018"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.inquisition-proof-branch",
@@ -2050,7 +2097,8 @@
         "L6-017"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.key-in-branch-names",
@@ -2063,7 +2111,8 @@
         "L6-022"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.lane-subticket-branch",
@@ -2076,7 +2125,8 @@
         "L6-015"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.leave-thread-worktree-to-t3",
@@ -2088,7 +2138,8 @@
       "statements": [
         "L1-158",
         "L6-102",
-        "L1-191"
+        "L1-191",
+        "L6-138"
       ],
       "drift": [
         {
@@ -2096,7 +2147,8 @@
           "note": "L1-191 says \"the worktree the thread runs in\" inside the release procedure; L1-158 and L6-102 say the captain's thread worktree in the cleanup context."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.name-remote-branches-due-for-user",
@@ -2110,7 +2162,10 @@
       "statements": [
         "L1-159",
         "L2-234",
-        "L6-132"
+        "L6-132",
+        "L1-307",
+        "L6-157",
+        "L6-160"
       ],
       "drift": [
         {
@@ -2118,7 +2173,8 @@
           "note": "L1-159 is the captain (inquisition/ and prototype/ branches included); L2-234 the chief-of-staff, listing any remote still standing after merge or Done; L6-132 any accountable officer."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.paths-in-owned-paths",
@@ -2133,7 +2189,8 @@
         "L6-039"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.place-ticket-worktree",
@@ -2146,7 +2203,8 @@
         "L6-023"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.project-branch",
@@ -2160,7 +2218,8 @@
         "L6-012"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.project-ticket-branch",
@@ -2173,7 +2232,8 @@
         "L6-013"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.proof-branch-left-committed-clean-for-captain",
@@ -2186,7 +2246,8 @@
         "L4-059"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.proof-only-branch",
@@ -2199,7 +2260,8 @@
         "L6-020"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.proof-work-pre-edit-checks",
@@ -2230,7 +2292,8 @@
           "note": "L4-043 says Break proves \"the three worktree checks\" and returns a failure to the captain; L4-044 to L4-046 and L6-042 name the three checks."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.prototype-branch",
@@ -2243,7 +2306,8 @@
         "L6-021"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.prototype-branch-lifecycle",
@@ -2257,7 +2321,8 @@
         "L6-128"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.prove-checks-before-first-edit",
@@ -2281,7 +2346,8 @@
           "note": "L3-009 \"the working-tree standard's checks, stop\"; L6-034 \"all five checks\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.read-working-tree-standard",
@@ -2305,7 +2371,8 @@
           "note": "Copies bind ticket-captain, docs-writer, admiral and chief-of-staff; same path and instruction."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.reviewer-probe-detached-worktree",
@@ -2318,7 +2385,8 @@
         "L3-173"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.root-is-isolated-worktree",
@@ -2333,7 +2401,8 @@
         "L6-036"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.satisfy-standard-before-spawning",
@@ -2346,7 +2415,8 @@
         "L1-059"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.stage-owned-paths-by-name",
@@ -2359,7 +2429,8 @@
         "L6-092"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K4"
     },
     {
       "id": "worktree.sweep-orphans",
@@ -2380,6 +2451,325 @@
           "note": "L6-134 says a finding is a standard failure to route with its owner named, not routine cleanup for staff; L2-231 lists what to sweep and when an inquisition or prototype branch is orphaned."
         }
       ],
+      "principle": null,
+      "group": "K4"
+    },
+    {
+      "id": "worktree.t3-made-worktrees-skipped-by-dydo-clean",
+      "kind": "worktree",
+      "rule": "Worktrees under ~/.t3/worktrees (delegate_task checkouts included) are T3-made, and dydo clean skips them.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-139"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "worktree.spawned-captain-pushes-parent-branch-and-opens-pr",
+      "kind": "worktree",
+      "rule": "A spawned Ticket Captain first pushes the parent branch and opens its PR so the work survives its return.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-140"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "worktree.hop-return-names-commit-sha",
+      "kind": "worktree",
+      "rule": "Every crew hop ends on a commit whose SHA the return names.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L6-009"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "worktree.captain-posts-hop-sha",
+      "kind": "worktree",
+      "rule": "The Ticket Captain posts each crew hop's commit SHA on the record.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-082",
+        "L6-097",
+        "L6-141"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-097 adds that the record holds the detail."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "worktree.hop-shas-preserved",
+      "kind": "worktree",
+      "rule": "Hop SHAs are preserved: the ticket branch keeps its hops unsquashed and unrewritten.",
+      "actors": [
+        "ticket-captain",
+        "code-writer",
+        "reviewer"
+      ],
+      "statements": [
+        "L1-183",
+        "L6-142",
+        "L6-152",
+        "L3-230"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-183 \"every operation preserves the hop SHAs\" does not name squash or rewrite; L6-142 names both."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "evidence.exact-gates-pass-for-hop",
+      "kind": "evidence",
+      "rule": "A hop's exact gates pass.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L6-144"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "worktree.audit-cleanup-never-deletes-retained-refs",
+      "kind": "worktree",
+      "rule": "Audit cleanup never deletes the retained Bug refs; they remain input to each Bug's normal chain.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-291",
+        "L6-117",
+        "L6-162"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "contract.contract-names-lanes-or-none",
+      "kind": "contract",
+      "rule": "The captain's compact acceptance contract names the lanes, or none.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-165"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "contract.writer-pre-code-comment-names-further-lanes",
+      "kind": "contract",
+      "rule": "When the work splits beyond the contract, the writer's one pre-code comment names the lanes.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L6-166"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.quote-both-passages-for-prose-finding",
+      "kind": "evidence",
+      "rule": "Quote both passages at file:line for an intent, decision, standard, comment or prose finding.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-097"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "contract.exact-gates-name-unavailable-support",
+      "kind": "contract",
+      "rule": "Exact gates name unavailable support.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-191"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "contract.reconcile-affected-contracts",
+      "kind": "contract",
+      "rule": "Reconcile the affected contracts when shared feature intent changes.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-320"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.final-candidate-gates-apply-at-offer",
+      "kind": "evidence",
+      "rule": "Final-candidate gates apply at offer.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-127"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.skipped-native-proof-is-never-runtime-proof",
+      "kind": "evidence",
+      "rule": "Skipped native proof is never runtime proof.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-173"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.meaningful-changes-retain-test-obligations",
+      "kind": "evidence",
+      "rule": "Meaningful code changes retain their specified test obligations.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-224"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.gap-gets-its-test-first",
+      "kind": "evidence",
+      "rule": "Fix at the root: a gap gets its test first.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-063"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.cut-what-the-contract-does-not-need",
+      "kind": "evidence",
+      "rule": "Cut what the contract does not need.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-225"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.split-or-flatten-complexity",
+      "kind": "evidence",
+      "rule": "Split or flatten what is complex.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-226"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.hide-what-leaks-across-a-seam",
+      "kind": "evidence",
+      "rule": "Hide what leaks across a seam.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-227"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.surviving-mutant-sharpens-test-or-deletes-code",
+      "kind": "evidence",
+      "rule": "A surviving mutant sharpens its test or deletes its code.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-228"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.surviving-example-value-gets-its-step-wired",
+      "kind": "evidence",
+      "rule": "A surviving example value gets its step wired.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-229"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "evidence.read-exact-candidate-evidence",
+      "kind": "evidence",
+      "rule": "Read this exact candidate's command, selection, environment, exit and artifacts.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-238"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "contract.ticket-bounds-intent-and-paths",
+      "kind": "contract",
+      "rule": "The current ticket bounds intent and paths.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-323"
+      ],
+      "drift": [],
       "principle": null
     }
   ],
@@ -2391,14 +2781,6 @@
         "evidence.rerun-only-on-concern"
       ],
       "note": "L1-128 has the captain rerun every writer proof recipe before offering; L1-122/L1-121/L3-172 say judge on the proof already run and rerun only on a stated concern. Both cannot hold unless the captain's rerun is exempt; no statement says so."
-    },
-    {
-      "type": "drift",
-      "claims": [
-        "contract.recontract-carries-user-rulings",
-        "contract.reconcile-older-gate-contracts"
-      ],
-      "note": "L2-098 combines reconcile and carry-over in one sentence; the captain skill splits them (L1-068, L1-070), so the admiral copy cannot be placed in one claim."
     },
     {
       "type": "gap",

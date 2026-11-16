@@ -19,7 +19,8 @@
         "L5-056"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.admiral-report-form",
@@ -32,7 +33,8 @@
         "L2-286"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.admirals-send-no-status",
@@ -52,7 +54,8 @@
           "note": "L5-026 binds admirals; L5-039 binds the chief of staff."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.already-matched",
@@ -65,7 +68,8 @@
         "L5-064"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.announce-start",
@@ -78,7 +82,8 @@
         "L5-020"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.answer-nudge-one-line",
@@ -91,7 +96,8 @@
         "L5-029"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.capture-separately",
@@ -104,7 +110,8 @@
         "L5-063"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.conn-split",
@@ -118,7 +125,8 @@
         "L5-003"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.cross-project-contact",
@@ -131,7 +139,8 @@
         "L5-027"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.delete-watch-schedule",
@@ -145,7 +154,8 @@
         "L5-045"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.exclude-or-defer-dependent-work",
@@ -158,7 +168,8 @@
         "L2-279"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.exercise-permissions",
@@ -172,7 +183,8 @@
         "L2-275"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.failed-transition-preserve-state",
@@ -185,7 +197,8 @@
         "L5-066"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.failed-transition-report",
@@ -210,12 +223,13 @@
           "note": "L2-254 says \"report shutdown incomplete with ... the exact human-terminal action\"; L5-016 says \"exact recovery action\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.failed-transition-resolve-and-return",
       "kind": "overnight",
-      "rule": "Return the blocker to the responsible captain or user with the exact action needed, and resolve it before proceeding; every recovery still needs fresh readback.",
+      "rule": "Return the blocker to the responsible captain or user with the exact action needed, and resolve it before proceeding.",
       "actors": [
         "chief-of-staff"
       ],
@@ -224,7 +238,8 @@
         "L5-069"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.fill-morning-brief",
@@ -239,7 +254,8 @@
         "L5-051"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.guard-warning-retry-once",
@@ -260,7 +276,8 @@
           "note": "L5-059 addresses any agent; L5-014 and L5-047 the chief of staff."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.handle-incoming-messages",
@@ -273,7 +290,8 @@
         "L2-248"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.intent-readback-to-user",
@@ -286,7 +304,8 @@
         "L2-271"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.keep-gaps",
@@ -299,12 +318,13 @@
         "L2-278"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.load-triggers",
       "kind": "overnight",
-      "rule": "Overnight mode is loaded only on the chief of staff's muster or morning-brief announcement, or when the user calls it; between muster and morning brief the admiral loads it and obeys standing plus night orders.",
+      "rule": "Overnight mode is loaded only on the chief of staff's muster or morning-brief announcement, or when the user calls it; between muster and morning brief the admiral loads it.",
       "actors": [
         "admiral",
         "chief-of-staff",
@@ -319,13 +339,10 @@
         {
           "type": "scope",
           "note": "L2-042 is the admiral (start/end by CoS announcement, load and obey); L2-202 the chief of staff on the user call; L5-001 any agent."
-        },
-        {
-          "type": "action",
-          "note": "L2-042 adds the obligation to obey standing plus night orders."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.mediate-cross-project",
@@ -338,7 +355,8 @@
         "L5-040"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.muster-checklist-complete",
@@ -352,7 +370,8 @@
         "L5-011"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.muster-ready-then-activate",
@@ -366,7 +385,8 @@
         "L2-283"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.muster-tools",
@@ -386,7 +406,8 @@
           "note": "L5-012 says \"only\"; L5-052 says \"terminal unblockers only\"; L5-068 says \"when needed\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.night-orders-expire-and-win",
@@ -399,7 +420,8 @@
         "L5-006"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.night-orders-posted-in-form",
@@ -413,7 +435,8 @@
         "L2-287"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.no-dummy-merge",
@@ -426,7 +449,8 @@
         "L2-277"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.nudge-idle-admiral",
@@ -439,7 +463,8 @@
         "L5-037"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.obey-standing-plus-night-orders",
@@ -452,7 +477,8 @@
         "L5-005"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.only-readback-proves-mode",
@@ -473,7 +499,8 @@
           "note": "L5-004 says \"only the verified value\"; L5-062 and L5-050 list further non-proofs."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.present-questions",
@@ -486,7 +513,8 @@
         "L2-272"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.project-decisions-admiral",
@@ -499,7 +527,8 @@
         "L5-022"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.readback-in-separate-call",
@@ -520,7 +549,8 @@
           "note": "L2-253 ties this to shutdown before the morning brief and requires `overnight: off`; L5-048 adds announcing the end to every admiral; L5-015 and L5-060 state it for activation or generally."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.rebuild-after-watch-gap",
@@ -533,7 +563,8 @@
         "L5-041"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.relay-down-the-chain",
@@ -546,7 +577,8 @@
         "L5-028"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.report-block-per-project",
@@ -559,7 +591,8 @@
         "L2-285"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.request-admiral-reports",
@@ -573,7 +606,8 @@
         "L2-284"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.resolve-blockers-present",
@@ -586,7 +620,8 @@
         "L2-273"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.settle-pending-survey",
@@ -599,7 +634,8 @@
         "L5-046"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.shutdown-done",
@@ -612,7 +648,8 @@
         "L5-053"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.shutdown-in-cos-conversation",
@@ -625,7 +662,8 @@
         "L5-042"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.skeleton-walkthrough-blocks-nothing",
@@ -646,7 +684,8 @@
           "note": "L7-104 states only that it blocks nothing; L2-094 and L5-032 add posting `DECIDED`, carrying on and treating a wrong direction as a revert."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.skill-resources-self-contained",
@@ -665,7 +704,8 @@
           "note": "L5-007 says do not reload; L5-008 says do not invoke another officer role; the two scopes differ slightly."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.startup-done",
@@ -678,7 +718,8 @@
         "L5-021"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.stop-only-at-stop-line",
@@ -692,7 +733,8 @@
         "L5-031"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.survey-check-nudges",
@@ -705,7 +747,8 @@
         "L2-296"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.survey-identify-problems",
@@ -718,7 +761,8 @@
         "L2-297"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.survey-incomplete-or-no-action",
@@ -731,7 +775,8 @@
         "L2-249"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.survey-inspect-threads",
@@ -744,7 +789,8 @@
         "L2-295"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.survey-no-shadow-board",
@@ -757,7 +803,8 @@
         "L2-301"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.survey-quiet-not-stuck",
@@ -770,7 +817,8 @@
         "L2-298"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.survey-read-and-compare",
@@ -784,7 +832,8 @@
         "L2-294"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.surveyor-inspects-cos-acts",
@@ -804,7 +853,8 @@
           "note": "L2-292 says only \"intervention belongs to the chief of staff\" in the surveyor's resource; L2-247 and L5-036 add that the surveyor result is inspection and the chief of staff performs the nudge, escalation or intervention."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.transition-command-only-by-cos",
@@ -817,7 +867,8 @@
         "L5-058"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.transition-commands",
@@ -830,7 +881,8 @@
         "L5-057"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.transition-preflight",
@@ -855,7 +907,8 @@
           "note": "L2-241 places the preflight at the start of muster; L2-267, L5-009, L5-043 and L5-054 cover startup and shutdown."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.unanswered-nudge-intervene",
@@ -868,7 +921,8 @@
         "L5-038"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.unprotected-branch-no-merge-proof",
@@ -881,7 +935,8 @@
         "L2-276"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.verified-readback-before-announce",
@@ -897,7 +952,8 @@
         "L5-061"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.watch-schedule-created",
@@ -910,7 +966,8 @@
         "L5-017"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.watch-schedule-failure",
@@ -923,7 +980,8 @@
         "L5-019"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.watch-schedule-id-preserved",
@@ -936,7 +994,8 @@
         "L5-018"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "overnight.watch-tick-survey",
@@ -950,7 +1009,8 @@
         "L5-035"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.admiral-wake-events",
@@ -973,7 +1033,8 @@
           "note": "L2-043 prescribes running the check-in resource; L6-105 prescribes rereading the board including released and blocker-cleared tickets."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.authority-persists",
@@ -986,12 +1047,13 @@
         "L2-082"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.canceled-records-why",
       "kind": "project",
-      "rule": "Project status `Canceled` means the destination was consciously abandoned; the map holder records why and commissions spec retirement.",
+      "rule": "Project status Canceled means the destination was consciously abandoned; the map holder records why.",
       "actors": [
         "map-holder"
       ],
@@ -999,7 +1061,8 @@
         "L7-007"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.captain-return-continuation",
@@ -1012,7 +1075,8 @@
         "L2-044"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.chart-and-approve-done",
@@ -1025,7 +1089,8 @@
         "L2-067"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.chart-unknown-route",
@@ -1038,7 +1103,8 @@
         "L2-051"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.checkin-delete",
@@ -1051,7 +1117,8 @@
         "L2-158"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.checkin-id-recorded",
@@ -1064,7 +1131,8 @@
         "L2-156"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.checkin-reschedule",
@@ -1083,7 +1151,8 @@
           "note": "L2-157 triggers on a user wake with a missing or disabled ID; L2-159 on new work becoming pickable after deletion."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.checkin-schedule-start",
@@ -1107,7 +1176,8 @@
           "note": "L2-155 also covers taking over an active Project; L2-071 and L2-195 cover setting In Progress or opening."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.delivery-ticket-one-milestone",
@@ -1122,7 +1192,8 @@
         "L7-101"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.delivery-to-map-holder",
@@ -1135,7 +1206,8 @@
         "L2-238"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.dispatch-before-yield",
@@ -1148,12 +1220,13 @@
         "L2-081"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.empty-landing-walkthrough-completes",
       "kind": "project",
-      "rule": "An empty landing walkthrough lets the Project close `Completed`, and the map holder then commissions spec retirement.",
+      "rule": "An empty landing walkthrough lets the Project close Completed.",
       "actors": [
         "admiral",
         "map-holder"
@@ -1173,7 +1246,8 @@
           "note": "L7-006 defines Completed as destination landed and the landing walkthrough found nothing more; the others describe the closing act."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.first-captain-opens-feature-branch",
@@ -1188,13 +1262,10 @@
         "L1-060",
         "L2-068",
         "L6-024",
-        "L2-196"
+        "L2-196",
+        "L7-193"
       ],
       "drift": [
-        {
-          "type": "action",
-          "note": "L6-024 also states the Project-map-in-Linear and per-ticket contract fields (outcome, owned paths, blockers, exact gates, base branch) as conditions for a ticket being pickable, and that the Captain reports both; L1-060 and L2-068 do not."
-        },
         {
           "type": "wording",
           "note": "L1-060 says the spec draft is committed unchanged and pushed as the first commit; L6-024 says \"when handed one\"; L2-068 does not mention the spec."
@@ -1204,7 +1275,8 @@
           "note": "L2-196 and L1-060 require the spec draft unchanged as the branch's first commit, pushed, with the SHA posted before the ticket branch is cut; L2-068 and L6-024 say commit the working spec \"when handed one\" and report both."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.first-ticket-blocks-first-lanes",
@@ -1217,7 +1289,8 @@
         "L2-194"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.flag-stalled-lane",
@@ -1230,7 +1303,8 @@
         "L2-177"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.flag-unnamed-needs-user",
@@ -1243,7 +1317,8 @@
         "L2-178"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.follow-scaffold-recipe",
@@ -1268,7 +1343,8 @@
           "note": "L2-186 limits the trigger to creating a Project or first charting one with no working spec; L2-052 says any new Project; L5-166 describes the recipe's content and the map-writing step's scope."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.four-lanes",
@@ -1281,7 +1357,8 @@
         "L2-166"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.human-holds-remain",
@@ -1294,7 +1371,8 @@
         "L2-049"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.landing-blockers-and-shoulds-query",
@@ -1314,7 +1392,8 @@
           "note": "L2-127 says \"only those the user explicitly deferred may remain open\"; L7-080 says \"unless the user explicitly deferred it\"."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.landing-cleanup",
@@ -1341,20 +1420,22 @@
           "note": "L2-132 names dydo clean --dry-run then dydo clean from outside the tree; L1-160 says \"remove the merged feature branch locally\"; L6-127 makes the map holder accountable and the landing captain delete it; L2-138 has the admiral confirm."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.landing-requires-clean-inquisition",
       "kind": "project",
-      "rule": "The admiral sequences the should-tickets; the Project lands only when each is `Done` or closed with a reason, and only after an inquisition round that found no blocker and no should.",
+      "rule": "The Project lands only when each should-ticket is `Done` or closed with a reason.",
       "actors": [
         "admiral"
       ],
       "statements": [
-        "L2-128"
+        "L2-323"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.ledger-lane-states",
@@ -1367,7 +1448,8 @@
         "L2-154"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.ledger-row-forms",
@@ -1382,7 +1464,8 @@
         "L2-153"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.ledger-section",
@@ -1395,7 +1478,8 @@
         "L2-150"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.map-and-contract-placement",
@@ -1408,7 +1492,8 @@
         "L2-069"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.map-complete",
@@ -1421,7 +1506,8 @@
         "L5-099"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.map-description-form",
@@ -1436,7 +1522,8 @@
         "L5-105"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.milestone-shape",
@@ -1464,7 +1551,8 @@
           "note": "L2-057 defines the skeleton as the rough foundation where the user can decide and understand the architecture; no other copy defines it."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.no-invented-work",
@@ -1477,7 +1565,8 @@
         "L2-146"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.plan-is-project-and-tickets",
@@ -1490,7 +1579,8 @@
         "L2-054"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.prepare-destination",
@@ -1503,7 +1593,8 @@
         "L2-217"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.read-state-at-arrival",
@@ -1516,7 +1607,8 @@
         "L2-001"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.reconcile-done",
@@ -1529,7 +1621,8 @@
         "L2-050"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.relay-rule-to-all-lanes",
@@ -1542,7 +1635,8 @@
         "L2-161"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.repository-plan-amendments",
@@ -1555,7 +1649,8 @@
         "L2-099"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.repository-plan-only-if-cross-cutting",
@@ -1568,7 +1663,8 @@
         "L2-061"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.route-done",
@@ -1581,7 +1677,8 @@
         "L2-240"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.route-put-to-user",
@@ -1594,7 +1691,8 @@
         "L2-066"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.run-survey",
@@ -1607,7 +1705,8 @@
         "L2-173"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.settle-intent-then-create",
@@ -1620,7 +1719,8 @@
         "L2-187"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.sort-arrivals",
@@ -1634,7 +1734,8 @@
         "L2-218"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.stalled-first-captain",
@@ -1647,7 +1748,8 @@
         "L2-197"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.survey-finding-to-action",
@@ -1659,10 +1761,12 @@
       ],
       "statements": [
         "L2-165",
-        "L2-174"
+        "L2-174",
+        "L2-334"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.survey-incomplete",
@@ -1675,7 +1779,8 @@
         "L2-167"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.survey-reads-lane-threads",
@@ -1688,7 +1793,8 @@
         "L2-175"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.sweep-board",
@@ -1703,7 +1809,8 @@
         "L2-237"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.tick-end",
@@ -1716,7 +1823,8 @@
         "L2-168"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.tick-returns-first",
@@ -1729,7 +1837,8 @@
         "L2-160"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.triage-user-attention",
@@ -1742,7 +1851,8 @@
         "L2-201"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.user-tells-admiral",
@@ -1756,7 +1866,8 @@
         "L2-147"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.wait-after-reconcile",
@@ -1769,7 +1880,8 @@
         "L2-145"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "project.watch-open-prs",
@@ -1782,7 +1894,8 @@
         "L2-045"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.admiral-facilitates-last",
@@ -1795,7 +1908,8 @@
         "L2-133"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.ask-target",
@@ -1808,7 +1922,8 @@
         "L5-075"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.brief-four-parts",
@@ -1823,7 +1938,8 @@
         "L7-056"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.brief-medium",
@@ -1836,7 +1952,8 @@
         "L5-089"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.durable-record-stays",
@@ -1849,7 +1966,8 @@
         "L5-090"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.landing-findings-reopen-lap",
@@ -1869,7 +1987,8 @@
           "note": "L2-135 requires confirmation for another inquisition; L5-087 says another landing/walkthrough."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.landing-nits-reported",
@@ -1884,12 +2003,13 @@
         "L5-082"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.later-tickets-never-block",
       "kind": "walkthrough",
-      "rule": "Later Milestones' Walkthrough Tickets block nothing; their findings become tickets in the Project as they arrive.",
+      "rule": "Later Milestones' Walkthrough Tickets block nothing.",
       "actors": [
         "admiral",
         "map-holder"
@@ -1898,13 +2018,9 @@
         "L2-093",
         "L7-105"
       ],
-      "drift": [
-        {
-          "type": "action",
-          "note": "L2-093 also states that findings become tickets; L7-105 does not."
-        }
-      ],
-      "principle": null
+      "drift": [],
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.load-triggers",
@@ -1917,20 +2033,24 @@
         "L5-070"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.milestone-findings-become-tickets",
       "kind": "walkthrough",
       "rule": "A Milestone's findings become tickets in the same Project as they arrive.",
       "actors": [
-        "map-holder"
+        "map-holder",
+        "admiral"
       ],
       "statements": [
-        "L5-086"
+        "L5-086",
+        "L2-317"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.milestone-verdict-recorded",
@@ -1950,7 +2070,8 @@
           "note": "L2-095 says verdict and findings; L5-084 says verdict in his own words."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.one-ticket-per-milestone",
@@ -1965,7 +2086,8 @@
         "L7-102"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.other-tours-ordinary-tickets",
@@ -1978,7 +2100,8 @@
         "L5-085"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.part-flagged-or-deferred",
@@ -1991,7 +2114,8 @@
         "L5-081"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.part-how-to-try",
@@ -2004,7 +2128,8 @@
         "L5-080"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.part-what-changed",
@@ -2017,7 +2142,8 @@
         "L5-078"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.part-where-to-look",
@@ -2030,7 +2156,8 @@
         "L5-079"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.prepare-after-last-ticket-merges",
@@ -2043,7 +2170,8 @@
         "L2-090"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.skeleton-ticket-blocks-next-milestone",
@@ -2068,7 +2196,8 @@
           "note": "L2-058 excepts overnight mode; L2-092 and L7-103 state no exception."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.target-sha",
@@ -2081,7 +2210,8 @@
         "L5-073"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.tour-ends",
@@ -2094,7 +2224,8 @@
         "L5-083"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.tour-whole-product",
@@ -2107,7 +2238,8 @@
         "L5-071"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.user-walks-or-skips",
@@ -2127,7 +2259,8 @@
           "note": "L2-091 names the admiral and the `walkthrough` skill; L5-074 names the map holder."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K6"
     },
     {
       "id": "walkthrough.walk-target-first",
@@ -2138,6 +2271,114 @@
       ],
       "statements": [
         "L5-076"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K6"
+    },
+    {
+      "id": "overnight.obey-standing-and-night-orders",
+      "kind": "overnight",
+      "rule": "Between muster and morning brief the admiral obeys standing plus night orders.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-322"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.landing-only-after-clean-inquisition-round",
+      "kind": "project",
+      "rule": "The Project lands only after an inquisition round that found no blocker and no should.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-324"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.sequence-should-tickets",
+      "kind": "project",
+      "rule": "The admiral sequences the should-tickets.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-128"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.first-captain-reports-branch-and-spec",
+      "kind": "project",
+      "rule": "The first Ticket Captain reports the opened feature branch and the committed spec.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-178"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.ticket-pickable-only-with-map-and-contract-fields",
+      "kind": "project",
+      "rule": "A ticket is pickable only once the Project map is in Linear and the ticket carries outcome, owned paths, blockers, exact gates and base branch.",
+      "actors": [
+        "map-holder",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-179"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.admiral-rereads-board-after-user-tells",
+      "kind": "project",
+      "rule": "After the user tells the admiral, the admiral reads the board again.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-333"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "overnight.recovery-needs-fresh-readback",
+      "kind": "overnight",
+      "rule": "Every recovery still needs a fresh readback.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L5-280"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "project.map-holder-commissions-spec-retirement",
+      "kind": "project",
+      "rule": "The map holder commissions spec retirement when a Project completes or is canceled.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-194",
+        "L7-195",
+        "L5-283"
       ],
       "drift": [],
       "principle": null

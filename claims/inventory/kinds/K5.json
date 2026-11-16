@@ -18,7 +18,8 @@
         "L4-143"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-cross-references",
@@ -31,7 +32,8 @@
         "L4-148"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-description-is-trigger",
@@ -45,7 +47,8 @@
         "L4-141"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-glossary-vocabulary",
@@ -58,20 +61,24 @@
         "L4-149"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-governed-by-writing-for-agents",
       "kind": "docs",
       "rule": "writing-for-agents governs agent-facing writing; the reviewer agent-docs list is that method turned into verdicts.",
       "actors": [
-        "reviewer"
+        "reviewer",
+        "docs-writer"
       ],
       "statements": [
-        "L4-139"
+        "L4-139",
+        "L3-235"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-off-the-map",
@@ -84,7 +91,8 @@
         "L4-147"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-prohibition-steering",
@@ -97,7 +105,8 @@
         "L4-150"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-return-shape-parsable",
@@ -110,7 +119,8 @@
         "L4-153"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-shape",
@@ -124,7 +134,8 @@
         "L4-145"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-sprawl",
@@ -137,7 +148,8 @@
         "L4-151"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.agent-docs-upstream-unaltered",
@@ -151,7 +163,8 @@
         "L4-152"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.authored-source-and-navigation",
@@ -164,7 +177,8 @@
         "L3-121"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.claim-needs-witness",
@@ -179,7 +193,8 @@
         "L3-115"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.cut-what-code-states",
@@ -192,7 +207,8 @@
         "L3-119"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.docs-work-done",
@@ -205,7 +221,8 @@
         "L3-120"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.drift-is-finding",
@@ -219,7 +236,8 @@
         "L4-154"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.dydo-check-left-failing",
@@ -232,7 +250,8 @@
         "L4-137"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.edits-in-authored-source-done",
@@ -245,7 +264,8 @@
         "L3-122"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.frontmatter-and-links-per-writing-docs",
@@ -265,7 +285,8 @@
           "note": "L3-118 names writing-docs.md without a path; L4-134 names dydo/reference/writing-docs.md."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.maintain-feature-intent-spec",
@@ -279,7 +300,8 @@
         "L2-199"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.one-home-per-claim",
@@ -300,7 +322,8 @@
           "note": "L3-116 instructs the docs-writer; L4-135 and L4-136 make the violation a reviewer finding."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.readme-outside-dydo-points-only",
@@ -313,7 +336,8 @@
         "L3-117"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.retire-working-spec",
@@ -327,7 +351,8 @@
         "L2-200"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.reusable-knowledge-assimilated",
@@ -340,7 +365,8 @@
         "L4-138"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.review-findings-labelled-with-severity",
@@ -353,7 +379,8 @@
         "L4-130"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.review-resolve-contract",
@@ -366,7 +393,8 @@
         "L4-131"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.review-sort-changed-files",
@@ -379,7 +407,8 @@
         "L4-132"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.review-verify-from-source",
@@ -392,7 +421,8 @@
         "L4-133"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.working-spec-draft",
@@ -407,7 +437,8 @@
         "L2-190"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.working-spec-draft-in-project-description",
@@ -420,7 +451,8 @@
         "L2-191"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "docs.working-spec-link-and-delete-draft",
@@ -433,7 +465,8 @@
         "L2-198"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.area-map-done",
@@ -446,7 +479,8 @@
         "L1-226"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.area-map-from-diff",
@@ -459,7 +493,8 @@
         "L1-217"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.area-map-posted-as-table",
@@ -472,7 +507,8 @@
         "L1-218"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.areas-small",
@@ -487,7 +523,8 @@
         "L1-221"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.audit-without-project",
@@ -500,7 +537,8 @@
         "L1-265"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.branch-step-done",
@@ -513,7 +551,8 @@
         "L1-216"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.branches-never-merge",
@@ -525,7 +564,9 @@
       "statements": [
         "L1-173",
         "L1-287",
-        "L6-113"
+        "L6-113",
+        "L6-161",
+        "L1-321"
       ],
       "drift": [
         {
@@ -533,7 +574,8 @@
           "note": "L1-173 names the inquisition branch, L6-113 the audit, group and proof branches, L1-287 says nothing but the record merges; whether the record branch is an exception to L1-173 is not stated."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.break-discard-unconfirmed-tests",
@@ -547,7 +589,8 @@
         "L4-056"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.break-hypothesis-list",
@@ -561,7 +604,8 @@
         "L4-049"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.break-own-tests",
@@ -575,7 +619,8 @@
         "L4-050"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.break-read-for-failure",
@@ -588,7 +633,8 @@
         "L4-047"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.break-verdict-mapping",
@@ -603,7 +649,8 @@
         "L4-055"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.break-verdict-step-done",
@@ -616,7 +663,8 @@
         "L4-058"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.bug-filing-fields",
@@ -629,7 +677,8 @@
         "L1-263"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.bug-fix-may-merge-mid-round",
@@ -642,7 +691,8 @@
         "L1-268"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.bug-status-and-landing-block",
@@ -655,7 +705,8 @@
         "L1-264"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.captain-never-hunts",
@@ -668,7 +719,8 @@
         "L1-204"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.captain-register-and-triage",
@@ -681,7 +733,8 @@
         "L1-176"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.clean-area-reports-nothing",
@@ -694,7 +747,8 @@
         "L4-040"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.close-done-when-verified",
@@ -705,10 +759,12 @@
       ],
       "statements": [
         "L1-300",
-        "L7-050"
+        "L7-050",
+        "L6-158"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.commission-inputs",
@@ -728,7 +784,8 @@
           "note": "L2-116 has the admiral ask the user; L1-207 has the captain check the ticket ## Scope; L1-207 list (in its code unit) may name inputs L2-116 does not."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.dispatch-done",
@@ -741,7 +798,8 @@
         "L1-253"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.disposition-vocabulary",
@@ -754,7 +812,8 @@
         "L1-242"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.drive-each-journey-via-skill",
@@ -767,7 +826,8 @@
         "L4-080"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.drive-journeys-like-a-user",
@@ -780,7 +840,8 @@
         "L4-076"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.drive-judge-journey",
@@ -793,7 +854,8 @@
         "L4-081"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.drive-list-journeys",
@@ -806,7 +868,8 @@
         "L4-079"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.drive-load-verification-skill",
@@ -819,19 +882,22 @@
         "L4-078"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.drive-not-applicable-without-runnable-surface",
       "kind": "inquisition",
-      "rule": "A project with nothing to run records that Drive does not apply; Break and Drive apply wherever the landing changed behaviour.",
+      "rule": "A project with nothing to run records that Drive does not apply.",
       "actors": [
         "ticket-captain",
-        "admiral"
+        "admiral",
+        "inquisitor"
       ],
       "statements": [
         "L1-225",
-        "L2-119"
+        "L2-119",
+        "L4-200"
       ],
       "drift": [
         {
@@ -839,7 +905,8 @@
           "note": "L1-225 puts it in the map cells (Drive says nothing to run); L2-119 says the project records it."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.file-after-integration",
@@ -852,7 +919,8 @@
         "L2-115"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.files-outcomes-no-verdict",
@@ -866,7 +934,8 @@
         "L1-205"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.finding-ids",
@@ -880,7 +949,8 @@
         "L1-254"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.finding-new-or-preexisting",
@@ -893,7 +963,8 @@
         "L4-038"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.finding-reachable-and-concrete",
@@ -906,7 +977,8 @@
         "L4-037"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.follow-up-brief-items-only",
@@ -919,12 +991,13 @@
         "L4-015"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.group-captain-run-and-close",
       "kind": "inquisition",
-      "rule": "A group captain runs the Inquisition steps on its rows, owns its Bugs retention, and closes Done with its register final and pushed; the parent rechecks retention over the merged register before its record.",
+      "rule": "A group captain runs the Inquisition steps on its rows, owns its Bugs retention, and closes Done with its register final and pushed.",
       "actors": [
         "ticket-captain"
       ],
@@ -933,7 +1006,8 @@
         "L6-111"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.group-nits-to-parent-ticket",
@@ -946,7 +1020,8 @@
         "L1-234"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.group-release-wiring",
@@ -959,7 +1034,8 @@
         "L1-232"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.group-split-threshold",
@@ -984,7 +1060,8 @@
           "note": "L1-227 states the capacity (\"one captain conducts about 10 areas\"); L1-228 states the cut above it; L2-121 adds the admiral's commission of one captain per group."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.group-subticket-contents",
@@ -997,7 +1074,8 @@
         "L1-229"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.nit-is-one-line",
@@ -1017,7 +1095,8 @@
           "note": "L4-030 is the inquisitor's severity-table cell \"a nit needs no proof\"; L1-271 adds one line on the round's nit ticket with file:line and the wrong outcome."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.nit-ticket-final-walkthrough",
@@ -1032,7 +1111,8 @@
         "L7-137"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.nit-ticket-opening",
@@ -1047,7 +1127,8 @@
         "L7-136"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.no-hypothesis-quota",
@@ -1060,7 +1141,8 @@
         "L1-248"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.parent-merges-group-registers",
@@ -1071,11 +1153,11 @@
       ],
       "statements": [
         "L1-236",
-        "L1-237",
         "L1-238"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.patch-cherry-pick-red-test",
@@ -1088,7 +1170,8 @@
         "L1-283"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.patch-code-writer-brief",
@@ -1103,7 +1186,8 @@
         "L3-029"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.patch-eligibility",
@@ -1118,7 +1202,8 @@
         "L1-281"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.patch-failure-unassign",
@@ -1131,7 +1216,8 @@
         "L1-286"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.patch-lane-bug-assignment",
@@ -1148,7 +1234,8 @@
         "L2-122"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.patch-reviewed-once-in-bug-chain",
@@ -1161,7 +1248,8 @@
         "L1-285"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.patching-done",
@@ -1174,7 +1262,8 @@
         "L1-288"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.phases-as-pipeline",
@@ -1187,7 +1276,8 @@
         "L1-245"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.post-merge-verification",
@@ -1201,7 +1291,8 @@
         "L6-121"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.proofless-bug-has-no-ref",
@@ -1215,7 +1306,8 @@
         "L6-115"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.prose-area-read-only",
@@ -1228,7 +1320,8 @@
         "L1-224"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.push-break-proof-branch",
@@ -1241,7 +1334,8 @@
         "L1-260"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.read-find-intent",
@@ -1254,7 +1348,8 @@
         "L4-087"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.read-pin-area",
@@ -1267,7 +1362,8 @@
         "L4-086"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.read-prose-area-questions",
@@ -1280,7 +1376,8 @@
         "L4-096"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.read-question-checklist",
@@ -1300,7 +1397,8 @@
         "L4-095"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.record-content",
@@ -1320,7 +1418,8 @@
           "note": "L1-294 also names every unreachable journey with its disposition; L3-124 omits it and adds that Bugs and patches carry their proof; L3-124 names the writing branch."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.record-delivered-through-docs-chain",
@@ -1337,7 +1436,8 @@
         "L6-118",
         "L6-119",
         "L1-296",
-        "L6-019"
+        "L6-019",
+        "L1-322"
       ],
       "drift": [
         {
@@ -1349,7 +1449,8 @@
           "note": "L6-019 gives the branch table row (cut from the feature tip, main for an audit of main, target and merge route); L1-296 and L6-119 state the merge route in prose; L1-293 and L6-118 name the ticket branch <KEY>-<slug>."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.record-done-criteria",
@@ -1364,7 +1465,8 @@
         "L3-125"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.record-written-on-handover",
@@ -1377,7 +1479,8 @@
         "L3-123"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.register-file-at-root",
@@ -1391,7 +1494,8 @@
         "L1-239"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.register-push-after-return",
@@ -1406,7 +1510,8 @@
         "L6-112"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.release-before-generic-commissioning",
@@ -1419,7 +1524,8 @@
         "L2-048"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.retain-reproduction-ref",
@@ -1434,7 +1540,8 @@
         "L6-114"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.retention-ownership",
@@ -1453,7 +1560,8 @@
           "note": "L6-116 adds adoption of the cleanup responsibility."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.rounds-start-from-zero",
@@ -1479,7 +1587,8 @@
           "note": "L2-124 says once every blocker and should of a round is Done; L1-302 says once every blocker and should Bug is fixed."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.route-tagged-finding",
@@ -1494,7 +1603,8 @@
         "L1-261"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.run-by-resource-pipeline",
@@ -1513,7 +1623,8 @@
           "note": "L1-175 adds that Break writes its own proof tests on its proof branch; L1-203 adds the swarm and the record delivery."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.seam-is-own-area",
@@ -1526,7 +1637,8 @@
         "L1-223"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.severity-checked-against-source",
@@ -1539,7 +1651,8 @@
         "L1-262"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.should-deferred-by-user-only",
@@ -1552,7 +1665,8 @@
         "L2-129"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.sighting-adds-reproduction",
@@ -1565,7 +1679,8 @@
         "L1-269"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.sighting-not-new-row",
@@ -1577,15 +1692,17 @@
       ],
       "statements": [
         "L1-255",
-        "L4-039"
+        "L4-039",
+        "L4-196"
       ],
       "drift": [
         {
           "type": "action",
-          "note": "L1-255 has the captain add the sighting; L4-039 has the inquisitor report it."
+          "note": "L1-255 has the captain add the sighting; L4-039 and L4-196 have the inquisitor report it."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.start-on-user-confirmation",
@@ -1599,7 +1716,8 @@
       "statements": [
         "L1-174",
         "L1-201",
-        "L2-120"
+        "L2-120",
+        "L2-332"
       ],
       "drift": [
         {
@@ -1607,7 +1725,8 @@
           "note": "L1-174 sets In Progress on confirmation; L2-120 has the user move the ticket to Todo and tell the admiral, who then commissions it; L1-201 states only that nothing starts before confirmation."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.status-path",
@@ -1620,7 +1739,8 @@
         "L7-095"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.tag-unproven-findings",
@@ -1636,7 +1756,8 @@
         "L4-098"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.triage-done",
@@ -1649,7 +1770,8 @@
         "L1-278"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.unproven-stays-open",
@@ -1663,7 +1785,8 @@
         "L1-276"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.unreachable-journey",
@@ -1677,7 +1800,8 @@
         "L1-259"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.verification-gap-is-should",
@@ -1698,7 +1822,8 @@
           "note": "L4-035 states only \"a verification gap is a should\"; L1-270 and L4-082 add that its Bug names maintain-verification-skill as owner and method."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.verification-skill-first",
@@ -1720,7 +1845,8 @@
           "note": "L1-211 stops the captain at that step; L2-118 has the admiral raise it with the user; L2-123 returns it to the user as released verification skill first."
         }
       ],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.work-in-order",
@@ -1734,7 +1860,8 @@
         "L4-014"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "inquisition.work-item-done",
@@ -1747,7 +1874,8 @@
         "L4-016"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.follow-claim-to-owning-source",
@@ -1762,7 +1890,8 @@
         "L3-215"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.name-conflicts-and-governing-source",
@@ -1775,7 +1904,8 @@
         "L3-151"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.open-cited-passage",
@@ -1789,7 +1919,8 @@
         "L3-153"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.question-is-whole-scope",
@@ -1802,7 +1933,8 @@
         "L3-141"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.read-governing-docs-on-default-branch",
@@ -1815,7 +1947,8 @@
         "L3-146"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.report-is-only-output",
@@ -1828,7 +1961,8 @@
         "L3-142"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.restate-question",
@@ -1842,7 +1976,8 @@
         "L3-144"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.scout-copy-passages",
@@ -1856,7 +1991,8 @@
         "L3-216"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.scout-search-whole-family",
@@ -1870,7 +2006,8 @@
         "L3-213"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.scouting-done",
@@ -1883,7 +2020,8 @@
         "L3-149"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.silent-sources-unsettled",
@@ -1896,7 +2034,8 @@
         "L3-152"
       ],
       "drift": [],
-      "principle": null
+      "principle": null,
+      "group": "K5"
     },
     {
       "id": "research.source-families-marked",
@@ -1908,6 +2047,85 @@
       "statements": [
         "L3-145",
         "L3-147"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K5"
+    },
+    {
+      "id": "inquisition.parent-joins-cross-group-duplicates-as-sightings",
+      "kind": "inquisition",
+      "rule": "The parent joins duplicates across groups as sightings.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-311"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.parent-closes-duplicate-bug-as-duplicate",
+      "kind": "inquisition",
+      "rule": "The parent closes a duplicate Bug as Duplicate of the one kept.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-312"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.parent-runs-record-step-over-merged-register",
+      "kind": "inquisition",
+      "rule": "The parent runs the record step over the merged register and delivers the one record.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-237"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "docs.skills-tree-is-the-only-editable-source",
+      "kind": "docs",
+      "rule": "skills/<category>/<name>/ is the only editable skill source; host discovery paths are setup projections.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-236"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.break-and-drive-apply-wherever-behaviour-changed",
+      "kind": "inquisition",
+      "rule": "Break and Drive apply wherever the landing changed behaviour.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-320"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "inquisition.parent-rechecks-retention-over-merged-register",
+      "kind": "inquisition",
+      "rule": "The parent rechecks retention over the merged register before its record.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-181"
       ],
       "drift": [],
       "principle": null

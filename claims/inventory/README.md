@@ -73,7 +73,9 @@ Actors: admiral, chief-of-staff, ticket-captain, code-writer, docs-writer, revie
 research, scout, map-holder, officer, crew, any-agent, user.
 
 Combined lines: one sentence stating several rules carries several rule ids in its `rules`. Never split
-the text. The rendered prose entry is marked `combined`.
+the text. The rendered prose entry is marked `combined`. Each rule id sits in the claim that holds that obligation's
+other copies: a claim groups copies of one rule, not a topic, and obligations an agent could obey or break
+independently are separate statements and separate claims.
 
 `principle` stays `null` until DYD-1078 sets principle slugs.
 
@@ -95,18 +97,25 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 ### Counts
 
 - Files 35; sentences (units) 1798; not-a-rule 163 (framing 87, description 46, rationale 12, example 9,
-  pointer 8, other 1); rule statements 1618.
-- Claims 916: 979 after phase 2, then 51 cross-group merge sets removed 63 claims and moved 89 statements into
-  another group (the survivor's kind now owns them). Claims with 2+ statements 378; with copies in 2+ carriers 237.
-- Claims with drift 206 (a claim may carry several types): scope 133, action 68, wording 66, value 13.
-- Findings 78: drift 28, gap 28, homeless 15, contradiction 7.
+  pointer 8, other 1); rule statements 1756.
+- Claims 1008: 979 after phase 2, then 51 cross-group merge sets removed 63 claims and moved 89 statements into
+  another group (the survivor's kind now owns them), leaving 916; the un-bundling pass then added 99 claims and
+  retired 7. Claims with 2+ statements 400; with copies in 2+ carriers 261.
+- Un-bundling pass: 96 sentences, each stating several independent obligations, carry one rule entry per obligation
+  (their rendered prose is `combined`); 93 statements were narrowed to their own obligation; 138 statements were
+  added; 24 claims were split into one claim per rule.
+- Claims with drift 205 (a claim may carry several types): scope 129, action 58, wording 64, value 13.
+- Findings 75: drift 25, gap 28, homeless 15, contradiction 7.
 
 ### R1 to R4, as found
 
 - R1 memory cap: `capacity.run-commands-memory-capped` holds L1-030, L3-051, L3-174, L4-020 (captain, code-writer,
   reviewer, inquisitor). `capacity.crew-brief-names-memory-cap` (L1-029, the brief names the cap) stays a second claim:
   naming the cap in a brief and running under it are two obligations on two actors.
-- R2 Codex concurrency cap: `capacity.codex-concurrency-cap` holds L1-026, L1-209, L2-025, L2-117, L6-068.
+- R2 Codex concurrency cap: `capacity.codex-concurrency-cap` holds L1-026, L1-209, L2-025, L2-117, L6-068. The
+  retry-on-429 and never-maximise rules of the same sentence sit in their own claims, as L1 maps them:
+  `capacity.capacity-429-retry-not-blocker` (L1-027, L2-313, L6-069) and `capacity.never-maximise-parallelism`
+  (L1-028, L2-314, L6-070).
 - R3 fifth consecutive FAIL: `escalation.fifth-consecutive-fail` holds L1-119, L2-041.
 - R4 no top-level threads for crew: `dispatch.no-top-level-threads-for-crew` holds L1-035, L2-026, L2-214, L6-058.
 
@@ -114,7 +123,7 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 
 - `escalation.path-crew-captain-admiral-user`: the admiral is in the path only when invoked (L1-056) or always (L2-039).
 - `linear.captain-ticket-carries-type-and-mode` / `linear.status-futurefeature-meaning`: every ticket carries one Type (L7-041), a FutureFeature has none (L7-012).
-- `return.pr-open-checks-pending` / `merge.unwatch-before-handoff`: the captain unwatches the PR (L1-136) but the owning officer is the watcher (L1-135, L2-084, L6-100).
+- `merge.officer-watches-captain-pr` / `merge.unwatch-before-handoff`: the captain unwatches the PR (L1-136) but the owning officer is the watcher (L1-135, L2-084, L6-100).
 - `evidence.captain-rerun-is-proof-of-record` / `evidence.rerun-only-on-concern`: the captain reruns every proof (L1-128) while others rerun only on a stated concern (L1-121, L1-122, L3-172).
 - `inquisition.record-delivered-through-docs-chain` / `inquisition.bug-filing-fields`: the record branch and Bugs assume a feature branch (L1-293, L1-263); an audit of main has none (L1-265, L6-119).
 - `project.no-invented-work` / `project.four-lanes`: no work invented to fill capacity (L2-146) versus keep four lanes occupied (L2-166).
@@ -128,7 +137,7 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 4. gap `capacity.run-commands-memory-capped`: the probe timeout is "short" in four copies and 120 s in the reviewer copy; "short" is undefined.
 5. drift `walkthrough.skeleton-ticket-blocks-next-milestone` / `overnight.skeleton-walkthrough-blocks-nothing`: L2-092 and L7-103 state the block without the overnight exception that L2-058 and L7-104 carry.
 6. drift `worktree.clean-own-worktrees` / `worktree.dydo-clean-branch-deletion-limit`: "merged" means merged (L1-155) or held by origin's default branch (L6-130).
-7. drift `review.should-filed-as-own-ticket` / `review.should-stays-in-project`: a should is a team Backlog ticket (L1-105), a Project ticket (L2-064) or Project filler (L2-074).
+7. drift `review.should-filed-as-own-ticket` / `review.should-stays-in-project`: L1-105 files a should in the source's Project (a team Backlog ticket only outside a Project) and blocks the landing Merge Ticket when it exists; L2-064 files it in the Project without the block; L2-074 keeps it in the Project as filler unless it blocks.
 8. gap `worktree.prove-checks-before-first-edit`: only the code-writer skill lists the pre-edit checks; docs-writer says "read the standard" (L3-106).
 9. homeless `dispatch.native-captain-no-codex-reviewer`: stated only in the working-tree standard (L6-064).
 10. gap `inquisition.start-on-user-confirmation` / `inquisition.status-path`: nowhere is it stated in one place who moves an Inquisition from Todo to In Progress (L1-174, L2-120, L7-095).
@@ -137,8 +146,8 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 
 Computed from `claims.json` (role actors admiral, chief-of-staff, ticket-captain, code-writer, docs-writer, reviewer,
 inquisitor, research, scout; group actors excluded): of 716 claims with a role actor, 92 have no carrier among their
-actors' own skills. By actor: ticket-captain 46, chief-of-staff 27, admiral 13, reviewer 7, code-writer 3, inquisitor 1
-(a claim counts once per actor). 32 of the 92 are `overnight.*` rules reached only by loading `overnight-mode`. Ten others:
+actors' own skills. By actor: ticket-captain 57, chief-of-staff 29, admiral 13, reviewer 7, code-writer 4, inquisitor 1
+(a claim counts once per actor). 33 of the 107 are `overnight.*` rules reached only by loading `overnight-mode`. Ten others:
 
 - `dispatch.native-captain-no-codex-reviewer` (ticket-captain): working-tree standard only.
 - `identity.mutation-testing-is-reviewers` (reviewer): code-writer skill only.
@@ -149,5 +158,5 @@ actors' own skills. By actor: ticket-captain 46, chief-of-staff 27, admiral 13, 
 - `contract.no-retrospective-gate-cancel` (ticket-captain): Linear standard only.
 - `linear.ready-to-merge-meaning` (ticket-captain): Linear standard only.
 - `inquisition.patch-cherry-pick-red-test` (code-writer): ticket-captain's inquisition resource only.
-- `decision.who-runs-the-skill` (chief-of-staff): `what-would-balazs-do` only.
+- `decision.chief-of-staff-never-runs-the-skill` (chief-of-staff): `what-would-balazs-do` only.
 

@@ -355,7 +355,23 @@
         {
           "id": "L2-021",
           "kind": "dispatch",
-          "rule": "Under T3, dispatch captains and anything else that returns to the admiral by `delegate_task` from the admiral's own turn (a child of it); use a native foreground subagent only for a job waited on within this turn; use no native background subagents.",
+          "rule": "Under T3, dispatch captains and anything else that returns to the admiral by `delegate_task` from the admiral's own turn (a child of it).",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-309",
+          "kind": "dispatch",
+          "rule": "Use a native foreground subagent only for a job the admiral waits on within this turn.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-310",
+          "kind": "dispatch",
+          "rule": "Use no native background subagents.",
           "actors": [
             "admiral"
           ]
@@ -415,7 +431,23 @@
         {
           "id": "L2-025",
           "kind": "capacity",
-          "rule": "Every brief that sends out Codex agents names a concurrency cap: about 8 at once, toward 16 only while clean, fewer on `429 turn_rate_limit_exceeded`; a capacity 429 means retry in a few minutes, never a blocker; never maximise parallelism.",
+          "rule": "Every brief that sends out Codex agents names a concurrency cap: about 8 at once, toward 16 only while clean, fewer on `429 turn_rate_limit_exceeded`.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L2-313",
+          "kind": "capacity",
+          "rule": "A capacity 429 means retry in a few minutes, never a blocker.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L2-314",
+          "kind": "capacity",
+          "rule": "Never maximise parallelism.",
           "actors": [
             "officer"
           ]
@@ -585,7 +617,15 @@
         {
           "id": "L2-035",
           "kind": "identity",
-          "rule": "The admiral's Git authorship covers plans and feature specs; it commissions other operations.",
+          "rule": "The admiral's Git authorship covers plans and feature specs.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-335",
+          "kind": "identity",
+          "rule": "The admiral commissions other operations.",
           "actors": [
             "admiral"
           ]
@@ -630,7 +670,15 @@
         {
           "id": "L2-038",
           "kind": "linear",
-          "rule": "Raise a conflict you find; write a live instruction that overrides the record back to the record.",
+          "rule": "Raise a conflict you find.",
+          "actors": [
+            "any-agent"
+          ]
+        },
+        {
+          "id": "L2-316",
+          "kind": "linear",
+          "rule": "Write a live instruction that overrides the record back to the record.",
           "actors": [
             "any-agent"
           ]
@@ -691,7 +739,15 @@
         {
           "id": "L2-042",
           "kind": "overnight",
-          "rule": "Overnight mode starts only when the chief of staff announces it at muster and ends at its morning-brief announcement; in between, load `overnight-mode` and obey standing plus night orders.",
+          "rule": "Overnight mode starts only when the chief of staff announces it at muster and ends at its morning-brief announcement; in between, load `overnight-mode`.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-322",
+          "kind": "overnight",
+          "rule": "Between muster and morning brief, obey standing plus night orders.",
           "actors": [
             "admiral"
           ]
@@ -867,7 +923,15 @@
         {
           "id": "L2-053",
           "kind": "wayfinding",
-          "rule": "Record the shared anchor choice from `wayfinder` when one is needed, and contract affected tickets from its relevant sections before commissioning them.",
+          "rule": "Record the shared anchor choice from `wayfinder` when one is needed.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-321",
+          "kind": "wayfinding",
+          "rule": "Contract affected tickets from the anchor's relevant sections before commissioning them.",
           "actors": [
             "admiral"
           ]
@@ -1017,7 +1081,15 @@
         {
           "id": "L2-063",
           "kind": "review",
-          "rule": "Correct a FAIL's blockers at a new commit and review afresh; the second FAIL goes to the user as the choice.",
+          "rule": "The second FAIL of a plan review goes to the user as the choice.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-315",
+          "kind": "review",
+          "rule": "Correct a FAIL's blockers at a new commit and review afresh.",
           "actors": [
             "admiral"
           ]
@@ -1238,7 +1310,23 @@
         {
           "id": "L2-079",
           "kind": "dispatch",
-          "rule": "State the requested model/effort value in your signature and claim an effective identity only where telemetry shows it; dydo compiles no model, effort or standing capability table.",
+          "rule": "State the requested model/effort value in your signature.",
+          "actors": [
+            "any-agent"
+          ]
+        },
+        {
+          "id": "L2-325",
+          "kind": "dispatch",
+          "rule": "Claim an effective identity only where telemetry shows it.",
+          "actors": [
+            "any-agent"
+          ]
+        },
+        {
+          "id": "L2-326",
+          "kind": "dispatch",
+          "rule": "dydo compiles no model, effort or standing capability table.",
           "actors": [
             "any-agent"
           ]
@@ -1307,7 +1395,15 @@
         {
           "id": "L2-083",
           "kind": "merge",
-          "rule": "A captain's `done <key>: PR ready` leaves its ticket `Ready to Merge` with a reviewed PR; the captain rechecked the gate before setting it.",
+          "rule": "A captain's `done <key>: PR ready` leaves its ticket `Ready to Merge` with a reviewed PR.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-318",
+          "kind": "merge",
+          "rule": "The captain rechecked the gate before setting Ready to Merge.",
           "actors": [
             "admiral"
           ]
@@ -1322,7 +1418,15 @@
         {
           "id": "L2-084",
           "kind": "merge",
-          "rule": "On `PR open <key>, checks pending: <url>, head <SHA>`, watch that PR (`watch_pull_request` in T3) and wake its captain on news; unwatch when it returns `done <key>: PR ready` or is released.",
+          "rule": "On `PR open <key>, checks pending: <url>, head <SHA>`, watch that PR (`watch_pull_request` in T3) and wake its captain on news.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-319",
+          "kind": "merge",
+          "rule": "Unwatch the PR when its captain returns `done <key>: PR ready` or is released.",
           "actors": [
             "admiral"
           ]
@@ -1459,7 +1563,15 @@
         {
           "id": "L2-093",
           "kind": "walkthrough",
-          "rule": "Later Milestones' Walkthrough Tickets block nothing; their findings become tickets in the Project as they arrive.",
+          "rule": "Later Milestones' Walkthrough Tickets block nothing.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-317",
+          "kind": "walkthrough",
+          "rule": "Later Milestones' findings become tickets in the Project as they arrive.",
           "actors": [
             "admiral"
           ]
@@ -1536,7 +1648,15 @@
         {
           "id": "L2-098",
           "kind": "contract",
-          "rule": "Reconcile affected contracts, each carrying every earlier ruling the user gave on its artifact as an acceptance line.",
+          "rule": "Each reconciled contract carries every earlier ruling the user gave on its artifact as an acceptance line.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-320",
+          "kind": "contract",
+          "rule": "Reconcile affected contracts.",
           "actors": [
             "admiral"
           ]
@@ -1689,7 +1809,15 @@
         {
           "id": "L2-109",
           "kind": "wayfinding",
-          "rule": "Accept a captain's local course correction when later facts expose it; move cross-ticket and Project-wide discoveries back onto the admiral's map.",
+          "rule": "Move cross-ticket and Project-wide discoveries back onto the admiral's map.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-329",
+          "kind": "wayfinding",
+          "rule": "Accept a captain's local course correction when later facts expose it.",
           "actors": [
             "admiral"
           ]
@@ -1704,7 +1832,15 @@
         {
           "id": "L2-110",
           "kind": "evidence",
-          "rule": "For evidenced inherited or infrastructure failures, assign a separate repair owner or escalate the unresolved decision; record blocked gates without converting the failure into a pass.",
+          "rule": "For evidenced inherited or infrastructure failures, assign a separate repair owner or escalate the unresolved decision.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-330",
+          "kind": "evidence",
+          "rule": "Record blocked gates without converting the failure into a pass.",
           "actors": [
             "admiral"
           ]
@@ -1764,7 +1900,15 @@
         {
           "id": "L2-114",
           "kind": "linear",
-          "rule": "Set and revisit priority on every human waiter by the standard's guide; AFK order remains in the map and blockers.",
+          "rule": "Set and revisit priority on every human waiter by the standard's guide.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-331",
+          "kind": "linear",
+          "rule": "AFK order remains in the map and blockers.",
           "actors": [
             "admiral"
           ]
@@ -1973,7 +2117,23 @@
         {
           "id": "L2-128",
           "kind": "project",
-          "rule": "Sequence the should-tickets; the Project lands only when each is `Done` or closed with a reason, and only after an inquisition round that found no blocker and no should.",
+          "rule": "Sequence the should-tickets.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-323",
+          "kind": "project",
+          "rule": "The Project lands only when each should is `Done` or closed with a reason.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-324",
+          "kind": "project",
+          "rule": "The Project lands only after an inquisition round that found no blocker and no should.",
           "actors": [
             "admiral"
           ]
@@ -2071,7 +2231,15 @@
         {
           "id": "L2-135",
           "kind": "walkthrough",
-          "rule": "Findings reopen the lap: commission the first fix Captain to re-cut the feature from main under the same name; another inquisition needs confirmation.",
+          "rule": "Findings reopen the lap: commission the first fix Captain to re-cut the feature from main under the same name.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-332",
+          "kind": "inquisition",
+          "rule": "Another inquisition needs the user's confirmation.",
           "actors": [
             "admiral"
           ]
@@ -2237,10 +2405,18 @@
         {
           "id": "L2-147",
           "kind": "project",
-          "rule": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells the admiral; the admiral reads the board again.",
+          "rule": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells the admiral.",
           "actors": [
             "admiral",
             "user"
+          ]
+        },
+        {
+          "id": "L2-333",
+          "kind": "project",
+          "rule": "The admiral reads the board again.",
+          "actors": [
+            "admiral"
           ]
         }
       ],
@@ -2262,7 +2438,15 @@
         {
           "id": "L2-148",
           "kind": "dispatch",
-          "rule": "Dispatch a cheap surveyor to read the board and return actions; the admiral acts on them.",
+          "rule": "Dispatch a cheap surveyor to read the board and return actions.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-334",
+          "kind": "project",
+          "rule": "The admiral acts on the surveyor's returned actions.",
           "actors": [
             "admiral"
           ]
@@ -3191,7 +3375,23 @@
         {
           "id": "L2-208",
           "kind": "identity",
-          "rule": "The chief of staff triages, prepares and reports; the user keeps every approval; delivery belongs to whoever owns it and the chief of staff never carries it.",
+          "rule": "The chief of staff triages, prepares and reports.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-327",
+          "kind": "identity",
+          "rule": "The user keeps every approval.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-328",
+          "kind": "identity",
+          "rule": "Delivery belongs to whoever owns it and the chief of staff never carries it.",
           "actors": [
             "chief-of-staff"
           ]
@@ -3221,7 +3421,23 @@
         {
           "id": "L2-210",
           "kind": "dispatch",
-          "rule": "Under T3, dispatch anything that returns to the chief of staff by `delegate_task` (a child of it); use a native foreground subagent only for a job waited on within this turn; use no native background subagents.",
+          "rule": "Under T3, dispatch anything that returns to the chief of staff by `delegate_task` (a child of it).",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-311",
+          "kind": "dispatch",
+          "rule": "Use a native foreground subagent only for a job the chief of staff waits on within this turn.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-312",
+          "kind": "dispatch",
+          "rule": "Use no native background subagents.",
           "actors": [
             "chief-of-staff"
           ]

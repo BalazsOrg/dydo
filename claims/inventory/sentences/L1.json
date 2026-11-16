@@ -265,7 +265,23 @@
         {
           "id": "L1-016",
           "kind": "capacity",
-          "rule": "Budget open native capacity and run necessary stages serially, preserving the fresh reviewer obligation.",
+          "rule": "Budget open native capacity.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-316",
+          "kind": "capacity",
+          "rule": "Run necessary stages serially.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-317",
+          "kind": "dispatch",
+          "rule": "Preserve the fresh reviewer obligation.",
           "actors": [
             "ticket-captain"
           ]
@@ -372,7 +388,15 @@
         {
           "id": "L1-024",
           "kind": "dispatch",
-          "rule": "Stay in your turn while waiting on a native child or a result you own; work that outlasts the turn goes by delegate_task.",
+          "rule": "Stay in your turn while waiting on a native child or a result you own.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-303",
+          "kind": "dispatch",
+          "rule": "Work that outlasts the turn goes by delegate_task.",
           "actors": [
             "ticket-captain"
           ]
@@ -593,7 +617,15 @@
         {
           "id": "L1-040",
           "kind": "contract",
-          "rule": "An adjacent outcome becomes another ticket, which the captain takes only on the user's word; the current ticket bounds intent and paths.",
+          "rule": "An adjacent outcome becomes another ticket, which the captain takes only on the user's word.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-323",
+          "kind": "contract",
+          "rule": "The current ticket bounds intent and paths.",
           "actors": [
             "ticket-captain"
           ]
@@ -958,7 +990,7 @@
         {
           "id": "L1-065",
           "kind": "review",
-          "rule": "When one risk buys a spec review, record that risk in the contract, brief a fresh reviewer(spec) on the contract text and set In Review.",
+          "rule": "When one risk buys a spec review, record that risk in the contract.",
           "actors": [
             "ticket-captain"
           ]
@@ -967,6 +999,22 @@
           "id": "L1-066",
           "kind": "linear",
           "rule": "Either spec-review verdict sets Implementing.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-314",
+          "kind": "review",
+          "rule": "Brief a fresh reviewer(spec) on the contract text.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-315",
+          "kind": "linear",
+          "rule": "Set In Review for the spec reviewer.",
           "actors": [
             "ticket-captain"
           ]
@@ -1218,7 +1266,15 @@
         {
           "id": "L1-083",
           "kind": "linear",
-          "rule": "An Inquisition's phases, proofs and patches stay In Progress; its own record then runs the normal docs delivery chain.",
+          "rule": "An Inquisition's phases, proofs and patches stay In Progress.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-322",
+          "kind": "inquisition",
+          "rule": "An Inquisition's own record then runs the normal docs delivery chain.",
           "actors": [
             "ticket-captain"
           ]
@@ -1340,6 +1396,14 @@
           "id": "L1-092",
           "kind": "dispatch",
           "rule": "Claim an effective model identity only where telemetry shows it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-319",
+          "kind": "dispatch",
+          "rule": "dydo compiles no model, no effort and no standing capability table.",
           "actors": [
             "ticket-captain"
           ]
@@ -1537,7 +1601,15 @@
         {
           "id": "L1-106",
           "kind": "review",
-          "rule": "Record each nit as one line on the ticket; the final walkthrough lists those left unaddressed for the user to promote.",
+          "rule": "Record each nit as one line on the ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-313",
+          "kind": "review",
+          "rule": "The final walkthrough lists the nits left unaddressed for the user to promote.",
           "actors": [
             "ticket-captain"
           ]
@@ -1711,7 +1783,15 @@
         {
           "id": "L1-119",
           "kind": "escalation",
-          "rule": "Review is done when each fix has its own commit and fresh review; the fifth consecutive FAIL stops the loop, records the findings and wires a prepared Question through the scope rule.",
+          "rule": "The fifth consecutive FAIL stops the loop, records the findings and wires a prepared Question through the scope rule.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-304",
+          "kind": "review",
+          "rule": "Review is done when each fix has its own commit and fresh review.",
           "actors": [
             "ticket-captain"
           ]
@@ -1833,7 +1913,23 @@
         {
           "id": "L1-127",
           "kind": "evidence",
-          "rule": "Apply the testing strategy's final-candidate gates at offer and the contract's mandatory combined and landing gates at their boundaries, with exact-candidate reuse only where permitted.",
+          "rule": "Apply the testing strategy's final-candidate gates at offer.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-309",
+          "kind": "evidence",
+          "rule": "Apply the contract's mandatory combined and landing gates at their boundaries.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-310",
+          "kind": "evidence",
+          "rule": "Exact-candidate reuse is allowed only where permitted.",
           "actors": [
             "ticket-captain"
           ]
@@ -1925,7 +2021,15 @@
         {
           "id": "L1-135",
           "kind": "merge",
-          "rule": "The PR's owning thread watches; in T3 that is the top-level officer, so a delegated captain links the PR, returns PR open <key>, checks pending: <url>, head <SHA> and ends its turn until its officer wakes it.",
+          "rule": "A delegated captain links the PR, returns PR open <key>, checks pending: <url>, head <SHA> and ends its turn until its officer wakes it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-306",
+          "kind": "merge",
+          "rule": "The PR's owning thread watches it; in T3 that is the top-level officer.",
           "actors": [
             "ticket-captain"
           ]
@@ -2343,7 +2447,15 @@
         {
           "id": "L1-165",
           "kind": "contract",
-          "rule": "Under the workspace standard's Bug exception, the captain may retain reproduce-or-identify and fix as direct Bug Sub-tickets: fix natively blocked by reproduction, both carrying the parent's Mode, with any shared paths transferring only after reproduction closes and its evidence is recorded.",
+          "rule": "Under the workspace standard's Bug exception, the captain may retain reproduce-or-identify and fix as direct Bug Sub-tickets: fix natively blocked by reproduction, both carrying the parent's Mode.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-308",
+          "kind": "contract",
+          "rule": "Shared paths transfer to the fix Sub-ticket only after reproduction closes and its evidence is recorded.",
           "actors": [
             "ticket-captain"
           ]
@@ -2690,7 +2802,15 @@
         {
           "id": "L1-190",
           "kind": "release",
-          "rule": "A blocker you cannot clear, the user's takeover, or a dying session releases the ticket: push the branch, post the resume SHA, clean the worktrees you or your crew made with dydo clean --dry-run <worktree> then dydo clean <worktree> from outside that tree, set the parent Todo, unassign and wire any blocker.",
+          "rule": "A blocker you cannot clear, the user's takeover, or a dying session releases the ticket: push the branch, post the resume SHA, set the parent Todo, unassign and wire any blocker.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-318",
+          "kind": "worktree",
+          "rule": "On release, clean the worktrees you or your crew made with dydo clean --dry-run <worktree> then dydo clean <worktree>, run from outside that tree.",
           "actors": [
             "ticket-captain"
           ]
@@ -3089,7 +3209,15 @@
         {
           "id": "L1-214",
           "kind": "worktree",
-          "rule": "Cut inquisition/<slug> from the audit SHA in your isolated worktree; it never merges.",
+          "rule": "Cut inquisition/<slug> from the audit SHA in your isolated worktree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-321",
+          "kind": "inquisition",
+          "rule": "The audit branch never merges.",
           "actors": [
             "ticket-captain"
           ]
@@ -3257,7 +3385,15 @@
         {
           "id": "L1-225",
           "kind": "inquisition",
-          "rule": "Break and Drive apply wherever the landing changed behaviour; Drive says nothing to run on a project without a runnable surface.",
+          "rule": "Drive says nothing to run on a project without a runnable surface.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-320",
+          "kind": "inquisition",
+          "rule": "Break and Drive apply wherever the landing changed behaviour.",
           "actors": [
             "ticket-captain"
           ]
@@ -3408,7 +3544,23 @@
         {
           "id": "L1-236",
           "kind": "inquisition",
-          "rule": "When the groups close, the parent resumes: merge their registers into yours, join duplicates across groups as sightings, and close a duplicate Bug as Duplicate of the one kept.",
+          "rule": "When the groups close, the parent resumes and merges their registers into its own.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-311",
+          "kind": "inquisition",
+          "rule": "Join duplicates across groups as sightings.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-312",
+          "kind": "inquisition",
+          "rule": "Close a duplicate Bug as Duplicate of the one kept.",
           "actors": [
             "ticket-captain"
           ]
@@ -4269,7 +4421,7 @@
         {
           "id": "L1-295",
           "kind": "linear",
-          "rule": "Set Implementing, then In Review for a fresh docs reviewer.",
+          "rule": "Set Implementing for the docs-writer of the Inquisition record.",
           "actors": [
             "ticket-captain"
           ]
@@ -4278,6 +4430,14 @@
           "id": "L1-296",
           "kind": "inquisition",
           "rule": "Then offer the PR and its Merge Sub-ticket into the feature as any Project ticket does; an audit of main merges its record as an atomic ticket does.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-305",
+          "kind": "linear",
+          "rule": "Set In Review for a fresh docs reviewer of the Inquisition record.",
           "actors": [
             "ticket-captain"
           ]
@@ -4322,7 +4482,15 @@
         {
           "id": "L1-299",
           "kind": "worktree",
-          "rule": "Delete the audit branch, and as parent every group's audit branch, locally; name their remotes, and any proof branch no open Bug needs, on the record for the user.",
+          "rule": "Delete the audit branch, and as parent every group's audit branch, locally.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-307",
+          "kind": "worktree",
+          "rule": "Name the audit branches' remotes, and any proof branch no open Bug needs, on the record for the user.",
           "actors": [
             "ticket-captain"
           ]
