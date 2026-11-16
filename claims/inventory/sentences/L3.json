@@ -1,0 +1,3570 @@
+{
+  "lane": "L3",
+  "base": "dee4861ae2691e41d9e60985e3e0ffb0c7ea987d",
+  "files": [
+    "skills/roles/crew/code-writer/SKILL.md",
+    "skills/roles/crew/code-writer/resources/bug.md",
+    "skills/roles/crew/code-writer/resources/merge.md",
+    "skills/roles/crew/code-writer/resources/tests.md",
+    "skills/roles/crew/docs-writer/SKILL.md",
+    "skills/roles/crew/research/SKILL.md",
+    "skills/roles/crew/reviewer/SKILL.md",
+    "skills/roles/crew/scout/SKILL.md"
+  ],
+  "units": [
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L3.1",
+      "text": "A contracted ticket to build, a review FAIL to close, a merge to perform, or a hypothesis to prove or refute with one test.",
+      "rules": [],
+      "notRule": {
+        "category": "description",
+        "note": "Skill trigger line."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L10.1",
+      "text": "Red you can check, green only from code.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Slogan."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L14.1",
+      "text": "The owning ticket, and on a fix hop the FAIL block that sent you.",
+      "rules": [
+        {
+          "id": "L3-001",
+          "kind": "contract",
+          "rule": "Read the owning ticket first, and on a fix hop the FAIL block that sent you.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L15.1",
+      "text": "The governing plan and applicable feature-spec sections at the brief's commits, and their Decisions.",
+      "rules": [
+        {
+          "id": "L3-002",
+          "kind": "contract",
+          "rule": "Read the governing plan and applicable feature-spec sections at the brief's commits, with their Decisions.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L16.1",
+      "text": "From the repository root, read `dydo/guides/coding-standards.md`.",
+      "rules": [
+        {
+          "id": "L3-003",
+          "kind": "contract",
+          "rule": "Read dydo/guides/coding-standards.md from the repository root.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L17.1",
+      "text": "From the repository root, read `dydo/glossary.md`.",
+      "rules": [
+        {
+          "id": "L3-004",
+          "kind": "contract",
+          "rule": "Read dydo/glossary.md from the repository root.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L18.1",
+      "text": "From the repository root, read Feature proof and gate placement, Runner prerequisites and shared hosts, and Evidence and inherited failures in `dydo/guides/testing-strategy.md`.",
+      "rules": [
+        {
+          "id": "L3-005",
+          "kind": "contract",
+          "rule": "Read Feature proof and gate placement, Runner prerequisites and shared hosts, and Evidence and inherited failures in dydo/guides/testing-strategy.md.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L23.1",
+      "text": "The Ticket Captain owns status, records and integration.",
+      "rules": [
+        {
+          "id": "L3-006",
+          "kind": "identity",
+          "rule": "The Ticket Captain owns status, records and integration; the code-writer does not.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L23.2",
+      "text": "Missing scope, a hard unknown or an open crossroads returns to it with what you searched, never to the user directly.",
+      "rules": [
+        {
+          "id": "L3-007",
+          "kind": "escalation",
+          "rule": "Missing scope, a hard unknown or an open crossroads goes back to the Ticket Captain with what was searched, never directly to the user.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L24.1",
+      "text": "So does a stated target your design cannot meet: redesign or return it, never lower it.",
+      "rules": [
+        {
+          "id": "L3-008",
+          "kind": "escalation",
+          "rule": "A stated target the design cannot meet is redesigned or returned to the captain, never lowered.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L29.1",
+      "text": "On an `implement` or `fix` hop, prove the working-tree standard's checks; return a failure to the captain and stop:",
+      "rules": [
+        {
+          "id": "L3-009",
+          "kind": "worktree",
+          "rule": "On an implement or fix hop, prove the working-tree standard's checks before the first edit; return a failure to the captain and stop.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L32.1",
+      "text": "`HEAD` is on the relevant ticket or Sub-ticket branch.",
+      "rules": [
+        {
+          "id": "L3-010",
+          "kind": "worktree",
+          "rule": "Before the first edit, HEAD is on the relevant ticket or Sub-ticket branch.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L33.1",
+      "text": "The repository root is the isolated worktree, not the main checkout.",
+      "rules": [
+        {
+          "id": "L3-011",
+          "kind": "worktree",
+          "rule": "Before the first edit, the repository root is the isolated worktree, not the main checkout.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L34.1",
+      "text": "The posted base SHA is an ancestor of `HEAD`.",
+      "rules": [
+        {
+          "id": "L3-012",
+          "kind": "worktree",
+          "rule": "Before the first edit, the posted base SHA is an ancestor of HEAD.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L35.1",
+      "text": "The worktree is clean.",
+      "rules": [
+        {
+          "id": "L3-013",
+          "kind": "worktree",
+          "rule": "Before the first edit, the worktree is clean.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L36.1",
+      "text": "Every path the work item will touch is in the ticket's owned paths.",
+      "rules": [
+        {
+          "id": "L3-014",
+          "kind": "worktree",
+          "rule": "Before the first edit, every path the work item will touch is in the ticket's owned paths.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L38.1",
+      "text": "Merge proves the pins in [merge](resources/merge.md); proof-only, `HEAD` on its brief's child branch off the brief's pinned source SHA, a clean worktree and only the brief's test path touched.",
+      "rules": [
+        {
+          "id": "L3-015",
+          "kind": "worktree",
+          "rule": "A merge hop proves the pins in merge.md; a proof-only hop proves HEAD is on its brief's child branch off the brief's pinned source SHA, the worktree is clean and only the brief's test path is touched.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L41.1",
+      "text": "Commits touch owned paths only.",
+      "rules": [
+        {
+          "id": "L3-016",
+          "kind": "worktree",
+          "rule": "Commits touch owned paths only.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L41.2",
+      "text": "Each hop ends on one commit named `<KEY> <hop>: <what>`, where the hop is `implement`, `fix` after a FAIL, or `merge`; proof-only commits `<KEY> proof: <hypothesis>`.",
+      "rules": [
+        {
+          "id": "L3-017",
+          "kind": "worktree",
+          "rule": "Each hop ends on one commit named `<KEY> <hop>: <what>`, hop being implement, fix after a FAIL, or merge; proof-only commits are named `<KEY> proof: <hypothesis>`.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L46.1",
+      "text": "**Bug** ([bug](resources/bug.md)): a red reproduction, then the fix; revert it, watch the reproduction fail, restore.",
+      "rules": [
+        {
+          "id": "L3-018",
+          "kind": "evidence",
+          "rule": "A Bug gets a red reproduction, then the fix; revert the fix, watch the reproduction fail, restore it.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L47.1",
+      "text": "An unused member's definition and reference search are its reproduction, with no revert.",
+      "rules": [
+        {
+          "id": "L3-019",
+          "kind": "evidence",
+          "rule": "An unused member's definition and reference search are its reproduction, with no revert.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L48.1",
+      "text": "Shared machine: force races with fake timers or interleaving, never synthetic CPU load; any load stays small and cleans up.",
+      "rules": [
+        {
+          "id": "L3-020",
+          "kind": "evidence",
+          "rule": "On a shared machine, force races with fake timers or interleaving, never synthetic CPU load; any load stays small and cleans up.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L49.1",
+      "text": "**Feature**: before code, turn each acceptance line into a named test case, empty bodies allowed.",
+      "rules": [
+        {
+          "id": "L3-021",
+          "kind": "evidence",
+          "rule": "On a Feature, before code, turn each acceptance line into a named test case, empty bodies allowed.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L50.1",
+      "text": "Write code and tests together.",
+      "rules": [
+        {
+          "id": "L3-022",
+          "kind": "evidence",
+          "rule": "On a Feature, write code and tests together.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L50.2",
+      "text": "When green, stash all but the tests, run those the change reaches, keep one failing line each, restore.",
+      "rules": [
+        {
+          "id": "L3-023",
+          "kind": "evidence",
+          "rule": "When a Feature is green, stash all but the tests, run those the change reaches, keep one failing line each, restore.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L52.1",
+      "text": "**Merge**: [merge](resources/merge.md).",
+      "rules": [],
+      "notRule": {
+        "category": "pointer",
+        "note": "Merge hop details live in merge.md."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L53.1",
+      "text": "**Prototype**: load `prototype`; return runnable-demo evidence and its commit, not the Prove section.",
+      "rules": [
+        {
+          "id": "L3-024",
+          "kind": "return",
+          "rule": "A Prototype hop loads the prototype skill and returns runnable-demo evidence and its commit, not the Prove section.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L54.1",
+      "text": "The user's verdict is its review.",
+      "rules": [
+        {
+          "id": "L3-025",
+          "kind": "review",
+          "rule": "The user's verdict is a prototype's review.",
+          "actors": [
+            "user"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L55.1",
+      "text": "**Proof-only**: the brief names the commissioning captain, the pinned source SHA and the test path.",
+      "rules": [
+        {
+          "id": "L3-026",
+          "kind": "contract",
+          "rule": "A proof-only brief names the commissioning captain, the pinned source SHA and the test path.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L56.1",
+      "text": "Run only the one test deciding the hypothesis; return to that captain `confirmed` with its red-test SHA, `not reproduced`, or `inconclusive` with the deciding observation.",
+      "rules": [
+        {
+          "id": "L3-027",
+          "kind": "evidence",
+          "rule": "A proof-only hop runs only the one test deciding the hypothesis.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-028",
+          "kind": "return",
+          "rule": "A proof-only hop returns to the commissioning captain confirmed with its red-test SHA, not reproduced, or inconclusive with the deciding observation.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L57.1",
+      "text": "An Inquisition's proofs are its Break-phase inquisitor's, not yours; its patch lane briefs you as a Bug.",
+      "rules": [
+        {
+          "id": "L3-029",
+          "kind": "inquisition",
+          "rule": "An Inquisition's proofs belong to its Break-phase inquisitor, not the code-writer; its patch lane briefs the code-writer as a Bug.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L60.1",
+      "text": "A test green before any code exists is a finding about the test.",
+      "rules": [
+        {
+          "id": "L3-030",
+          "kind": "evidence",
+          "rule": "A test that is green before any code exists is a finding about the test.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L60.2",
+      "text": "An existing failing test is the red.",
+      "rules": [
+        {
+          "id": "L3-031",
+          "kind": "evidence",
+          "rule": "An existing failing test is the red.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L61.1",
+      "text": "Delete a test only with code whose removal the contract or a FAIL requires: dead code with its test-only callers, or obsolete internal tests replaced by interface tests that still prove their behaviour.",
+      "rules": [
+        {
+          "id": "L3-032",
+          "kind": "evidence",
+          "rule": "Delete a test only together with code whose removal the contract or a FAIL requires: dead code with its test-only callers, or obsolete internal tests replaced by interface tests that still prove the behaviour.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L63.1",
+      "text": "Disabling a test of kept behaviour, removing its assertion or weakening its scenario is forbidden.",
+      "rules": [
+        {
+          "id": "L3-033",
+          "kind": "evidence",
+          "rule": "Never disable a test of kept behaviour, remove its assertion or weaken its scenario.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L64.1",
+      "text": "A test needing a sleep or timeout is wrong.",
+      "rules": [
+        {
+          "id": "L3-034",
+          "kind": "evidence",
+          "rule": "A test that needs a sleep or timeout is wrong.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L64.2",
+      "text": "Platform-specific code (processes, paths, signals) is proved on CI's platform too, not only on yours.",
+      "rules": [
+        {
+          "id": "L3-035",
+          "kind": "evidence",
+          "rule": "Platform-specific code (processes, paths, signals) is proved on CI's platform too, not only the local one.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L65.1",
+      "text": "Shapes and mocks: [tests](resources/tests.md).",
+      "rules": [],
+      "notRule": {
+        "category": "pointer",
+        "note": "Test shapes and mocks live in tests.md."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L70.1",
+      "text": "Load a skill when its trigger fires:",
+      "rules": [
+        {
+          "id": "L3-036",
+          "kind": "other",
+          "rule": "Load a skill when its trigger fires.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L72.1",
+      "text": "`diagnosing-bugs`: a Bug other than an unused member lacks a red reproduction.",
+      "rules": [
+        {
+          "id": "L3-037",
+          "kind": "dispatch",
+          "rule": "Load diagnosing-bugs when a Bug other than an unused member lacks a red reproduction.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L73.1",
+      "text": "`codebase-design`: you design a seam or interface.",
+      "rules": [
+        {
+          "id": "L3-038",
+          "kind": "dispatch",
+          "rule": "Load codebase-design when designing a seam or interface.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L74.1",
+      "text": "`domain-modeling`: you touch a glossary term or Decision Record.",
+      "rules": [
+        {
+          "id": "L3-039",
+          "kind": "dispatch",
+          "rule": "Load domain-modeling when touching a glossary term or Decision Record.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L75.1",
+      "text": "`writing-for-agents`: you edit a skill or entry file.",
+      "rules": [
+        {
+          "id": "L3-040",
+          "kind": "dispatch",
+          "rule": "Load writing-for-agents when editing a skill or entry file.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L76.1",
+      "text": "`prototype`: a design question is open; stop and return it.",
+      "rules": [
+        {
+          "id": "L3-041",
+          "kind": "dispatch",
+          "rule": "Load prototype when a design question is open; stop and return the question.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L78.1",
+      "text": "Write each acceptance line the contract marks for Gherkin as a feature-file scenario: at the product's boundary, in glossary words, example tables where values vary and every column changes an outcome, wired through step definitions.",
+      "rules": [
+        {
+          "id": "L3-042",
+          "kind": "evidence",
+          "rule": "Write each acceptance line the contract marks for Gherkin as a feature-file scenario at the product's boundary, in glossary words, with example tables where values vary and every column changes an outcome, wired through step definitions.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L80.1",
+      "text": "Add or remove scenarios only when asked.",
+      "rules": [
+        {
+          "id": "L3-043",
+          "kind": "contract",
+          "rule": "Add or remove scenarios only when asked.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L82.1",
+      "text": "Leave what you touched no worse than you found it.",
+      "rules": [
+        {
+          "id": "L3-044",
+          "kind": "other",
+          "rule": "Leave what you touched no worse than you found it.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L86.1",
+      "text": "Use the testing strategy's Feature proof and gate placement with the ticket's exact commands.",
+      "rules": [
+        {
+          "id": "L3-045",
+          "kind": "evidence",
+          "rule": "Prove with the testing strategy's Feature proof and gate placement, using the ticket's exact commands.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L87.1",
+      "text": "Account for every own/reached feature and shared test, preflight its selection, and return the hop's affected-feature Light and applicable static evidence.",
+      "rules": [
+        {
+          "id": "L3-046",
+          "kind": "evidence",
+          "rule": "Account for every own or reached feature and shared test, preflight its selection, and return the hop's affected-feature Light and applicable static evidence.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L88.1",
+      "text": "Attribute failures by Evidence and inherited failures; send unresolved attribution or missing support to the captain.",
+      "rules": [
+        {
+          "id": "L3-047",
+          "kind": "evidence",
+          "rule": "Attribute failures by Evidence and inherited failures.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-048",
+          "kind": "escalation",
+          "rule": "Send unresolved attribution or missing support to the captain.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L89.1",
+      "text": "Fix every HCRAP or cognitive-complexity finding in a method you changed.",
+      "rules": [
+        {
+          "id": "L3-049",
+          "kind": "evidence",
+          "rule": "Fix every HCRAP or cognitive-complexity finding in a method you changed.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L90.1",
+      "text": "Mutation is the reviewer's.",
+      "rules": [
+        {
+          "id": "L3-050",
+          "kind": "identity",
+          "rule": "Mutation testing belongs to the reviewer, not the code-writer.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L91.1",
+      "text": "Run every test, gate and probe capped: `[env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false] systemd-run --user --scope --slice=<agent slice> -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 <cmd>`, a probe at 4G with a short timeout.",
+      "rules": [
+        {
+          "id": "L3-051",
+          "kind": "capacity",
+          "rule": "Run every test, gate and probe capped with systemd-run (MemoryMax=8G, MemorySwapMax=0, OOMPolicy=continue, timeout 3600; the .NET env prefix for .NET commands); a probe uses 4G and a short timeout.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L91.2",
+      "text": "A cap hit is a finding; never raise the cap.",
+      "rules": [
+        {
+          "id": "L3-052",
+          "kind": "capacity",
+          "rule": "A cap hit is a finding; never raise the cap.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L92.1",
+      "text": "Use your session's agent slice: the nearest `.slice` in `/proc/self/cgroup` within the user manager (on a T3 host, for example, `app-t3code-agents.slice`; a nearer session slice takes precedence).",
+      "rules": [
+        {
+          "id": "L3-053",
+          "kind": "capacity",
+          "rule": "Use the session's agent slice: the nearest .slice in /proc/self/cgroup within the user manager; a nearer session slice takes precedence.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L94.1",
+      "text": "Omit `--slice` where no agent slice exists.",
+      "rules": [
+        {
+          "id": "L3-054",
+          "kind": "capacity",
+          "rule": "Omit --slice where no agent slice exists.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L94.2",
+      "text": "Use the bracketed env prefix for .NET commands, without the brackets.",
+      "rules": [
+        {
+          "id": "L3-055",
+          "kind": "capacity",
+          "rule": "Use the bracketed env prefix for .NET commands, without the brackets.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L98.1",
+      "text": "Before code, post only when the work splits into disjoint lanes or the contract is inexact: one comment naming them, then stop.",
+      "rules": [
+        {
+          "id": "L3-056",
+          "kind": "linear",
+          "rule": "Before code, post a comment only when the work splits into disjoint lanes or the contract is inexact: one comment naming them, then stop.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L99.1",
+      "text": "Sign every comment and return `code-writer/model: <truthful identity>`.",
+      "rules": [
+        {
+          "id": "L3-057",
+          "kind": "linear",
+          "rule": "Sign every comment and return code-writer/model with the truthful identity.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L101.1",
+      "text": "Outside proof-only, return to the Ticket Captain in the standard's form, proof carrying the proof recipe of `maintain-verification-skill`'s Proof: the red lines, or for an unused-member Bug its definition and reference search, and gates run with exits; a Prototype hop returns runnable-demo evidence and its commit:",
+      "rules": [
+        {
+          "id": "L3-058",
+          "kind": "return",
+          "rule": "Outside proof-only, return to the Ticket Captain in the standard's form, proof carrying the maintain-verification-skill proof recipe: the red lines, or for an unused-member Bug its definition and reference search, and gates run with exits; a Prototype hop returns runnable-demo evidence and its commit.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L105.1",
+      "text": "`IMPLEMENTED - hop/candidate <SHA>; <behavior>; proof: <evidence>; blocker: <none or named blocker>.`",
+      "rules": [
+        {
+          "id": "L3-058"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L109.1",
+      "text": "The FAIL block's blockers are your contract: close them and nothing else.",
+      "rules": [
+        {
+          "id": "L3-059",
+          "kind": "contract",
+          "rule": "On a fix hop the FAIL block's blockers are the contract: close them and nothing else.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L109.2",
+      "text": "Check each finding's severity against the source, not the reviewer's label; a label you change goes in your `IMPLEMENTED` behaviour with its evidence (file:line, test, output).",
+      "rules": [
+        {
+          "id": "L3-060",
+          "kind": "review",
+          "rule": "On a fix hop check each finding's severity against the source, not the reviewer's label; a label you change goes in the IMPLEMENTED behaviour with its evidence.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L111.1",
+      "text": "Shoulds and nits are the captain's to file.",
+      "rules": [
+        {
+          "id": "L3-061",
+          "kind": "review",
+          "rule": "Shoulds and nits are the captain's to file, not the fix hop's.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L112.1",
+      "text": "Prefer the change that deletes or narrows code; review never grows the PR.",
+      "rules": [
+        {
+          "id": "L3-062",
+          "kind": "review",
+          "rule": "Prefer the change that deletes or narrows code; review never grows the PR.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L113.1",
+      "text": "Fix at the root: a gap gets its test first; cut what the contract does not need; split or flatten what is complex; hide what leaks across a seam; a surviving mutant sharpens its test or deletes its code; a surviving example value gets its step wired.",
+      "rules": [
+        {
+          "id": "L3-063",
+          "kind": "evidence",
+          "rule": "Fix at the root: a gap gets its test first; cut what the contract does not need; split or flatten what is complex; hide what leaks across a seam; a surviving mutant sharpens its test or deletes its code; a surviving example value gets its step wired.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L116.1",
+      "text": "Before expensive broad gates, check the exact successor against the previous reviewer's strongest concrete counterexample and the accepted invariant at the implicated boundary; return failed or inconclusive evidence to the captain.",
+      "rules": [
+        {
+          "id": "L3-064",
+          "kind": "evidence",
+          "rule": "Before expensive broad gates, check the exact successor against the previous reviewer's strongest counterexample and the accepted invariant at the implicated boundary; return failed or inconclusive evidence to the captain.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/SKILL.md#L118.1",
+      "text": "A passing witness does not replace ordinary RED/fix proof, required final gates or independent review.",
+      "rules": [
+        {
+          "id": "L3-065",
+          "kind": "evidence",
+          "rule": "A passing witness does not replace ordinary RED/fix proof, required final gates or independent review.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/bug.md#L3.1",
+      "text": "Name the expected and observed behaviour at the highest stable seam, and the behaviour the fix must not change.",
+      "rules": [
+        {
+          "id": "L3-066",
+          "kind": "evidence",
+          "rule": "For a Bug, name the expected and observed behaviour at the highest stable seam, and the behaviour the fix must not change.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/bug.md#L5.1",
+      "text": "Reproduce it red: a scenario when the defect shows at the product's boundary, else a test at the seam.",
+      "rules": [
+        {
+          "id": "L3-067",
+          "kind": "evidence",
+          "rule": "Reproduce a Bug red: a scenario when the defect shows at the product's boundary, else a test at the seam.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/bug.md#L6.1",
+      "text": "An existing red test, an inquisition's among them, is the reproduction; adopt it.",
+      "rules": [
+        {
+          "id": "L3-068",
+          "kind": "evidence",
+          "rule": "An existing red test, an inquisition's included, is the reproduction; adopt it.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/bug.md#L7.1",
+      "text": "An unused member, export or field needs no test: its definition at `file:line` and a reference search showing no caller outside the tests are its reproduction.",
+      "rules": [
+        {
+          "id": "L3-069",
+          "kind": "evidence",
+          "rule": "An unused member, export or field needs no test: its definition at file:line and a reference search showing no caller outside the tests are its reproduction.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/bug.md#L8.1",
+      "text": "Its fix deletes the member with its test-only callers, and step 3's revert does not apply.",
+      "rules": [
+        {
+          "id": "L3-070",
+          "kind": "evidence",
+          "rule": "An unused member's fix deletes it with its test-only callers, and the revert step does not apply.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/bug.md#L10.1",
+      "text": "Done when one observation could refute the reproduction.",
+      "rules": [
+        {
+          "id": "L3-071",
+          "kind": "evidence",
+          "rule": "A reproduction is done when one observation could refute it.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/bug.md#L11.1",
+      "text": "Fix it, then revert the fix, watch the reproduction fail, and restore.",
+      "rules": [
+        {
+          "id": "L3-072",
+          "kind": "evidence",
+          "rule": "Fix, then revert the fix, watch the reproduction fail, and restore.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-018"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/bug.md#L11.2",
+      "text": "The fix claims success only with that red line in the return, or for an unused member its definition and reference search, and with the unchanged behaviour still green.",
+      "rules": [
+        {
+          "id": "L3-073",
+          "kind": "return",
+          "rule": "A Bug fix claims success only with the red line in the return (or, for an unused member, its definition and reference search) and the unchanged behaviour still green.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L3.1",
+      "text": "One operation on one record, judged by one fresh merge review.",
+      "rules": [],
+      "notRule": {
+        "category": "description",
+        "note": "A merge is one operation on one record, judged by one fresh merge review."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L3.2",
+      "text": "Pin source and target branches at their SHAs, the source's PASS, the governing contract and the combined gates; read both sides before naming a resolution.",
+      "rules": [
+        {
+          "id": "L3-074",
+          "kind": "merge",
+          "rule": "Pin source and target branches at their SHAs, the source's PASS, the governing contract and the combined gates, and read both sides before naming a resolution.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L7.1",
+      "text": "Map the conflicts, the shared seams and what changed since the source review.",
+      "rules": [
+        {
+          "id": "L3-075",
+          "kind": "merge",
+          "rule": "Map the conflicts, the shared seams and what changed since the source review.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L7.2",
+      "text": "State each resolution's intended behaviour; a new product choice goes back to the captain.",
+      "rules": [
+        {
+          "id": "L3-076",
+          "kind": "merge",
+          "rule": "State each resolution's intended behaviour.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L3-077",
+          "kind": "escalation",
+          "rule": "A new product choice in a merge goes back to the captain.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L8.1",
+      "text": "Done when you can merge without choosing policy.",
+      "rules": [
+        {
+          "id": "L3-078",
+          "kind": "merge",
+          "rule": "Mapping is done when the merge can be made without choosing policy.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L10.1",
+      "text": "Merge with a merge commit that keeps both parents and every hop SHA: a conflict-free merge of the reviewed PR into its feature branch is `dydo merge <pr> --match-head-commit <reviewed SHA> --match-base-commit <target tip>`; any other merge, a conflicted one included, stays local, with the resolutions applied.",
+      "rules": [
+        {
+          "id": "L3-079",
+          "kind": "merge",
+          "rule": "Merge with a merge commit that keeps both parents and every hop SHA; a conflict-free merge of the reviewed PR into its feature branch is `dydo merge <pr> --match-head-commit <reviewed SHA> --match-base-commit <target tip>`; any other merge, a conflicted one included, stays local with the resolutions applied.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L13.1",
+      "text": "Pin the target tip from the branch ref (`git ls-remote origin refs/heads/<base>` or `gh api repos/<owner>/<repo>/branches/<base>`), never from the PR's `baseRefOid` or `base.sha`; a refusal that the base moved means re-pin and return to the captain.",
+      "rules": [
+        {
+          "id": "L3-080",
+          "kind": "merge",
+          "rule": "Pin the target tip from the branch ref (git ls-remote or gh api), never from the PR's baseRefOid or base.sha; a refusal that the base moved means re-pin and return to the captain.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L16.1",
+      "text": "The command's own `merged` or `already integrated` line is the merge receipt.",
+      "rules": [
+        {
+          "id": "L3-081",
+          "kind": "merge",
+          "rule": "The merge command's own merged or already integrated line is the merge receipt.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L17.1",
+      "text": "Run the combined gates on the merge SHA, the merge review's candidate.",
+      "rules": [
+        {
+          "id": "L3-082",
+          "kind": "merge",
+          "rule": "Run the combined gates on the merge SHA, the merge review's candidate.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L18.1",
+      "text": "A resolution that refactored leaves its code no worse than either side.",
+      "rules": [
+        {
+          "id": "L3-083",
+          "kind": "merge",
+          "rule": "A merge resolution that refactored leaves its code no worse than either side.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/merge.md#L19.1",
+      "text": "Return both parents and the merge SHA.",
+      "rules": [
+        {
+          "id": "L3-084",
+          "kind": "return",
+          "rule": "A merge hop returns both parents and the merge SHA.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L7.1",
+      "text": "**Integration-style**: Test through real interfaces, not mocks of internal parts.",
+      "rules": [
+        {
+          "id": "L3-085",
+          "kind": "evidence",
+          "rule": "Test through real interfaces, not mocks of internal parts.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L9.1",
+      "text": "```typescript\n// GOOD: Tests observable behavior\ntest(\"user can checkout with valid cart\", async () => {\n  const cart = createCart();\n  cart.add(product);\n  const result = await checkout(cart, paymentMethod);\n  expect(result.status).toBe(\"confirmed\");\n});\n```",
+      "rules": [],
+      "notRule": {
+        "category": "example",
+        "note": "Good and bad integration-style test."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L19.1",
+      "text": "Characteristics:",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Heading-like label."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L21.1",
+      "text": "Tests behavior users/callers care about",
+      "rules": [
+        {
+          "id": "L3-086",
+          "kind": "evidence",
+          "rule": "Tests cover behaviour users or callers care about.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L22.1",
+      "text": "Uses public API only",
+      "rules": [
+        {
+          "id": "L3-087",
+          "kind": "evidence",
+          "rule": "Tests use the public API only.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L23.1",
+      "text": "Survives internal refactors",
+      "rules": [
+        {
+          "id": "L3-088",
+          "kind": "evidence",
+          "rule": "Tests survive internal refactors.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L24.1",
+      "text": "Describes WHAT, not HOW",
+      "rules": [
+        {
+          "id": "L3-089",
+          "kind": "evidence",
+          "rule": "Tests describe what, not how.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L25.1",
+      "text": "One logical assertion per test",
+      "rules": [
+        {
+          "id": "L3-090",
+          "kind": "evidence",
+          "rule": "One logical assertion per test.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L29.1",
+      "text": "**Implementation-detail tests**: Coupled to internal structure.",
+      "rules": [
+        {
+          "id": "L3-091",
+          "kind": "evidence",
+          "rule": "Tests are not coupled to internal structure.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L31.1",
+      "text": "```typescript\n// BAD: Tests implementation details\ntest(\"checkout calls paymentService.process\", async () => {\n  const mockPayment = jest.mock(paymentService);\n  await checkout(cart, payment);\n  expect(mockPayment.process).toHaveBeenCalledWith(cart.total);\n});\n```",
+      "rules": [],
+      "notRule": {
+        "category": "example",
+        "note": "Bad implementation-detail test."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L40.1",
+      "text": "Red flags:",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Label."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L42.1",
+      "text": "Mocking internal collaborators",
+      "rules": [
+        {
+          "id": "L3-092",
+          "kind": "evidence",
+          "rule": "Do not mock internal collaborators.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L43.1",
+      "text": "Testing private methods",
+      "rules": [
+        {
+          "id": "L3-093",
+          "kind": "evidence",
+          "rule": "Do not test private methods.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L44.1",
+      "text": "Asserting on call counts/order",
+      "rules": [
+        {
+          "id": "L3-094",
+          "kind": "evidence",
+          "rule": "Do not assert on call counts or order.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L45.1",
+      "text": "Test breaks when refactoring without behavior change",
+      "rules": [
+        {
+          "id": "L3-095",
+          "kind": "evidence",
+          "rule": "A test that breaks when refactoring without behaviour change is a red flag to fix.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L46.1",
+      "text": "Verifying through external means instead of interface",
+      "rules": [
+        {
+          "id": "L3-096",
+          "kind": "evidence",
+          "rule": "Verify through the interface, not through external means that bypass it.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L48.1",
+      "text": "```typescript\n// BAD: Bypasses interface to verify\ntest(\"createUser saves to database\", async () => {\n  await createUser({ name: \"Alice\" });\n  const row = await db.query(\"SELECT * FROM users WHERE name = ?\", [\"Alice\"]);\n  expect(row).toBeDefined();\n});\n\n// GOOD: Verifies through interface\ntest(\"createUser makes user retrievable\", async () => {\n  const user = await createUser({ name: \"Alice\" });\n  const retrieved = await getUser(user.id);\n  expect(retrieved.name).toBe(\"Alice\");\n});\n```",
+      "rules": [],
+      "notRule": {
+        "category": "example",
+        "note": "Bad and good interface-verification tests."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L64.1",
+      "text": "**Tautological tests**: Expected value restates the implementation, so the test passes by construction.",
+      "rules": [
+        {
+          "id": "L3-097",
+          "kind": "evidence",
+          "rule": "Expected values do not restate the implementation; a test must not pass by construction.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L66.1",
+      "text": "```typescript\n// BAD: Expected value is recomputed the way the code computes it\ntest(\"calculateTotal sums line items\", () => {\n  const items = [{ price: 10 }, { price: 5 }];\n  const expected = items.reduce((sum, i) => sum + i.price, 0);\n  expect(calculateTotal(items)).toBe(expected);\n});\n\n// GOOD: Expected value is an independent, known literal\ntest(\"calculateTotal sums line items\", () => {\n  expect(calculateTotal([{ price: 10 }, { price: 5 }])).toBe(15);\n});\n```",
+      "rules": [],
+      "notRule": {
+        "category": "example",
+        "note": "Tautological versus literal-expected test."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L82.1",
+      "text": "At system boundaries only: external APIs, time and randomness, and sometimes the database or file system, where a test instance is better still.",
+      "rules": [
+        {
+          "id": "L3-098",
+          "kind": "evidence",
+          "rule": "Mock only at system boundaries: external APIs, time and randomness, and sometimes the database or file system, where a test instance is better still.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L83.1",
+      "text": "Your own modules and internal collaborators stay real.",
+      "rules": [
+        {
+          "id": "L3-099",
+          "kind": "evidence",
+          "rule": "Your own modules and internal collaborators stay real in tests.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/code-writer/resources/tests.md#L84.1",
+      "text": "At a boundary, inject the dependency, and give each external operation its own function (`getUser`, `createOrder`) rather than one generic fetcher, so each mock returns one shape and the setup holds no logic.",
+      "rules": [
+        {
+          "id": "L3-100",
+          "kind": "evidence",
+          "rule": "At a boundary, inject the dependency, and give each external operation its own function rather than one generic fetcher, so each mock returns one shape and setup holds no logic.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L3.1",
+      "text": "Documentation the repository can witness.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Description line."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L3.2",
+      "text": "Write or correct one reviewed change, an inquisition's own record included, for its Ticket Captain.",
+      "rules": [
+        {
+          "id": "L3-101",
+          "kind": "identity",
+          "rule": "The docs-writer writes or corrects one reviewed change, an inquisition's own record included, for its Ticket Captain.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L8.1",
+      "text": "Make one documentation change true.",
+      "rules": [
+        {
+          "id": "L3-102",
+          "kind": "identity",
+          "rule": "Make one documentation change true.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L12.1",
+      "text": "The owning Linear ticket, its governing plan and applicable feature-spec sections at pinned commits, and on a fix hop the FAIL block that sent you.",
+      "rules": [
+        {
+          "id": "L3-103",
+          "kind": "contract",
+          "rule": "Read the owning Linear ticket, its governing plan and applicable feature-spec sections at pinned commits, and on a fix hop the FAIL block that sent you.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L14.1",
+      "text": "From the repository root, read `dydo/reference/writing-docs.md`.",
+      "rules": [
+        {
+          "id": "L3-104",
+          "kind": "contract",
+          "rule": "Read dydo/reference/writing-docs.md from the repository root.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L15.1",
+      "text": "From the repository root, read `dydo/understand/about.md`.",
+      "rules": [
+        {
+          "id": "L3-105",
+          "kind": "contract",
+          "rule": "Read dydo/understand/about.md from the repository root.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L16.1",
+      "text": "From the repository root, read `dydo/guides/working-tree-standard.md`.",
+      "rules": [
+        {
+          "id": "L3-106",
+          "kind": "contract",
+          "rule": "Read dydo/guides/working-tree-standard.md from the repository root.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L17.1",
+      "text": "From the repository root, read Feature proof and gate placement in `dydo/guides/testing-strategy.md`.",
+      "rules": [
+        {
+          "id": "L3-107",
+          "kind": "contract",
+          "rule": "Read Feature proof and gate placement in dydo/guides/testing-strategy.md.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L18.1",
+      "text": "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; do not preload the whole standard.",
+      "rules": [
+        {
+          "id": "L3-108",
+          "kind": "contract",
+          "rule": "Read only the Communication and evidence section of dydo/reference/linear-workspace-standard.md for the communication protocol; do not preload the whole standard.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L22.1",
+      "text": "Every sentence you write is a claim, and every claim needs a **witness** in the repository: code, configuration, governing intent (spec, Decision Record or ticket).",
+      "rules": [
+        {
+          "id": "L3-109",
+          "kind": "docs",
+          "rule": "Every sentence written is a claim, and every claim needs a witness in the repository: code, configuration, or governing intent (spec, Decision Record or ticket).",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L23.1",
+      "text": "Where the witness is missing, return the gap instead.",
+      "rules": [
+        {
+          "id": "L3-110",
+          "kind": "docs",
+          "rule": "Where the witness is missing, return the gap instead of writing the claim.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L24.1",
+      "text": "The Ticket Captain that spawned you owns review, integration, status and follow-up work; you own the words.",
+      "rules": [
+        {
+          "id": "L3-111",
+          "kind": "identity",
+          "rule": "The Ticket Captain owns review, integration, status and follow-up work; the docs-writer owns the words.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L25.1",
+      "text": "Your questions go to it, never to the user directly.",
+      "rules": [
+        {
+          "id": "L3-112",
+          "kind": "escalation",
+          "rule": "The docs-writer's questions go to the Ticket Captain, never directly to the user.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L25.2",
+      "text": "On a fix hop the FAIL block's blockers are your contract: check each finding's severity against the source, not the reviewer's label, close only the blockers, and put a label you change in your `IMPLEMENTED` behaviour with its evidence (file:line, check, output).",
+      "rules": [
+        {
+          "id": "L3-113",
+          "kind": "contract",
+          "rule": "On a fix hop the FAIL block's blockers are the contract: check each finding's severity against the source, close only the blockers, and put a label you change in the IMPLEMENTED behaviour with its evidence.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L28.1",
+      "text": "Prefer the edit that deletes or narrows; review never grows the change.",
+      "rules": [
+        {
+          "id": "L3-114",
+          "kind": "docs",
+          "rule": "Prefer the edit that deletes or narrows; review never grows the change.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L32.1",
+      "text": "**Find the witness.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L32.2",
+      "text": "Read the code, configuration and governing decisions behind the change until every claim you mean to write has one.",
+      "rules": [
+        {
+          "id": "L3-115",
+          "kind": "docs",
+          "rule": "Read the code, configuration and governing decisions behind the change until every claim to be written has a witness.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L34.1",
+      "text": "**Write it in its one home.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L34.2",
+      "text": "Concepts in `understand/`, procedures in `guides/`, exact contracts in `reference/`, temporary specs under `reference/working-specs/`, delivery history under `project/`; a meaning another document owns is a link.",
+      "rules": [
+        {
+          "id": "L3-116",
+          "kind": "docs",
+          "rule": "Write each claim in its one home: concepts in understand/, procedures in guides/, exact contracts in reference/, temporary specs under reference/working-specs/, delivery history under project/; a meaning another document owns is a link.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L35.1",
+      "text": "A README outside `dydo/` only points to the dydo doc that owns its folder; skill-owned resources are exempt.",
+      "rules": [
+        {
+          "id": "L3-117",
+          "kind": "docs",
+          "rule": "A README outside dydo/ only points to the dydo doc that owning its folder; skill-owned resources are exempt.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L36.1",
+      "text": "A dydo document takes its frontmatter and links from writing-docs.md; an agent-facing document (a skill, its resources, an entry point) is written by `writing-for-agents`.",
+      "rules": [
+        {
+          "id": "L3-118",
+          "kind": "docs",
+          "rule": "A dydo document takes its frontmatter and links from writing-docs.md; an agent-facing document is written by the writing-for-agents skill.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L38.1",
+      "text": "Cut whatever the code already states plainly.",
+      "rules": [
+        {
+          "id": "L3-119",
+          "kind": "docs",
+          "rule": "Cut whatever the code already states plainly.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L38.2",
+      "text": "Done when each claim has one canonical home, repeated meanings are pointers, and every added claim has its witness.",
+      "rules": [
+        {
+          "id": "L3-120",
+          "kind": "docs",
+          "rule": "Docs work is done when each claim has one canonical home, repeated meanings are pointers, and every added claim has its witness.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L40.1",
+      "text": "**Edit the source; regeneration writes the rest.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L40.2",
+      "text": "Author navigation pages when the docs need them; `skills/<category>/<name>/` is the only editable skill source and host discovery paths are setup projections.",
+      "rules": [
+        {
+          "id": "L3-121",
+          "kind": "docs",
+          "rule": "Author navigation pages when the docs need them; skills/<category>/<name>/ is the only editable skill source, and host discovery paths are setup projections.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L41.1",
+      "text": "Done when every edit is in its authored source and required regeneration is either verified in scope or explicitly handed to the integration owner with its source paths and command.",
+      "rules": [
+        {
+          "id": "L3-122",
+          "kind": "docs",
+          "rule": "Done when every edit is in its authored source and required regeneration is verified in scope or explicitly handed to the integration owner with its source paths and command.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L44.1",
+      "text": "**Write the inquisition record** when an Inquisition's captain hands you its pushed findings register.",
+      "rules": [
+        {
+          "id": "L3-123",
+          "kind": "docs",
+          "rule": "When an Inquisition's captain hands over its pushed findings register, write the inquisition record.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L45.1",
+      "text": "Work on the Inquisition's own ticket branch: a document at `dydo/project/inquisitions/<YYYY-MM-DD>-<slug>.md` naming the audit SHA, the commission, the area map with each phase run or its reason, every finding with its severity, sightings and disposition, the Bugs and patches filed with their proof, the nit ticket and the Questions.",
+      "rules": [
+        {
+          "id": "L3-124",
+          "kind": "docs",
+          "rule": "Write the inquisition record on the Inquisition's own ticket branch as dydo/project/inquisitions/<YYYY-MM-DD>-<slug>.md naming the audit SHA, the commission, the area map with each phase run or its reason, every finding with severity, sightings and disposition, the Bugs and patches filed with their proof, the nit ticket and the Questions.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L49.1",
+      "text": "Done when every claim traces to the register, with an empty section explicitly recorded as such; return the exact path and blob or content digest for the docs review and the captain's check after the merge.",
+      "rules": [
+        {
+          "id": "L3-125",
+          "kind": "docs",
+          "rule": "The inquisition record is done when every claim traces to the register, with an empty section explicitly recorded as such.",
+          "actors": [
+            "docs-writer"
+          ]
+        },
+        {
+          "id": "L3-126",
+          "kind": "return",
+          "rule": "Return the exact path and blob or content digest of the inquisition record for the docs review and the captain's check after the merge.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L52.1",
+      "text": "**Fix, check, commit.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L52.2",
+      "text": "`dydo fix` after a document is added, moved or renamed, then this hop's proof until clean: `dydo check`, the other cheap checks the ticket names, and the tests your change reaches, using the testing strategy's documentation-only scope.",
+      "rules": [
+        {
+          "id": "L3-127",
+          "kind": "evidence",
+          "rule": "Run `dydo fix` after a document is added, moved or renamed, then this hop's proof until clean: dydo check, the other cheap checks the ticket names, and the tests the change reaches, using the testing strategy's documentation-only scope.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L54.1",
+      "text": "Then commit in the owned paths; hand any remaining project-declared gates to the Captain.",
+      "rules": [
+        {
+          "id": "L3-128",
+          "kind": "worktree",
+          "rule": "Commit in the owned paths.",
+          "actors": [
+            "docs-writer"
+          ]
+        },
+        {
+          "id": "L3-129",
+          "kind": "escalation",
+          "rule": "Hand any remaining project-declared gates to the Captain.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L55.1",
+      "text": "Done when the bounded proof has run and the work is committed.",
+      "rules": [
+        {
+          "id": "L3-130",
+          "kind": "evidence",
+          "rule": "The hop is done when the bounded proof has run and the work is committed.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L60.1",
+      "text": "To the Ticket Captain, use the `IMPLEMENTED` form in the communication protocol, naming the SHA, files, witness, checks, gaps, and evidence.",
+      "rules": [
+        {
+          "id": "L3-131",
+          "kind": "return",
+          "rule": "Return to the Ticket Captain in the IMPLEMENTED form of the communication protocol, naming the SHA, files, witness, checks, gaps and evidence.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L61.1",
+      "text": "A writer's successful delivery is never an independent `PASS`.",
+      "rules": [
+        {
+          "id": "L3-132",
+          "kind": "review",
+          "rule": "A writer's successful delivery is never an independent PASS.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/docs-writer/SKILL.md#L62.1",
+      "text": "For an inquisition record, name its path and preserved evidence.",
+      "rules": [
+        {
+          "id": "L3-133",
+          "kind": "return",
+          "rule": "For an inquisition record, the return names its path and preserved evidence.",
+          "actors": [
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L3.1",
+      "text": "Primary sources, cited.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Slogan."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L3.2",
+      "text": "Use when a fact a choice waits on could hide in Decision Records, plans, code, history, or outside sources, or when docs, specs, or API behaviour must be established before work depends on them.",
+      "rules": [],
+      "notRule": {
+        "category": "description",
+        "note": "When to use the research skill."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L10.1",
+      "text": "Follow every claim back to the source that owns it, and search wide enough to know what you missed.",
+      "rules": [
+        {
+          "id": "L3-134",
+          "kind": "research",
+          "rule": "Follow every claim back to the source that owns it, and search wide enough to know what you missed.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L14.1",
+      "text": "The question as the invoker stated it, and the destination it named for the findings.",
+      "rules": [
+        {
+          "id": "L3-135",
+          "kind": "contract",
+          "rule": "Read the question as the invoker stated it and the destination it named for the findings.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L15.1",
+      "text": "From the repository root, read `dydo/understand/about.md`.",
+      "rules": [
+        {
+          "id": "L3-136",
+          "kind": "contract",
+          "rule": "Read dydo/understand/about.md from the repository root.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L16.1",
+      "text": "From the repository root, read `dydo/understand/architecture.md`.",
+      "rules": [
+        {
+          "id": "L3-137",
+          "kind": "contract",
+          "rule": "Read dydo/understand/architecture.md from the repository root.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L17.1",
+      "text": "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; do not preload the whole standard.",
+      "rules": [
+        {
+          "id": "L3-138",
+          "kind": "contract",
+          "rule": "Read only the Communication and evidence section of dydo/reference/linear-workspace-standard.md for the communication protocol; do not preload the whole standard.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L21.1",
+      "text": "A co-thinker, admiral, or Ticket Captain sends you after one fact a choice waits on, before anyone creates a human-facing Question Ticket; if the facts settle it, no Question Ticket exists.",
+      "rules": [
+        {
+          "id": "L3-139",
+          "kind": "escalation",
+          "rule": "A co-thinker, admiral or Ticket Captain sends research after one fact a choice waits on before anyone creates a human-facing Question Ticket; if the facts settle it, no Question Ticket exists.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L23.1",
+      "text": "Facts are your job; the choice they inform stays with the invoker and the user.",
+      "rules": [
+        {
+          "id": "L3-140",
+          "kind": "identity",
+          "rule": "Facts are research's job; the choice they inform stays with the invoker and the user.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L23.2",
+      "text": "The question you were given is the whole of your scope: an adjacent question you uncover is a line in the return, not a second investigation.",
+      "rules": [
+        {
+          "id": "L3-141",
+          "kind": "research",
+          "rule": "The question given is the whole scope: an adjacent question uncovered is a line in the return, not a second investigation.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L25.1",
+      "text": "The report under Return is the one thing you create; everything else you read.",
+      "rules": [
+        {
+          "id": "L3-142",
+          "kind": "research",
+          "rule": "The report under Return is the only thing research creates; everything else is read.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L30.1",
+      "text": "**Fix the question.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L30.2",
+      "text": "Restate it in one sentence, say what would count as an answer, and note the destination the invoker named.",
+      "rules": [
+        {
+          "id": "L3-143",
+          "kind": "research",
+          "rule": "Restate the question in one sentence, say what would count as an answer, and note the destination the invoker named.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L31.1",
+      "text": "Done when all three are written down.",
+      "rules": [
+        {
+          "id": "L3-144",
+          "kind": "research",
+          "rule": "The question step is done when all three are written down.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L32.1",
+      "text": "**Pick the source families that could own the answer.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L32.2",
+      "text": "Governing records: Decision Records, the Project plan at its governing commit, specifications.",
+      "rules": [
+        {
+          "id": "L3-145",
+          "kind": "research",
+          "rule": "Consider these source families: governing records (Decision Records, the Project plan at its governing commit, specifications).",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L33.1",
+      "text": "The rest of dydo: understand, guides, glossary, reference, where intent leaves breadcrumbs.",
+      "rules": [
+        {
+          "id": "L3-145"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L34.1",
+      "text": "Code and tests.",
+      "rules": [
+        {
+          "id": "L3-145"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L34.2",
+      "text": "Git history, for when and why something changed.",
+      "rules": [
+        {
+          "id": "L3-145"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L35.1",
+      "text": "Outside sources: official docs, specs, library source, first-party APIs.",
+      "rules": [
+        {
+          "id": "L3-145"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L36.1",
+      "text": "Read governing docs (Decision Records, standards, glossary) on the default branch too; a branch can lag.",
+      "rules": [
+        {
+          "id": "L3-146",
+          "kind": "research",
+          "rule": "Read governing docs (Decision Records, standards, glossary) on the default branch too, since a branch can lag.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L37.1",
+      "text": "Done when every family is marked in or out with a reason.",
+      "rules": [
+        {
+          "id": "L3-147",
+          "kind": "research",
+          "rule": "The family step is done when every family is marked in or out with a reason.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L38.1",
+      "text": "**Send scouts.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L38.2",
+      "text": "One scout per family in play, in parallel, each carrying the question, its family, and the brief in the `scout` agent; when one family alone is in play, read it yourself.",
+      "rules": [
+        {
+          "id": "L3-148",
+          "kind": "dispatch",
+          "rule": "Send one scout per family in play, in parallel, each carrying the question, its family and the brief in the scout agent; when only one family is in play, read it yourself.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L40.1",
+      "text": "Done when every family in play has returned passages or an honest \"nothing here\".",
+      "rules": [
+        {
+          "id": "L3-149",
+          "kind": "research",
+          "rule": "Scouting is done when every family in play has returned passages or an honest nothing here.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L41.1",
+      "text": "**Pool and verify.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L41.2",
+      "text": "Open the cited passage behind every load-bearing claim and confirm it says what the scout said.",
+      "rules": [
+        {
+          "id": "L3-150",
+          "kind": "research",
+          "rule": "Open the cited passage behind every load-bearing claim and confirm it says what the scout said.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L42.1",
+      "text": "Where sources conflict, name the conflict and which governs; inside the repository the order is the user's live instruction, Decision Record, reviewed architecture plan, feature spec (both pinned), ticket contract, standards, code.",
+      "rules": [
+        {
+          "id": "L3-151",
+          "kind": "research",
+          "rule": "Where sources conflict, name the conflict and which governs; the order in the repository is the user's live instruction, Decision Record, reviewed architecture plan, feature spec (both pinned), ticket contract, standards, code.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L44.1",
+      "text": "Where sources are silent, mark the point unsettled rather than reasoning your way to a fact.",
+      "rules": [
+        {
+          "id": "L3-152",
+          "kind": "research",
+          "rule": "Where sources are silent, mark the point unsettled rather than reasoning to a fact.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L45.1",
+      "text": "Done when every claim in the answer carries a citation you opened or is marked unsettled.",
+      "rules": [
+        {
+          "id": "L3-153",
+          "kind": "research",
+          "rule": "Verification is done when every claim in the answer carries a citation you opened or is marked unsettled.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L47.1",
+      "text": "**Write it once, answer first.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L47.2",
+      "text": "The question; the answer; each claim with the citation that carries it (URL, DOI, or repository path, with the commit where it matters, plus the exact passage); what stayed unsettled; and the families searched, including those that came back empty.",
+      "rules": [
+        {
+          "id": "L3-154",
+          "kind": "return",
+          "rule": "Write the report once, answer first: the question; the answer; each claim with its citation (URL, DOI or repository path, with commit where it matters, plus the exact passage); what stayed unsettled; and the families searched, including empty ones.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L50.1",
+      "text": "Done when a reader can check any claim without repeating your reading and can see what was not searched.",
+      "rules": [
+        {
+          "id": "L3-155",
+          "kind": "return",
+          "rule": "The report is done when a reader can check any claim without repeating the reading and can see what was not searched.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L55.1",
+      "text": "Post the report to the ticket the invoker named, as a named evidence comment using the `DECIDED` form in the communication protocol.",
+      "rules": [
+        {
+          "id": "L3-156",
+          "kind": "return",
+          "rule": "Post the report to the ticket the invoker named, as a named evidence comment using the DECIDED form in the communication protocol.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L56.1",
+      "text": "On a Wayfinding Ticket, the map holder closes the ticket and updates the map.",
+      "rules": [
+        {
+          "id": "L3-157",
+          "kind": "wayfinding",
+          "rule": "On a Wayfinding Ticket, the map holder closes the ticket and updates the map.",
+          "actors": [
+            "map-holder"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L57.1",
+      "text": "Without a named ticket, write it as `dydo/agents/workspace/research-<slug>.md`, the shared scratch folder git ignores.",
+      "rules": [
+        {
+          "id": "L3-158",
+          "kind": "return",
+          "rule": "Without a named ticket, write the report as dydo/agents/workspace/research-<slug>.md, the shared scratch folder git ignores.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/research/SKILL.md#L58.1",
+      "text": "Either way, report the answer, destination, and what stayed unsettled.",
+      "rules": [
+        {
+          "id": "L3-159",
+          "kind": "return",
+          "rule": "Either way, report the answer, destination and what stayed unsettled.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L3.1",
+      "text": "A ticket's code or docs, a spec, a Project plan, or a merged tree - one candidate, one named rubric, one binding verdict.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Skill description."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L8.1",
+      "text": "Gandalf at the bridge: judge one candidate against one rubric, and let no blocker past.",
+      "rules": [
+        {
+          "id": "L3-160",
+          "kind": "identity",
+          "rule": "Judge one candidate against one rubric, and let no blocker past.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L12.1",
+      "text": "The contract the candidate must satisfy, as the brief pins it: outcome, scenarios, owned paths, gates, applicable feature-spec commit and sections; the brief's rubric, `Contract` (for a ticket, `<KEY> description as of <Linear updatedAt>`), Candidate SHA, Base SHA, and, where a writer produced the candidate, the writer's `IMPLEMENTED` line.",
+      "rules": [
+        {
+          "id": "L3-161",
+          "kind": "contract",
+          "rule": "Read the contract as the brief pins it (outcome, scenarios, owned paths, gates, feature-spec commit and sections), the brief's rubric, Contract, Candidate SHA, Base SHA, and where a writer produced the candidate, the writer's IMPLEMENTED line.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L15.1",
+      "text": "From the repository root, read `dydo/understand/about.md`.",
+      "rules": [
+        {
+          "id": "L3-162",
+          "kind": "contract",
+          "rule": "Read dydo/understand/about.md from the repository root.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L16.1",
+      "text": "From the repository root, read `dydo/understand/architecture.md`.",
+      "rules": [
+        {
+          "id": "L3-163",
+          "kind": "contract",
+          "rule": "Read dydo/understand/architecture.md from the repository root.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L17.1",
+      "text": "From the repository root, read `dydo/guides/coding-standards.md`.",
+      "rules": [
+        {
+          "id": "L3-164",
+          "kind": "contract",
+          "rule": "Read dydo/guides/coding-standards.md from the repository root.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L18.1",
+      "text": "From the repository root, read Feature proof and gate placement and Evidence and inherited failures in `dydo/guides/testing-strategy.md`.",
+      "rules": [
+        {
+          "id": "L3-165",
+          "kind": "contract",
+          "rule": "Read Feature proof and gate placement and Evidence and inherited failures in dydo/guides/testing-strategy.md.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L20.1",
+      "text": "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; do not preload the whole standard.",
+      "rules": [
+        {
+          "id": "L3-166",
+          "kind": "contract",
+          "rule": "Read only the Communication and evidence section of dydo/reference/linear-workspace-standard.md for the communication protocol; do not preload the whole standard.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L24.1",
+      "text": "Judge one candidate; corrections and status are the invoker's.",
+      "rules": [
+        {
+          "id": "L3-167",
+          "kind": "identity",
+          "rule": "Judge one candidate; corrections and status are the invoker's.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L24.2",
+      "text": "Your independence is independence of *context*: read the candidate itself rather than the story told about it.",
+      "rules": [
+        {
+          "id": "L3-168",
+          "kind": "review",
+          "rule": "Read the candidate itself rather than the story told about it; independence is independence of context.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L29.1",
+      "text": "**Read the rubric you were given.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L29.2",
+      "text": "[code](resources/code.md) · [docs](resources/docs.md) · [project-plan](resources/project-plan.md) · [spec](resources/spec.md) · [merge](resources/merge.md), exactly the one the invoker named.",
+      "rules": [
+        {
+          "id": "L3-169",
+          "kind": "review",
+          "rule": "Read exactly the one rubric the invoker named: code, docs, project-plan, spec or merge.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L31.1",
+      "text": "Done when you can restate every item it asks of you.",
+      "rules": [
+        {
+          "id": "L3-170",
+          "kind": "review",
+          "rule": "The rubric step is done when you can restate every item it asks of you.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L33.1",
+      "text": "**Pin the contract and the candidate.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L33.2",
+      "text": "The contract as the brief pins it, the candidate at its SHA, the base SHA.",
+      "rules": [
+        {
+          "id": "L3-171",
+          "kind": "review",
+          "rule": "Pin the contract as the brief pins it, the candidate at its SHA, and the base SHA.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L34.1",
+      "text": "Where a writer produced the candidate, check its `IMPLEMENTED` line against them and its proof against `maintain-verification-skill`'s Proof; rerun its proof only on a doubt you state.",
+      "rules": [
+        {
+          "id": "L3-172",
+          "kind": "evidence",
+          "rule": "Where a writer produced the candidate, check its IMPLEMENTED line against the pins and its proof against maintain-verification-skill's Proof; rerun its proof only on a doubt you state.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L35.1",
+      "text": "A probe that edits files runs in your own detached worktree at the candidate SHA, removed after.",
+      "rules": [
+        {
+          "id": "L3-173",
+          "kind": "worktree",
+          "rule": "A probe that edits files runs in the reviewer's own detached worktree at the candidate SHA, removed after.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L36.1",
+      "text": "Every probe and rerun runs capped: `[env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false] systemd-run --user --scope --slice=<agent slice> -p MemoryMax=4G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 120 <cmd>`, a gate at 8G and `timeout 3600`; a cap hit is a finding, never a reason to raise the cap.",
+      "rules": [
+        {
+          "id": "L3-174",
+          "kind": "capacity",
+          "rule": "Every probe and rerun runs capped with systemd-run (MemoryMax=4G, MemorySwapMax=0, OOMPolicy=continue, timeout 120), a gate at 8G and timeout 3600; a cap hit is a finding, never a reason to raise the cap.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L36.2",
+      "text": "Done when another reviewer could open the same contract and candidate.",
+      "rules": [
+        {
+          "id": "L3-175",
+          "kind": "review",
+          "rule": "Pinning is done when another reviewer could open the same contract and candidate.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L37.1",
+      "text": "Use your session's agent slice: the nearest `.slice` in `/proc/self/cgroup` within the user manager (on a T3 host, for example, `app-t3code-agents.slice`; a nearer session slice takes precedence).",
+      "rules": [
+        {
+          "id": "L3-176",
+          "kind": "capacity",
+          "rule": "Use the session's agent slice: the nearest .slice in /proc/self/cgroup within the user manager; a nearer session slice takes precedence.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L39.1",
+      "text": "Omit `--slice` where no agent slice exists.",
+      "rules": [
+        {
+          "id": "L3-177",
+          "kind": "capacity",
+          "rule": "Omit --slice where no agent slice exists.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L39.2",
+      "text": "Use the bracketed env prefix for .NET commands, without the brackets.",
+      "rules": [
+        {
+          "id": "L3-178",
+          "kind": "capacity",
+          "rule": "Use the bracketed env prefix for .NET commands, without the brackets.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L40.1",
+      "text": "**Work the rubric section by section.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L40.2",
+      "text": "Each item ends verified against the source or as a finding, whatever the size of the diff; a clean section never covers another section's finding.",
+      "rules": [
+        {
+          "id": "L3-179",
+          "kind": "review",
+          "rule": "Each rubric item ends verified against the source or as a finding, whatever the size of the diff; a clean section never covers another section's finding.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L42.1",
+      "text": "**Take the gates at this stage's scale.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L42.2",
+      "text": "Apply the testing strategy to the pinned Exact gates.",
+      "rules": [
+        {
+          "id": "L3-180",
+          "kind": "evidence",
+          "rule": "Apply the testing strategy to the pinned Exact gates.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L43.1",
+      "text": "Check actual reach, including consumers and parent-shared tests: omitted relevant proof is a finding.",
+      "rules": [
+        {
+          "id": "L3-181",
+          "kind": "evidence",
+          "rule": "Check actual reach, including consumers and parent-shared tests; omitted relevant proof is a finding.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L44.1",
+      "text": "Read this exact candidate's command, selection, environment, exit and artifacts; a rerun needs a concrete doubt you state.",
+      "rules": [
+        {
+          "id": "L3-182",
+          "kind": "evidence",
+          "rule": "Read this exact candidate's command, selection, environment, exit and artifacts; a rerun needs a concrete doubt you state.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L45.1",
+      "text": "Check final Heavy/coverage placement and inherited failure attribution with its owner disposition.",
+      "rules": [
+        {
+          "id": "L3-183",
+          "kind": "evidence",
+          "rule": "Check final Heavy and coverage placement and inherited failure attribution with its owner disposition.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L46.1",
+      "text": "Real output is evidence; a required gate that cannot run is named with why, never treated as passed.",
+      "rules": [
+        {
+          "id": "L3-184",
+          "kind": "evidence",
+          "rule": "Real output is evidence; a required gate that cannot run is named with why, never treated as passed.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L48.1",
+      "text": "**Write the block.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L48.2",
+      "text": "Label each finding by the intent, not by how it looks: `blocker`, the intended case is wrong; `should`, a real bug callers will hit, inside the intent; `nit`, everything else.",
+      "rules": [
+        {
+          "id": "L3-185",
+          "kind": "review",
+          "rule": "Label each finding by intent: blocker when the intended case is wrong; should for a real bug callers will hit, inside the intent; nit for everything else.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L50.1",
+      "text": "Another code path, a rare case, a small perf cost, extra compat or style is a nit, however serious it looks.",
+      "rules": [
+        {
+          "id": "L3-186",
+          "kind": "review",
+          "rule": "Another code path, a rare case, a small perf cost, extra compat or style is a nit, however serious it looks.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L51.1",
+      "text": "Done when every finding carries one severity and the invoker can act on each without asking you a question.",
+      "rules": [
+        {
+          "id": "L3-187",
+          "kind": "review",
+          "rule": "The block is done when every finding carries one severity and the invoker can act on each without asking a question.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L54.1",
+      "text": "Close every gate this stage owes under the pinned contract and testing strategy.",
+      "rules": [
+        {
+          "id": "L3-188",
+          "kind": "evidence",
+          "rule": "Close every gate this stage owes under the pinned contract and testing strategy.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L54.2",
+      "text": "A bounded prose-only review may have no runtime gate when its contract names none.",
+      "rules": [
+        {
+          "id": "L3-189",
+          "kind": "evidence",
+          "rule": "A bounded prose-only review may have no runtime gate when its contract names none.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L55.1",
+      "text": "Meaningful code changes retain their specified test obligations; combined merge gates and final G/M release obligations remain mandatory at their stages.",
+      "rules": [
+        {
+          "id": "L3-190",
+          "kind": "evidence",
+          "rule": "Meaningful code changes retain their specified test obligations; combined merge gates and final G/M release obligations remain mandatory at their stages.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L57.1",
+      "text": "Check explicit reconciliation of older active gate contracts rather than silently dropping an obligation.",
+      "rules": [
+        {
+          "id": "L3-191",
+          "kind": "evidence",
+          "rule": "Check explicit reconciliation of older active gate contracts rather than silently dropping an obligation.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L59.1",
+      "text": "[ ] Every gate this stage owes has its contract-named command and result on this candidate.",
+      "rules": [
+        {
+          "id": "L3-192",
+          "kind": "evidence",
+          "rule": "Checklist: every gate this stage owes has its contract-named command and result on this candidate.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L60.1",
+      "text": "[ ] A hop's committed run includes every test its change reaches.",
+      "rules": [
+        {
+          "id": "L3-193",
+          "kind": "evidence",
+          "rule": "Checklist: a hop's committed run includes every test its change reaches.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L61.1",
+      "text": "[ ] Meaningful code changes passed their specified tests.",
+      "rules": [
+        {
+          "id": "L3-194",
+          "kind": "evidence",
+          "rule": "Checklist: meaningful code changes passed their specified tests.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L62.1",
+      "text": "[ ] Combined merge gates passed when this is a merge review.",
+      "rules": [
+        {
+          "id": "L3-195",
+          "kind": "evidence",
+          "rule": "Checklist: combined merge gates passed when this is a merge review.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L63.1",
+      "text": "[ ] Final G/M release obligations passed when this is the final release review.",
+      "rules": [
+        {
+          "id": "L3-196",
+          "kind": "evidence",
+          "rule": "Checklist: final G/M release obligations passed when this is the final release review.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L67.1",
+      "text": "The block is the return, using the `PASS` or `FAIL` form in the communication protocol; its `reviewer/model` field is the reviewer's signature.",
+      "rules": [
+        {
+          "id": "L3-197",
+          "kind": "return",
+          "rule": "The review block is the return, using the PASS or FAIL form in the communication protocol, its reviewer/model field being the signature.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L68.1",
+      "text": "The invoker records it on the work judged: a Project update for a project-plan review, the Merge Ticket for merge review, otherwise the ticket; the PR body carries it under `## Independent review` when a PR exists.",
+      "rules": [
+        {
+          "id": "L3-198",
+          "kind": "linear",
+          "rule": "The invoker records the review block on the work judged: a Project update for a project-plan review, the Merge Ticket for a merge review, otherwise the ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L3-199",
+          "kind": "merge",
+          "rule": "The PR body carries the review block under `## Independent review` when a PR exists.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L70.1",
+      "text": "Return it to the invoker even when a read-only host prevents posting.",
+      "rules": [
+        {
+          "id": "L3-200",
+          "kind": "return",
+          "rule": "Return the block to the invoker even when a read-only host prevents posting.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L73.1",
+      "text": "FAIL means at least one blocker - YOU SHALL NOT PASS.",
+      "rules": [
+        {
+          "id": "L3-201",
+          "kind": "review",
+          "rule": "FAIL means at least one blocker.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L73.2",
+      "text": "PASS means no blocker, and binds this candidate under this contract; it lists its should and nit findings in the form's `Deferred` tail.",
+      "rules": [
+        {
+          "id": "L3-202",
+          "kind": "review",
+          "rule": "PASS means no blocker, binds this candidate under this contract, and lists its should and nit findings in the form's Deferred tail.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L75.1",
+      "text": "There is no unlabelled note: every finding carries its severity and is answered - fixed, ticketed, recorded, or relabelled with evidence - never dropped.",
+      "rules": [
+        {
+          "id": "L3-203",
+          "kind": "review",
+          "rule": "There is no unlabelled note: every finding carries its severity and is answered (fixed, ticketed, recorded, or relabelled with evidence), never dropped.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/reviewer/SKILL.md#L76.1",
+      "text": "A defect the candidate neither created nor exposed is one line after the block, `Observation (out of scope, non-binding):`.",
+      "rules": [
+        {
+          "id": "L3-204",
+          "kind": "review",
+          "rule": "A defect the candidate neither created nor exposed is one line after the block: `Observation (out of scope, non-binding):`.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L3.1",
+      "text": "One question, one source family, passages back, for a researcher who verifies and pools them.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Skill description."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L8.1",
+      "text": "Collect evidence from one source family for one question; you conclude nothing.",
+      "rules": [
+        {
+          "id": "L3-205",
+          "kind": "identity",
+          "rule": "Collect evidence from one source family for one question; the scout concludes nothing.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L12.1",
+      "text": "The question as the researcher stated it, and the one family you own.",
+      "rules": [
+        {
+          "id": "L3-206",
+          "kind": "contract",
+          "rule": "Read the question as the researcher stated it and the one family you own.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L13.1",
+      "text": "From the repository root, read `dydo/understand/about.md`.",
+      "rules": [
+        {
+          "id": "L3-207",
+          "kind": "contract",
+          "rule": "Read dydo/understand/about.md from the repository root.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L14.1",
+      "text": "From the repository root, read `dydo/understand/architecture.md`.",
+      "rules": [
+        {
+          "id": "L3-208",
+          "kind": "contract",
+          "rule": "Read dydo/understand/architecture.md from the repository root.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L18.1",
+      "text": "The question is fixed and the family is yours alone: governing records, the rest of dydo, code and tests, git history, or outside sources.",
+      "rules": [
+        {
+          "id": "L3-209",
+          "kind": "contract",
+          "rule": "The question is fixed and the family is the scout's alone: governing records, the rest of dydo, code and tests, git history, or outside sources.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L19.1",
+      "text": "Read it yourself, in this thread; a scout has no crew.",
+      "rules": [
+        {
+          "id": "L3-210",
+          "kind": "dispatch",
+          "rule": "The scout reads its family itself, in its own thread; a scout has no crew.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L19.2",
+      "text": "The researcher verifies, pools and concludes.",
+      "rules": [
+        {
+          "id": "L3-211",
+          "kind": "identity",
+          "rule": "The researcher verifies, pools and concludes, not the scout.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L24.1",
+      "text": "**Search the whole family.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L24.2",
+      "text": "Every place in it where the answer or a breadcrumb of intent could sit, following references inside the family to their end.",
+      "rules": [
+        {
+          "id": "L3-212",
+          "kind": "research",
+          "rule": "Search every place in the family where the answer or a breadcrumb of intent could sit, following references inside the family to their end.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L25.1",
+      "text": "Done when you can list what you searched and nothing in the family that could bear on the question is left unopened.",
+      "rules": [
+        {
+          "id": "L3-213",
+          "kind": "research",
+          "rule": "Search is done when you can list what you searched and nothing in the family that could bear on the question is left unopened.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L27.1",
+      "text": "**Copy passages, not summaries.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "Step title."
+      }
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L27.2",
+      "text": "For each finding: the exact passage, its citation (URL, DOI, or repository path with commit), and one line on how it bears on the question.",
+      "rules": [
+        {
+          "id": "L3-214",
+          "kind": "research",
+          "rule": "Copy passages, not summaries: for each finding, the exact passage, its citation (URL, DOI, or repository path with commit), and one line on how it bears on the question.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L28.1",
+      "text": "Take the passage from the source that owns the claim: a doc's account of the code is a lead to the code, not a finding.",
+      "rules": [
+        {
+          "id": "L3-215",
+          "kind": "research",
+          "rule": "Take the passage from the source that owns the claim: a doc's account of the code is a lead to the code, not a finding.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L30.1",
+      "text": "Done when every finding is a quotation the researcher can open.",
+      "rules": [
+        {
+          "id": "L3-216",
+          "kind": "research",
+          "rule": "Done when every finding is a quotation the researcher can open.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/crew/scout/SKILL.md#L34.1",
+      "text": "To the researcher: the findings; the leads you could not follow because they leave your family; and, when the family holds nothing, \"nothing here\" with the list of what you searched.",
+      "rules": [
+        {
+          "id": "L3-217",
+          "kind": "return",
+          "rule": "Return to the researcher the findings, the leads that leave your family, and, when the family holds nothing, nothing here with the list of what you searched.",
+          "actors": [
+            "scout"
+          ]
+        }
+      ],
+      "notRule": null
+    }
+  ]
+}
