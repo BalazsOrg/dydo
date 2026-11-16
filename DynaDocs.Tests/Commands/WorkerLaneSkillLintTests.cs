@@ -15,17 +15,24 @@ using DynaDocs.Commands;
 /// project and the hostile command text the guard is tested with (<c>dydo init claude</c>,
 /// <c>dydo ${X} mode set</c>): fixture and corpus, not an instruction to the verifier, whose own
 /// instructions are verify-dydo's SKILL.md, scanned like the rest.</item>
-/// <item>One section of an officer file under <c>skills/roles/officers/</c>: a <c>## </c> section that
-/// says <c>assume no officer role</c>, the line a section carries when a sub-agent is told to read it
-/// alone (the admiral check-in's "Survey - the surveyor"). The rest of an officer file is addressed to
-/// the officer's own top-level session and stays out, as does <c>skills/productivity/</c>, whose skills
-/// the user or an officer invokes at top level (update-dydo, overnight-mode, catch-up).</item>
+/// <item>Officer files under <c>skills/roles/officers/</c>, by where the line <c>assume no officer role</c>
+/// sits, the line a file carries when a sub-agent is told to read it alone. In the text before the first
+/// <c>## </c> (the chief of staff's night-survey resource): the whole file is the sub-agent's. In a
+/// <c>## </c> section (the admiral check-in's "Survey - the surveyor"): that section only. The rest of an
+/// officer file is addressed to the officer's own top-level session and stays out, as does
+/// <c>skills/productivity/</c>, whose skills the user or an officer invokes at top level (update-dydo,
+/// overnight-mode, catch-up).</item>
 /// </list>
 ///
 /// <para>What counts as telling it to run a command: a code span or fenced-code line in that prose that
 /// the guard's own worker-lane scan (<see cref="GuardCommand.FindWorkerBlockedDydoCommand"/>) would
 /// refuse. The lint asks the guard, so no command name is listed here; a dydo word in plain prose, a
 /// <c>dydo/</c> path and <c>dydo.json</c> are not commands.</para>
+///
+/// <para>Every worker-allowed dydo word that prose names is also run by the verify-dydo worker-lane journey:
+/// the journey's hand-written <c>SKILL_COMMANDS</c> must cover each one, read from the same prose by the same
+/// rule (<see cref="GuardCommand.DydoWords"/>), so a skill that starts naming a command fails here until the
+/// journey runs it.</para>
 ///
 /// <para>Skills live only under <c>skills/</c>: the installed host copies (<c>.claude/skills</c>,
 /// <c>.agents/skills</c>) are links <c>setup-skills.mjs</c> projects to it, the Scaffold ships none, and
@@ -48,10 +55,22 @@ public partial class WorkerLaneSkillLintTests
     private static IEnumerable<string> Markdown(string directory) =>
         Directory.EnumerateFiles(directory, "*.md", SearchOption.AllDirectories).Order(StringComparer.Ordinal);
 
-    /// <summary>The sections of an officer file a sub-agent reads: those that tell it to assume no officer role.</summary>
-    internal static IEnumerable<string> SubAgentSections(string officerMarkdown) =>
-        SectionStartRegex().Split(officerMarkdown)
-            .Where(section => section.Contains(SubAgentSectionMarker, StringComparison.OrdinalIgnoreCase));
+    /// <summary>
+    /// The parts of an officer file a sub-agent reads: the whole file when the text before its first
+    /// <c>## </c> tells it to assume no officer role, else each section that does.
+    /// </summary>
+    internal static IEnumerable<string> SubAgentSections(string officerMarkdown)
+    {
+        var firstSection = SectionStartRegex().Match(officerMarkdown);
+        var preamble = firstSection.Success ? officerMarkdown[..firstSection.Index] : officerMarkdown;
+        if (IsMarked(preamble))
+            return [officerMarkdown];
+
+        return SectionStartRegex().Split(officerMarkdown).Where(IsMarked);
+    }
+
+    private static bool IsMarked(string markdown) =>
+        markdown.Contains(SubAgentSectionMarker, StringComparison.OrdinalIgnoreCase);
 
     private static IEnumerable<(string Source, string Prose)> SubAgentProse(string skills)
     {
@@ -159,6 +178,141 @@ public partial class WorkerLaneSkillLintTests
         Assert.Empty(Violations(prose));
     }
 
+    private static string JourneyDriver(string skills) =>
+        File.ReadAllText(Path.Combine(skills, "engineering", "verify-dydo", "scripts", "control_dydo.py"));
+
+    /// <summary>The commands in the driver's <c>SKILL_COMMANDS = (...)</c> tuple, as written there.</summary>
+    internal static List<string> JourneyCommands(string driverSource)
+    {
+        var tuple = JourneyCommandsRegex().Match(driverSource);
+        Assert.True(tuple.Success, "control_dydo.py has no SKILL_COMMANDS tuple");
+        return StringLiteralRegex().Matches(tuple.Groups["items"].Value).Select(item => item.Groups[1].Value).ToList();
+    }
+
+    /// <summary>
+    /// The worker-allowed dydo words <paramref name="prose"/> names in code that no journey command runs.
+    /// A word the worker lane refuses is <see cref="Violations"/>' to report, not this check's.
+    /// </summary>
+    internal static List<string> UnexercisedWords(IEnumerable<string> prose, IEnumerable<string> journeyCommands)
+    {
+        var exercised = journeyCommands.SelectMany(GuardCommand.DydoWords).ToHashSet(StringComparer.Ordinal);
+        var allowed = GuardCommand.WorkerAllowedDydoSubcommands.Concat(GuardCommand.WorkerAllowedDydoOptions).ToHashSet(StringComparer.Ordinal);
+        return prose.SelectMany(CodeText).SelectMany(GuardCommand.DydoWords)
+            .Where(word => allowed.Contains(word) && !exercised.Contains(word))
+            .Distinct(StringComparer.Ordinal).Order(StringComparer.Ordinal).ToList();
+    }
+
+    [Fact]
+    public void JourneyCommands_RunEveryWorkerAllowedCommandSubAgentProseNames()
+    {
+        var skills = SkillsRoot();
+        var prose = SubAgentProse(skills).Select(source => source.Prose);
+
+        var unexercised = UnexercisedWords(prose, JourneyCommands(JourneyDriver(skills)));
+
+        Assert.True(unexercised.Count == 0,
+            "Sub-agent prose names worker-allowed dydo commands that SKILL_COMMANDS in "
+            + "skills/engineering/verify-dydo/scripts/control_dydo.py does not run: "
+            + string.Join(", ", unexercised.Select(word => $"dydo {word}")) + ". Add one invocation each, as the prose writes it.");
+    }
+
+    [Fact]
+    public void JourneyCommands_ReadsTheDriversTupleNotAnEmptyOne()
+    {
+        var commands = JourneyCommands(JourneyDriver(SkillsRoot()));
+
+        Assert.Contains(commands, command => command.StartsWith("dydo survey ", StringComparison.Ordinal));
+        Assert.Contains(commands, command => command.StartsWith("dydo statechart ", StringComparison.Ordinal));
+    }
+
+    // The red case for the coverage rule: prose that names `dydo merge` against a journey that never runs it.
+    [Theory]
+    [InlineData("Run `dydo check`, then `dydo merge 12 --match-head-commit abc`.", "merge")]
+    [InlineData("```sh\ndydo survey P-1\n  dydo graph\n```", "graph")]
+    [InlineData("Run `dydo --version`.", "--version")]
+    public void UnexercisedWords_NamesAWorkerAllowedWordTheJourneyDoesNotRun(string prose, string word)
+    {
+        var journey = new[] { "dydo check", "dydo survey P-DYD-46", "dydo --help" };
+
+        Assert.Equal([word], UnexercisedWords([prose], journey));
+    }
+
+    [Theory]
+    [InlineData("Run `dydo check`, then `dydo merge 12 --match-head-commit abc`.")]
+    [InlineData("Plain prose names dydo merge outside code; `dydo/guides` and `dydo.json` are paths.")]
+    [InlineData("Run `dydo init claude`: a refused word is the other check's, not this one's.")]
+    public void UnexercisedWords_IgnoresWhatTheJourneyRunsProseAndRefusedWords(string prose)
+    {
+        var journey = new[] { "dydo check", "dydo merge 7 --match-head-commit def --match-base-commit ghi" };
+
+        Assert.Empty(UnexercisedWords([prose], journey));
+    }
+
+    [Fact]
+    public void JourneyCommands_ReadsEachLiteralOfTheTuple()
+    {
+        const string driver = """
+            # a comment ("dydo ignored")
+            SKILL_COMMANDS = (
+                "dydo check", "dydo fix dydo/guides",
+                "dydo merge 7 --match-head-commit abc")
+
+
+            def refusal_lists(reason):
+                return "dydo not-in-the-tuple"
+            """;
+
+        Assert.Equal(["dydo check", "dydo fix dydo/guides", "dydo merge 7 --match-head-commit abc"], JourneyCommands(driver));
+    }
+
+    // The red case for a marker in the intro: the whole file is the sub-agent's, later steps included.
+    [Fact]
+    public void SubAgentSections_TakesTheWholeFileWhenTheIntroCarriesTheMarker()
+    {
+        const string officerFile = """
+            # Night survey
+
+            You are the surveyor. Read this resource alone; assume no officer role.
+
+            ## Survey
+            Run `dydo map`.
+
+            ## Fixed dispatch
+            Run `dydo adopt 1`.
+            """;
+
+        var sections = SubAgentSections(officerFile).ToList();
+
+        var whole = Assert.Single(sections);
+        Assert.Equal(officerFile, whole);
+        Assert.Equal(["`dydo map` (dydo map)", "`dydo adopt 1` (dydo adopt)"], Violations(whole));
+    }
+
+    [Fact]
+    public void SubAgentSections_AllowsAWholeFileWithOnlyAllowedCommandsAfterTheMarker()
+    {
+        const string officerFile = """
+            # Night survey
+
+            Read this resource alone; assume no officer role.
+
+            ## Survey
+            Run `dydo survey P-1`.
+            """;
+
+        Assert.Empty(SubAgentSections(officerFile).SelectMany(Violations));
+    }
+
+    [Fact]
+    public void SubAgentSections_ReadsTheNightSurveyFromItsIntroThroughItsSteps()
+    {
+        var nightSurvey = File.ReadAllText(Path.Combine(SkillsRoot(), "roles", "officers", "chief-of-staff", "resources", "night-survey.md"));
+
+        var whole = Assert.Single(SubAgentSections(nightSurvey));
+        Assert.Contains("## Survey", whole);
+        Assert.Contains("## Return", whole);
+    }
+
     // The red case for the decision rule: only a section marked for a sub-agent is its prose.
     [Fact]
     public void SubAgentSections_TakesOnlyTheMarkedSection()
@@ -184,6 +338,12 @@ public partial class WorkerLaneSkillLintTests
         Assert.DoesNotContain("dydo init", section);
         Assert.DoesNotContain("dydo adopt", section);
     }
+
+    [GeneratedRegex(@"(?ms)^SKILL_COMMANDS = \((?<items>.*?)\)\s*$")]
+    private static partial Regex JourneyCommandsRegex();
+
+    [GeneratedRegex("\"([^\"]+)\"")]
+    private static partial Regex StringLiteralRegex();
 
     [GeneratedRegex(@"(?m)^(?=## )")]
     private static partial Regex SectionStartRegex();

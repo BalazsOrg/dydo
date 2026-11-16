@@ -6,8 +6,8 @@
 top-level-only list. A hook call carrying `agent_id` is a sub-agent's, and `Commands/GuardCommand.cs`
 refuses it any dydo word off the first list and prints both lists. The skills hand sub-agents these
 commands: the admiral check-in's surveyor runs `dydo survey`, crew run `dydo statechart` (with its
-`install-skill` and `resume` verbs, which the guard reads as the same first word), the gates, and
-`dydo merge`. The journey does not claim every shell dialect or nudge; `GuardWorkerLaneTests` covers
+`install-skill` and `resume` verbs, which the guard reads as the same first word), the gates, and the
+Merge code-writer's `dydo merge <pr> --match-head-commit <sha> --match-base-commit <sha>`. The journey does not claim every shell dialect or nudge; `GuardWorkerLaneTests` covers
 the guard's parsing.
 
 ## Which callers this is
@@ -29,15 +29,22 @@ installed marker and sends synthetic hook events to the real guard.
 ## Driving it with control-dydo
 
 `drive --run RUN --journey worker-lane` sends, as a sub-agent, `dydo init claude` and reads the
-refusal's two lists. Then each command a skill names (`SKILL_COMMANDS` in the driver) must be allowed,
-and each top-level-only word on the printed list must be refused by name. The same `dydo init claude`
-without `agent_id` is allowed: the refusal is the worker lane's. Capture `worker-lane-verdicts.json`
-and the `guard-*.json` receipts. No requested command is launched.
+refusal's two lists. Then each command a skill names (`SKILL_COMMANDS` in the driver: check, fix, mode,
+pr-ready, merge with its two `--match-*` pins, survey, statechart and its `install-skill` and `resume`
+verbs, `--help`) must be allowed, and each top-level-only word on the printed list must be refused by
+name. The same `dydo init claude` without `agent_id` is allowed: the refusal is the worker lane's.
+Capture `worker-lane-verdicts.json` and the `guard-*.json` receipts. No requested command is launched:
+the merge line is a string the guard reads, never a merge.
 
 ## Gotchas
 
 An exit of 0 alone does not mean allow: PreToolUse decisions are in JSON. The driver's command list
-mirrors the skills by hand; the skill lint test (`WorkerLaneSkillLintTests`) is what keeps every
-command in sub-agent prose worker-allowed, so a command a skill adds is checked there, not here. This
+mirrors the skills by hand, and two tests of `WorkerLaneSkillLintTests` keep it honest from the same
+reading of the sub-agent prose: one fails when prose names a command the worker lane refuses, the other
+(`JourneyCommands_RunEveryWorkerAllowedCommandSubAgentProseNames`) fails when prose names a
+worker-allowed command word that no `SKILL_COMMANDS` entry runs. A skill that adds a command therefore
+fails there until you add its invocation here, as the prose writes it. The prose is the crew and
+engineering skills and the sub-agent parts of the officer files (a file whose intro says "assume no
+officer role" counts whole, otherwise the section that says it), not these feature maps. This
 protocol drive does not prove a real host sends `agent_id` for every sub-agent, and it runs only where
 the driver's Windows containment runs.

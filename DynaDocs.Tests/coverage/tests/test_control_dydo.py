@@ -26,6 +26,7 @@ class ControlDydoContractTests(unittest.TestCase):
         self.head = "pinned\n"
         self.untracked = ""
         self.warned_commands = set()
+        self.worker_allowed = list(self.WORKER_ALLOWED)
         self.run = control.allocate()
 
     def process(self, argv, **options):
@@ -92,9 +93,9 @@ class ControlDydoContractTests(unittest.TestCase):
     def dydo_hook(self, command, sub_agent):
         """The worker lane's answer: a sub-agent passes its allowed words; the refusal prints both lists."""
         word = command.split()[1]
-        if not sub_agent or word in self.WORKER_ALLOWED or word.startswith("-"):
+        if not sub_agent or word in self.worker_allowed or word.startswith("-"):
             return ""
-        reason = ("BLOCKED: Sub-agents may run only these dydo commands: " + ", ".join(self.WORKER_ALLOWED)
+        reason = ("BLOCKED: Sub-agents may run only these dydo commands: " + ", ".join(self.worker_allowed)
                   + " (plus -h/--help/--version).\n  Not allowed here: dydo " + word
                   + "\n  These belong to the top-level session that spawned you: "
                   + ", ".join(self.TOP_LEVEL_ONLY) + ".")
@@ -315,8 +316,7 @@ class ControlDydoContractTests(unittest.TestCase):
 
     def test_worker_lane_fails_when_the_guard_refuses_a_command_a_skill_names(self):
         self.ready()
-        self.WORKER_ALLOWED.remove("survey")
-        self.addCleanup(self.WORKER_ALLOWED.append, "survey")
+        self.worker_allowed.remove("survey")
         with self.assertRaisesRegex(ValueError, "does not list 'survey' as worker-allowed"):
             self.invoke("drive", "worker-lane")
 

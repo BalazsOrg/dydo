@@ -1144,14 +1144,22 @@ public static partial class GuardCommand
     /// longer word or a path (dydo/guides, dydo.json) and is skipped. A matched line therefore blocks
     /// a dydo directory given as its own word, such as dydo check dydo src.
     /// </summary>
-    internal static string? FindWorkerBlockedDydoCommand(string command)
+    internal static string? FindWorkerBlockedDydoCommand(string command) =>
+        DydoWords(command).FirstOrDefault(word => !WorkerAllowedDydoWords.Contains(word));
+
+    /// <summary>
+    /// Every word the worker-lane scan reads after a dydo token in <paramref name="command"/>, in order;
+    /// none when <see cref="IsDydoCommand"/> does not match it. The one reading of "which dydo command
+    /// this line names": the guard's refusal and the skill lint's coverage check both take it from here.
+    /// </summary>
+    internal static IEnumerable<string> DydoWords(string command)
     {
         if (!IsDydoCommand(command))
-            return null;
+            return [];
 
         return DydoTokenRegex().Matches(NormaliseForDydoScan(command))
             .Select(token => token.Groups["word"].Value)
-            .FirstOrDefault(word => word.Length > 0 && !WorkerAllowedDydoWords.Contains(word));
+            .Where(word => word.Length > 0);
     }
 
     /// <summary>

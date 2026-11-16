@@ -213,9 +213,12 @@ def guard_journey(run):
 
 
 # The dydo commands the skills hand a sub-agent, as they write them (the check-in's surveyor, crew
-# gates, a statechart chart, the Merge Sub-ticket): the worker lane must let each one through.
+# gates, a statechart chart, the Merge Sub-ticket's merge): the worker lane must let each one through.
+# Hand-written, so WorkerLaneSkillLintTests fails when sub-agent prose names a worker-allowed command
+# word none of these runs. The merge line is only a string the guard reads; nothing here executes it.
 SKILL_COMMANDS = (
     "dydo check", "dydo fix dydo/guides", "dydo mode show", "dydo pr-ready --body pr-body.md",
+    "dydo merge 123 --match-head-commit 0123abc --match-base-commit 4567def",
     "dydo survey P-DYD-46", "dydo statechart SPEC.tla --skill skills/engineering/statechart --out chart",
     "dydo statechart install-skill --root /work/project", "dydo statechart resume --request request.json",
     "dydo --help")
