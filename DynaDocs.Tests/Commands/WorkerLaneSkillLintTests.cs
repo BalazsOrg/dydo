@@ -181,12 +181,76 @@ public partial class WorkerLaneSkillLintTests
     private static string JourneyDriver(string skills) =>
         File.ReadAllText(Path.Combine(skills, "engineering", "verify-dydo", "scripts", "control_dydo.py"));
 
-    /// <summary>The commands in the driver's <c>SKILL_COMMANDS = (...)</c> tuple, as written there.</summary>
+    /// <summary>
+    /// The commands in the driver's <c>SKILL_COMMANDS = (...)</c> tuple, read as Python reads it: a comment
+    /// (<c>#</c> to end of line) is skipped, a string literal is an entry, and the tuple ends at the first
+    /// <c>)</c> outside both. Anything else (a name, <c>+</c>, an f- or r-string, two literals with no comma
+    /// between them, a nested bracket, an escape other than <c>\\ \" \'</c>, a one-string "tuple") is
+    /// refused with a <see cref="FormatException"/>: the lint reads the tuple or fails, it never guesses.
+    /// </summary>
     internal static List<string> JourneyCommands(string driverSource)
     {
-        var tuple = JourneyCommandsRegex().Match(driverSource);
-        Assert.True(tuple.Success, "control_dydo.py has no SKILL_COMMANDS tuple");
-        return StringLiteralRegex().Matches(tuple.Groups["items"].Value).Select(item => item.Groups[1].Value).ToList();
+        var commands = new List<string>();
+        var sawComma = false;
+        var afterLiteral = false;
+        foreach (var (isComma, text, position) in TupleTokens(driverSource))
+        {
+            if (isComma && !afterLiteral) throw Unsupported(driverSource, position, "a comma with no entry before it");
+            if (!isComma && afterLiteral) throw Unsupported(driverSource, position, "two literals with no comma between them");
+            sawComma |= isComma;
+            afterLiteral = !isComma;
+            if (!isComma) commands.Add(Unescape(text, driverSource, position));
+        }
+
+        if (commands.Count == 0) throw Unsupported(driverSource, driverSource.Length, "an empty tuple");
+        if (commands.Count == 1 && !sawComma) throw Unsupported(driverSource, driverSource.Length, "a parenthesised string, not a tuple");
+        return commands;
+    }
+
+    /// <summary>The literals and commas of the tuple, in order, up to its real closing paren; comments and blanks are skipped.</summary>
+    private static IEnumerable<(bool IsComma, string Text, int Position)> TupleTokens(string source)
+    {
+        var start = JourneyCommandsStartRegex().Match(source);
+        Assert.True(start.Success, "control_dydo.py has no SKILL_COMMANDS tuple");
+
+        var position = start.Index + start.Length;
+        while (position < source.Length)
+        {
+            var token = TupleTokenRegex().Match(source, position);
+            if (!token.Success)
+            {
+                if (source[position] != ')') throw Unsupported(source, position, "syntax the lint does not read");
+                if (!TupleTailRegex().IsMatch(source, position + 1)) throw Unsupported(source, position + 1, "code after the closing paren");
+                yield break;
+            }
+
+            if (token.Groups["comma"].Success || token.Groups["string"].Success)
+                yield return (token.Groups["comma"].Success, token.Value, position);
+            position += token.Length;
+        }
+
+        throw Unsupported(source, source.Length, "a tuple that never closes");
+    }
+
+    private static FormatException Unsupported(string source, int position, string what)
+    {
+        var line = source.Take(position).Count(c => c == '\n') + 1;
+        return new FormatException($"SKILL_COMMANDS in control_dydo.py must be a plain tuple of double- or single-quoted string literals "
+            + $"separated by commas; found {what} (line {line} of the driver). Rewrite it in that shape, or teach this reader the new syntax.");
+    }
+
+    /// <summary>The value of a quoted literal; only the escapes <c>\\</c>, <c>\"</c> and <c>\'</c> are read.</summary>
+    private static string Unescape(string literal, string source, int position)
+    {
+        var value = new System.Text.StringBuilder();
+        for (var i = 1; i < literal.Length - 1; i++)
+        {
+            if (literal[i] != '\\') { value.Append(literal[i]); continue; }
+            var escaped = literal[++i];
+            if (escaped is not ('\\' or '"' or '\'')) throw Unsupported(source, position, $"the escape \\{escaped}");
+            value.Append(escaped);
+        }
+        return value.ToString();
     }
 
     /// <summary>
@@ -223,6 +287,8 @@ public partial class WorkerLaneSkillLintTests
 
         Assert.Contains(commands, command => command.StartsWith("dydo survey ", StringComparison.Ordinal));
         Assert.Contains(commands, command => command.StartsWith("dydo statechart ", StringComparison.Ordinal));
+        Assert.Contains(commands, command => command.StartsWith("dydo merge ", StringComparison.Ordinal));
+        Assert.Contains("dydo --help", commands);
     }
 
     // The red case for the coverage rule: prose that names `dydo merge` against a journey that never runs it.
@@ -263,6 +329,66 @@ public partial class WorkerLaneSkillLintTests
             """;
 
         Assert.Equal(["dydo check", "dydo fix dydo/guides", "dydo merge 7 --match-head-commit abc"], JourneyCommands(driver));
+    }
+
+    // The red case for a commented-out entry: Python no longer runs it, so neither may the lint count it.
+    [Fact]
+    public void JourneyCommands_DoesNotCountACommentedOutEntry()
+    {
+        const string driver = """
+            SKILL_COMMANDS = (
+                "dydo check",
+                # "dydo merge 7 --match-head-commit abc",
+                "dydo --help")  # "dydo survey P-1"
+            """;
+
+        var commands = JourneyCommands(driver);
+
+        Assert.Equal(["dydo check", "dydo --help"], commands);
+        Assert.Equal(["merge"], UnexercisedWords(["Run `dydo merge 12 --match-head-commit abc`."], commands));
+    }
+
+    [Fact]
+    public void JourneyCommands_EndsAtTheRealClosingParenNotOneInsideAString()
+    {
+        const string driver = """
+            SKILL_COMMANDS = (
+                "dydo check ) --not-the-end", 'dydo mode show)',
+                "dydo merge 7 --match-head-commit abc")
+            """;
+
+        Assert.Equal(["dydo check ) --not-the-end", "dydo mode show)", "dydo merge 7 --match-head-commit abc"],
+            JourneyCommands(driver));
+    }
+
+    [Fact]
+    public void JourneyCommands_ReadsSingleQuotesEscapesAndATrailingComma()
+    {
+        const string driver = "SKILL_COMMANDS = (\r\n    'dydo check',\r\n    \"dydo say \\\"hi\\\" \\\\ it\\'s\",\r\n)  # done\r\n";
+
+        Assert.Equal(["dydo check", "dydo say \"hi\" \\ it's"], JourneyCommands(driver));
+    }
+
+    // The red cases for unsupported syntax: read what Python would run or fail, never guess.
+    [Theory]
+    [InlineData("SKILL_COMMANDS = (\n    f\"dydo check\",\n    \"dydo --help\")\n")]
+    [InlineData("SKILL_COMMANDS = (\n    r\"dydo check\",\n    \"dydo --help\")\n")]
+    [InlineData("SKILL_COMMANDS = (\n    \"dydo check\" + \" --help\",\n    \"dydo mode show\")\n")]
+    [InlineData("SKILL_COMMANDS = (\n    \"dydo check\"\n    \"dydo --help\")\n")]
+    [InlineData("SKILL_COMMANDS = (\n    CHECK, \"dydo --help\")\n")]
+    [InlineData("SKILL_COMMANDS = (\n    \"dydo check\", (\"dydo --help\",))\n")]
+    [InlineData("SKILL_COMMANDS = (\n    \"dydo check\", \"dydo --help\") + EXTRA\n")]
+    [InlineData("SKILL_COMMANDS = (\n    \"dydo check\",, \"dydo --help\")\n")]
+    [InlineData("SKILL_COMMANDS = (\n    \"dydo a\\nb\", \"dydo --help\")\n")]
+    [InlineData("SKILL_COMMANDS = (\n    \"\"\"dydo check\"\"\", \"dydo --help\")\n")]
+    [InlineData("SKILL_COMMANDS = (\"dydo check\")\n")]
+    [InlineData("SKILL_COMMANDS = ()\n")]
+    [InlineData("SKILL_COMMANDS = (\n    \"dydo check\",\n    \"dydo --help\"\n")]
+    public void JourneyCommands_RejectsSyntaxItDoesNotRead(string driver)
+    {
+        var failure = Assert.Throws<FormatException>(() => JourneyCommands(driver));
+
+        Assert.Contains("SKILL_COMMANDS", failure.Message);
     }
 
     // The red case for a marker in the intro: the whole file is the sub-agent's, later steps included.
@@ -339,11 +465,16 @@ public partial class WorkerLaneSkillLintTests
         Assert.DoesNotContain("dydo adopt", section);
     }
 
-    [GeneratedRegex(@"(?ms)^SKILL_COMMANDS = \((?<items>.*?)\)\s*$")]
-    private static partial Regex JourneyCommandsRegex();
+    [GeneratedRegex(@"(?m)^SKILL_COMMANDS = \(")]
+    private static partial Regex JourneyCommandsStartRegex();
 
-    [GeneratedRegex("\"([^\"]+)\"")]
-    private static partial Regex StringLiteralRegex();
+    // One token at the scan position, tried in this order: a comment, a quoted literal, a comma, whitespace.
+    [GeneratedRegex(@"\G(?:(?<comment>#[^\r\n]*)|(?<string>""(?:[^""\\\r\n]|\\.)*""|'(?:[^'\\\r\n]|\\.)*')|(?<comma>,)|(?<space>\s+))")]
+    private static partial Regex TupleTokenRegex();
+
+    // After the closing paren only blanks and a comment may finish the line.
+    [GeneratedRegex(@"\G[ \t]*(?:#[^\r\n]*)?(?:\r?\n|\z)")]
+    private static partial Regex TupleTailRegex();
 
     [GeneratedRegex(@"(?m)^(?=## )")]
     private static partial Regex SectionStartRegex();

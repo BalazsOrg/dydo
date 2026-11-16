@@ -43,7 +43,10 @@ mirrors the skills by hand, and two tests of `WorkerLaneSkillLintTests` keep it 
 reading of the sub-agent prose: one fails when prose names a command the worker lane refuses, the other
 (`JourneyCommands_RunEveryWorkerAllowedCommandSubAgentProseNames`) fails when prose names a
 worker-allowed command word that no `SKILL_COMMANDS` entry runs. A skill that adds a command therefore
-fails there until you add its invocation here, as the prose writes it. The prose is the crew and
+fails there until you add its invocation here, as the prose writes it. The test reads the tuple as
+Python does: a commented-out entry is not run and does not count, and a tuple written in any syntax
+beyond plain quoted strings separated by commas (an f-string, a `+`, two literals with no comma) fails
+the test rather than being guessed at. The prose is the crew and
 engineering skills and the sub-agent parts of the officer files (a file whose intro says "assume no
 officer role" counts whole, otherwise the section that says it), not these feature maps. This
 protocol drive does not prove a real host sends `agent_id` for every sub-agent, and it runs only where
