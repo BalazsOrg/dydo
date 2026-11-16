@@ -1146,7 +1146,7 @@ public static partial class GuardCommand
     /// session.
     /// </summary>
     internal static readonly string[] WorkerAllowedDydoSubcommands =
-        ["check", "fix", "gap-check", "graph", "validate", "mode", "clean", "pr-ready", "merge", "help", "version"];
+        ["check", "fix", "gap-check", "graph", "validate", "mode", "clean", "archive", "pr-ready", "merge", "help", "version"];
 
     private static readonly HashSet<string> WorkerAllowedDydoWords =
         new([.. WorkerAllowedDydoSubcommands, "-h", "--help", "--version"], StringComparer.Ordinal);

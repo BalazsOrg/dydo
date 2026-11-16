@@ -14,6 +14,7 @@ public class CommandSmokeTests
         var commands = new Func<System.CommandLine.Command>[]
         {
             AdoptCommand.Create,
+            ArchiveCommand.Create,
             CheckCommand.Create,
             CleanCommand.Create,
             CompleteCommand.Create,
@@ -50,6 +51,7 @@ public class CommandSmokeTests
             var rootCommand = new System.CommandLine.RootCommand("Test")
             {
                 AdoptCommand.Create(),
+                ArchiveCommand.Create(),
                 CheckCommand.Create(),
                 CleanCommand.Create(),
                 CompleteCommand.Create(),
@@ -73,8 +75,8 @@ public class CommandSmokeTests
             // version is the only command created inline in Program.cs
             rootCommand.Subcommands.Add(new System.CommandLine.Command("version", "Test"));
 
-            // Must match Program.cs: 19 Create() commands + 1 inline (version) = 20
-            Assert.Equal(20, rootCommand.Subcommands.Count);
+            // Must match Program.cs: 20 Create() commands + 1 inline (version) = 21
+            Assert.Equal(21, rootCommand.Subcommands.Count);
         });
 
         Assert.Null(exception);

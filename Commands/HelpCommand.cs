@@ -42,6 +42,10 @@ public static class HelpCommand
         Console.WriteLine("  mode set <flag> <val>  Set a mode flag, e.g. mode set overnight on");
         Console.WriteLine("  clean [<worktree>...]  Remove linked worktrees; archives uncommitted work, keeps unmerged branches");
         Console.WriteLine("  clean --all            Every linked worktree (--dry-run first; --archive lists the archive)");
+        Console.WriteLine("  archive branch <name> Archive verified history, then delete the local and same-name remote branch");
+        Console.WriteLine("  archive worktree <p>  Archive every file and index, then remove a linked worktree and its branch");
+        Console.WriteLine("  archive list          List 30-day archives and recovery refs; --dry-run on deletion changes nothing");
+        Console.WriteLine("  archive restore <id>  Restore locally; --branch/--path choose new names; --remote creates absent original ref");
         Console.WriteLine("  pr-ready [path]        Check a PR can be opened: clean tree, HEAD pushed (--body checks the body)");
         Console.WriteLine("  merge <pr> --match-head-commit <sha> --match-base-commit <sha>");
         Console.WriteLine("                         Merge a reviewed PR into its feature/* branch (--dry-run checks only)");

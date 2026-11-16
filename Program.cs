@@ -63,6 +63,7 @@ rootCommand.Subcommands.Add(MapCommand.Create());
 rootCommand.Subcommands.Add(SurveyCommand.Create());
 rootCommand.Subcommands.Add(ModeCommand.Create());
 rootCommand.Subcommands.Add(CleanCommand.Create());
+rootCommand.Subcommands.Add(ArchiveCommand.Create());
 rootCommand.Subcommands.Add(PrReadyCommand.Create());
 rootCommand.Subcommands.Add(MergeCommand.Create());
 rootCommand.Subcommands.Add(StatechartCommand.Create());

@@ -153,7 +153,18 @@ class SelectionTests(unittest.TestCase):
         committed = dotnet_platform.load_selection(root, 'windows')
         found = dotnet_platform.discover_windows_tests(root, committed)
         self.assertEqual(committed['windows_tests']['tests'], list(found))
-        self.assertTrue(all(path.startswith('DynaDocs.Tests/Statechart/') for path in found.values()))
+        archive_tests = {
+            'DynaDocs.Tests.Integration.SafeDeleteTests.PartiallyStagedVersions_IgnoredBinary_EmptyDirectories_RoundTripAfterGc':
+                'DynaDocs.Tests/Integration/SafeDeleteTests.cs',
+            'DynaDocs.Tests.Integration.SafeDeleteTests.DetachedHead_RemainsDetached':
+                'DynaDocs.Tests/Integration/SafeDeleteTests.cs',
+        }
+        self.assertTrue(archive_tests.keys() <= found.keys())
+        for name, path in found.items():
+            if name in archive_tests:
+                self.assertEqual(archive_tests[name], path)
+            else:
+                self.assertTrue(path.startswith('DynaDocs.Tests/Statechart/'))
 
     def test_a_valid_selection_loads_for_both_platforms_and_builds_an_exact_filter(self):
         for platform in dotnet_platform.PLATFORMS:

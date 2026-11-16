@@ -17,7 +17,9 @@
       "DynaDocs.Tests.Statechart.StatechartScratchTests.AuthoritativeDrainDeletesOnlyRegisteredScratch",
       "DynaDocs.Tests.Statechart.StatechartScratchTests.NativeDirectoryPrimitivesRefuseExistingMissingPlainFileAndOccupiedTargets",
       "DynaDocs.Tests.Statechart.StatechartWindowsRunnerTests.ACancelledWindowsCheckStillDrainsAndCleansItsScratch",
-      "DynaDocs.Tests.Statechart.StatechartWindowsRunnerTests.AWindowsCheckPublishesOnlyAVerdictItsExitAgreesWithThenCleansItsScratch"
+      "DynaDocs.Tests.Statechart.StatechartWindowsRunnerTests.AWindowsCheckPublishesOnlyAVerdictItsExitAgreesWithThenCleansItsScratch",
+      "DynaDocs.Tests.Integration.SafeDeleteTests.PartiallyStagedVersions_IgnoredBinary_EmptyDirectories_RoundTripAfterGc",
+      "DynaDocs.Tests.Integration.SafeDeleteTests.DetachedHead_RemainsDetached"
     ]
   },
   "native": {
@@ -78,6 +80,14 @@
         "WaitAsync",
         "DisposeAsync",
         "Expect"
+      ]
+    },
+    "Services/SafeDeleteWindowsMetadata.cs": {
+      "sha256": "672864396ec731c9b1a3187b3cdb6e4d150b10030ab798b630ce06c53cf498b5",
+      "windows": [
+        "Read",
+        "Apply",
+        "CheckStreams"
       ]
     }
   }

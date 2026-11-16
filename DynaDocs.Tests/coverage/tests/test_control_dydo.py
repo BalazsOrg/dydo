@@ -7,6 +7,7 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
+import shutil
 import unittest
 from unittest.mock import patch
 
@@ -93,6 +94,46 @@ class ControlDydoContractTests(unittest.TestCase):
     def ready(self):
         control.launch(self.run)
         return self.run / "scratch/project"
+
+    def test_archive_route_drives_the_candidate_and_retains_roundtrip_evidence(self):
+        self.ready()
+        self.archive_bytes = {}
+        self.child.side_effect = self.archive_process
+        self.assertEqual(0, self.invoke("drive", "archive"))
+        evidence = json.loads((self.run / "evidence/archive-roundtrip.json").read_text())
+        self.assertEqual("staged only\n", evidence["staged"])
+        self.assertTrue(evidence["source_gc"] and evidence["archive_retained"])
+        commands = [call.args[0] for call in self.child.call_args_list]
+        self.assertTrue(any(command[:2] == ["git", "gc"] and "--prune=now" in command for command in commands))
+        self.assertTrue(any(command[2:4] == ["archive", "restore"] for command in commands))
+
+    def archive_process(self, argv, **options):
+        project = self.run / "scratch/archive-project"
+        tree = self.run / "scratch/archive-tree"
+        entry = project / ".git/dydo/safe-delete-archive/fixture-id"
+        if argv[0] == "git":
+            if "worktree" in argv and "add" in argv:
+                tree.mkdir()
+                (tree / "file.txt").write_bytes(b"base\n")
+            if "show" in argv:
+                return subprocess.CompletedProcess(argv, 0, "staged only\n", "")
+            return self.git(argv, options["cwd"])
+        if len(argv) <= 2 or argv[2] != "archive":
+            return self.process(argv, **options)
+        if argv[3] == "worktree":
+            self.archive_bytes.update({str(path.relative_to(tree)): path.read_bytes()
+                                       for path in tree.rglob("*") if path.is_file()})
+            entry.mkdir(parents=True)
+            control.write_json(entry / "manifest.json", {"complete": True})
+            (entry / "commits.bundle").write_bytes(b"nonempty bundle fixture")
+            shutil.rmtree(tree)
+        if argv[3] == "restore":
+            (tree / "ignored/empty").mkdir(parents=True)
+            for name, content in self.archive_bytes.items():
+                path = tree / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_bytes(content)
+        return subprocess.CompletedProcess(argv, 0, "archive command fixture", "")
 
     def test_launch_builds_once_and_doctor_pins_artifacts(self):
         self.ready()
