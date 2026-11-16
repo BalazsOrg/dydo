@@ -207,6 +207,38 @@ public partial class WorkerLaneSkillLintTests
         return commands;
     }
 
+    /// <summary>
+    /// The commands the journey runs: <see cref="JourneyCommands"/> once the driver's <c>worker_lane</c> is shown to
+    /// iterate <c>SKILL_COMMANDS</c> itself. Crediting a tuple the journey never loops over would let an honest edit
+    /// (a second tuple, a slice) stop exercising commands while the lint stays green.
+    /// </summary>
+    internal static List<string> ConsumedJourneyCommands(string driverSource)
+    {
+        var commands = JourneyCommands(driverSource);
+        if (!WorkerLaneLoopsOverTheTuple(driverSource))
+            throw new FormatException("The worker_lane journey in control_dydo.py must loop over SKILL_COMMANDS itself, as `for command in SKILL_COMMANDS:`, "
+                + "or the lint credits commands the journey never runs (a second tuple, a slice, a call, a loop in another function). "
+                + "Restore that loop, or teach this reader the new syntax.");
+        return commands;
+    }
+
+    /// <summary>
+    /// Whether the body of <c>def worker_lane(</c> (to the next column-0 <c>def</c> or <c>class</c>, comments dropped)
+    /// holds a loop header whose iterable is exactly <c>SKILL_COMMANDS</c>.
+    /// </summary>
+    private static bool WorkerLaneLoopsOverTheTuple(string driverSource)
+    {
+        var body = new List<string>();
+        var inside = false;
+        foreach (var line in driverSource.Split('\n'))
+        {
+            if (WorkerLaneDefRegex().IsMatch(line)) inside = true;
+            else if (inside && TopLevelDefinitionRegex().IsMatch(line)) break;
+            if (inside) body.Add(WithoutComment(line));
+        }
+        return JourneyLoopRegex().IsMatch(string.Join('\n', body));
+    }
+
     /// <summary>The literals and commas of the tuple, in order, up to its real closing paren; comments and blanks are skipped.</summary>
     private static IEnumerable<(bool IsComma, string Text, int Position)> TupleTokens(string source)
     {
@@ -301,7 +333,7 @@ public partial class WorkerLaneSkillLintTests
         var skills = SkillsRoot();
         var prose = SubAgentProse(skills).Select(source => source.Prose);
 
-        var unexercised = UnexercisedWords(prose, JourneyCommands(JourneyDriver(skills)));
+        var unexercised = UnexercisedWords(prose, ConsumedJourneyCommands(JourneyDriver(skills)));
 
         Assert.True(unexercised.Count == 0,
             "Sub-agent prose names worker-allowed dydo commands that SKILL_COMMANDS in "
@@ -312,7 +344,7 @@ public partial class WorkerLaneSkillLintTests
     [Fact]
     public void JourneyCommands_ReadsTheDriversTupleNotAnEmptyOne()
     {
-        var commands = JourneyCommands(JourneyDriver(SkillsRoot()));
+        var commands = ConsumedJourneyCommands(JourneyDriver(SkillsRoot()));
 
         Assert.Contains(commands, command => command.StartsWith("dydo survey ", StringComparison.Ordinal));
         Assert.Contains(commands, command => command.StartsWith("dydo statechart ", StringComparison.Ordinal));
@@ -487,6 +519,78 @@ public partial class WorkerLaneSkillLintTests
         Assert.Equal(["dydo check", "dydo merge 1"], JourneyCommands(driver));
     }
 
+    // The default-argument form is a read of the tuple, not a binding; a parameter named like it is one.
+    [Fact]
+    public void JourneyCommands_CountsADefaultArgumentAsAReadAndAParameterAsABinding()
+    {
+        Assert.Equal(["dydo check", "dydo merge 1"],
+            JourneyCommands(RealTuple + "\ndef worker_lane(run, commands=SKILL_COMMANDS):\n    pass\n"));
+        Assert.Equal(["dydo check", "dydo merge 1"],
+            JourneyCommands(RealTuple + "\ndef worker_lane(run, commands: tuple = SKILL_COMMANDS):\n    pass\n"));
+
+        foreach (var parameter in new[] { "SKILL_COMMANDS", "run, SKILL_COMMANDS=()", "run, *SKILL_COMMANDS" })
+        {
+            var failure = Assert.Throws<FormatException>(() => JourneyCommands(RealTuple + $"\ndef worker_lane({parameter}):\n    pass\n"));
+            Assert.Contains("(lines 1, 4)", failure.Message);
+        }
+    }
+
+    private const string TupleAndLoop = RealTuple + "\n\ndef worker_lane(run):\n    \"\"\"Doc.\"\"\"\n    for command in SKILL_COMMANDS:\n        guard(run, command)\n";
+
+    // The red cases for a tuple the journey does not loop over: bound once and read nowhere that runs the commands.
+    [Theory]
+    [InlineData(RealTuple + "SMOKE_COMMANDS = (\"dydo check\", \"dydo --help\")\n\n\ndef worker_lane(run):\n    for command in SMOKE_COMMANDS:\n        guard(run, command)\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    for command in SKILL_COMMANDS[:3]:\n        guard(run, command)\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    for command in SKILL_COMMANDS + EXTRA:\n        guard(run, command)\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    for command in sorted(SKILL_COMMANDS):\n        guard(run, command)\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    for command in SKILL_COMMANDS_EXTRA:\n        guard(run, command)\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    for command, word in SKILL_COMMANDS:\n        guard(run, command)\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    return [guard(run, c) for c in SKILL_COMMANDS]\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    # for command in SKILL_COMMANDS:\n    pass\n")]
+    [InlineData(RealTuple + "\n\ndef other(run):\n    pass\n")]
+    [InlineData(RealTuple + "\n\ndef other(run):\n    for command in SKILL_COMMANDS:\n        guard(run, command)\n\n\ndef worker_lane(run):\n    pass\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    pass\n\n\ndef other(run):\n    for command in SKILL_COMMANDS:\n        guard(run, command)\n")]
+    [InlineData(RealTuple + "\n\nclass Lane:\n    for command in SKILL_COMMANDS:\n        pass\n\n\ndef worker_lane(run):\n    pass\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    pass\n\n\nclass Lane:\n    for command in SKILL_COMMANDS:\n        pass\n")]
+    [InlineData(RealTuple)]
+    public void ConsumedJourneyCommands_RejectsADriverWhoseWorkerLaneDoesNotLoopOverTheTuple(string driver)
+    {
+        var failure = Assert.Throws<FormatException>(() => ConsumedJourneyCommands(driver));
+
+        Assert.Contains("SKILL_COMMANDS", failure.Message);
+        Assert.Contains("worker_lane", failure.Message);
+        Assert.Contains("control_dydo.py", failure.Message);
+    }
+
+    [Theory]
+    [InlineData(TupleAndLoop)]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    for c in SKILL_COMMANDS :  # each one\n        guard(run, c)\n")]
+    [InlineData(RealTuple + "\n\ndef worker_lane(run):\n    for _command2 in SKILL_COMMANDS: guard(run, _command2)\n")]
+    [InlineData(RealTuple + "\n\ndef setup():\n    pass\n\n\ndef worker_lane(run):\n    hook = installed_hook(run)\n    if hook:\n        for command in SKILL_COMMANDS:\n            guard(run, command)\n\n\ndef activation(run):\n    pass\n")]
+    [InlineData("def worker_lane(run, commands):\n    for command in SKILL_COMMANDS:\n        pass\n\n\n" + RealTuple)]
+    public void ConsumedJourneyCommands_AcceptsAWorkerLaneThatLoopsOverTheTuple(string driver)
+    {
+        Assert.Equal(["dydo check", "dydo merge 1"], ConsumedJourneyCommands(driver));
+    }
+
+    // The binding check still comes first: the loop proves nothing about which tuple a second binding leaves.
+    [Fact]
+    public void ConsumedJourneyCommands_StillRejectsASecondBinding()
+    {
+        var failure = Assert.Throws<FormatException>(() => ConsumedJourneyCommands(TupleAndLoop + "SKILL_COMMANDS = ()\n"));
+
+        Assert.Contains("found 2 bindings", failure.Message);
+    }
+
+    // The red cases for a read written as a default argument: the tuple is bound once and the journey loops over it.
+    [Fact]
+    public void ConsumedJourneyCommands_AcceptsTheTupleReadAsADefaultArgument()
+    {
+        const string driver = RealTuple + "\n\ndef worker_lane(run, commands=SKILL_COMMANDS):\n    for command in SKILL_COMMANDS:\n        pass\n";
+
+        Assert.Equal(["dydo check", "dydo merge 1"], ConsumedJourneyCommands(driver));
+    }
+
     // The red case for a marker in the intro: the whole file is the sub-agent's, later steps included.
     [Fact]
     public void SubAgentSections_TakesTheWholeFileWhenTheIntroCarriesTheMarker()
@@ -562,14 +666,25 @@ public partial class WorkerLaneSkillLintTests
     }
 
     // A line that binds the name: an assignment or augmented assignment (also `obj.SKILL_COMMANDS =`), a walrus, a
-    // statement-start annotation, `global`/`nonlocal`/`del`/`import`/`def`/`class` naming it, `as NAME`, and a `for`
-    // target (the tempered part stops at `in`, so `for c in SKILL_COMMANDS` is a read).
+    // statement-start annotation, `global`/`nonlocal`/`del`/`import`/`def`/`class` naming it (but not after an `=`:
+    // `def f(run, commands=SKILL_COMMANDS)` reads it), `as NAME`, and a `for` target (the tempered part stops at
+    // `in`, so `for c in SKILL_COMMANDS` is a read).
     [GeneratedRegex(@"(?<!\w)SKILL_COMMANDS[ \t]*(?::=|(?:[-+*/%&|^@]|//|\*\*|>>|<<)?=(?!=))"
         + @"|^[ \t]*SKILL_COMMANDS[ \t]*:"
-        + @"|\b(?:global|nonlocal|del|import|def|class)\b[^\n]*?(?<!\w)SKILL_COMMANDS\b"
+        + @"|\b(?:global|nonlocal|del|import|def|class)\b[^\n]*?(?<!\w|=[ \t]*)SKILL_COMMANDS\b"
         + @"|\bas[ \t]+SKILL_COMMANDS\b"
         + @"|\bfor[ \t]+(?:(?!\bin\b)[^\n])*?(?<!\w)SKILL_COMMANDS\b")]
     private static partial Regex BindingRegex();
+
+    [GeneratedRegex(@"^def worker_lane\(")]
+    private static partial Regex WorkerLaneDefRegex();
+
+    [GeneratedRegex(@"^(?:def|class) ")]
+    private static partial Regex TopLevelDefinitionRegex();
+
+    // A loop header over the tuple itself: a plain loop name, the iterable exactly SKILL_COMMANDS, then the colon.
+    [GeneratedRegex(@"(?m)^[ \t]*for[ \t]+[A-Za-z_]\w*[ \t]+in[ \t]+SKILL_COMMANDS[ \t]*:")]
+    private static partial Regex JourneyLoopRegex();
 
     [GeneratedRegex(@"(?m)^SKILL_COMMANDS = \(")]
     private static partial Regex JourneyCommandsStartRegex();

@@ -49,7 +49,10 @@ beyond plain quoted strings separated by commas (an f-string, a `+`, two literal
 the test rather than being guessed at. The driver must bind `SKILL_COMMANDS` exactly once, as that
 column-0 tuple: a second binding (a reassignment, a rebinding inside a function, a `for` target, an
 import, an assignment-shaped line in a docstring) fails the test, because Python would run a different
-tuple than the one credited. Reads of the name and comment lines are not bindings. The prose is the crew and
+tuple than the one credited. Reads of the name (a default argument included) and comment lines are not
+bindings. The journey must also consume the tuple: the body of `def worker_lane(` has to hold a loop header
+`for <name> in SKILL_COMMANDS:` over `SKILL_COMMANDS` itself, so a second tuple, a slice, a call or a loop in
+another function fails the test instead of leaving the commands credited but never run. The prose is the crew and
 engineering skills and the sub-agent parts of the officer files (a file whose intro says "assume no
 officer role" counts whole, otherwise the section that says it), not these feature maps. This
 protocol drive does not prove a real host sends `agent_id` for every sub-agent, and it runs only where
