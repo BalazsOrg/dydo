@@ -28,23 +28,27 @@ internal static class SafeDeleteWindowsMetadata
         if (!SetSecurity(path, flags, descriptor)) throw new IOException("Cannot restore Windows permissions; archive retained");
     }
 
+    // Each native call reads its Win32 error in the call's own statement. Anything that runs between two
+    // statements, a coverage visit included, may make P/Invoke calls of its own and replace that error.
     private static void CheckStreams(string path)
     {
         var data = new byte[600];
-        var handle = FindFirstStream(path, 0, data, 0);
+        var (handle, error) = (FindFirstStream(path, 0, data, 0), Marshal.GetLastPInvokeError());
         if (handle == new IntPtr(-1))
         {
-            if (Marshal.GetLastWin32Error() == 38) return;
-            throw new IOException("Cannot establish Windows stream metadata");
+            if (error == 38) return; // ERROR_HANDLE_EOF: no data streams, as for a directory.
+            throw new IOException($"Cannot establish Windows stream metadata: Win32 error {error}");
         }
         try
         {
+            bool more;
             do
             {
                 var name = System.Text.Encoding.Unicode.GetString(data, 8, 592).TrimEnd('\0');
                 if (name != "::$DATA") throw new InvalidDataException("Alternate Windows streams are unsupported; target retained");
-            } while (FindNextStream(handle, data));
-            if (Marshal.GetLastWin32Error() != 38) throw new IOException("Incomplete Windows stream metadata");
+                (more, error) = (FindNextStream(handle, data), Marshal.GetLastPInvokeError());
+            } while (more);
+            if (error != 38) throw new IOException($"Incomplete Windows stream metadata: Win32 error {error}");
         }
         finally { FindClose(handle); }
     }

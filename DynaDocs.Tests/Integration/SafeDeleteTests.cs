@@ -66,9 +66,11 @@ public sealed class SafeDeleteTests : IDisposable
     [Fact] public void DivergentAndReflogTips_RemainReachableAfterGc() => Journey("divergent and reflog history");
     [Fact] public void PartiallyStagedVersions_IgnoredBinary_EmptyDirectories_RoundTripAfterGc() => Journey("partially staged ignored binary and empty directories");
     [Fact] public void DetachedHead_RemainsDetached() => Journey("detached HEAD");
+    [Fact] public void ResolvedStashConflict_UndoRecreatesConflictAfterGc() => Journey("resolved stash conflict undo");
 
     internal void Journey(string journey)
     {
+        if (journey == "resolved stash conflict undo") { ResolvedStashConflictUndo(); return; }
         if (journey == "proof-enabled settled T3 eligibility")
         {
             AddTree();
@@ -137,6 +139,40 @@ public sealed class SafeDeleteTests : IDisposable
         }
         if (journey is "local-only restore" or "explicit remote restore")
             Assert.Equal(journey == "explicit remote restore",Git(Remote,"for-each-ref","refs/heads/topic").Length > 0);
+    }
+
+    // Ordinary stash workflow: after resolving the popped conflict and dropping the stash, the stashed
+    // version survives only in the index's resolve-undo record, so the archive alone must preserve it.
+    private void ResolvedStashConflictUndo()
+    {
+        AddTree();
+        var file = Path.Combine(Tree,"file.txt");
+        File.WriteAllText(file,"unique stashed version\n");
+        Git(Tree,"stash","push","-m","safe-delete stash conflict");
+        var stashed = Git(Tree,"rev-parse","stash@{0}:file.txt");
+        File.WriteAllText(file,"committed topic version\n");
+        Git(Tree,"commit","-am","topic change");
+        Assert.False(GitRunner.RunIsolated(Tree,new Dictionary<string,string>(),"stash","pop").Ok);
+        File.WriteAllText(file,"resolved working version\n");
+        Git(Tree,"add","file.txt");
+        Git(Tree,"stash","drop");
+        var undo = Git(Tree,"ls-files","--resolve-undo");
+        Assert.Contains($" {stashed} 3\tfile.txt",undo);
+        var resolved = Git(Tree,"rev-parse",":file.txt");
+        Assert.True(Run("worktree",Tree) == 0,Output);
+        var id = Id;
+        Assert.False(Directory.Exists(Tree));
+        Git(Main,"reflog","expire","--expire=now","--all"); Git(Main,"gc","--prune=now");
+        Assert.False(GitRunner.RunIsolated(Main,new Dictionary<string,string>(),"cat-file","-e",stashed).Ok);
+        Assert.True(Run("restore",id) == 0,Output);
+        Assert.Equal(undo,Git(Tree,"ls-files","--resolve-undo"));
+        Assert.Equal(resolved,Git(Tree,"rev-parse",":file.txt"));
+        Assert.Equal("resolved working version\n",File.ReadAllText(file));
+        Assert.Equal("unique stashed version",Git(Tree,"cat-file","blob",stashed));
+        Git(Tree,"checkout","-m","--","file.txt");
+        Assert.Equal(undo,Git(Tree,"ls-files","--unmerged"));
+        var conflict = File.ReadAllText(file);
+        Assert.Contains("committed topic version",conflict); Assert.Contains("unique stashed version",conflict);
     }
 
     internal void Refusal(string refusal)

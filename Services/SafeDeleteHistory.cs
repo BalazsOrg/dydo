@@ -82,22 +82,32 @@ internal static class SafeDeleteHistory
         var shared = SafeDeleteGit.Require(cwd, "rev-parse", "--shared-index-path");
         if (!string.IsNullOrEmpty(shared)) throw new InvalidDataException("Split index is unsupported; expand the index first");
         SafeDeletePaths.Write(Path.Combine(entry, "index"), File.ReadAllBytes(index));
-        manifest.IndexEntries = Convert.ToBase64String(SafeDeleteGit.Read(cwd, "ls-files", "--stage", "-z").Output);
-        var oids = IndexObjects(manifest.IndexEntries);
+        manifest.IndexEntries = IndexListing(cwd, "--stage");
+        manifest.ResolveUndoEntries = IndexListing(cwd, "--resolve-undo");
+        var oids = IndexObjects(manifest);
         SafeDeleteGit.Stream(cwd, string.Concat(oids.Select(oid => oid + "\n")), null, Path.Combine(entry, "index-objects.pack"), "pack-objects", "--stdout");
     }
 
-    internal static string[] IndexObjects(string encoded)
+    // The index's blob dependencies: every current stage and every resolve-undo stage. A resolved
+    // conflict's undo record can be the only reference to a version, such as a dropped stash's.
+    internal static string IndexListing(string cwd, string kind)
     {
-        var entries = Encoding.UTF8.GetString(Convert.FromBase64String(encoded)).Split('\0', StringSplitOptions.RemoveEmptyEntries);
-        var result = new HashSet<string>();
-        foreach (var entry in entries)
+        var result = SafeDeleteGit.Read(cwd, "ls-files", kind, "-z");
+        if (!result.Ok) throw new InvalidDataException("Cannot read index entries");
+        return Convert.ToBase64String(result.Output);
+    }
+
+    internal static string[] IndexObjects(SafeDeleteManifest manifest) =>
+        ListedObjects(manifest.IndexEntries).Concat(ListedObjects(manifest.ResolveUndoEntries)).Distinct().ToArray();
+
+    private static IEnumerable<string> ListedObjects(string encoded)
+    {
+        foreach (var entry in Encoding.UTF8.GetString(Convert.FromBase64String(encoded)).Split('\0', StringSplitOptions.RemoveEmptyEntries))
         {
             var fields = entry.Split(' ', 3);
             if (fields.Length != 3 || fields[0] == "160000") throw new InvalidDataException("Gitlink/submodule index requires independent preservation and is unsupported");
-            result.Add(fields[1]);
+            yield return fields[1];
         }
-        return result.ToArray();
     }
 
     internal static void Import(string cwd, string entry, SafeDeleteManifest manifest)
@@ -116,13 +126,13 @@ internal static class SafeDeleteHistory
         }
         foreach (var tip in manifest.Tips)
             if (SafeDeleteGit.Require(cwd, "cat-file", "-t", tip.Oid) != "commit") throw new InvalidDataException("Archived commit missing");
-        foreach (var oid in IndexObjects(manifest.IndexEntries)) SafeDeleteGit.Require(cwd, "cat-file", "-e", oid);
+        foreach (var oid in IndexObjects(manifest)) SafeDeleteGit.Require(cwd, "cat-file", "-e", oid);
     }
 
     internal static void CheckDependencies(string cwd, SafeDeleteManifest manifest)
     {
         var objects = SafeDeleteGit.Require(cwd, ["rev-list", "--objects", "--no-object-names", .. manifest.Tips.Select(t => t.Oid)]).Split('\n', StringSplitOptions.RemoveEmptyEntries)
-            .Concat(IndexObjects(manifest.IndexEntries)).Distinct().ToArray();
+            .Concat(IndexObjects(manifest)).Distinct().ToArray();
         using var process = Process.Start(GitRunner.IsolatedStartInfo(cwd, SafeDeleteGit.Environment, "cat-file", "--batch"))!;
         var errors = process.StandardError.ReadToEndAsync();
         var input = Task.Run(async () =>

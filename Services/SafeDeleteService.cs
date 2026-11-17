@@ -330,10 +330,13 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         SafeDeleteFiles.RestoreRoot(path, manifest);
     }
 
+    // The copied index's stage and resolve-undo listings must equal the manifest's, whose every
+    // object Import and CheckDependencies already proved present in the fresh proof object store.
     private static void CheckReconstruction(string path, SafeDeleteManifest manifest)
     {
         if (!SafeDeleteFiles.RootMatches(path, manifest) || !SafeDeleteFiles.Capture(path).SequenceEqual(manifest.Files) || SafeDeleteGit.Status(path) != manifest.Status
-            || Convert.ToBase64String(SafeDeleteGit.Read(path, "ls-files", "--stage", "-z").Output) != manifest.IndexEntries)
+            || SafeDeleteHistory.IndexListing(path, "--stage") != manifest.IndexEntries
+            || SafeDeleteHistory.IndexListing(path, "--resolve-undo") != manifest.ResolveUndoEntries)
             throw new InvalidDataException("Reconstructed file/index/status snapshot differs");
     }
 

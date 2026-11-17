@@ -28,5 +28,6 @@ internal sealed class SafeDeleteManifest
     public int RootAttributes { get; set; }
     public string? RootWindowsSecurity { get; set; }
     public string IndexEntries { get; set; } = "";
+    public string ResolveUndoEntries { get; set; } = "";
     public string DeleteOutcome { get; set; } = "not started";
 }

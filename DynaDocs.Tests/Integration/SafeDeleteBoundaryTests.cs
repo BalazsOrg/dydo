@@ -283,6 +283,115 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Contains("A intent.txt",SafeDeleteTests.Git(fixture.Tree,"status","--porcelain"));
     }
 
+    // Records three unique versions as a resolved conflict: afterwards only resolve-undo references them.
+    private static string[] ResolveThreeUniqueStages(SafeDeleteTests fixture)
+    {
+        var oids = new[] { "unique ancestor", "unique ours", "unique theirs" }.Select((text, index) =>
+        {
+            var source = Path.Combine(fixture.Root,$"stage-{index}");
+            File.WriteAllText(source,text + "\n");
+            return SafeDeleteTests.Git(fixture.Tree,"hash-object","-w","--",source);
+        }).ToArray();
+        var output = Path.Combine(fixture.Root,"resolve-undo-index-info");
+        SafeDeleteGit.Stream(fixture.Tree,$"0 {new string('0',40)}\tfile.txt\n" + string.Concat(oids.Select((oid, index) => $"100644 {oid} {index + 1}\tfile.txt\n")),null,output,"update-index","--index-info");
+        File.WriteAllText(Path.Combine(fixture.Tree,"file.txt"),"resolved working version\n");
+        SafeDeleteTests.Git(fixture.Tree,"add","file.txt");
+        var undo = SafeDeleteTests.Git(fixture.Tree,"ls-files","--resolve-undo");
+        Assert.All(oids, oid => Assert.Contains(oid,undo));
+        return oids;
+    }
+
+    [Fact]
+    public void EveryResolveUndoStage_SurvivesSourceGcAndRecreatesTheConflict()
+    {
+        using var fixture = new SafeDeleteTests(); fixture.AddTree();
+        var oids = ResolveThreeUniqueStages(fixture);
+        var undo = SafeDeleteTests.Git(fixture.Tree,"ls-files","--resolve-undo");
+        Assert.True(fixture.Run("worktree",fixture.Tree) == 0,fixture.Output);
+        var id = fixture.Id;
+        SafeDeleteTests.Git(fixture.Main,"reflog","expire","--expire=now","--all"); SafeDeleteTests.Git(fixture.Main,"gc","--prune=now");
+        Assert.All(oids, oid => Assert.False(SafeDeleteGit.Read(fixture.Main,"cat-file","-e",oid).Ok));
+        Assert.True(fixture.Run("restore",id) == 0,fixture.Output);
+        Assert.Equal(undo,SafeDeleteTests.Git(fixture.Tree,"ls-files","--resolve-undo"));
+        Assert.Equal(["unique ancestor","unique ours","unique theirs"],oids.Select(oid => SafeDeleteTests.Git(fixture.Tree,"cat-file","blob",oid)));
+        SafeDeleteTests.Git(fixture.Tree,"checkout","-m","--","file.txt");
+        Assert.Equal(undo,SafeDeleteTests.Git(fixture.Tree,"ls-files","--unmerged"));
+    }
+
+    [Fact]
+    public void ResolveUndoBlobMissingFromProofPack_RefusesBeforePublishingOrDeleting()
+    {
+        using var fixture = new SafeDeleteTests(); fixture.AddTree();
+        ResolveThreeUniqueStages(fixture);
+        var undo = SafeDeleteTests.Git(fixture.Tree,"ls-files","--resolve-undo");
+        fixture.Dependencies.Checkpoint = point =>
+        {
+            if (point != "before-proof") return;
+            // Replace the archived pack with one holding only the current index stages.
+            var pack = Directory.GetFiles(fixture.ArchiveRoot,"index-objects.pack",SearchOption.AllDirectories).Single();
+            var current = Path.Combine(fixture.Root,"current-stages.pack");
+            var stages = SafeDeleteTests.Git(fixture.Tree,"ls-files","--stage").Split('\n').Select(line => line.Split(' ')[1]);
+            SafeDeleteGit.Stream(fixture.Tree,string.Concat(stages.Select(oid => oid + "\n")),null,current,"pack-objects","--stdout");
+            File.Copy(current,pack,true);
+        };
+        Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
+        Assert.True(Directory.Exists(fixture.Tree)); Assert.True(fixture.Has("refs/heads/topic"));
+        Assert.Equal(undo,SafeDeleteTests.Git(fixture.Tree,"ls-files","--resolve-undo"));
+        Assert.DoesNotContain(Directory.GetDirectories(fixture.ArchiveRoot), p => !Path.GetFileName(p).StartsWith('.'));
+    }
+
+    [Fact]
+    public void ResolveUndoListingDisagreeingWithTheArchivedIndex_RefusesRestore()
+    {
+        using var fixture = new SafeDeleteTests(); fixture.AddTree();
+        ResolveThreeUniqueStages(fixture);
+        Assert.True(fixture.Run("worktree",fixture.Tree) == 0,fixture.Output);
+        var manifest = fixture.Manifest();
+        Assert.NotEqual("",manifest.ResolveUndoEntries);
+        manifest.ResolveUndoEntries = "";
+        fixture.Save(manifest);
+        Assert.Equal(2,fixture.Run("restore",manifest.Id));
+        Assert.Contains("index/status snapshot differs",fixture.Output);
+        Assert.False(Directory.Exists(fixture.Tree)); Assert.False(fixture.Has("refs/heads/topic"));
+    }
+
+    public static TheoryData<string> AllocationTargets() => new()
+    {
+        // A missing target on the root volume, and one under the (8.3 short-named on hosted Windows) temp path.
+        Path.Combine(Path.GetPathRoot(Path.GetTempPath())!,"dydo-missing-" + Guid.NewGuid().ToString("N"),"child"),
+        Path.Combine(Path.GetTempPath(),"dydo-missing-" + Guid.NewGuid().ToString("N"),"child")
+    };
+
+    [Theory]
+    [MemberData(nameof(AllocationTargets))]
+    public void DefaultAllocationVolume_IdentifiesTheContainingVolumeOfMissingTargets(string target)
+    {
+        Assert.False(Path.Exists(target));
+        var (available, total) = new SafeDeleteDependencies().Space(target);
+        Assert.InRange(total,1,long.MaxValue); Assert.InRange(available,0,total);
+    }
+
+    [Fact]
+    public void DefaultAllocationVolume_RefusesAnUnknownVolume()
+    {
+        if (!OperatingSystem.IsWindows()) return; // Every absolute Unix path lies on some mount; Windows UNC shares do not.
+        Assert.Throws<IOException>(() => new SafeDeleteDependencies().Space(@"\\dydo-unknown-host\share\child"));
+    }
+
+    [Fact]
+    public void WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams()
+    {
+        if (!OperatingSystem.IsWindows()) return; // NTFS stream enumeration is Windows-native.
+        using var fixture = new SafeDeleteTests();
+        var empty = Path.Combine(fixture.Root,"empty"); Directory.CreateDirectory(empty);
+        var file = Path.Combine(fixture.Root,"file.bin"); File.WriteAllBytes(file,[0,255,1,0]);
+        Assert.NotEmpty(SafeDeleteWindowsMetadata.Read(empty));
+        Assert.NotEmpty(SafeDeleteWindowsMetadata.Read(fixture.Root));
+        Assert.NotEmpty(SafeDeleteWindowsMetadata.Read(file));
+        File.WriteAllText(file + ":hidden","alternate stream\n");
+        Assert.Contains("Alternate Windows streams",Assert.Throws<InvalidDataException>(() => SafeDeleteWindowsMetadata.Read(file)).Message);
+    }
+
     [Theory]
     [InlineData("{\"archive\":{\"reserveBytes\":1.5}}")]
     [InlineData("{\"archive\":{\"reservePercent\":-1}}")]

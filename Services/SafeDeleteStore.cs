@@ -66,7 +66,7 @@ internal sealed class SafeDeleteStore(string root, TextWriter output)
     {
         if (manifest.Tips == null || manifest.Files == null || manifest.PayloadHashes == null || manifest.GitMetadata == null || manifest.GitConfig == null
             || manifest.Tips.Any(t => t == null || t.Id == null) || manifest.Files.Any(f => f == null)
-            || manifest.Status == null || manifest.IndexEntries == null)
+            || manifest.Status == null || manifest.IndexEntries == null || manifest.ResolveUndoEntries == null)
             throw new InvalidDataException("Null archive metadata");
         var keys = new[] { "core.filemode", "core.ignorecase", "core.symlinks", "core.autocrlf", "core.eol" };
         if (manifest.GitConfig.Any(pair => !keys.Contains(pair.Key, StringComparer.Ordinal) || pair.Value == null || pair.Value.Any(char.IsControl)))

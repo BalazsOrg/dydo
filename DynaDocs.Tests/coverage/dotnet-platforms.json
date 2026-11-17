@@ -83,7 +83,7 @@
       ]
     },
     "Services/SafeDeleteWindowsMetadata.cs": {
-      "sha256": "672864396ec731c9b1a3187b3cdb6e4d150b10030ab798b630ce06c53cf498b5",
+      "sha256": "f9a3c95bb2bcf8e3bbec4a337aefec7358684fa15f5e782cd2f10c52b06ab90e",
       "windows": [
         "Read",
         "Apply",

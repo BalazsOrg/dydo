@@ -6,7 +6,13 @@ internal static class SafeDeletePaths
 {
     internal static StringComparison Comparison => OperatingSystem.IsWindows() ? StringComparison.OrdinalIgnoreCase : StringComparison.Ordinal;
     internal static bool Same(string a, string b) => string.Equals(Path.TrimEndingDirectorySeparator(Path.GetFullPath(a)), Path.TrimEndingDirectorySeparator(Path.GetFullPath(b)), Comparison);
-    internal static bool Within(string path, string root) => Same(path, root) || Path.GetFullPath(path).StartsWith(Path.TrimEndingDirectorySeparator(Path.GetFullPath(root)) + Path.DirectorySeparatorChar, Comparison);
+    internal static bool Within(string path, string root)
+    {
+        // A volume root such as "/" or "C:\" already ends in its separator; never double it.
+        var parent = Path.GetFullPath(root);
+        if (!Path.EndsInDirectorySeparator(parent)) parent += Path.DirectorySeparatorChar;
+        return Same(path, root) || Path.GetFullPath(path).StartsWith(parent, Comparison);
+    }
 
     internal static void NoLinks(string path)
     {

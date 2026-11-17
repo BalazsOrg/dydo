@@ -18,6 +18,7 @@ Feature: Safe delete archives unique work before removal
       | unfetched remote |
       | divergent and reflog history |
       | partially staged ignored binary and empty directories |
+      | resolved stash conflict undo |
       | detached HEAD |
       | local-only restore |
       | explicit remote restore |
