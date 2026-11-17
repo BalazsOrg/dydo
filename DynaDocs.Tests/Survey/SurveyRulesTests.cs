@@ -14,12 +14,17 @@ public class SurveyRulesTests
 
     private static MapIssue Issue(
         int number, string type = "unstarted", string? assignee = null, int? parent = null,
-        bool external = false, params string[] labels) => new(
-        $"id-{number}", $"DYD-{number}", $"Issue {number}", $"https://linear.app/x/issue/DYD-{number}",
-        new MapIssueState(StateNames[type], type, "#000000"), assignee, parent is { } p ? $"id-{p}" : null,
-        new MapIssueTeam("t-dyd", "DYD"),
-        external ? new MapIssueProject("p-other", "Other") : new MapIssueProject("p-map", "Map"),
-        [.. labels.Select(label => new MapLabel(label, "#000000"))]);
+        bool external = false, params string[] labels)
+    {
+        if (labels.Length == 0)
+            labels = ["Feature"];
+        return new(
+            $"id-{number}", $"DYD-{number}", $"Issue {number}", $"https://linear.app/x/issue/DYD-{number}",
+            new MapIssueState(StateNames[type], type, "#000000"), assignee, parent is { } p ? $"id-{p}" : null,
+            new MapIssueTeam("t-dyd", "DYD"),
+            external ? new MapIssueProject("p-other", "Other") : new MapIssueProject("p-map", "Map"),
+            [.. labels.Select(label => new MapLabel(label, "#000000"))]);
+    }
 
     private static MapRelation Blocks(int from, int to) => new($"r-{from}-{to}", "blocks", $"id-{from}", $"id-{to}");
 
@@ -106,6 +111,86 @@ public class SurveyRulesTests
         Assert.Equal(["DYD-1"], Kinds(findings, "pickable"));
         Assert.Equal(["DYD-2"], Kinds(findings, "unblocked"));
         Assert.Contains("pickable DYD-1 Issue 1 — unstarted, unassigned, no open blocker", Lines(findings));
+    }
+
+    [Theory]
+    [InlineData("Feature")]
+    [InlineData("Bug")]
+    [InlineData("Merge")]
+    [InlineData("Enablement")]
+    [InlineData("Prototype")]
+    [InlineData("bUg")]
+    public void Offers_OnlyUnassignedCaptainHeldTickets(string label)
+    {
+        var findings = Survey(
+            [Issue(1, labels: ["AFK", label, "should"]), Issue(2, "backlog", labels: label),
+                Issue(3, assignee: "Balazs", labels: label), Issue(4, "backlog", "Balazs", labels: label)]);
+
+        Assert.Equal(["DYD-1"], Kinds(findings, "pickable"));
+        Assert.Equal(["DYD-2"], Kinds(findings, "uncontracted"));
+    }
+
+    [Theory]
+    [InlineData("Question", "unstarted", "pickable")]
+    [InlineData("Question", "backlog", "uncontracted")]
+    [InlineData("Research", "unstarted", "pickable")]
+    [InlineData("Research", "backlog", "uncontracted")]
+    [InlineData("Grilling", "unstarted", "pickable")]
+    [InlineData("Grilling", "backlog", "uncontracted")]
+    [InlineData("Walkthrough", "unstarted", "pickable")]
+    [InlineData("Walkthrough", "backlog", "uncontracted")]
+    [InlineData("Inquisition", "unstarted", "pickable")]
+    [InlineData("Inquisition", "backlog", "uncontracted")]
+    [InlineData("iNqUiSiTiOn", "unstarted", "pickable")]
+    [InlineData("iNqUiSiTiOn", "backlog", "uncontracted")]
+    [InlineData("Unknown", "unstarted", "pickable")]
+    [InlineData("Unknown", "backlog", "uncontracted")]
+    public void Offers_SkipMapHolderTypesAndInquisitions(string label, string state, string kind)
+    {
+        var findings = Survey([Issue(1, state, labels: label)]);
+
+        Assert.Empty(Kinds(findings, kind));
+    }
+
+    [Fact]
+    public void Offers_DoNotRecommissionAReleasedTodoInquisition_OnRepeatedTicks()
+    {
+        List<MapIssue> issues = [Issue(1, labels: "Inquisition")];
+        const string content = "## Lane ledger\n- DYD-1 released DYD-1: verification skill first\n";
+
+        for (var tick = 0; tick < 2; tick++)
+        {
+            var findings = Survey(issues, content: content);
+
+            Assert.Empty(Kinds(findings, "pickable"));
+            Assert.Empty(Kinds(findings, "uncontracted"));
+        }
+    }
+
+    [Fact]
+    public void Offers_RequireACaptainHeldType_NotJustAModeOrNoLabels()
+    {
+        var findings = Survey(
+            [Issue(1) with { Labels = [] }, Issue(2, "backlog") with { Labels = [] },
+                Issue(3, labels: "AFK"), Issue(4, "backlog", labels: "AFK")]);
+
+        Assert.Empty(Kinds(findings, "pickable"));
+        Assert.Empty(Kinds(findings, "uncontracted"));
+    }
+
+    [Theory]
+    [InlineData("Feature", "nit")]
+    [InlineData("Bug", "NIT")]
+    [InlineData("Merge", "nit")]
+    [InlineData("Enablement", "nit")]
+    [InlineData("Prototype", "nit")]
+    public void Offers_SkipNitTickets_EvenWithACaptainHeldType(string label, string severity)
+    {
+        var findings = Survey(
+            [Issue(1, labels: ["AFK", severity, label]), Issue(2, "backlog", labels: [label, severity])]);
+
+        Assert.Empty(Kinds(findings, "pickable"));
+        Assert.Empty(Kinds(findings, "uncontracted"));
     }
 
     [Fact]

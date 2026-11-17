@@ -65,7 +65,7 @@ public sealed class SurveyCommandTests : IDisposable
     public async Task ARead_PrintsTheHeaderInUtc_ThenOneLinePerFinding()
     {
         _linear.Serve(call => call.Operation == "ProjectIssues"
-            ? IssuesPage(Node(Issue("1")))
+            ? IssuesPage(Node(Issue("1", labels: Labels("Feature:#BB87FC"))))
             : ProjectContent("\"## Ledger\\n- DYD-1 lane\""));
 
         var (exitCode, stdout, stderr) = await Run("25acbbb9a90b");
@@ -108,7 +108,7 @@ public sealed class SurveyCommandTests : IDisposable
     public async Task AnArchivedBlocker_IsNoBlocker()
     {
         _linear.Serve(call => call.Operation == "ProjectIssues"
-            ? IssuesPage(Node(Issue("1"), inverseRelations: Connection(
+            ? IssuesPage(Node(Issue("1", labels: Labels("Feature:#BB87FC")), inverseRelations: Connection(
                 Incoming("r9", "blocks", Issue("9", state: Done, project: InOther, archivedAt: "\"2026-11-01T00:00:00.000Z\"")))))
             : ProjectContent("\"## Ledger\\n- DYD-1 lane\""));
 

@@ -1,0 +1,35 @@
+{
+  "head": "cc5e07ec5b886710e91be24cfeacba7d588fbb02",
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-3ae3ad83-9266c9f1446abf64",
+  "argv": [
+    "/var/tmp/dydo-gate-lock.sh",
+    "env",
+    "MSBUILDDISABLENODEREUSE=1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+    "UseSharedCompilation=false",
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=8G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "3600",
+    "dotnet",
+    "test",
+    "DynaDocs.Tests",
+    "--filter",
+    "FullyQualifiedName~Survey"
+  ],
+  "dirty_files": {
+    "DynaDocs.Tests/Features/survey.feature": "4c66bd768efeafed861cfcb2502637e76822c6ae3d3f827a814689c499bab223",
+    "DynaDocs.Tests/Survey/SurveyCommandTests.cs": "f07988d177d0b55f7d204af4861d4f3542add470d80c3fa3c6f54671c4ca3119",
+    "DynaDocs.Tests/Survey/SurveyRulesTests.cs": "42a2ec4a83a2de63abe60daa431ff1678a64410c68a8cf72a17cf3bec243472b",
+    "dydo/reference/linear-workspace-standard.md": "0f940fe4be37ee25e2f2cb5155b47c2a71365fa6384d9eae594848791a1de1c6"
+  },
+  "exit": 1
+}

@@ -1,0 +1,26 @@
+Running as unit: run-p354886-i142863768.scope; invocation ID: 7571b9c64d964720b75816393130c48f
+dotnet:
+  test: configured
+  static: configured
+  coverage: configured
+  mutation: unavailable: Pending DYD-103
+python:
+  test: configured
+  static: configured
+  coverage: configured
+  mutation: unavailable: Pending DYD-103
+node:
+  test: configured
+  static: configured
+  coverage: configured
+  mutation: unavailable: Pending DYD-103
+viewer:
+  test: configured
+  static: configured
+  coverage: configured
+  mutation: unavailable: No mutation mechanism is adopted for TypeScript; the DYD-103 lane the other stacks cite is canceled
+statechart:
+  test: configured
+  static: configured
+  coverage: configured
+  mutation: unavailable: No mutation mechanism is adopted for TypeScript; the DYD-103 lane the other stacks cite is canceled

@@ -49,7 +49,9 @@ every chain spawn, and nothing else flips it.
 ticket or the landing into main; a Merge Sub-ticket never enters it, since it runs the chain and closes. `In Review` on the
 board always means a reviewer is running. A ticket with an open native blocker is blocked in any
 status; do not add a `Blocked` status that can drift from Linear's dependency graph. Assignment is
-the claim: assigned means taken; unassigned, `Todo` and unblocked means pickable.
+the claim: assigned means taken; an unassigned, unblocked `Todo` with a captain-held Type is pickable,
+subject to the Type exceptions. The survey's generic `pickable` and `uncontracted` offers exclude
+`Inquisition` and `nit` tickets. An Inquisition is commissioned or resumed explicitly by the map holder.
 
 A `FutureFeature` is promoted by the user alone: at ticket grain it gains a Type and moves to `Backlog`
 or `Todo` on the same record; at Project or Initiative grain that record is created and linked and
