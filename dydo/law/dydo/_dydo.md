@@ -12,7 +12,7 @@ type: hub
 - [Design](./design.md) - Principles
 - [Review](./review.md) - Principles
 - [Verification](./verification.md) - Principles
-- [Case Studies](./cases/README.md) - Optional git records of origins
+- [Case Studies](./cases/readme.md) - Optional git records of origins
 - [Retired Principles](./retired.md) - Retirement record
 
 ## Related

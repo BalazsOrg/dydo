@@ -8,7 +8,7 @@ type: hub
 Shortlist pending F14 backfill; nothing enacted.
 
 - [Axioms](./axioms.md) - Pending
-- [Case Studies](./cases/README.md) - No enacted case studies
+- [Case Studies](./cases/readme.md) - No enacted case studies
 - [Retired Principles](./retired.md) - Empty retirement record
 
 ## Related
