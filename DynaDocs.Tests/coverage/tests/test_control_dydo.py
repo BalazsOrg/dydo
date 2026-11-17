@@ -350,6 +350,9 @@ class ControlDydoContractTests(unittest.TestCase):
         self.assertEqual(0, self.invoke("drive", "worker-lane"))
         receipts = [json.loads(path.read_text()) for path in (self.run / "evidence").glob("guard-*.json")]
         sent =[self.sent_and_decided(row) for row in receipts]
+        for event, _ in sent:
+            self.assertEqual("Bash", event.get("tool_name"), event)
+            self.assertEqual("PreToolUse", event.get("hook_event_name"), event)
         sub_agent = [(event, decision) for event, decision in sent if "agent_id" in event]
         for event, _ in sub_agent:
             self.assertTrue(event["agent_id"], f"empty agent_id sent with {event['tool_input']['command']!r}")
@@ -372,6 +375,26 @@ class ControlDydoContractTests(unittest.TestCase):
         for call in self.child.call_args_list:
             self.assertNotIn("survey", call.args[0])
             self.assertNotIn("statechart", call.args[0])
+
+    def test_worker_lane_probes_feature_map_invocation_variants(self):
+        # Independent of SKILL_COMMANDS: worker-lane.md promises these invocation forms.
+        required_commands = (
+            "dydo check", "dydo fix dydo/guides", "dydo mode show", "dydo pr-ready --body pr-body.md",
+            "dydo merge 123 --match-head-commit 0123abc --match-base-commit 4567def",
+            "dydo survey P-DYD-46",
+            "dydo statechart SPEC.tla --skill skills/engineering/statechart --out chart",
+            "dydo statechart install-skill --root /work/project",
+            "dydo statechart resume --request request.json", "dydo --help")
+        self.ready()
+        self.assertEqual(0, self.invoke("drive", "worker-lane"))
+        probed = set()
+        for path in (self.run / "evidence").glob("guard-*.json"):
+            event, decision = self.sent_and_decided(json.loads(path.read_text()))
+            if event.get("agent_id") and decision == "allow":
+                probed.add(event["tool_input"]["command"])
+        for command in required_commands:
+            with self.subTest(command=command):
+                self.assertIn(command, probed)
 
     def test_worker_lane_fails_when_the_guard_refuses_a_command_a_skill_names(self):
         self.ready()
