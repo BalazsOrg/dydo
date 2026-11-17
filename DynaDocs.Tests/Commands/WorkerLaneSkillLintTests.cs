@@ -119,6 +119,7 @@ public partial class WorkerLaneSkillLintTests
         foreach (var line in markdown.Split('\n'))
         {
             var trimmed = line.Trim();
+            if (!inFence) trimmed = ListMarkerRegex().Replace(trimmed, "");
             var isFence = trimmed.StartsWith("```", StringComparison.Ordinal) || trimmed.StartsWith("~~~", StringComparison.Ordinal);
             if (isFence)
             {
@@ -258,6 +259,49 @@ public partial class WorkerLaneSkillLintTests
         var violation = Assert.Single(Violations(prose));
 
         Assert.Contains(expected, violation);
+    }
+
+    [Fact]
+    public void Violations_ReadsTheListAdjacentFenceFromDyd1147()
+    {
+        const string prose = """
+            - ```sh
+              dydo \
+                init claude
+              ```
+            """;
+
+        Assert.Matches(@"^dydo +init claude$", Assert.Single(CodeText(prose)));
+        Assert.EndsWith("(dydo init)", Assert.Single(Violations(prose)));
+    }
+
+    [Theory]
+    [InlineData("  - ", "```")]
+    [InlineData("    + ", "~~~")]
+    [InlineData("  * ", "```")]
+    [InlineData("1. ", "```")]
+    [InlineData("  2) ", "~~~")]
+    public void Violations_ReadsIndentedListAdjacentFences(string prefix, string fence)
+    {
+        var prose = $"{prefix}{fence}sh\n      dydo \\\n        init claude\n      {fence}";
+
+        Assert.Matches(@"^dydo +init claude$", Assert.Single(CodeText(prose)));
+        Assert.EndsWith("(dydo init)", Assert.Single(Violations(prose)));
+    }
+
+    [Theory]
+    [InlineData("- ", "```")]
+    [InlineData("  1. ", "~~~")]
+    public void Violations_PreservesAllowedCommandsAndListFenceBoundaries(string prefix, string fence)
+    {
+        var prose = $"{prefix}{fence}sh\n  dydo survey \\\n    P-DYD-46\n  dydo check\n  dydo statechart install-skill --root /p\n  dydo \\\n  {fence}\n\n{prefix}{fence}sh\n  init claude\n  {fence}\nRun `dydo --help`.";
+
+        var code = CodeText(prose).ToList();
+
+        Assert.Equal(6, code.Count);
+        Assert.Matches(@"^dydo survey +P-DYD-46$", code[0]);
+        Assert.Equal(["dydo check", "dydo statechart install-skill --root /p", "dydo \\", "init claude", "dydo --help"], code.Skip(1));
+        Assert.Empty(Violations(prose));
     }
 
     [Theory]
@@ -805,6 +849,9 @@ public partial class WorkerLaneSkillLintTests
 
     [GeneratedRegex(@"(?<!`)`([^`]+)`(?!`)")]
     private static partial Regex InlineCodeRegex();
+
+    [GeneratedRegex(@"^(?:[-+*]|[0-9]+[.)])[ \t]+")]
+    private static partial Regex ListMarkerRegex();
 
     [GeneratedRegex(@"\s+")]
     private static partial Regex WhitespaceRegex();
