@@ -1,0 +1,106 @@
+from pathlib import Path
+import hashlib
+import json
+import shutil
+import subprocess
+
+root = Path.cwd()
+runs = Path('/tmp/dyd1134-platform-selection-fix-runs')
+target = 'DynaDocs.Tests/coverage/tests/test_dotnet_platform.py'
+base = '50a27f632c4d9d59707c305abfd18b3ad3fb25e2'
+batch = 'd97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d'
+labels = {'captain-red': 1, 'writer-red': 1, 'platform-green': 0, 'reverse-red': 1,
+          'restored-green': 0, 'prerequisites': 0, 'hosted-filter-discovery': 0, 'static-final': 0}
+receipts = {label: json.loads((runs / label / 'receipt.json').read_text()) for label in labels}
+for label, expected in labels.items():
+    receipt = receipts[label]
+    assert receipt['head'] == base and receipt['exit'] == expected, label
+    argv = receipt['argv']
+    assert argv[0] == '/var/tmp/dydo-gate-lock.sh'
+    assert '--slice=app-t3code-agents-cbc6c2286251.slice' in argv
+    assert 'MemorySwapMax=0' in argv and 'OOMPolicy=continue' in argv
+    timeout = argv.index('timeout')
+    assert argv[timeout + 1] == ('3600' if label == 'static-final' else '120')
+    assert ('MemoryMax=8G' if label == 'static-final' else 'MemoryMax=4G') in argv
+
+original = receipts['writer-red']['files']
+assert receipts['writer-red']['status'] == ''
+assert receipts['captain-red']['status'] == ''
+assert original == receipts['captain-red']['files']
+original_bytes = subprocess.check_output(['git', 'show', base + ':' + target])
+assert hashlib.sha256(original_bytes).hexdigest() == original[target]
+fixed_hash = hashlib.sha256((root / target).read_bytes()).hexdigest()
+for label in ('captain-red', 'writer-red', 'reverse-red'):
+    assert receipts[label]['files'] == original, label
+    log = (runs / label / 'raw.log').read_text()
+    assert 'line 170' in log and 'FAILED (failures=1)' in log and 'Ran 32 tests' in log
+for label in ('platform-green', 'restored-green', 'prerequisites', 'hosted-filter-discovery', 'static-final'):
+    changed = sorted(path for path in original.keys() | receipts[label]['files'].keys()
+                     if original.get(path) != receipts[label]['files'].get(path))
+    assert changed == [target], (label, changed)
+    assert receipts[label]['files'][target] == fixed_hash, label
+for label in ('platform-green', 'restored-green'):
+    log = (runs / label / 'raw.log').read_text()
+    assert 'Ran 32 tests' in log and '\nOK\n' in log
+assert receipts['static-final']['changed_during_run'] == []
+assert subprocess.check_output(['git', 'diff', '--name-only'], text=True).splitlines() == [target]
+for commit in (base, batch):
+    subprocess.run(['git', 'merge-base', '--is-ancestor', commit, 'HEAD'], check=True)
+assert subprocess.check_output(['git', 'branch', '--show-current'], text=True).strip() == 'DYD-1142-safe-delete-shoulds'
+assert subprocess.check_output(['git', 'rev-parse', '--show-toplevel'], text=True).strip() == str(root)
+assert str(root) != str(Path(subprocess.check_output(['git', 'rev-parse', '--git-common-dir'], text=True).strip()).parent)
+
+selection_log = (runs / 'hosted-filter-discovery' / 'raw.log').read_text()
+theories = ['UnsafePaths_RefuseTraversalAndForeignSeparators',
+            'ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams']
+cases = {name: sum(line.startswith('    DynaDocs.Tests.Integration.SafeDeletePathsTests.' + name + '(')
+                   for line in selection_log.splitlines()) for name in theories}
+assert list(cases.values()) == [10, 7], cases
+
+output = runs / 'static-artifacts'
+output.mkdir(exist_ok=True)
+results = root / 'DynaDocs.Tests/coverage/results'
+static = {}
+for stack in ('dotnet', 'python'):
+    report_path = results / 'adapters' / (stack + '-static.json')
+    report = json.loads(report_path.read_text())
+    assert report['exitCode'] == 0 and report['measurementComplete'] and report['findings'] == [] and report['gaps'] == [], stack
+    collectors = report['collectors']
+    assert all(row['status'] == 'pass' for row in collectors.values()), stack
+    assert report['candidate']['commit'] == base, stack
+    paths = set()
+    def inspect(value):
+        if isinstance(value, dict):
+            for item in value.values():
+                inspect(item)
+        elif isinstance(value, list):
+            for item in value:
+                inspect(item)
+        elif isinstance(value, str) and '/results/assurance/run-' in value:
+            path = Path(value)
+            if path.is_relative_to(results / 'assurance'):
+                paths.add(results / 'assurance' / path.relative_to(results / 'assurance').parts[0])
+    inspect(report)
+    assert len(paths) == 1, (stack, paths)
+    source_run = paths.pop()
+    shutil.copytree(source_run, output / source_run.name, dirs_exist_ok=True)
+    shutil.copy2(report_path, output / report_path.name)
+    static[stack] = {'exitCode': report['exitCode'], 'measurementComplete': report['measurementComplete'],
+                     'collectors': {name: row['status'] for name, row in collectors.items()},
+                     'findings': len(report['findings']), 'candidate': report['candidate'],
+                     'source_run': str(source_run)}
+latest = max(results.glob('run-*/result.json'), key=lambda path: path.stat().st_mtime)
+shutil.copytree(latest.parent, output / 'facade', dirs_exist_ok=True)
+
+summary = {'base': base, 'batch_base': batch, 'target': target, 'base_sha256': original[target],
+           'fixed_sha256': fixed_hash, 'exits': labels, 'reverse_matches_clean_base': True,
+           'only_test_map_changed': True, 'all_other_baseline_files_unchanged': True,
+           'static_repository_changes': receipts['static-final']['changed_during_run'],
+           'hosted_filter_discovered_theory_cases_on_linux': cases,
+           'static': static, 'native_windows_execution': 'not run',
+           'final_safedelete_runtime': 'owed at final batch head',
+           'whole_stack_coverage': 'not run; owed at final batch head',
+           'mutation': 'UNAVAILABLE DYD-103; never PASS',
+           'local_statechart': 'unmet; never PASS', 'T3_RELEASE_UNPROVEN': 'unchanged'}
+(runs / 'summary.json').write_text(json.dumps(summary, indent=2) + '\n')
+print(json.dumps(summary, indent=2), flush=True)
