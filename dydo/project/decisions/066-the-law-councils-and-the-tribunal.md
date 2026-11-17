@@ -77,10 +77,10 @@ findings are dated hints, "the AI landscape changes every two weeks".
 4. **Every new DR cites the law: `applies:` and `weighed:` (F1, F2, F13).** Every new DR records
    `applies:`, the principles or axioms it applies, or `new-ground`. For each tension it resolved, it
    records `weighed: <slug> over <slug>, because <reason>`; the reason clause is what a council
-   reuses. "this is the case law's spine." `weighed:` appears only where the DR states the trade-off,
-   quoted, never reconstructed. `dydo check` validates the slugs. A council's method in a value call:
-   map each option to the axioms it serves, find the DRs that weighed the same tension, predict from
-   them; if he weighed it both ways, the call is prepared for him as an amendment candidate.
+   reuses. "this is the case law's spine." `dydo check` validates the slugs. A council's method in a
+   value call: map each option to the axioms it serves, find the DRs that weighed the same tension,
+   predict from them; if he weighed it both ways, the call is prepared for him as an amendment
+   candidate.
 5. **Case law is DRs plus case studies (L1 A5, A6).** The definition of a DR is not broadened. A
    **case study** is an optional markdown file in git beside the law: a Question, grilling decision
    or idea that shaped it, linking its Linear origin, "kind of like a post-mortem and an origin story
@@ -128,8 +128,8 @@ findings are dated hints, "the AI landscape changes every two weeks".
      an adopter with DRs runs the same backfill; a new project starts empty.
 8. **The accepted DRs are backfilled once, and he reviews the result (F13, F14).** "Although I would
    have to review these somehow, this is important." After he approves the sorted principles, cheap-tier
-   crew drafts `applies:` on each accepted DR and `weighed:` where the DR states the trade-off;
-   superseded DRs keep their history untagged. A reviewer checks every citation as a doc claim, then
+   crew drafts `applies:` on each accepted DR and `weighed:` where the DR states the trade-off,
+   quoted, never reconstructed; superseded DRs keep their history untagged. A reviewer checks every citation as a doc claim, then
    he reviews one page per batch: a table with one row per DR (title linked, `applies:`, `weighed:`
    with the DR's own sentence quoted beside it), doubted and `new-ground` rows first. He marks each
    row ✓, ✗ or "retag"; only approved rows merge.
