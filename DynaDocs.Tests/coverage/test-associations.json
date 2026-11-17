@@ -1897,6 +1897,74 @@
     {
       "module": "skills/engineering/statechart/scripts/test/corpus/TwoPhaseFixed/view.mjs",
       "tests": ["DynaDocs.Tests/coverage/tests/statechart-corpus-views.test.cjs"]
+    },
+    {
+      "module": "tools/SkillBuild/BuiltFileSpec.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/BuiltTree.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildToolTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/CarrierEntry.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/CarrierFile.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/CarrierManifest.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/Claim.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/ClaimInventory.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/FileRenderer.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs", "DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/ManifestFiles.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/MapEntry.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/PlacedUnit.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/Placement.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs", "DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/Program.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildToolTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/ProseEntry.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/ProvenanceMap.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/RenderedFile.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/SkillBuilder.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs", "DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
     }
   ]
 }

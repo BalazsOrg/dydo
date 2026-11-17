@@ -67,6 +67,11 @@
         <None Remove="DynaDocs.Tests\**" />
         <None Remove="nupkg\dydo.1.2.22.nupkg" />
         <None Remove="viewer\**" />
+        <!-- dydo's own skill builder and its claims never compile into or ship with dydo (Grilling A D9). -->
+        <Compile Remove="tools\**;claims\**" />
+        <Content Remove="tools\**;claims\**" />
+        <EmbeddedResource Remove="tools\**;claims\**" />
+        <None Remove="tools\**;claims\**" />
     </ItemGroup>
 
     <ItemGroup>

@@ -31,6 +31,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DynaDocs.csproj" />
+    <ProjectReference Include="..\tools\SkillBuild\SkillBuild.csproj" />
   </ItemGroup>
 
   <ItemGroup>
