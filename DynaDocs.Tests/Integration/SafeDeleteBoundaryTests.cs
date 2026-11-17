@@ -7,6 +7,134 @@ using System.Diagnostics;
 public sealed class SafeDeleteBoundaryTests
 {
     [Theory]
+    [InlineData("shared clone", "nested.git")]
+    [InlineData("independent", "repository without suffix")]
+    [InlineData("reftable", "packed repository")]
+    [InlineData("sha256", "sha256 repository")]
+    [InlineData("common directory", "split repository")]
+    [InlineData("non-bare config", "administrative directory")]
+    public void InitializedNestedGitDirectory_RefusesBeforePublicationOrDeletion(string layout, string name)
+    {
+        using var fixture = new SafeDeleteTests();
+        AssertNestedRepositoryRefused(fixture,layout,name);
+    }
+
+    internal static void AssertNestedRepositoryRefused(SafeDeleteTests fixture, string layout, string name)
+    {
+        SafeDeleteTests.Git(fixture.Main,"switch","-c","nested-unique");
+        File.WriteAllText(Path.Combine(fixture.Main,"nested.txt"),"unique nested work\n");
+        SafeDeleteTests.Git(fixture.Main,"add","nested.txt");
+        SafeDeleteTests.Git(fixture.Main,"commit","-m","nested unique");
+        var unique = SafeDeleteTests.Git(fixture.Main,"rev-parse","HEAD");
+        SafeDeleteTests.Git(fixture.Main,"switch","main");
+        fixture.AddTree(); fixture.AddRemote();
+        var nested = Path.Combine(fixture.Tree,name);
+        CreateNestedRepository(fixture,layout,nested,unique);
+        SafeDeleteTests.Git(fixture.Main,"branch","-D","nested-unique");
+        SafeDeleteTests.Git(fixture.Main,"reflog","expire","--expire=now","--all");
+        var files = Snapshot(fixture.Tree);
+        var localRefs = SafeDeleteTests.Git(fixture.Main,"show-ref");
+        var remoteRefs = SafeDeleteTests.Git(fixture.Remote,"show-ref");
+        var nestedRefs = SafeDeleteTests.Git(nested,"--git-dir",nested,"show-ref");
+        var registration = SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain");
+        var checkpoints = new List<string>(); fixture.Dependencies.Checkpoint = checkpoints.Add;
+        Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
+        Assert.Contains("Initialized nested repository",fixture.Output);
+        Assert.Contains(nested,fixture.Output);
+        Assert.Contains("independent",fixture.Output);
+        Assert.False(Directory.Exists(fixture.ArchiveRoot));
+        Assert.Empty(checkpoints);
+        Assert.Equal(files,Snapshot(fixture.Tree));
+        Assert.Equal(localRefs,SafeDeleteTests.Git(fixture.Main,"show-ref"));
+        Assert.Equal(remoteRefs,SafeDeleteTests.Git(fixture.Remote,"show-ref"));
+        Assert.Equal(nestedRefs,SafeDeleteTests.Git(nested,"--git-dir",nested,"show-ref"));
+        Assert.Equal(registration,SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain"));
+        Assert.Equal("unique nested work",SafeDeleteTests.Git(nested,"--git-dir",nested,"show","nested-unique:nested.txt"));
+    }
+
+    private static void CreateNestedRepository(SafeDeleteTests fixture, string layout, string nested, string unique)
+    {
+        if (layout == "shared clone")
+        {
+            SafeDeleteTests.Git(fixture.Main,"clone","--bare","--shared",fixture.Main,nested);
+            Assert.DoesNotContain(Directory.GetFiles(Path.Combine(nested,"objects"),"*",SearchOption.AllDirectories),
+                path => !path.EndsWith("alternates",StringComparison.Ordinal));
+            return;
+        }
+        var options = layout switch
+        {
+            "reftable" => new[] { "--ref-format=reftable" },
+            "sha256" => new[] { "--object-format=sha256" },
+            _ => Array.Empty<string>()
+        };
+        SafeDeleteTests.Git(fixture.Main,["init","--bare",..options,nested]);
+        if (layout == "sha256")
+        {
+            var seed = Path.Combine(fixture.Root,"sha256-seed"); Directory.CreateDirectory(seed);
+            SafeDeleteTests.Git(seed,"init","--object-format=sha256");
+            File.WriteAllText(Path.Combine(seed,"nested.txt"),"unique nested work\n");
+            SafeDeleteTests.Git(seed,"add","nested.txt");
+            SafeDeleteTests.Git(seed,"-c","user.name=Test","-c","user.email=test@example.invalid","-c","commit.gpgsign=false","commit","-m","unique");
+            SafeDeleteTests.Git(nested,"fetch",seed,"HEAD:refs/heads/nested-unique");
+        }
+        else
+        {
+            var objects = SafeDeleteTests.Git(fixture.Main,"rev-parse","--path-format=absolute","--git-path","objects");
+            File.WriteAllText(Path.Combine(nested,"objects","info","alternates"),objects + "\n");
+            SafeDeleteTests.Git(nested,"update-ref","refs/heads/nested-unique",unique);
+        }
+        if (layout == "common directory")
+        {
+            var common = Path.Combine(fixture.Root,"nested-common"); Directory.CreateDirectory(common);
+            foreach (var part in new[] { "objects", "refs" }) Directory.Move(Path.Combine(nested,part),Path.Combine(common,part));
+            File.WriteAllText(Path.Combine(nested,"commondir"),common + "\n");
+        }
+        if (layout == "non-bare config") SafeDeleteTests.Git(nested,"config","core.bare","false");
+    }
+
+    private static string[] Snapshot(string root) => Directory.GetFiles(root,"*",SearchOption.AllDirectories)
+        .Order(StringComparer.Ordinal).Select(path => Path.GetRelativePath(root,path) + ":" + Convert.ToHexString(File.ReadAllBytes(path))).ToArray();
+
+    [Fact]
+    public void NestedGitDirectory_ValidatesFileKindsBeforeGitDiscovery()
+    {
+        if (!OperatingSystem.IsLinux()) return; // Linux hard-link refusal, not Windows metadata proof.
+        using var fixture = new SafeDeleteTests(); fixture.AddTree();
+        var nested = Path.Combine(fixture.Tree,"repository");
+        SafeDeleteTests.Git(fixture.Main,"init","--bare",nested);
+        var head = Path.Combine(nested,"HEAD");
+        var start = new ProcessStartInfo("ln");
+        start.ArgumentList.Add(head); start.ArgumentList.Add(Path.Combine(fixture.Root,"linked-head"));
+        using var process = Process.Start(start)!; process.WaitForExit(); Assert.Equal(0,process.ExitCode);
+        var error = Assert.Throws<InvalidDataException>(() => SafeDeleteFiles.Capture(fixture.Tree));
+        Assert.Contains("Special files and hard links",error.Message);
+        Assert.Contains(head,error.Message);
+        Assert.False(Directory.Exists(fixture.ArchiveRoot));
+        Assert.True(fixture.Has("refs/heads/topic"));
+    }
+
+    [Theory]
+    [InlineData("HEAD")]
+    [InlineData("objects")]
+    [InlineData("refs")]
+    [InlineData("invalid HEAD")]
+    public void RepositoryFragments_AreOrdinaryFilesThatRoundTrip(string missing)
+    {
+        using var fixture = new SafeDeleteTests(); fixture.AddTree();
+        var fragments = Path.Combine(fixture.Tree,"ordinary.git"); Directory.CreateDirectory(fragments);
+        File.WriteAllText(Path.Combine(fragments,"HEAD"),missing == "invalid HEAD" ? "ordinary document\n" : "ref: refs/heads/main\n");
+        File.WriteAllText(Path.Combine(fragments,"config"),"[core]\n\tbare = true\n");
+        Directory.CreateDirectory(Path.Combine(fragments,"objects")); Directory.CreateDirectory(Path.Combine(fragments,"refs"));
+        if (missing == "HEAD") File.Delete(Path.Combine(fragments,missing));
+        else if (missing != "invalid HEAD") Directory.Delete(Path.Combine(fragments,missing));
+        Assert.False(SafeDeleteGit.Read(fragments,"rev-parse","--resolve-git-dir",fragments).Ok);
+        var before = Snapshot(fixture.Tree);
+        Assert.True(fixture.Run("worktree",fixture.Tree) == 0,fixture.Output);
+        Assert.True(fixture.Run("restore",fixture.Id) == 0,fixture.Output);
+        Assert.Equal(before,Snapshot(fixture.Tree));
+    }
+
+    [Theory]
     [InlineData(false)]
     [InlineData(true)]
     public void AdministrativeNameCasing_PreservesDistinctFilesOrRefusesAliases(bool ignored)

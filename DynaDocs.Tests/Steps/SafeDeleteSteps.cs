@@ -34,7 +34,13 @@ public sealed class SafeDeleteSteps : IDisposable
     public void Journey(string journey) { _fixture!.Journey(journey); _completed = true; }
 
     [When("I exercise the {string} safe-delete refusal")]
-    public void Refusal(string refusal) { _fixture!.Refusal(refusal); _completed = true; }
+    public void Refusal(string refusal)
+    {
+        if (refusal == "shared bare nested repository")
+            SafeDeleteBoundaryTests.AssertNestedRepositoryRefused(_fixture!,"shared clone","nested.git");
+        else _fixture!.Refusal(refusal);
+        _completed = true;
+    }
 
     [When("I exercise the {string} safe-delete policy")]
     public void Policy(string policy) { _fixture!.Policy(policy); _completed = true; }

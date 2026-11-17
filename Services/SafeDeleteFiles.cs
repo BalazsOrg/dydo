@@ -53,6 +53,7 @@ internal static class SafeDeleteFiles
             {
                 result.Add(new(path, "directory", "", 0, mode, (int)attributes, null, WindowsSecurity(entry.FullName)));
                 Walk(child, root, result);
+                RefuseNestedGitDirectory(child.FullName);
             }
             else
             {
@@ -60,6 +61,15 @@ internal static class SafeDeleteFiles
                 result.Add(new(path, "file", SafeDeletePaths.Hash(entry.FullName), length, mode, (int)attributes, null, WindowsSecurity(entry.FullName)));
             }
         }
+    }
+
+    private static void RefuseNestedGitDirectory(string directory)
+    {
+        var result = SafeDeleteGit.Read(directory, "rev-parse", "--resolve-git-dir", directory);
+        if (result.Ok)
+            throw new InvalidDataException($"Initialized nested repository is unsupported: {directory}. Preserve its Git dependencies independently and move it outside the target worktree before retrying.");
+        if (result.ExitCode != 128)
+            throw new InvalidDataException($"Cannot determine whether a directory is an initialized nested repository; Git discovery failed: {directory}");
     }
 
     private static bool SkipGit(FileSystemInfo entry, string directory, string root)

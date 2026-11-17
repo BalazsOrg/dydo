@@ -48,6 +48,7 @@ Feature: Safe delete archives unique work before removal
       | copy failure |
       | unreadable source |
       | nested repository |
+      | shared bare nested repository |
       | unsupported file |
       | in-progress Git |
       | local ref race |
