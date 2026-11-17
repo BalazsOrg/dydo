@@ -13,8 +13,12 @@ public class SkillShapeTests
     private const string LinksA = "- [A](resources/a.md)\n";
 
     [Fact]
-    public void CommittedBuiltTree_MeetsEveryShapeLimit() =>
-        Assert.Empty(SkillShape.Violations(CommittedTree.BuiltText()));
+    public void CommittedBuiltTree_MeetsEveryShapeLimit()
+    {
+        var violations = SkillShape.Violations(CommittedTree.BuiltText());
+
+        Assert.True(violations.Count == 0, string.Join('\n', violations));
+    }
 
     [Fact]
     public void CommittedBuiltTree_ExercisesTheSpineAndResourceRules()
