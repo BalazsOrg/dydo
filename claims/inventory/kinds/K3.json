@@ -3229,14 +3229,6 @@
     {
       "type": "gap",
       "claims": [
-        "review.plan-check-shape",
-        "review.spec-review-excludes-wording"
-      ],
-      "note": "L4-169 says \"check the shape of the plan\" with no item list in the statement; the shape is defined outside any statement of this group."
-    },
-    {
-      "type": "gap",
-      "claims": [
         "merge.conflict-free-merge-uses-dydo-merge"
       ],
       "note": "A conflicted merge \"stays local\" (L3-079) but no statement in this group says how a local merge reaches the feature branch other than the push guard allowance in L6-033."
