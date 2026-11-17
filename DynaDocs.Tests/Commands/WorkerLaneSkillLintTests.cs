@@ -84,27 +84,40 @@ public partial class WorkerLaneSkillLintTests
                 yield return (Path.GetRelativePath(skills, file) + " (sub-agent section)", section);
     }
 
-    /// <summary>Each inline code span and each fenced-code line of <paramref name="markdown"/>, whitespace collapsed.</summary>
+    /// <summary>
+    /// Each inline code span (whitespace collapsed) and each fenced-code line of <paramref name="markdown"/>,
+    /// the lines of one fenced block joined across continuations by the guard's own rule.
+    /// </summary>
     internal static IEnumerable<string> CodeText(string markdown)
     {
         var inFence = false;
+        var block = new List<string>();
         var outside = new List<string>();
         foreach (var line in markdown.Split('\n'))
         {
             var trimmed = line.Trim();
-            if (trimmed.StartsWith("```", StringComparison.Ordinal) || trimmed.StartsWith("~~~", StringComparison.Ordinal))
-                inFence = !inFence;
-            else if (inFence)
+            var isFence = trimmed.StartsWith("```", StringComparison.Ordinal) || trimmed.StartsWith("~~~", StringComparison.Ordinal);
+            if (isFence)
             {
-                if (trimmed.Length > 0) yield return trimmed;
+                foreach (var code in FencedLines(block)) yield return code;
+                block.Clear();
+                inFence = !inFence;
             }
             else
-                outside.Add(line);
+                (inFence ? block : outside).Add(line);
         }
+
+        foreach (var code in FencedLines(block)) yield return code;
 
         foreach (Match span in InlineCodeRegex().Matches(string.Join('\n', outside)))
             yield return WhitespaceRegex().Replace(span.Groups[1].Value, " ").Trim();
     }
+
+    private static IEnumerable<string> FencedLines(List<string> block) =>
+        GuardCommand.JoinLineContinuations(string.Join('\n', block))
+            .Split('\n')
+            .Select(line => line.Trim())
+            .Where(line => line.Length > 0);
 
     /// <summary>The code in <paramref name="prose"/> that tells a reader to run a dydo command the worker lane refuses.</summary>
     internal static List<string> Violations(string prose) =>
@@ -160,11 +173,25 @@ public partial class WorkerLaneSkillLintTests
     [InlineData("Run `dydo\n  guard` first.", "dydo guard")]
     [InlineData("Run `./dydo adopt 3.7.0`.", "dydo adopt")]
     [InlineData("Run `dydo sync`: a command that does not exist is not worker-allowed either.", "dydo sync")]
+    [InlineData("```sh\ndydo \\\n  init claude\n```", "dydo init")]
+    [InlineData("```sh\r\ndydo \\\r\n  init claude\r\n```\r\n", "dydo init")]
+    [InlineData("```sh\ndydo check && \\\n  dydo \\\n  init claude\n```", "dydo init")]
+    [InlineData("```sh\ndydo `\n  init claude\n```", "dydo init")]
     public void Violations_NamesATopLevelOnlyCommandInCode(string prose, string expected)
     {
         var violation = Assert.Single(Violations(prose));
 
         Assert.Contains(expected, violation);
+    }
+
+    [Theory]
+    [InlineData("```sh\ndydo survey \\\n  P-DYD-46\n```")]
+    [InlineData("```sh\r\ndydo survey \\\r\n  P-DYD-46\r\n```\r\n")]
+    // A continuation ends with its block: it does not reach the first line of the next one.
+    [InlineData("```sh\ndydo \\\n```\n\n```sh\ninit claude\n```")]
+    public void Violations_JoinsContinuedLinesOfOneFencedBlockOnly(string prose)
+    {
+        Assert.Empty(Violations(prose));
     }
 
     [Theory]

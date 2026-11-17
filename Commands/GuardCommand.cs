@@ -1168,7 +1168,15 @@ public static partial class GuardCommand
     /// `dydo init` read as dydo.
     /// </summary>
     private static string NormaliseForDydoScan(string command) =>
-        WorkerScanStripRegex().Replace(LineContinuationRegex().Replace(command, ""), "");
+        WorkerScanStripRegex().Replace(JoinLineContinuations(command), "");
+
+    /// <summary>
+    /// <paramref name="text"/> with every backslash-newline and backtick-newline continuation deleted,
+    /// as the shell joins the lines. The one definition: the scan above and the skill lint's reading of
+    /// fenced blocks both take it from here.
+    /// </summary>
+    internal static string JoinLineContinuations(string text) =>
+        LineContinuationRegex().Replace(text, "");
 
     [GeneratedRegex(@"[\\`]\r?\n")]
     private static partial Regex LineContinuationRegex();

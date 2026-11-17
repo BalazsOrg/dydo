@@ -43,7 +43,9 @@ mirrors the skills by hand, and two tests of `WorkerLaneSkillLintTests` keep it 
 reading of the sub-agent prose: one fails when prose names a command the worker lane refuses, the other
 (`JourneyCommands_RunEveryWorkerAllowedCommandSubAgentProseNames`) fails when prose names a
 worker-allowed command word that no `SKILL_COMMANDS` entry runs. A skill that adds a command therefore
-fails there until you add its invocation here, as the prose writes it. The test reads the tuple as
+fails there until you add its invocation here, as the prose writes it. The reading joins the continued
+lines of a fenced block by the guard's own rule (`GuardCommand.JoinLineContinuations`), so a command
+split across lines is read whole. The test reads the tuple as
 Python does: a commented-out entry is not run and does not count, and a tuple written in any syntax
 beyond plain quoted strings separated by commas (an f-string, a `+`, two literals with no comma) fails
 the test rather than being guessed at. The driver must bind `SKILL_COMMANDS` exactly once, as that
