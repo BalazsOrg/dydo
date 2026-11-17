@@ -1,0 +1,2481 @@
+{
+  "lane": "L6",
+  "base": "dee4861ae2691e41d9e60985e3e0ffb0c7ea987d",
+  "files": [
+    "dydo/guides/working-tree-standard.md"
+  ],
+  "units": [
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L8.1",
+      "text": "The bird's-eye view of how a Project moves through branches and worktrees.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "intro"
+      }
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L8.2",
+      "text": "A Project's map holder, the user or an invoked admiral, uses it to know what to expect from Ticket Captains and their lane crew; Ticket Captains use it to know what they own and what they hand back.",
+      "rules": [],
+      "notRule": {
+        "category": "description",
+        "note": "who uses the standard"
+      }
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L10.1",
+      "text": "The `chief-of-staff` audits failures of this standard, not routine cleanup.",
+      "rules": [
+        {
+          "id": "L6-001",
+          "kind": "worktree",
+          "rule": "The chief-of-staff audits failures of the working-tree standard, not routine cleanup.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L14.1",
+      "text": "Linear assignment is the **claim**.",
+      "rules": [
+        {
+          "id": "L6-002",
+          "kind": "linear",
+          "rule": "Linear assignment is the claim on a ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L14.2",
+      "text": "One Ticket Captain owns the parent ticket and its integrated outcome end to end.",
+      "rules": [
+        {
+          "id": "L6-003",
+          "kind": "identity",
+          "rule": "One Ticket Captain owns the parent ticket and its integrated outcome end to end.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L16.1",
+      "text": "Every parent ticket has an isolated integration worktree.",
+      "rules": [
+        {
+          "id": "L6-004",
+          "kind": "worktree",
+          "rule": "Every parent ticket has an isolated integration worktree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L16.2",
+      "text": "Independently trackable parallel lanes may become direct Sub-tickets, each with an isolated branch and worktree.",
+      "rules": [
+        {
+          "id": "L6-005",
+          "kind": "worktree",
+          "rule": "Independently trackable parallel lanes may become direct Sub-tickets, each with an isolated branch and worktree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L17.1",
+      "text": "Parallel crew write only the disjoint paths their Ticket Captain grants; the Bug Type-map exception below transfers paths serially.",
+      "rules": [
+        {
+          "id": "L6-006",
+          "kind": "contract",
+          "rule": "Parallel crew write only the disjoint paths their Ticket Captain grants, except that a Bug's Type-map stages transfer paths serially.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L19.1",
+      "text": "Commits touch owned paths only.",
+      "rules": [
+        {
+          "id": "L6-007",
+          "kind": "contract",
+          "rule": "Commits touch owned paths only.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L19.2",
+      "text": "The Ticket Captain owns the whole diff, including crew edits.",
+      "rules": [
+        {
+          "id": "L6-008",
+          "kind": "identity",
+          "rule": "The Ticket Captain owns the whole diff, including crew edits.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L20.1",
+      "text": "Every crew **hop** ends on a commit: the return names its SHA, the Ticket Captain posts it on the record, and the ticket branch keeps its hops unsquashed and unrewritten.",
+      "rules": [
+        {
+          "id": "L6-009",
+          "kind": "worktree",
+          "rule": "Every crew hop ends on a commit whose SHA the return names.",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-141",
+          "kind": "worktree",
+          "rule": "The Ticket Captain posts the hop SHA on the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-142",
+          "kind": "worktree",
+          "rule": "The ticket branch keeps its hops unsquashed and unrewritten.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L22.1",
+      "text": "Branch, base SHA and worktree path are posted on the relevant ticket or Sub-ticket before the first edit.",
+      "rules": [
+        {
+          "id": "L6-010",
+          "kind": "linear",
+          "rule": "Branch, base SHA and worktree path are posted on the relevant ticket or Sub-ticket before the first edit.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L23.1",
+      "text": "Project tickets integrate serially through their feature branch; the user alone lands the feature on `main`/`master` (the repository's default branch, whatever it is named).",
+      "rules": [
+        {
+          "id": "L6-011",
+          "kind": "merge",
+          "rule": "The user alone lands the feature on the repository's default branch.",
+          "actors": [
+            "ticket-captain",
+            "user"
+          ]
+        },
+        {
+          "id": "L6-156",
+          "kind": "merge",
+          "rule": "Project tickets integrate serially through their feature branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L30.1",
+      "text": "| Project | `main` | `feature/<project-slug>` | `main` | user |",
+      "rules": [
+        {
+          "id": "L6-012",
+          "kind": "worktree",
+          "rule": "A Project branches from main as feature/<project-slug>, its PR targets main, and the user merges it.",
+          "actors": [
+            "ticket-captain",
+            "user"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L31.1",
+      "text": "| Project ticket | its feature branch | `DYD-123-<slug>` | its feature branch | its captain-directed Merge Sub-ticket |",
+      "rules": [
+        {
+          "id": "L6-013",
+          "kind": "worktree",
+          "rule": "A Project ticket branches from its feature branch as <KEY>-<slug>, its PR targets the feature branch, and its captain-directed Merge Sub-ticket merges it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L32.1",
+      "text": "| Atomic ticket | `main` | `DYD-123-<slug>` | `main` | user, clicking its PR once it carries a reviewer PASS and CI is green; no Merge Sub-ticket |",
+      "rules": [
+        {
+          "id": "L6-014",
+          "kind": "merge",
+          "rule": "An atomic ticket branches from main as <KEY>-<slug>, its PR targets main, and the user merges it by clicking once the PR carries a reviewer PASS and CI is green; it has no Merge Sub-ticket.",
+          "actors": [
+            "ticket-captain",
+            "user"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L33.1",
+      "text": "| Lane Sub-ticket | its parent ticket branch | `DYD-124-<slug>` | its parent ticket branch | its captain-directed Merge Sub-ticket |",
+      "rules": [
+        {
+          "id": "L6-015",
+          "kind": "worktree",
+          "rule": "A lane Sub-ticket branches from its parent ticket branch as <KEY>-<slug>, its PR targets the parent ticket branch, and its captain-directed Merge Sub-ticket merges it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L34.1",
+      "text": "| Inquisition audit | the audit SHA, the integrated feature commit | `inquisition/<slug>`; a group Sub-ticket's `inquisition/<slug>-<group>` | none; never merges | - |",
+      "rules": [
+        {
+          "id": "L6-016",
+          "kind": "worktree",
+          "rule": "An Inquisition audit branches from the audit SHA (the integrated feature commit) as inquisition/<slug> (a group Sub-ticket uses inquisition/<slug>-<group>) and has no PR target.",
+          "actors": [
+            "inquisitor",
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-184",
+          "kind": "inquisition",
+          "rule": "An Inquisition audit branch never merges.",
+          "actors": [
+            "inquisitor",
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L35.1",
+      "text": "| Inquisition proof | the audit SHA | `proof/<KEY>-<area>-<n>`, one per Break dispatch, `<n>` counting that area's dispatches, a follow-up or hand-back included | none; never merges | - |",
+      "rules": [
+        {
+          "id": "L6-017",
+          "kind": "worktree",
+          "rule": "An Inquisition proof branches from the audit SHA as proof/<KEY>-<area>-<n>, one per Break dispatch with <n> counting that area's dispatches (follow-ups and hand-backs included), has no PR target, and never merges.",
+          "actors": [
+            "inquisitor"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L36.1",
+      "text": "| Inquisition patch | the audit SHA | its Bug's own `<BUG-KEY>-<slug>` | as its Bug | as its Bug, through the Bug's own chain |",
+      "rules": [
+        {
+          "id": "L6-018",
+          "kind": "worktree",
+          "rule": "An Inquisition patch branches from the audit SHA as its Bug's own <BUG-KEY>-<slug> and targets and merges as its Bug does, through the Bug's own chain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L37.1",
+      "text": "| Inquisition record | the feature tip; `main` for an audit of main | the Inquisition's `DYD-123-<slug>` | its feature branch; `main` for an audit of main | its captain-directed Merge Sub-ticket; for an audit of main, as an atomic ticket |",
+      "rules": [
+        {
+          "id": "L6-019",
+          "kind": "inquisition",
+          "rule": "An Inquisition record branches from the feature tip (main for an audit of main) as the Inquisition's <KEY>-<slug>, targets its feature branch (main for an audit of main), and merges through its captain-directed Merge Sub-ticket, or as an atomic ticket for an audit of main.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L38.1",
+      "text": "| Proof branch | the pinned source SHA its brief names | a child branch named in the proof-only brief | none; never merges | - |",
+      "rules": [
+        {
+          "id": "L6-020",
+          "kind": "worktree",
+          "rule": "A proof branch is a child branch named in the proof-only brief, cut from the pinned source SHA the brief names, with no PR target, and never merges.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L39.1",
+      "text": "| Prototype Ticket | its feature branch, else `main` | `prototype/<name>` | none; never merges | - |",
+      "rules": [
+        {
+          "id": "L6-021",
+          "kind": "worktree",
+          "rule": "A Prototype Ticket branches from its feature branch (else main) as prototype/<name>, has no PR target, and never merges.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L41.1",
+      "text": "`DYD-123` is an example: use the ticket's key so Linear attaches the branch and PR.",
+      "rules": [
+        {
+          "id": "L6-022",
+          "kind": "worktree",
+          "rule": "Use the ticket's key in branch names so Linear attaches the branch and PR; DYD-123 is only an example.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L41.2",
+      "text": "The host may provide the ticket worktree; otherwise place it beside the repository at `../<repo>.worktrees/DYD-123-<slug>`.",
+      "rules": [
+        {
+          "id": "L6-023",
+          "kind": "worktree",
+          "rule": "Use the host-provided ticket worktree, else place it beside the repository at ../<repo>.worktrees/<KEY>-<slug>.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L49.1",
+      "text": "| Open the Project | the map holder, commissioning the first Ticket Captain | The first Captain opens the feature branch from the approved main SHA, commits the Project's working spec on it when the map holder hands one over, and reports both; the Project map is in Linear; every ticket carries outcome, owned paths, blockers, exact gates and base branch. Only then is a ticket pickable. |",
+      "rules": [
+        {
+          "id": "L6-024",
+          "kind": "project",
+          "rule": "To open a Project, the map holder commissions the first Ticket Captain, who opens the feature branch from the approved main SHA and commits the Project's working spec on it when handed one.",
+          "actors": [
+            "map-holder",
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-178",
+          "kind": "project",
+          "rule": "The first Captain reports both.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-179",
+          "kind": "project",
+          "rule": "The Project map is in Linear and every ticket carries outcome, owned paths, blockers, exact gates and base branch; only then is a ticket pickable.",
+          "actors": [
+            "map-holder",
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L50.1",
+      "text": "| Claim the ticket | `ticket-captain` | Ticket is assigned; its branch and isolated worktree exist; branch, base SHA and worktree path are on the ticket. The captain sets `Implementing` when it spawns the author, a code-writer or a docs-writer. |",
+      "rules": [
+        {
+          "id": "L6-025",
+          "kind": "linear",
+          "rule": "To claim a ticket, it is assigned, its branch and isolated worktree exist, and branch, base SHA and worktree path are on the ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-135",
+          "kind": "linear",
+          "rule": "The captain sets Implementing when it spawns the author, a code-writer or a docs-writer.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L51.1",
+      "text": "| Resolve the work | `ticket-captain` | The captain's compact acceptance contract names the lanes, or none; when the work splits beyond it, the writer's one pre-code comment names them. Parallel crew receive disjoint paths, the ticket's feature files among them, and exact gates; independently trackable parallel lanes become direct Sub-tickets. |",
+      "rules": [
+        {
+          "id": "L6-026",
+          "kind": "contract",
+          "rule": "Independently trackable parallel lanes become direct Sub-tickets.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-165",
+          "kind": "contract",
+          "rule": "The captain's compact acceptance contract names the lanes, or none.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-166",
+          "kind": "contract",
+          "rule": "When the work splits beyond the contract, the writer's one pre-code comment names the lanes.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-167",
+          "kind": "contract",
+          "rule": "Parallel crew receive disjoint paths (the ticket's feature files among them) and exact gates.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L52.1",
+      "text": "| Open a parallel lane | `ticket-captain` | The Sub-ticket carries the parent's Type and Mode, its own chain, status and evidence, a disjoint owned-path subset, exact gates, child-key branch, parent-branch base SHA and isolated worktree. |",
+      "rules": [
+        {
+          "id": "L6-027",
+          "kind": "contract",
+          "rule": "A parallel lane Sub-ticket carries the parent's Type and Mode, its own chain, status and evidence, a disjoint owned-path subset, exact gates, a child-key branch, the parent-branch base SHA and an isolated worktree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L53.1",
+      "text": "| Build and prove | crew | Changes stay inside owned paths; exact gates pass; each hop ends on a commit `<KEY> <hop>: <what>`, the hop being `implement`, `fix` after a FAIL, `merge`, or `proof`, which commits as `<KEY> proof: <hypothesis>`; review evidence stays on the work item reviewed; every return comes back to the Ticket Captain. |",
+      "rules": [
+        {
+          "id": "L6-028",
+          "kind": "worktree",
+          "rule": "Each hop ends on a commit named <KEY> <hop>: <what> (hop is implement, fix after a FAIL, merge, or proof as <KEY> proof: <hypothesis>).",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-143",
+          "kind": "worktree",
+          "rule": "Crew changes stay inside owned paths.",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-144",
+          "kind": "evidence",
+          "rule": "Exact gates pass.",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-145",
+          "kind": "review",
+          "rule": "Review evidence stays on the work item reviewed.",
+          "actors": [
+            "crew"
+          ]
+        },
+        {
+          "id": "L6-146",
+          "kind": "return",
+          "rule": "Every return comes back to the Ticket Captain.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L54.1",
+      "text": "| Review and offer | `ticket-captain` | Passed lane branches are integrated into the parent ticket branch; combined gates pass; a fresh parent ticket-review PASS block is on the ticket and in the PR; the branch is pushed and the PR targets the branch in the table above. |",
+      "rules": [
+        {
+          "id": "L6-029",
+          "kind": "review",
+          "rule": "Passed lane branches are integrated into the parent ticket branch, combined gates pass, and a fresh parent ticket-review PASS block is on the ticket and in the PR.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-169",
+          "kind": "merge",
+          "rule": "The branch is pushed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-170",
+          "kind": "merge",
+          "rule": "The PR targets the branch in the Branches table.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L55.1",
+      "text": "| Integrate a Project ticket | `ticket-captain` | Its final Merge Sub-ticket runs a code-writer - conflicts and combined gates mapped, the merge performed (a conflict-free merge of the reviewed PR into its feature branch is `dydo merge`, whose merge SHA is the candidate for the combined gates and merge review; a conflicted merge stays the local merge), a resolution that refactored leaving its code no worse than either side - then a fresh merge reviewer, preserving the merge commit and hop SHAs; the map holder wires the order and may advance an independent ready PR. Parent stays `Ready to Merge` until merge PASS, then both close `Done`. |",
+      "rules": [
+        {
+          "id": "L6-030",
+          "kind": "merge",
+          "rule": "A Project ticket integrates through its final Merge Sub-ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-147",
+          "kind": "merge",
+          "rule": "A code-writer maps conflicts and combined gates and performs the merge.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-148",
+          "kind": "merge",
+          "rule": "A conflict-free merge of the reviewed PR into its feature branch is dydo merge; a conflicted merge stays the local merge.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-149",
+          "kind": "merge",
+          "rule": "The merge SHA of a dydo merge is the candidate for the combined gates and merge review.",
+          "actors": [
+            "code-writer",
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L6-150",
+          "kind": "merge",
+          "rule": "A refactoring resolution leaves its code no worse than either side.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-151",
+          "kind": "review",
+          "rule": "A fresh merge reviewer judges the merge.",
+          "actors": [
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L6-152",
+          "kind": "worktree",
+          "rule": "The merge commit and hop SHAs are preserved.",
+          "actors": [
+            "code-writer",
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L6-153",
+          "kind": "merge",
+          "rule": "The map holder wires the merge order and may advance an independent ready PR.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L6-154",
+          "kind": "linear",
+          "rule": "The parent stays Ready to Merge until merge PASS.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-155",
+          "kind": "linear",
+          "rule": "On merge PASS the Merge Sub-ticket and its parent both close Done.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L56.1",
+      "text": "| Integrate an atomic ticket | `ticket-captain` | No Merge Sub-ticket: the PR into main carries its reviewer PASS, the captain confirms CI green and sets `Ready to Merge`, and the user clicks the merge. The captain then closes the ticket `Done` and cleans up. |",
+      "rules": [
+        {
+          "id": "L6-031",
+          "kind": "merge",
+          "rule": "An atomic ticket has no Merge Sub-ticket: the PR into main carries its reviewer PASS, the captain confirms CI green and sets Ready to Merge, the user clicks the merge, then the captain closes the ticket Done and cleans up.",
+          "actors": [
+            "ticket-captain",
+            "user"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L57.1",
+      "text": "| Land the Project | user | The landing Merge Ticket prepares main into feature and obtains acceptance PASS; the user clicks feature into main as a merge commit, never squash. |",
+      "rules": [
+        {
+          "id": "L6-032",
+          "kind": "merge",
+          "rule": "To land the Project, the landing Merge Ticket prepares main into feature and obtains acceptance PASS, and the user clicks feature into main as a merge commit, never squash.",
+          "actors": [
+            "user",
+            "map-holder"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L59.1",
+      "text": "A conflicted merge's push to its feature branch passes the guard, while a push to the default branch is blocked: the default branch is the user's.",
+      "rules": [
+        {
+          "id": "L6-033",
+          "kind": "merge",
+          "rule": "A conflicted merge's push to its feature branch passes the guard; a push to the default branch is blocked because the default branch is the user's.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L64.1",
+      "text": "Before the first edit of an `implement` or `fix` hop in a parent ticket or lane, its assigned writer proves all five checks and returns a failure to its Ticket Captain instead of working around it:",
+      "rules": [
+        {
+          "id": "L6-034",
+          "kind": "worktree",
+          "rule": "Before the first edit of an implement or fix hop in a parent ticket or lane, the assigned writer proves all five checks and returns a failure to its Ticket Captain instead of working around it.",
+          "actors": [
+            "code-writer",
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L67.1",
+      "text": "`HEAD` is on the relevant ticket or Sub-ticket branch.",
+      "rules": [
+        {
+          "id": "L6-034"
+        },
+        {
+          "id": "L6-035",
+          "kind": "worktree",
+          "rule": "HEAD is on the relevant ticket or Sub-ticket branch before the first edit.",
+          "actors": [
+            "code-writer",
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L68.1",
+      "text": "The repository root is the isolated worktree, not the main checkout.",
+      "rules": [
+        {
+          "id": "L6-036",
+          "kind": "worktree",
+          "rule": "The repository root is the isolated worktree, not the main checkout, before the first edit.",
+          "actors": [
+            "code-writer",
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L69.1",
+      "text": "The posted base SHA is an ancestor of `HEAD`.",
+      "rules": [
+        {
+          "id": "L6-037",
+          "kind": "worktree",
+          "rule": "The posted base SHA is an ancestor of HEAD before the first edit.",
+          "actors": [
+            "code-writer",
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L70.1",
+      "text": "The worktree is clean.",
+      "rules": [
+        {
+          "id": "L6-038",
+          "kind": "worktree",
+          "rule": "The worktree is clean before the first edit.",
+          "actors": [
+            "code-writer",
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L71.1",
+      "text": "Every path the work item will touch is in the ticket's owned paths.",
+      "rules": [
+        {
+          "id": "L6-039",
+          "kind": "contract",
+          "rule": "Every path the work item will touch is in the ticket's owned paths before the first edit.",
+          "actors": [
+            "code-writer",
+            "docs-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L73.1",
+      "text": "Merge work proves instead the pins of the code-writer's `merge` resource: source and target at their SHAs, the source's PASS, the governing contract and the combined gates.",
+      "rules": [
+        {
+          "id": "L6-040",
+          "kind": "merge",
+          "rule": "Merge work proves instead the pins of the code-writer's merge resource: source and target at their SHAs, the source's PASS, the governing contract and the combined gates.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L74.1",
+      "text": "A proof-only brief names the commissioning captain, the pinned source SHA and the test path.",
+      "rules": [
+        {
+          "id": "L6-041",
+          "kind": "dispatch",
+          "rule": "A proof-only brief names the commissioning captain, the pinned source SHA and the test path.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L75.1",
+      "text": "Proof work, a proof-only brief or an Inquisition's Break phase, proves three things: `HEAD` is on the proof branch its brief names, cut from that SHA (the audit SHA for Break); the worktree is clean; and every path it touches is a test path.",
+      "rules": [
+        {
+          "id": "L6-042",
+          "kind": "worktree",
+          "rule": "Proof work (a proof-only brief or an Inquisition's Break phase) proves before editing that HEAD is on the proof branch its brief names, cut from the pinned SHA (the audit SHA for Break).",
+          "actors": [
+            "code-writer",
+            "inquisitor"
+          ]
+        },
+        {
+          "id": "L6-182",
+          "kind": "worktree",
+          "rule": "Proof work (a proof-only brief or an Inquisition's Break phase) proves before editing that the worktree is clean.",
+          "actors": [
+            "code-writer",
+            "inquisitor"
+          ]
+        },
+        {
+          "id": "L6-183",
+          "kind": "worktree",
+          "rule": "Proof work (a proof-only brief or an Inquisition's Break phase) proves before editing that every path it touches is a test path.",
+          "actors": [
+            "code-writer",
+            "inquisitor"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L82.1",
+      "text": "The default crew is one author - `code-writer`, or `docs-writer` for a documentation change - and fresh independent whole-change review, whose first round on a candidate seats two reviewers in parallel, one Claude and one Codex, their findings merged into one block that FAILs only on a blocker.",
+      "rules": [
+        {
+          "id": "L6-043",
+          "kind": "review",
+          "rule": "A candidate's first review round seats two reviewers in parallel, one Claude and one Codex, their findings merged into one block that FAILs only on a blocker.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-168",
+          "kind": "dispatch",
+          "rule": "The default crew is one author (code-writer, or docs-writer for a documentation change) and a fresh independent whole-change review.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L85.1",
+      "text": "Add a spec review of the contract before any code only when one short, concrete risk reason, recorded in the contract, calls for it; persistence, migrations, permissions and uncertain native interfaces are examples of such a risk.",
+      "rules": [
+        {
+          "id": "L6-044",
+          "kind": "review",
+          "rule": "Add a spec review of the contract before any code only when one short, concrete risk reason, recorded in the contract, calls for it (persistence, migrations, permissions and uncertain native interfaces are examples).",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L87.1",
+      "text": "Keep one compact acceptance contract and point to evidence rather than copying it.",
+      "rules": [
+        {
+          "id": "L6-045",
+          "kind": "contract",
+          "rule": "Keep one compact acceptance contract and point to evidence rather than copying it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L88.1",
+      "text": "This scale rule does not weaken required G/M, integration or release gates, and skipped native proof is never runtime proof.",
+      "rules": [
+        {
+          "id": "L6-046",
+          "kind": "evidence",
+          "rule": "The delivery-scale rule does not weaken required G/M, integration or release gates.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-173",
+          "kind": "evidence",
+          "rule": "Skipped native proof is never runtime proof.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L91.1",
+      "text": "The [testing strategy](./testing-strategy.md#feature-proof-and-gate-placement) owns selection, stage placement, runner prerequisites, shared-host constraints and exact-candidate evidence reuse.",
+      "rules": [
+        {
+          "id": "L6-047",
+          "kind": "evidence",
+          "rule": "The testing strategy owns selection, stage placement, runner prerequisites, shared-host constraints and exact-candidate evidence reuse.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L93.1",
+      "text": "The captain pins those project-owned commands in Exact gates; the writer proves that hop's actual reach and the reviewer judges its record.",
+      "rules": [
+        {
+          "id": "L6-048",
+          "kind": "evidence",
+          "rule": "The captain pins project-owned commands in Exact gates.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-171",
+          "kind": "evidence",
+          "rule": "The writer proves that hop's actual reach.",
+          "actors": [
+            "code-writer"
+          ]
+        },
+        {
+          "id": "L6-172",
+          "kind": "evidence",
+          "rule": "The reviewer judges the hop's record.",
+          "actors": [
+            "reviewer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L94.1",
+      "text": "Required combined-merge and release gates stay at their boundaries.",
+      "rules": [
+        {
+          "id": "L6-049",
+          "kind": "evidence",
+          "rule": "Required combined-merge and release gates stay at their boundaries.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L95.1",
+      "text": "Reconcile existing active gate contracts explicitly before changing obligations.",
+      "rules": [
+        {
+          "id": "L6-050",
+          "kind": "contract",
+          "rule": "Reconcile existing active gate contracts explicitly before changing obligations.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L96.1",
+      "text": "Validate uncertain native interface shapes early.",
+      "rules": [
+        {
+          "id": "L6-051",
+          "kind": "evidence",
+          "rule": "Validate uncertain native interface shapes early.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L100.1",
+      "text": "The Admiral budgets open native capacity before commissioning or resuming a captain.",
+      "rules": [
+        {
+          "id": "L6-052",
+          "kind": "capacity",
+          "rule": "The Admiral budgets open native capacity before commissioning or resuming a captain.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L100.2",
+      "text": "The captain alone commissions exact-scope delivery crew, budgets that capacity and preserves the fresh reviewer obligation; `research` still sends its own scouts.",
+      "rules": [
+        {
+          "id": "L6-053",
+          "kind": "dispatch",
+          "rule": "The captain alone commissions exact-scope delivery crew.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-174",
+          "kind": "capacity",
+          "rule": "The captain budgets that capacity.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-175",
+          "kind": "dispatch",
+          "rule": "The captain preserves the fresh reviewer obligation.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-176",
+          "kind": "dispatch",
+          "rule": "Research still sends its own scouts.",
+          "actors": [
+            "research"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L102.1",
+      "text": "A saved brief is not Admiral-to-crew authority.",
+      "rules": [
+        {
+          "id": "L6-054",
+          "kind": "dispatch",
+          "rule": "A saved brief is not Admiral-to-crew authority.",
+          "actors": [
+            "admiral",
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L103.1",
+      "text": "Under T3, the channel follows where the child's result is awaited.",
+      "rules": [
+        {
+          "id": "L6-055",
+          "kind": "dispatch",
+          "rule": "Under T3, the dispatch channel follows where the child's result is awaited.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L103.2",
+      "text": "A native foreground subagent only when the dispatcher waits for it within its own turn.",
+      "rules": [
+        {
+          "id": "L6-056",
+          "kind": "dispatch",
+          "rule": "Under T3, use a native foreground subagent only when the dispatcher waits for it within its own turn.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L104.1",
+      "text": "`delegate_task` for every other child that returns to its dispatcher: captains, crew, reviewers, and any agent of another vendor.",
+      "rules": [
+        {
+          "id": "L6-057",
+          "kind": "dispatch",
+          "rule": "Under T3, use delegate_task for every other child that returns to its dispatcher: captains, crew, reviewers, and any agent of another vendor.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L105.1",
+      "text": "A new top-level T3 thread only for HITL work the user takes over, or when the user asks for one.",
+      "rules": [
+        {
+          "id": "L6-058",
+          "kind": "dispatch",
+          "rule": "Under T3, open a new top-level thread only for HITL work the user takes over, or when the user asks for one.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L106.1",
+      "text": "No native background subagents.",
+      "rules": [
+        {
+          "id": "L6-059",
+          "kind": "dispatch",
+          "rule": "Under T3, use no native background subagents.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L107.1",
+      "text": "A peer of another vendor is reached by T3 messaging.",
+      "rules": [
+        {
+          "id": "L6-060",
+          "kind": "dispatch",
+          "rule": "A peer of another vendor is reached by T3 messaging.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L107.2",
+      "text": "Without T3, use the host's native subagents and messaging, or none.",
+      "rules": [
+        {
+          "id": "L6-061",
+          "kind": "dispatch",
+          "rule": "Without T3, use the host's native subagents and messaging, or none.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L108.1",
+      "text": "A return comes back once, on the channel it was dispatched on.",
+      "rules": [
+        {
+          "id": "L6-062",
+          "kind": "dispatch",
+          "rule": "A return comes back once, on the channel it was dispatched on.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L110.1",
+      "text": "A native child lives only inside its dispatcher's turn and cannot itself call `delegate_task`; T3 refuses with `parent_not_active` (\"Delegated tasks require an active run owned by this MCP provider session\").",
+      "rules": [
+        {
+          "id": "L6-063",
+          "kind": "dispatch",
+          "rule": "A native child lives only inside its dispatcher's turn and cannot call delegate_task; T3 refuses with parent_not_active.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L112.1",
+      "text": "A native captain therefore cannot send its own Codex reviewer; a `delegate_task` captain can.",
+      "rules": [
+        {
+          "id": "L6-064",
+          "kind": "dispatch",
+          "rule": "A native captain cannot send its own Codex reviewer; a delegate_task captain can.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L113.1",
+      "text": "On `parent_not_active`, hand the dispatch up to your officer.",
+      "rules": [
+        {
+          "id": "L6-065",
+          "kind": "escalation",
+          "rule": "On parent_not_active, hand the dispatch up to your officer.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L114.1",
+      "text": "A dispatcher waiting on a native child, or a child awaiting a result it owns (a reviewer, a suite), stays in its turn until the result arrives.",
+      "rules": [
+        {
+          "id": "L6-066",
+          "kind": "dispatch",
+          "rule": "A dispatcher waiting on a native child, or a child awaiting a result it owns (a reviewer, a suite), stays in its turn until the result arrives.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L115.1",
+      "text": "Work that cannot finish inside the turn goes through `delegate_task` instead.",
+      "rules": [
+        {
+          "id": "L6-067",
+          "kind": "dispatch",
+          "rule": "Work that cannot finish inside the turn goes through delegate_task instead.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L117.1",
+      "text": "Every brief that sends out Codex agents names their concurrency cap: start around 8 at once, rise toward 16 only while runs stay clean, and back off on `429 turn_rate_limit_exceeded` (\"Codex is at capacity\").",
+      "rules": [
+        {
+          "id": "L6-068",
+          "kind": "capacity",
+          "rule": "Every brief that sends out Codex agents names a concurrency cap: start around 8 at once, rise toward 16 only while runs stay clean, and back off on 429 turn_rate_limit_exceeded.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L119.1",
+      "text": "A capacity 429 means retry after a few minutes, never a blocker.",
+      "rules": [
+        {
+          "id": "L6-069",
+          "kind": "capacity",
+          "rule": "A capacity 429 means retry after a few minutes, never a blocker.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L119.2",
+      "text": "A brief asks for a capped count, never for \"maximise parallelism\".",
+      "rules": [
+        {
+          "id": "L6-070",
+          "kind": "capacity",
+          "rule": "A brief asks for a capped count, never for \"maximise parallelism\".",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L121.1",
+      "text": "An officer that needs the user while its work runs asks through the host's question tool; T3 then lifts the thread into the user's queue.",
+      "rules": [
+        {
+          "id": "L6-071",
+          "kind": "escalation",
+          "rule": "An officer that needs the user while its work runs asks through the host's question tool; T3 then lifts the thread into the user's queue.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L122.1",
+      "text": "The Linear Question ticket stays the record.",
+      "rules": [
+        {
+          "id": "L6-072",
+          "kind": "escalation",
+          "rule": "The Linear Question ticket stays the record of an ask to the user.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L122.2",
+      "text": "Crew hand their questions up to their captain and never ask the user directly.",
+      "rules": [
+        {
+          "id": "L6-073",
+          "kind": "escalation",
+          "rule": "Crew hand their questions up to their captain and never ask the user directly.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L124.1",
+      "text": "On a bounded refusal, preserve the record, candidate, hop SHA and exact brief; do not broaden it or retry blindly.",
+      "rules": [
+        {
+          "id": "L6-074",
+          "kind": "release",
+          "rule": "On a bounded refusal, preserve the record, candidate, hop SHA and exact brief; do not broaden it or retry blindly.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L125.1",
+      "text": "Use established lifecycle handling, then return or release the concrete limitation when captain-owned work cannot run.",
+      "rules": [
+        {
+          "id": "L6-075",
+          "kind": "release",
+          "rule": "On a bounded refusal use established lifecycle handling, then return or release the concrete limitation when captain-owned work cannot run.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L126.1",
+      "text": "Record only observed native evidence.",
+      "rules": [
+        {
+          "id": "L6-076",
+          "kind": "evidence",
+          "rule": "Record only observed native evidence.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L127.1",
+      "text": "Crew inherit the relevant ticket or Sub-ticket contract, owned paths and gates, and commit their own hop.",
+      "rules": [
+        {
+          "id": "L6-077",
+          "kind": "contract",
+          "rule": "Crew inherit the relevant ticket or Sub-ticket contract, owned paths and gates, and commit their own hop.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L128.1",
+      "text": "Ordinary crew do not create its branch, open its PR, merge it or review their own work.",
+      "rules": [
+        {
+          "id": "L6-078",
+          "kind": "identity",
+          "rule": "Ordinary crew do not create the ticket's branch, open its PR, merge it or review their own work.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L129.1",
+      "text": "A captain-directed Merge code-writer performs the specified merge and conflict resolutions; a fresh reviewer judges that integrated candidate.",
+      "rules": [
+        {
+          "id": "L6-079",
+          "kind": "merge",
+          "rule": "A fresh reviewer judges the integrated merge candidate.",
+          "actors": [
+            "reviewer"
+          ]
+        },
+        {
+          "id": "L6-180",
+          "kind": "merge",
+          "rule": "A captain-directed Merge code-writer performs the specified merge and conflict resolutions.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L131.1",
+      "text": "Fan-out is safe only across disjoint paths.",
+      "rules": [
+        {
+          "id": "L6-080",
+          "kind": "contract",
+          "rule": "Fan-out is safe only across disjoint paths.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L131.2",
+      "text": "Each independently trackable parallel lane is a direct Sub-ticket of the captain's ticket.",
+      "rules": [
+        {
+          "id": "L6-081",
+          "kind": "contract",
+          "rule": "Each independently trackable parallel lane is a direct Sub-ticket of the captain's ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L132.1",
+      "text": "Lanes have one level; the Bug stages below, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets are the other permitted children.",
+      "rules": [
+        {
+          "id": "L6-082",
+          "kind": "contract",
+          "rule": "Lanes have one level; the only other permitted children are the Bug stages, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L132.2",
+      "text": "If a lane needs splitting, replace it with sibling lanes under the parent ticket.",
+      "rules": [
+        {
+          "id": "L6-083",
+          "kind": "contract",
+          "rule": "If a lane needs splitting, replace it with sibling lanes under the parent ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L134.1",
+      "text": "An agent invocation is recorded as comments and evidence on the relevant ticket or Sub-ticket, never as another child.",
+      "rules": [
+        {
+          "id": "L6-084",
+          "kind": "linear",
+          "rule": "An agent invocation is recorded as comments and evidence on the relevant ticket or Sub-ticket, never as another child.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L135.1",
+      "text": "Successive agents may work through the same record.",
+      "rules": [
+        {
+          "id": "L6-085",
+          "kind": "linear",
+          "rule": "Successive agents may work through the same record.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L136.1",
+      "text": "A Bug may retain its Type template's ordered reproduce-or-identify and fix Sub-tickets.",
+      "rules": [
+        {
+          "id": "L6-086",
+          "kind": "contract",
+          "rule": "A Bug may retain its Type template's ordered reproduce-or-identify and fix Sub-tickets.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L136.2",
+      "text": "Fix is natively blocked by reproduction; shared paths transfer only after the reproduction closes with its evidence recorded.",
+      "rules": [
+        {
+          "id": "L6-087",
+          "kind": "contract",
+          "rule": "On a Bug, Fix is natively blocked by reproduction.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-163",
+          "kind": "contract",
+          "rule": "Shared paths transfer only after the reproduction closes with its evidence recorded.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L138.1",
+      "text": "Each stage has a contract, branch and worktree; every actual integration has a Merge Sub-ticket.",
+      "rules": [
+        {
+          "id": "L6-088",
+          "kind": "contract",
+          "rule": "Each Bug stage has a contract, branch and worktree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-164",
+          "kind": "merge",
+          "rule": "Every actual integration has a Merge Sub-ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L139.1",
+      "text": "A simple Bug collapses the placeholders into parent hops and closes the unused records `Canceled` with the reason.",
+      "rules": [
+        {
+          "id": "L6-089",
+          "kind": "contract",
+          "rule": "A simple Bug collapses the placeholder stages into parent hops and closes the unused records Canceled with the reason.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L140.1",
+      "text": "This exception does not permit overlapping parallel lanes.",
+      "rules": [
+        {
+          "id": "L6-090",
+          "kind": "contract",
+          "rule": "The Bug stage exception does not permit overlapping parallel lanes.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L141.1",
+      "text": "The Ticket Captain directs collision resolution and integration of review-passed branches through their Merge code-writers, then verifies the integrated result.",
+      "rules": [
+        {
+          "id": "L6-091",
+          "kind": "merge",
+          "rule": "The Ticket Captain directs collision resolution and integration of review-passed branches through their Merge code-writers, then verifies the integrated result.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L142.1",
+      "text": "Each writer stages owned paths by name; a whole-tree add can capture another writer's work.",
+      "rules": [
+        {
+          "id": "L6-092",
+          "kind": "worktree",
+          "rule": "Each writer stages owned paths by name, never a whole-tree add, which can capture another writer's work.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L144.1",
+      "text": "The Ticket Captain consumes every crew return and remains accountable for the ticket, evidence and complete diff.",
+      "rules": [
+        {
+          "id": "L6-093",
+          "kind": "identity",
+          "rule": "The Ticket Captain consumes every crew return and remains accountable for the ticket, evidence and complete diff.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L145.1",
+      "text": "After integration it verifies the crew's combined proof and obtains the final parent review.",
+      "rules": [
+        {
+          "id": "L6-094",
+          "kind": "review",
+          "rule": "After integration the captain verifies the crew's combined proof and obtains the final parent review.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L149.1",
+      "text": "The captain offers a PR with its PASS block, sets `Ready to Merge`, and returns `done <key>: PR ready`.",
+      "rules": [
+        {
+          "id": "L6-095",
+          "kind": "return",
+          "rule": "The captain offers a PR with its PASS block, sets Ready to Merge, and returns \"done <key>: PR ready\".",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L150.1",
+      "text": "It resumes when its Merge Sub-ticket's native blocker clears, or a fresh captain takes the record, and returns `done <key>: merged` after merge PASS and cleanup.",
+      "rules": [
+        {
+          "id": "L6-096",
+          "kind": "return",
+          "rule": "The captain resumes when its Merge Sub-ticket's native blocker clears, or a fresh captain takes the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-185",
+          "kind": "return",
+          "rule": "The captain returns \"done <key>: merged\" after merge PASS and cleanup.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L151.1",
+      "text": "The record holds the detail; the captain posts each crew hop's SHA.",
+      "rules": [
+        {
+          "id": "L6-097",
+          "kind": "worktree",
+          "rule": "The record holds the detail; the captain posts each crew hop's SHA.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L152.1",
+      "text": "A Merge Sub-ticket never enters `Ready to Merge`.",
+      "rules": [
+        {
+          "id": "L6-098",
+          "kind": "linear",
+          "rule": "A Merge Sub-ticket never enters Ready to Merge.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L153.1",
+      "text": "An atomic ticket has no Merge Sub-ticket: its captain sets `Ready to Merge` once CI is green, and after the user's click closes it `Done`, cleans up and returns `done <key>: merged`.",
+      "rules": [
+        {
+          "id": "L6-099",
+          "kind": "return",
+          "rule": "An atomic ticket has no Merge Sub-ticket: its captain sets Ready to Merge once CI is green, and after the user's click closes it Done, cleans up and returns \"done <key>: merged\".",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L155.1",
+      "text": "A delegated captain whose PR still awaits checks returns `PR open <key>, checks pending: <url>, head <SHA>`; its officer, the top-level thread that owns the PR in T3, watches it and wakes the captain, which rechecks the gate before `Ready to Merge`.",
+      "rules": [
+        {
+          "id": "L6-100",
+          "kind": "return",
+          "rule": "A delegated captain whose PR still awaits checks returns \"PR open <key>, checks pending: <url>, head <SHA>\".",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-136",
+          "kind": "merge",
+          "rule": "The officer, the top-level thread that owns the PR in T3, watches the PR and wakes the captain.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L6-137",
+          "kind": "merge",
+          "rule": "The woken captain rechecks the gate before Ready to Merge.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L159.1",
+      "text": "For an uncleared blocker or user takeover: push, post the resume SHA, clean the worktrees the captain or its crew made (lanes, merge checkouts, temp checkouts) with `dydo clean --dry-run <worktree>`, then `dydo clean <worktree>`, run from outside that tree, set the parent `Todo`, unassign and wire any blocker; return `released <key>: <reason>`.",
+      "rules": [
+        {
+          "id": "L6-101",
+          "kind": "release",
+          "rule": "For an uncleared blocker or user takeover, the captain pushes, posts the resume SHA, sets the parent Todo, unassigns, wires any blocker, and returns \"released <key>: <reason>\".",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-177",
+          "kind": "worktree",
+          "rule": "On release, the captain cleans the worktrees it or its crew made with dydo clean --dry-run <worktree> then dydo clean <worktree>, run from outside that tree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L162.1",
+      "text": "The worktree its thread runs in belongs to T3: leave it.",
+      "rules": [
+        {
+          "id": "L6-102",
+          "kind": "worktree",
+          "rule": "The worktree the captain's thread runs in belongs to T3: leave it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L162.2",
+      "text": "A dead session is treated as release from its last recorded hop without a final push.",
+      "rules": [
+        {
+          "id": "L6-103",
+          "kind": "release",
+          "rule": "A dead session is treated as release from its last recorded hop without a final push.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L163.1",
+      "text": "Fresh commission from the record works on both hosts.",
+      "rules": [
+        {
+          "id": "L6-104",
+          "kind": "release",
+          "rule": "A fresh commission from the record works on both hosts.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L164.1",
+      "text": "An invoked admiral wakes on a captain's return, the user's word or its scheduled check-in, and rereads the board, including released and blocker-cleared tickets.",
+      "rules": [
+        {
+          "id": "L6-105",
+          "kind": "overnight",
+          "rule": "An invoked admiral wakes on a captain's return, the user's word or its scheduled check-in, and rereads the board, including released and blocker-cleared tickets.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L167.1",
+      "text": "Merge FAIL, a blocker, stays owned: fix integration defects inside Merge; revert a source defect there and close Merge `Canceled`, returning the source to `Implementing`.",
+      "rules": [
+        {
+          "id": "L6-106",
+          "kind": "merge",
+          "rule": "A Merge FAIL is a blocker and stays owned: fix integration defects inside Merge; revert a source defect there, close Merge Canceled, and return the source to Implementing.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L168.1",
+      "text": "If a later merge depends on it, use a following fix ticket.",
+      "rules": [
+        {
+          "id": "L6-107",
+          "kind": "merge",
+          "rule": "If a later merge depends on a reverted source, use a following fix ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L169.1",
+      "text": "Each corrected candidate gets fresh merge review.",
+      "rules": [
+        {
+          "id": "L6-108",
+          "kind": "review",
+          "rule": "Each corrected merge candidate gets fresh merge review.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L173.1",
+      "text": "An Inquisition runs its sweep, delivers its own record and closes once.",
+      "rules": [
+        {
+          "id": "L6-109",
+          "kind": "inquisition",
+          "rule": "An Inquisition runs its sweep, delivers its own record and closes once.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L173.2",
+      "text": "It releases in two cases only, by [Return and release](#return-and-release): `released <key>: verification skill first` when a project with a runnable surface has no verification skill, and `released <key>: groups <keys>` when its area map is cut into group Sub-tickets, resuming as parent for the cross-group triage once every group closes.",
+      "rules": [
+        {
+          "id": "L6-110",
+          "kind": "release",
+          "rule": "An Inquisition releases in two cases only: \"released <key>: verification skill first\" when a project with a runnable surface has no verification skill, and \"released <key>: groups <keys>\" when its area map is cut into group Sub-tickets, then resumes as parent for cross-group triage once every group closes.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L177.1",
+      "text": "Each group Sub-ticket owns its own Bugs' retention below and closes `Done` with its findings register final and pushed; the parent rechecks retention over the merged register before its record.",
+      "rules": [
+        {
+          "id": "L6-111",
+          "kind": "inquisition",
+          "rule": "Each Inquisition group Sub-ticket owns its own Bugs' retention and closes Done with its findings register final and pushed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-181",
+          "kind": "inquisition",
+          "rule": "The parent rechecks retention over the merged register before its record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L181.1",
+      "text": "The audit branch carries the findings register, `inquisition-register.md`, pushed after every return.",
+      "rules": [
+        {
+          "id": "L6-112",
+          "kind": "inquisition",
+          "rule": "The audit branch carries the findings register inquisition-register.md, pushed after every return.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L182.1",
+      "text": "Audit, group and proof branches never merge.",
+      "rules": [
+        {
+          "id": "L6-113",
+          "kind": "inquisition",
+          "rule": "Audit, group and proof branches never merge.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L182.2",
+      "text": "Before the sweep closes, every open Bug with a reproduction commit keeps its SHA reachable from a pushed named ref independent of the audit branch, linked on that Bug: its proof branch, or its patch branch when a fix was prepared.",
+      "rules": [
+        {
+          "id": "L6-114",
+          "kind": "inquisition",
+          "rule": "Before the sweep closes, every open Bug with a reproduction commit keeps its SHA reachable from a pushed named ref independent of the audit branch, linked on that Bug: its proof branch, or its patch branch when a fix was prepared.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L184.1",
+      "text": "A prose Bug carries its quoted passages, an unused-member Bug its definition and reference search, and a drive Bug its rerunnable drive steps; none has a ref to retain.",
+      "rules": [
+        {
+          "id": "L6-115",
+          "kind": "inquisition",
+          "rule": "A prose Bug carries its quoted passages, an unused-member Bug its definition and reference search, and a drive Bug its rerunnable drive steps; none has a ref to retain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L186.1",
+      "text": "The Inquisition captain owns that retention until each Bug captain records adopting the reproduction and the cleanup responsibility.",
+      "rules": [
+        {
+          "id": "L6-116",
+          "kind": "inquisition",
+          "rule": "The Inquisition captain owns reproduction retention until each Bug captain records adopting the reproduction and the cleanup responsibility.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L188.1",
+      "text": "Audit cleanup never deletes those refs; they remain input to each Bug's normal chain.",
+      "rules": [
+        {
+          "id": "L6-117",
+          "kind": "worktree",
+          "rule": "Audit cleanup never deletes the retained Bug refs; they remain input to each Bug's normal chain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L190.1",
+      "text": "The record is the Inquisition's last step, on its own ticket branch from the Branches table.",
+      "rules": [
+        {
+          "id": "L6-118",
+          "kind": "inquisition",
+          "rule": "The Inquisition record is its last step, on its own ticket branch from the Branches table.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L190.2",
+      "text": "A docs-writer writes it in `dydo/project/inquisitions/` from the pushed register, a fresh docs reviewer checks it, and it merges into the feature through the Inquisition's Merge Sub-ticket as any Project ticket's work does; an audit of main merges its record as an atomic ticket does.",
+      "rules": [
+        {
+          "id": "L6-119",
+          "kind": "inquisition",
+          "rule": "A docs-writer writes the Inquisition record in dydo/project/inquisitions/ from the pushed register, a fresh docs reviewer checks it, and it merges into the feature through the Inquisition's Merge Sub-ticket as any Project ticket's work does; an audit of main merges its record as an atomic ticket does.",
+          "actors": [
+            "docs-writer",
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L193.1",
+      "text": "The captain returns `done <key>: PR ready` when it offers the record's PR.",
+      "rules": [
+        {
+          "id": "L6-120",
+          "kind": "return",
+          "rule": "The Inquisition captain returns \"done <key>: PR ready\" when it offers the record's PR.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L194.1",
+      "text": "After the record merges, it verifies on the feature the record at its path, every Bug filed and wired, and every retained ref live; a record only on an unmerged branch cannot satisfy this check.",
+      "rules": [
+        {
+          "id": "L6-121",
+          "kind": "inquisition",
+          "rule": "After the record merges, the captain verifies on the feature the record at its path, every Bug filed and wired, and every retained ref live; a record only on an unmerged branch cannot satisfy this check.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L196.1",
+      "text": "Only then does it delete the audit branch and, as parent, every group's audit branch, name their remotes and any proof branch no open Bug needs on the record for the user, close `Done` and return `done <key>: merged`.",
+      "rules": [
+        {
+          "id": "L6-122",
+          "kind": "worktree",
+          "rule": "Only after the record and retention verification does the captain delete the audit branch and, as parent, every group's audit branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-157",
+          "kind": "worktree",
+          "rule": "Name the audit branches' remotes and any proof branch no open Bug needs on the record for the user.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-158",
+          "kind": "inquisition",
+          "rule": "After the audit branches are handled the captain closes the Inquisition Done.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-159",
+          "kind": "return",
+          "rule": "The captain returns done <key>: merged.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L204.1",
+      "text": "| Parent ticket and lane worktrees | `ticket-captain` | Every worktree it or its crew made (lanes, merge checkouts, temp checkouts) is cleaned with `dydo clean --dry-run <worktree>`, then `dydo clean <worktree>`, run from outside that tree. The worktree its thread runs in belongs to T3: leave it. Any worktree under `~/.t3/worktrees` was made by T3, a crew member's `delegate_task` checkout included, and `dydo clean` skips it. A spawned Ticket Captain first pushes the parent branch and opens its PR so the work survives its return. |",
+      "rules": [
+        {
+          "id": "L6-123",
+          "kind": "worktree",
+          "rule": "The ticket-captain cleans every worktree it or its crew made (lanes, merge checkouts, temp checkouts) with dydo clean --dry-run <worktree> then dydo clean <worktree>, run from outside that tree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-138",
+          "kind": "worktree",
+          "rule": "The worktree the captain's thread runs in belongs to T3: leave it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-139",
+          "kind": "worktree",
+          "rule": "Know that worktrees under ~/.t3/worktrees (delegate_task checkouts included) are T3-made and dydo clean skips them.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-140",
+          "kind": "worktree",
+          "rule": "A spawned Ticket Captain first pushes the parent branch and opens its PR so the work survives its return.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L205.1",
+      "text": "| Integrated lane Sub-ticket branch | `ticket-captain` | The branch is deleted after it passes review and is integrated into the parent ticket branch. |",
+      "rules": [
+        {
+          "id": "L6-124",
+          "kind": "worktree",
+          "rule": "The ticket-captain deletes an integrated lane Sub-ticket branch after it passes review and is integrated into the parent ticket branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L206.1",
+      "text": "| Merged Project ticket branch | `ticket-captain` | The branch is deleted after the merge. |",
+      "rules": [
+        {
+          "id": "L6-125",
+          "kind": "worktree",
+          "rule": "The ticket-captain deletes a merged Project ticket branch after the merge.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L207.1",
+      "text": "| Merged atomic ticket branch | `ticket-captain` | The branch is deleted after the user clicks its PR into main. |",
+      "rules": [
+        {
+          "id": "L6-126",
+          "kind": "worktree",
+          "rule": "The ticket-captain deletes a merged atomic ticket branch after the user clicks its PR into main.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L208.1",
+      "text": "| Merged feature branch | the map holder, commissioning the landing Captain | The landing Captain deletes the branch after the user lands it and reports completion. |",
+      "rules": [
+        {
+          "id": "L6-127",
+          "kind": "project",
+          "rule": "The map holder, commissioning the landing Captain, is accountable for the merged feature branch; the landing Captain deletes it after the user lands it and reports completion.",
+          "actors": [
+            "map-holder",
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L209.1",
+      "text": "| Prototype branch | `ticket-captain`, tracked by the map holder | Keep the winning code linked as delivery-spec input; delete when that delivery ticket is Done or with feature cleanup. |",
+      "rules": [
+        {
+          "id": "L6-128",
+          "kind": "worktree",
+          "rule": "A prototype branch is the ticket-captain's, tracked by the map holder: keep the winning code linked as delivery-spec input; delete when that delivery ticket is Done or with feature cleanup.",
+          "actors": [
+            "ticket-captain",
+            "map-holder"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L210.1",
+      "text": "| Inquisition audit and proof branches | `ticket-captain` | Delete the audit branch at Done after the record and retention checks above, and the group audit branches at the parent's Done, and name any proof branch no open Bug needs; never merge them or delete the independently retained Bug refs. |",
+      "rules": [
+        {
+          "id": "L6-129",
+          "kind": "worktree",
+          "rule": "The ticket-captain deletes the audit branch at Done after the record and retention checks, and the group audit branches at the parent's Done.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-160",
+          "kind": "worktree",
+          "rule": "Name any proof branch no open Bug needs.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-161",
+          "kind": "inquisition",
+          "rule": "The audit and proof branches are never merged.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L6-162",
+          "kind": "worktree",
+          "rule": "Never delete the independently retained Bug refs.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L212.1",
+      "text": "`dydo clean` deletes a local branch only once origin's default branch holds it.",
+      "rules": [
+        {
+          "id": "L6-130",
+          "kind": "worktree",
+          "rule": "dydo clean deletes a local branch only once origin's default branch holds it.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L212.2",
+      "text": "Deleting a branch here means the local branch.",
+      "rules": [
+        {
+          "id": "L6-131",
+          "kind": "worktree",
+          "rule": "Deleting a branch in this standard means the local branch.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L212.3",
+      "text": "GitHub deletes a merged PR's remote branch on merge, and the guard blocks agents from deleting remote branches, so the accountable officer names any other remote branch due for deletion on its record for the user.",
+      "rules": [
+        {
+          "id": "L6-132",
+          "kind": "worktree",
+          "rule": "The accountable officer names any remote branch due for deletion (other than a merged PR's branch, which GitHub deletes, and agents may not delete remote branches) on its record for the user.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L216.1",
+      "text": "The `chief-of-staff` compares `git worktree list` and merged branches with Linear during board hygiene.",
+      "rules": [
+        {
+          "id": "L6-133",
+          "kind": "worktree",
+          "rule": "The chief-of-staff compares git worktree list and merged branches with Linear during board hygiene.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L217.1",
+      "text": "Anything it finds is a standard failure to clear or route with its owner named, not normal cleanup delegated to staff.",
+      "rules": [
+        {
+          "id": "L6-134",
+          "kind": "worktree",
+          "rule": "Anything the chief-of-staff finds is a standard failure to clear or route with its owner named, not normal cleanup delegated to staff.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "dydo/guides/working-tree-standard.md#L222.1",
+      "text": "[dydo Glossary](../reference/dydo-glossary.md) - locked delivery vocabulary",
+      "rules": [],
+      "notRule": {
+        "category": "pointer",
+        "note": "glossary link"
+      }
+    }
+  ]
+}
