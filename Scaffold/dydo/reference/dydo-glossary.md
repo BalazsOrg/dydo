@@ -18,8 +18,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   from the user's intent would show. The map holder places few; every delivery ticket belongs to
   one, and each has a Walkthrough Ticket. The first is the **walking skeleton**, the rough
   foundation the Project is built on; the landing is the last.
-- **Ticket** - the only actionable tracked work item. Linear calls it an Issue. Status, priority,
-  assignment, blockers, updates, and current execution evidence live in Linear.
+- **Ticket** - A ticket is a step on the Project map toward the destination, sized to what one agent can handle within its context.
 - **Task** - the role a captain-held ticket plays on a Wayfinder map; a name for that role, not a
   separate Linear Type.
 - **Sub-ticket** - optional decomposition when child tickets need independent tracking.
@@ -47,6 +46,10 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 
 ## Knowledge and contracts
 
+- **Axiom** - a truth or value the law builds on; not questioned or second-guessed; it changes only if the world it assumes changes.
+- **Principle** - a value judgement that follows from an axiom or a broader principle, and can lose to another value in a given case.
+- **Case law** - the DRs and case studies that show how the law was applied.
+- **Case study** - a curated git record of a Question, grilling decision or idea that shaped the law. Often, but not always, a post-mortem. It is an origin story that links its source.
 - **Decision** - a choice recorded in a Decision Record because it is hard to reverse, surprising
   later, and the result of a real trade-off. Tickets carry questions, Decision Records carry
   decisions, and the two are linked rather than copied.

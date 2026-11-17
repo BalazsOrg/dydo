@@ -9,6 +9,7 @@ Documentation is agents' long-term memory: a source of truth that outlives every
 guiding light through the fog of implementation. Keep it true — a stale doc misleads everyone who
 comes after you.
 
+- [law/](law/_law.md) - dydo's product law and the pending tech law.
 - [understand/](understand/_understand.md) - what this project is and how it is built: start at
   [about](understand/about.md), what this project stands for.
 - [guides/](guides/_guides.md) - how to work here: the procedures and standards work is held to.
