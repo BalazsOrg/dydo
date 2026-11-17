@@ -1,0 +1,22 @@
+{
+  "branch": "DYD-1029-safe-delete",
+  "root": "/home/balazs/.t3/worktrees/DynaDocs/t3-8d7ada1c-88d218c54a54db07",
+  "headBeforeFirstEdit": "dee4861ae2691e41d9e60985e3e0ffb0c7ea987d",
+  "baseAncestorExit": 0,
+  "statusBeforeFirstEdit": "",
+  "mainCheckout": "/home/balazs/Desktop/Projects/DynaDocs",
+  "ownedPaths": "SafeDelete models/services/context/command/tests/feature/bindings and the explicitly commissioned config, Program, Help, Completion, Guard, Init, analyzer, Codex scaffold, documentation, CI, associations, verification resources and ticket evidence paths only.",
+  "testNamesBeforeProductCode": ["DynaDocs.Tests/Features/safe-delete.feature", "DynaDocs.Tests/Integration/SafeDeleteTests.cs"],
+  "agentSlice": "app-t3code-agents-cbc6c2286251.slice",
+  "sdk": "10.0.303",
+  "runtime": "10.0.14",
+  "python": "3.14",
+  "initialSandboxScopeProbeExit": 1,
+  "initialSandboxScopeProbeOutput": "Failed to connect to user scope bus via local transport: Operation not permitted",
+  "escalatedCappedSdkProbeExit": 0,
+  "lockedAssurancePipInstallExit": 0,
+  "initialDiscoveryExit": 1,
+  "initialDiscoveryReason": "Compiler S3776 complexity findings in new SafeDelete methods; refactored, no threshold changes",
+  "secondDiscoveryExit": 0,
+  "secondDiscoveryNonzero": true
+}

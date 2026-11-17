@@ -1725,13 +1725,13 @@ public partial class BashCommandAnalyzer : IBashCommandAnalyzer
 
     private const string WorktreeRemovalReason =
         "Raw worktree removal can lose uncommitted work or follow a link out of the tree. "
-        + "From outside the tree run dydo clean --dry-run <worktree>, then dydo clean <worktree>";
+        + "From outside the tree run dydo archive worktree <path> (--dry-run first); use dydo archive list and restore to recover work";
 
     // One git -C/-c value: double- or single-quoted (spaces allowed), or a bare word.
     private const string GitOptionValue = @"(?:""[^""\r\n]*""|'[^'\r\n]*'|[^\s;&|'""]+)";
 
     // git worktree remove with a force flag (-f, git's repeated -ff, --force), after any git -C/-c
-    // options, quoted or not. Plain remove refuses a dirty tree, so it stays allowed.
+    // options, quoted or not. Plain removal is also refused by RunsDestructiveGit.
     [GeneratedRegex(LinearCommandStart + @"git(?:\s+-[cC]\s+" + GitOptionValue + @")*\s+worktree\s+remove\b[^;&|\r\n]*\s(?:-f+|--force)" + LinearCommandEnd, LinearIgnoreCase, DangerousPatternTimeoutMs)]
     internal static partial Regex ForcedWorktreeRemoveRegex();
 
@@ -1825,6 +1825,34 @@ public partial class BashCommandAnalyzer : IBashCommandAnalyzer
     [GeneratedRegex(@"<\s*([^\s|;&><]+)")]
     private static partial Regex InputRedirectRegex();
 
+    private static bool RunsDestructiveGit(string command) => command.Contains("git", StringComparison.OrdinalIgnoreCase) && Runs(command, DestructiveGitCall).Found;
+
+    private static bool DestructiveGitCall(IReadOnlyList<string> words)
+    {
+        if (ProgramCall(words) is not { Program: "git" } call) return false;
+        var args = call.Arguments;
+        var at = 0;
+        while (at < args.Count && args[at].StartsWith('-'))
+        {
+            if (args[at] is "-C" or "-c" or "--git-dir" or "--work-tree" or "--namespace" or "--config-env") at += 2;
+            else at++;
+        }
+        if (at >= args.Count) return false;
+        var verb = args[at];
+        var tail = args.Skip(at + 1).ToArray();
+        return verb switch
+        {
+            "branch" => tail.Any(a => a == "-D" || ShortFlag(a, 'D'))
+                || tail.Any(a => a == "--delete" || ShortFlag(a, 'd')) && tail.Any(a => a == "--force" || ShortFlag(a, 'f')),
+            "update-ref" => tail.Contains("-d") && tail.Any(a => a.StartsWith("refs/heads/", StringComparison.Ordinal)),
+            "push" => tail.Any(a => a is "--delete" or "-d" or "--prune" or "--mirror" || a.StartsWith(':') || a.StartsWith("+:", StringComparison.Ordinal)),
+            "worktree" => tail.FirstOrDefault() == "remove",
+            _ => false
+        };
+    }
+
+    private static bool ShortFlag(string argument, char flag) => argument.StartsWith('-') && !argument.StartsWith("--", StringComparison.Ordinal) && argument.AsSpan(1).Contains(flag);
+
     private static readonly (Func<string, bool> IsMatch, string Reason)[] DangerousPatterns =
     [
         (RecursiveDeleteRootRegex.IsMatch, "Recursive delete of root or home directory"),
@@ -1866,7 +1894,7 @@ public partial class BashCommandAnalyzer : IBashCommandAnalyzer
         (OndrejDiskRegex().IsMatch, "Disk format or erase attempt"),
         (OndrejSudoRmRegex().IsMatch, "Privileged delete attempt"),
         (OndrejCurlPipeRegex().IsMatch, "Download and execute as shell"),
-        (OndrejGitPushRegex().IsMatch, "Force push or remote branch deletion. GitHub deletes a merged PR's branch itself; clean up locally from outside the tree with dydo clean --dry-run <worktree>, then dydo clean <worktree>, which removes the worktree, keeps unmerged branches and runs git fetch --prune; name any other remote branch for the user"),
+        (OndrejGitPushRegex().IsMatch, "Force push or remote branch deletion is blocked. Use dydo archive branch <name> or dydo archive worktree <path> for verified archive-before-delete."),
         (OndrejGitRecoveryRegex().IsMatch, "Git recovery history destruction"),
         (OndrejSystemPermissionsRegex().IsMatch, "System permission or ownership change"),
         (OndrejGhDeleteRegex().IsMatch, "Destructive GitHub operation"),
@@ -1883,6 +1911,7 @@ public partial class BashCommandAnalyzer : IBashCommandAnalyzer
 
         // Raw worktree removal - dydo clean archives uncommitted work and never follows a link.
         (ForcedWorktreeRemoveRegex().IsMatch, WorktreeRemovalReason),
+        (RunsDestructiveGit, "Destructive Git deletion is blocked. Use dydo archive branch <name> or dydo archive worktree <path>; list and restore use dydo archive too."),
         (IsRecursiveWorktreeDelete, WorktreeRemovalReason),
 
         (InlineInterpreterRegex().IsMatch, "Inline interpreter execution bypasses file operation analysis. Write a script file instead."),

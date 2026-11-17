@@ -1,0 +1,36 @@
+Supplemental commissioned ruling, user/captain message during this implementation hop,
+2026-11-17. Governing live contract snapshot remains eligibility-contract.txt.
+
+Use the successful exact-ref check plus this invocation's own successful expected-OID
+leased deletion as authority for the remaining local steps. This follows the commissioned
+public path, remote→worktree→local order, and accepted final-read/push residual race;
+do not make all non-closed-world public operations fail solely because the authorized
+remote deletion produced its expected absence.
+
+Distinguish two states explicitly:
+1. Initially absent ref / absence not caused and proved by this invocation: existing
+ruling applies, unproved associations => refuse before any delete.
+2. This invocation observed the exact selected repo/ref/OID, completed authoritative
+head/base eligibility, rechecked immediately before push, then successfully deleted
+precisely that OID using the explicit lease: carry an internal, invocation-scoped
+receipt of that verified transition. This is not an empty head connection or a general
+missing-ref bypass.
+
+Before worktree/local deletion, re-read repository identity/visibility/fork metadata
+(as applicable to the authority route), remote ref state, current base associations
+and all still-applicable policy; require the exact remote ref still absent and the
+receipt valid. Any recreated ref (even same OID), identity/metadata/authority change,
+lookup failure or inconsistent state aborts remaining deletes with accurate partial
+outcome and complete archive retained. Do not delete a recreated remote ref. Recheck
+local OID/snapshot/registration/busy state immediately before their destructive steps
+as contracted. Closed-world can additionally reread own head/base associations after
+deletion; public head association proof is the verified pre-push connection plus the
+own-deletion receipt, not an invented nonexistent-ref query.
+
+Add a real journey/regression for public non-closed-world: eligible exact ref ->
+successful leased own delete -> remaining worktree/local deletes; and injected ref
+recreation/final-check failure -> partial nonzero with remaining local/files retained.
+The accepted PR-state race is explicitly unchanged: no post-delete check can
+retroactively prevent a PR created between the final authoritative read and push,
+and no atomic guarantee is claimed. Document this distinction. No new scope
+reduction or user choice is needed.

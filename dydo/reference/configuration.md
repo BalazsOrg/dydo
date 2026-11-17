@@ -36,6 +36,10 @@ through Linear's official surfaces.
   },
   "clean": {
     "archiveSizeCapMb": 1024
+  },
+  "archive": {
+    "reserveBytes": 5368709120,
+    "reservePercent": 10
   }
 }
 ```
@@ -53,6 +57,8 @@ through Linear's official surfaces.
 | `nudges` | object[] | Project guard rules. |
 | `testing.runner` | nonempty string[] | Executable followed by fixed arguments for `dydo gap-check`. The executable is the first item; later empty arguments are preserved. |
 | `clean.archiveSizeCapMb` | positive integer | Size cap of `dydo clean`'s archive in megabytes; past it the oldest entries are pruned. Defaults to 1024. |
+| `archive.reserveBytes` | nonnegative integer | Minimum remaining bytes after the safe-delete archive and independent proof scratch; defaults to 5368709120 (5 GiB). |
+| `archive.reservePercent` | finite number, 0–100 | Minimum remaining percentage of the allocation volume; defaults to 10. The larger byte/percentage reserve wins. |
 
 Older 2.x configuration may still contain repository work-path, `skills` or `frameworkHashes`
 fields. The 3.x runtime ignores those unknown properties safely. A fresh initialization emits
@@ -62,6 +68,13 @@ fields. The 3.x runtime ignores those unknown properties safely. A fresh initial
 strings, whose first item is a nonblank executable. The launcher starts that executable directly from
 the directory containing the nearest `dydo.json`, appends the caller's arguments without shell parsing,
 and inherits the terminal streams.
+
+`archive` is optional. The nearest existing `dydo.json` supplies these settings; the command never
+rewrites it to insert defaults. Invalid values refuse before allocation. Archive deletion checks space
+before fetch, immediately after fetch, and before archive/proof writes. Output prints archive bytes,
+independent-proof scratch bytes, available/total bytes, both settings and the computed reserve.
+Dry-run never fetches; missing remote objects make its estimate a lower bound. Remote transfer size
+is not promised before transfer. Space checks cannot reserve space against unrelated writers.
 
 `clean` is optional. `dydo clean` reads `clean.archiveSizeCapMb` from the nearest `dydo.json` and refuses to
 run, exit `2`, when it is not a positive whole number; without the field the cap is 1024 MB. Entries older

@@ -4,6 +4,10 @@ using System.Text.Json.Serialization;
 
 public class DydoConfig
 {
+    [JsonPropertyName("archive")]
+    [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+    public ArchiveConfig? Archive { get; set; }
+
     [JsonPropertyName("version")]
     public int Version { get; set; } = 1;
 
