@@ -109,7 +109,7 @@ public partial class WorkerLaneSkillLintTests
 
     /// <summary>
     /// Each inline code span (whitespace collapsed) and each fenced-code line of <paramref name="markdown"/>,
-    /// the lines of one fenced block joined across continuations by the guard's own rule.
+    /// continuations within each span or fenced block joined by the guard's own rule before whitespace folding.
     /// </summary>
     internal static IEnumerable<string> CodeText(string markdown)
     {
@@ -134,7 +134,7 @@ public partial class WorkerLaneSkillLintTests
         foreach (var code in FencedLines(block)) yield return code;
 
         foreach (Match span in InlineCodeRegex().Matches(string.Join('\n', outside)))
-            yield return WhitespaceRegex().Replace(span.Groups[1].Value, " ").Trim();
+            yield return WhitespaceRegex().Replace(GuardCommand.JoinLineContinuations(span.Groups["code"].Value), " ").Trim();
     }
 
     private static IEnumerable<string> FencedLines(List<string> block) =>
@@ -259,6 +259,67 @@ public partial class WorkerLaneSkillLintTests
         var violation = Assert.Single(Violations(prose));
 
         Assert.Contains(expected, violation);
+    }
+
+    [Fact]
+    public void Violations_ReadsTheDoubleBacktickContinuationFromDyd1148()
+    {
+        const string prose = """
+            Run ``dydo `
+              init claude``.
+            """;
+
+        Assert.Equal("dydo init claude", Assert.Single(CodeText(prose)));
+        Assert.Equal("`dydo init claude` (dydo init)", Assert.Single(Violations(prose)));
+    }
+
+    [Theory]
+    [InlineData("Run ``dydo init claude``.", "dydo init claude")]
+    [InlineData("Run ```dydo index```.", "dydo index")]
+    [InlineData("Run ````dydo map````.", "dydo map")]
+    [InlineData("Run ``dydo `\r\n  init claude``.", "dydo init claude")]
+    [InlineData("Run ``dy`\ndo init claude``.", "dydo init claude")]
+    [InlineData("Run ``dydo in`\nit claude``.", "dydo init claude")]
+    [InlineData("Run ``dydo \\\n  init claude``.", "dydo init claude")]
+    [InlineData("Run `dydo \\\n  init claude`.", "dydo init claude")]
+    [InlineData("Run ``echo `marker`; dydo init claude``.", "echo `marker`; dydo init claude")]
+    public void Violations_ReadsMatchingInlineDelimiterRuns(string prose, string expectedCode)
+    {
+        Assert.Equal(expectedCode, Assert.Single(CodeText(prose)));
+        Assert.Single(Violations(prose));
+    }
+
+    [Theory]
+    [InlineData("Use ``echo `literal` ``.", "echo `literal`")]
+    [InlineData("Use ```echo ``literal`` and `one` ```.", "echo ``literal`` and `one`")]
+    [InlineData("Use `echo \\literal`.", "echo \\literal")]
+    public void CodeText_PreservesInternalBackticksAndNonContinuationBackslashes(string prose, string expectedCode)
+    {
+        Assert.Equal(expectedCode, Assert.Single(CodeText(prose)));
+    }
+
+    [Theory]
+    [InlineData("Run ``dydo init claude`.")]
+    [InlineData("Run `dydo init claude``.")]
+    [InlineData("Run ``dydo init claude```.")]
+    [InlineData("Run ```dydo init claude``.")]
+    [InlineData("Run ``dydo init claude.")]
+    public void CodeText_DoesNotCloseAnInlineSpanWithADifferentLengthRun(string prose)
+    {
+        Assert.Empty(CodeText(prose));
+        Assert.Empty(Violations(prose));
+    }
+
+    [Theory]
+    [InlineData("Run ``dydo `\n  survey P-DYD-46``.", "dydo survey P-DYD-46")]
+    [InlineData("Run ``dydo statechart install-skill --root /p``.", "dydo statechart install-skill --root /p")]
+    [InlineData("Read ``dydo/guides`` and ```dydo.json```.", "dydo/guides", "dydo.json")]
+    [InlineData("Run ``dydo \\\n`` then ``init claude``.", "dydo", "init claude")]
+    [InlineData("Run ``dydo `\n`` then ``init claude``.", "dydo", "init claude")]
+    public void Violations_PreservesAllowedInlineSpansAndTheirBoundaries(string prose, params string[] expectedCode)
+    {
+        Assert.Equal(expectedCode, CodeText(prose));
+        Assert.Empty(Violations(prose));
     }
 
     [Fact]
@@ -847,7 +908,7 @@ public partial class WorkerLaneSkillLintTests
     [GeneratedRegex(@"(?m)^(?=## )")]
     private static partial Regex SectionStartRegex();
 
-    [GeneratedRegex(@"(?<!`)`([^`]+)`(?!`)")]
+    [GeneratedRegex(@"(?<!`)(?<delimiter>`+)(?!`)(?<code>.*?)(?<!`)\k<delimiter>(?!`)", RegexOptions.Singleline)]
     private static partial Regex InlineCodeRegex();
 
     [GeneratedRegex(@"^(?:[-+*]|[0-9]+[.)])[ \t]+")]
