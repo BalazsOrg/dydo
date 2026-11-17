@@ -93,6 +93,13 @@ public class SkillShapeTests
     public void FilesOutsideSkillFolders_AreNotSkillShaped() =>
         Assert.Empty(SkillShape.Violations(Tree(("dydo/guides/g.md", Lines(900)), ("claims.map.json", "{}\n"))));
 
+    [Theory]
+    [InlineData("skills/x/demo/SKILL.md")]
+    [InlineData("skills/x/demo/resources/a.md")]
+    [InlineData("dydo/guides/g.md")]
+    public void AnyBuiltFile_WithAnUnbalancedFence_Fails(string path) =>
+        Assert.Contains($"{path}: unbalanced fenced block", SkillShape.Violations(Tree((path, "```text\nopen\n"))));
+
     private static string Lines(int count) => string.Concat(Enumerable.Repeat("- line\n", count));
 
     private static Dictionary<string, string> Tree(params (string Path, string Text)[] files) =>

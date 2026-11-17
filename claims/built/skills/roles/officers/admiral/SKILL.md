@@ -1,6 +1,7 @@
 ---
 name: admiral
 description: Your right hand on one Project - chart it, then run it through captains, reviewed merges and your gates.
+disable-model-invocation: true
 ---
 <!-- Built by tools/SkillBuild from claims/; edit the claims and rebuild. -->
 

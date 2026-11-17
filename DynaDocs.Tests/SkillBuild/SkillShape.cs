@@ -26,9 +26,14 @@ internal static partial class SkillShape
     [GeneratedRegex(@"^resources/[^/]+\.md$")]
     private static partial Regex ResourcePath();
 
+    [GeneratedRegex(@"(?m)^ {0,3}(`{3,}|~{3,})(.*)$")]
+    private static partial Regex Fence();
+
     public static IReadOnlyList<string> Violations(IReadOnlyDictionary<string, string> tree)
     {
         var violations = new List<string>();
+        foreach (var (path, text) in tree)
+            if (HasUnbalancedFence(text)) violations.Add($"{path}: unbalanced fenced block");
         foreach (var spine in tree.Keys.Where(IsSpine))
         {
             if (BodyLines(tree[spine]) > SpineBodyLimit)
@@ -41,6 +46,19 @@ internal static partial class SkillShape
                     : [$"{path}: a skill folder holds only SKILL.md and resources/*.md, runtime resources and never tests or fixtures (DYD-968)"]);
         }
         return violations;
+    }
+
+    private static bool HasUnbalancedFence(string text)
+    {
+        var pending = "";
+        foreach (Match match in Fence().Matches(text))
+        {
+            var run = match.Groups[1].Value;
+            if (pending.Length == 0) pending = run;
+            else if (run.StartsWith(pending, StringComparison.Ordinal) && match.Groups[2].Value.Trim().Length == 0)
+                pending = "";
+        }
+        return pending.Length != 0;
     }
 
     private static IEnumerable<string> ResourceViolations(IReadOnlyDictionary<string, string> tree, string path,

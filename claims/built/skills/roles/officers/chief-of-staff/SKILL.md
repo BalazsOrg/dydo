@@ -1,6 +1,7 @@
 ---
 name: chief-of-staff
 description: Your attention, triaged - the Questions waiting on your answer, the gates waiting on your approval or your click, and what on the board has gone stale.
+disable-model-invocation: true
 ---
 <!-- Built by tools/SkillBuild from claims/; edit the claims and rebuild. -->
 

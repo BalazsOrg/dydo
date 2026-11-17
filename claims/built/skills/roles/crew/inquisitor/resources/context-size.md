@@ -21,9 +21,11 @@ if (e.CLAUDE_CODE_SESSION_ID) {
   console.log(last(find(root, e.CODEX_THREAD_ID), j => j.payload?.type === 'token_count' ? j.payload.info.last_token_usage.input_tokens : undefined));
 } else console.log('unknown host');
 ```
+```
 
 Replace `<temp dir>` with the folder you saved the script in, and keep the quotes, since a Windows temp path can hold spaces: ```bash
 node "<temp dir>/context-size.mjs"
+```
 ```
 
 - The limit is 110k tokens unless the commission set another, and your brief states it.

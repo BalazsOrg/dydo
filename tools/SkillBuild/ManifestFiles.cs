@@ -31,12 +31,16 @@ internal static class ManifestFiles
         if (string.IsNullOrWhiteSpace(file.Title))
             throw new InvalidDataException($"carriers.json: {carrier} {file.Path} has no title");
         var valid = file.IsSpine
-            ? !string.IsNullOrWhiteSpace(file.Name) && !string.IsNullOrWhiteSpace(file.Description)
-            : file.Name is null && file.Description is null;
+            ? file.Frontmatter is not null && HasValue(file.Frontmatter, "name") && HasValue(file.Frontmatter, "description")
+            : file.Frontmatter is null;
         if (!valid)
             throw new InvalidDataException(
-                $"carriers.json: {carrier} {file.Path} needs a name and description exactly when it is a SKILL.md");
+                $"carriers.json: {carrier} {file.Path} needs frontmatter with name and description exactly when it is a SKILL.md");
     }
+
+    private static bool HasValue(IReadOnlyList<string> frontmatter, string key) =>
+        frontmatter.Any(line => line.StartsWith(key + ": ", StringComparison.Ordinal)
+                                && !string.IsNullOrWhiteSpace(line[(key.Length + 2)..]));
 
     private static IEnumerable<BuiltFileSpec> Specs(CarrierEntry carrier)
     {

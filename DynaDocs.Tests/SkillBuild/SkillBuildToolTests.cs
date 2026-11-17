@@ -69,4 +69,30 @@ public sealed class SkillBuildToolTests : IDisposable
 
         Assert.Contains("claims.json", error.ToString());
     }
+
+    [Fact]
+    public void Main_UsesTheWorkingDirectoryAndConsoleError()
+    {
+        Directory.CreateDirectory(_root);
+        var directory = Directory.GetCurrentDirectory();
+        var previousError = Console.Error;
+        var error = new StringWriter();
+        try
+        {
+            Directory.SetCurrentDirectory(_root);
+            Console.SetError(error);
+
+            Assert.Equal(1, Program.Main());
+            Assert.Contains("claims.json", error.ToString());
+        }
+        finally
+        {
+            Directory.SetCurrentDirectory(directory);
+            Console.SetError(previousError);
+        }
+    }
+
+    [Fact]
+    public void Run_DoesNotHideUnexpectedErrors() =>
+        Assert.Throws<ArgumentException>(() => Program.Run("\0", new StringWriter()));
 }

@@ -22,7 +22,9 @@ CAMPAIGN_BINARIES = ["bin/Debug/net10.0/dydo.dll", "bin/Debug/net10.0/dydo.pdb",
                      "DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll",
                      "DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.pdb",
                      "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.dll",
-                     "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.pdb"]
+                     "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.pdb",
+                     "tools/SkillBuild/bin/Debug/net10.0/SkillBuild.dll",
+                     "tools/SkillBuild/bin/Debug/net10.0/SkillBuild.pdb"]
 CAMPAIGN_RESULTS = "dydo/_system/.local/csharp-campaign-results"
 UNMEASURED = ["obj/Debug/Generated.cs", "bin/Debug/net10.0/Skipped.cs",
               "node_modules/pkg/Vendor.cs", ".git/Hook.cs", ".local/Local.cs"]

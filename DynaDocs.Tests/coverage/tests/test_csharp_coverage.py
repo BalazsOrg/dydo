@@ -37,12 +37,16 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynaDocs", "DynaDocs.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DynaDocs.Tests", "DynaDocs.Tests\\DynaDocs.Tests.csproj", "{0838948C-BE5B-4F0D-980D-389149315058}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SkillBuild", "tools/SkillBuild/SkillBuild.csproj", "{CE51C49C-3B25-4B7E-B1D1-08F363976908}"
+EndProject
 Global
 \tGlobalSection(SolutionConfigurationPlatforms) = preSolution
 \t\tDebug|Any CPU = Debug|Any CPU
 \t\tRelease|Any CPU = Release|Any CPU
 \tEndGlobalSection
 \tGlobalSection(ProjectConfigurationPlatforms) = postSolution
+\t\t{CE51C49C-3B25-4B7E-B1D1-08F363976908}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+\t\t{CE51C49C-3B25-4B7E-B1D1-08F363976908}.Debug|Any CPU.Build.0 = Debug|Any CPU
 \t\t{8537ADD5-149C-4DAA-B9B7-C26CA3852204}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 \t\t{8537ADD5-149C-4DAA-B9B7-C26CA3852204}.Debug|Any CPU.Build.0 = Debug|Any CPU
 \t\t{8537ADD5-149C-4DAA-B9B7-C26CA3852204}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -176,6 +180,8 @@ def _minimal_campaign_root(root):
         "DynaDocs.sln": MINIMAL_SOLUTION,
         "DynaDocs.csproj": MINIMAL_LIBRARY,
         "src/Widget.cs": MINIMAL_WIDGET,
+        "tools/SkillBuild/SkillBuild.csproj": '<Project Sdk="Microsoft.NET.Sdk"><PropertyGroup><TargetFramework>net10.0</TargetFramework></PropertyGroup></Project>',
+        "tools/SkillBuild/Builder.cs": 'namespace Mini; public static class Builder { public static int Build() => 1; }',
         "DynaDocs.Tests/DynaDocs.Tests.csproj": MINIMAL_TEST_PROJECT,
         "DynaDocs.Tests/WidgetTests.cs": MINIMAL_WIDGET_TESTS,
         "DynaDocs.Tests/coverage/metrics/GateMetrics.csproj": MINIMAL_PRODUCER_PROJECT,
@@ -377,8 +383,8 @@ class CSharpCoverageTests(unittest.TestCase):
             self.assertIn("--eager", prepare)
             self.assertIn("--visibleBranches", prepare)
             self.assertNotIn("--showGenerated", prepare)
-            self.assertIn("--assemblyFilter=^(?!(dydo|DynaDocs.Tests|GateMetrics)$).*", prepare)
-            self.assertEqual(3, sum(arg.startswith("--inputDirectory=") for arg in prepare))
+            self.assertIn("--assemblyFilter=^(?!(dydo|DynaDocs.Tests|GateMetrics|SkillBuild)$).*", prepare)
+            self.assertEqual(4, sum(arg.startswith("--inputDirectory=") for arg in prepare))
             self.assertEqual("runner", runner[5])
             self.assertNotIn("--filter", runner)
             executable = next(item for item in runner if item.startswith("--executable="))
@@ -471,6 +477,7 @@ class CSharpCoverageTests(unittest.TestCase):
             "dydo": "DynaDocs.csproj",
             "DynaDocs.Tests": "DynaDocs.Tests/DynaDocs.Tests.csproj",
             "GateMetrics": "DynaDocs.Tests/coverage/metrics/GateMetrics.csproj",
+            "SkillBuild": "tools/SkillBuild/SkillBuild.csproj",
         }, ASSEMBLY_PROJECTS)
         facts = {"assembly_name": "A", "module_id": "m", "documents": {"C:/A.cs": "A.cs"},
                  "methods": [{"token": 1, "identity": "A::M()", "key": "A::M()",
@@ -832,7 +839,7 @@ class CSharpCampaignTests(unittest.TestCase):
 
     def test_real_campaign_joins_collected_hits_onto_the_authored_source_method(self):
         joined = self.recorded("joined.json")
-        self.assertEqual(["dydo", "GateMetrics"], [row["assembly"] for row in joined["targets"]])
+        self.assertEqual(["dydo", "GateMetrics", "SkillBuild"], [row["assembly"] for row in joined["targets"]])
         library = next(row for row in joined["modules"] if row["path"] == "src/Widget.cs")
         method = library["methods"][0]
         self.assertTrue(method["id"].endswith("|System.Int32 Mini.Widget::Classify(System.Int32)"))

@@ -47,6 +47,31 @@ public class SkillBuilderTests
     }
 
     [Fact]
+    public void Spine_CarriesEveryFrontmatterLineInSourceOrder()
+    {
+        var input = new SkillBuildInput();
+        Files(input, 0)[0]!["frontmatter"] = new JsonArray("description: A demo skill.", "disable-model-invocation: true", "name: demo");
+
+        Assert.StartsWith("---\ndescription: A demo skill.\ndisable-model-invocation: true\nname: demo\n---\n", input.BuildText()[SkillBuildInput.Spine]);
+    }
+
+    [Theory]
+    [InlineData("```text\nblock", "```text\nblock\n```")]
+    [InlineData("~~~text\nblock", "~~~text\nblock\n~~~")]
+    [InlineData("````text\n```\nblock", "````text\n```\nblock\n````")]
+    [InlineData("```text\n~~~\nblock\n```", "```text\n~~~\nblock\n```")]
+    [InlineData("```text\nblock\n```  ", "```text\nblock\n```  ")]
+    [InlineData("```", "```\n```")]
+    [InlineData("  ~~~text\nblock\n  ~~~~", "  ~~~text\nblock\n  ~~~~")]
+    public void Unit_ClosesOnlyItsUnclosedFenceWithoutChangingProse(string prose, string expected)
+    {
+        var input = new SkillBuildInput();
+        Prose(input, 1)["guide"]![0]!["text"] = prose;
+
+        Assert.Contains("\n\n" + expected + "\n\n- After.\n", input.BuildText()[SkillBuildInput.Doc]);
+    }
+
+    [Fact]
     public void Resource_HasNoFrontmatter()
     {
         var text = new SkillBuildInput().BuildText()[SkillBuildInput.Resource];
@@ -156,8 +181,11 @@ public class SkillBuilderTests
         { "blank or duplicate carrier 'demo'", input => input.CarrierList.Add(input.CarrierList[0]!.DeepClone()) },
         { "skills/x/demo/SKILL.md is listed twice", input => Files(input, 1).Add(Files(input, 0)[0]!.DeepClone()) },
         { "has no title", input => Files(input, 1)[0]!["title"] = "" },
-        { "needs a name and description exactly when it is a SKILL.md", input => Files(input, 0)[0]!.AsObject().Remove("description") },
-        { "needs a name and description exactly when it is a SKILL.md", input => Files(input, 0)[1]!["name"] = "extra" },
+        { "needs frontmatter with name and description exactly when it is a SKILL.md", input => Files(input, 0)[0]!["frontmatter"]!.AsArray().RemoveAt(1) },
+        { "needs frontmatter with name and description exactly when it is a SKILL.md", input => Files(input, 0)[0]!["frontmatter"] = new JsonArray("name: ", "description: d") },
+        { "needs frontmatter with name and description exactly when it is a SKILL.md", input => Files(input, 0)[0]!["frontmatter"] = new JsonArray("name: demo", "description:   ") },
+        { "needs frontmatter with name and description exactly when it is a SKILL.md", input => Files(input, 0)[0]!["frontmatter"] = null },
+        { "needs frontmatter with name and description exactly when it is a SKILL.md", input => Files(input, 0)[1]!["frontmatter"] = new JsonArray("name: extra", "description: extra") },
         { "must hold one SKILL.md with its resources, or one system doc", input => Files(input, 1).Add(FileEntry("dydo/guides/h.md")) },
         { "skills/x/demo/notes.md is not a resources/*.md of skills/x/demo/SKILL.md", input => Files(input, 0).Add(FileEntry("skills/x/demo/notes.md")) },
         { "skills/x/demo/resources/deep/a.md is not a resources/*.md", input => Files(input, 0).Add(FileEntry("skills/x/demo/resources/deep/a.md")) },

@@ -1939,6 +1939,10 @@
       "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
     },
     {
+      "module": "tools/SkillBuild/MarkdownFence.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+    },
+    {
       "module": "tools/SkillBuild/PlacedUnit.cs",
       "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
     },

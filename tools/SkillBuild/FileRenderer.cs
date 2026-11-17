@@ -22,7 +22,7 @@ internal static class FileRenderer
         var lines = new List<string>();
         var map = new List<MapEntry>();
         var file = spec.File;
-        if (file.IsSpine) lines.AddRange(["---", $"name: {file.Name}", $"description: {file.Description}", "---"]);
+        if (file.IsSpine) lines.AddRange(["---", ..file.Frontmatter!, "---"]);
         lines.AddRange([Header, "", $"# {file.Title}", ""]);
         var sections = units.GroupBy(unit => unit.Kind).ToArray();
         if (contents) lines.AddRange(["## Contents", "", ..sections.Select(section => $"- [{section.Key}](#{section.Key})"), ""]);
@@ -42,7 +42,8 @@ internal static class FileRenderer
     private static void Emit(List<string> lines, List<MapEntry> map, PlacedUnit unit)
     {
         var block = unit.Text.Split('\n');
-        if (block.Length == 1)
+        var fence = MarkdownFence.Unclosed(block);
+        if (block.Length == 1 && fence is null)
         {
             lines.Add("- " + unit.Text);
             map.Add(new MapEntry([lines.Count, lines.Count], unit.Id, unit.Claims));
@@ -52,6 +53,7 @@ internal static class FileRenderer
         var start = lines.Count + 1;
         lines.AddRange(block);
         map.Add(new MapEntry([start, lines.Count], unit.Id, unit.Claims));
+        if (fence is not null) lines.Add(fence);
         lines.Add("");
     }
 

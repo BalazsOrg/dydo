@@ -42,7 +42,7 @@ public sealed class SkillBuildInput
           "base": "b",
           "carriers": [
             { "carrier": "demo", "files": [
-              { "path": "skills/x/demo/SKILL.md", "title": "Demo", "name": "demo", "description": "A demo skill." },
+              { "path": "skills/x/demo/SKILL.md", "title": "Demo", "frontmatter": ["name: demo", "description: A demo skill."] },
               { "path": "skills/x/demo/resources/extra.md", "title": "Extra" } ] },
             { "carrier": "guide", "files": [ { "path": "dydo/guides/g.md", "title": "Guide" } ] }
           ]
