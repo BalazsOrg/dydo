@@ -64,11 +64,12 @@ one run per project per machine
    spec is compared to."
    - Every review also checks the change against the governing spec's problem statement and goals,
      including behaviour a ticket inherits unchanged. A review brief names the governing spec, or
-     says there is none.
+     says there is none (DYD-1120, "What 4.0.0 makes true" §1).
    - Tests that pin an untraced inherited rule are findings, not proof. A test that pins a behaviour
-     traces to the spec or a DR. On tests that lock in inherited behaviour: "This is also a trap."
+     traces to the spec or a DR (§2). On tests that lock in inherited behaviour: "This is also a
+     trap."
    - Before landing, the integrated product is driven against the problem statement, the way its
-     users will run it. Gate checks alone don't count.
+     users will run it. Gate checks alone don't count (§3).
 
    **Case study, [DYD-1111](https://linear.app/bodnar-balazs/issue/DYD-1111):** host admission runs
    one run per project per machine, so parallel agents queue behind each other on an idle machine.
@@ -79,7 +80,8 @@ one run per project per machine
    Each review judged its own contract; tests pinned the rule as correct, so reviewers saw green tests
    confirming it; the inquisition and landing reviews checked gates, not behaviour against the problem
    statement. Nobody ran parallel runs on a live network until his walkthrough, where it surfaced in
-   20 minutes. His words: "This is a serious violation of the design intent."
+   20 minutes (DYD-1120, "Case study"). His words, in DYD-1111: "This is a serious violation of the
+   design intent."
 4. **No early contract review; a spec scout asks what the spec doesn't answer (B4a).** "I've had
    some bad experiences with agents reviewing plans 10 times." **First make it work, then make it
    good:** "First you make it work. Then you make it good. The reviews are supposed to catch the
