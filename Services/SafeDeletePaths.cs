@@ -27,7 +27,8 @@ internal static class SafeDeletePaths
     internal static string Child(string root, string relative)
     {
         if (string.IsNullOrWhiteSpace(relative) || relative.Contains('\\') || Path.IsPathRooted(relative)
-            || relative.Split('/').Any(part => part is "" or "." or ".." || part.Contains(':')))
+            || (OperatingSystem.IsWindows() && relative.Contains(':'))
+            || relative.Split('/').Any(part => part is "" or "." or ".."))
             throw new InvalidDataException($"Unsafe archive path: {relative}");
         var path = Path.GetFullPath(Path.Combine(root, relative.Replace('/', Path.DirectorySeparatorChar)));
         if (!Within(path, root) || Same(path, root)) throw new InvalidDataException("Archive traversal refused");

@@ -1,0 +1,2342 @@
+{
+  "base": "01c8d558dcda426128a866d1b537aa09c069387d",
+  "batch_base": "d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d",
+  "runs": {
+    "discovery-red": {
+      "start": "2026-11-17T08:39:07.854706+00:00",
+      "end": "2026-11-17T08:39:20.332147+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": "?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-restore",
+        "--list-tests",
+        "--filter",
+        "FullyQualifiedName~SafeDeletePathsTests"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "bcdaa22b420f517c81446004bcdd7562199ecb34260efa58207e48450b1ea8b0",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "d7e4266c7dee3e410a679f722b9143f568e5b7fec0f383781362536f0cce5adc"
+      },
+      "raw_log": "runs/discovery-red/raw.log",
+      "trx": [],
+      "discovered_count": 18,
+      "feature_scenarios_discovered": false
+    },
+    "discovery-restored": {
+      "start": "2026-11-17T08:42:10.209866+00:00",
+      "end": "2026-11-17T08:42:29.080067+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n M Services/SafeDeletePaths.cs\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-restore",
+        "--list-tests",
+        "--filter",
+        "FullyQualifiedName~SafeDelete"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/discovery-restored/raw.log",
+      "trx": [],
+      "discovered_count": 323,
+      "feature_scenarios_discovered": true
+    },
+    "discovery-restored-02": {
+      "start": "2026-11-17T08:43:45.064791+00:00",
+      "end": "2026-11-17T08:43:52.882805+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n M Services/SafeDeletePaths.cs\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-restore",
+        "--list-tests",
+        "--filter",
+        "FullyQualifiedName~SafeDelete"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/discovery-restored-02/raw.log",
+      "trx": [],
+      "discovered_count": 323,
+      "feature_scenarios_discovered": true
+    },
+    "green-initial": {
+      "start": "2026-11-17T08:40:41.089975+00:00",
+      "end": "2026-11-17T08:40:51.844488+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n M Services/SafeDeletePaths.cs\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-restore",
+        "--filter",
+        "FullyQualifiedName~SafeDeletePathsTests",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/tmp/dyd1134-runs/green-initial/results"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/green-initial/raw.log",
+      "trx": [
+        {
+          "path": "runs/green-initial/results/_Nightfury_2026-11-17_09_40_51_net10.0.trx",
+          "counters": {
+            "total": "18",
+            "executed": "18",
+            "passed": "18",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "results": [
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"/absolute\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs:today/run.log\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt:hidden\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested//file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"//server/share\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:relative\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs/run-2026-11-16T21:25:15.log\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"C:\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:/escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"nested/C:/escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt::$DATA\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.LinuxIgnoredTimestamp_ArchivesDeletesAndRestoresExactNameAndBytes",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/./file\")",
+              "outcome": "Passed"
+            }
+          ]
+        }
+      ]
+    },
+    "light-final": {
+      "start": "2026-11-17T08:45:45.104143+00:00",
+      "end": "2026-11-17T08:46:54.526910+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n M Services/SafeDeletePaths.cs\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=8G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "3600",
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--filter",
+        "FullyQualifiedName~SafeDelete",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/tmp/dyd1134-runs/light-final/results"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/light-final/raw.log",
+      "trx": [
+        {
+          "path": "runs/light-final/results/_Nightfury_2026-11-17_09_46_01_net10.0.trx",
+          "counters": {
+            "total": "323",
+            "executed": "323",
+            "passed": "323",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "results": [
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedRestoreInputs_RefuseBeforeCreatingRefsAndKeepSharedBytes(name: \"attributes\", duringRestore: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_OpenOwnHeadOrBaseRetainsEveryLocalTarget(visibility: \"private\", side: \"head\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.AdministrativeNameCasing_PreservesDistinctFilesOrRefusesAliases(ignored: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"PR base\", __pickleIndex: \"26\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_ArchivesWithoutPushAndRestoresIndependently(visibility: \"public\", worktree: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git -c core.bare=false push origin :refs/heads/top\"\u00b7\u00b7\u00b7, verdict: \"refuse\", __pickleIndex: \"70\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.AfterOwnDeletion_RecheckFailureRetainsRemainingWorktreeAndLocalBranch(change: \"file change\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt:hidden\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"local-only restore\", __pickleIndex: \"11\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.FinalBranchRecheck_RefusesNewlyCheckedOutBranch",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"codex-bash\", worker: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.PostFetchReserveShortfall_KeepsLocalRemoteAndFiles",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"page limit\", refused: True, initiallyAbsent: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.MalformedManifestFields_RefuseBeforeCreatingRefs(field: \"tips\", value: null)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.FinalPrePushChange_RefusesBeforeRemoteDeletion(change: \"OID\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"repo id\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt::$DATA\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"pr base null\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"errors\", reason: \"GraphQL\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Services.LinkSafeDeleteTests.DeleteTree_ReadOnlyFilesAndLongPaths_AreDeleted",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.CompareAndSwap_ProtectsARefMovingAfterFinalQuery(checkpoint: \"before-remote-delete\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"errors\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.WorktreeFilemodeOverride_OrdinaryStatusRemainsCleanAfterSourceGcAndRestore",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.FinalPrePushChange_RefusesBeforeRemoteDeletion(change: \"PR\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"codex-pwsh\", worker: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs/run-2026-11-16T21:25:15.log\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"data null\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.FinalPrePushChange_RefusesBeforeRemoteDeletion(change: \"forks\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.CommonInputs_ArchiveAndRestoreOrdinaryGitBehavior(exclude: False, attributes: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git branch -d merged-topic\", verdict: \"allow\", __pickleIndex: \"76\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"late head\", refused: True, initiallyAbsent: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.ProcessFailuresAndMalformedOrOversizedOutput_Refuse",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: \"exclude\", checkpoint: \"before-delete\", present: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"configured reserve\", __pickleIndex: \"55\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InitializedNestedGitDirectory_RefusesBeforePublicationOrDeletion(layout: \"independent\", name: \"repository without suffix\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover files governed by repository-local exclude and attributes",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"negative forks\", reason: \"inconsistent\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"current worktree\", __pickleIndex: \"18\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"claude-powershell\", worker: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git worktree remove --force tree\", verdict: \"refuse\", __pickleIndex: \"75\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"ref repository\", reason: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentOutsideClosedWorld_RefusesEveryLocalTarget(visibility: \"public\", fork: True, forks: 0)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"public\", point: \"before-local-delete\", change: \"ref\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentOutsideClosedWorld_RefusesEveryLocalTarget(visibility: \"internal\", fork: False, forks: 0)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"private fork\", reason: \"closed-world\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(visibility: \"private\", worktree: True, change: \"forks\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"dry-run remote lower bound\", __pickleIndex: \"58\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.UnsupportedInputManifest_RefusesRestoreAndPurge(change: \"missing hash\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"shared bare nested repository\", __pickleIndex: \"32\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteTests.UnfetchedRemote_RestoresRemoteOnlyTip",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: \"attributes\", checkpoint: \"before-proof\", present: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"dydo archive branch topic\", verdict: \"allow\", __pickleIndex: \"77\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentOutsideClosedWorld_RefusesEveryLocalTarget(visibility: \"public\", fork: False, forks: 1)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.AuthoritativeT3Settings_InvalidOrUnreadableRefusesOrdinaryTrees(json: \"[]\", refused: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"offline GitHub\", __pickleIndex: \"27\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"nodes null\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"changing count\", refused: True, initiallyAbsent: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"dydo archive restore ID\", verdict: \"allow\", __pickleIndex: \"80\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedRestoreInputs_RefuseBeforeCreatingRefsAndKeepSharedBytes(name: \"exclude\", duringRestore: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"codex-pwsh\", worker: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git worktree remove tree\", verdict: \"refuse\", __pickleIndex: \"74\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Authoritative remote eligibility permits recoverable cleanup(authority: \"private closed-world\", __pickleIndex: \"3\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"own owner identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.PublicExactRefWithoutHeadsOrBases_IsEligible(visibility: \"public\", fork: True, forks: 12)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.FinalPrePushChange_RefusesBeforeRemoteDeletion(change: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.AfterOwnDeletion_RecheckFailureRetainsRemainingWorktreeAndLocalBranch(change: \"recreated\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_ArchivesWithoutPushAndRestoresIndependently(visibility: \"private\", worktree: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"late base\", refused: True, initiallyAbsent: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.AuthoritativeT3Settings_InvalidOrUnreadableRefusesOrdinaryTrees(json: \"{\\\"previousWorktreesDirectories\\\":42}\", refused: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InitializedNestedGitDirectory_RefusesBeforePublicationOrDeletion(layout: \"common directory\", name: \"split repository\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"duplicate node\", refused: True, initiallyAbsent: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: \"attributes\", checkpoint: \"before-worktree-delete\", present: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"ref null\", reason: \"unproven\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_CompleteOwnAssociationsAuthorizeAbsence(visibility: \"private\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"previous T3 root\", __pickleIndex: \"41\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.RepositoryFragments_AreOrdinaryFilesThatRoundTrip(missing: \"HEAD\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"live T3 owner\", __pickleIndex: \"38\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.CommonInputs_ArchiveAndRestoreOrdinaryGitBehavior(exclude: True, attributes: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.LegacyBranchArchive_RemainsReadable",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"partial deletion failure\", __pickleIndex: \"50\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.UnsupportedInputManifest_RefusesRestoreAndPurge(change: \"null\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.PublicExactRefWithoutHeadsOrBases_IsEligible(visibility: \"public\", fork: False, forks: 0)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"unreadable source\", __pickleIndex: \"30\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:relative\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.PrivateClosedWorld_ExactOwnHeadOrBaseIsProtected(side: \"head\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git push origin --delete topic\", verdict: \"refuse\", __pickleIndex: \"68\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: \"attributes\", checkpoint: \"before-worktree-delete\", present: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.PerWorktreeRefTip_RemainsRecoverableAfterRegistrationAndSourceGc",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"duplicate node\", refused: True, initiallyAbsent: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"//server/share\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"changing count\", refused: True, initiallyAbsent: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"ref prefix\", reason: \"identity/OID\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteTests.DetachedHead_RemainsDetached",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InvalidReserveConfiguration_RefusesBeforeAllocating(config: \"{\\\"archive\\\":{\\\"reservePercent\\\":-1}}\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.FinalSnapshotRecheck_RefusesChangesWithoutTipMovement(change: \"root permissions\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"local default\", __pickleIndex: \"14\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git update-ref -d refs/heads/topic\", verdict: \"refuse\", __pickleIndex: \"67\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"invalid reserve\", __pickleIndex: \"56\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"source file race\", __pickleIndex: \"37\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"repeated cursor\", refused: True, initiallyAbsent: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:/escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"corrupt payload\", __pickleIndex: \"44\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.Redaction_DropsUserinfoQueryAndFragment",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InitializedNestedGitDirectory_RefusesBeforePublicationOrDeletion(layout: \"non-bare config\", name: \"administrative directory\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"private\", point: \"before-worktree-delete\", change: \"base\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"repository null\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"metadata id\", reason: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InvalidReserveConfiguration_RefusesBeforeAllocating(config: \"{\\\"archive\\\":{\\\"reservePercent\\\":101}}\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.UnsupportedInputManifest_RefusesRestoreAndPurge(change: \"legacy worktree\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.RepositoryFragments_AreOrdinaryFilesThatRoundTrip(missing: \"objects\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"remote ref race\", __pickleIndex: \"36\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InvalidReserveConfiguration_RefusesBeforeAllocating(config: \"{\\\"archive\\\":{\\\"reserveBytes\\\":1.5}}\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.UnsupportedInputManifest_RefusesRestoreAndPurge(change: \"missing\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.CorruptInputPayload_RetainsTarget(name: \"exclude\", checkpoint: \"before-proof\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.EveryRemainingDestructiveStep_RechecksPrEligibility(point: \"before-worktree-delete\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"unproven settled T3 route\", __pickleIndex: \"42\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"ref branch\", reason: \"identity/OID\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"explicit remote restore\", __pickleIndex: \"12\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"dydo archive list && git branch -D topic\", verdict: \"refuse\", __pickleIndex: \"81\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"divergent and reflog history\", __pickleIndex: \"7\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"pr id\", reason: \"incomplete\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"codex-argv\", worker: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"missing forks\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"ref oid\", reason: \"identity/OID\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.RepositoryFragments_AreOrdinaryFilesThatRoundTrip(missing: \"refs\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git branch -d -f topic\", verdict: \"refuse\", __pickleIndex: \"65\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"/absolute\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(visibility: \"public\", worktree: True, change: \"fork\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"remote restore collision\", __pickleIndex: \"48\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"public\", point: \"before-worktree-delete\", change: \"ref\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"public\", point: \"before-local-delete\", change: \"head\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.DefaultAllocationVolume_IdentifiesTheContainingVolumeOfMissingTargets(target: \"/tmp/dydo-missing-4f9f09cd2c324259a3a5a49ea3563351\"\u00b7\u00b7\u00b7)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.EveryRemainingDestructiveStep_RechecksPrEligibility(point: \"before-local-delete\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"repository null\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"errors malformed\", reason: \"GraphQL\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.MalformedManifestFields_RefuseBeforeCreatingRefs(field: \"files\", value: null)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"recovery ref collision\", __pickleIndex: \"47\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.UnsupportedInputManifest_RefusesRestoreAndPurge(change: \"unknown path\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.UnsupportedInputManifest_RefusesRestoreAndPurge(change: \"bad hash\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.RestoreWithChangedSharedSettings_RefusesWithoutRewritingCommonConfig",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"copy failure\", __pickleIndex: \"29\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"/usr/bin/git --git-dir=repo push origin +:refs/hea\"\u00b7\u00b7\u00b7, verdict: \"refuse\", __pickleIndex: \"71\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"pr head identity\", reason: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.LinuxIgnoredTimestamp_ArchivesDeletesAndRestoresExactNameAndBytes",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.IndexConflictStagesAndIntentToAdd_SurviveSourceGc",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.AfterOwnDeletion_RecheckFailureRetainsRemainingWorktreeAndLocalBranch(change: \"API failure\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"own base identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"count negative\", reason: \"count\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedRestoreInputs_RefuseBeforeCreatingRefsAndKeepSharedBytes(name: \"attributes\", duringRestore: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"fractional forks\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"pr null\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"in-progress Git\", __pickleIndex: \"34\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"resolved stash conflict undo\", __pickleIndex: \"9\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.AfterOwnDeletion_RecheckFailureRetainsRemainingWorktreeAndLocalBranch(change: \"base PR\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_OpenOwnHeadOrBaseRetainsEveryLocalTarget(visibility: \"public\", side: \"base\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"private forks\", reason: \"closed-world\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"proof-enabled settled T3 eligibility\", __pickleIndex: \"13\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.AllocationVolumeUnavailable_RefusesWithoutArchiveOrDeletion",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/./file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(visibility: \"private\", worktree: True, change: \"fork\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"missing cursor\", refused: True, initiallyAbsent: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"unknown remote default\", __pickleIndex: \"16\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"default percentage reserve\", __pickleIndex: \"54\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"differently named upstream kept\", __pickleIndex: \"62\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"public\", point: \"before-worktree-delete\", change: \"head\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InitializedNestedGitDirectory_RefusesBeforePublicationOrDeletion(layout: \"shared clone\", name: \"nested.git\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.ExplicitRemoteRestore_UsesOriginalRemoteTipAndRenamesOnlyPrimary",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"read-only commands never purge\", __pickleIndex: \"52\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"complete\", refused: False, initiallyAbsent: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"unsupported file\", __pickleIndex: \"33\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"internal\", reason: \"internal\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"pr state\", reason: \"state\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"pr head null\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"private\", point: \"before-local-delete\", change: \"base\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"data null\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(visibility: \"public\", worktree: False, change: \"forks\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"empty nonterminal\", reason: \"cursor/count\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"own base identity\", reason: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Services.LinkSafeDeleteTests.DeleteTree_LinkInside_RemovesTheLinkAndKeepsItsTarget",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"codex-argv\", worker: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.FinalMetadataRead_AfterCompletePrTraversalRefusesNewForkAuthority(change: \"fork\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"private\", point: \"before-worktree-delete\", change: \"ref\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Services.LinkSafeDeleteTests.DeleteTree_MissingRoot_IsANoOp",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.AuthoritativeT3Settings_InvalidOrUnreadableRefusesOrdinaryTrees(json: \"{\\\"worktreesDirectory\\\":\\\"\\\"}\", refused: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteTests.PartiallyStagedVersions_IgnoredBinary_EmptyDirectories_RoundTripAfterGc",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"public\", point: \"before-worktree-delete\", change: \"API ref\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"metadata repo\", reason: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"unfetched remote\", __pickleIndex: \"6\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"cursor missing\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"visibility\", reason: \"unknown\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.FinalMetadataRead_AfterCompletePrTraversalRefusesNewForkAuthority(change: \"forks\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"dry-run estimates\", __pickleIndex: \"57\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"custom T3 root\", __pickleIndex: \"40\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.RestorePathCollision_PreservesSentinelAndRefAbsence",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"unavailable T3 ownership\", __pickleIndex: \"39\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.CorruptInputPayload_RetainsTarget(name: \"attributes\", checkpoint: \"before-proof\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"nested/C:/escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"init archive prefix rules\", __pickleIndex: \"63\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"main worktree\", __pickleIndex: \"17\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.CommonInputs_ArchiveAndRestoreOrdinaryGitBehavior(exclude: True, attributes: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"locked worktree\", __pickleIndex: \"19\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_OpenOwnHeadOrBaseRetainsEveryLocalTarget(visibility: \"public\", side: \"head\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.CorruptManifestGitConfiguration_RefusesWithoutCreatingRefs",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"count short\", reason: \"count\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs:today/run.log\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"local branch\", __pickleIndex: \"5\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"claude-bash\", worker: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.AuthoritativeT3Settings_InvalidOrUnreadableRefusesOrdinaryTrees(json: \"{\\\"worktreesDirectory\\\":\\\"relative\\\"}\", refused: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"empty bundle\", __pickleIndex: \"43\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteTests.LocalBranch_RestoresWithoutSourceRefs",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.PublicExactRefWithoutHeadsOrBases_IsEligible(visibility: \"private\", fork: False, forks: 0)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"dydo archive worktree tree\", verdict: \"allow\", __pickleIndex: \"78\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Services.LinkSafeDeleteTests.UnlinkAll_RemovesOnlyLinks",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"archive traversal\", __pickleIndex: \"60\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested//file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.AfterOwnDeletion_RecheckFailureRetainsRemainingWorktreeAndLocalBranch(change: \"local ref change\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"cursor wrong type\", reason: \"cursor\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"nested repository\", __pickleIndex: \"31\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentOutsideClosedWorld_RefusesEveryLocalTarget(visibility: \"private\", fork: True, forks: 0)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"restore failure\", __pickleIndex: \"49\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"claude-powershell\", worker: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"pr branch\", reason: \"inconsistent\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.FinalSnapshotRecheck_RefusesChangesWithoutTipMovement(change: \"index\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentOutsideClosedWorld_RefusesEveryLocalTarget(visibility: \"private\", fork: False, forks: 1)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.DefaultAllocationVolume_RefusesAnUnknownVolume",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_ArchivesWithoutPushAndRestoresIndependently(visibility: \"private\", worktree: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(visibility: \"public\", worktree: True, change: \"forks\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.AfterOwnDeletion_RecheckFailureRetainsRemainingWorktreeAndLocalBranch(change: \"metadata\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"own owner identity\", reason: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.PublicFork_LeasedOwnDeletionAuthorizesRemainingLocalSteps",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.ForkBranchUsedAsUpstreamPullRequestHead_RefusesWithRemoteLocalAndFilesIntact(destination: \"upstream/repo\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"claude-bash\", worker: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Services.LinkSafeDeleteTests.DeleteTree_RootThatIsALink_RemovesOnlyTheLink",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.MalformedManifestFields_RefuseBeforeCreatingRefs(field: \"localOid\", value: \"invalid\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"prunable worktree\", __pickleIndex: \"23\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.T3HistoryPathRecognition_RequiresNoSettingsFile",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"private mismatch\", reason: \"inconsistent\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"feature remote\", __pickleIndex: \"24\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"expiry boundary\", __pickleIndex: \"51\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"archive symlink\", __pickleIndex: \"59\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"private\", point: \"before-local-delete\", change: \"API failure\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"ref id\", reason: \"incomplete\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Authoritative remote eligibility permits recoverable cleanup(authority: \"public fork\", __pickleIndex: \"4\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"restore collision\", __pickleIndex: \"46\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_OpenOwnHeadOrBaseRetainsEveryLocalTarget(visibility: \"private\", side: \"base\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"link round trip or refusal\", __pickleIndex: \"61\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.CompareAndSwap_ProtectsARefMovingAfterFinalQuery(checkpoint: \"before-local-delete\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.ForkBranchUsedAsUpstreamPullRequestHead_RefusesWithRemoteLocalAndFilesIntact(destination: \"other-fork/repo\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.PrivateClosedWorld_RealCliAndBareRemoteArchiveAndRestore",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"page limit\", refused: True, initiallyAbsent: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(visibility: \"private\", worktree: False, change: \"forks\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.FinalPrePushChange_RefusesBeforeRemoteDeletion(change: \"fork\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"late base\", refused: True, initiallyAbsent: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteTests.ResolvedStashConflict_UndoRecreatesConflictAfterGc",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.RawDeletionTable_IsEnforcedForEveryHookAndWorker(envelope: \"codex-bash\", worker: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.CorruptProofPayload_RefusesBeforePublishingOrDeleting",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"incomplete archive\", __pickleIndex: \"45\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.EveryResolveUndoStage_SurvivesSourceGcAndRecreatesTheConflict",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(visibility: \"private\", point: \"before-local-delete\", change: \"ref\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: \"exclude\", checkpoint: \"before-copy\", present: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"repo name\", reason: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.ResolveUndoListingDisagreeingWithTheArchivedIndex_RefusesRestore",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"complete\", refused: False, initiallyAbsent: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"missing cursor\", refused: True, initiallyAbsent: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.LinkedIncompleteEntry_ListRefusesWithoutFollowingTarget",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InitializedNestedGitDirectory_RefusesBeforePublicationOrDeletion(layout: \"sha256\", name: \"sha256 repository\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteTests.DivergentAndReflogTips_RemainReachableAfterGc",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Archive an unpushed worktree with proved remote absence(visibility: \"private\", __pickleIndex: \"2\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.CorruptInputPayload_RetainsTarget(name: \"attributes\", checkpoint: \"before-delete\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InitializedNestedGitDirectory_RefusesBeforePublicationOrDeletion(layout: \"reftable\", name: \"packed repository\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"missing worktree\", __pickleIndex: \"22\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"dydo archive list\", verdict: \"allow\", __pickleIndex: \"79\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git branch --delete --force topic\", verdict: \"refuse\", __pickleIndex: \"66\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(visibility: \"private\", worktree: False, change: \"fork\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"count fractional\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.DefaultAllocationVolume_IdentifiesTheContainingVolumeOfMissingTargets(target: \"/dydo-missing-949815098d9b488abe9b9e24fcbddaea/chi\"\u00b7\u00b7\u00b7)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(visibility: \"public\", worktree: False, change: \"fork\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.BranchNameCasing_PreservesDistinctRefsOrRefusesAliases",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.AuthoritativeT3Settings_InvalidOrUnreadableRefusesOrdinaryTrees(json: \"{\\\"worktreesDirectory\\\":null}\", refused: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"count missing\", reason: \"unavailable\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"remote default\", __pickleIndex: \"15\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"PR head\", __pickleIndex: \"25\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.AuthoritativeT3Settings_InvalidOrUnreadableRefusesOrdinaryTrees(json: \"corrupt\", refused: True)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"checked out branch\", __pickleIndex: \"21\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.ResolveUndoBlobMissingFromProofPack_RefusesBeforePublishingOrDeleting",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git branch -D topic\", verdict: \"refuse\", __pickleIndex: \"64\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.InvalidReserveConfiguration_RefusesBeforeAllocating(config: \"{\\\"archive\\\":{\\\"reserveBytes\\\":null}}\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"fetch failure\", __pickleIndex: \"28\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_CompleteOwnAssociationsAuthorizeAbsence(visibility: \"public\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.NestedGitDirectory_ValidatesFileKindsBeforeGitDiscovery",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.NativeBusyProbe_KeepsRefsAndFiles",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git push --prune origin\", verdict: \"refuse\", __pickleIndex: \"72\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePolicyTests.AuthoritativeT3Settings_InvalidOrUnreadableRefusesOrdinaryTrees(json: \"{}\", refused: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git push --mirror origin\", verdict: \"refuse\", __pickleIndex: \"73\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"repo id\", reason: \"identity\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.RepositoryFragments_AreOrdinaryFilesThatRoundTrip(missing: \"invalid HEAD\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"busy worktree\", __pickleIndex: \"20\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.MalformedManifestFields_RefuseBeforeCreatingRefs(field: \"primaryOid\", value: \"0000000000000000000000000000000000000000\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Archive an unpushed worktree with proved remote absence(visibility: \"public\", __pickleIndex: \"1\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.UnsupportedInputManifest_RefusesRestoreAndPurge(change: \"future version\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"repo name\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"nodes null\", reason: \"nodes\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.OwnPullPagination_RequiresTerminalUniqueCompleteCount(variant: \"repeated cursor\", refused: True, initiallyAbsent: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_ArchivesWithoutPushAndRestoresIndependently(visibility: \"public\", worktree: False)",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGuardTests.InitGeneratedCodexRules_AdmitAllArchiveForms",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"detached HEAD\", __pickleIndex: \"10\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InvalidAuthorityOrResponse_RefusesIntact(defect: \"cursor null\", reason: \"cursor\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.FinalSnapshotRecheck_RefusesChangesWithoutTipMovement(change: \"reflog\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"C:\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Recover history and every worktree version independently(journey: \"partially staged ignored binary and empty director\"\u00b7\u00b7\u00b7, __pickleIndex: \"8\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.InitiallyAbsent_MalformedOwnListingCannotProveAbsence(defect: \"count short\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteInputsTests.CorruptInputPayload_RetainsTarget(name: \"exclude\", checkpoint: \"before-delete\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Raw destructive Git requires the archive command(command: \"git -C repo push origin --delete topic\", verdict: \"refuse\", __pickleIndex: \"69\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Refuse without losing the original target(refusal: \"local ref race\", __pickleIndex: \"35\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "Validate archive policy through the command(policy: \"default byte reserve\", __pickleIndex: \"53\", exampleTags: [])",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteGitHubTests.PrivateClosedWorld_ExactOwnHeadOrBaseIsProtected(side: \"base\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.AdministrativeNameCasing_PreservesDistinctFilesOrRefusesAliases(ignored: False)",
+              "outcome": "Passed"
+            }
+          ]
+        }
+      ]
+    },
+    "native-linux-final": {
+      "start": "2026-11-17T08:47:42.259637+00:00",
+      "end": "2026-11-17T08:48:28.204210+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n M Services/SafeDeletePaths.cs\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "python3",
+        "/tmp/dyd1134-native.py"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/native-linux-final/raw.log",
+      "trx": []
+    },
+    "native-linux-initial": {
+      "start": "2026-11-17T08:41:07.119949+00:00",
+      "end": "2026-11-17T08:41:08.182760+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n M Services/SafeDeletePaths.cs\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "python3",
+        "/tmp/dyd1134-native.py"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/native-linux-initial/raw.log",
+      "trx": []
+    },
+    "prerequisites": {
+      "start": "2026-11-17T08:38:58.388085+00:00",
+      "end": "2026-11-17T08:38:58.922133+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": "?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "bash",
+        "-c",
+        "dotnet --info && git --version && python3 --version && node --version && pnpm --version && .static-gates/python/bin/python /tmp/dyd1134-static-prerequisites.py"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "bcdaa22b420f517c81446004bcdd7562199ecb34260efa58207e48450b1ea8b0",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "d7e4266c7dee3e410a679f722b9143f568e5b7fec0f383781362536f0cce5adc"
+      },
+      "raw_log": "runs/prerequisites/raw.log",
+      "trx": []
+    },
+    "red-before-fix": {
+      "start": "2026-11-17T08:40:08.814679+00:00",
+      "end": "2026-11-17T08:40:11.971642+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": "?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-restore",
+        "--filter",
+        "FullyQualifiedName~SafeDeletePathsTests",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/tmp/dyd1134-runs/red-before-fix/results"
+      ],
+      "exit": 1,
+      "files": {
+        "Services/SafeDeletePaths.cs": "bcdaa22b420f517c81446004bcdd7562199ecb34260efa58207e48450b1ea8b0",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "d7e4266c7dee3e410a679f722b9143f568e5b7fec0f383781362536f0cce5adc"
+      },
+      "raw_log": "runs/red-before-fix/raw.log",
+      "trx": [
+        {
+          "path": "runs/red-before-fix/results/_Nightfury_2026-11-17_09_40_11_net10.0.trx",
+          "counters": {
+            "total": "18",
+            "executed": "18",
+            "passed": "10",
+            "failed": "8",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "results": [
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt:hidden\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested//file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:relative\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.LinuxIgnoredTimestamp_ArchivesDeletesAndRestoresExactNameAndBytes",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"//server/share\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt::$DATA\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs/run-2026-11-16T21:25:15.log\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:/escape\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/./file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"nested/C:/escape\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"C:\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs:today/run.log\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"/absolute\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../../escape\")",
+              "outcome": "Passed"
+            }
+          ]
+        }
+      ]
+    },
+    "red-native-before-fix": {
+      "start": "2026-11-17T08:39:59.293130+00:00",
+      "end": "2026-11-17T08:39:59.720610+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": "?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "python3",
+        "/tmp/dyd1134-native.py"
+      ],
+      "exit": 1,
+      "files": {
+        "Services/SafeDeletePaths.cs": "bcdaa22b420f517c81446004bcdd7562199ecb34260efa58207e48450b1ea8b0",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "d7e4266c7dee3e410a679f722b9143f568e5b7fec0f383781362536f0cce5adc"
+      },
+      "raw_log": "runs/red-native-before-fix/raw.log",
+      "trx": []
+    },
+    "red-production-reversed": {
+      "start": "2026-11-17T08:41:48.136048+00:00",
+      "end": "2026-11-17T08:42:12.582317+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-restore",
+        "--filter",
+        "FullyQualifiedName~SafeDeletePathsTests",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/tmp/dyd1134-runs/red-production-reversed/results"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "bcdaa22b420f517c81446004bcdd7562199ecb34260efa58207e48450b1ea8b0",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/red-production-reversed/raw.log",
+      "trx": [
+        {
+          "path": "runs/red-production-reversed/results/_Nightfury_2026-11-17_09_42_11_net10.0.trx",
+          "counters": {
+            "total": "18",
+            "executed": "18",
+            "passed": "18",
+            "failed": "0",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "results": [
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:/escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/./file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs:today/run.log\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"//server/share\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.LinuxIgnoredTimestamp_ArchivesDeletesAndRestoresExactNameAndBytes",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested//file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"/absolute\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs/run-2026-11-16T21:25:15.log\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"nested/C:/escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:relative\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt::$DATA\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"C:\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt:hidden\")",
+              "outcome": "Passed"
+            }
+          ]
+        }
+      ],
+      "invalid_for_red_proof": "Production restored before test process completed; passing result retained, never used as RED."
+    },
+    "red-production-reversed-02": {
+      "start": "2026-11-17T08:43:06.311886+00:00",
+      "end": "2026-11-17T08:43:44.828433+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-restore",
+        "--filter",
+        "FullyQualifiedName~SafeDeletePathsTests",
+        "--logger",
+        "trx",
+        "--results-directory",
+        "/tmp/dyd1134-runs/red-production-reversed-02/results"
+      ],
+      "exit": 1,
+      "files": {
+        "Services/SafeDeletePaths.cs": "bcdaa22b420f517c81446004bcdd7562199ecb34260efa58207e48450b1ea8b0",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/red-production-reversed-02/raw.log",
+      "trx": [
+        {
+          "path": "runs/red-production-reversed-02/results/_Nightfury_2026-11-17_09_43_44_net10.0.trx",
+          "counters": {
+            "total": "18",
+            "executed": "18",
+            "passed": "10",
+            "failed": "8",
+            "error": "0",
+            "timeout": "0",
+            "aborted": "0",
+            "inconclusive": "0",
+            "passedButRunAborted": "0",
+            "notRunnable": "0",
+            "notExecuted": "0",
+            "disconnected": "0",
+            "warning": "0",
+            "completed": "0",
+            "inProgress": "0",
+            "pending": "0"
+          },
+          "results": [
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"nested/C:/escape\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs/run-2026-11-16T21:25:15.log\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt::$DATA\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:relative\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"C:\\\\escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"//server/share\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"C:/escape\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"logs:today/run.log\")",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/../../escape\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested//file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"nested/./file\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators(relative: \"/absolute\")",
+              "outcome": "Passed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.LinuxIgnoredTimestamp_ArchivesDeletesAndRestoresExactNameAndBytes",
+              "outcome": "Failed"
+            },
+            {
+              "testName": "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams(relative: \"file.txt:hidden\")",
+              "outcome": "Failed"
+            }
+          ]
+        }
+      ]
+    },
+    "static-final": {
+      "start": "2026-11-17T08:49:05.081064+00:00",
+      "end": "2026-11-17T08:50:26.027197+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n M Services/SafeDeletePaths.cs\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=8G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "3600",
+        ".static-gates/python/bin/python",
+        "DynaDocs.Tests/coverage/gap_check.py",
+        "gate",
+        "static",
+        "--stack",
+        "dotnet"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/static-final/raw.log",
+      "trx": []
+    },
+    "windows-selection-preflight": {
+      "start": "2026-11-17T08:44:15.014141+00:00",
+      "end": "2026-11-17T08:45:03.797117+00:00",
+      "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605",
+      "head": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "status": " M DynaDocs.Tests/coverage/dotnet-platforms.json\n M Services/SafeDeletePaths.cs\n?? DynaDocs.Tests/Integration/SafeDeletePathsTests.cs\n",
+      "argv": [
+        "/var/tmp/dydo-gate-lock.sh",
+        "env",
+        "MSBUILDDISABLENODEREUSE=1",
+        "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+        "UseSharedCompilation=false",
+        "systemd-run",
+        "--user",
+        "--scope",
+        "--slice=app-t3code-agents-cbc6c2286251.slice",
+        "-p",
+        "MemoryMax=4G",
+        "-p",
+        "MemorySwapMax=0",
+        "-p",
+        "OOMPolicy=continue",
+        "timeout",
+        "120",
+        ".static-gates/python/bin/python",
+        "/tmp/dyd1134-selection.py"
+      ],
+      "exit": 0,
+      "files": {
+        "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+        "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+        "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+      },
+      "raw_log": "runs/windows-selection-preflight/raw.log",
+      "trx": []
+    }
+  },
+  "production_base_hashes": {
+    "Services/SafeDeletePaths.cs": "bcdaa22b420f517c81446004bcdd7562199ecb34260efa58207e48450b1ea8b0"
+  },
+  "final_source_hashes": {
+    "Services/SafeDeletePaths.cs": "0db09fee875b82d29047d67b0c1884475badc0e507cfaa22ffd19476b62f5402",
+    "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+    "DynaDocs.Tests/coverage/dotnet-platforms.json": "0c8aca180af17c16d2e17fe1852caa12c32ba4483ed1cb09aca137a628ca9c11"
+  },
+  "production_only_reversal_matches_base": true,
+  "retained_tests_match_final_reversal": true,
+  "final_source_bytes_match_discovery_selection_light_native_static": true,
+  "static_adapter": {
+    "candidate": {
+      "commit": "01c8d558dcda426128a866d1b537aa09c069387d",
+      "dirty": true,
+      "sourceFingerprint": "5a11e4c5a546e51abcca26e0418d0097ce8e22a9bc912b91111a6d450805b250"
+    },
+    "measurementComplete": true,
+    "collectors": {
+      "associations": {
+        "status": "pass",
+        "errors": [],
+        "findings": []
+      },
+      "csharp-analyzers": {
+        "status": "pass",
+        "errors": [],
+        "findings": []
+      },
+      "csharp-source": {
+        "status": "pass",
+        "errors": [],
+        "findings": []
+      },
+      "projects": {
+        "status": "pass",
+        "errors": [],
+        "findings": []
+      },
+      "repository-inputs": {
+        "status": "pass",
+        "errors": [],
+        "findings": []
+      },
+      "source-inventory": {
+        "status": "pass",
+        "errors": [],
+        "findings": []
+      },
+      "versions": {
+        "status": "pass",
+        "errors": [],
+        "findings": []
+      }
+    },
+    "sha256": "a766424749b50be9c38eb2f52630b5985339d04900a4688489ed69c74d81fbdf"
+  },
+  "recipe_sha256": {
+    "run": "749455b11d64bca7b3581d8db7839e1ddd73e5b7210a2d56467c035df8c2ecda",
+    "native": "b327e4babd408f52c721f2a8ede09b88afaace505a99e0cc71c13e12e1441f9e",
+    "selection": "e9b6fefe1db7576f9368438871658459e69c68ea1bbea9bfc7fcabca93ee8ff5",
+    "reverse": "4c97d101d056098cbf0b808c6a46cb47d9333bec96974e7223b5f46baf2ed1d9",
+    "summarize": "04c0d2c3ec56f3400e5d75d176169a57eeb348977057f57e978f205235a2e91a"
+  },
+  "native_windows": "OWED at whole-batch head; no simulated or Linux skip result counts as proof",
+  "final_whole_stack_coverage_mutation_hosted": "OWED at whole-batch head; mutation DYD-103 remains fail-closed UNAVAILABLE, never PASS"
+}

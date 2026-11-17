@@ -1,0 +1,46 @@
+DYD-1134 serial implementation contract
+Commission: ticket-captain DYD-1142; code-writer/model: gpt-6.1-sol, high.
+Hop 3 of 5, one serial writer, no subagents or parallel edits, Codex cap 8 overall.
+Checkout /home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605
+Branch DYD-1142-safe-delete-shoulds
+Hop base 01c8d558dcda426128a866d1b537aa09c069387d
+Batch base d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d
+Retain prior hops 74bf3bc3 and 01c8d558. No branch/push/PR/merge/ticket status edits.
+
+DYD-1134 description as of 2026-11-17T07:37:47.725Z (verbatim):
+SafeDeletePaths.Child rejects ':' on every platform. An ordinary Linux ignored timestamped file such as logs/run-2026-11-16T21:25:15.log causes archive worktree to refuse “Unsafe archive path”. The target remains intact.
+
+Expected: allow valid native Linux names while retaining path traversal protection and rejecting Windows drive/ADS syntax where unsafe. Prove archive/delete, source-independent restore and exact filename/byte recovery for a Linux colon-name file; retain Windows safety cases.
+
+Source: <issue id="4ffab092-4f99-4b5c-8ddb-3e66d1419a52" label="DYD-1029" href="https://linear.app/bodnar-balazs/issue/DYD-1029/a-safe-delete-dydo-command-archive-a-branch-or-worktree-for-30-days" /> Claude code review finding 2, severity should. [Full review](<https://linear.app/bodnar-balazs/issue/DYD-1029#comment-44b15c19-a9aa-4861-bdc6-df74d2d6e8e7>). Candidate ab242bdb33d85c521e5ea1a852de00007bf0ec0d; Services/SafeDeletePaths.cs:294–302, SafeDeleteFiles.Walk. Capped native Linux reproduction exited 2 safely.
+
+Owned scope: safe-delete native path validation and focused unit/CLI regression. Retain RED, affected SafeDelete Light/static and applicable final coverage/native proof under the testing strategy. This deferral gates Project landing.
+
+Governing atomic intent and DECIDED rulings read through committed initial-hop snapshot:
+dydo/project/changelog/2026/2026-11-17/dyd-1142/contract.txt at 01c8d558.
+No governing safe-delete feature spec exists. Every destructive step retains source/ref/eligibility
+rechecks and independent archive proof. T3_RELEASE_UNPROVEN unchanged; managed T3 worktrees
+remain undeletable. No skill, DR or axiom changes. No DYD-1135 journey/Then rewrite or DYD-1143 fake repair.
+
+Owned: Services/SafeDeletePaths.cs and narrowly necessary native validation consumers;
+focused SafeDelete tests; narrowly necessary hosted platform-selection metadata;
+related command reference only if needed; evidence under this ticket's changelog directory.
+Required: real Linux ignored timestamp RED before production; archive/delete and independent
+restore with exact filename/bytes; production-only reversal RED after GREEN, immediate restore
+and rebuild; nonzero native test discovery; prerequisite pin check; baseline
+dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --filter FullyQualifiedName~SafeDelete --logger trx;
+.static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate static --stack dotnet.
+Widen for actual reach. Docs check only if references change. Freeze all repository bytes during static.
+All proof runs: /var/tmp/dydo-gate-lock.sh OUTSIDE env MSBUILDDISABLENODEREUSE=1
+DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false systemd-run --user --scope
+--slice=app-t3code-agents-cbc6c2286251.slice -p MemoryMax=8G -p MemorySwapMax=0
+-p OOMPolicy=continue timeout 3600; focused probes 4G/120s. Never bypass queue or raise caps.
+Hosted Windows selector must include new Windows checks; Linux branch/skip is never native proof.
+Whole-stack coverage/mutation and exact-head hosted Linux/Windows remain due at whole-batch head.
+Mutation DYD-103 fail-closed UNAVAILABLE and unmet local statechart are never PASS.
+One commit: DYD-1134 implement: <behavior>; stage only named owned paths; clean handback.
+
+Diagnosis note
+Supplied deterministic reproduction and exact failure path allow a direct boundary reproduction;
+no bisection, synthetic load, speculative instrumentation or widened hypothesis campaign needed.
+Observed RED distinguishes the unconditional colon validator from Git status/restore handling.
