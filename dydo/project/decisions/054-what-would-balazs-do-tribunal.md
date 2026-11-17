@@ -7,6 +7,8 @@ date: 2026-10-22
 
 # 054 - What Would Balazs Do: a Tribunal for His Calls
 
+> **Partially superseded by [066 - The Law, Councils and the Tribunal](./066-the-law-councils-and-the-tribunal.md)** for the tribunal's composition, rounds, ballot, hard-Question routing and the ratification of ordinary Questions; the overnight DR-grade ratification stays. The rest remains in force.
+
 ## Context
 
 Officers stall on calls only the human may make, and while he is away the work waits for him.
