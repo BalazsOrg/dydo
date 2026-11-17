@@ -1,0 +1,8 @@
+  DynaDocs -> /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/bin/Debug/net10.0/dydo.dll
+  SkillBuild -> /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/tools/SkillBuild/bin/Debug/net10.0/SkillBuild.dll
+  DynaDocs.Tests -> /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll
+Test run for /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Results File: /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/dydo/project/changelog/2026/2026-11-17/dyd-1172/forced-space-safe-delete/results/_Nightfury_2026-11-17_23_04_59_net10.0.trx
+
+Passed!  - Failed:     0, Passed:   335, Skipped:     0, Total:   335, Duration: 46 s - DynaDocs.Tests.dll (net10.0)
