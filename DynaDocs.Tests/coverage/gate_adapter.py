@@ -687,21 +687,47 @@ def collect_statechart_coverage(root, raw, inventory):
         "artifacts": _raw_artifacts([report, lcov], run)})
 
 
-def _scoped_dotnet(root, evidence, platform, selection):
+def _dotnet_inventory_gaps(inventory, joined):
+    """Reconcile each evaluated Compile owner against the unpartitioned native join."""
+    payload = json.loads(Path(inventory).read_text(encoding="utf-8"))
+    targets = {row["path"] for row in payload["sources"]
+               if row["language"] == "cs" and row["role"] == "target"}
+    measured = {(target["project"], target["assembly"]): {module["path"] for module in target["modules"]}
+                for target in joined["targets"]}
+    gaps = []
+    for project in payload["projects"]:
+        sources = targets.intersection(project["compile"])
+        if project["testProject"] or not sources:
+            continue
+        assembly = Path(project["assembly"]).stem
+        identity = project["path"], assembly
+        missing = sorted(sources - measured.get(identity, set()))
+        if missing:
+            message = ("Inventory target sources absent from native campaign" if identity in measured
+                       else "Inventory target assembly absent from native campaign")
+            gaps.append({"gate": "csharp-coverage", "project": project["path"],
+                         "assembly": assembly, "sources": missing, "message": message})
+    return gaps
+
+
+def _scoped_dotnet(root, evidence, platform, selection, inventory):
     """The native join partitioned by the reviewed selection; the raw join keeps every point."""
     from dotnet_platform import read_source_files, scope, selected_tests
     from gate_policy import evaluate_policy
     joined = json.loads((evidence / "joined.json").read_text(encoding="utf-8"))
+    gaps = _dotnet_inventory_gaps(inventory, joined)
+    if gaps:
+        return joined, [], gaps
     modules, receipt = scope(root, joined["modules"], read_source_files(evidence), platform, selection)
     if platform == "windows":
         receipt["tests"] = selected_tests(evidence, selection)
     targets = [{key: value for key, value in target.items() if key != "modules"}
                for target in joined["targets"]]
     return {"schema": joined["schema"], "targets": targets, "modules": modules,
-            "platform_selection": receipt}, evaluate_policy(modules)
+            "platform_selection": receipt}, evaluate_policy(modules), gaps
 
 
-def collect_dotnet_coverage(root, raw):
+def collect_dotnet_coverage(root, raw, inventory):
     from dotnet_platform import WINDOWS_RESULTS, discover_windows_tests, load_selection, native_platform
     platform = native_platform()
     selection = load_selection(root, platform)
@@ -731,8 +757,8 @@ def collect_dotnet_coverage(root, raw):
                                 [{"gate": "functional", "child_exit": child,
                                   "failingTests": names, "failingTestsSummary": summary}], [],
                                 commands, artifacts)
-    joined, findings = _scoped_dotnet(root, evidence, platform, selection)
-    return _coverage_report("csharp-coverage", {**facts, **joined}, findings, [],
+    joined, findings, gaps = _scoped_dotnet(root, evidence, platform, selection, inventory)
+    return _coverage_report("csharp-coverage", {**facts, **joined}, findings, gaps,
                             commands, artifacts)
 
 
@@ -745,7 +771,7 @@ def collect_coverage(root, output, stack, inventory):
         return collect_node_coverage(root, raw, inventory,
                                      payload["candidate"]["sourceFingerprint"])
     if stack == "dotnet":
-        return collect_dotnet_coverage(root, raw)
+        return collect_dotnet_coverage(root, raw, inventory)
     if stack == "viewer":
         return collect_viewer_coverage(root, raw, inventory)
     if stack == "statechart":
