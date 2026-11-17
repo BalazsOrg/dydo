@@ -77,9 +77,9 @@ disable-model-invocation: true
 ## inquisition
 
 - A project with a runnable surface and no verification skill needs one first: raise it with the user, who makes it with `create-verification-skill`; one with nothing to run records that Drive does not apply.
+- Rounds start from zero: once every blocker and should fix of a round is `Done`, offer the next round as a fresh Inquisition, never a recheck of the old findings.
 - A patch-lane Bug stays assigned to the inquisition's captain until its patch is attached; it is pickable once unassigned.
 - Process an Inquisition's release through step 7 before generic pickable commissioning.
-- Rounds start from zero: once every blocker and should fix of a round is `Done`, offer the next round as a fresh Inquisition, never a recheck of the old findings.
 - Only the user defers an inquisition's should, at the end of the Project.
 - **Done:** the user moves it to `Todo` and tells you, or cancels it; commission the confirmed ticket with the answers on it.
 - Findings reopen the lap: commission the first fix Captain to re-cut the feature from main under the same name; another inquisition needs confirmation.

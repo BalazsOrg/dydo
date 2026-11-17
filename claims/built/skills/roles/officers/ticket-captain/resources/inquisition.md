@@ -69,6 +69,7 @@
 - **Nit:** one line on this round's nit ticket, with its `file:line` and the wrong outcome; it needs no proof.
 - The map holder lists every open nit ticket at the Project's final walkthrough, where the user decides each nit; it closes `Done` once every nit is fixed or accepted as is.
 - Open the nit ticket with the first nit: Type `Feature`, Mode `AFK`, Severity `nit`, `Backlog`, held by the map holder, linked to this Inquisition.
+- The map holder offers the next round once every blocker and should Bug is fixed.
 - A Bug whose fix step 9 will prepare is filed assigned to you, the claim that keeps it unpicked, naming its patch branch; any other Bug is filed unassigned and pickable at once.
 - When the groups close you resume as parent: merge their registers into yours, join duplicates across groups as sightings, and close a duplicate Bug as `Duplicate` of the one kept.
 - Done when every area belongs to one group and each group's register is merged into yours.
@@ -99,7 +100,6 @@
 - Done when every applicable phase of every area has returned, every register row has a final disposition, the register and every proof branch are pushed, and each open Bug's reproduction SHA is reachable from a pushed named ref independent of the audit branch: its proof branch or its patch branch, linked on the Bug.
 - You own that retention until each Bug's captain records adopting it; audit cleanup never deletes those refs.
 - Each round is its own Inquisition, started from zero: you never read the previous round's map or findings.
-- The map holder offers the next round once every blocker and should Bug is fixed.
 - **Tagged finding:** route it to the phase that can prove it, `testable` to Break and `drivable` to Drive.
 - When that phase already ran for the area, send a short follow-up agent with only the routed entries as its work items.
 - Done when every finding of the return is a row or a sighting and every tag has a phase scheduled.
