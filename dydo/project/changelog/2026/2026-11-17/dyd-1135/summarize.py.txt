@@ -1,0 +1,106 @@
+from pathlib import Path
+import hashlib
+import json
+import subprocess
+import xml.etree.ElementTree as ET
+
+root = Path('/tmp/dyd1135-runs')
+ns = {'t':'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+owned = [
+    'DynaDocs.Tests/Steps/SafeDeleteSteps.cs',
+    'DynaDocs.Tests/Integration/SafeDeleteTests.cs',
+    'DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs',
+    'DynaDocs.Tests/Integration/SafeDeleteBindingsTests.cs',
+]
+source = owned + ['DynaDocs.Tests/Features/safe-delete.feature']
+base = '269386e77eb22b8b31430c31763cbf493d121d4d'
+digest = lambda value: hashlib.sha256(value).hexdigest()
+receipts = {path.parent.name:json.loads(path.read_text()) for path in root.glob('*/receipt.json') if path.parent.name != 'evidence-verification'}
+expected = {'prerequisites':0,'discovery-red':0,'red-before-fix':1,'green-initial':1,'green-02':0,
+            'red-example-local':1,'red-example-detached':1,'red-checks-removed':1,
+            'discovery-restored':0,'light-final':0,'static-final':1,
+            'discovery-final':0,'light-final-02':0,'static-final-02':0}
+assert set(receipts) == set(expected), set(receipts)
+summary = {'hop_base':base,'outcome':'IMPLEMENTED; independent review and batch assurance owed',
+           'owned_source':owned,'current_hashes':{name:digest(Path(name).read_bytes()) for name in source},'runs':{}}
+for label, exit_code in expected.items():
+    receipt = receipts[label]
+    assert receipt['head'] == base and receipt['exit'] == exit_code, (label,receipt.get('exit'))
+    row = {key:receipt[key] for key in ['head','status','start','end','exit','argv']}
+    row['receipt'] = f'runs/{label}/receipt.json'
+    row['raw_log'] = f'runs/{label}/raw.log'
+    trxs = list((root/label).glob('results/*.trx'))
+    if trxs:
+        assert len(trxs) == 1
+        tree = ET.parse(trxs[0])
+        row['counters'] = tree.find('.//t:Counters',ns).attrib
+        row['results'] = [item.attrib for item in tree.findall('.//t:UnitTestResult',ns)]
+        row['test_methods'] = [item.attrib for item in tree.findall('.//t:TestMethod',ns)]
+    summary['runs'][label] = row
+
+for label in ['discovery-final','light-final-02','static-final-02']:
+    assert all(receipts[label]['files'][name]==summary['current_hashes'][name] for name in source), label
+    for name, sha in receipts[label]['files'].items():
+        if name.startswith('Services/'):
+            assert sha == digest(subprocess.check_output(['git','show',f'{base}:{name}'])), (label,name)
+
+pre_namespace_hashes = dict(summary['current_hashes'])
+binding_tests = 'DynaDocs.Tests/Integration/SafeDeleteBindingsTests.cs'
+pre_namespace_hashes[binding_tests] = digest(Path(binding_tests).read_bytes().replace(
+    b'namespace DynaDocs.Tests.Steps;',b'namespace DynaDocs.Tests.Integration;').replace(
+    b'using DynaDocs.Tests.Integration;',b'using DynaDocs.Tests.Steps;'))
+for label in ['green-02','discovery-restored','light-final','static-final']:
+    assert all(receipts[label]['files'][name]==pre_namespace_hashes[name] for name in source), label
+summary['namespace_only_correction_after_initial_static_failure'] = True
+discovered = [line.strip() for line in (root/'discovery-final'/'raw.log').read_text().splitlines() if line.startswith('    ')]
+assert len(discovered) == 331, len(discovered)
+summary['native_discovery_count'] = len(discovered)
+summary['native_discovery'] = discovered
+light = summary['runs']['light-final-02']
+assert light['counters']['passed']=='331' and light['counters']['failed']=='0' and light['counters']['notExecuted']=='0'
+scenario_prefixes = {
+    'Recover history and every worktree version independently':9,
+    'Refuse without losing the original target':29,
+    'Validate archive policy through the command':21,
+}
+for prefix, count in scenario_prefixes.items():
+    rows = [row for row in light['results'] if row['testName'].startswith(prefix)]
+    assert len(rows)==count and all(row['outcome']=='Passed' for row in rows), prefix
+summary['affected_executable_gherkin'] = scenario_prefixes
+feature = 'DynaDocs.Tests/Features/safe-delete.feature'
+assert Path(feature).read_bytes() == subprocess.check_output(['git','show',f'{base}:{feature}'])
+for label in ['red-example-local','red-example-detached']:
+    hashes = receipts[label]['files']
+    assert hashes[feature] != summary['current_hashes'][feature]
+    assert all(hashes[name] == pre_namespace_hashes[name] for name in owned)
+    assert json.loads((root/label/'restoration.json').read_text())[feature] == summary['current_hashes'][feature]
+checks = receipts['red-checks-removed']['files']
+changed = {name for name in source if checks[name] != pre_namespace_hashes[name]}
+assert changed == {'DynaDocs.Tests/Steps/SafeDeleteSteps.cs','DynaDocs.Tests/Integration/SafeDeleteTests.cs'}, changed
+assert all(sha == digest(subprocess.check_output(['git','show',f'{base}:{name}']))
+           for label in ['red-example-local','red-example-detached','red-checks-removed']
+           for name, sha in receipts[label]['files'].items() if name.startswith('Services/'))
+for name, sha in json.loads((root/'red-checks-removed'/'restoration.json').read_text()).items():
+    assert sha == summary['current_hashes'][name]
+
+adapter = Path('DynaDocs.Tests/coverage/results/adapters/dotnet-static.json')
+static = json.loads(adapter.read_text())
+assert static['exitCode']==0 and static['measurementComplete'] is True
+summary['static_collectors'] = {name:{key:row.get(key) for key in ['status','errors','findings']} for name,row in static['collectors'].items()}
+assert len(summary['static_collectors'])==7
+for name,row in summary['static_collectors'].items():
+    assert not row.get('errors') and not row.get('findings'), (name,row)
+artifact = root/'static-final-02'/'artifacts'
+artifact.mkdir(exist_ok=True)
+(artifact/'dotnet-static.json').write_bytes(adapter.read_bytes())
+summary['static_adapter_sha256'] = digest(adapter.read_bytes())
+summary['final_source_matches_green_discovery_light_static'] = True
+summary['accepted_feature_bytes_preserved'] = True
+summary['production_bytes_unchanged_in_all_mutation_proofs'] = True
+summary['limitations'] = ['No independent PASS','Whole-batch coverage/mutation/hosted Linux-Windows and captain replay owed',
+    'DYD-103 mutation remains fail-closed UNAVAILABLE; local statechart unmet never PASS',
+    'No native Windows or managed T3 deletion proof; T3_RELEASE_UNPROVEN unchanged']
+Path('/tmp/dyd1135-summary.json').write_text(json.dumps(summary,indent=2)+'\n')
+print('331 discovered and passed; affected Gherkin 9/29/21 passed; all final source bytes bound to GREEN/discovery/Light/static receipts.')
+print('Actual feature-value mutation RED 1/8 twice; test-only check removal RED 8/0; serialized restoration verified; production unchanged.')
+print(json.dumps(summary['static_collectors'],indent=2))

@@ -1,0 +1,118 @@
+IMPLEMENTED - DYD-1133 implementation hop
+code-writer/model: gpt-6.1-sol high
+Base: 74bf3bc332de5aaedd5523e506fbf6621788a6bb
+Batch base: d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d
+Branch: DYD-1142-safe-delete-shoulds
+Checkout: /home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605
+Candidate: the commit containing this record. Receipts bind the dirty implementation bytes to base.
+
+Behavior
+Worktree archives now capture Git-resolved common info/exclude and info/attributes as byte-exact,
+hashed payloads under git-inputs/info/. The version-2 manifest records both required input names,
+including explicit absence. Source files are read-only: no shared exclude, attributes or config
+rewrite is introduced. Independent reconstruction installs only captured inputs into its fresh
+scratch Git directory. Its object-store proof, status/index/file comparison, no-alternates and
+inherited-GIT-variable isolation remain intact.
+
+Copies verify source/destination hashes; loaded archives validate the exact supported input names,
+hashes and payload membership. Existing generic payload/container path, hash and link checks stay.
+The source input snapshot is rechecked with every worktree/source recheck, including immediately
+before remote/worktree deletion. Even comment-only changes with identical Git status refuse.
+The existing pre-delete archive reload also verifies the new payloads. Any failed proof retains
+the target. Remote-first order, collision/ref/snapshot protections, first-hop closed-world
+initial absence support and T3_RELEASE_UNPROVEN remain intact.
+
+Restore requires matching current common inputs and rechecks after its before-restore checkpoint,
+before importing objects or creating recovery/primary refs. It uses ordinary repository Git
+behavior, refusing mismatches without rewriting shared files. This is intentionally conservative:
+even a comment-only difference requires restoring in a repository whose inputs match the archive.
+Version-1 branch archives remain readable. Version-1 worktree archives explicitly refuse restore
+and purge because they lack repository input proof; unsupported/corrupt archives are retained.
+
+Owned source paths
+Models/SafeDeleteManifest.cs
+Services/SafeDeleteFiles.cs
+Services/SafeDeleteService.cs
+Services/SafeDeleteStore.cs
+DynaDocs.Tests/Integration/SafeDeleteInputsTests.cs
+DynaDocs.Tests/Features/safe-delete.feature
+DynaDocs.Tests/Steps/SafeDeleteSteps.cs
+Evidence is confined to dydo/project/changelog/2026/2026-11-17/dyd-1133/.
+No DYD-1134, DYD-1135 or DYD-1143 work; no skill/DR/axiom, branch, push, PR, merge or status changes.
+
+Observed proof and exits
+prerequisites: exit 0. SDK 10.0.303, runtime 10.0.14, Git 2.53.0, Python 3.14.4,
+Node 26.13.0, pnpm 12.16.1. Locked closure: 8 Python, 228 JavaScript, 23 metrics NuGet pins.
+discovery-red: exit 0. Three intended input regression cases discovered before production edits.
+red-before-fix: exit 1. Three failures, zero passed/skipped. Deciding line for exclude-only,
+attributes-only and both: "archive: Reconstructed file/index/status snapshot differs".
+green-initial: exit 0. Same three cases passed.
+discovery-expanded: exit 0. Own/reached SafeDelete selection includes new input tests and Gherkin.
+green-expanded: exit 0. 24 passed, zero failed/skipped, including the new Gherkin journey.
+red-production-reversed: exit 1. Four failures, zero passed/skipped: three retained regression
+cases plus "Recover files governed by repository-local exclude and attributes". Same deciding
+reconstruction mismatch. Only the FOUR production paths were reversed; git diff --exit-code HEAD
+on those paths exited 0. summary.json verifies each receipt hash equals its pinned-base bytes.
+Tests/Gherkin were unchanged and the first-hop production behavior stayed present. Production
+was immediately restored with git apply of the same patch.
+discovery-restored: exit 0. Nonzero final selection after rebuilding restored production.
+light-final: exit 0. Required baseline FullyQualifiedName~SafeDelete: 305 passed, zero failed/skipped.
+native-linux: exit 0. Real CLI archive/delete and restore in owned temporary repositories. The
+staged-only blob was absent from the source after reflog expiry/GC. The archive was copied to a
+fresh empty destination repository, the original source directory renamed out of its recorded
+path, and restore succeeded with no alternates or inherited GIT_* environment. Ordinary status
+still reported !! local-only.log, the custom attribute resolved local, CRLF working bytes and
+unique staged bytes matched, and source/destination common inputs remained byte-identical.
+static-final: exit 0. dotnet static PASSED (child exit 0), aggregate 0; all seven collectors completed with zero findings.
+
+Reach and gate placement
+Only the SafeDelete archive model, file-input capture/reconstruction, orchestration and store
+validation changed. The required SafeDelete filter discovers/runs the own API/command/parser,
+archive/refusal/race/restore/store/guard/T3 policy tests and executable feature scenarios, including
+the previous hop. No shared GitRunner, clean command, guard parser, executable Python/JavaScript,
+platform-selection or command/reference consumer changed. No Heavy trigger applies. Dotnet static
+is applicable; no other executable stack changed. No command references changed, so docs check
+is not an owed gate for this hop. Evidence files are non-Markdown.
+
+Exact rerunnable proof recipe (repository root; use unused labels)
+1. Copy run.py.txt to /tmp/dyd1133-run.py and native.py.txt to /tmp/dyd1133-native.py. The runner's
+   root is /tmp/dyd1133-runs/<label>. It records HEAD, dirty state, exact file SHA256s, argv, UTC
+   times, exit and raw output. The host gate lock stays OUTSIDE the memory scope; probes use
+   4G/120s, gates 8G/3600s, MemorySwapMax=0, OOMPolicy=continue, nearest agent slice and the
+   required .NET environment. Run with the user-systemd-bus access required by this host.
+2. Copy dydo/project/changelog/2026/2026-11-17/dyd-1142/static-prerequisites.py.txt to
+   /tmp/dyd1142-static-prerequisites.py to validate installed locks, through the runner:
+   python3 /tmp/dyd1133-run.py replay-pins probe bash -lc 'dotnet --info; git --version; python3 --version; node --version; pnpm --version; .static-gates/python/bin/python /tmp/dyd1142-static-prerequisites.py'
+   If missing, provision the exact locked closure using the first-hop proof's capped setup recipe.
+3. Discover and rebuild:
+   python3 /tmp/dyd1133-run.py replay-discovery probe dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --no-restore --list-tests --filter FullyQualifiedName~SafeDelete
+4. Run affected Light (the required baseline):
+   python3 /tmp/dyd1133-run.py replay-light gate dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --filter FullyQualifiedName~SafeDelete --logger trx --results-directory /tmp/dyd1133-runs/replay-light/results
+5. Reverse ONLY this hop's production.patch with git apply --reverse <evidence-dir>/production.patch.
+   Verify original source:
+   git diff --exit-code 74bf3bc332de5aaedd5523e506fbf6621788a6bb -- Models/SafeDeleteManifest.cs Services/SafeDeleteFiles.cs Services/SafeDeleteService.cs Services/SafeDeleteStore.cs
+   Rebuild and expect exit 1 / four exact reconstruction failures:
+   python3 /tmp/dyd1133-run.py replay-red probe dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --no-restore --filter 'FullyQualifiedName~SafeDeleteInputsTests.CommonInputs|FullyQualifiedName~RecoverFilesGoverned' --logger trx --results-directory /tmp/dyd1133-runs/replay-red/results
+   Immediately restore with git apply <evidence-dir>/production.patch; repeat discovery and Light
+   under fresh labels. Never use --no-build immediately after changing source bytes.
+6. Live Linux proof (uses the assembly built by step 3/4; owns and cleans its temporary repos):
+   python3 /tmp/dyd1133-run.py replay-native probe python3 /tmp/dyd1133-native.py
+7. Freeze ALL repository files, including evidence, until static returns:
+   python3 /tmp/dyd1133-run.py replay-static gate .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate static --stack dotnet
+
+Evidence
+raw-evidence.tar.gz contains run receipts, full source file hash sets, raw logs, native TRX and
+static producer/consumer artifacts; its digest is raw-evidence.tar.gz.sha256. summary.json binds
+the final seven source/test files to discovery, Light, Linux CLI and static receipts, and compares
+the production-only reversal to the pinned base. production.patch is this hop only. run.py.txt,
+native.py.txt and summarize.py.txt retain the exact recipes; working-tree-contract.txt and
+contract.txt retain authorization and pins. Gate collection froze repository bytes; evidence-only
+files added afterward do not change implementation bytes. No independent review PASS is claimed.
+
+Limitations / remaining assurance owners
+No native Windows, hosted Linux/Windows CI, AOT or managed-T3 deletion proof is claimed. Final
+whole-stack coverage/mutation and hosted native proof remain owed at batch head, by the captain.
+Mutation is fail-closed UNAVAILABLE (DYD-103), never PASS. Local statechart unmet is never PASS.
+There is no atomic filesystem freeze: the existing final-check-to-delete external-writer race
+remains; detected changes refuse. No cap increase or cap hit was observed.
+Blocker: none within this implementation hop; final batch assurance remains owed.

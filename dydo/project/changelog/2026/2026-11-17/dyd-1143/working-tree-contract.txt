@@ -1,0 +1,27 @@
+Working-tree contract proved before first source edit, 2026-11-17.
+Observed directly with pwd, git status --short, git branch --show-current, git rev-parse HEAD,
+git rev-parse --show-toplevel --git-common-dir, git log -5, git merge-base --is-ancestor.
+Initial raw outputs also retained in raw-evidence.tar.gz:dyd1143-preflight/.
+prerequisites and discovery-base receipts independently bind the clean pre-edit tree to full hashes.
+
+1. Branch: DYD-1142-safe-delete-shoulds, the explicitly commissioned serial-batch branch.
+2. Root: /home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605.
+   Git common dir: /home/balazs/Desktop/Projects/DynaDocs/.git, distinct from root.
+   This is the isolated registered worktree, not the main checkout.
+3. HEAD b6c4e323ee9be824c3f02574098b9ed2fa7b5b6c equals commissioned hop base.
+   Both hop base and batch base d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d are ancestors (exit 0).
+4. Initial git status --porcelain was empty. No captain tests active per commission.
+5. Planned/actual owned edits: DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs and
+   dydo/project/changelog/2026/2026-11-17/dyd-1143/ only.
+   Services/SafeDeleteGitHub.cs temporarily mutated solely for the authorized check-removal proof;
+   exact original bytes restored after each child completed, with native restoration receipts.
+
+Preserved ancestry, oldest first:
+74bf3bc3 DYD-1142 implement: archive proved closed-world absent remote refs locally
+01c8d558 DYD-1133 implement: preserve repository exclude and attribute proof inputs
+269386e7 DYD-1134 implement: preserve native Linux colon filenames safely
+b6c4e323 DYD-1135 implement: reject unknown journeys and verify boundary outcomes
+
+Tool/selection preflight: prerequisites exit 0; discovery-base exit 0, 331 cases with Gherkin.
+After tests: discovery-new exit 0, 335 cases. Exact versions and installed locked prerequisite hashes
+are in native prerequisite output/receipt; no inherited worktree's package setup was assumed.

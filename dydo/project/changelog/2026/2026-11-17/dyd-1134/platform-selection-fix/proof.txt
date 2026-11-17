@@ -1,0 +1,115 @@
+IMPLEMENTED - DYD-1134 platform-selection contract correction
+code-writer/model: gpt-6.1-sol, high
+Commissioning officer: DYD-1142 ticket-captain; one serial writer, no subagents.
+Candidate: the commit containing this record. Receipts bind the tested dirty bytes to
+hop base 50a27f632c4d9d59707c305abfd18b3ad3fb25e2, above all five implementation hops.
+Batch base: d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d.
+Checkout: /home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605
+Branch: DYD-1142-safe-delete-shoulds.
+
+Contract and exact correction
+The captain reported 32 tests / 1 failure at test_dotnet_platform.py:170 on the clean
+hop base. DYD-1134 already selected the native Windows path safety theories, but this
+test's archive_tests expected-file dictionary omitted them. They fell through to the
+Statechart-only path assertion. This is compatibility with existing native safety proof,
+not an acceptance change. Governing intent/rulings are retained in ../contract.txt and
+../../dyd-1142/contract.txt; no feature-spec or acceptance rewrite is commissioned.
+
+Only the following dictionary entries were added, both mapped exactly to
+DynaDocs.Tests/Integration/SafeDeletePathsTests.cs:
+DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators
+DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams
+
+The source diff adds four lines. Every existing assertion, selected method, source pin
+and production byte remains intact. correction.patch retains the complete source diff.
+Base test SHA256: e6b758f2f3b36560e97a6c9622156b63e0af13613ac952020371ea06a108443e
+Fixed test SHA256: b258cf444f3cf7788e1d246c1bf962649d05c524947401286fff3964864ad16e
+
+Observed proof and exits
+captain-red: exit 1, native receipt/raw log copied verbatim from
+  /tmp/dyd1143-runs/captain-platform-contract-50a/ into the durable raw archive.
+writer-red: exit 1, independently replayed the same 32 tests / 1 failure before edits:
+  FAIL: test_the_committed_selection_is_reviewed_pinned_and_its_tests_are_declared
+  test_dotnet_platform.py:170: self.assertTrue(path.startswith('DynaDocs.Tests/Statechart/'))
+  AssertionError: False is not true
+platform-green: exit 0, 32 tests passed.
+reverse-red: child exit 1, 32 tests / same single line-170 failure. Removing ONLY the
+  two added entries produced exact clean-base bytes for the entire baseline file set.
+  reverse.py.txt awaited subprocess completion, then restored the original fixed bytes
+  in finally. Wrapper exit 0 means the expected RED was observed and restore completed.
+restored-green: exit 0, 32 tests passed after restoration, exact fixed SHA256 above.
+prerequisites: exit 0, installed lock closure checked locally: 8 Python, 228 JavaScript,
+  23 metrics NuGet packages. SDK 10.0.303/runtime 10.0.14, Python 3.14.4, Git 2.53.0,
+  Node 26.13.0, pnpm 12.16.1. No prerequisite or lock changes.
+hosted-filter-discovery: exit 0. The unchanged prior DYD-1134 selection.py.txt loaded
+  real pinned sources and the real hosted Windows filter. dotnet test --list-tests
+  found all selected methods, including the 10 unsafe-path and 7 colon-path theory
+  cases, plus existing native ADS metadata checks. This is discovery on Linux only.
+static-final: exit 0; gate static --stack dotnet,python; aggregate 0. Both adapters
+  exited 0, measurementComplete true, zero findings/gaps, seven passing collectors each.
+  Both candidate fingerprints: ce1ca4a8f54c3a35e8174b2117ba56cdbb7a24627d883db3c36074373834266a.
+  All repository inputs stayed frozen through completion; runner changed_during_run [].
+evidence-audit: exit 0, verifies all receipt exits, lock/caps, original/restored hashes,
+  unchanged baseline files, ancestry, actual discovery counts and static producer outputs.
+
+Actual reach and remaining gates
+The only executable-file change is a literal map local to this one platform-selection
+test. No production module, adapter, selector, fixture helper or shared consumer changes.
+The affected-feature Light is the complete test_dotnet_platform.py suite (32 tests),
+covering reviewed declaration/pinning, native partition, results and union contracts.
+The actual hosted filter was separately preflighted. Python static applies because the
+test is Python; .NET static is retained for the reached native selection contract.
+No other Python feature is reached by this method-local map. No Heavy trigger applies.
+Per the commissioning contract, unrelated SafeDelete runtime is not repeated on this
+correction hop. Final SafeDelete Light/runtime, final native Linux/Windows proof, final
+whole-stack coverage and exact-head hosted CI remain owed at the final batch head.
+No whole-stack coverage run, native Windows execution, or independent reviewer PASS is
+claimed. Mutation remains fail-closed UNAVAILABLE (DYD-103), never PASS; unmet local
+statechart proof remains unmet, never PASS. T3_RELEASE_UNPROVEN remains unchanged.
+No branch/push/PR/merge/status change; no managed-T3 deletion enablement.
+
+Rerunnable proof recipe (repository root, serial commands, unused labels/run directories)
+1. Copy run.py.txt to /tmp/dyd1134-platform-selection-fix-run.py, selection.py.txt to
+   /tmp/dyd1134-platform-selection-fix-selection.py, prerequisites.py.txt to
+   /tmp/dyd1134-platform-selection-fix-prerequisites.py, reverse.py.txt to
+   /tmp/dyd1134-platform-selection-fix-reverse.py. Use a fresh runs root and fresh labels
+   in copied scripts if original /tmp artifacts still exist; never overwrite receipts.
+   This runner was copied from ../../dyd-1143/run.py.txt, with its own runs root and an
+   added post-run repository hash comparison. Earlier RED/GREEN receipts precede that
+   comparison addition; they still retain full before-run hashes. Static includes it.
+2. On the pinned clean hop base, before adding the two entries:
+   python3 /tmp/dyd1134-platform-selection-fix-run.py writer-red probe .static-gates/python/bin/python -m unittest discover -s DynaDocs.Tests/coverage/tests -p test_dotnet_platform.py -v
+   Expect exit 1 / 32 tests / one failure at line 170. Apply correction.patch.
+3. python3 /tmp/dyd1134-platform-selection-fix-run.py platform-green probe .static-gates/python/bin/python -m unittest discover -s DynaDocs.Tests/coverage/tests -p test_dotnet_platform.py -v
+   Expect exit 0, 32 tests. Then controlled reversal (wait for completion):
+   python3 /tmp/dyd1134-platform-selection-fix-reverse.py
+   Expect wrapper exit 0, child reverse-red exit 1 with the identical failure, and
+   restored_sha256 b258cf444f3cf7788e1d246c1bf962649d05c524947401286fff3964864ad16e.
+   python3 /tmp/dyd1134-platform-selection-fix-run.py restored-green probe .static-gates/python/bin/python -m unittest discover -s DynaDocs.Tests/coverage/tests -p test_dotnet_platform.py -v
+4. python3 /tmp/dyd1134-platform-selection-fix-run.py prerequisites probe bash -c 'dotnet --info && git --version && python3 --version && node --version && pnpm --version && .static-gates/python/bin/python /tmp/dyd1134-platform-selection-fix-prerequisites.py'
+   python3 /tmp/dyd1134-platform-selection-fix-run.py hosted-filter-discovery probe .static-gates/python/bin/python /tmp/dyd1134-platform-selection-fix-selection.py
+5. Freeze ALL repository bytes, including evidence, until this command returns:
+   python3 /tmp/dyd1134-platform-selection-fix-run.py static-final gate .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate static --stack dotnet,python
+   Expect aggregate 0 and both complete adapters with zero findings. Save producer and
+   consumer output before another run replaces adapter pointers.
+6. Copy audit.py.txt to /tmp/dyd1134-platform-selection-fix-audit.py. This is the exact
+   original evidence audit/collection recipe. It expects the
+   original pre-evidence baseline, receipts/labels and paths; execute there for an exact
+   replay, or read its assertions against the retained archive. It is not a release gate:
+   python3 /tmp/dyd1134-platform-selection-fix-run.py evidence-audit probe .static-gates/python/bin/python /tmp/dyd1134-platform-selection-fix-audit.py
+
+Every test/probe/gate ran through /var/tmp/dydo-gate-lock.sh OUTSIDE the required env
+MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false,
+systemd-run --user --scope --slice=app-t3code-agents-cbc6c2286251.slice,
+-p MemoryMax=4G (probes) or 8G (static), -p MemorySwapMax=0 -p OOMPolicy=continue,
+timeout 120 (probes) or timeout 3600 (static), with separate timeout argv elements.
+Host user-bus access used require_escalated. No cap increase or lock bypass.
+
+Durable evidence
+raw-evidence.tar.gz includes captain/writer RED, both GREENs, reverse RED, prerequisites,
+hosted-filter discovery, static and evidence-audit receipts/raw logs, full input hash sets,
+both static adapter summaries, their producer runs/inventories/commands/SARIF and facade
+consumer output. Its SHA256 is alongside it. summary.json is the audited result summary.
+Evidence-only files were assembled after the frozen static run; no code changed afterward.
+Implementation evidence only; independent review and captain replay remain owed.
+Blocker: none within this correction hop; final batch assurance remains owed.

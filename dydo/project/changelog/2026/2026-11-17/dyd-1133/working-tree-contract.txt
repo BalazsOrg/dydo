@@ -1,0 +1,36 @@
+code-writer/model: gpt-6.1-sol high
+Observed before first source edit, 2026-11-17:
+pwd: /home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605
+git branch --show-current: DYD-1142-safe-delete-shoulds
+git rev-parse HEAD: 74bf3bc332de5aaedd5523e506fbf6621788a6bb
+git status --short: empty
+git merge-base --is-ancestor 74bf3bc332de5aaedd5523e506fbf6621788a6bb HEAD: exit 0
+git merge-base --is-ancestor d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d HEAD: exit 0
+git worktree list --porcelain confirms this linked worktree; main checkout is
+/home/balazs/Desktop/Projects/DynaDocs, master, separate from this checkout.
+
+Owned planned paths: Models/SafeDeleteManifest.cs, Services/SafeDeleteFiles.cs,
+Services/SafeDeleteService.cs, Services/SafeDeleteStore.cs,
+DynaDocs.Tests/Integration/SafeDeleteInputsTests.cs,
+DynaDocs.Tests/Features/safe-delete.feature, DynaDocs.Tests/Steps/SafeDeleteSteps.cs,
+and evidence in this directory. No other hop's production changes are reverted.
+No branch, push, PR, merge, ticket status, skill, Decision or axiom edits authorized.
+No subagents; serial writer. Existing shared repository inputs are read-only.
+
+Contract: user-supplied DYD-1133 description at 2026-11-17T07:37:47.725Z,
+with governing DYD-1029 full intent and DECIDED rulings in committed sibling
+../dyd-1142/contract.txt at the pinned hop base. No feature spec exists.
+Retain independent object store, final source/ref/input checks, fail-closed deletion,
+restore collisions, remote-first order and T3_RELEASE_UNPROVEN.
+
+Reach: only archive worktree capture/proof/restore and archive store validation.
+No shared GitRunner, guard parser, clean command, executable Python/JS or platform
+selection changes. Own/reached Light: FullyQualifiedName~SafeDelete, including
+Gherkin. Static: dotnet. Native Windows and whole-stack final coverage/mutation
+remain batch-head obligations. Local statechart unmet and DYD-103 mutation
+unavailable never count as PASS.
+
+All proof commands use /tmp/dyd1133-run.py, copied from first-hop receipt runner,
+with output root /tmp/dyd1133-runs. Lock stays outside systemd scope. Probe 4G/120s;
+gate 8G/3600s; MemorySwapMax=0; OOMPolicy=continue; no cap increases.
+Agent slice: app-t3code-agents-cbc6c2286251.slice.

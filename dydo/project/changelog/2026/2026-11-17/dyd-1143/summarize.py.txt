@@ -1,0 +1,113 @@
+from pathlib import Path
+from datetime import datetime
+import hashlib
+import json
+import os
+import shutil
+import subprocess
+import xml.etree.ElementTree as ET
+
+root = Path('/tmp/dyd1143-runs')
+base = 'b6c4e323ee9be824c3f02574098b9ed2fa7b5b6c'
+test = 'DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs'
+production = 'Services/SafeDeleteGitHub.cs'
+feature = 'DynaDocs.Tests/Features/safe-delete.feature'
+digest = lambda value: hashlib.sha256(value).hexdigest()
+ns = {'t': 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+expected = {'prerequisites': 0, 'discovery-base': 0, 'discovery-new': 0,
+    'focused-green': 0, 'red-api-null': 1, 'red-receipt-metadata': 1,
+    'red-both-checks': 1, 'light-final': 0, 'static-final': 0}
+receipts = {label: json.loads((root / label / 'receipt.json').read_text()) for label in expected}
+summary = {'hop_base': base, 'source': test, 'source_sha256': digest(Path(test).read_bytes()),
+    'production_sha256': digest(Path(production).read_bytes()), 'runs': {}}
+for label, exit_code in expected.items():
+    receipt = receipts[label]
+    assert receipt['head'] == base and receipt['exit'] == exit_code, (label, receipt.get('exit'))
+    row = {key: receipt[key] for key in ['head', 'status', 'start', 'end', 'exit', 'argv']}
+    row['receipt'] = f'runs/{label}/receipt.json'
+    row['raw_log'] = f'runs/{label}/raw.log'
+    trxs = list((root / label / 'results').glob('*.trx'))
+    if trxs:
+        trx, = trxs
+        tree = ET.parse(trx)
+        row['counters'] = tree.find('.//t:Counters', ns).attrib
+        row['results'] = [item.attrib for item in tree.findall('.//t:UnitTestResult', ns)]
+        row['test_methods'] = [item.attrib for item in tree.findall('.//t:TestMethod', ns)]
+    summary['runs'][label] = row
+
+for label in ['discovery-new', 'focused-green', 'light-final', 'static-final']:
+    assert receipts[label]['files'][test] == summary['source_sha256'], label
+    assert receipts[label]['files'][production] == summary['production_sha256'], label
+assert Path(production).read_bytes() == subprocess.check_output(['git', 'show', f'{base}:{production}'])
+assert Path(feature).read_bytes() == subprocess.check_output(['git', 'show', f'{base}:{feature}'])
+for label in ['discovery-base', 'discovery-new']:
+    rows = [line.strip() for line in (root / label / 'raw.log').read_text().splitlines() if line.startswith('    ')]
+    assert len(rows) == (331 if label == 'discovery-base' else 335), (label, len(rows))
+    summary['runs'][label]['native_discovery_count'] = len(rows)
+    summary['runs'][label]['native_discovery'] = rows
+
+assert summary['runs']['focused-green']['counters']['passed'] == '5'
+light = summary['runs']['light-final']
+assert light['counters']['passed'] == '335' and light['counters']['failed'] == '0' and light['counters']['notExecuted'] == '0'
+trx, = (root / 'light-final' / 'results').glob('*.trx')
+tree = ET.parse(trx)
+gherkin_ids = {item.attrib['id'] for item in tree.findall('.//t:UnitTest', ns)
+    if item.find('t:TestMethod', ns).attrib['className'] == 'DynaDocs.Tests.Features.SafeDeleteArchivesUniqueWorkBeforeRemovalFeature'}
+gherkin_results = [row for row in light['results'] if row['testId'] in gherkin_ids]
+assert len(gherkin_results) == 82 and all(row['outcome'] == 'Passed' for row in gherkin_results)
+summary['executable_gherkin_count'] = len(gherkin_results)
+summary['executable_gherkin_results'] = gherkin_results
+
+for label in ['red-api-null', 'red-receipt-metadata', 'red-both-checks']:
+    proof = json.loads((root / label / 'proof.json').read_text())
+    restored = json.loads((root / label / 'restoration.json').read_text())
+    assert proof['original_sha256'] == restored['sha256'] == summary['production_sha256']
+    assert proof['mutant_sha256'] == receipts[label]['files'][production]
+    assert restored['matches_original'] is True
+    assert datetime.fromisoformat(proof['child_completed']) <= datetime.fromisoformat(restored['restored'])
+    assert receipts[label]['files'][test] == summary['source_sha256']
+    differences = {name for name, sha in receipts[label]['files'].items() if sha != receipts['light-final']['files'][name]}
+    assert differences == {production}, (label, differences)
+    summary['runs'][label]['boundary_proof'] = proof
+    summary['runs'][label]['restoration'] = restored
+
+# Verify all repository inputs stayed frozen through the final static run before evidence is added.
+files = subprocess.check_output(['git', 'ls-files', '-c', '-o', '--exclude-standard', '-z']).split(b'\0')
+current = {os.fsdecode(name): digest(Path(os.fsdecode(name)).read_bytes()) for name in files if name and Path(os.fsdecode(name)).is_file()}
+assert current == receipts['static-final']['files'] == receipts['light-final']['files']
+summary['full_repository_inputs_frozen_through_static'] = True
+
+adapter = Path('DynaDocs.Tests/coverage/results/adapters/dotnet-static.json')
+static = json.loads(adapter.read_text())
+assert static['exitCode'] == 0 and static['measurementComplete'] is True
+assert static['candidate']['commit'] == base
+summary['static_collectors'] = {name: {key: row.get(key) for key in ['status', 'errors', 'findings']} for name, row in static['collectors'].items()}
+assert len(summary['static_collectors']) == 7
+for name, row in summary['static_collectors'].items():
+    assert row['status'] == 'pass' and not row['errors'] and not row['findings'], (name, row)
+artifacts = root / 'static-final' / 'artifacts'
+artifacts.mkdir(exist_ok=True)
+shutil.copy2(adapter, artifacts / 'dotnet-static.json')
+# Locate and retain this producer's native command logs/SARIFs as well as its aggregate adapter.
+inventory = Path('DynaDocs.Tests/coverage/results') / static['inventory']['path']
+assert digest(inventory.read_bytes()) == static['inventory']['sha256']
+producer = inventory.parent
+assert (producer / 'report.json').read_bytes() == adapter.read_bytes()
+shutil.copytree(producer, artifacts / producer.name)
+aggregate_paths = [Path(line.removeprefix('Result: ')) for line in (root / 'static-final' / 'raw.log').read_text().splitlines() if line.startswith('Result: ')]
+aggregate_path, = aggregate_paths
+aggregate = json.loads(aggregate_path.read_text())
+assert aggregate['aggregateExit'] == 0 and aggregate['candidate']['commit'] == base
+shutil.copy2(aggregate_path, artifacts / 'aggregate-result.json')
+summary['static_adapter_sha256'] = digest(adapter.read_bytes())
+summary['static_native_artifacts'] = producer.name
+summary['production_and_accepted_feature_unchanged'] = True
+summary['limitations'] = ['No independent PASS; captain replay and reviewer mutation readback owed',
+    'Final whole-batch coverage and hosted exact-head Linux-Windows remain owed; not run in this hop',
+    'DYD-103 mutation remains inherited fail-closed UNAVAILABLE, never PASS; unmet statechart never PASS',
+    'No native Windows or managed-T3 deletion proof; T3_RELEASE_UNPROVEN unchanged']
+Path('/tmp/dyd1143-summary.json').write_text(json.dumps(summary, indent=2) + '\n')
+print('335 discovered and passed; 82 executable Gherkin passed; no skipped tests.')
+print('API-null removal RED 1/4; receipt-metadata removal RED 1/4; whole guard removal RED 2/3.')
+print('Exact production restoration verified after child completion; all repo inputs frozen through static.')
+print(json.dumps(summary['static_collectors'], indent=2))

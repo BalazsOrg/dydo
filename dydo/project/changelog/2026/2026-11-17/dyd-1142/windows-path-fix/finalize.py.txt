@@ -1,0 +1,34 @@
+from pathlib import Path
+import hashlib
+import json
+import shutil
+import subprocess
+import tarfile
+
+root = Path.cwd()
+out = root / 'dydo/project/changelog/2026/2026-11-17/dyd-1142/windows-path-fix'
+stage = Path('/tmp/dyd1142-windows-bundle-02')
+for label in ('evidence', 'evidence-02'):
+    run = Path('/tmp/dyd1142-runs') / ('windows-fix-' + label)
+    shutil.copytree(run, stage / 'runs' / run.name)
+for name in ('summarize', 'setup'):
+    (out / (name + '.py.txt')).write_bytes(Path('/tmp/dyd1142-windows-' + name + '.py').read_bytes())
+with tarfile.open(out / 'raw-evidence.tar.gz', 'w:gz') as bundle:
+    for item in sorted(stage.iterdir()):
+        bundle.add(item, arcname=item.name)
+archive = out / 'raw-evidence.tar.gz'
+digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+(out / 'raw-evidence.tar.gz.sha256').write_text(digest + '  raw-evidence.tar.gz\n')
+summary = json.loads((out / 'summary.json').read_text())
+source = root / summary['tested_source']
+assert hashlib.sha256(source.read_bytes()).hexdigest() == summary['tested_source_sha256']
+subprocess.run(['git', 'diff', '--check'], check=True)
+changed = subprocess.check_output(['git', 'diff', '--name-only', 'HEAD'], text=True).splitlines()
+assert changed == [summary['tested_source']], changed
+unknown = subprocess.check_output(['git', 'ls-files', '--others', '--exclude-standard'], text=True).splitlines()
+assert unknown and all(name.startswith(str(out.relative_to(root)) + '/') for name in unknown), unknown
+with tarfile.open(archive) as bundle:
+    assert all(not member.name.startswith('/') and '..' not in Path(member.name).parts for member in bundle)
+print(json.dumps({'source_sha256': summary['tested_source_sha256'], 'archive_sha256': digest,
+                  'archive_bytes': archive.stat().st_size, 'tracked_changed_paths': changed,
+                  'owned_evidence_files': len(unknown), 'git_diff_check_exit': 0}, indent=2))

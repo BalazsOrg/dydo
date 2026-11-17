@@ -1,5 +1,19 @@
 @SafeDelete
 Feature: Safe delete archives unique work before removal
+  Scenario: Recover files governed by repository-local exclude and attributes
+    Given an owned safe-delete repository
+    When I archive a worktree governed by repository-local exclude and attributes
+    Then the archive restores ordinary ignored and attribute behavior after source garbage collection
+
+  Scenario Outline: Archive an unpushed worktree with proved remote absence
+    Given an owned safe-delete repository
+    When I archive the unpushed worktree in a "<visibility>" closed-world repository
+    Then the absent remote ref required no push and the archived worktree restores independently
+    Examples:
+      | visibility |
+      | public |
+      | private |
+
   Scenario Outline: Authoritative remote eligibility permits recoverable cleanup
     When I archive and restore through the "<authority>" GitHub authority route
     Then the remote eligibility journey preserved its unique files

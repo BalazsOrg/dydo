@@ -33,7 +33,7 @@ internal sealed class SafeDeleteStore(string root, TextWriter output)
         var manifest = JsonSerializer.Deserialize(File.ReadAllBytes(Path.Combine(entry, "manifest.json")), SafeDeleteJsonContext.Default.SafeDeleteManifest)
             ?? throw new InvalidDataException("Empty manifest");
         ValidateFields(manifest);
-        if (manifest.Version != 1 || manifest.Id != id || complete && !manifest.Complete || manifest.Tips.Count == 0
+        if (manifest.Version is not (1 or 2) || manifest.Id != id || complete && !manifest.Complete || manifest.Tips.Count == 0
             || manifest.Created.Offset != TimeSpan.Zero || manifest.Expires != manifest.Created.AddDays(30)
             || manifest.ObjectFormat is not ("sha1" or "sha256")) throw new InvalidDataException("Invalid/incomplete archive manifest");
         var width = manifest.ObjectFormat == "sha256" ? 64 : 40;
@@ -49,6 +49,7 @@ internal sealed class SafeDeleteStore(string root, TextWriter output)
             if (SafeDeletePaths.Hash(file) != hash) throw new InvalidDataException($"Corrupt archive payload: {relative}");
         }
         CheckRequired(entry, manifest);
+        SafeDeleteFiles.ValidateGitInputs(manifest);
         return manifest;
     }
 

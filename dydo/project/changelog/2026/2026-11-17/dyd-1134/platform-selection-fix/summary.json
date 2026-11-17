@@ -1,0 +1,73 @@
+{
+  "base": "50a27f632c4d9d59707c305abfd18b3ad3fb25e2",
+  "batch_base": "d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d",
+  "target": "DynaDocs.Tests/coverage/tests/test_dotnet_platform.py",
+  "base_sha256": "e6b758f2f3b36560e97a6c9622156b63e0af13613ac952020371ea06a108443e",
+  "fixed_sha256": "b258cf444f3cf7788e1d246c1bf962649d05c524947401286fff3964864ad16e",
+  "exits": {
+    "captain-red": 1,
+    "writer-red": 1,
+    "platform-green": 0,
+    "reverse-red": 1,
+    "restored-green": 0,
+    "prerequisites": 0,
+    "hosted-filter-discovery": 0,
+    "static-final": 0
+  },
+  "reverse_matches_clean_base": true,
+  "only_test_map_changed": true,
+  "all_other_baseline_files_unchanged": true,
+  "static_repository_changes": [],
+  "hosted_filter_discovered_theory_cases_on_linux": {
+    "UnsafePaths_RefuseTraversalAndForeignSeparators": 10,
+    "ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams": 7
+  },
+  "static": {
+    "dotnet": {
+      "exitCode": 0,
+      "measurementComplete": true,
+      "collectors": {
+        "associations": "pass",
+        "csharp-analyzers": "pass",
+        "csharp-source": "pass",
+        "projects": "pass",
+        "repository-inputs": "pass",
+        "source-inventory": "pass",
+        "versions": "pass"
+      },
+      "findings": 0,
+      "candidate": {
+        "commit": "50a27f632c4d9d59707c305abfd18b3ad3fb25e2",
+        "dirty": true,
+        "sourceFingerprint": "ce1ca4a8f54c3a35e8174b2117ba56cdbb7a24627d883db3c36074373834266a"
+      },
+      "source_run": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605/DynaDocs.Tests/coverage/results/assurance/run-3d9ada6bdc474506bcc7efd22dc6804e"
+    },
+    "python": {
+      "exitCode": 0,
+      "measurementComplete": true,
+      "collectors": {
+        "associations": "pass",
+        "projects": "pass",
+        "python-dead-code": "pass",
+        "python-dependencies": "pass",
+        "python-source": "pass",
+        "repository-inputs": "pass",
+        "source-inventory": "pass"
+      },
+      "findings": 0,
+      "candidate": {
+        "commit": "50a27f632c4d9d59707c305abfd18b3ad3fb25e2",
+        "dirty": true,
+        "sourceFingerprint": "ce1ca4a8f54c3a35e8174b2117ba56cdbb7a24627d883db3c36074373834266a"
+      },
+      "source_run": "/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605/DynaDocs.Tests/coverage/results/assurance/run-79742cc3738d421faf95fd61c182b46c"
+    }
+  },
+  "native_windows_execution": "not run",
+  "final_safedelete_runtime": "owed at final batch head",
+  "whole_stack_coverage": "not run; owed at final batch head",
+  "mutation": "UNAVAILABLE DYD-103; never PASS",
+  "local_statechart": "unmet; never PASS",
+  "T3_RELEASE_UNPROVEN": "unchanged"
+}

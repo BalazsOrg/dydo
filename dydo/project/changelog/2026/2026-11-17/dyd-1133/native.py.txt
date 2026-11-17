@@ -1,0 +1,73 @@
+from pathlib import Path
+import json
+import os
+import shutil
+import subprocess
+import tempfile
+
+assembly = Path.cwd() / 'bin/Debug/net10.0/dydo.dll'
+environment = {k: v for k, v in os.environ.items() if not k.startswith('GIT_')}
+
+def run(cwd, *args):
+    result = subprocess.run(args, cwd=cwd, env=environment, text=True, capture_output=True)
+    print('COMMAND', list(args), 'EXIT', result.returncode, flush=True)
+    print(result.stdout, result.stderr, flush=True)
+    assert result.returncode == 0
+    return result.stdout.rstrip('\r\n')
+
+with tempfile.TemporaryDirectory(prefix='dyd1133-native-') as folder:
+    root = Path(folder)
+    source, tree, destination, restored = [root / name for name in ('source','tree','destination','restored')]
+    source.mkdir()
+    git = lambda cwd, *args: run(cwd, 'git', *args)
+    git(source, 'init', '-b', 'main')
+    for key, value in [('user.name','DYD-1133 proof'),('user.email','proof@example.invalid'),('commit.gpgsign','false'),('core.autocrlf','false')]:
+        git(source, 'config', key, value)
+    (source / 'file.txt').write_bytes(b'base\n')
+    git(source, 'add', 'file.txt')
+    git(source, 'commit', '-m', 'seed')
+    (source / 'dydo.json').write_text('{"archive":{"reserveBytes":0,"reservePercent":0}}')
+    inputs = {'exclude': b'# local only\r\nlocal-only.log\r\n', 'attributes': b'*.txt text eol=lf archive-proof=local\n'}
+    for name, value in inputs.items():
+        (source / '.git/info' / name).write_bytes(value)
+    git(source, 'worktree', 'add', '-b', 'topic', str(tree))
+    (tree / 'file.txt').write_bytes(b'base\r\n')
+    (tree / 'local-only.log').write_bytes(b'private ignored bytes\n')
+    (tree / 'unique.txt').write_bytes(b'unique staged bytes\n')
+    git(tree, 'add', 'file.txt', 'unique.txt')
+    staged = git(tree, 'rev-parse', ':unique.txt')
+    status = git(tree, 'status', '--porcelain=v1', '--ignored', '--untracked-files=all')
+    assert '!! local-only.log' in status and 'file.txt' not in status
+    output = run(source, 'dotnet', str(assembly), 'archive', 'worktree', str(tree))
+    assert 'Independent proof passed: fresh object store; no alternates or inherited GIT_* variables' in output
+    assert not tree.exists()
+    assert git(source, 'for-each-ref', 'refs/heads/topic') == ''
+    for name, value in inputs.items():
+        assert (source / '.git/info' / name).read_bytes() == value
+    git(source, 'reflog', 'expire', '--expire=now', '--all')
+    git(source, 'gc', '--prune=now')
+    assert subprocess.run(['git','cat-file','-e',staged],cwd=source,env=environment,capture_output=True).returncode != 0
+    archives = source / '.git/dydo/safe-delete-archive'
+    entry = next(path for path in archives.iterdir() if path.is_dir() and not path.name.startswith('.'))
+    destination.mkdir()
+    git(destination, 'init', '-b', 'main')
+    git(destination, 'config', 'core.autocrlf', 'false')
+    (destination / 'dydo.json').write_text('{"archive":{"reserveBytes":0,"reservePercent":0}}')
+    for name, value in inputs.items():
+        assert (entry / 'git-inputs/info' / name).read_bytes() == value
+        (destination / '.git/info' / name).write_bytes(value)
+    copied = destination / '.git/dydo/safe-delete-archive' / entry.name
+    shutil.copytree(entry, copied)
+    source.rename(root / 'source-offline')
+    assert not source.exists()
+    assert not (destination / '.git/objects/info/alternates').exists()
+    run(destination, 'dotnet', str(assembly), 'archive', 'restore', copied.name, '--path', str(restored), '--branch', 'recovered')
+    assert git(restored, 'status', '--porcelain=v1', '--ignored', '--untracked-files=all') == status
+    assert git(restored, 'show', ':unique.txt') == 'unique staged bytes'
+    assert (restored / 'file.txt').read_bytes() == b'base\r\n'
+    assert (restored / 'local-only.log').read_bytes() == b'private ignored bytes\n'
+    assert git(restored, 'check-attr', 'archive-proof', '--', 'file.txt') == 'file.txt: archive-proof: local'
+    for name, value in inputs.items():
+        assert (destination / '.git/info' / name).read_bytes() == value
+    assert copied.exists()
+    print('NATIVE LINUX PROOF: archive/delete; staged-only source-GC; original source path absent; fresh destination object store; ordinary ignored/attribute behavior and exact content restored; common inputs unchanged', flush=True)

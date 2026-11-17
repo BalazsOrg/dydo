@@ -91,6 +91,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
     {
         if (tree != null)
         {
+            manifest.GitInputs = SafeDeleteFiles.CaptureGitInputs(cwd);
             manifest.Files = SafeDeleteFiles.Capture(tree.Path);
             SafeDeleteFiles.CaptureRoot(tree.Path, manifest);
             manifest.Status = SafeDeleteGit.Status(cwd);
@@ -113,7 +114,6 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
             var pushUrls = SafeDeleteGit.Require(directory, "remote", "get-url", "--push", "--all", remote).Split('\n');
             if (fetchUrl != remoteUrl || pushUrls.Length != 1) throw new InvalidDataException("Different/multiple remote push URLs are unsupported");
             if (branch!.StartsWith("feature/", StringComparison.Ordinal)) throw new InvalidDataException("Remote feature/* branch is protected");
-            if (oid == null) throw new InvalidDataException("Initially absent remote ref: PR association authority is unproven; local target retained");
             _gitHubTarget = new SafeDeleteGitHubTarget(remoteUrl!, branch!, oid);
             var refusal = dependencies.CheckGitHub(_gitHubTarget);
             if (refusal != null) throw new InvalidDataException(refusal);
@@ -130,6 +130,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         else if (OperatingSystem.IsLinux()) platform = "linux";
         if (manifest.Worktree != null && manifest.Platform != platform)
             throw new InvalidDataException("Worktree metadata belongs to a different platform; native reconstruction required");
+        if (manifest.Worktree != null) SafeDeleteFiles.CheckGitInputs(directory, manifest);
         if (branch != null)
         {
             SafeDeleteGit.BranchName(directory, branch);
@@ -178,7 +179,11 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         store.Save(entry, manifest);
         dependencies.Checkpoint("before-copy");
         SafeDeleteHistory.Write(cwd, entry, manifest);
-        if (tree != null) SafeDeleteFiles.Copy(tree.Path, Path.Combine(entry, "files"), manifest.Files, false);
+        if (tree != null)
+        {
+            SafeDeleteFiles.CopyGitInputs(cwd, entry, manifest, independent: false);
+            SafeDeleteFiles.Copy(tree.Path, Path.Combine(entry, "files"), manifest.Files, false);
+        }
         store.HashPayloads(entry, manifest);
         store.Save(entry, manifest);
         dependencies.Checkpoint("before-proof");
@@ -274,6 +279,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         Verify(repository, entry, manifest);
         dependencies.Checkpoint("before-restore");
         _ = store.Load(id);
+        if (manifest.Worktree != null) SafeDeleteFiles.CheckGitInputs(directory, manifest);
         SafeDeleteHistory.Import(directory, entry, manifest);
         foreach (var tip in manifest.Tips)
             if (SafeDeleteGit.Ref(directory, tip.RecoveryRef(id)) == null)
@@ -322,6 +328,8 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
 
     private static void Reconstruct(string entry, string path, SafeDeleteManifest manifest, bool independent = false)
     {
+        if (independent) SafeDeleteFiles.CopyGitInputs(path, entry, manifest, independent: true);
+        else SafeDeleteFiles.CheckGitInputs(path, manifest);
         RestoreGitConfig(path, manifest, independent);
         SafeDeleteFiles.Copy(Path.Combine(entry, "files"), path, manifest.Files, true);
         var index = SafeDeleteGit.Require(path, "rev-parse", "--path-format=absolute", "--git-path", "index");
@@ -385,6 +393,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
             throw new InvalidDataException("Source reflog/per-worktree history changed; target retained");
         if (tree == null) return;
         if (current == null || current.Head != tree.Head || current.Branch != tree.Branch) throw new InvalidDataException("Registered worktree changed");
+        SafeDeleteFiles.CheckGitInputs(tree.Path, manifest);
         if (!SafeDeleteFiles.RootMatches(tree.Path, manifest) || !SafeDeleteFiles.Capture(tree.Path).SequenceEqual(manifest.Files) || SafeDeleteGit.Status(tree.Path) != manifest.Status)
             throw new InvalidDataException("Source file/status snapshot changed; target retained");
         var index = SafeDeleteGit.Require(tree.Path, "rev-parse", "--path-format=absolute", "--git-path", "index");
@@ -416,7 +425,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         {
             var sizes = SafeDeleteGit.Require(cwd, "cat-file", "--batch-all-objects", "--batch-check=%(objectsize)");
             foreach (var size in sizes.Split('\n', StringSplitOptions.RemoveEmptyEntries)) objects = checked(objects + long.Parse(size) + 128);
-            foreach (var name in new[] { "index", "HEAD", "logs/HEAD", "logs/refs/heads/" + manifest.Branch })
+            foreach (var name in new[] { "index", "HEAD", "logs/HEAD", "logs/refs/heads/" + manifest.Branch, "info/exclude", "info/attributes" })
             {
                 var path = SafeDeleteGit.Require(cwd, "rev-parse", "--path-format=absolute", "--git-path", name);
                 SafeDeletePaths.NoLinks(path);

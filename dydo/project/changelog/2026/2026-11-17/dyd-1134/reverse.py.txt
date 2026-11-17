@@ -1,0 +1,22 @@
+from pathlib import Path
+import subprocess
+
+patch = '/tmp/dyd1134-production.patch'
+base = '01c8d558dcda426128a866d1b537aa09c069387d'
+subprocess.run(['git', 'apply', '--reverse', patch], check=True)
+try:
+    subprocess.run(['git', 'diff', '--exit-code', base, '--', 'Services/SafeDeletePaths.cs'], check=True)
+    print('ONLY production path reversed; exact hop-base bytes verified', flush=True)
+    result = subprocess.run(['python3', '/tmp/dyd1134-run.py', 'red-production-reversed-02', 'probe',
+                             'dotnet', 'test', 'DynaDocs.Tests/DynaDocs.Tests.csproj', '--no-restore',
+                             '--filter', 'FullyQualifiedName~SafeDeletePathsTests', '--logger', 'trx',
+                             '--results-directory', '/tmp/dyd1134-runs/red-production-reversed-02/results'])
+finally:
+    subprocess.run(['git', 'apply', patch], check=True)
+    print('Production patch restored AFTER reversed run completed', flush=True)
+restored = subprocess.run(['python3', '/tmp/dyd1134-run.py', 'discovery-restored-02', 'probe',
+                           'dotnet', 'test', 'DynaDocs.Tests/DynaDocs.Tests.csproj', '--no-restore',
+                           '--list-tests', '--filter', 'FullyQualifiedName~SafeDelete'])
+assert result.returncode == 1, result.returncode
+assert restored.returncode == 0, restored.returncode
+print('Completed production-only RED and restored rebuild', flush=True)

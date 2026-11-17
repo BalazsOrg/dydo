@@ -5,6 +5,58 @@ using System.Runtime.InteropServices;
 
 internal static class SafeDeleteFiles
 {
+    private static readonly string[] GitInputNames = ["info/exclude", "info/attributes"];
+
+    internal static Dictionary<string, string?> CaptureGitInputs(string cwd) => GitInputNames.ToDictionary(
+        name => name, name => GitInputHash(GitInputPath(cwd, name)));
+
+    private static string GitInputPath(string cwd, string name) =>
+        SafeDeleteGit.Require(cwd, "rev-parse", "--path-format=absolute", "--git-path", name);
+
+    private static string? GitInputHash(string path)
+    {
+        SafeDeletePaths.NoLinks(path);
+        if (Directory.Exists(path)) throw new InvalidDataException("Repository proof input is not a regular file");
+        return File.Exists(path) ? SafeDeletePaths.Hash(path) : null;
+    }
+
+    internal static void CheckGitInputs(string cwd, SafeDeleteManifest manifest)
+    {
+        if (!CaptureGitInputs(cwd).OrderBy(p => p.Key).SequenceEqual(manifest.GitInputs.OrderBy(p => p.Key)))
+            throw new InvalidDataException("Repository proof inputs changed; shared exclude/attributes retained");
+    }
+
+    internal static void CopyGitInputs(string cwd, string entry, SafeDeleteManifest manifest, bool independent)
+    {
+        foreach (var (name, hash) in manifest.GitInputs)
+        {
+            var repositoryPath = GitInputPath(cwd, name);
+            var payload = SafeDeletePaths.Child(entry, "git-inputs/" + name);
+            var source = independent ? payload : repositoryPath;
+            if (GitInputHash(source) != hash) throw new InvalidDataException("Repository proof input hash differs");
+            if (hash == null) continue;
+            var destination = independent ? repositoryPath : payload;
+            SafeDeletePaths.NoLinks(destination);
+            Directory.CreateDirectory(Path.GetDirectoryName(destination)!);
+            SafeDeletePaths.Write(destination, File.ReadAllBytes(source));
+            if (SafeDeletePaths.Hash(destination) != hash) throw new InvalidDataException("Copied repository proof input differs");
+        }
+    }
+
+    internal static void ValidateGitInputs(SafeDeleteManifest manifest)
+    {
+        if (manifest.Worktree == null) return;
+        if (manifest.Version != 2) throw new InvalidDataException("Archive version does not preserve repository proof inputs; worktree restore/purge refused");
+        if (manifest.GitInputs == null || manifest.GitInputs.Count != GitInputNames.Length || GitInputNames.Any(name => !manifest.GitInputs.ContainsKey(name)))
+            throw new InvalidDataException("Missing/unsupported repository proof inputs");
+        foreach (var (name, hash) in manifest.GitInputs)
+        {
+            var saved = manifest.PayloadHashes.GetValueOrDefault("git-inputs/" + name);
+            if (hash != saved || hash != null && (hash.Length != 64 || !hash.All(char.IsAsciiHexDigit)))
+                throw new InvalidDataException("Unverified repository proof input");
+        }
+    }
+
     internal static List<SafeDeleteFile> Capture(string root)
     {
         SafeDeletePaths.NoLinks(root);

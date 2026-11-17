@@ -2,7 +2,7 @@ namespace DynaDocs.Models;
 
 internal sealed class SafeDeleteManifest
 {
-    public int Version { get; set; } = 1;
+    public int Version { get; set; } = 2;
     public string Id { get; set; } = "";
     public DateTimeOffset Created { get; set; }
     public DateTimeOffset Expires { get; set; }
@@ -22,6 +22,7 @@ internal sealed class SafeDeleteManifest
     public Dictionary<string, string> PayloadHashes { get; set; } = [];
     public Dictionary<string, string> GitMetadata { get; set; } = [];
     public Dictionary<string, string> GitConfig { get; set; } = [];
+    public Dictionary<string, string?> GitInputs { get; set; } = [];
     public string Status { get; set; } = "";
     public string Platform { get; set; } = OperatingSystem.IsWindows() ? "windows" : "linux";
     public int RootMode { get; set; }

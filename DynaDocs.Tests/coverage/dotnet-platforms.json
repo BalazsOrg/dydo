@@ -20,7 +20,9 @@
       "DynaDocs.Tests.Statechart.StatechartWindowsRunnerTests.AWindowsCheckPublishesOnlyAVerdictItsExitAgreesWithThenCleansItsScratch",
       "DynaDocs.Tests.Integration.SafeDeleteTests.PartiallyStagedVersions_IgnoredBinary_EmptyDirectories_RoundTripAfterGc",
       "DynaDocs.Tests.Integration.SafeDeleteTests.DetachedHead_RemainsDetached",
-      "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams"
+      "DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams",
+      "DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators",
+      "DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams"
     ]
   },
   "native": {

@@ -1,0 +1,58 @@
+Production inspection: no demonstrated separator bug; production retained unchanged.
+code-writer/model: gpt-6.1-sol high
+Source baseline: 3fcbcd689a5294ece2fb4270037f0df9cda80260
+
+SafeDeletePaths.cs:7-14
+Same applies Path.GetFullPath to BOTH operands, trims the ending directory separator,
+and uses OrdinalIgnoreCase only on Windows, Ordinal elsewhere. Within normalizes BOTH
+the parent and candidate, adds exactly one native directory separator when needed,
+and accepts either Same or a separator-bounded prefix. It does not compare an arbitrary
+substring. Unix backslashes remain literal filename characters in production.
+
+Windows runtime source was downloaded, not executed, in this Linux session:
+https://raw.githubusercontent.com/dotnet/runtime/v10.0.14/src/libraries/System.Private.CoreLib/src/System/IO/Path.Windows.cs
+https://raw.githubusercontent.com/dotnet/runtime/v10.0.14/src/libraries/System.Private.CoreLib/src/System/IO/PathHelper.Windows.cs
+https://raw.githubusercontent.com/dotnet/runtime/v10.0.14/src/libraries/Common/src/System/IO/PathInternal.Windows.cs
+Exact bytes and SHA256 provenance are retained in raw-evidence.tar.gz/runtime-source/.
+Path.Windows.cs:44-58,129-143 routes ordinary GetFullPath through PathHelper.Normalize.
+PathHelper.Windows.cs:19,25-30,70-77 calls Win32 GetFullPathNameW.
+PathInternal.Windows.cs:277-290 recognizes both slash forms and explicitly documents
+that GetFullPathName supplies directory-separator normalization, converting forward
+slashes to backslashes. Thus ordinary C:/... and C:\... paths normalize identically
+before Same/Within compare them. The runtime version matches the observed 10.0.14 host
+and the patched runtime used by the hosted job. This is source evidence, not native
+Windows execution. Extended device paths are explicitly exempt from normalization
+(Path.Windows.cs:134-140); no claim of equivalence between device-prefixed and ordinary
+paths is made. An unrecognized registration spelling refuses before archive/deletion;
+this hop does not broaden long/device-path support or bypass identity checks.
+
+Relevant registration consumers, unchanged:
+- SafeDeleteRepository.cs:22-30 parses complete NUL-delimited worktree fields (-z).
+- SafeDeleteService.cs:58-60 resolves the requested target and selects exactly one
+  registered tree using Same. Missing matches refuse.
+- SafeDeleteRepository.cs:69 protects the current tree with Within; :76 compares both
+  actual common-directory and worktree top-level identities with Same; :109 checks
+  occupancy elsewhere with Same. Main/locked/missing/link/busy refusal checks remain.
+- SafeDeleteService.cs:384-385 rechecks common-directory identity and current tree via
+  Same. :386-401 still validates eligibility, captured local OID, history, registration
+  HEAD/branch, shared inputs, file/status snapshots, and index hash before deletion.
+- SafeDeleteService.cs:153-154 rejects restore containment with Within and registration
+  collisions with Same, in addition to checking actual filesystem occupancy.
+- Additional Same/Within consumers: SafeDeleteFiles.cs:130 (root identity),
+  SafeDeleteDependencies.cs:13 (volume containment), SafeDeleteT3Policy.cs:37
+  (managed-root containment). None uses the test's raw substring assertion.
+- SafeDeleteFiles.cs:179 compares archive-relative manifest paths, not worktree
+  registrations; these paths have a separate validated archive-path contract.
+
+The hosted RED passed each affected caller's preceding command/ref/staged/working-byte
+assertions and failed at the helper's final raw string containment assertion (:458).
+That supports a test-only defect for these ordinary paths. No production regression
+was independently demonstrated, so there is no speculative production patch or new
+path test. Existing hosted selection (.github/workflows/ci.yml:675-683) already runs
+the SafeDelete test class. No platform map or accepted scenario was changed.
+
+Inspection commands (repository root):
+rg -n 'SafeDeletePaths\.(Same|Within)|\.Path\s*(==|!=)|Equals\([^\n]*\.Path' Services/SafeDelete*.cs
+git diff --exit-code HEAD -- Services
+The latter returned 0 after the assertion fix; the final summary verifies every
+Services/SafeDelete*.cs byte against the pinned baseline again.

@@ -161,6 +161,10 @@ class SelectionTests(unittest.TestCase):
                 'DynaDocs.Tests/Integration/SafeDeleteTests.cs',
             'DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams':
                 'DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs',
+            'DynaDocs.Tests.Integration.SafeDeletePathsTests.UnsafePaths_RefuseTraversalAndForeignSeparators':
+                'DynaDocs.Tests/Integration/SafeDeletePathsTests.cs',
+            'DynaDocs.Tests.Integration.SafeDeletePathsTests.ColonPaths_AllowNativeNamesAndRefuseWindowsDrivesAndStreams':
+                'DynaDocs.Tests/Integration/SafeDeletePathsTests.cs',
         }
         self.assertTrue(archive_tests.keys() <= found.keys())
         for name, path in found.items():

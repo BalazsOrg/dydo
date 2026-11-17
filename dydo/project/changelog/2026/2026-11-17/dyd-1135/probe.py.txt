@@ -1,0 +1,77 @@
+from pathlib import Path
+import difflib
+import hashlib
+import json
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+mode, label, *values = sys.argv[1:]
+run_root = Path('/tmp/dyd1135-runs')
+feature = Path('DynaDocs.Tests/Features/safe-delete.feature')
+helper = Path('DynaDocs.Tests/Integration/SafeDeleteTests.cs')
+steps = Path('DynaDocs.Tests/Steps/SafeDeleteSteps.cs')
+originals = {}
+patches = []
+
+def change(path, updated):
+    original = path.read_text()
+    originals[path] = original
+    patches.extend(difflib.unified_diff(original.splitlines(True), updated.splitlines(True), fromfile=str(path), tofile=str(path)))
+    path.write_text(updated)
+
+try:
+    if mode == 'example':
+        original, mutated = values
+        row = f'      | {original} |\n'
+        assert feature.read_text().count(row) == 1
+        change(feature, feature.read_text().replace(row, f'      | {mutated} |\n'))
+        selection = 'FullyQualifiedName~RecoverHistoryAndEveryWorktreeVersionIndependently'
+        expected_failed, expected_passed = 1, 8
+    elif mode == 'baseline':
+        base = '269386e77eb22b8b31430c31763cbf493d121d4d'
+        change(helper,subprocess.check_output(['git','show',f'{base}:{helper}'],text=True))
+        change(Path('DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs'),subprocess.check_output(
+            ['git','show',f'{base}:DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs'],text=True))
+        source = subprocess.check_output(['git','show',f'{base}:{steps}'],text=True)
+        marker = 'public sealed class SafeDeleteSteps : IDisposable\n{\n'
+        assert source.count(marker) == 1
+        source = source.replace(marker,marker+'    public SafeDeleteSteps() { }\n    internal SafeDeleteSteps(SafeDeleteTests fixture) => _fixture = fixture;\n\n')
+        change(steps,source)
+        selection = 'FullyQualifiedName~SafeDeleteBindingsTests'
+        expected_failed, expected_passed = 8, 0
+    elif mode == 'sensitivity':
+        source = helper.read_text()
+        start = source.index('        if (journey is not (')
+        end = source.index('        if (journey == "resolved stash conflict undo")',start)
+        change(helper, source[:start]+source[end:])
+        source = steps.read_text()
+        assert source.count('        _verifyOutcome();\n') == 1
+        change(steps,source.replace('        _verifyOutcome();\n','        // DYD-1135 proof: boundary outcome assertions removed.\n'))
+        selection = 'FullyQualifiedName~SafeDeleteBindingsTests'
+        expected_failed, expected_passed = 8, 0
+    else:
+        raise ValueError(mode)
+    result = subprocess.run(['python3','/tmp/dyd1135-run.py',label,'probe','dotnet','test',
+        'DynaDocs.Tests/DynaDocs.Tests.csproj','--no-restore','--filter',selection,
+        '--logger','trx','--results-directory',str(run_root/label/'results')],check=False)
+    assert result.returncode == 1, result.returncode
+    trx, = (run_root/label/'results').glob('*.trx')
+    ns = {'t':'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+    counters = ET.parse(trx).find('.//t:Counters',ns).attrib
+    assert int(counters['failed']) == expected_failed, counters
+    assert int(counters['passed']) == expected_passed, counters
+    assert int(counters['notExecuted']) == 0, counters
+    if mode == 'example':
+        failed = [row for row in ET.parse(trx).findall('.//t:UnitTestResult',ns) if row.attrib['outcome']=='Failed']
+        assert len(failed)==1 and mutated in failed[0].attrib['testName']
+        assert 'Unwired journey: '+mutated in ''.join(failed[0].itertext())
+    (run_root/label/'mutation.patch').write_text(''.join(patches))
+    (run_root/label/'proof.json').write_text(json.dumps({'mode':mode,'failed':expected_failed,'passed':expected_passed,'mutation_only':list(map(str,originals))},indent=2)+'\n')
+    print('Confirmed intended RED:', counters)
+finally:
+    for path, original in originals.items():
+        path.write_text(original)
+    if (run_root/label).exists():
+        (run_root/label/'restoration.json').write_text(json.dumps({str(path):hashlib.sha256(path.read_bytes()).hexdigest() for path in originals},indent=2)+'\n')
+    print('Restored changed bytes AFTER the test process completed.',flush=True)

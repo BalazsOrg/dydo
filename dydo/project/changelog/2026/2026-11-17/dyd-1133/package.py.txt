@@ -1,0 +1,30 @@
+from pathlib import Path
+import hashlib
+import json
+import shutil
+import tarfile
+
+evidence = Path('dydo/project/changelog/2026/2026-11-17/dyd-1133')
+runs = Path('/tmp/dyd1133-runs')
+static = Path('DynaDocs.Tests/coverage/results')
+output = Path('/tmp/dyd1133-raw-evidence.tar.gz')
+with tarfile.open(output, 'w:gz') as archive:
+    archive.add(runs, arcname='runs', recursive=False)
+    for directory in sorted(runs.iterdir()):
+        receipt = directory / 'receipt.json'
+        if receipt.is_file() and json.loads(receipt.read_text()).get('exit') is not None:
+            archive.add(directory,arcname='runs/'+directory.name)
+    archive.add(static, arcname='static-results')
+    for name in ('run.py','native.py','summarize.py','production.patch'):
+        archive.add(Path('/tmp') / ('dyd1133-'+name),arcname='recipe/'+name)
+target = evidence/'raw-evidence.tar.gz'
+shutil.copyfile(output,target)
+digest = hashlib.sha256(target.read_bytes()).hexdigest()
+(evidence/'raw-evidence.tar.gz.sha256').write_text(digest+'  raw-evidence.tar.gz\n')
+with tarfile.open(target) as archive:
+    names = archive.getnames()
+    assert 'runs/red-production-reversed/raw.log' in names
+    assert 'runs/light-final/receipt.json' in names
+    assert 'runs/native-linux/raw.log' in names
+    assert 'static-results/adapters/dotnet-static.json' in names
+print(str(target),target.stat().st_size,'bytes',digest)

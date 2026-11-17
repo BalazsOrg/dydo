@@ -211,32 +211,308 @@ public sealed class SafeDeleteGitHubTests
     }
 
     [Fact]
-    public void InitiallyAbsentRemoteRef_RefusesWithoutCallingApiOrDeletingLocal()
+    public void AfterOwnDeletion_ApiRefSurvivesWhileGitIsAbsent_RetainsVerifiedArchiveAndLocalTarget()
     {
         using var fixture = new SafeDeleteTests(); fixture.AddRemote(); fixture.AddTree();
+        var tip = SafeDeleteTests.Git(fixture.Main,"rev-parse","topic");
+        File.WriteAllText(Path.Combine(fixture.Tree,"unique.txt"),"receipt witness bytes\n");
+        var afterLease = false;
+        var receiptRefReads = 0;
+        fixture.Dependencies.Checkpoint = point =>
+        {
+            if (point != "before-worktree-delete") return;
+            Assert.Empty(SafeDeleteTests.Git(fixture.Main,"ls-remote","origin","refs/heads/topic"));
+            afterLease = true;
+        };
+        fixture.Dependencies.CheckGitHub = target => Check(fixture,target,start =>
+        {
+            if (afterLease && IsGraph(start))
+            {
+                Assert.True(target.DeletedByInvocation);
+                Assert.NotNull(target.Metadata);
+                Assert.False(IsHeads(start));
+                Assert.Empty(SafeDeleteTests.Git(fixture.Main,"ls-remote","origin","refs/heads/topic"));
+                receiptRefReads++;
+            }
+            return Response(start,target,"public",true,12,apiRefPresent: true);
+        });
+
+        var exit = fixture.Run("worktree",fixture.Tree);
+
+        Assert.True(afterLease);
+        Assert.True(receiptRefReads > 0);
+        Assert.Equal(2,exit);
+        Assert.Contains("Remote ref recreated or own-deletion receipt is invalid",fixture.Output);
+        Assert.Contains("remote deleted; worktree/local branch retained",fixture.Output);
+        Assert.Contains("Independent proof passed",fixture.Output);
+        Assert.Empty(SafeDeleteTests.Git(fixture.Main,"ls-remote","origin","refs/heads/topic"));
+        Assert.Equal(tip,SafeDeleteTests.Git(fixture.Main,"rev-parse","topic"));
+        Assert.Equal(tip,SafeDeleteTests.Git(fixture.Tree,"rev-parse","HEAD"));
+        Assert.Equal("base\n",File.ReadAllText(Path.Combine(fixture.Tree,"file.txt")));
+        Assert.Equal("receipt witness bytes\n",File.ReadAllText(Path.Combine(fixture.Tree,"unique.txt")));
+        Assert.True(new SafeDeleteStore(fixture.ArchiveRoot,TextWriter.Null).Load(fixture.Id).Complete);
+        Assert.Equal("receipt witness bytes\n",File.ReadAllText(Path.Combine(fixture.Entry,"files","unique.txt")));
+    }
+
+    [Theory]
+    [InlineData("missing metadata","own-deletion receipt is invalid")]
+    [InlineData("unrelated repository","metadata changed")]
+    [InlineData("without lease","authority is unproven")]
+    public void OwnDeletionReceipt_MissingOrUnownedContextCannotAuthorizeApiAbsence(string context, string reason)
+    {
+        using var fixture = new SafeDeleteTests();
+        var target = Target(fixture);
+        Assert.Null(Check(fixture,target,start => Response(start,target,"public",true,12,apiRefPresent: true)));
+        target.DeletedByInvocation = context != "without lease";
+        if (context == "missing metadata") target.Metadata = null;
+        if (context == "unrelated repository") target.Metadata = ("R_unrelated","public",true,12);
+
+        var result = Check(fixture,target,start => Response(start,target,"public",true,12,apiRefPresent: false));
+
+        Assert.Contains(reason,result);
+    }
+
+    [Theory]
+    [InlineData("public")]
+    [InlineData("private")]
+    public void InitiallyAbsentClosedWorld_CompleteOwnAssociationsAuthorizeAbsence(string visibility)
+    {
+        using var fixture = new SafeDeleteTests();
+        var target = new SafeDeleteGitHubTarget("https://github.com/owner/repo.git","topic",null);
+        Assert.Null(Check(fixture,target,start => AbsentResponse(start,target,visibility)));
+        Assert.Equal("R_selected",target.Metadata?.Id);
+    }
+
+    [Theory]
+    [InlineData("public",true)]
+    [InlineData("private",true)]
+    [InlineData("public",false)]
+    [InlineData("private",false)]
+    public void InitiallyAbsentClosedWorld_ArchivesWithoutPushAndRestoresIndependently(string visibility, bool worktree)
+    {
+        using var fixture = new SafeDeleteTests();
+        PrepareInitiallyAbsent(fixture,visibility,worktree);
+        var staged = worktree ? SafeDeleteTests.Git(fixture.Tree,"rev-parse",":file.txt") : null;
+        Assert.True(fixture.Run(worktree ? ["worktree",fixture.Tree] : ["branch","topic"]) == 0,fixture.Output);
+        Assert.False(fixture.Has("refs/heads/topic"));
+        Assert.False(Directory.Exists(fixture.Tree));
+        Assert.Contains("Independent proof passed",fixture.Output);
+        SafeDeleteTests.Git(fixture.Main,"reflog","expire","--expire=now","--all");
+        SafeDeleteTests.Git(fixture.Main,"gc","--prune=now");
+        if (staged != null) Assert.False(GitRunner.RunIsolated(fixture.Main,new Dictionary<string,string>(),"cat-file","-e",staged).Ok);
+        Assert.True(fixture.Run("restore",fixture.Id) == 0,fixture.Output);
+        Assert.True(fixture.Has("refs/heads/topic"));
+        if (worktree)
+        {
+            Assert.Equal("staged only",SafeDeleteTests.Git(fixture.Tree,"show",":file.txt"));
+            Assert.Equal("working bytes\n",File.ReadAllText(Path.Combine(fixture.Tree,"file.txt")));
+        }
+        Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
+    }
+
+    internal static void PrepareInitiallyAbsent(SafeDeleteTests fixture, string visibility, bool worktree)
+    {
+        fixture.AddRemote();
         SafeDeleteTests.Git(fixture.Remote,"update-ref","-d","refs/heads/topic");
-        fixture.Dependencies.CheckGitHub = _ => throw new InvalidOperationException("absent ref must refuse");
+        SafeDeleteTests.Git(fixture.Main,"config","remote.origin.receivepack","dydo-must-not-push");
+        if (worktree)
+        {
+            fixture.AddTree();
+            File.WriteAllText(Path.Combine(fixture.Tree,"file.txt"),"staged only\n");
+            SafeDeleteTests.Git(fixture.Tree,"add","file.txt");
+            File.WriteAllText(Path.Combine(fixture.Tree,"file.txt"),"working bytes\n");
+        }
+        fixture.Dependencies.Checkpoint = point =>
+        {
+            if (point is "before-fetch" or "before-remote-delete") throw new IOException("Initially absent ref must not fetch or push");
+        };
+        fixture.Dependencies.CheckGitHub = target => Check(fixture,target,start => AbsentResponse(start,target,visibility));
+    }
+
+    private static JsonObject AbsentResponse(ProcessStartInfo start, SafeDeleteGitHubTarget target, string visibility = "public", bool fork = false, int forks = 0)
+    {
+        var response = Response(start,target,visibility,fork,forks);
+        if (IsGraph(start)) response["data"]!["repository"]!["ref"] = null;
+        return response;
+    }
+
+    [Theory]
+    [InlineData("public","head")]
+    [InlineData("public","base")]
+    [InlineData("private","head")]
+    [InlineData("private","base")]
+    public void InitiallyAbsentClosedWorld_OpenOwnHeadOrBaseRetainsEveryLocalTarget(string visibility, string side)
+    {
+        using var fixture = new SafeDeleteTests();
+        PrepareInitiallyAbsent(fixture,visibility,true);
+        fixture.Dependencies.CheckGitHub = target => Check(fixture,target,start =>
+        {
+            var response = AbsentResponse(start,target,visibility);
+            if (IsOwn(start)) SetNodes(response,"own",Pull("R_selected","owner/repo",side == "head" ? "topic" : "other","R_selected","owner/repo",side == "base" ? "topic" : "main"));
+            return response;
+        });
         Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
-        Assert.Contains("Initially absent",fixture.Output);
-        Assert.True(fixture.Has("refs/heads/topic")); Assert.True(Directory.Exists(fixture.Tree));
+        Assert.Contains("open PR " + side,fixture.Output);
+        AssertInitiallyAbsentLocalIntact(fixture);
+        Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
         Assert.False(Directory.Exists(fixture.ArchiveRoot));
     }
 
     [Theory]
-    [InlineData("complete",false)]
-    [InlineData("late base",true)]
-    [InlineData("repeated cursor",true)]
-    [InlineData("missing cursor",true)]
-    [InlineData("changing count",true)]
-    [InlineData("duplicate node",true)]
-    [InlineData("page limit",true)]
-    public void OwnPullPagination_RequiresTerminalUniqueCompleteCount(string variant, bool refused)
+    [InlineData("public",true,0)]
+    [InlineData("public",false,1)]
+    [InlineData("private",true,0)]
+    [InlineData("private",false,1)]
+    [InlineData("internal",false,0)]
+    public void InitiallyAbsentOutsideClosedWorld_RefusesEveryLocalTarget(string visibility, bool fork, int forks)
     {
-        using var fixture = new SafeDeleteTests(); var target = Target(fixture);
+        using var fixture = new SafeDeleteTests();
+        PrepareInitiallyAbsent(fixture,visibility,true);
+        fixture.Dependencies.CheckGitHub = target => Check(fixture,target,start => AbsentResponse(start,target,visibility,fork,forks));
+        Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
+        AssertInitiallyAbsentLocalIntact(fixture);
+        Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
+        Assert.False(Directory.Exists(fixture.ArchiveRoot));
+    }
+
+    [Theory]
+    [InlineData("public","before-worktree-delete","ref")]
+    [InlineData("private","before-worktree-delete","ref")]
+    [InlineData("public","before-local-delete","ref")]
+    [InlineData("private","before-local-delete","ref")]
+    [InlineData("public","before-worktree-delete","head")]
+    [InlineData("private","before-worktree-delete","base")]
+    [InlineData("public","before-local-delete","head")]
+    [InlineData("private","before-local-delete","base")]
+    [InlineData("public","before-worktree-delete","API ref")]
+    [InlineData("private","before-local-delete","API failure")]
+    public void InitiallyAbsent_FinalLocalStepRechecksRefAndAssociations(string visibility, string point, string change)
+    {
+        using var fixture = new SafeDeleteTests();
+        var worktree = point == "before-worktree-delete";
+        PrepareInitiallyAbsent(fixture,visibility,worktree);
+        var changed = false;
+        fixture.Dependencies.Checkpoint = current =>
+        {
+            if (current != point) return;
+            changed = true;
+            if (change == "ref") SafeDeleteTests.Git(fixture.Remote,"update-ref","refs/heads/topic",SafeDeleteTests.Git(fixture.Main,"rev-parse","topic"));
+        };
+        fixture.Dependencies.CheckGitHub = target => Check(fixture,target,start => FinalAbsentResponse(start,target,visibility,changed,change));
+        Assert.Equal(2,fixture.Run(worktree ? ["worktree",fixture.Tree] : ["branch","topic"]));
+        Assert.True(fixture.Has("refs/heads/topic"));
+        if (worktree) AssertInitiallyAbsentLocalIntact(fixture);
+        Assert.Equal(change == "ref",SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic").Length > 0);
+        Assert.Contains("Verified archive",fixture.Output);
+        Assert.DoesNotContain("remote deleted",fixture.Output);
+    }
+
+    private static JsonObject FinalAbsentResponse(ProcessStartInfo start, SafeDeleteGitHubTarget target, string visibility, bool changed, string change)
+    {
+        if (changed && change == "API ref") return Response(start,target,visibility);
+        var response = AbsentResponse(start,target,visibility);
+        if (!changed || !IsOwn(start)) return response;
+        if (change == "API failure") response["errors"] = new JsonArray(new JsonObject { ["message"] = "denied" });
+        if (change is "head" or "base") SetNodes(response,"own",Pull("R_selected","owner/repo",change == "head" ? "topic" : "other","R_selected","owner/repo",change == "base" ? "topic" : "main"));
+        return response;
+    }
+
+    [Theory]
+    [InlineData("public",true,"fork")]
+    [InlineData("public",true,"forks")]
+    [InlineData("private",true,"fork")]
+    [InlineData("private",true,"forks")]
+    [InlineData("public",false,"fork")]
+    [InlineData("public",false,"forks")]
+    [InlineData("private",false,"fork")]
+    [InlineData("private",false,"forks")]
+    public void InitiallyAbsent_FinalMetadataReadRefusesAuthorityChange(string visibility, bool worktree, string change)
+    {
+        using var fixture = new SafeDeleteTests();
+        PrepareInitiallyAbsent(fixture,visibility,worktree);
+        var final = false;
+        var metadataReads = 0;
+        fixture.Dependencies.Checkpoint = point =>
+        {
+            if (point == (worktree ? "before-worktree-delete" : "before-local-delete")) final = true;
+        };
+        fixture.Dependencies.CheckGitHub = target => Check(fixture,target,start =>
+        {
+            if (final && !IsGraph(start)) metadataReads++;
+            var changed = metadataReads == 2;
+            return AbsentResponse(start,target,visibility,changed && change == "fork",changed && change == "forks" ? 1 : 0);
+        });
+        Assert.Equal(2,fixture.Run(worktree ? ["worktree",fixture.Tree] : ["branch","topic"]));
+        Assert.Equal(2,metadataReads);
+        Assert.True(fixture.Has("refs/heads/topic"));
+        if (worktree) AssertInitiallyAbsentLocalIntact(fixture);
+        Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
+        Assert.Contains("Verified archive",fixture.Output);
+    }
+
+    private static void AssertInitiallyAbsentLocalIntact(SafeDeleteTests fixture)
+    {
+        Assert.Equal(SafeDeleteTests.Git(fixture.Main,"rev-parse","main"),SafeDeleteTests.Git(fixture.Main,"rev-parse","topic"));
+        Assert.Equal("staged only",SafeDeleteTests.Git(fixture.Tree,"show",":file.txt"));
+        Assert.Equal("working bytes\n",File.ReadAllText(Path.Combine(fixture.Tree,"file.txt")));
+        var paths = SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain","-z")
+            .Split('\0',StringSplitOptions.RemoveEmptyEntries)
+            .Where(field => field.StartsWith("worktree ",StringComparison.Ordinal))
+            .Select(field => field[9..].Replace('\\','/'));
+        Assert.Contains(fixture.Tree.Replace('\\','/'),paths,
+            OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
+    }
+
+    [Theory]
+    [InlineData("errors")]
+    [InlineData("data null")]
+    [InlineData("repository null")]
+    [InlineData("repo name")]
+    [InlineData("repo id")]
+    [InlineData("own base identity")]
+    [InlineData("own owner identity")]
+    [InlineData("count short")]
+    [InlineData("nodes null")]
+    public void InitiallyAbsent_MalformedOwnListingCannotProveAbsence(string defect)
+    {
+        using var fixture = new SafeDeleteTests();
+        PrepareInitiallyAbsent(fixture,"public",true);
+        fixture.Dependencies.CheckGitHub = target => Check(fixture,target,start =>
+        {
+            var response = AbsentResponse(start,target);
+            if (IsOwn(start)) Damage(response,start,defect);
+            return response;
+        });
+        Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
+        AssertInitiallyAbsentLocalIntact(fixture);
+        Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
+        Assert.False(Directory.Exists(fixture.ArchiveRoot));
+    }
+
+    [Theory]
+    [InlineData("complete",false,false)]
+    [InlineData("late base",true,false)]
+    [InlineData("repeated cursor",true,false)]
+    [InlineData("missing cursor",true,false)]
+    [InlineData("changing count",true,false)]
+    [InlineData("duplicate node",true,false)]
+    [InlineData("page limit",true,false)]
+    [InlineData("complete",false,true)]
+    [InlineData("late head",true,true)]
+    [InlineData("late base",true,true)]
+    [InlineData("repeated cursor",true,true)]
+    [InlineData("missing cursor",true,true)]
+    [InlineData("changing count",true,true)]
+    [InlineData("duplicate node",true,true)]
+    [InlineData("page limit",true,true)]
+    public void OwnPullPagination_RequiresTerminalUniqueCompleteCount(string variant, bool refused, bool initiallyAbsent)
+    {
+        using var fixture = new SafeDeleteTests();
+        var target = new SafeDeleteGitHubTarget("https://github.com/owner/repo.git","topic",initiallyAbsent ? null : Target(fixture).Oid);
         var page = 0;
         var result = Check(fixture,target,start =>
         {
-            var response = Response(start,target);
+            var response = initiallyAbsent ? AbsentResponse(start,target) : Response(start,target);
             if (!IsOwn(start)) return response;
             page++;
             PaginationResponse(response,variant,page);
@@ -257,6 +533,7 @@ public sealed class SafeDeleteGitHubTests
     {
         var connection = response["data"]!["repository"]!["pullRequests"]!;
         var pr = Pull("R_other","other/repo","topic","R_selected","owner/repo",variant == "late base" && page == 2 ? "topic" : "main");
+        if (variant == "late head" && page == 2) pr = Pull();
         pr["id"] = variant == "duplicate node" ? "PR_same" : "PR_" + page;
         SetNodes(response,"own",pr);
         connection["totalCount"] = variant == "page limit" ? 101 : 2;
@@ -272,7 +549,7 @@ public sealed class SafeDeleteGitHubTests
         using var fixture = new SafeDeleteTests(); var target = Target(fixture);
         Assert.Contains("unsupported",SafeDeleteGitHub.Check(new("file:///local.git","topic",target.Oid)));
         Assert.Contains("protected",SafeDeleteGitHub.Check(new(target.Url,"feature/integration",target.Oid)));
-        Assert.Contains("unproven",SafeDeleteGitHub.Check(new(target.Url,"topic",null)));
+        Assert.Contains("failed",SafeDeleteGitHub.CheckUsing(new(target.Url,"topic",null),_ => Start(fixture,"not-a-git-command")));
         Assert.Contains("failed",SafeDeleteGitHub.CheckUsing(target,_ => Start(fixture,"not-a-git-command")));
         Assert.Contains("unavailable",SafeDeleteGitHub.CheckUsing(target,_ => new ProcessStartInfo("dydo-nonexistent-gh") { UseShellExecute = false }));
         Assert.Contains("unavailable",Raw(fixture,target,"not json"));
@@ -410,7 +687,7 @@ public sealed class SafeDeleteGitHubTests
     private static bool IsHeads(ProcessStartInfo start) => IsGraph(start) && start.ArgumentList.Any(arg => arg.StartsWith("query=",StringComparison.Ordinal) && arg.Contains("associatedPullRequests",StringComparison.Ordinal));
     private static bool IsOwn(ProcessStartInfo start) => IsGraph(start) && !IsHeads(start);
 
-    private static JsonObject Response(ProcessStartInfo start, SafeDeleteGitHubTarget target, string visibility = "public", bool fork = false, int forks = 0)
+    private static JsonObject Response(ProcessStartInfo start, SafeDeleteGitHubTarget target, string visibility = "public", bool fork = false, int forks = 0, bool? apiRefPresent = null)
     {
         Assert.Equal("gh",start.FileName);
         Assert.Contains("github.com",start.ArgumentList);
@@ -424,7 +701,7 @@ public sealed class SafeDeleteGitHubTests
         var reference = new JsonObject { ["id"] = "REF_topic", ["name"] = "topic", ["prefix"] = "refs/heads/", ["repository"] = repo.DeepClone(), ["target"] = new JsonObject { ["oid"] = target.Oid } };
         if (IsHeads(start)) reference["associatedPullRequests"] = EmptyConnection();
         else repo["pullRequests"] = EmptyConnection();
-        repo["ref"] = target.DeletedByInvocation ? null : reference;
+        repo["ref"] = (apiRefPresent ?? !target.DeletedByInvocation) ? reference : null;
         return new JsonObject { ["data"] = new JsonObject { ["repository"] = repo } };
     }
 
