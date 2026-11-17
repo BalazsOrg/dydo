@@ -96,8 +96,8 @@ stays `accepted` for the rest:
 
 - **§3, the gate set.** The Coverage floor row, the HCRAP row and the HCRAP note go (rules 1, 2).
   The Tests row is superseded: DR 067's tag lint replaced its "every non-trivial module has a test
-  file", and mutation now gates test quality (rule 4). Grilling G does not restate the row's "all
-  pass". §3's other rows and notes stand (rule 3).
+  file", and mutation now gates test quality (rule 4). The row's "all pass" is an open question
+  (below). §3's other rows and notes stand (rule 3).
 - **§4.** Mutation is no longer a per-project threshold: no surviving mutant in changed code,
   equivalent mutants approved one at a time, never by a threshold (rule 4).
 - **§2, amended.** Every module is still held to the one set, but the gate checks it only on
@@ -110,6 +110,10 @@ stays `accepted` for the rest:
 runners. Each project keeps its own `gap_check.py`…": "I'm really not sure about the other projects
 keeping gap_check.py. And by not sure I mean I really don't know." Whether that line is superseded
 goes to him as a DR question (DYD-971, comment b4b2aa41). Until he answers, §2's line stands.
+
+Grilling G does not restate §3's Tests row's "all pass", and none of rules G1-G6 addresses it. What
+becomes of it goes to him beside the `gap_check.py` question
+([DYD-1174](https://linear.app/bodnar-balazs/issue/DYD-1174)).
 
 ## Related
 
