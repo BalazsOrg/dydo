@@ -146,6 +146,22 @@ retain their existing behavior. No skill prose is changed here.
 
 code-writer/model: GPT-6.1-sol, high.
 
+## Captain proof of record
+
+The captain independently reran the writer's production-revert recipe on implementation commit
+`e42a50eeeeeaadf8eb4ff3349230f93518c5809f`. The same focused survey command returned RED exit 1
+with 21 failures and 114 passes, then restored GREEN exit 0 with 135 passes and no skips.
+The fixed production file was restored byte for byte; its SHA-256 remains
+`3e680e775e4173010ee7b93e955110e7c4207be054b19f440e6761c9ec6a378f`.
+Both runs used the existing host lock, an 8G scope with swap disabled and a 3600-second deadline.
+Exact argv, candidate, exits and source hashes are in `dyd-964-evidence/captain-proof.json`;
+raw output is in `captain-red.log` and `captain-green.log` in that directory.
+This evidence-only addition changes no measured source, tests or standard. The writer's Light,
+static and coverage evidence is reused for those identical bytes; mutation and local statechart
+coverage remain unavailable or unmet, never passed.
+
+ticket-captain/model: gpt-6.1-sol, high.
+
 ## Related
 
 - [Linear workspace standard](../../../../reference/linear-workspace-standard.md) — Type holders and pickup.
