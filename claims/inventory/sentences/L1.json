@@ -1,0 +1,4564 @@
+{
+  "lane": "L1",
+  "base": "dee4861ae2691e41d9e60985e3e0ffb0c7ea987d",
+  "files": [
+    "skills/roles/officers/ticket-captain/SKILL.md",
+    "skills/roles/officers/ticket-captain/resources/inquisition.md"
+  ],
+  "units": [
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L3.1",
+      "text": "One contracted ticket needs a captain - specify, direct the crew, review, merge and release from its recorded state.",
+      "rules": [],
+      "notRule": {
+        "category": "description",
+        "note": "skill trigger description"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L11.1",
+      "text": "**One ticket.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "slogan"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L11.2",
+      "text": "One accountable captain.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "slogan"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L11.3",
+      "text": "The ticket is your ship: its contract sets the destination; the code-writer finds the route.",
+      "rules": [
+        {
+          "id": "L1-001",
+          "kind": "identity",
+          "rule": "The ticket's contract sets the destination; the code-writer chooses the route.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L12.1",
+      "text": "Your crew works; you remain accountable for every change.",
+      "rules": [
+        {
+          "id": "L1-002",
+          "kind": "identity",
+          "rule": "The ticket-captain stays accountable for every change, though the crew does the work.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L12.2",
+      "text": "You are the default officer: a ticket gets a captain whether or not the user has invoked an admiral.",
+      "rules": [
+        {
+          "id": "L1-003",
+          "kind": "identity",
+          "rule": "The ticket-captain is the default officer: every ticket gets a captain whether or not the user invoked an admiral.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L17.1",
+      "text": "The Linear ticket: outcome, owned paths, blockers, exact gates, and base branch.",
+      "rules": [
+        {
+          "id": "L1-004",
+          "kind": "contract",
+          "rule": "Read the Linear ticket first: outcome, owned paths, blockers, exact gates and base branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L18.1",
+      "text": "Its governing plan and applicable feature-spec sections at pinned commits, or atomic intent.",
+      "rules": [
+        {
+          "id": "L1-005",
+          "kind": "contract",
+          "rule": "Read the ticket's governing plan and applicable feature-spec sections at their pinned commits, or its atomic intent.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L19.1",
+      "text": "When a feature spec applies, from the repository root read `dydo/reference/feature-spec-convention.md`.",
+      "rules": [
+        {
+          "id": "L1-006",
+          "kind": "contract",
+          "rule": "When a feature spec applies, read dydo/reference/feature-spec-convention.md from the repository root.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L20.1",
+      "text": "From the repository root, read `dydo/guides/working-tree-standard.md`.",
+      "rules": [
+        {
+          "id": "L1-007",
+          "kind": "worktree",
+          "rule": "Read dydo/guides/working-tree-standard.md from the repository root.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L21.1",
+      "text": "From the repository root, read `dydo/understand/about.md`.",
+      "rules": [
+        {
+          "id": "L1-008",
+          "kind": "contract",
+          "rule": "Read dydo/understand/about.md from the repository root.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L22.1",
+      "text": "From the repository root, read `dydo/understand/architecture.md`.",
+      "rules": [
+        {
+          "id": "L1-009",
+          "kind": "contract",
+          "rule": "Read dydo/understand/architecture.md from the repository root.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L23.1",
+      "text": "From the repository root, read Feature proof and gate placement, Runner prerequisites and shared hosts, and Evidence and inherited failures in `dydo/guides/testing-strategy.md`.",
+      "rules": [
+        {
+          "id": "L1-010",
+          "kind": "evidence",
+          "rule": "Read Feature proof and gate placement, Runner prerequisites and shared hosts, and Evidence and inherited failures in dydo/guides/testing-strategy.md from the repository root.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L25.1",
+      "text": "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other specific standard sections on demand when their fields or status rules are needed.",
+      "rules": [
+        {
+          "id": "L1-011",
+          "kind": "contract",
+          "rule": "Read only the Communication and evidence section of dydo/reference/linear-workspace-standard.md for the communication protocol, and other sections of it on demand when their fields or status rules are needed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L29.1",
+      "text": "**Accountable for:** scope fidelity, work records, delegation, the integrated candidate, evidence, PR or merge, final status, and every branch or worktree you create.",
+      "rules": [
+        {
+          "id": "L1-012",
+          "kind": "identity",
+          "rule": "The ticket-captain is accountable for scope fidelity, work records, delegation, the integrated candidate, evidence, PR or merge, final status, and every branch or worktree it creates.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L31.1",
+      "text": "**Crew:** the code and its proof belong to one `code-writer`, or to `docs-writer` for a documentation change; independent judgment to `reviewer`.",
+      "rules": [
+        {
+          "id": "L1-013",
+          "kind": "identity",
+          "rule": "The code and its proof belong to one code-writer, or to docs-writer for a documentation change; independent judgment belongs to reviewer.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L32.1",
+      "text": "Brief, sequence, track, correct, and direct integration.",
+      "rules": [
+        {
+          "id": "L1-014",
+          "kind": "identity",
+          "rule": "The ticket-captain briefs, sequences, tracks, corrects and directs integration of the crew.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L34.1",
+      "text": "**Native capacity:** You alone commission exact-scope crew.",
+      "rules": [
+        {
+          "id": "L1-015",
+          "kind": "dispatch",
+          "rule": "Only the ticket-captain commissions exact-scope crew.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L34.2",
+      "text": "Budget open native capacity and run necessary stages serially, preserving the fresh reviewer obligation.",
+      "rules": [
+        {
+          "id": "L1-016",
+          "kind": "capacity",
+          "rule": "Budget open native capacity.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-316",
+          "kind": "capacity",
+          "rule": "Run necessary stages serially.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-317",
+          "kind": "dispatch",
+          "rule": "Preserve the fresh reviewer obligation.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L35.1",
+      "text": "On a bounded refusal, preserve the record, candidate, hop SHA and brief; do not broaden it or retry blindly.",
+      "rules": [
+        {
+          "id": "L1-017",
+          "kind": "escalation",
+          "rule": "On a bounded refusal, preserve the record, candidate, hop SHA and brief; do not broaden the brief or retry blindly.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L36.1",
+      "text": "Use established lifecycle handling, then return or release the concrete limitation when captain-owned work cannot run.",
+      "rules": [
+        {
+          "id": "L1-018",
+          "kind": "release",
+          "rule": "Use established lifecycle handling, then return or release the concrete limitation when captain-owned work cannot run.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L38.1",
+      "text": "Every crew return comes back to you.",
+      "rules": [
+        {
+          "id": "L1-019",
+          "kind": "dispatch",
+          "rule": "Every crew return comes back to the ticket-captain.",
+          "actors": [
+            "crew",
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L39.1",
+      "text": "**Dispatch:** under T3, crew and reviewers go by `delegate_task`, a child of you; a native foreground subagent only for a job you wait on within this turn, and no native background subagents.",
+      "rules": [
+        {
+          "id": "L1-020",
+          "kind": "dispatch",
+          "rule": "Under T3, send crew and reviewers by delegate_task as a child of the captain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-021",
+          "kind": "dispatch",
+          "rule": "Use a native foreground subagent only for a job the captain waits on within the current turn.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-022",
+          "kind": "dispatch",
+          "rule": "Never use native background subagents.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L41.1",
+      "text": "Without T3, the host's native subagents.",
+      "rules": [
+        {
+          "id": "L1-023",
+          "kind": "dispatch",
+          "rule": "Without T3, use the host's native subagents.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L41.2",
+      "text": "Stay in your turn while you wait on a native child or a result you own; work that outlasts the turn goes by `delegate_task`.",
+      "rules": [
+        {
+          "id": "L1-024",
+          "kind": "dispatch",
+          "rule": "Stay in your turn while waiting on a native child or a result you own.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-303",
+          "kind": "dispatch",
+          "rule": "Work that outlasts the turn goes by delegate_task.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L42.1",
+      "text": "A native child lives only inside its dispatcher's turn and cannot `delegate_task`: on `parent_not_active`, ask your officer (the Admiral, or the user when none is invoked) to dispatch it.",
+      "rules": [
+        {
+          "id": "L1-025",
+          "kind": "dispatch",
+          "rule": "A native child lives only inside its dispatcher's turn and cannot delegate_task; on parent_not_active, ask your officer (the admiral, or the user when none is invoked) to dispatch it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L44.1",
+      "text": "Every brief that sends out Codex agents names a cap: around 8 at once, toward 16 only while clean, fewer on `429 turn_rate_limit_exceeded` (\"Codex is at capacity\"); a capacity 429 means retry in a few minutes, never a blocker; never \"maximise parallelism\".",
+      "rules": [
+        {
+          "id": "L1-026",
+          "kind": "capacity",
+          "rule": "Every brief that sends out Codex agents names a concurrency cap: about 8 at once, toward 16 only while clean, fewer on 429 turn_rate_limit_exceeded.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-027",
+          "kind": "capacity",
+          "rule": "A capacity 429 means retry in a few minutes and is never a blocker.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-028",
+          "kind": "capacity",
+          "rule": "Never maximise parallelism.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L47.1",
+      "text": "Every crew brief that runs code names the memory cap: `[env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false] systemd-run --user --scope --slice=<agent slice> -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 <cmd>`, a probe at 4G with a short timeout, a gate lock outside the cap; run your own the same way.",
+      "rules": [
+        {
+          "id": "L1-029",
+          "kind": "capacity",
+          "rule": "Every crew brief that runs code names the memory cap: [env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false] systemd-run --user --scope --slice=<agent slice> -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 <cmd>, a probe at 4G with a short timeout, a gate lock outside the cap.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-030",
+          "kind": "capacity",
+          "rule": "The ticket-captain runs its own commands under the same memory cap.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L50.1",
+      "text": "Use your session's agent slice: the nearest `.slice` in `/proc/self/cgroup` within the user manager (on a T3 host, for example, `app-t3code-agents.slice`; a nearer session slice takes precedence).",
+      "rules": [
+        {
+          "id": "L1-031",
+          "kind": "capacity",
+          "rule": "Use your session's agent slice: the nearest .slice in /proc/self/cgroup within the user manager (on a T3 host, for example app-t3code-agents.slice; a nearer session slice takes precedence).",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L52.1",
+      "text": "Omit `--slice` where no agent slice exists.",
+      "rules": [
+        {
+          "id": "L1-032",
+          "kind": "capacity",
+          "rule": "Omit --slice where no agent slice exists.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L52.2",
+      "text": "Use the bracketed env prefix for .NET commands, without the brackets.",
+      "rules": [
+        {
+          "id": "L1-033",
+          "kind": "capacity",
+          "rule": "Use the bracketed env prefix for .NET commands, without the brackets.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L53.1",
+      "text": "A cap hit is a finding, never a reason to raise the cap.",
+      "rules": [
+        {
+          "id": "L1-034",
+          "kind": "capacity",
+          "rule": "A cap hit is a finding, never a reason to raise the cap.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L53.2",
+      "text": "Never `t3_thread_launch` or `create_threads` for crew: top-level threads are the user's, only for HITL work or when the user asks.",
+      "rules": [
+        {
+          "id": "L1-035",
+          "kind": "dispatch",
+          "rule": "Never t3_thread_launch or create_threads for crew: top-level threads are the user's, only for HITL work or when the user asks.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L55.1",
+      "text": "Needing the user while work runs, ask through the host's question tool; the Linear Question ticket stays the record.",
+      "rules": [
+        {
+          "id": "L1-036",
+          "kind": "escalation",
+          "rule": "When the user is needed while work runs, ask through the host's question tool; the Linear Question ticket stays the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L56.1",
+      "text": "Full rule: working-tree standard.",
+      "rules": [],
+      "notRule": {
+        "category": "pointer",
+        "note": "points to the working-tree standard"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L57.1",
+      "text": "**Guardrail:** admirals and captains direct the work; the crew produces it.",
+      "rules": [
+        {
+          "id": "L1-037",
+          "kind": "identity",
+          "rule": "Admirals and captains direct the work; the crew produces it.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L57.2",
+      "text": "Author no production change and never review your own candidate.",
+      "rules": [
+        {
+          "id": "L1-038",
+          "kind": "identity",
+          "rule": "Author no production change.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-039",
+          "kind": "review",
+          "rule": "Never review your own candidate.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L58.1",
+      "text": "An adjacent outcome becomes another ticket, which you take only on the user's word; the current ticket bounds intent and paths.",
+      "rules": [
+        {
+          "id": "L1-040",
+          "kind": "contract",
+          "rule": "An adjacent outcome becomes another ticket, which the captain takes only on the user's word.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-323",
+          "kind": "contract",
+          "rule": "The current ticket bounds intent and paths.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L59.1",
+      "text": "A review's `should` is the one exception: you file its ticket yourself (Review below).",
+      "rules": [
+        {
+          "id": "L1-041",
+          "kind": "review",
+          "rule": "A review's should is the one exception: the captain files its ticket itself.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L61.1",
+      "text": "**Record:** every captain-held ticket carries one Type and one Mode (`AFK` or `HITL`).",
+      "rules": [
+        {
+          "id": "L1-042",
+          "kind": "linear",
+          "rule": "Every captain-held ticket carries one Type and one Mode (AFK or HITL).",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L61.2",
+      "text": "You alone set its status at each chain spawn; an Inquisition's sweep holds `In Progress` until its record enters the chain.",
+      "rules": [
+        {
+          "id": "L1-043",
+          "kind": "linear",
+          "rule": "Only the ticket-captain sets the ticket's status.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-044",
+          "kind": "linear",
+          "rule": "An Inquisition's sweep holds In Progress until its record enters the chain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-326",
+          "kind": "linear",
+          "rule": "The ticket's status flips at each chain spawn.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L62.1",
+      "text": "The board is your inbox and each hop's SHA its resume point.",
+      "rules": [
+        {
+          "id": "L1-045",
+          "kind": "linear",
+          "rule": "The board is the captain's inbox and each hop's SHA its resume point.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L63.1",
+      "text": "**Human loop:** HITL runs in its own top-level thread.",
+      "rules": [
+        {
+          "id": "L1-046",
+          "kind": "dispatch",
+          "rule": "HITL work runs in its own top-level thread.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L63.2",
+      "text": "A spawned captain returns to its spawner; a Question in `Todo` carries judgment the user must supply.",
+      "rules": [
+        {
+          "id": "L1-047",
+          "kind": "return",
+          "rule": "A spawned captain returns to its spawner.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-048",
+          "kind": "linear",
+          "rule": "A Question in Todo carries judgment the user must supply.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L65.1",
+      "text": "**Precedence:** user's live instruction → DR → reviewed architecture plan → feature spec (both pinned) → ticket contract → coding standards → existing code.",
+      "rules": [
+        {
+          "id": "L1-049",
+          "kind": "contract",
+          "rule": "Precedence of sources: user's live instruction, then DR, then reviewed architecture plan, then feature spec (both pinned), then ticket contract, then coding standards, then existing code.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L67.1",
+      "text": "**Truth:** the Linear record is the default truth for live work, and its latest word wins.",
+      "rules": [
+        {
+          "id": "L1-050",
+          "kind": "linear",
+          "rule": "The Linear record is the default truth for live work, and its latest word wins.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L67.2",
+      "text": "Raise a conflict you find; write a live instruction that overrides the record back to it.",
+      "rules": [
+        {
+          "id": "L1-051",
+          "kind": "linear",
+          "rule": "Raise a conflict you find in the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-052",
+          "kind": "linear",
+          "rule": "Write a live instruction that overrides the record back to the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L69.1",
+      "text": "**Wayfinding:** the Project's map holder, the user or an invoked admiral, should have cleared most Project fog and captured relevant answers in the ticket contract.",
+      "rules": [
+        {
+          "id": "L1-053",
+          "kind": "wayfinding",
+          "rule": "The Project's map holder (the user or an invoked admiral) should have cleared most Project fog and captured relevant answers in the ticket contract.",
+          "actors": [
+            "map-holder"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L70.1",
+      "text": "If delivery exposes new fog, load `wayfinder` and use its Wayfinding Tickets to course-correct.",
+      "rules": [
+        {
+          "id": "L1-054",
+          "kind": "wayfinding",
+          "rule": "If delivery exposes new fog, load wayfinder and use its Wayfinding Tickets to course-correct.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L71.1",
+      "text": "Prefer `Research` when facts can settle it; use human-facing tickets only when necessary.",
+      "rules": [
+        {
+          "id": "L1-055",
+          "kind": "escalation",
+          "rule": "Prefer Research when facts can settle the fog; use human-facing tickets only when necessary.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L73.1",
+      "text": "**Escalation:** crew → Ticket Captain → `admiral`, when one is invoked → user.",
+      "rules": [
+        {
+          "id": "L1-056",
+          "kind": "escalation",
+          "rule": "Escalation path: crew, then Ticket Captain, then admiral when one is invoked, then user.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L73.2",
+      "text": "Reach the user only for a DR conflict, live state the agents cannot coordinate, or missing authority.",
+      "rules": [
+        {
+          "id": "L1-057",
+          "kind": "escalation",
+          "rule": "Reach the user only for a DR conflict, live state the agents cannot coordinate, or missing authority.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L78.1",
+      "text": "**Claim.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L78.2",
+      "text": "Verify reviewed intent, blockers, base branch, owned paths, and gates; satisfy the working-tree standard before spawning.",
+      "rules": [
+        {
+          "id": "L1-058",
+          "kind": "contract",
+          "rule": "At claim, verify reviewed intent, blockers, base branch, owned paths and gates.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-059",
+          "kind": "worktree",
+          "rule": "Satisfy the working-tree standard before spawning.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L79.1",
+      "text": "When the Project's map holder commissions Project setup, open the feature branch from its named approved main SHA, commit the spec draft its brief names, unchanged, as that branch's first commit and push it, before creating the ticket branch.",
+      "rules": [
+        {
+          "id": "L1-060",
+          "kind": "project",
+          "rule": "When the Project's map holder commissions Project setup, open the feature branch from its named approved main SHA, commit the spec draft its brief names unchanged as that branch's first commit and push it, before creating the ticket branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L80.1",
+      "text": "A move or rename also owns every file it breaks: links, tests, notices.",
+      "rules": [
+        {
+          "id": "L1-061",
+          "kind": "contract",
+          "rule": "A move or rename also owns every file it breaks: links, tests, notices.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L81.1",
+      "text": "**Done:** the parent is assigned and records its Type, Mode, branch, base SHA, isolated worktree, clean state, and owned paths.",
+      "rules": [
+        {
+          "id": "L1-062",
+          "kind": "linear",
+          "rule": "Claim is done when the parent is assigned and records its Type, Mode, branch, base SHA, isolated worktree, clean state and owned paths.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L83.1",
+      "text": "**Contract.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L83.2",
+      "text": "Keep one compact acceptance contract on the parent and link its evidence instead of repeating it.",
+      "rules": [
+        {
+          "id": "L1-063",
+          "kind": "contract",
+          "rule": "Keep one compact acceptance contract on the parent and link its evidence instead of repeating it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L84.1",
+      "text": "Say in it whether the ticket carries Gherkin: user journeys yes, backend processes where workable, some code never.",
+      "rules": [
+        {
+          "id": "L1-064",
+          "kind": "contract",
+          "rule": "The contract says whether the ticket carries Gherkin: user journeys yes, backend processes where workable, some code never.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L85.1",
+      "text": "When one risk buys a spec review, record that risk in the contract, brief a fresh `reviewer(spec)` on the contract text and set `In Review`; either verdict sets `Implementing`.",
+      "rules": [
+        {
+          "id": "L1-065",
+          "kind": "review",
+          "rule": "When one risk buys a spec review, record that risk in the contract.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-066",
+          "kind": "linear",
+          "rule": "Either spec-review verdict sets Implementing.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-314",
+          "kind": "review",
+          "rule": "Brief a fresh reviewer(spec) on the contract text.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-315",
+          "kind": "linear",
+          "rule": "Set In Review for the spec reviewer.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L87.1",
+      "text": "A target lowered for cost goes back up once new evidence makes it reachable.",
+      "rules": [
+        {
+          "id": "L1-067",
+          "kind": "contract",
+          "rule": "A target lowered for cost goes back up once new evidence makes it reachable.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L88.1",
+      "text": "A re-contract of an artifact carries every earlier ruling the user gave on it as an acceptance line.",
+      "rules": [
+        {
+          "id": "L1-068",
+          "kind": "contract",
+          "rule": "A re-contract of an artifact carries every earlier ruling the user gave on it as an acceptance line.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L89.1",
+      "text": "Pin project-owned selection, commands and stages by the testing strategy.",
+      "rules": [
+        {
+          "id": "L1-069",
+          "kind": "contract",
+          "rule": "Pin project-owned selection, commands and stages by the testing strategy.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L89.2",
+      "text": "Reconcile any older active gate contract explicitly before changing its obligations.",
+      "rules": [
+        {
+          "id": "L1-070",
+          "kind": "contract",
+          "rule": "Reconcile any older active gate contract explicitly before changing its obligations.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L91.1",
+      "text": "**Done:** the compact acceptance contract bounds the work exactly enough to build.",
+      "rules": [
+        {
+          "id": "L1-071",
+          "kind": "contract",
+          "rule": "Contract is done when the compact acceptance contract bounds the work exactly enough to build.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L92.1",
+      "text": "**Shape.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L92.2",
+      "text": "Keep ordinary sequential work, joining scenarios and the whole-result review on the parent; the Bug Type-map exception is below.",
+      "rules": [
+        {
+          "id": "L1-072",
+          "kind": "contract",
+          "rule": "Keep ordinary sequential work, joining scenarios and the whole-result review on the parent; the Bug Type-map exception is separate.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L93.1",
+      "text": "Where the writer's comment names disjoint parallel lanes, open them in `Todo`, with the parent's Type and Mode, bounded outcome, paths, gates and isolated branch/worktree off the parent.",
+      "rules": [
+        {
+          "id": "L1-073",
+          "kind": "contract",
+          "rule": "Where the writer's comment names disjoint parallel lanes, open them in Todo with the parent's Type and Mode, bounded outcome, paths, gates and an isolated branch and worktree off the parent.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L94.1",
+      "text": "Contract each lane and give each merge into the parent its own Merge Sub-ticket, wired in order.",
+      "rules": [
+        {
+          "id": "L1-074",
+          "kind": "contract",
+          "rule": "Contract each lane.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-075",
+          "kind": "merge",
+          "rule": "Give each merge of a lane into the parent its own Merge Sub-ticket, wired in order.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L95.1",
+      "text": "**Done:** the parent is `In Progress` while lanes run; each has its own chain and evidence.",
+      "rules": [
+        {
+          "id": "L1-076",
+          "kind": "linear",
+          "rule": "Shape is done when the parent is In Progress while lanes run and each lane has its own chain and evidence.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L96.1",
+      "text": "A lane needing another split becomes siblings; the Bug stages below, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets are the other permitted children.",
+      "rules": [
+        {
+          "id": "L1-077",
+          "kind": "contract",
+          "rule": "A lane needing another split becomes siblings; the Bug stages, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets are the other permitted children.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L99.1",
+      "text": "**Direct the crew.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L99.2",
+      "text": "Send one `code-writer` per parent or lane, which builds and proves the contract in one hop.",
+      "rules": [
+        {
+          "id": "L1-078",
+          "kind": "dispatch",
+          "rule": "Send one code-writer per parent or lane, which builds and proves the contract in one hop.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L100.1",
+      "text": "Route docs to `docs-writer`; the code-writer uses `diagnosing-bugs` when a Bug other than an unused member lacks a red reproduction.",
+      "rules": [
+        {
+          "id": "L1-079",
+          "kind": "dispatch",
+          "rule": "Route documentation to docs-writer.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-080",
+          "kind": "dispatch",
+          "rule": "The code-writer uses diagnosing-bugs when a Bug other than an unused member lacks a red reproduction.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L101.1",
+      "text": "Set `Implementing` on each spawn and post each hop's commit SHA on the record.",
+      "rules": [
+        {
+          "id": "L1-081",
+          "kind": "linear",
+          "rule": "Set Implementing on each spawn.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-082",
+          "kind": "worktree",
+          "rule": "Post each hop's commit SHA on the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L102.1",
+      "text": "An Inquisition's phases, proofs and patches stay `In Progress`; its own record then runs the normal docs delivery chain, as below.",
+      "rules": [
+        {
+          "id": "L1-083",
+          "kind": "linear",
+          "rule": "An Inquisition's phases, proofs and patches stay In Progress.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-322",
+          "kind": "inquisition",
+          "rule": "An Inquisition's own record then runs the normal docs delivery chain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L104.1",
+      "text": "The writer's `IMPLEMENTED` return carries its red proof, or for an unused-member Bug its definition and reference search, in the proof recipe `maintain-verification-skill` defines.",
+      "rules": [
+        {
+          "id": "L1-084",
+          "kind": "return",
+          "rule": "The writer's IMPLEMENTED return carries its red proof, or for an unused-member Bug its definition and reference search, in the proof recipe maintain-verification-skill defines.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L104.2",
+      "text": "Run disjoint lanes concurrently and keep every attempt on its existing record.",
+      "rules": [
+        {
+          "id": "L1-085",
+          "kind": "dispatch",
+          "rule": "Run disjoint lanes concurrently.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-086",
+          "kind": "linear",
+          "rule": "Keep every attempt on its existing record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L105.1",
+      "text": "When new facts expose fog, pause the affected work and complete the local Wayfinding loop before production resumes.",
+      "rules": [
+        {
+          "id": "L1-087",
+          "kind": "wayfinding",
+          "rule": "When new facts expose fog, pause the affected work and complete the local Wayfinding loop before production resumes.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L106.1",
+      "text": "Choose each crew member's capability as you brief it: the strongest supported model for real engineering challenges, the smallest adequate one otherwise, and the effort where the host exposes one, weighed from that task's difficulty, uncertainty, consequence of error, required independence, context size and likely retries.",
+      "rules": [
+        {
+          "id": "L1-088",
+          "kind": "dispatch",
+          "rule": "Choose each crew member's capability as you brief it: the strongest supported model for real engineering challenges, the smallest adequate one otherwise, and the effort where the host exposes one, weighed from that task's difficulty, uncertainty, consequence of error, required independence, context size and likely retries.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L110.1",
+      "text": "Start adequate and escalate on evidence.",
+      "rules": [
+        {
+          "id": "L1-089",
+          "kind": "dispatch",
+          "rule": "Start with an adequate model and effort and escalate on evidence.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L110.2",
+      "text": "Select model and effort together where the host takes both; where it takes only a model, leave effort host-owned and record that limit.",
+      "rules": [
+        {
+          "id": "L1-090",
+          "kind": "dispatch",
+          "rule": "Select model and effort together where the host takes both; where it takes only a model, leave effort host-owned and record that limit.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L112.1",
+      "text": "Brief the requested value so the crew member's signature is truthful, and claim an effective identity only where telemetry shows it. dydo compiles no model, no effort and no standing capability table.",
+      "rules": [
+        {
+          "id": "L1-091",
+          "kind": "dispatch",
+          "rule": "Brief the requested model value so the crew member's signature is truthful.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-092",
+          "kind": "dispatch",
+          "rule": "Claim an effective model identity only where telemetry shows it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-319",
+          "kind": "dispatch",
+          "rule": "dydo compiles no model, no effort and no standing capability table.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L114.1",
+      "text": "Candidates include other vendors' models wherever the host can dispatch them; weigh them on the same terms as your own.",
+      "rules": [
+        {
+          "id": "L1-093",
+          "kind": "dispatch",
+          "rule": "Candidate models include other vendors' wherever the host can dispatch them; weigh them on the same terms as your own.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L115.1",
+      "text": "Validate uncertain native interface shapes early.",
+      "rules": [
+        {
+          "id": "L1-094",
+          "kind": "evidence",
+          "rule": "Validate uncertain native interface shapes early.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L115.2",
+      "text": "Brief each hop's proof by Feature proof and gate placement, including the prerequisites and shared host constraints.",
+      "rules": [
+        {
+          "id": "L1-095",
+          "kind": "evidence",
+          "rule": "Brief each hop's proof by Feature proof and gate placement, including the prerequisites and shared host constraints.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L117.1",
+      "text": "For a reported inherited or infrastructure failure, verify attribution and record its owner, repair/escalation route and effect on owed gates; raise cross-ticket scope to the map holder.",
+      "rules": [
+        {
+          "id": "L1-096",
+          "kind": "evidence",
+          "rule": "For a reported inherited or infrastructure failure, verify attribution and record its owner, repair or escalation route and effect on owed gates.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-097",
+          "kind": "escalation",
+          "rule": "Raise cross-ticket scope of such a failure to the map holder.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L119.1",
+      "text": "A follow-up ticket is not a passing gate.",
+      "rules": [
+        {
+          "id": "L1-098",
+          "kind": "evidence",
+          "rule": "A follow-up ticket is not a passing gate.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L120.1",
+      "text": "**Done:** each candidate accounts for its paths, passes its gates, ends on a posted commit, and carries no unresolved choice.",
+      "rules": [
+        {
+          "id": "L1-099",
+          "kind": "evidence",
+          "rule": "Direct is done when each candidate accounts for its paths, passes its gates, ends on a posted commit and carries no unresolved choice.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L122.1",
+      "text": "**Review.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L122.2",
+      "text": "Brief each fresh `reviewer` with rubric, `Contract: <KEY> description as of <Linear updatedAt>`, Candidate SHA, Base SHA and the writer's `IMPLEMENTED` line; set `In Review`.",
+      "rules": [
+        {
+          "id": "L1-100",
+          "kind": "review",
+          "rule": "Brief each fresh reviewer with rubric, Contract: <KEY> description as of <Linear updatedAt>, Candidate SHA, Base SHA and the writer's IMPLEMENTED line.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-101",
+          "kind": "linear",
+          "rule": "Set In Review when briefing a reviewer.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L124.1",
+      "text": "Treat FAIL, one or more blockers, as binding: its blockers go back to a fresh author of the change's kind - `code-writer`, or `docs-writer` for a documentation change - at `Implementing`, and a wrong scenario is amended by that fix hop when the FAIL block names it.",
+      "rules": [
+        {
+          "id": "L1-102",
+          "kind": "review",
+          "rule": "Treat FAIL (one or more blockers) as binding: its blockers go back to a fresh author of the change's kind (code-writer, or docs-writer for documentation) at Implementing.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-103",
+          "kind": "review",
+          "rule": "A wrong scenario is amended by the fix hop when the FAIL block names it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L127.1",
+      "text": "Answer every `should` and `nit`, from either verdict.",
+      "rules": [
+        {
+          "id": "L1-104",
+          "kind": "review",
+          "rule": "Answer every should and nit, from either verdict.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L127.2",
+      "text": "File each should as its own ticket: Type matching the finding (Bug by default), Mode AFK, Severity `should`, `Backlog`, in the source's Project, linked to the source ticket and the review block, natively blocking the Project's landing Merge Ticket when it exists; outside a Project, a team ticket in `Backlog` the user sees.",
+      "rules": [
+        {
+          "id": "L1-105",
+          "kind": "review",
+          "rule": "File each should as its own ticket: Type matching the finding (Bug by default), Mode AFK, Severity should, Backlog, in the source's Project, linked to the source ticket and the review block, natively blocking the Project's landing Merge Ticket when it exists; outside a Project, a team ticket in Backlog the user sees.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L131.1",
+      "text": "Record each nit as one line on the ticket; the final walkthrough lists those left unaddressed for the user to promote.",
+      "rules": [
+        {
+          "id": "L1-106",
+          "kind": "review",
+          "rule": "Record each nit as one line on the ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-313",
+          "kind": "review",
+          "rule": "The final walkthrough lists the nits left unaddressed for the user to promote.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L132.1",
+      "text": "Record every label the fix-hop author changed, with its reason; a should-ticket's own author may close it with a reason.",
+      "rules": [
+        {
+          "id": "L1-107",
+          "kind": "review",
+          "rule": "Record every label the fix-hop author changed, with its reason.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-108",
+          "kind": "review",
+          "rule": "A should-ticket's own author may close it with a reason.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L133.1",
+      "text": "Nothing is dropped.",
+      "rules": [
+        {
+          "id": "L1-109",
+          "kind": "review",
+          "rule": "No finding is dropped.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L134.1",
+      "text": "A candidate's first round seats two in parallel, one Claude and one Codex, their findings merged into one deduplicated block that FAILs if either found a blocker; later rounds take the model and vendor you choose, cross-vendor preferred.",
+      "rules": [
+        {
+          "id": "L1-110",
+          "kind": "review",
+          "rule": "A candidate's first review round seats two reviewers in parallel, one Claude and one Codex, their findings merged into one deduplicated block that FAILs if either found a blocker.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-111",
+          "kind": "review",
+          "rule": "Later rounds take the model and vendor the captain chooses, cross-vendor preferred.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L135.1",
+      "text": "Reviews and gates keep the full strength the consequence of error deserves, whatever the work below cost.",
+      "rules": [
+        {
+          "id": "L1-112",
+          "kind": "review",
+          "rule": "Reviews and gates keep the full strength the consequence of error deserves, whatever the work below cost.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L137.1",
+      "text": "Seat parallel reviewers in separate worktrees when either may run probes.",
+      "rules": [
+        {
+          "id": "L1-113",
+          "kind": "review",
+          "rule": "Seat parallel reviewers in separate worktrees when either may run probes.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L138.1",
+      "text": "A reviewer without Linear access, a Codex seat, gets the contract pasted verbatim into its brief or as a snapshot file, never a pointer to the ticket.",
+      "rules": [
+        {
+          "id": "L1-114",
+          "kind": "review",
+          "rule": "A reviewer without Linear access (a Codex seat) gets the contract pasted verbatim into its brief or as a snapshot file, never a pointer to the ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L139.1",
+      "text": "Cancel and replace a reviewer stuck on an approval prompt nobody can grant.",
+      "rules": [
+        {
+          "id": "L1-115",
+          "kind": "review",
+          "rule": "Cancel and replace a reviewer stuck on an approval prompt nobody can grant.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L141.1",
+      "text": "Send the FAIL block with the brief and set `Implementing`.",
+      "rules": [
+        {
+          "id": "L1-116",
+          "kind": "review",
+          "rule": "Send the FAIL block with the brief.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-117",
+          "kind": "linear",
+          "rule": "Set Implementing when sending a FAIL block to a fix hop.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L141.2",
+      "text": "A change to acceptance, scope, destination or architecture goes to the Project's map holder for a map or plan amendment.",
+      "rules": [
+        {
+          "id": "L1-118",
+          "kind": "escalation",
+          "rule": "A change to acceptance, scope, destination or architecture goes to the Project's map holder for a map or plan amendment.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L142.1",
+      "text": "**Done:** each fix has its own commit and fresh review; the fifth consecutive FAIL stops the loop, records the findings and wires a prepared Question through the scope rule below.",
+      "rules": [
+        {
+          "id": "L1-119",
+          "kind": "escalation",
+          "rule": "The fifth consecutive FAIL stops the loop, records the findings and wires a prepared Question through the scope rule.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-304",
+          "kind": "review",
+          "rule": "Review is done when each fix has its own commit and fresh review.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L144.1",
+      "text": "Record each gate result with its candidate, command, environment or session, exit and result location.",
+      "rules": [
+        {
+          "id": "L1-120",
+          "kind": "evidence",
+          "rule": "Record each gate result with its candidate, command, environment or session, exit and result location.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L145.1",
+      "text": "Reuse exact-candidate evidence when that gate and environment permit; rerun only after relevant change or concern, or at a distinct mandatory integration or release boundary.",
+      "rules": [
+        {
+          "id": "L1-121",
+          "kind": "evidence",
+          "rule": "Reuse exact-candidate evidence when that gate and environment permit; rerun only after relevant change or concern, or at a distinct mandatory integration or release boundary.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L147.1",
+      "text": "Judge a hop on the proof it ran instead of scheduling a suite again.",
+      "rules": [
+        {
+          "id": "L1-122",
+          "kind": "evidence",
+          "rule": "Judge a hop on the proof it ran instead of scheduling a suite again.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L149.1",
+      "text": "**Offer.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L149.2",
+      "text": "Direct each passed lane's Merge Sub-ticket with one `code-writer`: it maps conflicts and combined gates and performs the merge; a resolution that refactored leaves its code no worse than either side.",
+      "rules": [
+        {
+          "id": "L1-123",
+          "kind": "merge",
+          "rule": "Direct each passed lane's Merge Sub-ticket with one code-writer, which maps conflicts and combined gates and performs the merge.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-124",
+          "kind": "merge",
+          "rule": "A merge resolution that refactored leaves its code no worse than either side.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L151.1",
+      "text": "Only then does a fresh `reviewer(merge)` judge the integrated parent.",
+      "rules": [
+        {
+          "id": "L1-125",
+          "kind": "review",
+          "rule": "Only after the lane merges does a fresh reviewer(merge) judge the integrated parent.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L151.2",
+      "text": "Obtain a fresh whole-ticket PASS once all lanes are in.",
+      "rules": [
+        {
+          "id": "L1-126",
+          "kind": "review",
+          "rule": "Obtain a fresh whole-ticket PASS once all lanes are in.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L152.1",
+      "text": "Apply the testing strategy's final-candidate gates here and the contract's mandatory combined and landing gates at their boundaries, with exact-candidate reuse only where permitted.",
+      "rules": [
+        {
+          "id": "L1-127",
+          "kind": "evidence",
+          "rule": "Apply the testing strategy's final-candidate gates at offer.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-309",
+          "kind": "evidence",
+          "rule": "Apply the contract's mandatory combined and landing gates at their boundaries.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-310",
+          "kind": "evidence",
+          "rule": "Exact-candidate reuse is allowed only where permitted.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L154.1",
+      "text": "Before offering, rerun each writer's proof recipe yourself; that rerun, posted on the record, is the proof of record.",
+      "rules": [
+        {
+          "id": "L1-128",
+          "kind": "evidence",
+          "rule": "Before offering, rerun each writer's proof recipe yourself; that rerun, posted on the record, is the proof of record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L155.1",
+      "text": "**Done:** push the branch, write the PR body with `pr` to `dydo/agents/workspace/pr-body-<KEY>.md`, listing the should-tickets filed and the nits recorded, run `dydo pr-ready --body <that file>` as its own command, then open the PR, its PASS block on the record and in the body, with a lone `gh pr create --body-file <that file>`, nothing chained, piped or redirected.",
+      "rules": [
+        {
+          "id": "L1-129",
+          "kind": "merge",
+          "rule": "Push the branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-130",
+          "kind": "merge",
+          "rule": "Write the PR body with the pr skill to dydo/agents/workspace/pr-body-<KEY>.md, listing the should-tickets filed and the nits recorded.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-131",
+          "kind": "merge",
+          "rule": "Run dydo pr-ready --body <that file> as its own command.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-132",
+          "kind": "merge",
+          "rule": "Then open the PR with its PASS block on the record and in the body, using a lone gh pr create --body-file <that file>, nothing chained, piped or redirected.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L156.1",
+      "text": "Handle its existing checks and comments, then **watch** it: one watcher per PR, `watch_pull_request` in T3, elsewhere one long-running watcher (Monitor in Claude Code), never a sleep or polling loop.",
+      "rules": [
+        {
+          "id": "L1-133",
+          "kind": "merge",
+          "rule": "Handle the PR's existing checks and comments, then watch it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-134",
+          "kind": "merge",
+          "rule": "Use one watcher per PR: watch_pull_request in T3, elsewhere one long-running watcher (Monitor in Claude Code), never a sleep or polling loop.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L158.1",
+      "text": "The PR's owning thread watches; in T3 that is the top-level officer, so a delegated captain links the PR, returns `PR open <key>, checks pending: <url>, head <SHA>` and ends its turn until its officer wakes it.",
+      "rules": [
+        {
+          "id": "L1-135",
+          "kind": "merge",
+          "rule": "A delegated captain links the PR, returns PR open <key>, checks pending: <url>, head <SHA> and ends its turn until its officer wakes it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-306",
+          "kind": "merge",
+          "rule": "The PR's owning thread watches it; in T3 that is the top-level officer.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L160.1",
+      "text": "Unwatch before handing off, asking or releasing.",
+      "rules": [
+        {
+          "id": "L1-136",
+          "kind": "merge",
+          "rule": "Unwatch the PR before handing off, asking or releasing.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L161.1",
+      "text": "A wake is news, not a merge decision: act only on checks and comments newer than the latest push, verify each bot finding against the source and grade it blocker, should or nit as in Review, refresh the body's `**Deferred:**` line, tell repo failures from infra flakes, answer each dismissal with a written reason, and stay silent when nothing changed.",
+      "rules": [
+        {
+          "id": "L1-137",
+          "kind": "merge",
+          "rule": "A wake is news, not a merge decision: act only on checks and comments newer than the latest push.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-138",
+          "kind": "merge",
+          "rule": "Verify each bot finding against the source and grade it blocker, should or nit as in Review.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-139",
+          "kind": "merge",
+          "rule": "Refresh the PR body's **Deferred:** line.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-140",
+          "kind": "merge",
+          "rule": "Tell repo failures from infra flakes.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-141",
+          "kind": "merge",
+          "rule": "Answer each dismissal with a written reason.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-142",
+          "kind": "merge",
+          "rule": "Stay silent when nothing changed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L164.1",
+      "text": "With GraphQL exhausted, read the PR and check-runs over REST (`gh api repos/<o>/<r>/pulls/<n>`, `.../commits/<sha>/check-runs`).",
+      "rules": [
+        {
+          "id": "L1-143",
+          "kind": "merge",
+          "rule": "With GraphQL exhausted, read the PR and check-runs over REST (gh api repos/<o>/<r>/pulls/<n>, .../commits/<sha>/check-runs).",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L165.1",
+      "text": "Recheck the merge gate yourself:",
+      "rules": [
+        {
+          "id": "L1-144",
+          "kind": "merge",
+          "rule": "Recheck the merge gate yourself:",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L167.1",
+      "text": "[ ] the proof of record covers every change in the diff;",
+      "rules": [
+        {
+          "id": "L1-144"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L168.1",
+      "text": "[ ] required checks are green on the latest push;",
+      "rules": [
+        {
+          "id": "L1-144"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L169.1",
+      "text": "[ ] review bots have finished, each finding fixed or answered;",
+      "rules": [
+        {
+          "id": "L1-144"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L170.1",
+      "text": "[ ] no human review requests changes;",
+      "rules": [
+        {
+          "id": "L1-144"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L171.1",
+      "text": "[ ] the branch is up to date with its target (not BEHIND; T3 reports only conflicts), and GitHub reports it mergeable.",
+      "rules": [
+        {
+          "id": "L1-144"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L174.1",
+      "text": "Then set `Ready to Merge`, and return `done <key>: PR ready`.",
+      "rules": [
+        {
+          "id": "L1-145",
+          "kind": "merge",
+          "rule": "Then set Ready to Merge.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-146",
+          "kind": "return",
+          "rule": "Return done <key>: PR ready.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L175.1",
+      "text": "**Merge.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L175.2",
+      "text": "When the final Merge Sub-ticket's blocker clears, resume from the record and direct its chain as above into the contract's target; its code-writer merges a conflict-free reviewed PR into its feature branch with `dydo merge`.",
+      "rules": [
+        {
+          "id": "L1-147",
+          "kind": "merge",
+          "rule": "When the final Merge Sub-ticket's blocker clears, resume from the record and direct its chain into the contract's target.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-148",
+          "kind": "merge",
+          "rule": "The Merge Sub-ticket's code-writer merges a conflict-free reviewed PR into its feature branch with dydo merge.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L177.1",
+      "text": "The parent stays `Ready to Merge` while the Sub-ticket runs; a Merge Sub-ticket never enters that status.",
+      "rules": [
+        {
+          "id": "L1-149",
+          "kind": "linear",
+          "rule": "The parent stays Ready to Merge while the Merge Sub-ticket runs.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-150",
+          "kind": "linear",
+          "rule": "A Merge Sub-ticket never enters Ready to Merge.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L178.1",
+      "text": "A landing Merge instead offers its reviewed PR and waits for the user's merge-commit click.",
+      "rules": [
+        {
+          "id": "L1-151",
+          "kind": "merge",
+          "rule": "A landing Merge instead offers its reviewed PR and waits for the user's merge-commit click.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L179.1",
+      "text": "An atomic ticket has no Merge Sub-ticket: the user clicks its PR, then you resume from the record.",
+      "rules": [
+        {
+          "id": "L1-152",
+          "kind": "merge",
+          "rule": "An atomic ticket has no Merge Sub-ticket: the user clicks its PR, then the captain resumes from the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L180.1",
+      "text": "**Done:** merge review passes, or the user's click has landed the atomic ticket; the operation and source ticket close `Done`, the worktrees you or your crew made (lanes, merge checkouts, temp checkouts) are cleaned (`dydo clean --dry-run <worktree>`, then `dydo clean <worktree>`, run from outside that tree; it deletes the worktree's own branch once merged), merged local branches with no worktree go by `git branch -d`, and you return `done <key>: merged`.",
+      "rules": [
+        {
+          "id": "L1-153",
+          "kind": "merge",
+          "rule": "Merge is done when merge review passes, or the user's click has landed the atomic ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-154",
+          "kind": "linear",
+          "rule": "The operation and source ticket close Done.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-155",
+          "kind": "worktree",
+          "rule": "Clean the worktrees you or your crew made (lanes, merge checkouts, temp checkouts) with dydo clean --dry-run <worktree>, then dydo clean <worktree>, run from outside that tree; it deletes the worktree's own branch once merged.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-156",
+          "kind": "worktree",
+          "rule": "Delete merged local branches with no worktree by git branch -d.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-157",
+          "kind": "return",
+          "rule": "Return done <key>: merged.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L185.1",
+      "text": "The worktree your thread runs in belongs to T3: leave it.",
+      "rules": [
+        {
+          "id": "L1-158",
+          "kind": "worktree",
+          "rule": "The worktree your thread runs in belongs to T3: leave it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L186.1",
+      "text": "GitHub deletes a merged PR's remote branch itself; the guard blocks remote deletion, so name any other remote branch due for deletion, an `inquisition/` or `prototype/` branch included, on the record for the user.",
+      "rules": [
+        {
+          "id": "L1-159",
+          "kind": "worktree",
+          "rule": "GitHub deletes a merged PR's remote branch itself; the guard blocks remote deletion, so name any other remote branch due for deletion (an inquisition/ or prototype/ branch included) on the record for the user.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L189.1",
+      "text": "On the map holder's landing-cleanup commission, remove the merged feature branch locally and report completion.",
+      "rules": [
+        {
+          "id": "L1-160",
+          "kind": "project",
+          "rule": "On the map holder's landing-cleanup commission, remove the merged feature branch locally and report completion.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L194.1",
+      "text": "Start from the Type's shape in the workspace standard; when used, your contract makes the map exact.",
+      "rules": [
+        {
+          "id": "L1-161",
+          "kind": "contract",
+          "rule": "Start from the Type's shape in the workspace standard; when used, your contract makes the map exact.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L194.2",
+      "text": "A Bug normally reproduces or identifies, then fixes; adopt an inquisition's red-test SHA when one exists, and its prepared patch branch when one is attached: verify and review it rather than rebuilding it.",
+      "rules": [
+        {
+          "id": "L1-162",
+          "kind": "contract",
+          "rule": "A Bug normally reproduces or identifies, then fixes.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-163",
+          "kind": "contract",
+          "rule": "Adopt an inquisition's red-test SHA when one exists.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-324",
+          "kind": "inquisition",
+          "rule": "Adopt an inquisition's prepared patch branch when one is attached: verify and review it rather than rebuilding it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L196.1",
+      "text": "Collapse simple Bug template placeholders into parent hops, recording why and closing the unused records `Canceled`.",
+      "rules": [
+        {
+          "id": "L1-164",
+          "kind": "contract",
+          "rule": "Collapse simple Bug template placeholders into parent hops, recording why and closing the unused records Canceled.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L198.1",
+      "text": "Under the workspace standard's Bug exception, you may retain reproduce-or-identify and fix as direct Bug Sub-tickets: fix is natively blocked by reproduction, both carry the parent's Mode, and any shared paths transfer only after reproduction closes and its evidence is recorded.",
+      "rules": [
+        {
+          "id": "L1-165",
+          "kind": "contract",
+          "rule": "Under the workspace standard's Bug exception, the captain may retain reproduce-or-identify and fix as direct Bug Sub-tickets: fix natively blocked by reproduction, both carrying the parent's Mode.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-308",
+          "kind": "contract",
+          "rule": "Shared paths transfer to the fix Sub-ticket only after reproduction closes and its evidence is recorded.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L200.1",
+      "text": "Give each stage its own contract, chain, branch and worktree; create a Merge Sub-ticket for each actual integration.",
+      "rules": [
+        {
+          "id": "L1-166",
+          "kind": "contract",
+          "rule": "Give each Bug stage its own contract, chain, branch and worktree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-167",
+          "kind": "merge",
+          "rule": "Create a Merge Sub-ticket for each actual integration.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L202.1",
+      "text": "Keep the joined acceptance and final review on the parent.",
+      "rules": [
+        {
+          "id": "L1-168",
+          "kind": "contract",
+          "rule": "Keep the joined acceptance and final review on the parent.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L204.1",
+      "text": "A guard-rule ticket says in its contract and every reviewer brief: guards stop accidents, not rogue agents.",
+      "rules": [
+        {
+          "id": "L1-169",
+          "kind": "contract",
+          "rule": "A guard-rule ticket says in its contract and every reviewer brief: guards stop accidents, not rogue agents.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L206.1",
+      "text": "A Prototype uses `prototype` and closes on the user's verdict with its winning branch linked, never submitted.",
+      "rules": [
+        {
+          "id": "L1-170",
+          "kind": "contract",
+          "rule": "A Prototype uses the prototype skill and closes on the user's verdict with its winning branch linked, never submitted.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L207.1",
+      "text": "Enablement uses `wizard` for the steps only the user can perform.",
+      "rules": [
+        {
+          "id": "L1-171",
+          "kind": "contract",
+          "rule": "Enablement uses wizard for the steps only the user can perform.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L209.1",
+      "text": "An Inquisition gets `inquisition/<slug>` from the integrated feature SHA, never merged.",
+      "rules": [
+        {
+          "id": "L1-172",
+          "kind": "worktree",
+          "rule": "An Inquisition gets inquisition/<slug> from the integrated feature SHA.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-173",
+          "kind": "inquisition",
+          "rule": "The inquisition branch is never merged.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L209.2",
+      "text": "Set `In Progress` on the user's confirmation and run it by [inquisition](resources/inquisition.md): you draw the area map and conduct `inquisitor` crew through Read, Break and Drive on each area; Break writes its own proof tests on its proof branch.",
+      "rules": [
+        {
+          "id": "L1-174",
+          "kind": "inquisition",
+          "rule": "Set In Progress on the user's confirmation of an Inquisition.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-175",
+          "kind": "inquisition",
+          "rule": "Run it by resources/inquisition.md: the captain draws the area map and conducts inquisitor crew through Read, Break and Drive on each area.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-325",
+          "kind": "identity",
+          "rule": "Break writes its own proof tests on its proof branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L212.1",
+      "text": "You keep the findings register, triage every return into Bugs, one nit ticket and Questions, and prepare well-defined fixes on their Bugs' branches.",
+      "rules": [
+        {
+          "id": "L1-176",
+          "kind": "inquisition",
+          "rule": "The captain keeps the findings register, triages every return into Bugs, one nit ticket and Questions, and prepares well-defined fixes on their Bugs' branches.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L214.1",
+      "text": "Retain each open Bug's reproduction commit on a pushed independent ref, by **Retaining an Inquisition's record and proofs** in the working-tree standard.",
+      "rules": [
+        {
+          "id": "L1-177",
+          "kind": "inquisition",
+          "rule": "Retain each open Bug's reproduction commit on a pushed independent ref, by Retaining an Inquisition's record and proofs in the working-tree standard.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L215.1",
+      "text": "The Inquisition then delivers its own record through a docs-writer, docs review and its Merge Sub-ticket, and closes once.",
+      "rules": [
+        {
+          "id": "L1-178",
+          "kind": "inquisition",
+          "rule": "The Inquisition delivers its own record through a docs-writer, docs review and its Merge Sub-ticket, and closes once.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L216.1",
+      "text": "It files, never PASSes or FAILs.",
+      "rules": [
+        {
+          "id": "L1-179",
+          "kind": "inquisition",
+          "rule": "An Inquisition files outcomes; it never PASSes or FAILs.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L219.1",
+      "text": "Merge review FAIL has an owner: fix an integration defect inside the Merge Ticket, then re-review.",
+      "rules": [
+        {
+          "id": "L1-180",
+          "kind": "merge",
+          "rule": "A Merge review FAIL has an owner: fix an integration defect inside the Merge Ticket, then re-review.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L220.1",
+      "text": "For a source-work defect, revert inside Merge, close it `Canceled` with the reason, and return the source ticket from `Ready to Merge` to `Implementing` with the findings.",
+      "rules": [
+        {
+          "id": "L1-181",
+          "kind": "merge",
+          "rule": "For a source-work defect, revert inside Merge, close the Merge ticket Canceled with the reason, and return the source ticket from Ready to Merge to Implementing with the findings.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L221.1",
+      "text": "If a later merge depends on it, file a following fix ticket instead of reverting.",
+      "rules": [
+        {
+          "id": "L1-182",
+          "kind": "merge",
+          "rule": "If a later merge depends on the defective work, file a following fix ticket instead of reverting.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L222.1",
+      "text": "Every operation preserves the hop SHAs.",
+      "rules": [
+        {
+          "id": "L1-183",
+          "kind": "worktree",
+          "rule": "Every operation preserves the hop SHAs.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L226.1",
+      "text": "Discovery comes before a Question.",
+      "rules": [
+        {
+          "id": "L1-184",
+          "kind": "escalation",
+          "rule": "Discovery comes before a Question.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L226.2",
+      "text": "A call above your say goes through `what-would-balazs-do` when it is DR-grade or irreversible, or when the user is away; it sets the Question's wiring.",
+      "rules": [
+        {
+          "id": "L1-185",
+          "kind": "decision",
+          "rule": "A call above the captain's say goes through what-would-balazs-do when it is DR-grade or irreversible, or when the user is away; it sets the Question's wiring.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L227.1",
+      "text": "File any other local Question Sub-ticket in `Todo`, wired to its waiters; send a prepared packet to the Project's map holder when its answer reaches other tickets or the Project's destination.",
+      "rules": [
+        {
+          "id": "L1-186",
+          "kind": "escalation",
+          "rule": "File any other local Question Sub-ticket in Todo, wired to its waiters.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-187",
+          "kind": "escalation",
+          "rule": "Send a prepared packet to the Project's map holder when its answer reaches other tickets or the Project's destination.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L230.1",
+      "text": "Put the packet and all evidence on the record.",
+      "rules": [
+        {
+          "id": "L1-188",
+          "kind": "escalation",
+          "rule": "Put the Question packet and all evidence on the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L230.2",
+      "text": "Set priority by the standard: the user's next pick is the answer that frees the most AFK work.",
+      "rules": [
+        {
+          "id": "L1-189",
+          "kind": "linear",
+          "rule": "Set Question priority by the standard: the user's next pick is the answer that frees the most AFK work.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L233.1",
+      "text": "A blocker you cannot clear, the user's takeover, or a dying session releases the ticket: push the branch, post the resume SHA, clean the worktrees you or your crew made (lanes, merge checkouts, temp checkouts) with `dydo clean --dry-run <worktree>`, then `dydo clean <worktree>`, run from outside that tree, set the parent `Todo`, unassign and wire any blocker.",
+      "rules": [
+        {
+          "id": "L1-190",
+          "kind": "release",
+          "rule": "A blocker you cannot clear, the user's takeover, or a dying session releases the ticket: push the branch, post the resume SHA, set the parent Todo, unassign and wire any blocker.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-318",
+          "kind": "worktree",
+          "rule": "On release, clean the worktrees you or your crew made with dydo clean --dry-run <worktree> then dydo clean <worktree>, run from outside that tree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L236.1",
+      "text": "The worktree your thread runs in belongs to T3: leave it.",
+      "rules": [
+        {
+          "id": "L1-191",
+          "kind": "worktree",
+          "rule": "The worktree your thread runs in belongs to T3: leave it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L237.1",
+      "text": "The next captain reads the record and resumes from the branch.",
+      "rules": [
+        {
+          "id": "L1-192",
+          "kind": "release",
+          "rule": "The next captain reads the record and resumes from the branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L237.2",
+      "text": "After a dead session the map holder uses the last posted hop, without assuming a final push.",
+      "rules": [
+        {
+          "id": "L1-193",
+          "kind": "release",
+          "rule": "After a dead session the map holder uses the last posted hop, without assuming a final push.",
+          "actors": [
+            "map-holder"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L238.1",
+      "text": "Fresh commission is the portable floor; a host that can resume the same captain may do so.",
+      "rules": [
+        {
+          "id": "L1-194",
+          "kind": "release",
+          "rule": "Fresh commission is the portable floor; a host that can resume the same captain may do so.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L239.1",
+      "text": "Takeover always goes through release.",
+      "rules": [
+        {
+          "id": "L1-195",
+          "kind": "release",
+          "rule": "Takeover always goes through release.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L243.1",
+      "text": "One line to the spawner: `done <key>: PR ready`, `done <key>: merged`, or `released <key>: <reason>`; for a non-merging Type, `done <key>`.",
+      "rules": [
+        {
+          "id": "L1-196",
+          "kind": "return",
+          "rule": "Return one line to the spawner: done <key>: PR ready, done <key>: merged, or released <key>: <reason>; for a non-merging Type, done <key>.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L244.1",
+      "text": "A delegated captain whose PR awaits its officer's watch returns `PR open <key>, checks pending: <url>, head <SHA>`.",
+      "rules": [
+        {
+          "id": "L1-197",
+          "kind": "return",
+          "rule": "A delegated captain whose PR awaits its officer's watch returns PR open <key>, checks pending: <url>, head <SHA>.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L245.1",
+      "text": "An atomic ticket returns `done <key>: PR ready` at `Ready to Merge` and `done <key>: merged` after the user's click and cleanup.",
+      "rules": [
+        {
+          "id": "L1-198",
+          "kind": "return",
+          "rule": "An atomic ticket returns done <key>: PR ready at Ready to Merge and done <key>: merged after the user's click and cleanup.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L247.1",
+      "text": "Everything else lives on the record.",
+      "rules": [
+        {
+          "id": "L1-199",
+          "kind": "return",
+          "rule": "Everything else lives on the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/SKILL.md#L247.2",
+      "text": "A top-level captain returns in its own session; the user tells an invoked admiral.",
+      "rules": [
+        {
+          "id": "L1-200",
+          "kind": "return",
+          "rule": "A top-level captain returns in its own session; the user tells an invoked admiral.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L3.1",
+      "text": "The user has confirmed it.",
+      "rules": [
+        {
+          "id": "L1-201",
+          "kind": "inquisition",
+          "rule": "An Inquisition starts only after the user has confirmed it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L3.2",
+      "text": "You conduct; the crew hunts.",
+      "rules": [
+        {
+          "id": "L1-202",
+          "kind": "identity",
+          "rule": "In an Inquisition the captain conducts and the inquisitor crew hunts.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L3.3",
+      "text": "Map the landed work into small areas, run Read → Break → Drive on each through a swarm of `inquisitor` crew, triage every return, then deliver the record.",
+      "rules": [
+        {
+          "id": "L1-203",
+          "kind": "inquisition",
+          "rule": "Map the landed work into small areas, run Read, Break and Drive on each through a swarm of inquisitor crew, triage every return, then deliver the record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L5.1",
+      "text": "You never hunt yourself: reading code for bugs is the crew's.",
+      "rules": [
+        {
+          "id": "L1-204",
+          "kind": "inquisition",
+          "rule": "Never hunt yourself: reading code for bugs is the crew's.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L5.2",
+      "text": "An Inquisition files outcomes; it has no PASS or FAIL.",
+      "rules": [
+        {
+          "id": "L1-205",
+          "kind": "inquisition",
+          "rule": "An Inquisition files outcomes; it has no PASS or FAIL.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L6.1",
+      "text": "Each round is its own Inquisition, started from zero: you never read the previous round's map or findings.",
+      "rules": [
+        {
+          "id": "L1-206",
+          "kind": "inquisition",
+          "rule": "Each Inquisition round starts from zero: never read the previous round's map or findings.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L11.1",
+      "text": "Done when the ticket's `## Scope` records:",
+      "rules": [
+        {
+          "id": "L1-207",
+          "kind": "inquisition",
+          "rule": "The commission step is done when the ticket's ## Scope records the following:",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L13.1",
+      "text": "the audit SHA, the integrated feature commit, and the landing base it is diffed against;",
+      "rules": [
+        {
+          "id": "L1-207"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L14.1",
+      "text": "the governing intent: the Project plan, the landed tickets' contracts, the Decision Records;",
+      "rules": [
+        {
+          "id": "L1-207"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L15.1",
+      "text": "a provider and model for each phase, and the swarm width: the most crew agents running at once;",
+      "rules": [
+        {
+          "id": "L1-207"
+        },
+        {
+          "id": "L1-208",
+          "kind": "capacity",
+          "rule": "The commission sets a provider and model for each phase and the swarm width, the most crew agents running at once.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L16.1",
+      "text": "the Codex cap: start about 8 at once, go toward 16 while runs stay clean, back off on a 429;",
+      "rules": [
+        {
+          "id": "L1-207"
+        },
+        {
+          "id": "L1-209",
+          "kind": "capacity",
+          "rule": "The Codex cap is to start about 8 at once, go toward 16 while runs stay clean, and back off on a 429.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L17.1",
+      "text": "the crew context limit, 110k tokens unless the commission set another;",
+      "rules": [
+        {
+          "id": "L1-207"
+        },
+        {
+          "id": "L1-210",
+          "kind": "capacity",
+          "rule": "The crew context limit is 110k tokens unless the commission set another.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L18.1",
+      "text": "the project's verification skill, or the one-line reason nothing in the project runs.",
+      "rules": [
+        {
+          "id": "L1-207"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L20.1",
+      "text": "A project with a runnable surface and no verification skill stops here: the skill comes first.",
+      "rules": [
+        {
+          "id": "L1-211",
+          "kind": "inquisition",
+          "rule": "A project with a runnable surface and no verification skill stops here: the skill comes first.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L21.1",
+      "text": "Release with `released <key>: verification skill first`.",
+      "rules": [
+        {
+          "id": "L1-212",
+          "kind": "release",
+          "rule": "When the verification skill is missing, release with released <key>: verification skill first.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L21.2",
+      "text": "Otherwise the ticket stays `In Progress` from here through step 10.",
+      "rules": [
+        {
+          "id": "L1-213",
+          "kind": "linear",
+          "rule": "Otherwise the Inquisition ticket stays In Progress from commission through step 10.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L26.1",
+      "text": "Cut `inquisition/<slug>` from the audit SHA in your isolated worktree; it never merges.",
+      "rules": [
+        {
+          "id": "L1-214",
+          "kind": "worktree",
+          "rule": "Cut inquisition/<slug> from the audit SHA in your isolated worktree.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-321",
+          "kind": "inquisition",
+          "rule": "The audit branch never merges.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L26.2",
+      "text": "Create the findings register (step 5) on it and push.",
+      "rules": [
+        {
+          "id": "L1-215",
+          "kind": "inquisition",
+          "rule": "Create the findings register on the inquisition branch and push it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L27.1",
+      "text": "Done when branch, audit SHA and worktree path are on the ticket and the register's first commit is pushed.",
+      "rules": [
+        {
+          "id": "L1-216",
+          "kind": "inquisition",
+          "rule": "Branch step is done when branch, audit SHA and worktree path are on the ticket and the register's first commit is pushed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L32.1",
+      "text": "Draw it from `git diff --stat <landing base>..<audit SHA>` and the file layout, never from the feature list or an earlier round's map.",
+      "rules": [
+        {
+          "id": "L1-217",
+          "kind": "inquisition",
+          "rule": "Draw the area map from git diff --stat <landing base>..<audit SHA> and the file layout, never from the feature list or an earlier round's map.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L33.1",
+      "text": "Post it on the ticket as a table:",
+      "rules": [
+        {
+          "id": "L1-218",
+          "kind": "inquisition",
+          "rule": "Post the area map on the ticket as a table.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L37.1",
+      "text": "| A-01 | the files or folder | one line | yes | yes, or why not in one line | yes, or why not in one line |",
+      "rules": [
+        {
+          "id": "L1-218"
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L39.1",
+      "text": "**Small on purpose:** a big area gets superficial coverage.",
+      "rules": [
+        {
+          "id": "L1-219",
+          "kind": "inquisition",
+          "rule": "Keep areas small: a big area gets superficial coverage.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L39.2",
+      "text": "One file can be an area.",
+      "rules": [
+        {
+          "id": "L1-220",
+          "kind": "inquisition",
+          "rule": "One file can be an area.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L39.3",
+      "text": "Merge tiny areas into one area here; a dispatch never carries more than one area.",
+      "rules": [
+        {
+          "id": "L1-221",
+          "kind": "inquisition",
+          "rule": "Merge tiny areas into one area at map time.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-222",
+          "kind": "dispatch",
+          "rule": "A dispatch never carries more than one area.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L41.1",
+      "text": "**Seams:** where two areas meet through a call, a shared type, a file format or a protocol, the seam is its own area.",
+      "rules": [
+        {
+          "id": "L1-223",
+          "kind": "inquisition",
+          "rule": "Where two areas meet through a call, a shared type, a file format or a protocol, the seam is its own area.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L43.1",
+      "text": "**Prose:** a plain skill or doc area gets Read only; its Break and Drive cells say `prose`.",
+      "rules": [
+        {
+          "id": "L1-224",
+          "kind": "inquisition",
+          "rule": "A plain skill or doc area gets Read only; its Break and Drive cells say prose.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L44.1",
+      "text": "**Behaviour:** Break and Drive apply wherever the landing changed behaviour; Drive says `nothing to run` on a project without a runnable surface.",
+      "rules": [
+        {
+          "id": "L1-225",
+          "kind": "inquisition",
+          "rule": "Drive says nothing to run on a project without a runnable surface.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-320",
+          "kind": "inquisition",
+          "rule": "Break and Drive apply wherever the landing changed behaviour.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L47.1",
+      "text": "Done when every changed path sits in exactly one area, every seam is an area, and every cell holds `yes` or a one-line reason.",
+      "rules": [
+        {
+          "id": "L1-226",
+          "kind": "inquisition",
+          "rule": "The map is done when every changed path sits in exactly one area, every seam is an area, and every cell holds yes or a one-line reason.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L52.1",
+      "text": "One captain conducts about 10 areas.",
+      "rules": [
+        {
+          "id": "L1-227",
+          "kind": "inquisition",
+          "rule": "One captain conducts about 10 areas.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L52.2",
+      "text": "Above that, cut the map into group Sub-tickets of up to about 10 areas each, seams kept with the areas they join.",
+      "rules": [
+        {
+          "id": "L1-228",
+          "kind": "inquisition",
+          "rule": "Above about 10 areas, cut the map into group Sub-tickets of up to about 10 areas each, seams kept with the areas they join.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L53.1",
+      "text": "Each group Sub-ticket carries the Inquisition Type, the parent's Mode and commission, its map rows and its own `inquisition/<slug>-<group>` branch from the same audit SHA.",
+      "rules": [
+        {
+          "id": "L1-229",
+          "kind": "inquisition",
+          "rule": "Each group Sub-ticket carries the Inquisition Type, the parent's Mode and commission, its map rows and its own inquisition/<slug>-<group> branch from the same audit SHA.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L55.1",
+      "text": "Split the commissioned swarm width and its Codex share between the groups, write each group's share on its Sub-ticket, and keep the totals inside the commission; a finished group's share returns to your officer, who may give it to a running group.",
+      "rules": [
+        {
+          "id": "L1-230",
+          "kind": "capacity",
+          "rule": "Split the commissioned swarm width and its Codex share between the groups, write each group's share on its Sub-ticket, and keep the totals inside the commission.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-231",
+          "kind": "capacity",
+          "rule": "A finished group's share returns to your officer, who may give it to a running group.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L58.1",
+      "text": "Wire the parent blocked by every group, open this round's nit ticket (step 8), then release the parent by the Release section with `released <key>: groups <keys>`; your officer commissions one captain per group.",
+      "rules": [
+        {
+          "id": "L1-232",
+          "kind": "inquisition",
+          "rule": "Wire the parent blocked by every group, open this round's nit ticket (step 8), then release the parent with released <key>: groups <keys>.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-233",
+          "kind": "dispatch",
+          "rule": "The officer commissions one captain per group.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L60.1",
+      "text": "Group captains add their nits to your nit ticket.",
+      "rules": [
+        {
+          "id": "L1-234",
+          "kind": "inquisition",
+          "rule": "Group captains add their nits to the parent's nit ticket.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L61.1",
+      "text": "A group captain runs steps 2 and 5 to 10 on its rows, owns its Bugs' retention, and closes `Done` with its register final and pushed.",
+      "rules": [
+        {
+          "id": "L1-235",
+          "kind": "inquisition",
+          "rule": "A group captain runs steps 2 and 5 to 10 on its rows, owns its Bugs' retention, and closes Done with its register final and pushed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L62.1",
+      "text": "When the groups close you resume as parent: merge their registers into yours, join duplicates across groups as sightings, and close a duplicate Bug as `Duplicate` of the one kept.",
+      "rules": [
+        {
+          "id": "L1-236",
+          "kind": "inquisition",
+          "rule": "When the groups close, the parent resumes and merges their registers into its own.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-311",
+          "kind": "inquisition",
+          "rule": "Join duplicates across groups as sightings.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-312",
+          "kind": "inquisition",
+          "rule": "Close a duplicate Bug as Duplicate of the one kept.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L64.1",
+      "text": "Then run step 10 over the merged register and deliver the one record.",
+      "rules": [
+        {
+          "id": "L1-237",
+          "kind": "inquisition",
+          "rule": "Then run step 10 over the merged register and deliver the one record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L64.2",
+      "text": "Done when every area belongs to one group and each group's register is merged into yours.",
+      "rules": [
+        {
+          "id": "L1-238",
+          "kind": "inquisition",
+          "rule": "Grouping is done when every area belongs to one group and each group's register is merged into the parent's.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L69.1",
+      "text": "`inquisition-register.md` at the root of the audit branch, one row per finding:",
+      "rules": [
+        {
+          "id": "L1-239",
+          "kind": "inquisition",
+          "rule": "Keep inquisition-register.md at the root of the audit branch, one row per finding, in the register's table shape:",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L74.1",
+      "text": "IDs run `F-01`, `F-02` and so on; a group qualifies its IDs with its group, as `G2-F-07`.",
+      "rules": [
+        {
+          "id": "L1-240",
+          "kind": "inquisition",
+          "rule": "Finding IDs run F-01, F-02 and so on; a group qualifies its IDs with its group, as G2-F-07.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L74.2",
+      "text": "A sighting is a further `file:line` and proof of one finding.",
+      "rules": [],
+      "notRule": {
+        "category": "description",
+        "note": "defines sighting"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L74.3",
+      "text": "Tags are `testable` and `drivable` until a phase proves or refutes the finding.",
+      "rules": [
+        {
+          "id": "L1-241",
+          "kind": "inquisition",
+          "rule": "Tag a finding testable or drivable until a phase proves or refutes it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L75.1",
+      "text": "A disposition is a Bug key, `patch <SHA>` on its Bug, the nit ticket, a Question key, or `refuted` with the observation.",
+      "rules": [
+        {
+          "id": "L1-242",
+          "kind": "inquisition",
+          "rule": "A disposition is a Bug key, patch <SHA> on its Bug, the nit ticket, a Question key, or refuted with the observation.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L77.1",
+      "text": "Commit and push the register after every return, before the next dispatch.",
+      "rules": [
+        {
+          "id": "L1-243",
+          "kind": "inquisition",
+          "rule": "Commit and push the register after every return, before the next dispatch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L77.2",
+      "text": "Done when every return is in it and pushed.",
+      "rules": [
+        {
+          "id": "L1-244",
+          "kind": "inquisition",
+          "rule": "Register step is done when every return is in it and pushed.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L82.1",
+      "text": "Run the phases as a pipeline across areas, never in waves: an area's Break starts when its Read returns, its Drive when its Break returns.",
+      "rules": [
+        {
+          "id": "L1-245",
+          "kind": "inquisition",
+          "rule": "Run the phases as a pipeline across areas, never in waves: an area's Break starts when its Read returns, its Drive when its Break returns.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L83.1",
+      "text": "Keep up to the swarm width running, with Codex inside its cap.",
+      "rules": [
+        {
+          "id": "L1-246",
+          "kind": "capacity",
+          "rule": "Keep up to the swarm width running, with Codex inside its cap.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L84.1",
+      "text": "Dispatch one agent per area per phase, and set no quota of hypotheses or journeys.",
+      "rules": [
+        {
+          "id": "L1-247",
+          "kind": "dispatch",
+          "rule": "Dispatch one agent per area per phase.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-248",
+          "kind": "inquisition",
+          "rule": "Set no quota of hypotheses or journeys.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L85.1",
+      "text": "Dispatch each as its own session through T3 `delegate_task` (DR 057): crew outlive your turn, and the context check needs its own session.",
+      "rules": [
+        {
+          "id": "L1-249",
+          "kind": "dispatch",
+          "rule": "Dispatch each Inquisition agent as its own session through T3 delegate_task (DR 057), because crew outlive your turn and the context check needs its own session.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L88.1",
+      "text": "Brief each agent with its phase, its area's map row and register entries, the audit SHA and landing base, the governing intent, its context limit, and its worktree: one at the audit SHA for Read and Drive; for Break, one on its own proof branch `proof/<KEY>-<area>-<n>` cut from the audit SHA, with the test paths it may touch, `<n>` counting the Break dispatches for that area; for Drive, the verification skill and the API base.",
+      "rules": [
+        {
+          "id": "L1-250",
+          "kind": "dispatch",
+          "rule": "Brief each agent with its phase, its area's map row and register entries, the audit SHA and landing base, the governing intent, its context limit, and its worktree: one at the audit SHA for Read and Drive; for Break, one on its own proof branch proof/<KEY>-<area>-<n> cut from the audit SHA with the test paths it may touch, <n> counting the Break dispatches for that area; for Drive, the verification skill and the API base.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L92.1",
+      "text": "A return with work items handed back gets a fresh agent for the rest of the area, briefed with those items; a hand-back or follow-up Break agent gets the next `<n>`.",
+      "rules": [
+        {
+          "id": "L1-251",
+          "kind": "dispatch",
+          "rule": "A return with work items handed back gets a fresh agent for the rest of the area, briefed with those items.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-252",
+          "kind": "dispatch",
+          "rule": "A hand-back or follow-up Break agent gets the next <n>.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L94.1",
+      "text": "Done when every applicable phase of every area has returned.",
+      "rules": [
+        {
+          "id": "L1-253",
+          "kind": "inquisition",
+          "rule": "Dispatch is done when every applicable phase of every area has returned.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L98.1",
+      "text": "**New finding:** add a row with the next ID.",
+      "rules": [
+        {
+          "id": "L1-254",
+          "kind": "inquisition",
+          "rule": "A new finding gets a row with the next ID.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L99.1",
+      "text": "**Known bug:** a finding matching a register row is a sighting on that row, never a new row.",
+      "rules": [
+        {
+          "id": "L1-255",
+          "kind": "inquisition",
+          "rule": "A finding matching a register row is a sighting on that row, never a new row.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L100.1",
+      "text": "**Tagged finding:** route it to the phase that can prove it, `testable` to Break and `drivable` to Drive.",
+      "rules": [
+        {
+          "id": "L1-256",
+          "kind": "inquisition",
+          "rule": "Route a tagged finding to the phase that can prove it: testable to Break, drivable to Drive.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L101.1",
+      "text": "When that phase already ran for the area, send a short follow-up agent with only the routed entries as its work items.",
+      "rules": [
+        {
+          "id": "L1-257",
+          "kind": "inquisition",
+          "rule": "When the routed phase already ran for the area, send a short follow-up agent with only the routed entries as its work items.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L103.1",
+      "text": "**Unreachable journey:** a register row with its prerequisite and the route tried.",
+      "rules": [
+        {
+          "id": "L1-258",
+          "kind": "inquisition",
+          "rule": "An unreachable journey is a register row with its prerequisite and the route tried.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L103.2",
+      "text": "Before that area's Drive counts as returned, dispose of it: a follow-up Drive once the prerequisite is met, a verification-gap should, or a Question.",
+      "rules": [
+        {
+          "id": "L1-259",
+          "kind": "inquisition",
+          "rule": "Before that area's Drive counts as returned, dispose of an unreachable journey: a follow-up Drive once the prerequisite is met, a verification-gap should, or a Question.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L106.1",
+      "text": "**Break's commits:** push the proof branch; its red-test SHAs are reproductions.",
+      "rules": [
+        {
+          "id": "L1-260",
+          "kind": "inquisition",
+          "rule": "Push Break's proof branch; its red-test SHAs are reproductions.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L108.1",
+      "text": "Done when every finding of the return is a row or a sighting and every tag has a phase scheduled.",
+      "rules": [
+        {
+          "id": "L1-261",
+          "kind": "inquisition",
+          "rule": "Triage intake is done when every finding of the return is a row or a sighting and every tag has a phase scheduled.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L112.1",
+      "text": "Check each severity against the source, not the crew's label, and record any change with its reason in the row.",
+      "rules": [
+        {
+          "id": "L1-262",
+          "kind": "inquisition",
+          "rule": "Check each finding's severity against the source, not the crew's label, and record any change with its reason in the row.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L113.1",
+      "text": "Then:",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "transition"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L115.1",
+      "text": "**Proven blocker or should:** file a Bug: Mode `AFK`, Severity `blocker` or `should` matching the finding, in the Project, base the feature branch, `## Reproduction` holding its proof (the red-test SHA and test, the quoted passages, the definition and reference search, or the rerunnable drive steps), linked to this Inquisition.",
+      "rules": [
+        {
+          "id": "L1-263",
+          "kind": "inquisition",
+          "rule": "File a proven blocker or should as a Bug: Mode AFK, Severity blocker or should matching the finding, in the Project, base the feature branch, ## Reproduction holding its proof (the red-test SHA and test, the quoted passages, the definition and reference search, or the rerunnable drive steps), linked to this Inquisition.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L119.1",
+      "text": "A blocker goes to `Todo`, a should to `Backlog`, natively blocking the Project's landing Merge Ticket when it exists.",
+      "rules": [
+        {
+          "id": "L1-264",
+          "kind": "inquisition",
+          "rule": "A blocker Bug goes to Todo, a should Bug to Backlog, natively blocking the Project's landing Merge Ticket when it exists.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L120.1",
+      "text": "An audit with no Project files a team ticket, base `main`, with no landing relation.",
+      "rules": [
+        {
+          "id": "L1-265",
+          "kind": "inquisition",
+          "rule": "An audit with no Project files a team ticket, base main, with no landing relation.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L121.1",
+      "text": "A Bug whose fix step 9 will prepare is filed assigned to you, the claim that keeps it unpicked, naming its patch branch; any other Bug is filed unassigned and pickable at once.",
+      "rules": [
+        {
+          "id": "L1-266",
+          "kind": "inquisition",
+          "rule": "A Bug whose fix step 9 will prepare is filed assigned to you, the claim that keeps it unpicked, naming its patch branch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-267",
+          "kind": "inquisition",
+          "rule": "Any other Bug is filed unassigned and pickable at once.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L122.1",
+      "text": "Its fix may merge into the feature mid-round: the audit is pinned to its SHA.",
+      "rules": [
+        {
+          "id": "L1-268",
+          "kind": "inquisition",
+          "rule": "A Bug's fix may merge into the feature mid-round: the audit is pinned to its SHA.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L123.1",
+      "text": "A later sighting of a Bug, even a fixed one, adds a reproduction to it.",
+      "rules": [
+        {
+          "id": "L1-269",
+          "kind": "inquisition",
+          "rule": "A later sighting of a Bug, even a fixed one, adds a reproduction to it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L124.1",
+      "text": "A verification gap is a should whose Bug names `maintain-verification-skill` as its method.",
+      "rules": [
+        {
+          "id": "L1-270",
+          "kind": "inquisition",
+          "rule": "A verification gap is a should whose Bug names maintain-verification-skill as its method.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L125.1",
+      "text": "**Nit:** one line on this round's nit ticket, with its `file:line` and the wrong outcome; it needs no proof.",
+      "rules": [
+        {
+          "id": "L1-271",
+          "kind": "inquisition",
+          "rule": "A nit is one line on this round's nit ticket, with its file:line and the wrong outcome; it needs no proof.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L126.1",
+      "text": "Open the nit ticket with the first nit: Type `Feature`, Mode `AFK`, Severity `nit`, `Backlog`, held by the map holder, linked to this Inquisition.",
+      "rules": [
+        {
+          "id": "L1-272",
+          "kind": "inquisition",
+          "rule": "Open the nit ticket with the first nit: Type Feature, Mode AFK, Severity nit, Backlog, held by the map holder, linked to this Inquisition.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L127.1",
+      "text": "The map holder lists every open nit ticket at the Project's final walkthrough, where the user decides each nit; it closes `Done` once every nit is fixed or accepted as is.",
+      "rules": [
+        {
+          "id": "L1-273",
+          "kind": "inquisition",
+          "rule": "The map holder lists every open nit ticket at the Project's final walkthrough, where the user decides each nit.",
+          "actors": [
+            "map-holder"
+          ]
+        },
+        {
+          "id": "L1-274",
+          "kind": "inquisition",
+          "rule": "A nit ticket closes Done once every nit is fixed or accepted as is.",
+          "actors": [
+            "map-holder"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L130.1",
+      "text": "**Unproven:** stays open in the register until its routed phase returns; a refuted one closes `refuted`, an inconclusive one stays in the record with its deciding observation.",
+      "rules": [
+        {
+          "id": "L1-275",
+          "kind": "inquisition",
+          "rule": "An unproven finding stays open in the register until its routed phase returns.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-276",
+          "kind": "inquisition",
+          "rule": "A refuted finding closes refuted; an inconclusive one stays in the record with its deciding observation.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L132.1",
+      "text": "**Judgment call:** a Question for the user, prepared by the standard's Question Tickets rules.",
+      "rules": [
+        {
+          "id": "L1-277",
+          "kind": "escalation",
+          "rule": "A judgment call is filed as a Question for the user, prepared by the standard's Question Tickets rules.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L134.1",
+      "text": "Done when every register row has a disposition or a routed phase in flight.",
+      "rules": [
+        {
+          "id": "L1-278",
+          "kind": "inquisition",
+          "rule": "Triage is done when every register row has a disposition or a routed phase in flight.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L138.1",
+      "text": "A blocker or should that Break proved with a red test, whose fix is **well-defined**, gets it prepared now: one obvious fix, inside one area, small, touching no contract, Decision Record or public interface.",
+      "rules": [
+        {
+          "id": "L1-279",
+          "kind": "inquisition",
+          "rule": "Prepare a patch now for a blocker or should that Break proved with a red test and whose fix is well-defined: one obvious fix, inside one area, small, touching no contract, Decision Record or public interface.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L140.1",
+      "text": "Any doubt means no patch.",
+      "rules": [
+        {
+          "id": "L1-280",
+          "kind": "inquisition",
+          "rule": "Any doubt means no patch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L141.1",
+      "text": "Nits are never patched.",
+      "rules": [
+        {
+          "id": "L1-281",
+          "kind": "inquisition",
+          "rule": "Nits are never patched.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L143.1",
+      "text": "Brief a `code-writer` in Bug mode on the Bug's own branch, `<BUG-KEY>-<slug>`, cut from the audit SHA, with the Bug's base SHA and owned paths posted on it.",
+      "rules": [
+        {
+          "id": "L1-282",
+          "kind": "inquisition",
+          "rule": "Brief a code-writer in Bug mode on the Bug's own branch <BUG-KEY>-<slug>, cut from the audit SHA, with the Bug's base SHA and owned paths posted on it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L144.1",
+      "text": "It cherry-picks the finding's red-test commit first, then commits the fix that turns that test green.",
+      "rules": [
+        {
+          "id": "L1-283",
+          "kind": "inquisition",
+          "rule": "The patch code-writer cherry-picks the finding's red-test commit first, then commits the fix that turns that test green.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L145.1",
+      "text": "Attach the branch and SHA to the Bug, then unassign it: it is pickable at once.",
+      "rules": [
+        {
+          "id": "L1-284",
+          "kind": "inquisition",
+          "rule": "Attach the patch branch and SHA to the Bug, then unassign it so it is pickable at once.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L146.1",
+      "text": "The Bug's captain verifies and reviews the patch once, in the Bug's own chain.",
+      "rules": [
+        {
+          "id": "L1-285",
+          "kind": "inquisition",
+          "rule": "The Bug's captain verifies and reviews the patch once, in the Bug's own chain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L147.1",
+      "text": "When the lane fails, the fix not well-defined after all or the code-writer returning blocked, record the reason on the Bug and unassign it without a patch.",
+      "rules": [
+        {
+          "id": "L1-286",
+          "kind": "inquisition",
+          "rule": "When the patch lane fails, the fix is not well-defined after all, or the code-writer returns blocked, record the reason on the Bug and unassign it without a patch.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L148.1",
+      "text": "The inquisition merges nothing but its own record.",
+      "rules": [
+        {
+          "id": "L1-287",
+          "kind": "inquisition",
+          "rule": "The inquisition merges nothing but its own record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L149.1",
+      "text": "Done when every Bug filed for the lane is unassigned with its patch attached or its reason recorded.",
+      "rules": [
+        {
+          "id": "L1-288",
+          "kind": "inquisition",
+          "rule": "Patching is done when every Bug filed for the lane is unassigned with its patch attached or its reason recorded.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L154.1",
+      "text": "Done when every applicable phase of every area has returned, every register row has a final disposition, the register and every proof branch are pushed, and each open Bug's reproduction SHA is reachable from a pushed named ref independent of the audit branch: its proof branch or its patch branch, linked on the Bug.",
+      "rules": [
+        {
+          "id": "L1-289",
+          "kind": "inquisition",
+          "rule": "Retention is done when every applicable phase of every area has returned, every register row has a final disposition, the register and every proof branch are pushed, and each open Bug's reproduction SHA is reachable from a pushed named ref independent of the audit branch (its proof branch or its patch branch, linked on the Bug).",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L157.1",
+      "text": "You own that retention until each Bug's captain records adopting it; audit cleanup never deletes those refs.",
+      "rules": [
+        {
+          "id": "L1-290",
+          "kind": "inquisition",
+          "rule": "The captain owns that retention until each Bug's captain records adopting it.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-291",
+          "kind": "worktree",
+          "rule": "Audit cleanup never deletes those retained refs.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L158.1",
+      "text": "A prose, unused-member or drive Bug carries its proof in its body and has no ref to retain.",
+      "rules": [
+        {
+          "id": "L1-292",
+          "kind": "inquisition",
+          "rule": "A prose, unused-member or drive Bug carries its proof in its body and has no ref to retain.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L163.1",
+      "text": "The record is this Inquisition's own last step, through the ordinary docs chain on its ticket branch `<KEY>-<slug>`, cut from the feature tip.",
+      "rules": [
+        {
+          "id": "L1-293",
+          "kind": "inquisition",
+          "rule": "Deliver the Inquisition's record as its own last step, through the ordinary docs chain on its ticket branch <KEY>-<slug> cut from the feature tip.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L164.1",
+      "text": "Brief a `docs-writer` with the pushed register: it writes `dydo/project/inquisitions/<YYYY-MM-DD>-<slug>.md` naming the audit SHA, the commission, the area map with each phase run or its reason, every finding with its severity, sightings and disposition, every unreachable journey with its disposition, the Bugs and patches filed, the nit ticket and the Questions, an empty section recorded as such.",
+      "rules": [
+        {
+          "id": "L1-294",
+          "kind": "inquisition",
+          "rule": "Brief a docs-writer with the pushed register; it writes dydo/project/inquisitions/<YYYY-MM-DD>-<slug>.md naming the audit SHA, the commission, the area map with each phase run or its reason, every finding with its severity, sightings and disposition, every unreachable journey with its disposition, the Bugs and patches filed, the nit ticket and the Questions, an empty section recorded as such.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L168.1",
+      "text": "Set `Implementing`, then `In Review` for a fresh docs `reviewer`, then offer the PR and its Merge Sub-ticket into the feature as any Project ticket does; an audit of main merges its record as an atomic ticket does.",
+      "rules": [
+        {
+          "id": "L1-295",
+          "kind": "linear",
+          "rule": "Set Implementing for the docs-writer of the Inquisition record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-296",
+          "kind": "inquisition",
+          "rule": "Then offer the PR and its Merge Sub-ticket into the feature as any Project ticket does; an audit of main merges its record as an atomic ticket does.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-305",
+          "kind": "linear",
+          "rule": "Set In Review for a fresh docs reviewer of the Inquisition record.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L170.1",
+      "text": "Done when the record's merge review passes.",
+      "rules": [
+        {
+          "id": "L1-297",
+          "kind": "inquisition",
+          "rule": "Record delivery is done when the record's merge review passes.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L175.1",
+      "text": "After the record merges, verify on the feature: the record at its path, every Bug filed and wired, every retained ref live.",
+      "rules": [
+        {
+          "id": "L1-298",
+          "kind": "inquisition",
+          "rule": "After the record merges, verify on the feature: the record at its path, every Bug filed and wired, every retained ref live.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L176.1",
+      "text": "Delete the audit branch, and as parent every group's audit branch, locally, and name their remotes, and any proof branch no open Bug needs, on the record for the user.",
+      "rules": [
+        {
+          "id": "L1-299",
+          "kind": "worktree",
+          "rule": "Delete the audit branch, and as parent every group's audit branch, locally.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-307",
+          "kind": "worktree",
+          "rule": "Name the audit branches' remotes, and any proof branch no open Bug needs, on the record for the user.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L178.1",
+      "text": "Close the Inquisition `Done` and return `done <key>: merged`.",
+      "rules": [
+        {
+          "id": "L1-300",
+          "kind": "inquisition",
+          "rule": "Close the Inquisition Done.",
+          "actors": [
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L1-301",
+          "kind": "return",
+          "rule": "Return done <key>: merged.",
+          "actors": [
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L179.1",
+      "text": "The map holder offers the next round once every blocker and should Bug is fixed.",
+      "rules": [
+        {
+          "id": "L1-302",
+          "kind": "inquisition",
+          "rule": "The map holder offers the next round once every blocker and should Bug is fixed.",
+          "actors": [
+            "map-holder"
+          ]
+        }
+      ],
+      "notRule": null
+    }
+  ]
+}
