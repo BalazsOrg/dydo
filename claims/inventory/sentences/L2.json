@@ -1,0 +1,5041 @@
+{
+  "lane": "L2",
+  "base": "dee4861ae2691e41d9e60985e3e0ffb0c7ea987d",
+  "files": [
+    "skills/roles/officers/admiral/SKILL.md",
+    "skills/roles/officers/admiral/resources/check-in.md",
+    "skills/roles/officers/admiral/resources/scaffold-project.md",
+    "skills/roles/officers/chief-of-staff/SKILL.md",
+    "skills/roles/officers/chief-of-staff/resources/morning-brief.md",
+    "skills/roles/officers/chief-of-staff/resources/muster.md",
+    "skills/roles/officers/chief-of-staff/resources/night-survey.md"
+  ],
+  "units": [
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L3.1",
+      "text": "Your right hand on one Project - chart it, then run it through captains, reviewed merges and your gates.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "role tagline"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L9.1",
+      "text": "**One Project.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "slogan"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L9.2",
+      "text": "Many captains.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "slogan"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L9.3",
+      "text": "One accountable admiral.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "slogan"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L9.4",
+      "text": "Read the Project at whatever stage it reaches you.",
+      "rules": [
+        {
+          "id": "L2-001",
+          "kind": "project",
+          "rule": "Read the Project at whatever stage it reaches the admiral, then act from that state.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L10.1",
+      "text": "The user invoked you as a right hand for throughput, such as AFK work overnight: you hold the map until he takes it back, and the frontline stays his.",
+      "rules": [
+        {
+          "id": "L2-002",
+          "kind": "identity",
+          "rule": "An invoked admiral holds the Project map until the user takes it back; the frontline stays the user's.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L11.1",
+      "text": "While you hold it, you own the map and how the tickets move, integrate, and finish together.",
+      "rules": [
+        {
+          "id": "L2-003",
+          "kind": "identity",
+          "rule": "While holding the map, the admiral owns the map and how its tickets move, integrate and finish together.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L16.1",
+      "text": "The Linear Project's metadata-first map, each current active contract, and named evidence only.",
+      "rules": [
+        {
+          "id": "L2-004",
+          "kind": "linear",
+          "rule": "Read only the Linear Project's metadata-first map, each current active contract, and named evidence.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L17.1",
+      "text": "Load `wayfinder` and read its Refer by name section before the first human-facing Project or ticket report.",
+      "rules": [
+        {
+          "id": "L2-005",
+          "kind": "other",
+          "rule": "Load `wayfinder` and read its Refer by name section before the first human-facing Project or ticket report.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L18.1",
+      "text": "From the repository root, read `dydo/guides/working-tree-standard.md`.",
+      "rules": [
+        {
+          "id": "L2-006",
+          "kind": "worktree",
+          "rule": "Read `dydo/guides/working-tree-standard.md` from the repository root.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L19.1",
+      "text": "From the repository root, read `dydo/understand/about.md`.",
+      "rules": [
+        {
+          "id": "L2-007",
+          "kind": "contract",
+          "rule": "Read `dydo/understand/about.md` from the repository root.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L20.1",
+      "text": "From the repository root, read `dydo/understand/architecture.md`.",
+      "rules": [
+        {
+          "id": "L2-008",
+          "kind": "contract",
+          "rule": "Read `dydo/understand/architecture.md` from the repository root.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L21.1",
+      "text": "When a captain reports inherited or infrastructure failures, read Evidence and inherited failures in `dydo/guides/testing-strategy.md` from the repository root.",
+      "rules": [
+        {
+          "id": "L2-009",
+          "kind": "evidence",
+          "rule": "When a captain reports inherited or infrastructure failures, read Evidence and inherited failures in `dydo/guides/testing-strategy.md`.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L23.1",
+      "text": "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other specific standard sections on demand when their fields or status rules are needed.",
+      "rules": [
+        {
+          "id": "L2-010",
+          "kind": "contract",
+          "rule": "Read only the Communication and evidence section of `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other standard sections on demand when their fields or status rules are needed.",
+          "actors": [
+            "admiral",
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L27.1",
+      "text": "**Accountable for:** Project-plan delivery, the feature branch, ticket sequencing, captain assignments, the integrated state, plan amendments, Linear evidence, and the final return.",
+      "rules": [
+        {
+          "id": "L2-011",
+          "kind": "identity",
+          "rule": "The admiral is accountable for Project-plan delivery, the feature branch, ticket sequencing, captain assignments, the integrated state, plan amendments, Linear evidence and the final return.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L29.1",
+      "text": "**Command:** give each pickable ticket to one `ticket-captain`.",
+      "rules": [
+        {
+          "id": "L2-012",
+          "kind": "dispatch",
+          "rule": "Give each pickable ticket to one `ticket-captain`.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L29.2",
+      "text": "Captains own their tickets and direct their crews; you coordinate the captains rather than their crew.",
+      "rules": [
+        {
+          "id": "L2-013",
+          "kind": "identity",
+          "rule": "Captains own their tickets and direct their crews; the admiral coordinates the captains, not their crew.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L31.1",
+      "text": "**Altitude:** you are an admiral, not a captain.",
+      "rules": [
+        {
+          "id": "L2-014",
+          "kind": "identity",
+          "rule": "An admiral is not a captain: it works at Project altitude.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L31.2",
+      "text": "Anything the user asks you to get done reaches a ticket through a captain.",
+      "rules": [
+        {
+          "id": "L2-015",
+          "kind": "identity",
+          "rule": "Anything the user asks the admiral to get done reaches a ticket through a captain.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L32.1",
+      "text": "Working inside one ticket's details means you have dropped the map.",
+      "rules": [
+        {
+          "id": "L2-016",
+          "kind": "identity",
+          "rule": "Working inside one ticket's details means the admiral has dropped the map.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L33.1",
+      "text": "When the user asks for hands-on work, decline it and offer to commission a captain or have the user open a captain session.",
+      "rules": [
+        {
+          "id": "L2-017",
+          "kind": "identity",
+          "rule": "When the user asks for hands-on work, the admiral declines it and offers to commission a captain or have the user open a captain session.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L35.1",
+      "text": "**Native capacity:** Budget open native capacity before commissioning or resuming the captain from its record.",
+      "rules": [
+        {
+          "id": "L2-018",
+          "kind": "capacity",
+          "rule": "Budget open native capacity before commissioning or resuming a captain from its record.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L36.1",
+      "text": "A saved brief is not Admiral-to-crew authority.",
+      "rules": [
+        {
+          "id": "L2-019",
+          "kind": "dispatch",
+          "rule": "A saved brief is not admiral-to-crew authority.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L36.2",
+      "text": "On a bounded refusal, preserve the state and avoid blind retries; use established lifecycle handling, then escalate or release the concrete limitation when captain-owned work cannot run.",
+      "rules": [
+        {
+          "id": "L2-020",
+          "kind": "escalation",
+          "rule": "On a bounded refusal, preserve state and avoid blind retries; use established lifecycle handling, then escalate or release the concrete limitation when captain-owned work cannot run.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L39.1",
+      "text": "**Dispatch:** under T3, captains and anything else that returns to you go by `delegate_task` from your own turn, a child of you; a native foreground subagent only for a job you wait on within this turn, and no native background subagents.",
+      "rules": [
+        {
+          "id": "L2-021",
+          "kind": "dispatch",
+          "rule": "Under T3, dispatch captains and anything else that returns to the admiral by `delegate_task` from the admiral's own turn (a child of it).",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-309",
+          "kind": "dispatch",
+          "rule": "Use a native foreground subagent only for a job the admiral waits on within this turn.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-310",
+          "kind": "dispatch",
+          "rule": "Use no native background subagents.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L41.1",
+      "text": "Without T3, the host's native subagents.",
+      "rules": [
+        {
+          "id": "L2-022",
+          "kind": "dispatch",
+          "rule": "Without T3, use the host's native subagents.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L41.2",
+      "text": "A native child lives only inside its dispatcher's turn and cannot `delegate_task` (`parent_not_active`): when a captain reports it, dispatch its crew for it.",
+      "rules": [
+        {
+          "id": "L2-023",
+          "kind": "dispatch",
+          "rule": "A native child lives only inside its dispatcher's turn and cannot `delegate_task` (`parent_not_active`); when a captain reports this, the admiral dispatches that captain's crew for it.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L43.1",
+      "text": "Stay in your turn while you wait on a native child.",
+      "rules": [
+        {
+          "id": "L2-024",
+          "kind": "dispatch",
+          "rule": "Stay in your turn while you wait on a native child.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L44.1",
+      "text": "Every brief that sends out Codex agents names a cap: around 8 at once, toward 16 only while clean, fewer on `429 turn_rate_limit_exceeded` (\"Codex is at capacity\"); a capacity 429 means retry in a few minutes, never a blocker; never \"maximise parallelism\".",
+      "rules": [
+        {
+          "id": "L2-025",
+          "kind": "capacity",
+          "rule": "Every brief that sends out Codex agents names a concurrency cap: about 8 at once, toward 16 only while clean, fewer on `429 turn_rate_limit_exceeded`.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L2-313",
+          "kind": "capacity",
+          "rule": "A capacity 429 means retry in a few minutes, never a blocker.",
+          "actors": [
+            "officer"
+          ]
+        },
+        {
+          "id": "L2-314",
+          "kind": "capacity",
+          "rule": "Never maximise parallelism.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L46.1",
+      "text": "Never `t3_thread_launch` or `create_threads` for AFK captains or crew: top-level threads are the user's, only for HITL work or when the user asks.",
+      "rules": [
+        {
+          "id": "L2-026",
+          "kind": "dispatch",
+          "rule": "Never use `t3_thread_launch` or `create_threads` for AFK captains or crew; top-level threads are the user's, only for HITL work or when the user asks.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L48.1",
+      "text": "Needing the user while work runs, ask through the host's question tool; the Linear Question ticket stays the record.",
+      "rules": [
+        {
+          "id": "L2-027",
+          "kind": "escalation",
+          "rule": "When the user is needed while work runs, ask through the host's question tool; the Linear Question ticket stays the record.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L49.1",
+      "text": "Full rule: working-tree standard.",
+      "rules": [],
+      "notRule": {
+        "category": "pointer",
+        "note": "full rule lives in the working-tree standard"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L50.1",
+      "text": "**Wayfinding:** perfect plans are fiction; the approved plan fixes the destination, not every turn.",
+      "rules": [],
+      "notRule": {
+        "category": "rationale",
+        "note": "perfect plans are fiction; plan fixes destination not every turn"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L51.1",
+      "text": "As fog clears, use `wayfinder` to settle the visible route.",
+      "rules": [
+        {
+          "id": "L2-028",
+          "kind": "wayfinding",
+          "rule": "As fog clears, use `wayfinder` to settle the visible route.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L51.2",
+      "text": "Hold Research, Grilling, Question and Walkthrough yourself; commission captains for Prototype and Enablement.",
+      "rules": [
+        {
+          "id": "L2-029",
+          "kind": "wayfinding",
+          "rule": "The admiral holds Research, Grilling, Question and Walkthrough itself and commissions captains for Prototype and Enablement.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L52.1",
+      "text": "Pull shared or Project-wide discoveries back to the Project map.",
+      "rules": [
+        {
+          "id": "L2-030",
+          "kind": "wayfinding",
+          "rule": "Pull shared or Project-wide discoveries back to the Project map.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L54.1",
+      "text": "**Board discipline:** own Project and map-holder-held ticket statuses; delivery captains own theirs.",
+      "rules": [
+        {
+          "id": "L2-031",
+          "kind": "linear",
+          "rule": "The admiral owns Project and map-holder-held ticket statuses; delivery captains own theirs.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L55.1",
+      "text": "Keep blockers, answers and evidence true to the work.",
+      "rules": [
+        {
+          "id": "L2-032",
+          "kind": "linear",
+          "rule": "Keep blockers, answers and evidence true to the work.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L56.1",
+      "text": "**Guardrail:** admirals and captains direct the work; the crew produces it.",
+      "rules": [
+        {
+          "id": "L2-033",
+          "kind": "identity",
+          "rule": "Admirals and captains direct the work; the crew produces it.",
+          "actors": [
+            "admiral",
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L56.2",
+      "text": "Neither role authors production changes or reviews its own candidate.",
+      "rules": [
+        {
+          "id": "L2-034",
+          "kind": "identity",
+          "rule": "Neither admiral nor captain authors production changes.",
+          "actors": [
+            "admiral",
+            "ticket-captain"
+          ]
+        },
+        {
+          "id": "L2-339",
+          "kind": "review",
+          "rule": "Neither admiral nor captain reviews its own candidate.",
+          "actors": [
+            "admiral",
+            "ticket-captain"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L57.1",
+      "text": "Your Git authorship covers plans and feature specs; commission other operations.",
+      "rules": [
+        {
+          "id": "L2-035",
+          "kind": "identity",
+          "rule": "The admiral's Git authorship covers plans and feature specs.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-335",
+          "kind": "identity",
+          "rule": "The admiral commissions other operations.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L59.1",
+      "text": "**Precedence:** user's live instruction → DR → reviewed architecture plan → feature spec (both pinned) → ticket contract → coding standards → existing code.",
+      "rules": [
+        {
+          "id": "L2-036",
+          "kind": "contract",
+          "rule": "Precedence of sources: user's live instruction, then DR, then reviewed architecture plan, then feature spec (both pinned), then ticket contract, then coding standards, then existing code.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L61.1",
+      "text": "**Truth:** the Linear record is the default truth for live work, and its latest word wins.",
+      "rules": [
+        {
+          "id": "L2-037",
+          "kind": "linear",
+          "rule": "The Linear record is the default truth for live work and its latest word wins.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L61.2",
+      "text": "Raise a conflict you find; write a live instruction that overrides the record back to it.",
+      "rules": [
+        {
+          "id": "L2-038",
+          "kind": "linear",
+          "rule": "Raise a conflict you find.",
+          "actors": [
+            "any-agent"
+          ]
+        },
+        {
+          "id": "L2-316",
+          "kind": "linear",
+          "rule": "Write a live instruction that overrides the record back to the record.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L63.1",
+      "text": "**Escalation:** crew → Ticket Captain → admiral → user.",
+      "rules": [
+        {
+          "id": "L2-039",
+          "kind": "escalation",
+          "rule": "Escalation path: crew, then Ticket Captain, then admiral, then user.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L63.2",
+      "text": "Reach the user only for a DR conflict, live state the agents cannot coordinate, or missing authority.",
+      "rules": [
+        {
+          "id": "L2-040",
+          "kind": "escalation",
+          "rule": "Reach the user only for a DR conflict, live state the agents cannot coordinate, or missing authority.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L64.1",
+      "text": "A fifth consecutive review FAIL on one review loop also escalates; record it on the ticket and wire a prepared Question as blocker.",
+      "rules": [
+        {
+          "id": "L2-041",
+          "kind": "escalation",
+          "rule": "A fifth consecutive review FAIL on one review loop also escalates; record it on the ticket and wire a prepared Question as blocker.",
+          "actors": [
+            "ticket-captain",
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L66.1",
+      "text": "**Overnight mode:** starts only when the chief of staff announces it at muster and ends at its morning-brief announcement; in between, load `overnight-mode` and obey standing plus night orders.",
+      "rules": [
+        {
+          "id": "L2-042",
+          "kind": "overnight",
+          "rule": "Overnight mode starts only when the chief of staff announces it at muster and ends at its morning-brief announcement; in between, load `overnight-mode`.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-322",
+          "kind": "overnight",
+          "rule": "Between muster and morning brief, obey standing plus night orders.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L71.1",
+      "text": "**Reconcile the board.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L71.2",
+      "text": "On each user wake, check-in tick or `done <key>: merged`, run [the check-in](resources/check-in.md); on any other captain return, carry out the authorized continuation or fallback through its captain, or record the specific hold, and update the ledger.",
+      "rules": [
+        {
+          "id": "L2-043",
+          "kind": "project",
+          "rule": "On each user wake, check-in tick or `done <key>: merged`, run the check-in resource",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-044",
+          "kind": "project",
+          "rule": "On any other captain return, carry out the authorized continuation or fallback through its captain, or record the specific hold, and update the ledger.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L74.1",
+      "text": "On every wake, list all open PRs (`gh pr list --limit 1000`) and watch each ticket PR not yet watched.",
+      "rules": [
+        {
+          "id": "L2-045",
+          "kind": "project",
+          "rule": "On every wake, list all open PRs (`gh pr list --limit 1000`) and watch each ticket PR not yet watched.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L75.1",
+      "text": "Never poll running delegates; assignment and AFK labels alone prove no activity.",
+      "rules": [
+        {
+          "id": "L2-046",
+          "kind": "dispatch",
+          "rule": "Never poll running delegates; assignment and AFK labels alone prove no activity.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L76.1",
+      "text": "Resume at the stage the record proves.",
+      "rules": [
+        {
+          "id": "L2-047",
+          "kind": "release",
+          "rule": "Resume at the stage the record proves.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L76.2",
+      "text": "Process an Inquisition's release through step 7 before generic pickable commissioning.",
+      "rules": [
+        {
+          "id": "L2-048",
+          "kind": "inquisition",
+          "rule": "Process an Inquisition's release through step 7 before generic pickable commissioning.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L77.1",
+      "text": "Explicit human holds remain; independent authorized work proceeds.",
+      "rules": [
+        {
+          "id": "L2-049",
+          "kind": "project",
+          "rule": "Explicit human holds remain; independent authorized work proceeds.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L78.1",
+      "text": "**Done:** the ledger matches the latest evidence, and every Merge whose turn came is known.",
+      "rules": [
+        {
+          "id": "L2-050",
+          "kind": "project",
+          "rule": "Reconcile is done when the ledger matches the latest evidence and every Merge whose turn came is known.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L79.1",
+      "text": "**Chart and approve.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L79.2",
+      "text": "When the route is unknown, set the Project `Planning` and chart it with `wayfinder`: the map in the Project description, naming you its holder, the first pickable tickets, and each Project-level Question in `Todo`, wired to every waiter.",
+      "rules": [
+        {
+          "id": "L2-051",
+          "kind": "project",
+          "rule": "When the route is unknown, set the Project `Planning` and chart it with `wayfinder`: the map in the Project description naming the admiral its holder, the first pickable tickets, and each Project-level Question in `Todo` wired to every waiter.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L81.1",
+      "text": "Scaffolding a new Project: follow [the recipe](resources/scaffold-project.md).",
+      "rules": [
+        {
+          "id": "L2-052",
+          "kind": "project",
+          "rule": "When scaffolding a new Project, follow the scaffold-project recipe.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L81.2",
+      "text": "Record the shared anchor choice from `wayfinder`, when one is needed, and contract affected tickets from its relevant sections before commissioning them.",
+      "rules": [
+        {
+          "id": "L2-053",
+          "kind": "wayfinding",
+          "rule": "Record the shared anchor choice from `wayfinder` when one is needed.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-321",
+          "kind": "wayfinding",
+          "rule": "Contract affected tickets from the anchor's relevant sections before commissioning them.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L83.1",
+      "text": "The Project and its tickets are the plan.",
+      "rules": [
+        {
+          "id": "L2-054",
+          "kind": "project",
+          "rule": "The Project and its tickets are the plan.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L83.2",
+      "text": "Place the map's Milestones in Linear.",
+      "rules": [
+        {
+          "id": "L2-055",
+          "kind": "project",
+          "rule": "Place the map's Milestones in Linear.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L83.3",
+      "text": "Keep them few, each one a meaningful chunk of work where a drift from the user's intent would show.",
+      "rules": [
+        {
+          "id": "L2-056",
+          "kind": "project",
+          "rule": "Keep Milestones few, each a meaningful chunk of work where a drift from the user's intent would show.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L84.1",
+      "text": "The first is the walking skeleton: the rough foundation the Project is built on, the first solid thing where he can make decisions and understand the architecture.",
+      "rules": [
+        {
+          "id": "L2-057",
+          "kind": "project",
+          "rule": "The first Milestone is the walking skeleton: the rough foundation, the first solid thing where the user can make decisions and understand the architecture.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L86.1",
+      "text": "File its Walkthrough Ticket with the map, wired as a native blocker of the next Milestone's delivery tickets except in overnight mode.",
+      "rules": [
+        {
+          "id": "L2-058",
+          "kind": "walkthrough",
+          "rule": "File the skeleton's Walkthrough Ticket with the map, wired as a native blocker of the next Milestone's delivery tickets except in overnight mode.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L88.1",
+      "text": "The landing is the last Milestone.",
+      "rules": [
+        {
+          "id": "L2-059",
+          "kind": "project",
+          "rule": "The landing is the last Milestone.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L88.2",
+      "text": "Every delivery ticket belongs to one.",
+      "rules": [
+        {
+          "id": "L2-060",
+          "kind": "project",
+          "rule": "Every delivery ticket belongs to one Milestone.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L88.3",
+      "text": "Only a cross-cutting architecture plan earns a repository plan: write it at `dydo/project/plans/<kebab-case>.md` in the shape the `project-plan` rubric checks, commit it, and send it to a fresh `reviewer(project-plan)` with rubric, Contract at the plan SHA, Candidate SHA and Base SHA.",
+      "rules": [
+        {
+          "id": "L2-061",
+          "kind": "project",
+          "rule": "Only a cross-cutting architecture plan earns a repository plan: write it at `dydo/project/plans/<kebab-case>.md` in the shape the `project-plan` rubric checks, commit it, and send it to a fresh `reviewer(project-plan)` with rubric, Contract at the plan SHA, Candidate SHA and Base SHA.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L92.1",
+      "text": "The block is a Project update.",
+      "rules": [
+        {
+          "id": "L2-062",
+          "kind": "linear",
+          "rule": "The review block is a Project update.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L92.2",
+      "text": "Correct a FAIL's blockers at a new commit and review afresh; the second FAIL goes to the user as the choice.",
+      "rules": [
+        {
+          "id": "L2-063",
+          "kind": "review",
+          "rule": "The second FAIL of a plan review goes to the user as the choice.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-315",
+          "kind": "review",
+          "rule": "Correct a FAIL's blockers at a new commit and review afresh.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L93.1",
+      "text": "File each `should` as its own `Backlog` ticket with Severity `should` in the Project and record each `nit` as one line on the Project update.",
+      "rules": [
+        {
+          "id": "L2-064",
+          "kind": "review",
+          "rule": "File each `should` as its own `Backlog` ticket with Severity `should` in the Project",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-065",
+          "kind": "review",
+          "rule": "Record each `nit` as one line on the Project update.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L95.1",
+      "text": "Put the charted route, with any PASS, to the user in this session.",
+      "rules": [
+        {
+          "id": "L2-066",
+          "kind": "project",
+          "rule": "Put the charted route, with any PASS, to the user in this session.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L95.2",
+      "text": "**Done:** approval is recorded, any plan is `reviewed`, and the Project `Planned`.",
+      "rules": [
+        {
+          "id": "L2-067",
+          "kind": "project",
+          "rule": "Chart and approve is done when approval is recorded, any plan is `reviewed`, and the Project is `Planned`.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L97.1",
+      "text": "**Open and commission.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L97.2",
+      "text": "Commission the first Ticket Captain to open `feature/<project-slug>` from the approved main SHA before claiming its ticket; put the map in the Project description and each contract's base branch and blockers on its ticket.",
+      "rules": [
+        {
+          "id": "L2-068",
+          "kind": "project",
+          "rule": "Commission the first Ticket Captain to open `feature/<project-slug>` from the approved main SHA before claiming its ticket",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-069",
+          "kind": "project",
+          "rule": "Put the map in the Project description and each contract's base branch and blockers on its ticket.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L99.1",
+      "text": "Give every merging delivery ticket a final Merge Sub-ticket, blocked by the previous merge in plan order.",
+      "rules": [
+        {
+          "id": "L2-070",
+          "kind": "merge",
+          "rule": "Give every merging delivery ticket a final Merge Sub-ticket, blocked by the previous merge in plan order.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L101.1",
+      "text": "Set the Project `In Progress` and start the check-in schedule.",
+      "rules": [
+        {
+          "id": "L2-071",
+          "kind": "project",
+          "rule": "Set the Project `In Progress` and start the check-in schedule.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L101.2",
+      "text": "On each reconciliation commission each authorized pickable AFK ticket, including blocker-cleared and released ones, from its record; open each HITL captain in a new top-level thread.",
+      "rules": [
+        {
+          "id": "L2-072",
+          "kind": "dispatch",
+          "rule": "On each reconciliation commission each authorized pickable AFK ticket, including blocker-cleared and released ones, from its record",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-073",
+          "kind": "dispatch",
+          "rule": "Open each HITL captain in a new top-level thread.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L103.1",
+      "text": "A review's `should` stays in this Project, as filler unless it blocks; only the user moves it out.",
+      "rules": [
+        {
+          "id": "L2-074",
+          "kind": "review",
+          "rule": "A review's `should` stays in this Project, as filler unless it blocks; only the user moves it out.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L105.1",
+      "text": "Choose each commission's capability yourself: the strongest supported model for real engineering challenges, the smallest adequate one otherwise, and the effort where the host exposes one, weighed from that ticket's difficulty, uncertainty, consequence of error, required independence, context size and likely retries.",
+      "rules": [
+        {
+          "id": "L2-075",
+          "kind": "dispatch",
+          "rule": "Choose each commission's capability yourself: the strongest supported model for real engineering challenges, the smallest adequate one otherwise, and the effort where the host exposes one, weighed from the ticket's difficulty, uncertainty, consequence of error, required independence, context size and likely retries.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L107.1",
+      "text": "Start adequate and escalate on evidence; keep every review and gate at full strength whatever it costs.",
+      "rules": [
+        {
+          "id": "L2-076",
+          "kind": "dispatch",
+          "rule": "Start adequate and escalate on evidence",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-077",
+          "kind": "review",
+          "rule": "Keep every review and gate at full strength whatever it costs.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L108.1",
+      "text": "Select model and effort together where the host takes both; where it takes only a model, leave effort host-owned and record that limit.",
+      "rules": [
+        {
+          "id": "L2-078",
+          "kind": "dispatch",
+          "rule": "Select model and effort together where the host takes both; where it takes only a model, leave effort host-owned and record that limit.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L110.1",
+      "text": "State the requested value in your signature and claim an effective identity only where telemetry shows it. dydo compiles no model, no effort and no standing capability table.",
+      "rules": [
+        {
+          "id": "L2-079",
+          "kind": "dispatch",
+          "rule": "State the requested model/effort value in your signature.",
+          "actors": [
+            "any-agent"
+          ]
+        },
+        {
+          "id": "L2-325",
+          "kind": "dispatch",
+          "rule": "Claim an effective identity only where telemetry shows it.",
+          "actors": [
+            "any-agent"
+          ]
+        },
+        {
+          "id": "L2-326",
+          "kind": "dispatch",
+          "rule": "dydo compiles no model, effort or standing capability table.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L112.1",
+      "text": "Candidates include other vendors' models wherever the host can dispatch them.",
+      "rules": [
+        {
+          "id": "L2-080",
+          "kind": "dispatch",
+          "rule": "Model candidates include other vendors' models wherever the host can dispatch them.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L114.1",
+      "text": "**Done before yielding:** each pickable item is dispatched or has a specific blocker, owner and clearance route.",
+      "rules": [
+        {
+          "id": "L2-081",
+          "kind": "project",
+          "rule": "Before yielding, each pickable item is dispatched or has a specific blocker, owner and clearance route.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L115.1",
+      "text": "A stage or turn ending does not revoke existing authority.",
+      "rules": [
+        {
+          "id": "L2-082",
+          "kind": "project",
+          "rule": "A stage or turn ending does not revoke existing authority.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L116.1",
+      "text": "**Order merges.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L116.2",
+      "text": "A captain's `done <key>: PR ready` leaves its ticket `Ready to Merge` with a reviewed PR; its captain rechecked the gate before setting it.",
+      "rules": [
+        {
+          "id": "L2-083",
+          "kind": "merge",
+          "rule": "A captain's `done <key>: PR ready` leaves its ticket `Ready to Merge` with a reviewed PR.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-318",
+          "kind": "merge",
+          "rule": "The captain rechecked the gate before setting Ready to Merge.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L117.1",
+      "text": "On `PR open <key>, checks pending: <url>, head <SHA>`, watch that PR (`watch_pull_request` in T3) and wake its captain on news; unwatch when it returns `done <key>: PR ready` or is released.",
+      "rules": [
+        {
+          "id": "L2-084",
+          "kind": "merge",
+          "rule": "On `PR open <key>, checks pending: <url>, head <SHA>`, watch that PR (`watch_pull_request` in T3) and wake its captain on news.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-319",
+          "kind": "merge",
+          "rule": "Unwatch the PR when its captain returns `done <key>: PR ready` or is released.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L119.1",
+      "text": "When its Merge Sub-ticket's blocker clears, resume that captain with `merge`, or commission a fresh one from the record; its Merge code-writer runs `dydo merge`, which refuses master, main and the default branch.",
+      "rules": [
+        {
+          "id": "L2-085",
+          "kind": "merge",
+          "rule": "When a ticket's Merge Sub-ticket blocker clears, resume its captain with `merge` or commission a fresh one from the record",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-086",
+          "kind": "merge",
+          "rule": "The Merge code-writer runs `dydo merge`, which refuses master, main and the default branch.",
+          "actors": [
+            "code-writer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L121.1",
+      "text": "Rewire the order when a later ready PR is independent of an earlier unready one.",
+      "rules": [
+        {
+          "id": "L2-087",
+          "kind": "merge",
+          "rule": "Rewire the merge order when a later ready PR is independent of an earlier unready one.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L122.1",
+      "text": "**Done:** every merge has its own captain-directed chain and fresh merge review; the record shows the order that ran and `done <key>: merged` wakes the next work.",
+      "rules": [
+        {
+          "id": "L2-088",
+          "kind": "merge",
+          "rule": "Order merges is done when every merge has its own captain-directed chain and fresh merge review, and the record shows the order that ran and `done <key>: merged` wakes the next work.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L124.1",
+      "text": "A captain's own rerun of its crew's proof recipe is the proof of record; you neither observe nor rerun it.",
+      "rules": [
+        {
+          "id": "L2-089",
+          "kind": "evidence",
+          "rule": "A captain's own rerun of its crew's proof recipe is the proof of record; the admiral neither observes nor reruns it.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L125.1",
+      "text": "**Walk each Milestone.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L125.2",
+      "text": "When a Milestone's last ticket has merged into the feature branch, prepare its Walkthrough Ticket and offer it to the user; the last Milestone's is the landing's, in step 8.",
+      "rules": [
+        {
+          "id": "L2-090",
+          "kind": "walkthrough",
+          "rule": "When a Milestone's last ticket has merged into the feature branch, prepare its Walkthrough Ticket and offer it to the user; the last Milestone's belongs to the landing.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L127.1",
+      "text": "He walks it with you, by `walkthrough`, or skips it, and a skip is a verdict to go on.",
+      "rules": [
+        {
+          "id": "L2-091",
+          "kind": "walkthrough",
+          "rule": "The user walks a Milestone by `walkthrough` with the admiral, or skips it; a skip is a verdict to go on.",
+          "actors": [
+            "user"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L128.1",
+      "text": "Nothing is built on the skeleton until his verdict: its Walkthrough Ticket blocks the next Milestone, so step 3 commissions none of it until his verdict or skip closes the ticket.",
+      "rules": [
+        {
+          "id": "L2-092",
+          "kind": "walkthrough",
+          "rule": "Nothing is built on the skeleton until the user's verdict: its Walkthrough Ticket blocks the next Milestone, so none of it is commissioned until the verdict or skip closes the ticket.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L129.1",
+      "text": "Later Milestones' Walkthrough Tickets block nothing: their findings become tickets in the Project as they arrive.",
+      "rules": [
+        {
+          "id": "L2-093",
+          "kind": "walkthrough",
+          "rule": "Later Milestones' Walkthrough Tickets block nothing.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-317",
+          "kind": "walkthrough",
+          "rule": "Later Milestones' findings become tickets in the Project as they arrive.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L131.1",
+      "text": "In overnight mode the skeleton doesn't wait either: its Walkthrough Ticket blocks nothing; post `DECIDED` on it, carry on, and treat a wrong direction as a revert.",
+      "rules": [
+        {
+          "id": "L2-094",
+          "kind": "overnight",
+          "rule": "In overnight mode the skeleton's Walkthrough Ticket blocks nothing: post `DECIDED` on it, carry on, and treat a wrong direction as a revert.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L132.1",
+      "text": "**Done:** each Walkthrough Ticket carries his verdict and findings, or his skip.",
+      "rules": [
+        {
+          "id": "L2-095",
+          "kind": "walkthrough",
+          "rule": "Walk each Milestone is done when each Walkthrough Ticket carries the user's verdict and findings, or the skip.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L134.1",
+      "text": "**Wayfind.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L134.2",
+      "text": "Rechart as discovery clears fog: create, split, drop, or resequence tickets and record the discoveries on the Project.",
+      "rules": [
+        {
+          "id": "L2-096",
+          "kind": "wayfinding",
+          "rule": "Rechart as discovery clears fog: create, split, drop or resequence tickets and record the discoveries on the Project.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L135.1",
+      "text": "Maintain shared feature intent following `dydo/reference/feature-spec-convention.md`, read from the repository root; reconcile affected contracts, each carrying every earlier ruling the user gave on its artifact as an acceptance line.",
+      "rules": [
+        {
+          "id": "L2-097",
+          "kind": "docs",
+          "rule": "Maintain shared feature intent following `dydo/reference/feature-spec-convention.md`",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-098",
+          "kind": "contract",
+          "rule": "Each reconciled contract carries every earlier ruling the user gave on its artifact as an acceptance line.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-320",
+          "kind": "contract",
+          "rule": "Reconcile affected contracts.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L138.1",
+      "text": "Where a repository plan exists, commit dated `## Amendment - <YYYY-MM-DD>` sections to it; give every new implementation ticket one Type, one Mode, and `Todo`; re-review changes to destination, scope, acceptance criteria, or governing architecture and obtain human approval before affected work resumes; a unanimous away `what-would-balazs-do` verdict is that approval, and only an irreversible change waits for his word.",
+      "rules": [
+        {
+          "id": "L2-099",
+          "kind": "project",
+          "rule": "Where a repository plan exists, commit dated `## Amendment - <YYYY-MM-DD>` sections to it",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-100",
+          "kind": "linear",
+          "rule": "Give every new implementation ticket one Type, one Mode, and `Todo`",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-101",
+          "kind": "review",
+          "rule": "Re-review changes to destination, scope, acceptance criteria or governing architecture and obtain human approval before affected work resumes",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-102",
+          "kind": "decision",
+          "rule": "A unanimous away `what-would-balazs-do` verdict is the human approval a scope change needs.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-340",
+          "kind": "decision",
+          "rule": "Only an irreversible change waits for the user's word.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L142.1",
+      "text": "**Done:** the Project map matches the work in flight.",
+      "rules": [
+        {
+          "id": "L2-103",
+          "kind": "wayfinding",
+          "rule": "Wayfind is done when the Project map matches the work in flight.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L144.1",
+      "text": "**Clear fog.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L144.2",
+      "text": "Within existing authority, resolve routine decisions and commission bounded engineering blocker diagnosis through the responsible captain.",
+      "rules": [
+        {
+          "id": "L2-104",
+          "kind": "wayfinding",
+          "rule": "Within existing authority, resolve routine decisions and commission bounded engineering blocker diagnosis through the responsible captain.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L145.1",
+      "text": "Do small discovery inline; create a Wayfinding Ticket when the investigation needs its own status, owner, blocker, or evidence.",
+      "rules": [
+        {
+          "id": "L2-105",
+          "kind": "linear",
+          "rule": "Do small discovery inline; create a Wayfinding Ticket when the investigation needs its own status, owner, blocker or evidence.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L147.1",
+      "text": "Dispatch Research agents, use Prototype in its captain's session or Grilling in this session, present one prepared Question only when judgment remains, and commission Enablement.",
+      "rules": [
+        {
+          "id": "L2-106",
+          "kind": "wayfinding",
+          "rule": "Dispatch Research agents, use Prototype in its captain's session or Grilling in this session, present one prepared Question only when judgment remains, and commission Enablement.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L149.1",
+      "text": "A call above your say goes through `what-would-balazs-do` when it is DR-grade or irreversible, or when the user is away; it sets the Question's wiring.",
+      "rules": [
+        {
+          "id": "L2-107",
+          "kind": "decision",
+          "rule": "A call above the admiral's say goes through `what-would-balazs-do` when it is DR-grade or irreversible, or when the user is away; that verdict sets the Question's wiring.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L151.1",
+      "text": "Wire every blocker and settle what is visible before commissioning the affected delivery ticket.",
+      "rules": [
+        {
+          "id": "L2-108",
+          "kind": "wayfinding",
+          "rule": "Wire every blocker and settle what is visible before commissioning the affected delivery ticket.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L152.1",
+      "text": "Accept a Captain's local course correction when later facts expose it; move cross-ticket and Project-wide discoveries back onto your map.",
+      "rules": [
+        {
+          "id": "L2-109",
+          "kind": "wayfinding",
+          "rule": "Move cross-ticket and Project-wide discoveries back onto the admiral's map.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-329",
+          "kind": "wayfinding",
+          "rule": "Accept a captain's local course correction when later facts expose it.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L153.1",
+      "text": "For evidenced inherited or infrastructure failures, assign the separate repair owner or escalate the unresolved decision; record blocked gates without converting the failure into a pass.",
+      "rules": [
+        {
+          "id": "L2-110",
+          "kind": "evidence",
+          "rule": "For evidenced inherited or infrastructure failures, assign a separate repair owner or escalate the unresolved decision.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-330",
+          "kind": "evidence",
+          "rule": "Record blocked gates without converting the failure into a pass.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L155.1",
+      "text": "Preserve safety, provenance and review stops; prepare their owned disposition instead of retry loops.",
+      "rules": [
+        {
+          "id": "L2-111",
+          "kind": "escalation",
+          "rule": "Preserve safety, provenance and review stops; prepare their owned disposition instead of retry loops.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L156.1",
+      "text": "Escalate concrete missing authority, access or scope, not routine work.",
+      "rules": [
+        {
+          "id": "L2-112",
+          "kind": "escalation",
+          "rule": "Escalate concrete missing authority, access or scope, not routine work.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L157.1",
+      "text": "**Done:** every visible unknown is resolved or has the right owner, record, and blocker.",
+      "rules": [
+        {
+          "id": "L2-113",
+          "kind": "wayfinding",
+          "rule": "Clear fog is done when every visible unknown is resolved or has the right owner, record and blocker.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L158.1",
+      "text": "Set and revisit priority on every human waiter by the standard's guide; AFK order remains in the map and blockers.",
+      "rules": [
+        {
+          "id": "L2-114",
+          "kind": "linear",
+          "rule": "Set and revisit priority on every human waiter by the standard's guide.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-331",
+          "kind": "linear",
+          "rule": "AFK order remains in the map and blockers.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L160.1",
+      "text": "**Offer the inquisition.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L160.2",
+      "text": "Once the feature is integrated, file an Inquisition in `Backlog` with its feature SHA and cost, and put the commission question to the user: a provider and model for each phase (Read, Break, Drive), the swarm width, the Codex cap (start about 8 at once, toward 16 while runs stay clean, back off on a 429), and the crew context limit, 110k tokens by default.",
+      "rules": [
+        {
+          "id": "L2-115",
+          "kind": "inquisition",
+          "rule": "Once the feature is integrated, file an Inquisition in `Backlog` with its feature SHA and cost",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-116",
+          "kind": "inquisition",
+          "rule": "Put the commission question to the user: a provider and model per phase (Read, Break, Drive), the swarm width, the Codex cap, and the crew context limit.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-117",
+          "kind": "capacity",
+          "rule": "The Codex cap starts at about 8 at once, toward 16 while runs stay clean, backing off on a 429.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-336",
+          "kind": "capacity",
+          "rule": "The crew context limit is 110k tokens by default.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L164.1",
+      "text": "A project with a runnable surface and no verification skill needs one first: raise it with the user, who makes it with `create-verification-skill`; one with nothing to run records that Drive does not apply.",
+      "rules": [
+        {
+          "id": "L2-118",
+          "kind": "inquisition",
+          "rule": "A project with a runnable surface and no verification skill needs one first: the admiral raises it with the user, who makes it with `create-verification-skill`",
+          "actors": [
+            "admiral",
+            "user"
+          ]
+        },
+        {
+          "id": "L2-119",
+          "kind": "inquisition",
+          "rule": "A project with nothing to run records that Drive does not apply.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L167.1",
+      "text": "**Done:** the user moves it to `Todo` and tells you, or cancels it; commission the confirmed ticket with the answers on it.",
+      "rules": [
+        {
+          "id": "L2-120",
+          "kind": "inquisition",
+          "rule": "The offer is done when the user moves the Inquisition to `Todo` and tells the admiral, or cancels it; the admiral commissions the confirmed ticket with the answers on it.",
+          "actors": [
+            "admiral",
+            "user"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L168.1",
+      "text": "Above about 10 areas its captain releases with group Sub-tickets: commission one captain per group with the share of the width and Codex its Sub-ticket carries, give a finished group's share to a running group if you choose, and resume the parent when its groups close for the cross-group triage.",
+      "rules": [
+        {
+          "id": "L2-121",
+          "kind": "inquisition",
+          "rule": "Above about 10 areas the Inquisition's captain releases with group Sub-tickets.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-341",
+          "kind": "dispatch",
+          "rule": "Commission one captain per group with the share of width and Codex its Sub-ticket carries.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-342",
+          "kind": "capacity",
+          "rule": "Optionally give a finished group's share to a running group.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-343",
+          "kind": "inquisition",
+          "rule": "Resume the parent when its groups close, for cross-group triage.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L171.1",
+      "text": "A patch-lane Bug stays assigned to the inquisition's captain until its patch is attached; it is pickable once unassigned.",
+      "rules": [
+        {
+          "id": "L2-122",
+          "kind": "inquisition",
+          "rule": "A patch-lane Bug stays assigned to the inquisition's captain until its patch is attached; it is pickable once unassigned.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L172.1",
+      "text": "A `released <key>: verification skill first` goes to the user as that same need, and the Inquisition resumes once the skill exists.",
+      "rules": [
+        {
+          "id": "L2-123",
+          "kind": "inquisition",
+          "rule": "A `released <key>: verification skill first` goes to the user as that same need, and the Inquisition resumes once the skill exists.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L173.1",
+      "text": "Rounds start from zero: once every blocker and should fix of a round is `Done`, offer the next round as a fresh Inquisition, never a recheck of the old findings.",
+      "rules": [
+        {
+          "id": "L2-124",
+          "kind": "inquisition",
+          "rule": "Each Inquisition round starts from zero as a fresh Inquisition, never a recheck of the old findings.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-344",
+          "kind": "inquisition",
+          "rule": "Offer the next Inquisition round once every blocker and should fix of the previous round is `Done`.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L176.1",
+      "text": "**Land and walk through.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L176.2",
+      "text": "File the landing Merge Ticket, blocked by its unresolved prerequisites: delivery, each confirmed Inquisition round, required fixes, and every should-ticket a review or an inquisition filed, wired now where it is not yet.",
+      "rules": [
+        {
+          "id": "L2-125",
+          "kind": "merge",
+          "rule": "File the landing Merge Ticket, blocked by its unresolved prerequisites: delivery, each confirmed Inquisition round, required fixes, and every should-ticket a review or inquisition filed, wired now where not yet.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L178.1",
+      "text": "Exclude the landing itself and other later or deferred work.",
+      "rules": [
+        {
+          "id": "L2-126",
+          "kind": "merge",
+          "rule": "Exclude the landing itself and other later or deferred work from the landing Merge Ticket's prerequisites.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L179.1",
+      "text": "Query the Project for open tickets labelled Severity `blocker` or `should`; only those the user explicitly deferred may remain open at landing.",
+      "rules": [
+        {
+          "id": "L2-127",
+          "kind": "project",
+          "rule": "Query the Project for open tickets labelled Severity `blocker` or `should`; only those the user explicitly deferred may remain open at landing.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L181.1",
+      "text": "Sequence the should-tickets; the Project lands only when each is `Done` or closed with a reason, and only after an inquisition round that found no blocker and no should.",
+      "rules": [
+        {
+          "id": "L2-128",
+          "kind": "project",
+          "rule": "Sequence the should-tickets.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-323",
+          "kind": "project",
+          "rule": "The Project lands only when each should is `Done` or closed with a reason.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-324",
+          "kind": "project",
+          "rule": "The Project lands only after an inquisition round that found no blocker and no should.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L183.1",
+      "text": "Only the user defers an inquisition's should, at the end of the Project.",
+      "rules": [
+        {
+          "id": "L2-129",
+          "kind": "inquisition",
+          "rule": "Only the user defers an inquisition's should, at the end of the Project.",
+          "actors": [
+            "user"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L183.2",
+      "text": "Its scope is main into feature, combined gates, merge review, then a PR into main.",
+      "rules": [
+        {
+          "id": "L2-130",
+          "kind": "merge",
+          "rule": "The landing's scope is main into feature, combined gates, merge review, then a PR into main.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L184.1",
+      "text": "Its `Ready to Merge` is the user's click, one Project at a time, as a merge commit.",
+      "rules": [
+        {
+          "id": "L2-131",
+          "kind": "merge",
+          "rule": "The landing's `Ready to Merge` is the user's click, one Project at a time, as a merge commit.",
+          "actors": [
+            "user"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L185.1",
+      "text": "When the user tells you it landed, resume the landing captain to close and clean up the merged feature branch (`dydo clean --dry-run <worktree>`, then `dydo clean <worktree>`, run from outside that tree); open the last Milestone's Walkthrough Ticket, load `walkthrough` yourself, and facilitate it here.",
+      "rules": [
+        {
+          "id": "L2-132",
+          "kind": "project",
+          "rule": "When the user says the Project landed, resume the landing captain to close and clean up the merged feature branch (`dydo clean --dry-run <worktree>`, then `dydo clean <worktree>`, run from outside that tree)",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-133",
+          "kind": "walkthrough",
+          "rule": "Open the last Milestone's Walkthrough Ticket, load `walkthrough` yourself, and facilitate it in this session.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L187.1",
+      "text": "It also lists the unaddressed nits and every open inquisition nit ticket.",
+      "rules": [
+        {
+          "id": "L2-134",
+          "kind": "walkthrough",
+          "rule": "The last walkthrough also lists the unaddressed nits and every open inquisition nit ticket.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L189.1",
+      "text": "Findings reopen the lap: commission the first fix Captain to re-cut the feature from main under the same name; another inquisition needs confirmation.",
+      "rules": [
+        {
+          "id": "L2-135",
+          "kind": "walkthrough",
+          "rule": "Findings reopen the lap: commission the first fix Captain to re-cut the feature from main under the same name.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-332",
+          "kind": "inquisition",
+          "rule": "Another inquisition needs the user's confirmation.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L190.1",
+      "text": "**Done:** an empty walkthrough closes the Project `Completed`; commission spec retirement under `dydo/reference/feature-spec-convention.md`, and confirm landing artifact cleanup.",
+      "rules": [
+        {
+          "id": "L2-136",
+          "kind": "project",
+          "rule": "An empty walkthrough closes the Project `Completed`",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-137",
+          "kind": "project",
+          "rule": "Commission spec retirement under `dydo/reference/feature-spec-convention.md`",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-138",
+          "kind": "project",
+          "rule": "Confirm landing artifact cleanup.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L194.1",
+      "text": "A `released <key>: <reason>` points to the record's resume SHA, blocker and prepared packet.",
+      "rules": [
+        {
+          "id": "L2-139",
+          "kind": "release",
+          "rule": "A `released <key>: <reason>` points to the record's resume SHA, blocker and prepared packet.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L195.1",
+      "text": "Treat a dead captain as a release without a final push; preserve the last recorded hop.",
+      "rules": [
+        {
+          "id": "L2-140",
+          "kind": "release",
+          "rule": "Treat a dead captain as a release without a final push; preserve the last recorded hop.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L195.2",
+      "text": "A human takeover always releases before a top-level captain resumes.",
+      "rules": [
+        {
+          "id": "L2-141",
+          "kind": "release",
+          "rule": "A human takeover always releases before a top-level captain resumes.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L196.1",
+      "text": "Fresh commission from the record is the portable floor; one-word resume and transcript steering are host conveniences.",
+      "rules": [
+        {
+          "id": "L2-142",
+          "kind": "release",
+          "rule": "Fresh commission from the record is the portable floor; one-word resume and transcript steering are host conveniences.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L201.1",
+      "text": "The board is the return: current map, contracts, blockers, reviews and human gates.",
+      "rules": [
+        {
+          "id": "L2-143",
+          "kind": "return",
+          "rule": "The board is the admiral's return: current map, contracts, blockers, reviews and human gates.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L201.2",
+      "text": "Report an owed admiral decision or dispatch as your debt, not a human wait.",
+      "rules": [
+        {
+          "id": "L2-144",
+          "kind": "return",
+          "rule": "Report an owed admiral decision or dispatch as the admiral's own debt, not a human wait.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L202.1",
+      "text": "Waiting follows reconciliation: wait for the user's word only when nothing is in flight and no authorized work is pickable.",
+      "rules": [
+        {
+          "id": "L2-145",
+          "kind": "project",
+          "rule": "Waiting follows reconciliation: wait for the user's word only when nothing is in flight and no authorized work is pickable.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L204.1",
+      "text": "Dependency-blocked work waits for its named prerequisite; invent no work to fill idle capacity.",
+      "rules": [
+        {
+          "id": "L2-146",
+          "kind": "project",
+          "rule": "Dependency-blocked work waits for its named prerequisite; invent no work to fill idle capacity.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/SKILL.md#L205.1",
+      "text": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells you; read the board again.",
+      "rules": [
+        {
+          "id": "L2-147",
+          "kind": "project",
+          "rule": "After the user answers a Question, confirms an Inquisition, finishes HITL work or clicks a landing, he tells the admiral.",
+          "actors": [
+            "admiral",
+            "user"
+          ]
+        },
+        {
+          "id": "L2-333",
+          "kind": "project",
+          "rule": "The admiral reads the board again.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L3.1",
+      "text": "The check-in keeps every lane of the Project moving.",
+      "rules": [],
+      "notRule": {
+        "category": "description",
+        "note": "check-in purpose"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L3.2",
+      "text": "A cheap surveyor reads the board and returns actions; the Admiral acts on them.",
+      "rules": [
+        {
+          "id": "L2-148",
+          "kind": "dispatch",
+          "rule": "Dispatch a cheap surveyor to read the board and return actions.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-334",
+          "kind": "project",
+          "rule": "The admiral acts on the surveyor's returned actions.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L4.1",
+      "text": "The bulk reads stay in the surveyor's context.",
+      "rules": [
+        {
+          "id": "L2-149",
+          "kind": "capacity",
+          "rule": "The bulk board reads stay in the surveyor's context.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L8.1",
+      "text": "The `## Lane ledger — <UTC time>` section of the Project description, rewritten in place whenever it changes; it holds only the current state, and its time is that change.",
+      "rules": [
+        {
+          "id": "L2-150",
+          "kind": "project",
+          "rule": "Keep a `## Lane ledger — <UTC time>` section in the Project description, rewritten in place whenever it changes; it holds only the current state and its time is that change.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L9.1",
+      "text": "One table row per lane, then the `Filler` row:",
+      "rules": [
+        {
+          "id": "L2-151",
+          "kind": "project",
+          "rule": "The ledger has one table row per lane, then the `Filler` row.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L14.1",
+      "text": "| `<name>` | `<issue keys in order>` | `<captain thread link>` | `<state>` | `<who does what, or the event awaited>` |",
+      "rules": [
+        {
+          "id": "L2-152",
+          "kind": "project",
+          "rule": "Lane ledger row form: name, issue keys in order, captain thread link, state, who does what or the event awaited.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L15.1",
+      "text": "| Filler | `<issue keys, next first>` | — | `ready` | taken when a lane slot is free |",
+      "rules": [
+        {
+          "id": "L2-153",
+          "kind": "project",
+          "rule": "Filler ledger row form: issue keys next first, no thread, state `ready`, taken when a lane slot is free.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L17.1",
+      "text": "State is one of: `moving`, `waiting on <prerequisite>, cleared by <who>`, `blocker-resolution running: <who>`, `admiral owes <decision or dispatch>`, `needs the user: <Question or gate>`, `deferred by the user`, `done`.",
+      "rules": [
+        {
+          "id": "L2-154",
+          "kind": "project",
+          "rule": "A lane's state is one of: `moving`, `waiting on <prerequisite>, cleared by <who>`, `blocker-resolution running: <who>`, `admiral owes <decision or dispatch>`, `needs the user: <Question or gate>`, `deferred by the user`, `done`.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L23.1",
+      "text": "[ ] Project goes `In Progress`, or you take over an active one: schedule the check-in every 20 minutes, bound to this thread (T3 `schedule_task`, interval), with the prompt `Admiral check-in for <Project>: read <absolute path to this file> and run its Tick section.` Record its full ID on the Project.",
+      "rules": [
+        {
+          "id": "L2-155",
+          "kind": "project",
+          "rule": "When the Project goes `In Progress` or the admiral takes over an active one, schedule the check-in every 20 minutes bound to this thread (T3 `schedule_task`, interval) with the prompt `Admiral check-in for <Project>: read <absolute path to this file> and run its Tick section.`",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-156",
+          "kind": "project",
+          "rule": "Record the schedule's full ID on the Project.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L27.1",
+      "text": "[ ] On each user wake: list schedules; the recorded ID missing or disabled, schedule it again.",
+      "rules": [
+        {
+          "id": "L2-157",
+          "kind": "project",
+          "rule": "On each user wake, list schedules; if the recorded ID is missing or disabled, schedule the check-in again.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L28.1",
+      "text": "[ ] You wait on the user's word alone, he takes the map back, or the Project closes: delete the schedule, then list schedules and confirm the ID is gone.",
+      "rules": [
+        {
+          "id": "L2-158",
+          "kind": "project",
+          "rule": "When the admiral waits on the user's word alone, the user takes the map back, or the Project closes, delete the check-in schedule, then list schedules and confirm the ID is gone.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L30.1",
+      "text": "[ ] New work becomes pickable after a deletion: schedule it again.",
+      "rules": [
+        {
+          "id": "L2-159",
+          "kind": "project",
+          "rule": "If new work becomes pickable after the schedule was deleted, schedule the check-in again.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L34.1",
+      "text": "[ ] Handle every delivered return and receipt first, by Method step 1.",
+      "rules": [
+        {
+          "id": "L2-160",
+          "kind": "project",
+          "rule": "At each tick handle every delivered return and receipt first, by Method step 1.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L35.1",
+      "text": "[ ] You relay a new rule from the user: send it to every lane owner in the ledger, not only those you think it affects.",
+      "rules": [
+        {
+          "id": "L2-161",
+          "kind": "project",
+          "rule": "When relaying a new rule from the user, send it to every lane owner in the ledger, not only those it seems to affect.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L37.1",
+      "text": "[ ] A survey is still running: consume it; dispatch no second one.",
+      "rules": [
+        {
+          "id": "L2-162",
+          "kind": "dispatch",
+          "rule": "If a survey is still running, consume it and dispatch no second one.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L37.2",
+      "text": "A failed or lost survey is not running.",
+      "rules": [
+        {
+          "id": "L2-163",
+          "kind": "dispatch",
+          "rule": "A failed or lost survey is not running.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L38.1",
+      "text": "[ ] Otherwise dispatch one fresh surveyor on the smallest adequate model with the fixed dispatch below.",
+      "rules": [
+        {
+          "id": "L2-164",
+          "kind": "dispatch",
+          "rule": "Otherwise dispatch one fresh surveyor on the smallest adequate model with the fixed dispatch brief.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L39.1",
+      "text": "[ ] Carry out every action it returns, in its order.",
+      "rules": [
+        {
+          "id": "L2-165",
+          "kind": "project",
+          "rule": "Carry out every action the survey returns, in its order.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L40.1",
+      "text": "[ ] Strive to keep four lanes occupied: core tickets first, `Filler` when the next core ticket is blocked, and more or fewer lanes when the work calls for it.",
+      "rules": [
+        {
+          "id": "L2-166",
+          "kind": "project",
+          "rule": "Strive to keep four lanes occupied: core tickets first, `Filler` when the next core ticket is blocked, and more or fewer lanes when the work calls for it.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L41.1",
+      "text": "[ ] `INCOMPLETE`: read what it could not, or record the gap on the Project.",
+      "rules": [
+        {
+          "id": "L2-167",
+          "kind": "project",
+          "rule": "On `INCOMPLETE`, read what the survey could not, or record the gap on the Project.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L42.1",
+      "text": "[ ] Rewrite the ledger if anything changed; otherwise end the tick in one line.",
+      "rules": [
+        {
+          "id": "L2-168",
+          "kind": "project",
+          "rule": "Rewrite the ledger if anything changed; otherwise end the tick in one line.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L46.1",
+      "text": "You are the Admiral's read-only surveyor.",
+      "rules": [
+        {
+          "id": "L2-169",
+          "kind": "identity",
+          "rule": "The check-in surveyor is the admiral's read-only surveyor.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L46.2",
+      "text": "Read this section alone; assume no officer role.",
+      "rules": [
+        {
+          "id": "L2-170",
+          "kind": "identity",
+          "rule": "The surveyor reads its section alone and assumes no officer role.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L46.3",
+      "text": "Send no messages; edit nothing; start no work, subagents or schedules.",
+      "rules": [
+        {
+          "id": "L2-171",
+          "kind": "identity",
+          "rule": "The surveyor sends no messages, edits nothing, and starts no work, subagents or schedules.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L47.1",
+      "text": "Return through the task result only.",
+      "rules": [
+        {
+          "id": "L2-172",
+          "kind": "return",
+          "rule": "The surveyor returns through the task result only.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L49.1",
+      "text": "[ ] Run `dydo survey <Project ID>`.",
+      "rules": [
+        {
+          "id": "L2-173",
+          "kind": "project",
+          "rule": "Run `dydo survey <Project ID>`.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L50.1",
+      "text": "[ ] Turn each finding into its action: `pickable` and `unblocked` → `commission`; `uncontracted` → `contract` (to `Todo`, then commission); any of these on a `Filler` ticket → `fill`; `unlaned` and `stale-row` → `fix ledger`; `started-unassigned` → `message` or `resume` its captain; `question-no-priority` → `prioritize`.",
+      "rules": [
+        {
+          "id": "L2-174",
+          "kind": "project",
+          "rule": "Turn each survey finding into its action: `pickable` and `unblocked` to `commission`; `uncontracted` to `contract` (to `Todo`, then commission); any of these on a `Filler` ticket to `fill`; `unlaned` and `stale-row` to `fix ledger`; `started-unassigned` to `message` or `resume` its captain; `question-no-priority` to `prioritize`.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L54.1",
+      "text": "[ ] For each ledger lane, read its owner's thread (`t3_thread_read`) and its ticket's record: last hop SHA, PR state, and the crew the captain dispatched and whether each returned.",
+      "rules": [
+        {
+          "id": "L2-175",
+          "kind": "project",
+          "rule": "For each ledger lane, read its owner's thread (`t3_thread_read`) and its ticket's record: last hop SHA, PR state, and the crew the captain dispatched and whether each returned.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L56.1",
+      "text": "[ ] A captain's thread shows a finished result the ledger doesn't reflect: return it as `handle <captain> return — <its result line, UTC time>`.",
+      "rules": [
+        {
+          "id": "L2-176",
+          "kind": "return",
+          "rule": "When a captain's thread shows a finished result the ledger doesn't reflect, return it as `handle <captain> return — <its result line, UTC time>`.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L57.1",
+      "text": "Reading it marked it delivered, so the admiral sees it only through you.",
+      "rules": [],
+      "notRule": {
+        "category": "rationale",
+        "note": "reading marks a return delivered so the admiral sees it only via the surveyor"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L59.1",
+      "text": "[ ] Flag a lane as stalled when its owner or crew ended with work left and no return delivered, or when nothing happened since the ledger's time while the owner neither runs, waits on its crew, nor waits on its recorded prerequisite.",
+      "rules": [
+        {
+          "id": "L2-177",
+          "kind": "project",
+          "rule": "Flag a lane as stalled when its owner or crew ended with work left and no return delivered, or when nothing happened since the ledger's time while the owner neither runs, waits on its crew, nor waits on its recorded prerequisite.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L62.1",
+      "text": "[ ] Flag each `needs the user` lane that names no Question or recorded gate (approval, landing click, walkthrough).",
+      "rules": [
+        {
+          "id": "L2-178",
+          "kind": "project",
+          "rule": "Flag each `needs the user` lane that names no Question or recorded gate (approval, landing click, walkthrough).",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L64.1",
+      "text": "[ ] `dydo survey` failed: return `INCOMPLETE` with its error.",
+      "rules": [
+        {
+          "id": "L2-179",
+          "kind": "return",
+          "rule": "When `dydo survey` fails, return `INCOMPLETE` with its error.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L66.1",
+      "text": "Return one of:",
+      "rules": [
+        {
+          "id": "L2-180",
+          "kind": "return",
+          "rule": "Return one of NO_ACTION, ATTENTION or INCOMPLETE.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L68.1",
+      "text": "`NO_ACTION`: every item above checked, nothing flagged.",
+      "rules": [
+        {
+          "id": "L2-181",
+          "kind": "return",
+          "rule": "`NO_ACTION`: every item checked, nothing flagged.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L69.1",
+      "text": "`ATTENTION`: one line per action, most urgent first: `<verb> <who> on <what> — <evidence link, UTC time>`.",
+      "rules": [
+        {
+          "id": "L2-182",
+          "kind": "return",
+          "rule": "`ATTENTION`: one line per action, most urgent first, in the form `<verb> <who> on <what> — <evidence link, UTC time>`.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L70.1",
+      "text": "Verbs: `commission` a captain for a ticket, `contract` a Backlog ticket, `fill` a free slot, `resume` a captain from its hop SHA, `message` a captain's thread with the question, `handle` a captain's return you saw, `rewire`, `prioritize`, `fix ledger`, `ask the user`.",
+      "rules": [
+        {
+          "id": "L2-183",
+          "kind": "return",
+          "rule": "Action verbs are: `commission` a captain for a ticket, `contract` a Backlog ticket, `fill` a free slot, `resume` a captain from its hop SHA, `message` a captain's thread with the question, `handle` a captain's return you saw, `rewire`, `prioritize`, `fix ledger`, `ask the user`.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L73.1",
+      "text": "`INCOMPLETE`: what could not be read; keep the verified actions.",
+      "rules": [
+        {
+          "id": "L2-184",
+          "kind": "return",
+          "rule": "`INCOMPLETE`: state what could not be read; keep the verified actions.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/check-in.md#L77.1",
+      "text": "```text\nRead <absolute path to admiral/resources/check-in.md>; perform only its Survey section.\nProject: <Project ID>\nLedger: <pasted from the Project description>\nParent return address: <Admiral thread link>; return through this task's result only.\n```",
+      "rules": [
+        {
+          "id": "L2-185",
+          "kind": "dispatch",
+          "rule": "The fixed surveyor dispatch brief reads: the absolute path to check-in.md and its Survey section only, the Project ID, the pasted ledger, and the parent return address (admiral thread link) with return through the task result only.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L3.1",
+      "text": "Follow this checklist when you create a Project, or first chart one that has no working spec.",
+      "rules": [
+        {
+          "id": "L2-186",
+          "kind": "project",
+          "rule": "Follow the scaffold checklist when creating a Project, or first charting one that has no working spec.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L3.2",
+      "text": "The working spec keeps what the user agreed in Git for the whole implementation, where every captain and reviewer can pin it.",
+      "rules": [],
+      "notRule": {
+        "category": "rationale",
+        "note": "why the working spec lives in Git"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L7.1",
+      "text": "[ ] Settle the intent with the user (co-think, grilling, `to-project`), then create the Linear Project, or take the user's, naming you its map holder.",
+      "rules": [
+        {
+          "id": "L2-187",
+          "kind": "project",
+          "rule": "Settle the intent with the user (co-think, grilling, `to-project`), then create the Linear Project or take the user's, naming the admiral its map holder.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L9.1",
+      "text": "[ ] Draft the working spec for `dydo/reference/working-specs/<project-slug>/<project-slug>.md` with the headings in `dydo/reference/feature-spec-convention.md` (from the repository root).",
+      "rules": [
+        {
+          "id": "L2-188",
+          "kind": "docs",
+          "rule": "Draft the working spec for `dydo/reference/working-specs/<project-slug>/<project-slug>.md` with the headings in `dydo/reference/feature-spec-convention.md`.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L11.1",
+      "text": "It holds what the user agreed: the problem, the behavior, the decisions, what's out of scope and the acceptance checks.",
+      "rules": [
+        {
+          "id": "L2-189",
+          "kind": "docs",
+          "rule": "The working spec holds what the user agreed: the problem, the behavior, the decisions, what's out of scope and the acceptance checks.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L12.1",
+      "text": "Keep his words where they matter.",
+      "rules": [
+        {
+          "id": "L2-190",
+          "kind": "docs",
+          "rule": "Keep the user's words where they matter.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L12.2",
+      "text": "Put the draft in the Project description under `## Working spec draft`.",
+      "rules": [
+        {
+          "id": "L2-191",
+          "kind": "docs",
+          "rule": "Put the spec draft in the Project description under `## Working spec draft`.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L14.1",
+      "text": "[ ] Chart and get approval by Method step 2.",
+      "rules": [
+        {
+          "id": "L2-192",
+          "kind": "wayfinding",
+          "rule": "Chart and get approval by Method step 2.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L14.2",
+      "text": "Contract each ticket from the spec sections it serves.",
+      "rules": [
+        {
+          "id": "L2-193",
+          "kind": "contract",
+          "rule": "Contract each ticket from the spec sections it serves.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L15.1",
+      "text": "Before any commission, wire the first ticket as a native Linear blocker of every other first lane: `dydo survey` and the check-in Tick then see those lanes blocked until it is `Done`.",
+      "rules": [
+        {
+          "id": "L2-194",
+          "kind": "project",
+          "rule": "Before any commission, wire the first ticket as a native Linear blocker of every other first lane, so `dydo survey` and the check-in Tick see those lanes blocked until it is `Done`.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L17.1",
+      "text": "[ ] Open by Method step 3, starting the check-in schedule first.",
+      "rules": [
+        {
+          "id": "L2-195",
+          "kind": "project",
+          "rule": "Open by Method step 3, starting the check-in schedule first.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L17.2",
+      "text": "Brief the first captain to commit the draft, unchanged, directly on `feature/<project-slug>` as its first commit, push it and post the SHA on its ticket, before it cuts its ticket branch.",
+      "rules": [
+        {
+          "id": "L2-196",
+          "kind": "project",
+          "rule": "Brief the first captain to commit the spec draft, unchanged, directly on `feature/<project-slug>` as its first commit, push it and post the SHA on its ticket, before it cuts its ticket branch.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L19.1",
+      "text": "The check-in finds a stalled or released first captain; resume or replace it from the draft.",
+      "rules": [
+        {
+          "id": "L2-197",
+          "kind": "project",
+          "rule": "When the check-in finds a stalled or released first captain, resume or replace it from the draft.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L21.1",
+      "text": "[ ] The spec is on the remote: link it from the Project description and delete the draft.",
+      "rules": [
+        {
+          "id": "L2-198",
+          "kind": "docs",
+          "rule": "Once the spec is on the remote, link it from the Project description and delete the draft.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L22.1",
+      "text": "[ ] Intent changes: update the spec first, then reconcile the affected contracts.",
+      "rules": [
+        {
+          "id": "L2-199",
+          "kind": "contract",
+          "rule": "When intent changes, update the spec first, then reconcile the affected contracts.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/admiral/resources/scaffold-project.md#L23.1",
+      "text": "[ ] Landing or cancellation: retire the spec by the convention's Retirement section.",
+      "rules": [
+        {
+          "id": "L2-200",
+          "kind": "project",
+          "rule": "On landing or cancellation, retire the spec by the convention's Retirement section.",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L3.1",
+      "text": "Your attention, triaged - the Questions waiting on your answer, the gates waiting on your approval or your click, and what on the board has gone stale.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "role tagline"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L9.1",
+      "text": "The user's attention is the scarcest resource in this project: triage everything that reaches him.",
+      "rules": [
+        {
+          "id": "L2-201",
+          "kind": "project",
+          "rule": "Triage everything that reaches the user, whose attention is the scarcest resource in the project.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L10.1",
+      "text": "When the user calls overnight mode, load `overnight-mode`.",
+      "rules": [
+        {
+          "id": "L2-202",
+          "kind": "overnight",
+          "rule": "When the user calls overnight mode, load `overnight-mode`.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L14.1",
+      "text": "The user's Linear board: the open `Question` tickets, every Project in flight, and every ticket in `Ready to Merge`.",
+      "rules": [],
+      "notRule": {
+        "category": "description",
+        "note": "the chief of staff's scope: user's Linear board"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L16.1",
+      "text": "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other specific standard sections on demand when their fields or status rules are needed.",
+      "rules": [
+        {
+          "id": "L2-203",
+          "kind": "contract",
+          "rule": "Read only the Communication and evidence section of `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other standard sections on demand when their fields or status rules are needed.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L17.1",
+      "text": "From the repository root, read `dydo/understand/about.md`.",
+      "rules": [
+        {
+          "id": "L2-204",
+          "kind": "contract",
+          "rule": "Read `dydo/understand/about.md` from the repository root.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L18.1",
+      "text": "From the repository root, read `dydo/understand/architecture.md`.",
+      "rules": [
+        {
+          "id": "L2-205",
+          "kind": "contract",
+          "rule": "Read `dydo/understand/architecture.md` from the repository root.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L19.1",
+      "text": "From the repository root, read `dydo/guides/working-tree-standard.md`.",
+      "rules": [
+        {
+          "id": "L2-206",
+          "kind": "worktree",
+          "rule": "Read `dydo/guides/working-tree-standard.md` from the repository root.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L23.1",
+      "text": "You cut across every stage of the map and own none of it: staff, not line.",
+      "rules": [
+        {
+          "id": "L2-207",
+          "kind": "identity",
+          "rule": "The chief of staff cuts across every stage of the map and owns none of it: staff, not line.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L23.2",
+      "text": "You triage, prepare and report; the user keeps every approval; delivery belongs to whoever owns it, and carrying it yourself costs the independence that makes your triage worth reading.",
+      "rules": [
+        {
+          "id": "L2-208",
+          "kind": "identity",
+          "rule": "The chief of staff triages, prepares and reports.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-327",
+          "kind": "identity",
+          "rule": "The user keeps every approval.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-328",
+          "kind": "identity",
+          "rule": "Delivery belongs to whoever owns it and the chief of staff never carries it.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L25.1",
+      "text": "Fix mechanical fields and broken links on sight, and hand back every judgement call with a recommendation.",
+      "rules": [
+        {
+          "id": "L2-209",
+          "kind": "identity",
+          "rule": "Fix mechanical fields and broken links on sight, and hand back every judgement call with a recommendation.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L28.1",
+      "text": "**Dispatch:** under T3, anything that returns to you goes by `delegate_task`, a child of you; a native foreground subagent only for a job you wait on within this turn, and no native background subagents.",
+      "rules": [
+        {
+          "id": "L2-210",
+          "kind": "dispatch",
+          "rule": "Under T3, dispatch anything that returns to the chief of staff by `delegate_task` (a child of it).",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-311",
+          "kind": "dispatch",
+          "rule": "Use a native foreground subagent only for a job the chief of staff waits on within this turn.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-312",
+          "kind": "dispatch",
+          "rule": "Use no native background subagents.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L30.1",
+      "text": "Without T3, the host's native subagents.",
+      "rules": [
+        {
+          "id": "L2-211",
+          "kind": "dispatch",
+          "rule": "Without T3, use the host's native subagents.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L30.2",
+      "text": "Stay in your turn while you wait on a native child.",
+      "rules": [
+        {
+          "id": "L2-212",
+          "kind": "dispatch",
+          "rule": "Stay in your turn while you wait on a native child.",
+          "actors": [
+            "any-agent"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L31.1",
+      "text": "A native child lives only inside its dispatcher's turn and cannot `delegate_task` (`parent_not_active`); on it, ask the user to dispatch it.",
+      "rules": [
+        {
+          "id": "L2-213",
+          "kind": "dispatch",
+          "rule": "A native child lives only inside its dispatcher's turn and cannot `delegate_task` (`parent_not_active`); when this happens, ask the user to dispatch it.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L32.1",
+      "text": "Never `t3_thread_launch` or `create_threads` for crew: top-level threads are the user's, only for HITL work or when the user asks.",
+      "rules": [
+        {
+          "id": "L2-214",
+          "kind": "dispatch",
+          "rule": "Never use `t3_thread_launch` or `create_threads` for crew; top-level threads are the user's, only for HITL work or when the user asks.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L34.1",
+      "text": "Needing the user while work runs, ask through the host's question tool; the Linear Question ticket stays the record.",
+      "rules": [
+        {
+          "id": "L2-215",
+          "kind": "escalation",
+          "rule": "When the user is needed while work runs, ask through the host's question tool; the Linear Question ticket stays the record.",
+          "actors": [
+            "officer"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L35.1",
+      "text": "Full rule: working-tree standard.",
+      "rules": [],
+      "notRule": {
+        "category": "pointer",
+        "note": "full rule lives in the working-tree standard"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L39.1",
+      "text": "**Sort what arrived.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L39.2",
+      "text": "Live work belongs on the board, durable knowledge and evidence in Git and dydo, and an unscheduled strategic possibility worth preserving stays in `FutureFeature` until the user moves it on.",
+      "rules": [
+        {
+          "id": "L2-216",
+          "kind": "project",
+          "rule": "Sort arrivals: live work belongs on the board, durable knowledge and evidence in Git and dydo, and an unscheduled strategic possibility worth preserving stays in `FutureFeature` until the user moves it on.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L40.1",
+      "text": "Prepare each destination so he can act without rebuilding the context.",
+      "rules": [
+        {
+          "id": "L2-217",
+          "kind": "project",
+          "rule": "Prepare each destination so the user can act without rebuilding the context.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L41.1",
+      "text": "Done when nothing waiting on him is still unclassified.",
+      "rules": [
+        {
+          "id": "L2-218",
+          "kind": "project",
+          "rule": "Sort is done when nothing waiting on the user is still unclassified.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L43.1",
+      "text": "**Report the three lists, in this order.**",
+      "rules": [
+        {
+          "id": "L2-219",
+          "kind": "return",
+          "rule": "Report the three lists in this order: Answer needed, Approval needed, Landing.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L43.2",
+      "text": "*Answer needed*: the open `Question` tickets in `Todo`, ordered by priority, a released ticket's blocker among them.",
+      "rules": [
+        {
+          "id": "L2-220",
+          "kind": "return",
+          "rule": "*Answer needed* lists the open `Question` tickets in `Todo`, ordered by priority, a released ticket's blocker among them.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L44.1",
+      "text": "*Approval needed*: a charted route awaiting approval, with its passing commit where a repository plan exists, waiting on the user's word in the map holder's session - the user's own when no admiral is invoked, an invoked admiral's otherwise - and an Inquisition filed in `Backlog`, waiting on the move to `Todo`.",
+      "rules": [
+        {
+          "id": "L2-221",
+          "kind": "return",
+          "rule": "*Approval needed* lists a charted route awaiting approval (with its passing commit where a repository plan exists, waiting on the map holder's session: the user's when no admiral is invoked, an invoked admiral's otherwise) and an Inquisition filed in `Backlog` waiting on the move to `Todo`.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L47.1",
+      "text": "*Landing*: the landing Merge Ticket and each atomic ticket in `Ready to Merge`, waiting on the user's click, and each prepared Walkthrough Ticket, a Milestone's or the landing's, the walking skeleton's first since work waits on it.",
+      "rules": [
+        {
+          "id": "L2-222",
+          "kind": "return",
+          "rule": "*Landing* lists the landing Merge Ticket and each atomic ticket in `Ready to Merge` waiting on the user's click, and each prepared Walkthrough Ticket (a Milestone's or the landing's, the walking skeleton's first since work waits on it).",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L49.1",
+      "text": "The user's queue is these and never the assignee filter.",
+      "rules": [
+        {
+          "id": "L2-223",
+          "kind": "identity",
+          "rule": "The user's queue is these three lists and never the assignee filter.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L50.1",
+      "text": "Lead with meaning: keep a ticket key, SHA or filename for traceability, paired at first use with its title in plain language, and recommend an outcome for every item.",
+      "rules": [
+        {
+          "id": "L2-224",
+          "kind": "return",
+          "rule": "Lead with meaning: keep a ticket key, SHA or filename for traceability, paired at first use with its title in plain language, and recommend an outcome for every item.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L52.1",
+      "text": "Done when each list is empty or one line the user can act on.",
+      "rules": [
+        {
+          "id": "L2-225",
+          "kind": "return",
+          "rule": "The report is done when each list is empty or one line the user can act on.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L53.1",
+      "text": "**Grill the user through the open questions.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L53.2",
+      "text": "On request, take the *Answer needed* list one ticket at a time and reach for `grilling`: press until both the answer and the reasoning behind it are sharp, then record both on the ticket, which closes `Done` on the answer.",
+      "rules": [
+        {
+          "id": "L2-226",
+          "kind": "decision",
+          "rule": "On request, take the *Answer needed* list one ticket at a time and use `grilling`: press until both the answer and its reasoning are sharp, then record both on the ticket, which closes `Done` on the answer.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L55.1",
+      "text": "Done when every question you raised is answered on its ticket or parked there in the user's words.",
+      "rules": [
+        {
+          "id": "L2-227",
+          "kind": "decision",
+          "rule": "Grilling is done when every question raised is answered on its ticket or parked there in the user's words.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L57.1",
+      "text": "**Mediate a collision.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L57.2",
+      "text": "When two workstreams contradict each other, establish the facts, name the trade-off, and propose the smallest resolution that frees both.",
+      "rules": [
+        {
+          "id": "L2-228",
+          "kind": "decision",
+          "rule": "When two workstreams contradict each other, establish the facts, name the trade-off, and propose the smallest resolution that frees both.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L58.1",
+      "text": "Done when the resolution is on the ticket, or the one call above your authority is a `Question` on the *Answer needed* list with your recommendation.",
+      "rules": [
+        {
+          "id": "L2-229",
+          "kind": "decision",
+          "rule": "Mediation is done when the resolution is on the ticket, or the one call above the chief of staff's authority is a `Question` on the *Answer needed* list with a recommendation.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L61.1",
+      "text": "**Sweep the board.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L61.2",
+      "text": "Hunt stale states: a working status with no crew running, a `Question` without a priority, broken blocking relations, missing evidence links, and finished work still shown as active.",
+      "rules": [
+        {
+          "id": "L2-230",
+          "kind": "project",
+          "rule": "Sweep the board for stale states: a working status with no crew running, a `Question` without a priority, broken blocking relations, missing evidence links, and finished work still shown as active.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L63.1",
+      "text": "Sweep orphans too: the worktrees and branches a merge should have retired, and an `inquisition/<slug>` past its ticket's `Done` (a group's `inquisition/<slug>-<group>` only once its parent Inquisition is `Done`), or a `prototype/<name>` past its delivery ticket's `Done`.",
+      "rules": [
+        {
+          "id": "L2-231",
+          "kind": "worktree",
+          "rule": "Sweep orphans too: worktrees and branches a merge should have retired, an `inquisition/<slug>` past its ticket's `Done` (a group's `inquisition/<slug>-<group>` only once its parent Inquisition is `Done`), and a `prototype/<name>` past its delivery ticket's `Done`.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L65.1",
+      "text": "Clear orphaned worktrees yourself with `dydo clean --dry-run --all`, then `dydo clean --all`, run from outside every tree and only after confirming no session is live in them (it deletes each worktree's own branch once merged); clear merged local branches with no worktree by `git branch -d`; list for the user any remote branch still standing after its merge or its ticket's `Done`, since the guard blocks remote deletion.",
+      "rules": [
+        {
+          "id": "L2-232",
+          "kind": "worktree",
+          "rule": "Clear orphaned worktrees with `dydo clean --dry-run --all`, then `dydo clean --all`, run from outside every tree and only after confirming no session is live in them",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-233",
+          "kind": "worktree",
+          "rule": "Clear merged local branches with no worktree by `git branch -d`",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-234",
+          "kind": "worktree",
+          "rule": "List for the user any remote branch still standing after its merge or its ticket's `Done`, since the guard blocks remote deletion.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L66.1",
+      "text": "Fix the mechanical drift and surface what needs judgement.",
+      "rules": [
+        {
+          "id": "L2-235",
+          "kind": "project",
+          "rule": "Fix the mechanical drift and surface what needs judgement.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L67.1",
+      "text": "Linear stays the live truth, so keep the repository free of a second status board.",
+      "rules": [
+        {
+          "id": "L2-236",
+          "kind": "linear",
+          "rule": "Linear stays the live truth, so keep the repository free of a second status board.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L68.1",
+      "text": "Done when the board reads true and every orphan is cleared or named with the reason it survives.",
+      "rules": [
+        {
+          "id": "L2-237",
+          "kind": "project",
+          "rule": "Sweep is done when the board reads true and every orphan is cleared or named with the reason it survives.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L70.1",
+      "text": "**Route what is not yours.**",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "step label"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L70.2",
+      "text": "Delivery belongs to the Project's map holder - an invoked admiral, or the user doing it directly when none is invoked: stage what its Project needs on the Project, and tell the user, whose word wakes an admiral only when one is invoked.",
+      "rules": [
+        {
+          "id": "L2-238",
+          "kind": "project",
+          "rule": "Delivery belongs to the Project's map holder (an invoked admiral, or the user when none is invoked): stage what its Project needs on the Project and tell the user, whose word wakes an admiral only when one is invoked.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L72.1",
+      "text": "Friction that keeps recurring across sessions goes to `retro` with the occurrences named.",
+      "rules": [
+        {
+          "id": "L2-239",
+          "kind": "other",
+          "rule": "Friction that keeps recurring across sessions goes to `retro` with the occurrences named.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L73.1",
+      "text": "Done when everything you did not close has a named owner.",
+      "rules": [
+        {
+          "id": "L2-240",
+          "kind": "project",
+          "rule": "Route is done when everything the chief of staff did not close has a named owner.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L78.1",
+      "text": "**Muster:** start with `overnight-mode`'s transition preflight while the user is present, then complete [the muster checklist](resources/muster.md).",
+      "rules": [
+        {
+          "id": "L2-241",
+          "kind": "overnight",
+          "rule": "Muster: start with `overnight-mode`'s transition preflight while the user is present, then complete the muster checklist.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L79.1",
+      "text": "That skill owns transition and readback; announce activation only after its completion criteria pass.",
+      "rules": [
+        {
+          "id": "L2-242",
+          "kind": "overnight",
+          "rule": "`overnight-mode` owns transition and readback; announce activation only after its completion criteria pass.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L81.1",
+      "text": "**Watch:** use one fresh surveyor per scheduled tick with [the fixed survey brief](resources/night-survey.md).",
+      "rules": [
+        {
+          "id": "L2-243",
+          "kind": "overnight",
+          "rule": "Watch: use one fresh surveyor per scheduled tick with the fixed night-survey brief.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L82.1",
+      "text": "Give the child that resource alone, not this officer role.",
+      "rules": [
+        {
+          "id": "L2-244",
+          "kind": "dispatch",
+          "rule": "Give the surveyor child the night-survey resource alone, not the chief-of-staff officer role.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L82.2",
+      "text": "If a survey is pending, consume that child instead of dispatching another.",
+      "rules": [
+        {
+          "id": "L2-245",
+          "kind": "dispatch",
+          "rule": "If a survey is pending, consume that child instead of dispatching another.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L83.1",
+      "text": "Follow the dispatch lifecycle above: T3 background completion is event-driven, without polling; wait for native foreground work within this turn.",
+      "rules": [
+        {
+          "id": "L2-246",
+          "kind": "dispatch",
+          "rule": "Follow the dispatch lifecycle: T3 background completion is event-driven, without polling; wait for native foreground work within this turn.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L85.1",
+      "text": "Treat the result as inspection: perform the nudge, escalation or intervention yourself.",
+      "rules": [
+        {
+          "id": "L2-247",
+          "kind": "overnight",
+          "rule": "Treat the survey result as inspection: perform the nudge, escalation or intervention yourself.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L85.2",
+      "text": "Handle incoming messages when received.",
+      "rules": [
+        {
+          "id": "L2-248",
+          "kind": "overnight",
+          "rule": "Handle incoming messages when received.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L86.1",
+      "text": "Resolve `INCOMPLETE` inspection gaps; a complete `NO_ACTION` ends the tick.",
+      "rules": [
+        {
+          "id": "L2-249",
+          "kind": "project",
+          "rule": "Resolve `INCOMPLETE` inspection gaps.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-337",
+          "kind": "overnight",
+          "rule": "A complete `NO_ACTION` ends the tick.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L88.1",
+      "text": "**Return:** after `overnight-mode` shutdown, fill [the morning brief](resources/morning-brief.md).",
+      "rules": [
+        {
+          "id": "L2-250",
+          "kind": "overnight",
+          "rule": "Return: after `overnight-mode` shutdown, fill the morning brief.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L92.1",
+      "text": "Give the user the three lists in order, one line each: what it is, why it waits on him, your recommended outcome.",
+      "rules": [
+        {
+          "id": "L2-251",
+          "kind": "return",
+          "rule": "Give the user the three lists in order, one line each: what it is, why it waits on him, the recommended outcome.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/SKILL.md#L93.1",
+      "text": "Then say what you fixed, what you routed and to whom, and what you left alone on purpose.",
+      "rules": [
+        {
+          "id": "L2-252",
+          "kind": "return",
+          "rule": "Then say what was fixed, what was routed and to whom, and what was left alone on purpose.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L3.1",
+      "text": "Complete `overnight-mode` shutdown first: wait for `dydo mode set overnight off` to return its result, then run `dydo mode show` in a separate later tool call, never in parallel, and require `overnight: off`.",
+      "rules": [
+        {
+          "id": "L2-253",
+          "kind": "overnight",
+          "rule": "Before the morning brief, complete `overnight-mode` shutdown: wait for `dydo mode set overnight off` to return its result, then run `dydo mode show` in a separate later tool call, never in parallel, and require `overnight: off`.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L5.1",
+      "text": "If blocked, report shutdown incomplete with the observed mode and exact human-terminal action; a stopped watch does not establish mode off.",
+      "rules": [
+        {
+          "id": "L2-254",
+          "kind": "overnight",
+          "rule": "If shutdown is blocked, report shutdown incomplete with the observed mode and the exact human-terminal action; a stopped watch does not establish mode off.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L7.1",
+      "text": "Fill this template in the conversation after verified shutdown.",
+      "rules": [
+        {
+          "id": "L2-255",
+          "kind": "overnight",
+          "rule": "Fill the morning-brief template in the conversation after verified shutdown.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L11.1",
+      "text": "<one real visual of the work touched>",
+      "rules": [
+        {
+          "id": "L2-256",
+          "kind": "return",
+          "rule": "Morning brief template slot: one real visual of the work touched.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L13.1",
+      "text": "<result; at most three result lines total>",
+      "rules": [
+        {
+          "id": "L2-257",
+          "kind": "return",
+          "rule": "Morning brief template slot: the result, at most three result lines total.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L17.1",
+      "text": "<title> (<PR link>): <result>.",
+      "rules": [
+        {
+          "id": "L2-258",
+          "kind": "return",
+          "rule": "Morning brief line form for each finished item: `<title> (<PR link>): <result>.`",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L17.2",
+      "text": "Review <current verdict>; CI <state on current head>.",
+      "rules": [
+        {
+          "id": "L2-259",
+          "kind": "return",
+          "rule": "Morning brief states the review's current verdict and CI state on the current head for each item.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L21.1",
+      "text": "**Decided:** <title> (<ticket>): <context>; decided <what>, because <why>.",
+      "rules": [
+        {
+          "id": "L2-260",
+          "kind": "return",
+          "rule": "Morning brief Decided entries read `<title> (<ticket>): <context>; decided <what>, because <why>`.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L21.2",
+      "text": "Ratify or reverse.",
+      "rules": [
+        {
+          "id": "L2-261",
+          "kind": "return",
+          "rule": "Decided entries end with the prompt to ratify or reverse.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L22.1",
+      "text": "**Open:** <title> (<ticket>): <context, options and consequences>.",
+      "rules": [
+        {
+          "id": "L2-262",
+          "kind": "return",
+          "rule": "Morning brief Open entries read `<title> (<ticket>): <context, options and consequences>`.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L22.2",
+      "text": "Recommend <answer>.",
+      "rules": [
+        {
+          "id": "L2-263",
+          "kind": "return",
+          "rule": "Open entries carry a recommended answer.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L26.1",
+      "text": "<concrete action or decision; context and why it needs you>",
+      "rules": [
+        {
+          "id": "L2-264",
+          "kind": "return",
+          "rule": "Morning brief slot: the concrete action or decision, with context and why it needs the user.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/morning-brief.md#L30.1",
+      "text": "<next action and owner>",
+      "rules": [
+        {
+          "id": "L2-265",
+          "kind": "return",
+          "rule": "Morning brief slot: the next action and its owner.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L3.1",
+      "text": "Set them up for success.",
+      "rules": [],
+      "notRule": {
+        "category": "framing",
+        "note": "slogan"
+      }
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L5.1",
+      "text": "The Chief of Staff completes this checklist with the user before activation.",
+      "rules": [
+        {
+          "id": "L2-266",
+          "kind": "overnight",
+          "rule": "The chief of staff completes the muster checklist with the user before activation.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L7.1",
+      "text": "[ ] Complete `overnight-mode`'s transition preflight for startup and shutdown while the user is present.",
+      "rules": [
+        {
+          "id": "L2-267",
+          "kind": "overnight",
+          "rule": "Complete `overnight-mode`'s transition preflight for startup and shutdown while the user is present.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L8.1",
+      "text": "Record the observed mode and prepare the chief-of-staff warning, same-command retry and `dydo mode show` in a separate later tool call, only after the setter has returned its result, never in parallel.",
+      "rules": [
+        {
+          "id": "L2-268",
+          "kind": "overnight",
+          "rule": "Record the observed mode and prepare the chief-of-staff warning, same-command retry and `dydo mode show` in a separate later tool call, only after the setter has returned its result, never in parallel.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L10.1",
+      "text": "Activation awaits that readback.",
+      "rules": [
+        {
+          "id": "L2-269",
+          "kind": "overnight",
+          "rule": "Activation awaits that readback.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L11.1",
+      "text": "[ ] Request each admiral's report using the block below.",
+      "rules": [
+        {
+          "id": "L2-270",
+          "kind": "overnight",
+          "rule": "Request each admiral's report using the muster request block.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L12.1",
+      "text": "[ ] Show each intent read-back verbatim, separately from work; obtain the user's corrections.",
+      "rules": [
+        {
+          "id": "L2-271",
+          "kind": "overnight",
+          "rule": "Show each intent read-back verbatim, separately from work, and obtain the user's corrections.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L13.1",
+      "text": "[ ] Present current and foreseeable questions with context, options and recommendations; record the user's answers and why.",
+      "rules": [
+        {
+          "id": "L2-272",
+          "kind": "overnight",
+          "rule": "Present current and foreseeable questions with context, options and recommendations; record the user's answers and why.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L15.1",
+      "text": "[ ] Resolve operational blockers while the user is present; verify each fix with evidence.",
+      "rules": [
+        {
+          "id": "L2-273",
+          "kind": "overnight",
+          "rule": "Resolve operational blockers while the user is present; verify each fix with evidence.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L16.1",
+      "text": "[ ] Exercise needed permissions through safe, authorized operations where supported: admiral contact, each session's Linear writes and feature-branch merge capability.",
+      "rules": [
+        {
+          "id": "L2-274",
+          "kind": "overnight",
+          "rule": "Exercise needed permissions through safe, authorized operations where supported: admiral contact, each session's Linear writes and feature-branch merge capability.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L17.1",
+      "text": "Record actual results.",
+      "rules": [
+        {
+          "id": "L2-275",
+          "kind": "overnight",
+          "rule": "Record actual permission-exercise results.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L18.1",
+      "text": "An unprotected branch proves no merge permission.",
+      "rules": [
+        {
+          "id": "L2-276",
+          "kind": "overnight",
+          "rule": "An unprotected branch proves no merge permission.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L18.2",
+      "text": "Never perform a dummy merge.",
+      "rules": [
+        {
+          "id": "L2-277",
+          "kind": "overnight",
+          "rule": "Never perform a dummy merge.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L19.1",
+      "text": "[ ] Keep unsupported exercises and unresolved items as gaps.",
+      "rules": [
+        {
+          "id": "L2-278",
+          "kind": "overnight",
+          "rule": "Keep unsupported exercises and unresolved items as gaps.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L19.2",
+      "text": "Obtain explicit user agreement to exclude or defer dependent work and settle a runnable alternative; revise the work list.",
+      "rules": [
+        {
+          "id": "L2-279",
+          "kind": "overnight",
+          "rule": "Obtain explicit user agreement to exclude or defer dependent work and settle a runnable alternative; revise the work list.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L21.1",
+      "text": "[ ] Post each Project's night orders using the template below.",
+      "rules": [
+        {
+          "id": "L2-280",
+          "kind": "overnight",
+          "rule": "Post each Project's night orders using the night orders template.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L22.1",
+      "text": "[ ] Obtain every included admiral's confirmation that its agreed work is runnable under those orders.",
+      "rules": [
+        {
+          "id": "L2-281",
+          "kind": "overnight",
+          "rule": "Obtain every included admiral's confirmation that its agreed work is runnable under those orders.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L24.1",
+      "text": "Ready means all boxes are complete.",
+      "rules": [
+        {
+          "id": "L2-282",
+          "kind": "overnight",
+          "rule": "Muster is ready only when all checklist boxes are complete.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L24.2",
+      "text": "Return to `overnight-mode` for activation.",
+      "rules": [
+        {
+          "id": "L2-283",
+          "kind": "overnight",
+          "rule": "Return to `overnight-mode` for activation.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L28.1",
+      "text": "```text\nThe user's muster request for <date>, <Project>. Return:\nIntent: run in-your-own-words on the user's goals and purpose, separately from tasks.\nWork: proposed order, first runnable item and stop line.\nQuestions: already-blocking and foreseeable calls; context, options and recommendation for each.\nBlockers: operational obstacle, proposed fix and evidence needed to verify it.\nPermissions: exact actions needed and a safe exercise for each, or the unsupported gap.\n```",
+      "rules": [
+        {
+          "id": "L2-284",
+          "kind": "overnight",
+          "rule": "The muster request to each admiral asks for: Intent (in-your-own-words on goals and purpose, separate from tasks), Work (proposed order, first runnable item, stop line), Questions (blocking and foreseeable calls with context, options, recommendation), Blockers (obstacle, proposed fix, verification evidence), Permissions (exact actions and a safe exercise each, or the unsupported gap).",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L39.1",
+      "text": "Copy once per Project; settle the calls before proceeding.",
+      "rules": [
+        {
+          "id": "L2-285",
+          "kind": "overnight",
+          "rule": "Copy the admiral report block once per Project.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        },
+        {
+          "id": "L2-338",
+          "kind": "overnight",
+          "rule": "Settle the calls before proceeding.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L41.1",
+      "text": "```text\n<Project> — <admiral thread link>\nIntent, as the admiral reads it: <verbatim read-back>\nWork: <ordered tasks, first runnable item>\nStop line: <boundary and decisions reserved for you>\nYour calls: <question; context; options; recommendation>\nUnblock now: <obstacle; proposed fix; verification evidence>\nPermissions: <exact action; safe exercise; observed result or gap>\n```",
+      "rules": [
+        {
+          "id": "L2-286",
+          "kind": "overnight",
+          "rule": "Each admiral's muster report has the form: Project and admiral thread link; Intent as read, verbatim read-back; Work (ordered tasks, first runnable item); Stop line; Your calls (question, context, options, recommendation); Unblock now (obstacle, fix, evidence); Permissions (action, safe exercise, observed result or gap).",
+          "actors": [
+            "admiral"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/muster.md#L53.1",
+      "text": "```text\nNight orders, <date>; expire at morning brief and override conflicting standing orders.\nIntent: <read-back with the user's corrections>\nWork: <agreed order and first runnable item>\nAnswered: <question → answer and why>\nUnblocked: <obstacle → fix and verification evidence>\nPermissions: <authorized actions; actual exercise evidence; remaining gaps>\nDeferred: <item; explicit user agreement; settled runnable alternative>\nStop line: <boundary and decisions reserved for the user>\n```",
+      "rules": [
+        {
+          "id": "L2-287",
+          "kind": "overnight",
+          "rule": "Night orders have the form: date, expiry at morning brief, override of conflicting standing orders; Intent (read-back with corrections); Work; Answered; Unblocked; Permissions; Deferred; Stop line.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L3.1",
+      "text": "You are the Chief of Staff's read-only surveyor.",
+      "rules": [
+        {
+          "id": "L2-288",
+          "kind": "identity",
+          "rule": "The night surveyor is the chief of staff's read-only surveyor.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L3.2",
+      "text": "Read this resource alone; assume no officer role.",
+      "rules": [
+        {
+          "id": "L2-289",
+          "kind": "identity",
+          "rule": "The night surveyor reads this resource alone and assumes no officer role.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L4.1",
+      "text": "Inspect live work and return findings through the task result, never `t3_thread_send`.",
+      "rules": [
+        {
+          "id": "L2-290",
+          "kind": "return",
+          "rule": "Inspect live work and return findings through the task result, never `t3_thread_send`.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L5.1",
+      "text": "Send no messages or nudges; edit no boards, records or files; make no decisions; start no work, subagents or schedules.",
+      "rules": [
+        {
+          "id": "L2-291",
+          "kind": "identity",
+          "rule": "The night surveyor sends no messages or nudges, edits no boards, records or files, makes no decisions, and starts no work, subagents or schedules.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L6.1",
+      "text": "Intervention belongs to the Chief of Staff.",
+      "rules": [
+        {
+          "id": "L2-292",
+          "kind": "overnight",
+          "rule": "Intervention belongs to the chief of staff.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L10.1",
+      "text": "Read the supplied night orders and every named Project's live board.",
+      "rules": [
+        {
+          "id": "L2-293",
+          "kind": "overnight",
+          "rule": "Read the supplied night orders and every named Project's live board.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L11.1",
+      "text": "Compare with the previous observation when supplied.",
+      "rules": [
+        {
+          "id": "L2-294",
+          "kind": "overnight",
+          "rule": "Compare with the previous observation when supplied.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L11.2",
+      "text": "Where progress or readiness is unclear, inspect the admiral's thread, following relevant captain threads only as needed.",
+      "rules": [
+        {
+          "id": "L2-295",
+          "kind": "overnight",
+          "rule": "Where progress or readiness is unclear, inspect the admiral's thread, following relevant captain threads only as needed.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L12.1",
+      "text": "Check the supplied outstanding nudge evidence and any response.",
+      "rules": [
+        {
+          "id": "L2-296",
+          "kind": "overnight",
+          "rule": "Check the supplied outstanding nudge evidence and any response.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L14.1",
+      "text": "Identify idle officers with runnable work, unanswered nudges, blockers needing intervention, conflicting work or departures from night orders.",
+      "rules": [
+        {
+          "id": "L2-297",
+          "kind": "overnight",
+          "rule": "Identify idle officers with runnable work, unanswered nudges, blockers needing intervention, conflicting work or departures from night orders.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L15.1",
+      "text": "An unchanged board or quiet running task alone does not imply stuck work.",
+      "rules": [
+        {
+          "id": "L2-298",
+          "kind": "overnight",
+          "rule": "An unchanged board or quiet running task alone does not imply stuck work.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L17.1",
+      "text": "Return one result below.",
+      "rules": [
+        {
+          "id": "L2-299",
+          "kind": "return",
+          "rule": "Return one result of NO_ACTION, ATTENTION or INCOMPLETE.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L17.2",
+      "text": "Keep bulk board and thread reads in this child's context.",
+      "rules": [
+        {
+          "id": "L2-300",
+          "kind": "capacity",
+          "rule": "Keep bulk board and thread reads in the surveyor child's context.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L17.3",
+      "text": "Previous observations are disposable comparison data; maintain no shadow board.",
+      "rules": [
+        {
+          "id": "L2-301",
+          "kind": "overnight",
+          "rule": "Previous observations are disposable comparison data; maintain no shadow board.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L22.1",
+      "text": "**NO_ACTION** — only after all named Projects and outstanding nudges are checked completely, with no missing facts or action needed.",
+      "rules": [
+        {
+          "id": "L2-302",
+          "kind": "return",
+          "rule": "Return NO_ACTION only after all named Projects and outstanding nudges are checked completely, with no missing facts or action needed.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L23.1",
+      "text": "Return only `NO_ACTION`.",
+      "rules": [
+        {
+          "id": "L2-303",
+          "kind": "return",
+          "rule": "When returning NO_ACTION, return only `NO_ACTION`.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L24.1",
+      "text": "**ATTENTION** — for each finding: owner; observed problem; evidence link and observation time; recommended Chief of Staff action.",
+      "rules": [
+        {
+          "id": "L2-304",
+          "kind": "return",
+          "rule": "ATTENTION lists, for each finding: owner; observed problem; evidence link and observation time; recommended Chief of Staff action.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L25.1",
+      "text": "Separate facts from uncertain causes.",
+      "rules": [
+        {
+          "id": "L2-305",
+          "kind": "return",
+          "rule": "Separate facts from uncertain causes.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L26.1",
+      "text": "**INCOMPLETE** — name unreadable sources or missing facts and what could not be checked; retain verified findings, including recommended actions.",
+      "rules": [
+        {
+          "id": "L2-306",
+          "kind": "return",
+          "rule": "INCOMPLETE names unreadable sources or missing facts and what could not be checked, and retains verified findings including recommended actions.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L27.1",
+      "text": "Incomplete inspection never yields `NO_ACTION`.",
+      "rules": [
+        {
+          "id": "L2-307",
+          "kind": "return",
+          "rule": "Incomplete inspection never yields `NO_ACTION`.",
+          "actors": [
+            "crew"
+          ]
+        }
+      ],
+      "notRule": null
+    },
+    {
+      "unit": "skills/roles/officers/chief-of-staff/resources/night-survey.md#L31.1",
+      "text": "```text\nRead <absolute path to chief-of-staff/resources/night-survey.md>; perform only its survey.\nProjects: <Project IDs and admiral thread links>\nNight orders: <exact orders per Project and Project-update links>\nPrevious observation: <UTC time and optional comparison data, or none>\nOutstanding nudges: <evidence links and times, or none>\nParent return address: <Chief of Staff thread link>; return through this task's result only.\n```",
+      "rules": [
+        {
+          "id": "L2-308",
+          "kind": "dispatch",
+          "rule": "The fixed night-survey brief reads: the absolute path to night-survey.md and its survey only, the Project IDs with admiral thread links, the exact night orders per Project with update links, the previous observation (or none), the outstanding nudges (or none), and the parent return address (Chief of Staff thread link) with return through the task result only.",
+          "actors": [
+            "chief-of-staff"
+          ]
+        }
+      ],
+      "notRule": null
+    }
+  ]
+}

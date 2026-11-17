@@ -1,0 +1,3277 @@
+{
+  "group": "K3",
+  "kinds": [
+    "review",
+    "merge",
+    "return"
+  ],
+  "claims": [
+    {
+      "id": "merge.answer-dismissal-with-reason",
+      "kind": "merge",
+      "rule": "Answer each dismissal with a written reason.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-141"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.atomic-ticket-no-merge-subticket",
+      "kind": "merge",
+      "rule": "An atomic ticket has no Merge Sub-ticket: its PR into main carries the reviewer PASS, the captain confirms CI green and sets Ready to Merge, the user clicks the merge, then the captain closes it Done, cleans up and resumes from the record.",
+      "actors": [
+        "ticket-captain",
+        "user"
+      ],
+      "statements": [
+        "L1-152",
+        "L6-031",
+        "L6-099",
+        "L6-014"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L6-014 adds the branch from main as <KEY>-<slug> and the PR target; L6-031, L6-099 and L1-152 add the captain's steps (confirm CI green, set Ready to Merge, close Done, clean up, return done <key>: merged)."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.captain-directs-merge-code-writer",
+      "kind": "merge",
+      "rule": "The captain directs each passed lane's or branch's Merge Sub-ticket with one code-writer who maps conflicts and combined gates and performs the merge, then verifies the integrated result.",
+      "actors": [
+        "ticket-captain",
+        "code-writer"
+      ],
+      "statements": [
+        "L1-123",
+        "L6-091",
+        "L6-147",
+        "L6-180"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.conflict-free-merge-uses-dydo-merge",
+      "kind": "merge",
+      "rule": "A conflict-free merge of the reviewed PR into its feature branch is performed by the Merge code-writer with dydo merge; any other merge, a conflicted one included, stays local with the resolutions applied.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L1-148",
+        "L3-079",
+        "L6-148"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L3-079 adds the flags --match-head-commit <reviewed SHA> --match-base-commit <target tip>."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.dydo-merge-never-default-branch",
+      "kind": "merge",
+      "rule": "Merges go into the feature branch and never into master, main or the default branch; dydo merge and the push guard refuse the default branch, which is the user's, while a conflicted merge's push to its feature branch passes.",
+      "actors": [
+        "code-writer",
+        "admiral",
+        "officer",
+        "any-agent"
+      ],
+      "statements": [
+        "L2-086",
+        "L5-025",
+        "L6-033"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-025 is stated for overnight merges (admiral, officer); L2-086 for the Merge code-writer; L6-033 for any agent and the push guard."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.every-integration-has-merge-subticket",
+      "kind": "merge",
+      "rule": "Every actual merge operation (lane into parent, ticket into feature, landing) has its own Merge Sub-ticket, wired in order, except an atomic ticket's own merge into main.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-075",
+        "L1-167",
+        "L2-070",
+        "L4-157",
+        "L7-107",
+        "L7-116",
+        "L6-164"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-070 speaks of every merging delivery ticket's final Merge Sub-ticket; L1-075 of each lane merge into the parent; L4-157 also names the landing; L7-107 states the atomic exception."
+        },
+        {
+          "type": "action",
+          "note": "L1-075 and L2-070 add wiring (in order, blocked by the previous merge); L4-157 calls it a Merge Ticket."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.handle-existing-checks-then-watch",
+      "kind": "merge",
+      "rule": "Handle the PR's existing checks and comments, then watch it.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-133"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.landing-prerequisites",
+      "kind": "merge",
+      "rule": "The landing Merge Ticket is filed blocked by its unresolved prerequisites (delivery, each confirmed Inquisition round, required fixes, every should-ticket a review or inquisition filed) and excludes the landing itself and later or deferred work.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-125",
+        "L2-126"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.landing-scope",
+      "kind": "merge",
+      "rule": "The landing's scope is main into feature, combined gates, merge review, then a PR into main.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-130"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.landing-user-click",
+      "kind": "merge",
+      "rule": "The landing (one Project at a time) and an atomic ticket wait in Ready to Merge for the user's merge-commit click; the user alone lands the feature on the default branch.",
+      "actors": [
+        "ticket-captain",
+        "user",
+        "map-holder"
+      ],
+      "statements": [
+        "L1-151",
+        "L2-131",
+        "L6-011",
+        "L7-025",
+        "L6-032"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-025 covers both landing and atomic tickets; L1-151 and L2-131 the landing; L6-011 states the user's sole landing on the default branch."
+        },
+        {
+          "type": "wording",
+          "note": "L1-151 and L2-131 say merge-commit click; L7-025 and L6-011 say click or lands."
+        },
+        {
+          "type": "scope",
+          "note": "L6-032 adds that the landing Merge Ticket prepares main into feature and obtains acceptance PASS and that the merge is \"never squash\"; L2-131 says \"as a merge commit, one Project at a time\"."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.merge-command-line-is-receipt",
+      "kind": "merge",
+      "rule": "The merge command's own merged or already integrated line is the merge receipt.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-081"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.merge-done-condition",
+      "kind": "merge",
+      "rule": "Merge is done when merge review passes, or the user's click has landed the atomic ticket.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-153"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.one-watcher-per-pr",
+      "kind": "merge",
+      "rule": "Use one watcher per PR (watch_pull_request in T3, elsewhere one long-running watcher such as Monitor), never a sleep or polling loop.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-134"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.open-pr-with-pass-block",
+      "kind": "merge",
+      "rule": "The PR is opened with its PASS block on the record and in the body (under ## Independent review), using a lone gh pr create --body-file, nothing chained, piped or redirected.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-132",
+        "L3-199"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-132 prescribes the gh pr create form; L3-199 prescribes the heading \"## Independent review\"."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.order-merges-done",
+      "kind": "merge",
+      "rule": "Ordering merges is done when every merge has its own captain-directed chain and fresh merge review, the record shows the order that ran, and done <key>: merged wakes the next work.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-088"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.pin-target-tip-from-branch-ref",
+      "kind": "merge",
+      "rule": "The target tip is pinned from the branch ref (git ls-remote or gh api), never from the PR's baseRefOid or base.sha.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-080"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.pr-body-via-pr-skill",
+      "kind": "merge",
+      "rule": "Write the PR body with the pr skill to dydo/agents/workspace/pr-body-<KEY>.md, listing the should-tickets filed and the nits recorded.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-130"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.pr-ready-own-command",
+      "kind": "merge",
+      "rule": "Run dydo pr-ready --body <that file> as its own command.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-131"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.project-ticket-integration-path",
+      "kind": "merge",
+      "rule": "A Project ticket integrates through its final Merge Sub-ticket.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-030"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.push-branch",
+      "kind": "merge",
+      "rule": "Push the branch.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-129",
+        "L6-169"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.refactor-resolution-no-worse",
+      "kind": "merge",
+      "rule": "A merge resolution that refactored leaves its code no worse than either side.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L1-124",
+        "L3-083",
+        "L6-150"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.refresh-deferred-line",
+      "kind": "merge",
+      "rule": "Refresh the PR body's **Deferred:** line.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-139"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.repo-failure-vs-infra-flake",
+      "kind": "merge",
+      "rule": "Tell repo failures from infra flakes.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-140"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.rest-fallback-when-graphql-exhausted",
+      "kind": "merge",
+      "rule": "With GraphQL exhausted, read the PR and check-runs over REST.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-143"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.resume-when-blocker-clears",
+      "kind": "merge",
+      "rule": "When a ticket's final Merge Sub-ticket blocker clears, its captain resumes from the record (or a fresh captain takes the record) and directs the chain into the contract's target.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-147",
+        "L2-085",
+        "L6-096"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-085 lets the admiral resume with merge or commission a fresh captain from the record; L6-096 lets a fresh captain take the record."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.rewire-order-for-independent-pr",
+      "kind": "merge",
+      "rule": "The merge order is rewired when a later ready PR is independent of an earlier unready one.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-087",
+        "L6-153"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.stay-silent-when-unchanged",
+      "kind": "merge",
+      "rule": "Stay silent when nothing changed.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-142"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.unwatch-before-handoff",
+      "kind": "merge",
+      "rule": "Unwatch the PR before handing off, asking or releasing.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-136"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.verify-bot-finding",
+      "kind": "merge",
+      "rule": "Verify each bot finding against the source and grade it blocker, should or nit as in Review.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-138"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.wake-is-news-not-decision",
+      "kind": "merge",
+      "rule": "A wake is news, not a merge decision: act only on checks and comments newer than the latest push.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-137"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.writer-maps-conflicts",
+      "kind": "merge",
+      "rule": "The merge writer maps the conflicts, the shared seams and what changed since the source review; mapping is done when the merge can be made without choosing policy.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-075",
+        "L3-078"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.writer-pins-and-reads-both-sides",
+      "kind": "merge",
+      "rule": "A merge hop pins source and target branches at their SHAs, the source's PASS, the governing contract and the combined gates (proved before the first edit in place of the five working-tree checks) and reads both sides before naming a resolution.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-074",
+        "L3-015",
+        "L6-040"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L6-040 adds \"instead of the five checks\"; L3-074 adds \"read both sides\"."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "merge.writer-states-resolution-behaviour",
+      "kind": "merge",
+      "rule": "The merge writer states each resolution's intended behaviour.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-076"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.admiral-board-is-return",
+      "kind": "return",
+      "rule": "The board is the admiral's return: current map, contracts, blockers, reviews and human gates.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-143"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.admiral-owed-decision-own-debt",
+      "kind": "return",
+      "rule": "An owed admiral decision or dispatch is reported as the admiral's own debt, not a human wait.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-144"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.attention-action-verbs",
+      "kind": "return",
+      "rule": "Surveyor action verbs are commission, contract, fill, resume, message, handle, rewire, prioritize, fix ledger, ask the user.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-183"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.attention-lists-findings-with-evidence",
+      "kind": "return",
+      "rule": "ATTENTION lists each finding or action with its evidence link and UTC observation time, most urgent first.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-182",
+        "L2-304"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-182 uses one line `<verb> <who> on <what> — <evidence link, UTC time>`; L2-304 lists owner, observed problem, evidence link and time, recommended Chief of Staff action."
+        },
+        {
+          "type": "scope",
+          "note": "L2-182 is the surveyor's shape; L2-304 the project inspector's."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-action-slot",
+      "kind": "return",
+      "rule": "Morning brief slot: the concrete action or decision, with context and why it needs the user.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-264"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-decided-entry-form",
+      "kind": "return",
+      "rule": "Morning brief Decided entries read `<title> (<ticket>): <context>; decided <what>, because <why>`.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-260"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-decided-entry-ratify-prompt",
+      "kind": "return",
+      "rule": "Decided entries end with the prompt to ratify or reverse.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-261"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-finished-item-form",
+      "kind": "return",
+      "rule": "Morning brief line form for each finished item: `<title> (<PR link>): <result>.`",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-258"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-next-action-slot",
+      "kind": "return",
+      "rule": "Morning brief slot: the next action and its owner.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-265"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-open-entry-form",
+      "kind": "return",
+      "rule": "Morning brief Open entries read `<title> (<ticket>): <context, options and consequences>`.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-262"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-result-lines",
+      "kind": "return",
+      "rule": "Morning brief slot: the result, at most three result lines total.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-257"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-verdict-and-ci",
+      "kind": "return",
+      "rule": "Morning brief states the review's current verdict and CI state on the current head for each item.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-259"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.brief-visual",
+      "kind": "return",
+      "rule": "Morning brief slot: one real visual of the work touched.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-256"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.captain-returns-one-line-to-spawner",
+      "kind": "return",
+      "rule": "A spawned captain returns one line to its spawner (done <key>: PR ready, done <key>: merged, released <key>: <reason>, or done <key> for a non-merging Type); everything else lives on the record.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-047",
+        "L1-196",
+        "L1-199"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.cos-answer-needed-list",
+      "kind": "return",
+      "rule": "Answer needed lists the open Question tickets in Todo, ordered by priority, a released ticket's blocker among them.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-220"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.cos-approval-needed-list",
+      "kind": "return",
+      "rule": "Approval needed lists a charted route awaiting approval and an Inquisition filed in Backlog awaiting the move to Todo.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-221"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.cos-landing-list",
+      "kind": "return",
+      "rule": "Landing lists the landing Merge Ticket, each atomic ticket in Ready to Merge awaiting the user's click, and each prepared Walkthrough Ticket.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-222"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.cos-lead-with-meaning-recommend-outcome",
+      "kind": "return",
+      "rule": "Lead with meaning (key, SHA or filename paired with a plain-language title at first use) and recommend an outcome or answer for every item.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-224",
+        "L2-263"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-263 limits to morning-brief Open entries; L2-224 to the three lists."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.cos-report-done-condition",
+      "kind": "return",
+      "rule": "The Chief of Staff report is done when each list is empty or one line the user can act on.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-225"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.cos-say-what-was-fixed-routed",
+      "kind": "return",
+      "rule": "After the lists, say what was fixed, what was routed and to whom, and what was left alone on purpose.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-252"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.cos-three-lists-order",
+      "kind": "return",
+      "rule": "The Chief of Staff reports the three lists in order Answer needed, Approval needed, Landing, one line each.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-219",
+        "L2-251"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-251 adds what each line holds (what it is, why it waits on the user, recommended outcome)."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.decided-block-form",
+      "kind": "return",
+      "rule": "A DECIDED block reads `DECIDED - result: <result>; immutable contract: <contract>; next: <action>.`",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L7-166"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.docs-inquisition-record",
+      "kind": "return",
+      "rule": "A docs-writer's inquisition-record return names the exact path, blob or content digest and preserved evidence.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-126",
+        "L3-133"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.done-merged",
+      "kind": "return",
+      "rule": "A captain returns done <key>: merged after merge PASS (or the user's click) and cleanup.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-157",
+        "L1-301",
+        "L6-159",
+        "L6-185"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-185 names the condition (after merge PASS and cleanup); L1-157, L1-301 and L6-159 state only the return line at the end of their procedures."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.done-pr-ready",
+      "kind": "return",
+      "rule": "A captain returns done <key>: PR ready when its PR is offered at Ready to Merge (the Inquisition captain when it offers the record's PR).",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-146",
+        "L1-198",
+        "L6-095",
+        "L6-120"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L6-120 names the Inquisition captain; L1-198 the atomic ticket; L6-095 the Project captain."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.fail-block-form",
+      "kind": "return",
+      "rule": "A FAIL block reads `FAIL - rubric/type: <rubric>; contract <ref>; candidate <SHA>; base <SHA>; reviewer/model: <name>; gates <N/N>. 1. Where; severity; wrong; why; required correction; owner. Evidence: <link>.`",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L7-164"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.finding-severity-and-axis-slot",
+      "kind": "return",
+      "rule": "Each finding in a FAIL or PASS tail carries severity and axis in the wrong: slot as \"wrong: <axis>: <fact>\", axis being contract, standards, gates or security.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-127"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.following-fix-ticket-if-dependent",
+      "kind": "return",
+      "rule": "If a later merge depends on the defective source work, a following fix ticket is filed instead of reverting.",
+      "actors": [
+        "ticket-captain",
+        "reviewer"
+      ],
+      "statements": [
+        "L1-182",
+        "L6-107",
+        "L4-199"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-182 and L6-107 bind the ticket-captain, who files the ticket; L4-199 is the merge reviewer's statement of the same rule, inside its duty to distinguish integration defects from source-work defects."
+        },
+        {
+          "type": "wording",
+          "note": "L1-182 says \"instead of reverting\" and L6-107 \"depends on a reverted source\"; L4-199 says only \"a later dependent merge requires a following fix ticket\"."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.implemented-block-form",
+      "kind": "return",
+      "rule": "An implementation hop returns to the Ticket Captain in the IMPLEMENTED form `IMPLEMENTED - hop/candidate <SHA>; <behavior>; proof: <evidence>; blocker: <none or named blocker>.`",
+      "actors": [
+        "code-writer",
+        "docs-writer",
+        "crew"
+      ],
+      "statements": [
+        "L3-058",
+        "L3-131",
+        "L7-165"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L3-131 lists SHA, files, witness, checks, gaps and evidence for the docs-writer; L7-165 lists hop/candidate, behavior, proof, blocker."
+        },
+        {
+          "type": "scope",
+          "note": "L7-165 names crew; L3-058 the code-writer; L3-131 the docs-writer."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.incomplete-names-gaps",
+      "kind": "return",
+      "rule": "INCOMPLETE names what could not be read or checked (including a failed dydo survey's error) and keeps the verified actions or findings.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-179",
+        "L2-184",
+        "L2-306"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.inquisitor-area-entries-shape",
+      "kind": "return",
+      "rule": "The inquisitor returns to the captain in the given shape, writing the area entries in the return shape; an empty list is written none.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-041",
+        "L4-060",
+        "L4-084",
+        "L4-099"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.inquisitor-confirmed-is-sighting",
+      "kind": "return",
+      "rule": "A confirmed register entry is a sighting with that proof.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-061"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.inquisitor-not-reproduced",
+      "kind": "return",
+      "rule": "Every not-reproduced and inconclusive hypothesis goes under Not reproduced with its observation, marked inconclusive where it is.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-062"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.inquisitor-return-completeness",
+      "kind": "return",
+      "rule": "The inquisitor return is done when every work item is documented or listed as handed back and every hypothesis appears exactly once.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-019",
+        "L4-063"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.length-aims-soft",
+      "kind": "return",
+      "rule": "Brevity is soft: ordinary events aim for at most 800 characters, descriptions and state at most 1,500 characters or 12 lines; a necessary finding, gap, blocker or evidence may exceed it, omitting narration and repetition.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-177",
+        "L7-178"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.linear-post-starts-with-form",
+      "kind": "return",
+      "rule": "Start each Linear post with the applicable form (PASS, FAIL, IMPLEMENTED, DECIDED, RATIFIED, OVERTURNED, STATE).",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-162"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.merge-hop-returns-parents-and-sha",
+      "kind": "return",
+      "rule": "A merge hop returns both parents and the merge SHA.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-084"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.merge-review-distinguishes-defects",
+      "kind": "return",
+      "rule": "The merge reviewer distinguishes integration defects from source-work defects so the Captain can route a fix here or a revert and source rework.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-166"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.no-action-bare",
+      "kind": "return",
+      "rule": "When returning NO_ACTION, return only `NO_ACTION`.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-303"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.no-action-only-when-complete",
+      "kind": "return",
+      "rule": "NO_ACTION means every item was checked completely and nothing is flagged; an incomplete inspection never yields NO_ACTION.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-181",
+        "L2-302",
+        "L2-307"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.ordinary-updates-compact",
+      "kind": "return",
+      "rule": "Ordinary updates expose only counts, exits, failure excerpts and an evidence link, and do not repeat contracts, hashes, full returns, passing-test name dumps, unchanged updates, or token, cost or latency claims.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-159",
+        "L7-160"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.pass-block-form",
+      "kind": "return",
+      "rule": "A PASS block reads `PASS - rubric/type: <rubric>; contract <ref>; candidate <SHA>; base <SHA>; reviewer/model: <name>; applicable tests <N/N>, gates <N/N>. Checks: ... Deferred (optional): ... Evidence: <link>.`",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L7-163"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.pr-open-checks-pending",
+      "kind": "return",
+      "rule": "A delegated captain whose PR awaits checks links the PR, returns PR open <key>, checks pending: <url>, head <SHA> and ends its turn.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-197",
+        "L6-100",
+        "L1-135"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-135 adds linking the PR and ending the turn until its officer wakes it; L1-197 and L6-100 state only the return line."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.proof-only-verdict",
+      "kind": "return",
+      "rule": "A proof-only hop returns to the commissioning captain confirmed with its red-test SHA, not reproduced, or inconclusive with the deciding observation.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-028"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.prototype-hop-returns-demo",
+      "kind": "return",
+      "rule": "A Prototype hop loads the prototype skill and returns runnable-demo evidence and its commit, not the Prove section.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-024",
+        "L3-234"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.research-report-destination",
+      "kind": "return",
+      "rule": "The research report goes to the named ticket as a named evidence comment in the DECIDED form, or without a ticket to dydo/agents/workspace/research-<slug>.md; either way report the answer, destination and what stayed unsettled.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-156",
+        "L3-158",
+        "L3-159"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.research-report-shape",
+      "kind": "return",
+      "rule": "The research report is written once, answer first, with each claim cited (URL, DOI or repo path, commit, exact passage), what stayed unsettled and the families searched including empty ones; it is done when a reader can check any claim and see what was not searched.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-154",
+        "L3-155"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.review-block-is-the-return",
+      "kind": "return",
+      "rule": "The review block is the reviewer's return, in the PASS or FAIL form of the communication protocol with reviewer/model as signature, returned to the invoker even when a read-only host prevents posting.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-197",
+        "L3-200"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.scout-return",
+      "kind": "return",
+      "rule": "A scout returns to the researcher the findings, leads that leave its family, and when the family holds nothing, \"nothing here\" with the list searched.",
+      "actors": [
+        "scout"
+      ],
+      "statements": [
+        "L3-217"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.separate-facts-from-causes",
+      "kind": "return",
+      "rule": "Separate facts from uncertain causes.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-305"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.spec-review-pass-condition",
+      "kind": "return",
+      "rule": "A spec review block is PASS only when a writer can build the spec without being misled.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-187"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.state-block-form",
+      "kind": "return",
+      "rule": "A STATE block reads `STATE - <status>; owner: <role>; candidate or PR: <reference>; next or blocker: <fact>; evidence: <link>.`",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L7-170"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.survey-three-results",
+      "kind": "return",
+      "rule": "The survey crew returns one of NO_ACTION, ATTENTION or INCOMPLETE.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-180",
+        "L2-299"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.surveyor-handle-unreflected-captain-return",
+      "kind": "return",
+      "rule": "When a captain's thread shows a finished result the ledger does not reflect, return it as `handle <captain> return — <its result line, UTC time>`.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-176"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.surveyor-via-task-result",
+      "kind": "return",
+      "rule": "Surveyor and inspector crew return findings through the task result only, never t3_thread_send.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-172",
+        "L2-290"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "return.writer-return-carries-red-proof",
+      "kind": "return",
+      "rule": "A code-writer's return carries its red proof (or for an unused-member Bug its definition and reference search) and the gates run with their exits, in the maintain-verification-skill proof recipe; a Bug fix claims success only with it.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L1-084",
+        "L3-073",
+        "L3-233"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L3-073 adds \"unchanged behaviour still green\"; L3-233 adds the gates run with exits."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.answer-every-finding",
+      "kind": "review",
+      "rule": "Every review finding carries a severity and is answered (fixed, ticketed, recorded or relabelled with evidence); none is dropped, from either verdict.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-104",
+        "L1-109",
+        "L3-203"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-104 and L1-109 are the captain's duty; L3-203 is stated for any agent and adds \"no unlabelled note\"."
+        },
+        {
+          "type": "wording",
+          "note": "L1-104 limits to shoulds and nits; L1-109 and L3-203 say every finding."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.blocker-never-ticket",
+      "kind": "review",
+      "rule": "A review blocker stays a FAIL and never becomes a ticket.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L7-077"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.brief-contents",
+      "kind": "review",
+      "rule": "Each fresh reviewer is briefed with rubric, Contract: <KEY> description as of <Linear updatedAt>, Candidate SHA, Base SHA and the writer's IMPLEMENTED line.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-100"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.cancel-stuck-reviewer",
+      "kind": "review",
+      "rule": "A reviewer stuck on an approval prompt nobody can grant is cancelled and replaced.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-115"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-contract-axis-claimed-behaviours",
+      "kind": "review",
+      "rule": "Contract axis: every behaviour, edge case and risk the contract names is claimed by a scenario or test; a bug fix carries its reproducing test, an unused-member fix its definition and reference search.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-108"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-contract-axis-deviations",
+      "kind": "review",
+      "rule": "Contract axis: every deviation the implementation reported is justified or raised.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-111"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-contract-axis-matches",
+      "kind": "review",
+      "rule": "Contract axis: the candidate matches the pinned contract, the owned paths and the requested outcome.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-105"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-contract-axis-no-creep",
+      "kind": "review",
+      "rule": "Contract axis: nothing beyond the contract; an unrelated improvement is scope creep and a finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-110"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-contract-axis-nothing-dropped",
+      "kind": "review",
+      "rule": "Contract axis: nothing the contract needed from the implement hop was dropped by a later hop.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-109"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-contract-axis-red-proof",
+      "kind": "review",
+      "rule": "Contract axis: the IMPLEMENTED line holds its red proof line; the reviewer reruns it only on a stated doubt.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-107"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-contract-axis-scenarios",
+      "kind": "review",
+      "rule": "Contract axis: every scenario the contract calls for stands unweakened and passes.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-106"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-gates-axis-coverage-stage",
+      "kind": "review",
+      "rule": "Gates axis at the declared coverage stage: read coverage evidence for HCRAP on every touched method; one over the unchanged bar is a finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-120"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-gates-axis-hop",
+      "kind": "review",
+      "rule": "Gates axis at a hop: the writer's affected-feature Light and applicable static run under the testing strategy, every own/reached feature and parent-shared test accounted for, with exact-candidate evidence and owner disposition.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-119"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-gates-axis-mutation",
+      "kind": "review",
+      "rule": "Gates axis: run the project's changed-code mutation gate in its --since <base> form when it has one; a surviving or uncovered mutant is a finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-122"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-read-diff",
+      "kind": "review",
+      "rule": "The code reviewer reads the diff (git diff <base>...<candidate>) and then the code it lands in, enough of each file to judge the whole.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-103"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-read-hops",
+      "kind": "review",
+      "rule": "The code reviewer reads the hops with git log <base>..<candidate>.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-102"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-security-axis-boundaries",
+      "kind": "review",
+      "rule": "Security axis: every boundary the diff touches validates what crosses it, the standards' Security vulnerabilities are asked against every such hunk, and secrets stay out of source and logs.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-124"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-security-axis-concurrency",
+      "kind": "review",
+      "rule": "Security axis: ordering, concurrency and resource lifetime are checked where the diff introduces them.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-126"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-security-axis-edges",
+      "kind": "review",
+      "rule": "Security axis: logic holds at the edges (empty, null, first, last, off-by-one), no fallback masks an impossible state, each error path is handled on purpose.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-125"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-standards-axis-binding",
+      "kind": "review",
+      "rule": "Standards axis: dydo/guides/coding-standards.md and any stack-specific standard bind, including the anti-slop mandate, with the codebase-design lens on every touched seam.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-112"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-standards-axis-built-on-bad-code",
+      "kind": "review",
+      "rule": "Standards axis: already-bad code is a finding when this change builds on it.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-115"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-standards-axis-dead-code",
+      "kind": "review",
+      "rule": "Standards axis: code only tests call, or commented out, is dead.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-116"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-standards-axis-fowler-smells",
+      "kind": "review",
+      "rule": "Standards axis: judge Fowler's twelve smells (Refactoring ch. 3).",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-114"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-standards-axis-no-worse",
+      "kind": "review",
+      "rule": "Standards axis: touched code is no worse than found and smaller, simpler, standard or deeper where warranted; an abstraction or optimisation ahead of need is a finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-113"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-standards-axis-pass-by-construction",
+      "kind": "review",
+      "rule": "Standards axis: shapes that pass by construction (recomputed expected value, mock inside the unit, never-red suite, assertion on prompt wording, metric moved with nothing claimed, unbounded wait or order dependence) are findings.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-118"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.code-standards-axis-test-is-contract",
+      "kind": "review",
+      "rule": "Standards axis: each test is a contract (one claim, named by case and expectation, at a seam a caller observes, that some breach turns red); a test with no such breach is a finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-117"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.codex-reviewer-gets-contract-pasted",
+      "kind": "review",
+      "rule": "A reviewer without Linear access (a Codex seat) gets the contract pasted verbatim into its brief or as a snapshot file, never a pointer to the ticket.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-114"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.corrected-merge-fresh-review",
+      "kind": "review",
+      "rule": "Each corrected merge candidate gets a fresh merge review.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-108"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.docs-review-two-kinds",
+      "kind": "review",
+      "rule": "Documentation changes are two kinds: human-facing dydo documents judged against code or governing intent, and agent-facing documents judged as prompt files that must fire and route.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-128"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.each-rubric-item-verified",
+      "kind": "review",
+      "rule": "Each rubric item or axis ends verified against the source or as a finding, whatever the diff size.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-179",
+        "L4-104"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L4-104 speaks of the four code-review axes; L3-179 of any rubric item."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.fail-block-sent-with-brief",
+      "kind": "review",
+      "rule": "The FAIL block is sent with the brief of the re-review.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-116"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.fail-blockers-binding-to-implementing",
+      "kind": "review",
+      "rule": "A FAIL (one or more blockers) is binding: the record returns to Implementing and the blockers go to a fresh author of the change's kind.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-102",
+        "L7-021"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-102 names the fresh author (code-writer, or docs-writer for documentation); L7-021 states only the status move."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.fail-means-at-least-one-blocker",
+      "kind": "review",
+      "rule": "A FAIL carries at least one blocker.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-201",
+        "L7-173"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.final-merge-proves-acceptance",
+      "kind": "review",
+      "rule": "Acceptance is proved at a final merge (final landing proves Project acceptance).",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-164",
+        "L4-198"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.finding-carries-one-severity",
+      "kind": "review",
+      "rule": "A review block is done when every finding carries exactly one severity and the invoker can act on each without asking.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-187"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.fix-hop-label-changes-recorded",
+      "kind": "review",
+      "rule": "When the fix-hop author changes a finding's severity label after checking it against the source, the change and its reason or evidence is reported and recorded.",
+      "actors": [
+        "ticket-captain",
+        "code-writer",
+        "docs-writer"
+      ],
+      "statements": [
+        "L1-107",
+        "L3-060",
+        "L3-222"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-107 has the captain record every changed label with its reason; L3-060 has the fix hop put the changed label in its IMPLEMENTED behaviour with evidence."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.fix-hop-prefers-narrowing",
+      "kind": "review",
+      "rule": "A fix hop prefers the change that deletes or narrows code; review never grows the PR.",
+      "actors": [
+        "code-writer",
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-062",
+        "L3-114"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-062 binds the code-writer's fix hop and says \"review never grows the PR\"; L3-114 binds the docs-writer and says \"review never grows the change\"."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.full-strength-whatever-cost",
+      "kind": "review",
+      "rule": "Reviews and gates keep full strength whatever the work below or the review costs.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-112",
+        "L2-077"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-112 ties strength to the consequence of error; L2-077 says whatever it costs."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.gate-set-on-exact-candidate",
+      "kind": "review",
+      "rule": "At a gate (final gates, a merge, the landing) the whole gate set applies on that exact candidate, read from its gate record or run by the reviewer.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-123"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.later-rounds-reviewer-choice",
+      "kind": "review",
+      "rule": "Later review rounds take the model and vendor the captain chooses, cross-vendor preferred.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-111"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-fail-routing",
+      "kind": "review",
+      "rule": "A merge review FAIL is owned: an integration defect is fixed inside the Merge Ticket then re-reviewed; a source-work defect is reverted inside Merge, the Merge ticket closed Canceled with the reason, and the source ticket returned to Implementing.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-180",
+        "L1-181",
+        "L6-106",
+        "L7-026"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-181 adds returning the source ticket \"from Ready to Merge\" with the findings; L7-026 states only that a reverting merge FAIL sends the record to Implementing."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-after-merge",
+      "kind": "review",
+      "rule": "Only after the merge is made does a fresh reviewer(merge) judge the integrated candidate.",
+      "actors": [
+        "ticket-captain",
+        "reviewer"
+      ],
+      "statements": [
+        "L1-125",
+        "L6-079",
+        "L6-151"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-artifact-sweep",
+      "kind": "review",
+      "rule": "The merge reviewer sweeps for merge artifacts: conflict markers, duplicated or vanished hunks, a neighbour's change reverted, build products or local files committed.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-161"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-fix-the-unit",
+      "kind": "review",
+      "rule": "The merge reviewer names the merge commit, both parents and the tickets that landed in it.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-160"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-gates-on-merge-commit",
+      "kind": "review",
+      "rule": "Each landed ticket's exact gate commands have run once on this exact merge commit, verified from a gate record naming it or run in the merged tree.",
+      "actors": [
+        "code-writer",
+        "reviewer"
+      ],
+      "statements": [
+        "L3-082",
+        "L4-163"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-082 has the merge code-writer run combined gates on the merge SHA; L4-163 has the reviewer verify a gate record or run them."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-not-substitutable",
+      "kind": "review",
+      "rule": "No review at another level substitutes for the merge review.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-159"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-read-scale",
+      "kind": "review",
+      "rule": "The merge reviewer reads the integrated state at the scale of what landed.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-155"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-reads-record",
+      "kind": "review",
+      "rule": "The merge reviewer reads the Merge Ticket record's pinned source, target and combined gates.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-158"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-scope",
+      "kind": "review",
+      "rule": "Merge review scope is what this merge created or exposed.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-156"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.merge-review-walk-seams",
+      "kind": "review",
+      "rule": "The merge reviewer walks every file, symbol and behaviour two merged tickets both touch.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-162"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.never-self-review",
+      "kind": "review",
+      "rule": "An author never serves as the independent review of its own candidate or delivery; a successful delivery is not an independent PASS.",
+      "actors": [
+        "ticket-captain",
+        "docs-writer",
+        "any-agent",
+        "admiral"
+      ],
+      "statements": [
+        "L1-039",
+        "L3-132",
+        "L7-179",
+        "L2-339"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-039 forbids the captain reviewing its own candidate and L2-339 the admiral or captain; L3-132 and L7-179 say a writer's delivery is never an independent PASS."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.nit-one-line-on-record",
+      "kind": "review",
+      "rule": "Each review nit is recorded as one line on the ticket or Project update record.",
+      "actors": [
+        "ticket-captain",
+        "admiral",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-106",
+        "L2-065",
+        "L7-078",
+        "L7-176"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-106 and L7-078 place the line on the ticket, L2-065 on the Project update; L7-176 says \"on the record\"."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.no-per-hop-coverage-run",
+      "kind": "review",
+      "rule": "Review adds no per-hop coverage run; ordinary hop static checks remain required.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-121"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.observation-out-of-scope",
+      "kind": "review",
+      "rule": "A defect the candidate neither created nor exposed is one line after the block: `Observation (out of scope, non-binding):`.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-204"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.parallel-reviewers-separate-worktrees",
+      "kind": "review",
+      "rule": "Parallel reviewers sit in separate worktrees when either may run probes.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-113"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.pass-means-no-blocker-lists-deferred",
+      "kind": "review",
+      "rule": "A PASS carries no blocker and lists its should and nit findings under Deferred.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-202",
+        "L7-174"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L3-202 adds that a PASS binds this candidate under this contract."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.plan-check-shape",
+      "kind": "review",
+      "rule": "The plan reviewer checks the shape of the plan.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-169"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.plan-inspect-starting-route",
+      "kind": "review",
+      "rule": "Each first ticket is self-contained and vertical, carries outcome, owned paths, blockers, gate and base branch, exactly one Type, one Mode and Todo; its gate is copy-pasteable.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-172"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.plan-pass-meaning",
+      "kind": "review",
+      "rule": "A project-plan PASS means the plan can reach human approval and open the first work; it certifies a starting route, not a complete one.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-168"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.plan-respect-horizon",
+      "kind": "review",
+      "rule": "The plan reviewer respects the horizon: later bearings orient without speculative precision, every in-scope outcome (the durable knowledge and integration the destination needs included) is a first ticket, a later bearing, honest fog or a blocking Question Ticket, and the step is done when the map starts the journey without hiding or inventing what comes later.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-173"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.plan-review-target",
+      "kind": "review",
+      "rule": "The project-plan review targets one committed Project plan the map holder wrote, judged in the given shape at the plan's candidate commit.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-167"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.plan-second-fail-to-user",
+      "kind": "review",
+      "rule": "The second FAIL of a plan review goes to the user as a choice, owned by the map holder's review loop.",
+      "actors": [
+        "admiral",
+        "map-holder"
+      ],
+      "statements": [
+        "L2-063",
+        "L4-176"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-063 names the admiral; L4-176 names the map holder and adds that it presents approval to the user."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.plan-test-destination",
+      "kind": "review",
+      "rule": "Plan intent, scope, acceptance and governing design agree, and each acceptance criterion names the scenario, command, diff or artifact proving it at the final merge.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-171"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.plan-verify-ground",
+      "kind": "review",
+      "rule": "The plan reviewer reads every cited Decision, path, pattern and specification at the candidate commit.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-170"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.prototype-review-is-user-verdict",
+      "kind": "review",
+      "rule": "The user's verdict is a prototype's review.",
+      "actors": [
+        "user"
+      ],
+      "statements": [
+        "L3-025"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.read-candidate-not-story",
+      "kind": "review",
+      "rule": "The reviewer reads the candidate itself rather than the story told about it; independence is independence of context.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-168"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.read-exactly-one-rubric",
+      "kind": "review",
+      "rule": "The reviewer reads exactly the one rubric the invoker named (code, docs, project-plan, spec or merge).",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-169"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.rereview-on-scope-change",
+      "kind": "review",
+      "rule": "Changes to destination, scope, acceptance criteria or governing architecture are re-reviewed and need human approval before affected work resumes.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-101"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.reviewer-pins-contract-candidate-base",
+      "kind": "review",
+      "rule": "The reviewer pins the contract as the brief pins it, the candidate at its SHA and the base SHA, so another reviewer could open the same contract and candidate; the block's contract ref and base are the brief's.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-171",
+        "L3-175",
+        "L4-101",
+        "L7-171",
+        "L7-172"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L7-171 fixes the ticket contract form as \"<KEY> description as of <Linear updatedAt>\"; L3-171 and L4-101 only say pin the contract."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.rubric-restatable",
+      "kind": "review",
+      "rule": "The rubric step is done when the reviewer can restate every item it asks.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-170"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.severity-definitions",
+      "kind": "review",
+      "rule": "Findings are labelled by intent: blocker when the intended case is wrong (data loss, corruption, security hole, broken journey), should for a real bug callers will hit inside the intent, nit for everything else (another code path, rare case, small cost, style, extra compat), however serious it looks; severities are judged against the source.",
+      "actors": [
+        "reviewer",
+        "inquisitor"
+      ],
+      "statements": [
+        "L3-185",
+        "L3-186",
+        "L4-032",
+        "L4-033",
+        "L4-034",
+        "L4-036"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L3-186 says another code path, rare case, small perf cost, extra compat or style is a nit \"however serious it looks\"; L4-036 lists the same without compat; L4-033 adds blocker examples."
+        },
+        {
+          "type": "wording",
+          "note": "L4-032 asks to judge against the source \"not how sure you feel\"; L3 copies do not mention the source."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.should-author-may-close",
+      "kind": "review",
+      "rule": "A should-ticket's own author may close it with a reason.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-108"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.should-filed-as-own-ticket",
+      "kind": "review",
+      "rule": "Each review finding labelled should is filed as its own ticket by the captain (or admiral).",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-041",
+        "L1-105",
+        "L2-064",
+        "L7-175"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-105 prescribes Type matching the finding (Bug default), Mode AFK, Severity should, Backlog, linked to source ticket and review block, blocking the landing Merge Ticket when it exists, a team ticket outside a Project; L2-064 only says Backlog ticket with Severity should in the Project; L7-175 only says own ticket."
+        },
+        {
+          "type": "scope",
+          "note": "L1-105, L1-041 and L7-175 name the ticket captain; L2-064 names the admiral."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.should-stays-in-project",
+      "kind": "review",
+      "rule": "A review's should stays in its Project, as filler unless it blocks; only the user moves it out.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-074"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-check-fog",
+      "kind": "review",
+      "rule": "The spec reviewer checks the fog: any unanswered question records homework and blocks the work through the Captain.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-186",
+        "L4-194"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-check-proof",
+      "kind": "review",
+      "rule": "Scenarios and exact gates can prove the outcome; only stage-applicable gates were run.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-185",
+        "L4-193"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-edge-cases-covered",
+      "kind": "review",
+      "rule": "Edge cases, failures, migration, compatibility and rollback are covered when consequential.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-192"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-hunt-hidden-decisions",
+      "kind": "review",
+      "rule": "The acceptance lines account for every outcome without hidden design choices.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-184",
+        "L4-191"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-judge-scenarios",
+      "kind": "review",
+      "rule": "Every scenario stands at the boundary, refines a parent criterion and has no idle example column.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-182",
+        "L4-189"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-pin-ground",
+      "kind": "review",
+      "rule": "The spec reviewer pins the ground: exact Linear record, base SHA, branch, worktree, clean state and owned paths match.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-181",
+        "L4-188"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-review-excludes-wording",
+      "kind": "review",
+      "rule": "Wording, formatting preference and an equally valid route are outside the spec rubric and become neither findings nor notes.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-180"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-review-finding-kinds",
+      "kind": "review",
+      "rule": "A scenario beyond its parent criterion, a concrete contract conflict, a false pattern, a hidden design choice, a consequential missing case or a gate that cannot prove the outcome is a spec finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-179"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-review-judged-against",
+      "kind": "review",
+      "rule": "The spec is judged against the parent's criteria, the settled working tree, governing Decisions, pinned architecture-plan and feature-spec sections and the code-writer skill.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-178"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-review-only-for-recorded-risk",
+      "kind": "review",
+      "rule": "A spec review of the contract before any code is bought only for one short concrete risk reason recorded in the contract.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-065",
+        "L6-044",
+        "L7-059"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-044 gives examples of risks (persistence, migrations, permissions, uncertain native interfaces)."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-review-target",
+      "kind": "review",
+      "rule": "The spec review targets the contract text on the ticket before any code and is invoked when the Ticket Captain has bought one.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-177"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.spec-verify-cited-ground",
+      "kind": "review",
+      "rule": "Every Decision, pattern and path the spec cites holds at the base SHA.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-183",
+        "L4-190"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.ticket-pr-binding-review-compact",
+      "kind": "review",
+      "rule": "Ticket-and-PR binding review stays compact but complete.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L7-158"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.two-reviewers-first-round",
+      "kind": "review",
+      "rule": "A candidate's first review round seats two reviewers in parallel, one Claude and one Codex, and merges their findings into one block.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-110",
+        "L6-043"
+      ],
+      "drift": [
+        {
+          "type": "value",
+          "note": "L1-110 says the merged block FAILs if either reviewer found a blocker; L6-043 says it FAILs only on a blocker (same meaning, different phrasing)."
+        }
+      ],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.whole-ticket-pass-after-lanes",
+      "kind": "review",
+      "rule": "Once all lanes are in, the captain verifies the combined proof and obtains a fresh whole-ticket (parent) PASS on the ticket and in the PR.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-126",
+        "L6-029",
+        "L6-094"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.wrong-scenario-amended-by-fix-hop",
+      "kind": "review",
+      "rule": "A wrong scenario is amended by the fix hop when the FAIL block names it.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-103"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K3"
+    },
+    {
+      "id": "review.fix-at-new-commit-and-fresh-review",
+      "kind": "review",
+      "rule": "Each fix of a FAIL's blockers lands at its own new commit and is reviewed afresh.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-304",
+        "L2-315"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-304 states it as the completion test of the review step; L2-315 states it for a plan review."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "merge.recheck-gate-before-ready-to-merge",
+      "kind": "merge",
+      "rule": "The captain rechecks the merge gate itself before setting Ready to Merge.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-144",
+        "L2-318",
+        "L6-137"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-318 states what the admiral may rely on after done <key>: PR ready; L6-137 has the captain recheck after its officer wakes it."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "merge.officer-watches-captain-pr",
+      "kind": "merge",
+      "rule": "The owning officer (the top-level thread in T3) watches a delegated captain's PR and wakes the captain on news.",
+      "actors": [
+        "ticket-captain",
+        "admiral",
+        "officer"
+      ],
+      "statements": [
+        "L1-306",
+        "L2-084",
+        "L6-136"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-084 is the admiral; L1-306 and L6-136 name the top-level officer and thread that owns the PR in T3."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "merge.officer-unwatches-on-done-or-release",
+      "kind": "merge",
+      "rule": "The owning officer unwatches the PR when its captain returns done <key>: PR ready or is released.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-319"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "return.top-level-captain-returns-in-own-session",
+      "kind": "return",
+      "rule": "A top-level captain returns in its own session; the user tells an invoked admiral.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-200"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "review.review-evidence-stays-on-reviewed-work-item",
+      "kind": "review",
+      "rule": "Review evidence stays on the work item reviewed.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L6-145"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "return.crew-return-goes-to-ticket-captain",
+      "kind": "return",
+      "rule": "Every crew return comes back to the Ticket Captain.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L6-146"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "merge.merge-sha-is-candidate-for-combined-gates-and-review",
+      "kind": "merge",
+      "rule": "The dydo merge SHA is the candidate for the combined gates and the merge review.",
+      "actors": [
+        "code-writer",
+        "reviewer"
+      ],
+      "statements": [
+        "L6-149"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "merge.project-tickets-integrate-serially-through-feature-branch",
+      "kind": "merge",
+      "rule": "Project tickets integrate serially through their feature branch.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-156"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "review.plan-fog-is-not-a-gap",
+      "kind": "review",
+      "rule": "Wayfinding fog is not a gap: dimmer uncertainty stays in Not yet specified, and a plan that pretends either is settled FAILs while honest placement passes.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-174"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "review.axes-judged-alone",
+      "kind": "review",
+      "rule": "Axes and sections are judged alone, so a clean one never masks another's finding.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-100",
+        "L3-219"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L4-100 speaks of the four code-review axes and their target; L3-219 of any rubric section."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "review.fix-hop-checks-severity-against-source",
+      "kind": "review",
+      "rule": "On a fix hop check each finding's severity against the source, not the reviewer's label.",
+      "actors": [
+        "code-writer",
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-220",
+        "L3-221"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "merge.pr-targets-branch-in-branches-table",
+      "kind": "merge",
+      "rule": "The PR targets the branch the working-tree standard's Branches table names.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-170"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "review.fix-hop-files-no-shoulds-or-nits",
+      "kind": "review",
+      "rule": "Shoulds and nits are the captain's to file, not the fix hop's.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L3-061"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "review.final-walkthrough-lists-unaddressed-nits",
+      "kind": "review",
+      "rule": "The final walkthrough lists the nits left unaddressed for the user to promote.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-313"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "review.spec-reviewer-briefed-on-contract-text",
+      "kind": "review",
+      "rule": "A fresh spec reviewer is briefed on the contract text.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-314"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "merge.base-moved-refusal-means-repin-and-return",
+      "kind": "merge",
+      "rule": "A refusal that the base moved means re-pin and return to the captain.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-231"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "review.check-implemented-line-and-proof-against-pins",
+      "kind": "review",
+      "rule": "Where a writer produced the candidate, check its IMPLEMENTED line against the pins and its proof against maintain-verification-skill's Proof.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-237"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "review.documented-standard-beats-taste",
+      "kind": "review",
+      "rule": "A documented standard beats taste and a tooling-enforced rule is closed.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L4-201"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "merge.captain-sets-ready-to-merge",
+      "kind": "merge",
+      "rule": "The captain sets Ready to Merge, which means a reviewed PR is offered.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-145",
+        "L2-083"
+      ],
+      "drift": [],
+      "principle": null
+    }
+  ],
+  "findings": [
+    {
+      "type": "contradiction",
+      "claims": [
+        "merge.officer-watches-captain-pr",
+        "merge.unwatch-before-handoff"
+      ],
+      "note": "L1-136 has the captain unwatch the PR before handing off, while L1-306/L2-084/L6-136 make the owning officer the watcher; a delegated captain that never watches cannot obey L1-136 as written."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "review.two-reviewers-first-round"
+      ],
+      "note": "L1-110 says the merged block FAILs if either reviewer found a blocker; L6-043 says FAILs only on a blocker; same outcome, different words."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "review.plan-second-fail-to-user",
+        "escalation.fifth-consecutive-fail"
+      ],
+      "note": "The FAIL loop stops at the second FAIL for a Project plan (L2-063, L4-176) and at the fifth for a ticket (L1-119); neither statement says which applies to other review types (docs, merge)."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "review.merge-review-not-substitutable",
+        "review.final-merge-proves-acceptance"
+      ],
+      "note": "L4-159 holds both the no-substitute rule and the final-landing acceptance rule; L4-164 repeats the acceptance rule alone."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "return.merge-review-distinguishes-defects",
+        "return.following-fix-ticket-if-dependent"
+      ],
+      "note": "L4-199 states the following-fix-ticket rule in the merge reviewer's duty to distinguish integration from source-work defects (L4-166 holds the distinguishing); L1-182 and L6-107 state it for the captain."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "review.should-filed-as-own-ticket",
+        "review.should-stays-in-project"
+      ],
+      "note": "L1-105 files a should in the source's Project, natively blocking the Project's landing Merge Ticket when it exists, and uses a team Backlog ticket only outside a Project; L2-074 says a should stays in the Project as filler unless it blocks, only the user moves it out. L2-064 files it in the Project without the landing block. The difference that remains is the landing block against filler."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "review.should-author-may-close"
+      ],
+      "note": "L1-108 lets a should-ticket's author close it with a reason, but no statement says who else may close it or what happens to the review block's Deferred entry."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "linear.set-implementing-on-author-spawn"
+      ],
+      "note": "L7-022 returns the record to Implementing on either spec verdict; no statement says who moves it on to the next status after a PASS."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "review.rereview-on-scope-change"
+      ],
+      "note": "L2-101 requires re-review and human approval after scope change but names no reviewer rubric or owner of the approval request."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "merge.conflict-free-merge-uses-dydo-merge"
+      ],
+      "note": "A conflicted merge \"stays local\" (L3-079) but no statement in this group says how a local merge reaches the feature branch other than the push guard allowance in L6-033."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "return.brief-visual",
+        "return.brief-result-lines",
+        "return.brief-action-slot",
+        "return.brief-next-action-slot"
+      ],
+      "note": "L2-256, L2-257, L2-264, L2-265 state morning-brief template slots with no actor or rule beyond the template; they sit where the chief of staff reads them only when the template is printed."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "review.codex-reviewer-gets-contract-pasted"
+      ],
+      "note": "L1-114 is stated for the ticket captain only; the Codex reviewer, who suffers when the contract is not pasted, is not told what to do when it receives a pointer."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "return.docs-inquisition-record"
+      ],
+      "note": "L3-126 and L3-133 ask for the digest and path of an inquisition record in the docs-writer skill; the docs reviewer and captain who check it carry no matching rule."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "review.severity-definitions",
+        "inquisition.verification-gap-is-should"
+      ],
+      "note": "Only the inquisitor (L4-035) states that a verification gap is a should; the reviewer copies (L3-185, L3-186) do not, so a reviewer could label it a nit."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "review.fix-hop-label-changes-recorded",
+        "review.severity-definitions"
+      ],
+      "note": "L3-060 has the fix hop re-judge severity against the source; L3-061 says shoulds and nits are the captain's to file; nothing says who decides if the fix hop and the reviewer disagree."
+    }
+  ]
+}

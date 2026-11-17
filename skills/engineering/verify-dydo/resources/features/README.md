@@ -6,6 +6,7 @@ its executable acceptance scenarios own expected values; this map owns the drivi
 - [Initialize and check documentation](init-docs.md)
 - [Guard tool calls](guard.md)
 - [Archive before deletion and restore](archive.md)
+- [Sub-agent dydo commands](worker-lane.md)
 - [Activate and end overnight mode](machine-mode.md)
 - [Pending release prerequisites](release-prerequisites.md)
 

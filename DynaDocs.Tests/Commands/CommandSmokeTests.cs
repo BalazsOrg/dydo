@@ -45,37 +45,12 @@ public class CommandSmokeTests
     [Fact]
     public void RootCommand_CanBeBuilt_WithAllSubcommands()
     {
-        // Verify the entire CLI can be constructed - mirrors Program.cs registrations
+        // Verify the entire CLI can be constructed: the tree Program.cs runs
         var exception = Record.Exception(() =>
         {
-            var rootCommand = new System.CommandLine.RootCommand("Test")
-            {
-                AdoptCommand.Create(),
-                ArchiveCommand.Create(),
-                CheckCommand.Create(),
-                CleanCommand.Create(),
-                CompleteCommand.Create(),
-                CompletionsCommand.Create(),
-                FixCommand.Create(),
-                GraphCommand.Create(),
-                GapCheckCommand.Create(),
-                GuardCommand.Create(),
-                HelpCommand.Create(),
-                IndexCommand.Create(),
-                InitCommand.Create(),
-                MapCommand.Create(),
-                MergeCommand.Create(),
-                ModeCommand.Create(),
-                PrReadyCommand.Create(),
-                StatechartCommand.Create(),
-                SurveyCommand.Create(),
-                ValidateCommand.Create(),
-            };
+            var rootCommand = DydoRootCommand.Create();
 
-            // version is the only command created inline in Program.cs
-            rootCommand.Subcommands.Add(new System.CommandLine.Command("version", "Test"));
-
-            // Must match Program.cs: 20 Create() commands + 1 inline (version) = 21
+            // 20 Create() commands + 1 inline (version) = 21
             Assert.Equal(21, rootCommand.Subcommands.Count);
         });
 

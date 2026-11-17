@@ -1,0 +1,2166 @@
+{
+  "group": "K1",
+  "kinds": [
+    "dispatch",
+    "capacity",
+    "identity",
+    "other"
+  ],
+  "claims": [
+    {
+      "id": "capacity.budget-native-capacity",
+      "kind": "capacity",
+      "rule": "Budget open native capacity before commissioning or resuming a captain (the captain does the same for its crew).",
+      "actors": [
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-016",
+        "L2-018",
+        "L6-052",
+        "L6-174"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-016 binds the captain; L2-018 and L6-052 bind the admiral before commissioning or resuming a captain; L6-174 states the captain budgets that capacity."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.cap-hit-is-finding",
+      "kind": "capacity",
+      "rule": "A cap hit is a finding, never a reason to raise the cap.",
+      "actors": [
+        "any-agent",
+        "crew",
+        "reviewer"
+      ],
+      "statements": [
+        "L1-034",
+        "L3-052",
+        "L4-021",
+        "L3-218"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.capacity-429-retry-not-blocker",
+      "kind": "capacity",
+      "rule": "A capacity 429 means retry in a few minutes, never a blocker.",
+      "actors": [
+        "ticket-captain",
+        "any-agent",
+        "officer"
+      ],
+      "statements": [
+        "L1-027",
+        "L6-069",
+        "L2-313"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.codex-concurrency-cap",
+      "kind": "capacity",
+      "rule": "Every brief that sends out Codex agents names a concurrency cap: about 8 at once, toward 16 only while runs stay clean, fewer or back off on 429 turn_rate_limit_exceeded.",
+      "actors": [
+        "admiral",
+        "ticket-captain",
+        "officer"
+      ],
+      "statements": [
+        "L1-026",
+        "L1-209",
+        "L2-025",
+        "L2-117",
+        "L6-068"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-026 and L2-025 say \"fewer on 429\"; L1-209 and L2-117 say \"back off on a 429\"; L6-068 says \"start around 8, rise toward 16\"."
+        },
+        {
+          "type": "scope",
+          "note": "L1-209 and L2-117 put the cap in the Inquisition commission (L2-117 as a question to the user); the others bind any brief."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.commission-provider-model-swarm-width",
+      "kind": "capacity",
+      "rule": "The Inquisition commission sets a provider and model for each phase and the swarm width, the most crew agents running at once.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-208"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.context-check-unavailable-or-error",
+      "kind": "capacity",
+      "rule": "Where the context check is unavailable (no T3, not its own session), unknown host or an error, say so in the return context field and keep working under the other rules.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-068",
+        "L4-075"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L4-068 says to write the word unavailable; L4-075 says \"say so\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.context-size-for-inquisition-crew-only",
+      "kind": "capacity",
+      "rule": "The context-size rule is for inquisition crew only.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-066"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.context-size-script-in-temp-file",
+      "kind": "capacity",
+      "rule": "Save the context-size script to a temporary file outside the repository so it never enters a commit.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-069"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.context-size-temp-dir-quotes",
+      "kind": "capacity",
+      "rule": "Replace <temp dir> with the folder the script is saved in and keep the quotes, since a Windows temp path can hold spaces.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-070"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.crew-brief-names-memory-cap",
+      "kind": "capacity",
+      "rule": "Every crew brief that runs code names the memory cap command: [env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false] systemd-run --user --scope --slice=<agent slice> -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 <cmd>, a probe at 4G with a short timeout, a gate lock outside the cap.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-029"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.crew-context-limit-110k",
+      "kind": "capacity",
+      "rule": "The crew context limit is 110k tokens unless the commission set another; the brief states it.",
+      "actors": [
+        "ticket-captain",
+        "inquisitor",
+        "admiral"
+      ],
+      "statements": [
+        "L1-210",
+        "L4-065",
+        "L2-336"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-210 and L4-065 say \"unless the commission set another\"; L2-336 says \"by default\"."
+        },
+        {
+          "type": "scope",
+          "note": "L1-210 and L2-336 put the limit in the Inquisition commission (L2-336 as a question to the user); L4-065 binds the inquisitor and adds that the brief states it."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.dotnet-env-prefix",
+      "kind": "capacity",
+      "rule": "Use the bracketed env prefix for .NET commands, without the brackets.",
+      "actors": [
+        "reviewer",
+        "inquisitor",
+        "crew",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-033",
+        "L3-055",
+        "L3-178",
+        "L4-024"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.finished-group-share-returns-to-officer",
+      "kind": "capacity",
+      "rule": "A finished group's share returns to the captain's officer, who may give it to a running group.",
+      "actors": [
+        "ticket-captain",
+        "admiral"
+      ],
+      "statements": [
+        "L1-231",
+        "L2-342"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-231 returns the finished share to the captain's officer, who may give it on; L2-342 has the admiral optionally give it to a running group."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.keep-swarm-width-running",
+      "kind": "capacity",
+      "rule": "Keep up to the swarm width running, with Codex inside its cap.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-246"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.never-maximise-parallelism",
+      "kind": "capacity",
+      "rule": "A brief asks for a capped count, never for \"maximise parallelism\".",
+      "actors": [
+        "ticket-captain",
+        "officer"
+      ],
+      "statements": [
+        "L1-028",
+        "L6-070",
+        "L2-314"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.omit-slice-where-none",
+      "kind": "capacity",
+      "rule": "Omit --slice where no agent slice exists.",
+      "actors": [
+        "reviewer",
+        "inquisitor",
+        "crew",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-032",
+        "L3-054",
+        "L3-177",
+        "L4-023"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.past-limit-stop",
+      "kind": "capacity",
+      "rule": "Past the context limit, stop; the item just documented is the last.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-018",
+        "L4-073"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L4-018 \"Past your limit\", L4-073 \"Over the limit\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.read-context-size-after-each-item",
+      "kind": "capacity",
+      "rule": "An inquisition crew agent reads its context size with the context-size resource after each work item, never once at the start.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-017",
+        "L4-064",
+        "L4-071",
+        "L4-004"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L4-064 adds handing the rest of the area back once past the limit."
+        },
+        {
+          "type": "wording",
+          "note": "L4-004 names only \"the command you run after each work item\"; L4-017, L4-064 and L4-071 name the context-size resource and say \"never once at the start\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.run-commands-memory-capped",
+      "kind": "capacity",
+      "rule": "Run every test, gate, probe and drive capped with systemd-run: MemoryMax=8G, MemorySwapMax=0, OOMPolicy=continue, timeout 3600, a probe at 4G with a short timeout.",
+      "actors": [
+        "ticket-captain",
+        "reviewer",
+        "inquisitor",
+        "crew"
+      ],
+      "statements": [
+        "L1-030",
+        "L3-051",
+        "L3-174",
+        "L4-020"
+      ],
+      "drift": [
+        {
+          "type": "value",
+          "note": "L3-174 (reviewer) sets probes and reruns at MemoryMax=4G timeout 120 and a gate at 8G timeout 3600; the others say \"a short timeout\" for probes and 8G timeout 3600 for the rest."
+        },
+        {
+          "type": "scope",
+          "note": "L1-030 binds the captain, L3-051 crew, L3-174 the reviewer, L4-020 the inquisitor."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.split-swarm-width-between-groups",
+      "kind": "capacity",
+      "rule": "Split the commissioned swarm width and its Codex share between the groups, write each group's share on its Sub-ticket, and keep the totals inside the commission.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-230"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.surveyor-bulk-reads-in-own-context",
+      "kind": "capacity",
+      "rule": "The bulk board and thread reads stay in the surveyor child's context.",
+      "actors": [
+        "admiral",
+        "crew"
+      ],
+      "statements": [
+        "L2-149",
+        "L2-300"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.under-limit-start-next-item",
+      "kind": "capacity",
+      "rule": "Under the context limit, start the next item.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-072"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.use-session-agent-slice",
+      "kind": "capacity",
+      "rule": "Use your session's agent slice: the nearest .slice in /proc/self/cgroup within the user manager; a nearer session slice takes precedence.",
+      "actors": [
+        "reviewer",
+        "inquisitor",
+        "crew",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-031",
+        "L3-053",
+        "L3-176",
+        "L4-022"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.captain-specifies-parent-before-lanes-merge-subtickets",
+      "kind": "dispatch",
+      "rule": "The captain specifies its parent before naming disjoint parallel lanes, and each merging lane or ticket gets its own Merge Sub-ticket in order, except an atomic ticket's own merge into main.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L5-118"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.channel-follows-where-result-awaited",
+      "kind": "dispatch",
+      "rule": "Under T3, the dispatch channel follows where the child's result is awaited.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L6-055"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.check-in-survey-brief-fixed",
+      "kind": "dispatch",
+      "rule": "The fixed check-in surveyor dispatch brief has: the absolute path to check-in.md and its Survey section only, the Project ID, the pasted ledger, and the parent return address with return through the task result only.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-185"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.choose-crew-capability",
+      "kind": "dispatch",
+      "rule": "Choose each commission's or crew member's capability yourself: the strongest supported model for real engineering challenges, the smallest adequate one otherwise, and the effort where the host exposes one, weighed from the task's difficulty, uncertainty, consequence of error, required independence, context size and likely retries.",
+      "actors": [
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-088",
+        "L2-075"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-088 \"that task's\", L2-075 \"that ticket's\"; L1-088 binds crew briefs, L2-075 admiral commissions."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.consume-running-survey-no-second",
+      "kind": "dispatch",
+      "rule": "If a survey is already running or pending, consume it and dispatch no second one.",
+      "actors": [
+        "admiral",
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-162",
+        "L2-245"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-162 binds the admiral; L2-245 the chief of staff and says \"pending\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.dispatch-fresh-surveyor",
+      "kind": "dispatch",
+      "rule": "The admiral dispatches one fresh surveyor on the smallest adequate model with the fixed dispatch brief to read the board and return actions.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-148",
+        "L2-164"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.failed-survey-not-running",
+      "kind": "dispatch",
+      "rule": "A failed or lost survey is not running.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-163"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.fresh-agent-for-rest-of-area",
+      "kind": "dispatch",
+      "rule": "The captain sends a fresh agent for the rest of an area when an agent hands work items back or stops past its context limit.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-251",
+        "L4-074"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-251 triggers on a return with work items handed back and briefs those items; L4-074 triggers on the context limit."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.hitl-own-top-level-thread",
+      "kind": "dispatch",
+      "rule": "HITL work, including an HITL captain, runs in its own new top-level thread.",
+      "actors": [
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-046",
+        "L2-073"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-073 binds the admiral opening an HITL captain; L1-046 the captain."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.inquisition-agent-brief-contents",
+      "kind": "dispatch",
+      "rule": "Brief each inquisition agent with its phase, area with map row and register entries, audit SHA and landing base, governing intent, context limit, worktree, and for Break the proof branch, for Drive the verification skill and the API base.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-250",
+        "L4-002"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-250 also specifies proof/<KEY>-<area>-<n> cut from the audit SHA, the test paths it may touch and the counting of n, and which phases get a worktree at the audit SHA; L4-002 says only \"the proof branch\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.inquisition-crew-own-session-delegate-task",
+      "kind": "dispatch",
+      "rule": "Dispatch each Inquisition crew agent as its own session through T3 delegate_task (DR 057), because crew outlive the captain's turn and the context check needs its own session.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-249",
+        "L4-067"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L1-249 gives both reasons; L4-067 only that crew outlive the captain's turn."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.load-codebase-design",
+      "kind": "dispatch",
+      "rule": "Load codebase-design when designing a seam or interface.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-038"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.load-diagnosing-bugs",
+      "kind": "dispatch",
+      "rule": "The code-writer loads diagnosing-bugs when a Bug other than an unused member lacks a red reproduction.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L1-080",
+        "L3-037"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.load-domain-modeling",
+      "kind": "dispatch",
+      "rule": "Load domain-modeling when touching a glossary term or Decision Record.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-039"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.load-prototype",
+      "kind": "dispatch",
+      "rule": "Load prototype when a design question is open; stop and return the question.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-041"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.load-writing-for-agents",
+      "kind": "dispatch",
+      "rule": "Load writing-for-agents when editing a skill or entry file.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-040"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.native-captain-no-codex-reviewer",
+      "kind": "dispatch",
+      "rule": "A native captain cannot send its own Codex reviewer; a delegate_task captain can.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-064"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.native-child-cannot-delegate-task",
+      "kind": "dispatch",
+      "rule": "A native child lives only inside its dispatcher's turn and cannot call delegate_task (parent_not_active); when this arises the work is dispatched by someone who can.",
+      "actors": [
+        "chief-of-staff",
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-025",
+        "L2-023",
+        "L2-213",
+        "L6-063"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "Remedy differs: L1-025 captain asks its officer (admiral, or the user when none) to dispatch it; L2-023 the admiral dispatches the captain's crew; L2-213 the chief of staff asks the user; L6-063 states only that T3 refuses, no remedy."
+        },
+        {
+          "type": "scope",
+          "note": "L1-025 binds the captain, L2-023 the admiral and any-agent, L2-213 the chief of staff."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.native-foreground-only-when-awaited",
+      "kind": "dispatch",
+      "rule": "Use a native foreground subagent only for a job the dispatcher waits on within its current turn.",
+      "actors": [
+        "ticket-captain",
+        "any-agent",
+        "admiral",
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L1-021",
+        "L6-056",
+        "L2-309",
+        "L2-311"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.next-n-for-follow-up-break-agent",
+      "kind": "dispatch",
+      "rule": "A hand-back or follow-up Break agent gets the next <n> for its proof branch.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-252"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.night-survey-brief-fixed",
+      "kind": "dispatch",
+      "rule": "The fixed night-survey brief has: the absolute path to night-survey.md and its survey only, the Project IDs with admiral thread links, exact night orders per Project with update links, the previous observation, the outstanding nudges and the parent return address with return through the task result only.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-308"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.no-native-background-subagents",
+      "kind": "dispatch",
+      "rule": "Under T3, never use native background subagents.",
+      "actors": [
+        "ticket-captain",
+        "any-agent",
+        "admiral",
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L1-022",
+        "L6-059",
+        "L2-310",
+        "L2-312"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.no-polling-delegates",
+      "kind": "dispatch",
+      "rule": "Never poll running delegates; T3 background completion is event-driven, and assignment or AFK labels alone prove no activity.",
+      "actors": [
+        "admiral",
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-046",
+        "L2-246"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-046 binds the admiral; L2-246 the chief of staff, and adds waiting on native foreground work within the turn."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.no-top-level-threads-for-crew",
+      "kind": "dispatch",
+      "rule": "Never use t3_thread_launch or create_threads for crew (or AFK captains): top-level threads are the user's, only for HITL work the user takes over or when the user asks.",
+      "actors": [
+        "ticket-captain",
+        "officer",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-035",
+        "L2-026",
+        "L2-214",
+        "L6-058"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-035 and L2-214 say crew; L2-026 says AFK captains or crew; L6-058 speaks of any new top-level T3 thread."
+        },
+        {
+          "type": "wording",
+          "note": "L6-058 says \"HITL work the user takes over\"; the others say only \"HITL work\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.one-agent-per-area-per-phase",
+      "kind": "dispatch",
+      "rule": "Dispatch one agent per area per phase.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-247"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.one-area-per-dispatch",
+      "kind": "dispatch",
+      "rule": "A dispatch never carries more than one area.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-222"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.one-captain-per-pickable-ticket",
+      "kind": "dispatch",
+      "rule": "Give each pickable ticket (and each Inquisition group) to one ticket-captain.",
+      "actors": [
+        "admiral",
+        "officer"
+      ],
+      "statements": [
+        "L1-233",
+        "L2-012",
+        "L2-341"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-012 covers pickable tickets; L1-233 and L2-341 one captain per Inquisition group, L2-341 adding the group's width and Codex share."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.one-code-writer-per-parent-or-lane",
+      "kind": "dispatch",
+      "rule": "Send one code-writer per parent or lane, which builds and proves the contract in one hop; a captain-held ticket normally uses one author and review at the Delivery scale.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-078",
+        "L7-058",
+        "L6-168"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L7-058 also names docs-writer as the author for a documentation change and ties review to the working-tree standard Delivery scale; L1-078 speaks of code-writer per parent or lane."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.only-captain-commissions-crew",
+      "kind": "dispatch",
+      "rule": "Only the ticket-captain commissions exact-scope delivery crew.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-015",
+        "L6-053"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.other-vendor-model-candidates",
+      "kind": "dispatch",
+      "rule": "Candidate models include other vendors' wherever the host can dispatch them.",
+      "actors": [
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-093",
+        "L2-080"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-093 adds: weigh them on the same terms as your own."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.outlasting-work-by-delegate-task",
+      "kind": "dispatch",
+      "rule": "Work that cannot finish inside the turn goes through delegate_task instead.",
+      "actors": [
+        "any-agent",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L6-067",
+        "L1-303"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.peer-of-other-vendor-by-t3-messaging",
+      "kind": "dispatch",
+      "rule": "A peer of another vendor is reached by T3 messaging.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L6-060"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.proof-only-brief-names",
+      "kind": "dispatch",
+      "rule": "A proof-only brief names the commissioning captain, the pinned source SHA and the test path.",
+      "actors": [
+        "ticket-captain",
+        "officer"
+      ],
+      "statements": [
+        "L6-041",
+        "L3-026",
+        "L5-277"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-041 and L3-026 state the same three items; L5-277 states them for a tribunal experiment."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.reconciliation-commissions-afk-tickets",
+      "kind": "dispatch",
+      "rule": "On each reconciliation the admiral commissions each authorized pickable AFK ticket, including blocker-cleared and released ones, from its record.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-072"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.requested-value-effective-identity-by-telemetry",
+      "kind": "dispatch",
+      "rule": "Claim an effective model identity only where trustworthy runtime information or telemetry shows it, and otherwise qualify a family or a requested/configured value.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-092",
+        "L7-181",
+        "L7-182",
+        "L2-325"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L7-181 and L7-182 say \"runtime information exposes it\" and \"qualify a family or requested/configured value\"; L1-092 and the telemetry statement of L2-325 say \"telemetry shows it\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.research-one-scout-per-family",
+      "kind": "dispatch",
+      "rule": "Research sends one scout per family in play, in parallel, each carrying the question, its family and the scout brief; when only one family is in play, read it yourself.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-148",
+        "L6-176"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.return-comes-back-to-captain",
+      "kind": "dispatch",
+      "rule": "Every crew return comes back to the ticket-captain.",
+      "actors": [
+        "ticket-captain",
+        "crew"
+      ],
+      "statements": [
+        "L1-019"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.return-once-on-dispatch-channel",
+      "kind": "dispatch",
+      "rule": "A return comes back once, on the channel it was dispatched on.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L6-062"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.route-docs-to-docs-writer",
+      "kind": "dispatch",
+      "rule": "Route documentation to docs-writer.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-079"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.run-disjoint-lanes-concurrently",
+      "kind": "dispatch",
+      "rule": "Run disjoint lanes concurrently.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-085"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.saved-brief-not-admiral-authority",
+      "kind": "dispatch",
+      "rule": "A saved brief is not Admiral-to-crew authority.",
+      "actors": [
+        "admiral",
+        "crew"
+      ],
+      "statements": [
+        "L2-019",
+        "L6-054"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.scout-reads-itself-no-crew",
+      "kind": "dispatch",
+      "rule": "A scout reads its family itself, in its own thread, and has no crew.",
+      "actors": [
+        "scout"
+      ],
+      "statements": [
+        "L3-210"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.select-model-and-effort-together",
+      "kind": "dispatch",
+      "rule": "Select model and effort together where the host takes both; where it takes only a model, leave effort host-owned and record that limit.",
+      "actors": [
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-090",
+        "L2-078"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.start-adequate-escalate",
+      "kind": "dispatch",
+      "rule": "Start with an adequate model and effort and escalate on evidence.",
+      "actors": [
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-089",
+        "L2-076"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-089 is the captain; L2-076 the admiral."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.stay-in-turn-while-waiting",
+      "kind": "dispatch",
+      "rule": "A dispatcher waiting on a native child, or a result it owns, stays in its turn until the result arrives.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-024",
+        "L2-024",
+        "L2-212",
+        "L6-066"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-024 and L6-066 cover results the agent owns (L6-066 names a reviewer or suite); L2-024 and L2-212 name only a native child."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.surveyor-gets-resource-alone",
+      "kind": "dispatch",
+      "rule": "Give the surveyor child the night-survey resource alone, not the chief-of-staff officer role.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-244"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.t3-delegate-task-for-returning-children",
+      "kind": "dispatch",
+      "rule": "Under T3, send any child that returns to its dispatcher by delegate_task, as a child of the dispatcher's own turn.",
+      "actors": [
+        "admiral",
+        "chief-of-staff",
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-020",
+        "L2-021",
+        "L2-210",
+        "L6-057"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-020 names crew and reviewers; L2-021 captains and anything returning to the admiral; L2-210 anything returning to the chief of staff; L6-057 captains, crew, reviewers and any agent of another vendor."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.two-judges-claude-and-codex",
+      "kind": "dispatch",
+      "rule": "Start two fresh judges as T3 delegate_task children, one Claude and one Codex, each with the strongest model and effort set explicitly.",
+      "actors": [
+        "officer"
+      ],
+      "statements": [
+        "L5-243"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "dispatch.without-t3-native-subagents",
+      "kind": "dispatch",
+      "rule": "Without T3, use the host's native subagents.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-023",
+        "L2-022",
+        "L2-211",
+        "L6-061"
+      ],
+      "drift": [
+        {
+          "type": "wording",
+          "note": "L6-061 adds \"and messaging, or none\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.admiral-accountable-for",
+      "kind": "identity",
+      "rule": "The admiral is accountable for Project-plan delivery, the feature branch, ticket sequencing, captain assignments, the integrated state, plan amendments, Linear evidence and the final return.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-011"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.admiral-git-authorship",
+      "kind": "identity",
+      "rule": "The admiral's Git authorship covers plans and feature specs.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-035"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.admiral-holds-map",
+      "kind": "identity",
+      "rule": "An invoked admiral holds the Project map until the user takes it back, owns the map and how its tickets move, integrate and finish together, and the frontline stays the user's.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-002",
+        "L2-003"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.admiral-project-altitude",
+      "kind": "identity",
+      "rule": "The admiral works at Project altitude: it coordinates captains, not their crew, and working inside one ticket means it has dropped the map.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-013",
+        "L2-014",
+        "L2-016"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.break-touches-test-paths-only",
+      "kind": "identity",
+      "rule": "Break writes tests on its proof branch and touches test paths only.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-010"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.captain-accountable-for-ticket",
+      "kind": "identity",
+      "rule": "The ticket-captain stays accountable for the ticket, its evidence and every change, including crew edits and the complete integrated diff, though the crew does the work.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-002",
+        "L1-012",
+        "L6-003",
+        "L6-008",
+        "L6-093"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-012 lists the accountable items (scope fidelity, records, delegation, candidate, evidence, PR or merge, final status, every branch or worktree created); L1-002, L6-003, L6-008 and L6-093 name only changes, the parent ticket and integrated outcome, the whole diff, or the ticket, evidence and complete diff."
+        },
+        {
+          "type": "action",
+          "note": "L6-093 adds that the captain consumes every crew return; L6-008 adds that crew edits are part of the diff."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.captain-directs-crew",
+      "kind": "identity",
+      "rule": "The ticket-captain briefs, sequences, tracks, corrects and directs integration of the crew.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-014"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.captain-owns-status-records-integration",
+      "kind": "identity",
+      "rule": "The ticket-captain owns status, records, integration and follow-up work; the writer on the change does not.",
+      "actors": [
+        "code-writer",
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-006",
+        "L3-111"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-006 lists status, records and integration; L3-111 adds review and follow-up work and says the docs-writer owns the words."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.contract-sets-destination",
+      "kind": "identity",
+      "rule": "The ticket's contract sets the destination; the code-writer chooses the route.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-001"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.cos-fix-mechanical-hand-back-judgement",
+      "kind": "identity",
+      "rule": "The chief of staff fixes mechanical fields and broken links on sight and hands back every judgement call with a recommendation.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-209"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.cos-staff-not-line",
+      "kind": "identity",
+      "rule": "The chief of staff cuts across every stage of the map and owns none of it (staff, not line): it triages, prepares and reports.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-207",
+        "L2-208"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.crew-no-branch-pr-merge-self-review",
+      "kind": "identity",
+      "rule": "Ordinary crew do not create the ticket's branch, open its PR, merge it or review their own work.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L6-078"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.crew-roles-split",
+      "kind": "identity",
+      "rule": "The code and its proof belong to one code-writer, or to docs-writer for a documentation change; independent judgment belongs to the reviewer.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-013"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.default-officer",
+      "kind": "identity",
+      "rule": "The ticket-captain is the default officer: every ticket gets a captain whether or not the user invoked an admiral.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-003"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.docs-writer-writes-one-change",
+      "kind": "identity",
+      "rule": "The docs-writer writes or corrects one reviewed documentation change, an inquisition's own record included, for its Ticket Captain, and makes it true.",
+      "actors": [
+        "docs-writer"
+      ],
+      "statements": [
+        "L3-101",
+        "L3-102"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.drive-leaves-verification-skill",
+      "kind": "identity",
+      "rule": "Drive leaves the verification skill as it is; the gap ticket fixes it.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-083"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.inquisition-captain-conducts",
+      "kind": "identity",
+      "rule": "In an Inquisition the captain conducts and the inquisitor crew hunts.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-202"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.inquisitor-reads-own-phase-checklist",
+      "kind": "identity",
+      "rule": "An inquisitor reads the checklist of its own phase: read, break or drive.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-003"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.inquisitor-skill-trigger",
+      "kind": "identity",
+      "rule": "The inquisitor skill is used when an inquisition captain sends a phase (Read, Break or Drive) and an area.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-001"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.inquisitor-worker-one-return",
+      "kind": "identity",
+      "rule": "An inquisitor is a worker: one phase, one area, one return to the captain who sent it; the captain files tickets, prepares patches and keeps the register, and the inquisitor outputs only its return.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-008",
+        "L4-011"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.map-holder-definition",
+      "kind": "identity",
+      "rule": "The map holder is the user, or an admiral the user invoked, for a Project, and the captain for a ticket.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-087",
+        "L5-094"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L5-094 adds \"driving the map in his own session\" and \"until the user takes the map back\"; L7-087 adds \"the captain for a ticket\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.map-holder-held-ticket-run-directly",
+      "kind": "identity",
+      "rule": "A map-holder-held ticket is run directly by the map holder whose map it clears.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-062"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.map-holder-runs-fog-tickets",
+      "kind": "identity",
+      "rule": "The map holder runs the map-holder-held tickets that clear its own fog: it dispatches research, runs a Grilling or Walkthrough with the user, and files a Question only when judgment remains.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-091"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.mutation-testing-is-reviewers",
+      "kind": "identity",
+      "rule": "Mutation testing belongs to the reviewer, not the code-writer.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-050"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.officers-direct-crew-produces",
+      "kind": "identity",
+      "rule": "Admirals and captains direct the work; the crew produces it.",
+      "actors": [
+        "admiral",
+        "ticket-captain",
+        "officer"
+      ],
+      "statements": [
+        "L1-037",
+        "L2-033"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-037 actor is officer, L2-033 names admiral and ticket-captain."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.read-and-drive-change-nothing",
+      "kind": "identity",
+      "rule": "Read and Drive change nothing in the repository.",
+      "actors": [
+        "inquisitor"
+      ],
+      "statements": [
+        "L4-009",
+        "L4-077",
+        "L4-085"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.research-facts-not-choice",
+      "kind": "identity",
+      "rule": "Facts are the researcher's job; the choice they inform stays with the invoker and the user.",
+      "actors": [
+        "research"
+      ],
+      "statements": [
+        "L3-140"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.reviewer-judges-one-candidate",
+      "kind": "identity",
+      "rule": "The reviewer judges one candidate against one rubric and lets no blocker past; corrections and status are the invoker's.",
+      "actors": [
+        "reviewer"
+      ],
+      "statements": [
+        "L3-160",
+        "L3-167"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.scout-collects-researcher-concludes",
+      "kind": "identity",
+      "rule": "The scout collects evidence from one source family for one question and concludes nothing; the researcher verifies, pools and concludes.",
+      "actors": [
+        "research",
+        "scout"
+      ],
+      "statements": [
+        "L3-205",
+        "L3-211"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.surveyor-read-only-no-officer-role",
+      "kind": "identity",
+      "rule": "A surveyor is its officer's read-only surveyor: it reads its own section or resource alone and assumes no officer role.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-169",
+        "L2-170",
+        "L2-288",
+        "L2-289"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L2-169 and L2-170 are the admiral check-in surveyor, L2-288 and L2-289 the chief-of-staff night surveyor; one says \"section\", the other \"resource\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.surveyor-sends-edits-starts-nothing",
+      "kind": "identity",
+      "rule": "A surveyor sends no messages, edits nothing and starts no work, subagents or schedules.",
+      "actors": [
+        "crew"
+      ],
+      "statements": [
+        "L2-171",
+        "L2-291"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L2-291 also forbids nudges, making decisions, and names boards, records and files; L2-171 says only \"edit nothing\"."
+        }
+      ],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.task-owned-by-captain-and-crew",
+      "kind": "identity",
+      "rule": "A Task is owned end to end by a Ticket Captain, who with the crew carries it through its contract, production, review and Merge Sub-ticket.",
+      "actors": [
+        "ticket-captain",
+        "crew"
+      ],
+      "statements": [
+        "L5-109",
+        "L5-122"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.user-queue-three-lists",
+      "kind": "identity",
+      "rule": "The user's queue is the three named lists and never the assignee filter.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-223"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "identity.user-work-reaches-ticket-via-captain",
+      "kind": "identity",
+      "rule": "Anything the user asks the admiral to get done reaches a ticket through a captain; for hands-on work the admiral declines and offers to commission a captain or have the user open a captain session.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-015",
+        "L2-017"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "other.leave-no-worse",
+      "kind": "other",
+      "rule": "Leave what you touched no worse than you found it.",
+      "actors": [
+        "any-agent"
+      ],
+      "statements": [
+        "L3-044"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "other.load-skill-when-trigger-fires",
+      "kind": "other",
+      "rule": "Load a skill when its trigger fires.",
+      "actors": [
+        "code-writer"
+      ],
+      "statements": [
+        "L3-036"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "other.load-wayfinder-before-first-report",
+      "kind": "other",
+      "rule": "Load wayfinder and read its Refer by name section before the first human-facing Project or ticket report.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-005"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "other.recurring-friction-to-retro",
+      "kind": "other",
+      "rule": "Friction that keeps recurring across sessions goes to retro with the occurrences named.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-239"
+      ],
+      "drift": [],
+      "principle": null,
+      "group": "K1"
+    },
+    {
+      "id": "capacity.run-necessary-stages-serially",
+      "kind": "capacity",
+      "rule": "Run necessary stages serially.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-316"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "dispatch.preserve-fresh-reviewer-obligation",
+      "kind": "dispatch",
+      "rule": "Preserve the fresh reviewer obligation.",
+      "actors": [
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-317",
+        "L6-175"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "dispatch.state-requested-value-so-signature-is-truthful",
+      "kind": "dispatch",
+      "rule": "State the requested model/effort value so the crew member's or agent's signature is truthful.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-091",
+        "L2-079"
+      ],
+      "drift": [
+        {
+          "type": "action",
+          "note": "L1-091 has the captain brief the requested value to the crew member; L2-079 has the agent state it in its own signature."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "dispatch.dydo-compiles-no-capability-table",
+      "kind": "dispatch",
+      "rule": "dydo compiles no model, effort or standing capability table.",
+      "actors": [
+        "ticket-captain",
+        "any-agent"
+      ],
+      "statements": [
+        "L1-319",
+        "L2-326"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.user-keeps-every-approval",
+      "kind": "identity",
+      "rule": "The user keeps every approval.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-327"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.cos-never-carries-delivery",
+      "kind": "identity",
+      "rule": "Delivery belongs to whoever owns it; the chief of staff never carries it.",
+      "actors": [
+        "chief-of-staff"
+      ],
+      "statements": [
+        "L2-328"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.inquisition-proofs-belong-to-break-inquisitor",
+      "kind": "identity",
+      "rule": "An Inquisition's proofs belong to its Break-phase inquisitor, which writes them on its proof branch.",
+      "actors": [
+        "code-writer",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L3-232",
+        "L1-325"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L3-232 tells the code-writer the proofs are not its own; L1-325 tells the captain that Break writes them, on its proof branch."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "identity.admiral-commissions-other-git-operations",
+      "kind": "identity",
+      "rule": "The admiral commissions every other Git operation.",
+      "actors": [
+        "admiral"
+      ],
+      "statements": [
+        "L2-335"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.officer-authors-no-production-change",
+      "kind": "identity",
+      "rule": "An admiral or ticket-captain authors no production change.",
+      "actors": [
+        "admiral",
+        "ticket-captain"
+      ],
+      "statements": [
+        "L1-038",
+        "L2-034"
+      ],
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-038 binds the captain only; L2-034 binds both admiral and captain."
+        }
+      ],
+      "principle": null
+    },
+    {
+      "id": "identity.project-description-names-map-holder",
+      "kind": "identity",
+      "rule": "The Project description names the Project's current map holder.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-088",
+        "L5-286"
+      ],
+      "drift": [],
+      "principle": null
+    },
+    {
+      "id": "identity.map-holder-held-ticket-no-captain-branch-pr-review",
+      "kind": "identity",
+      "rule": "A map-holder-held ticket receives no captain, branch, PR or review loop.",
+      "actors": [
+        "map-holder"
+      ],
+      "statements": [
+        "L7-063"
+      ],
+      "drift": [],
+      "principle": null
+    }
+  ],
+  "findings": [
+    {
+      "type": "drift",
+      "claims": [
+        "dispatch.native-child-cannot-delegate-task"
+      ],
+      "note": "parent_not_active remedy differs by role: captain asks its officer (L1-025), admiral dispatches the captain's crew (L2-023), chief of staff asks the user (L2-213), standard gives none (L6-063). Only a gap if a captain with no invoked admiral is read as \"the user\" in both L1-025 and L2-023."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "capacity.budget-native-capacity"
+      ],
+      "note": "L1-016 \"preserving the fresh reviewer obligation\" and \"open native capacity\" are used without a definition or a measure of how capacity is budgeted (L1-016, L2-018, L6-052)."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "capacity.run-commands-memory-capped"
+      ],
+      "note": "Probe timeout is \"short\" in L1-029, L1-030, L3-051, L4-020 but 120 s in L3-174; no statement defines \"short\". The reviewer cap (4G/120) and crew probe cap (4G/short) may differ."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "capacity.crew-brief-names-memory-cap"
+      ],
+      "note": "L1-029 requires \"a gate lock outside the cap\" without any statement defining the gate lock."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "capacity.crew-context-limit-110k",
+        "capacity.commission-provider-model-swarm-width"
+      ],
+      "note": "The 110k context limit appears in the commission (L1-210, L2-336) and is stated by the brief (L4-065, L1-250), but no statement says what happens when the swarm width or Codex cap changes mid-run beyond L1-231 handing a finished share back."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "identity.user-queue-three-lists"
+      ],
+      "note": "L2-223 refers to \"these three lists\" that no statement of this group defines; the rule is stated only in the chief-of-staff skill, where the lists sit."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "overnight.surveyor-inspects-cos-acts"
+      ],
+      "note": "L2-292 is stated only in the night-survey resource that the surveyor reads, not where the chief of staff acts; the chief of staff never reads it as an instruction to itself."
+    },
+    {
+      "type": "homeless",
+      "claims": [
+        "dispatch.native-captain-no-codex-reviewer"
+      ],
+      "note": "L6-064 is stated only in the working-tree standard; the ticket-captain skill (L1-020..L1-025) never says a native captain cannot reach a Codex reviewer."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "dispatch.one-code-writer-per-parent-or-lane",
+        "dispatch.route-docs-to-docs-writer"
+      ],
+      "note": "L7-058 (docs-writer for a documentation change) overlaps L1-079 and L1-013; the statements sit in different claims because they differ in scope (one author per ticket vs documentation routing)."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "dispatch.consume-running-survey-no-second",
+        "dispatch.failed-survey-not-running"
+      ],
+      "note": "L2-163 defines a failed or lost survey as not running for the admiral; L2-245 says \"pending\" for the chief of staff with no statement saying a failed or lost night survey is not pending."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "dispatch.inquisition-agent-brief-contents"
+      ],
+      "note": "L4-002 (inquisitor skill) omits the proof branch name, test paths and the Break n counter that L1-250 requires of the brief; the inquisitor cannot check a brief against its own skill."
+    },
+    {
+      "type": "drift",
+      "claims": [
+        "dispatch.no-top-level-threads-for-crew",
+        "dispatch.hitl-own-top-level-thread"
+      ],
+      "note": "L1-046 and L2-073 require HITL in a new top-level thread while L1-035, L2-026, L2-214 forbid top-level threads for crew; consistent only because of the HITL exception, which L1-035/L2-026/L2-214 each restate."
+    },
+    {
+      "type": "gap",
+      "claims": [
+        "capacity.past-limit-stop",
+        "capacity.under-limit-start-next-item"
+      ],
+      "note": "L4-072 and L4-073 do not say what happens at exactly the limit (L4-018 says \"past\")."
+    }
+  ]
+}

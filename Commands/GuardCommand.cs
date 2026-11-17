@@ -286,7 +286,8 @@ public static partial class GuardCommand
         var filePath = normalized.FilePath;
         var searchPath = normalized.SearchPath;
 
-        // Calls carrying agent_id come from sub-agents (Decision 024).
+        // Calls carrying agent_id come from native in-process sub-agents (Decision 024); a T3
+        // delegate_task child carries none and reads as top-level (DYD-1072).
         if (!ctx.HasCliArgs && !string.IsNullOrEmpty(ctx.AgentId))
         {
             return HandleWorkerCall(normalized, filePath, searchPath, offLimitsService, bashAnalyzer, env);
@@ -652,11 +653,8 @@ public static partial class GuardCommand
         if (workerBlocked == null)
             return null;
 
-        Console.Error.WriteLine("BLOCKED: Sub-agents may run only these dydo commands: "
-            + string.Join(", ", WorkerAllowedDydoSubcommands) + " (plus -h/--help/--version).");
-        Console.Error.WriteLine($"  Not allowed here: dydo {workerBlocked}");
-        Console.Error.WriteLine("  Setup, generation and hook commands (init, adopt, index, guard, map, completions, _complete)");
-        Console.Error.WriteLine("  belong to the top-level session that spawned you.");
+        foreach (var line in WorkerRefusalLines(workerBlocked))
+            Console.Error.WriteLine(line);
         return ExitCodes.ToolError;
     }
 
@@ -1138,20 +1136,6 @@ public static partial class GuardCommand
     }
 
     /// <summary>
-    /// dydo subcommands a sub-agent may run: the documentation and coverage gates (check, fix,
-    /// gap-check), read-only inspection (graph, validate), help/version and the machine mode every agent
-    /// reads (mode); mode set still meets its nudge; clean is what Ticket Captains run on close-out,
-    /// pr-ready before they open a PR, merge what a Merge Sub-ticket's code-writer runs to integrate a
-    /// reviewed PR into its feature branch. Setup, generation and hook commands stay with the top-level
-    /// session.
-    /// </summary>
-    internal static readonly string[] WorkerAllowedDydoSubcommands =
-        ["check", "fix", "gap-check", "graph", "validate", "mode", "clean", "archive", "pr-ready", "merge", "help", "version"];
-
-    private static readonly HashSet<string> WorkerAllowedDydoWords =
-        new([.. WorkerAllowedDydoSubcommands, "-h", "--help", "--version"], StringComparer.Ordinal);
-
-    /// <summary>
     /// Returns the first word a sub-agent may not pass to dydo, or null when the command is allowed.
     /// A command <see cref="IsDydoCommand"/> does not match is allowed. A matched command is allowed
     /// only when every dydo token in it that is followed by a word is followed by an allowed word; a
@@ -1160,14 +1144,22 @@ public static partial class GuardCommand
     /// longer word or a path (dydo/guides, dydo.json) and is skipped. A matched line therefore blocks
     /// a dydo directory given as its own word, such as dydo check dydo src.
     /// </summary>
-    internal static string? FindWorkerBlockedDydoCommand(string command)
+    internal static string? FindWorkerBlockedDydoCommand(string command) =>
+        DydoWords(command).FirstOrDefault(word => !WorkerAllowedDydoWords.Contains(word));
+
+    /// <summary>
+    /// Every word the worker-lane scan reads after a dydo token in <paramref name="command"/>, in order;
+    /// none when <see cref="IsDydoCommand"/> does not match it. The one reading of "which dydo command
+    /// this line names": the guard's refusal and the skill lint's coverage check both take it from here.
+    /// </summary>
+    internal static IEnumerable<string> DydoWords(string command)
     {
         if (!IsDydoCommand(command))
-            return null;
+            return [];
 
         return DydoTokenRegex().Matches(NormaliseForDydoScan(command))
             .Select(token => token.Groups["word"].Value)
-            .FirstOrDefault(word => word.Length > 0 && !WorkerAllowedDydoWords.Contains(word));
+            .Where(word => word.Length > 0);
     }
 
     /// <summary>
@@ -1176,7 +1168,15 @@ public static partial class GuardCommand
     /// `dydo init` read as dydo.
     /// </summary>
     private static string NormaliseForDydoScan(string command) =>
-        WorkerScanStripRegex().Replace(LineContinuationRegex().Replace(command, ""), "");
+        WorkerScanStripRegex().Replace(JoinLineContinuations(command), "");
+
+    /// <summary>
+    /// <paramref name="text"/> with every backslash-newline and backtick-newline continuation deleted,
+    /// as the shell joins the lines. The one definition: the scan above and the skill lint's reading of
+    /// fenced blocks both take it from here.
+    /// </summary>
+    internal static string JoinLineContinuations(string text) =>
+        LineContinuationRegex().Replace(text, "");
 
     [GeneratedRegex(@"[\\`]\r?\n")]
     private static partial Regex LineContinuationRegex();

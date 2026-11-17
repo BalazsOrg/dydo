@@ -186,11 +186,14 @@ def init_docs(run):
     write_json(run / "evidence/init-side-effects.json", fixture_hashes(run))
 
 
-def guard(run, command, arguments, expected, session):
-    payload = json.dumps({"session_id": session, "hook_event_name": "PreToolUse",
-                          "permission_mode": "default", "tool_name": "Bash",
-                          "tool_input": {"command": command}})
-    result = cli(run, "guard", arguments, payload)
+def guard(run, command, arguments, expected, session, sub_agent=False):
+    """Send one synthetic PreToolUse event; a sub-agent's call carries the hook's agent_id."""
+    event = {"session_id": session, "hook_event_name": "PreToolUse",
+             "permission_mode": "default", "tool_name": "Bash",
+             "tool_input": {"command": command}}
+    if sub_agent:
+        event.update(agent_id=f"verify-{uuid.uuid4().hex[:8]}", agent_type="code-writer")
+    result = cli(run, "guard", arguments, json.dumps(event))
     success(result)
     if expected == "allow":
         require(not result.stdout.strip(), "Expected empty stdout on guard allow")
@@ -207,6 +210,53 @@ def guard_journey(run):
     guard(run, "rm -rf ./", installed_hook(run), "deny", uuid.uuid4().hex)
     require(digest(sentinel) == before, "Guard sample was executed")
     write_json(run / "evidence/guard-side-effects.json", {"keep.txt": before, "payload_executed": False})
+
+
+# The dydo commands the skills hand a sub-agent, as they write them (the check-in's surveyor, crew
+# gates, a statechart chart, the Merge Sub-ticket's merge): the worker lane must let each one through.
+# Hand-written, so WorkerLaneSkillLintTests fails when sub-agent prose names a worker-allowed command
+# word none of these runs. The merge line is only a string the guard reads; nothing here executes it.
+SKILL_COMMANDS = (
+    "dydo check", "dydo fix dydo/guides", "dydo mode show", "dydo pr-ready --body pr-body.md",
+    "dydo merge 123 --match-head-commit 0123abc --match-base-commit 4567def",
+    "dydo survey P-DYD-46", "dydo statechart SPEC.tla --skill skills/engineering/statechart --out chart",
+    "dydo statechart install-skill --root /work/project", "dydo statechart resume --request request.json",
+    "dydo archive branch topic", "dydo archive worktree tree", "dydo archive list", "dydo archive restore ID",
+    "dydo --help")
+
+
+def refusal_lists(reason):
+    """The worker-allowed and top-level-only command names a worker-lane refusal prints."""
+    allowed = re.search(r"run only these dydo commands: (.+) \(plus ", reason)
+    top_level = re.search(r"top-level session that spawned you: (.+)\.", reason)
+    require(allowed and top_level, "Worker-lane refusal does not print its classification")
+    return allowed.group(1).split(", "), top_level.group(1).split(", ")
+
+
+def worker_lane(run):
+    """Synthetic hook protocol: a native sub-agent's call (agent_id) to the real guard; nothing is executed.
+
+    A T3 delegate_task child carries no agent_id and reads as top-level (DYD-1072): never proof here."""
+    hook = installed_hook(run)
+    session = uuid.uuid4().hex
+    reason = guard(run, "dydo init claude", hook, "deny", session, sub_agent=True)
+    allowed, top_level = refusal_lists(reason)
+    require("Not allowed here: dydo init" in reason, "Refusal does not name the refused word")
+    verdicts = {}
+    for command in SKILL_COMMANDS:
+        word = command.split()[1]
+        require(word in allowed or word.startswith("-"), f"Refusal does not list '{word}' as worker-allowed")
+        guard(run, command, hook, "allow", session, sub_agent=True)
+        verdicts[command] = "allow"
+    for word in top_level:
+        refused = guard(run, f"dydo {word}", hook, "deny", session, sub_agent=True)
+        require(f"Not allowed here: dydo {word}" in refused, f"Refusal for '{word}' does not name it")
+        verdicts[f"dydo {word}"] = "deny"
+    # The same refused text from a top-level session (no agent_id) is not the worker lane's to refuse.
+    guard(run, "dydo init claude", hook, "allow", session)
+    verdicts["dydo init claude (top-level session)"] = "allow"
+    write_json(run / "evidence/worker-lane-verdicts.json",
+               {"allowed": allowed, "top_level_only": top_level, "verdicts": verdicts, "payload_executed": False})
 
 
 def activation(run):
@@ -297,14 +347,14 @@ def cleanup(run):
 
 def drive(run, journey):
     doctor(run)
-    {"init-docs": init_docs, "guard": guard_journey, "activation": activation, "archive": archive_journey}[journey](run)
+    {"init-docs": init_docs, "guard": guard_journey, "activation": activation, "archive": archive_journey, "worker-lane": worker_lane}[journey](run)
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("verb", choices=("launch", "doctor", "drive", "cleanup"))
     parser.add_argument("--run")
-    parser.add_argument("--journey", choices=("init-docs", "guard", "activation", "archive"))
+    parser.add_argument("--journey", choices=("init-docs", "guard", "activation", "archive", "worker-lane"))
     args = parser.parse_args(argv)
     require((args.verb == "launch") == (args.run is None), "Only launch allocates a run")
     require((args.verb == "drive") == (args.journey is not None), "Only drive takes a journey")
