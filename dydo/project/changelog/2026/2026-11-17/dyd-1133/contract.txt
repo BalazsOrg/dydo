@@ -1,0 +1,17 @@
+DYD-1133 contract: supplied captain description as of 2026-11-17T07:37:47.725Z
+
+A worktree file ignored only by .git/info/exclude is captured as ignored at the source but untracked in the independent scratch repository. Archive refuses safely with “Reconstructed file/index/status snapshot differs”. Common repository attributes are also absent from the proof inputs.
+
+Expected: capture the required exclude/attribute inputs read-only in the archive, use them in independent reconstruction, and preserve ordinary Git behavior during restore. Keep the independent object-store proof and never delete on a failed reconstruction. Add a regression with local-only.log ignored through the common .git/info/exclude and relevant info/attributes handling.
+
+Source: DYD-1029 Claude code review finding 1, severity should.
+https://linear.app/bodnar-balazs/issue/DYD-1029#comment-44b15c19-a9aa-4861-bdc6-df74d2d6e8e7
+Candidate ab242bdb33d85c521e5ea1a852de00007bf0ec0d; Services/SafeDeleteService.cs:299–335.
+Reviewer reproduced exit 2 with target retained.
+
+Owned scope: safe-delete snapshot/reconstruction inputs, archive model and related tests/reference only. Retain RED, affected SafeDelete Light/static and applicable final coverage/native proof under the testing strategy. This deferral gates Project landing, not DYD-1029's current blocker fix hop.
+
+Governing DYD-1029 intent and DECIDED rulings: committed sibling ../dyd-1142/contract.txt
+at hop base 74bf3bc332de5aaedd5523e506fbf6621788a6bb. User's explicit serial-hop
+brief governs execution. No feature spec exists. Preserve first hop; no work on DYD-1134,
+DYD-1135 or DYD-1143. No skill/Decision/axiom changes. No managed-worktree deletion.
