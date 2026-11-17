@@ -1,22 +1,176 @@
 #!/usr/bin/env python3
 """Bounded real-CLI verification. Run inside the host's shared test FIFO."""
 import argparse
-from contextlib import contextmanager
+from contextlib import ExitStack, contextmanager
 import hashlib
 import json
 import os
 from pathlib import Path
 import re
+import selectors
 import shutil
+import signal
 import stat
+import subprocess
+import sys
 import tempfile
+import time
 import uuid
 
-from owned_process import run_owned
+import owned_process
 
 ROOT = Path(__file__).resolve().parents[4]
 RUNS = Path(tempfile.gettempdir()) / "dydo-verification"
 FIXTURE_FILES = ("dydo.json", "dydo/index.md", ".claude/settings.json", "AGENTS.md", "dydo/files-off-limits.md")
+
+
+def posix_members(pgid):
+    """Keep the unreaped leader's PID reserved until its group has stopped."""
+    if sys.platform == "darwin":
+        snapshot = subprocess.run(["/bin/ps", "-axo", "pid=,pgid=,stat="],
+                                  capture_output=True, text=True, check=True, timeout=1)
+        rows = (line.split() for line in snapshot.stdout.splitlines())
+        return {int(pid): state for pid, group, state in rows if int(group) == pgid}
+    members = {}
+    for path in Path("/proc").glob("[0-9]*/stat"):
+        try:
+            # comm can contain spaces and parentheses; the last ')' ends it.
+            fields = path.read_text().rsplit(")", 1)[1].split()
+        except (FileNotFoundError, ProcessLookupError):
+            continue
+        if int(fields[2]) == pgid:
+            members[int(path.parent.name)] = fields[0]
+    return members
+
+
+def posix_drain(selector, seconds):
+    for key, _ in selector.select(max(0, min(seconds, 0.05))):
+        data = os.read(key.fileobj.fileno(), 65536)
+        if data:
+            key.data.write(data)
+        else:
+            selector.unregister(key.fileobj)
+
+
+def posix_observe(process, selector, result, deadline):
+    while True:
+        members = posix_members(process.pid)
+        result["members_observed"].update({str(pid): state for pid, state in members.items()})
+        # Zombies cannot execute or hold streams. Adopted descendants are reaped by the OS,
+        # not this owner; do not claim Windows Job accounting or descendant wait handles.
+        result["group_quiescent"] = all(state.startswith("Z") for state in members.values())
+        result["streams_complete"] = not selector.get_map()
+        if result["group_quiescent"] and result["streams_complete"]:
+            return
+        remaining = deadline - time.monotonic()
+        if remaining <= 0:
+            raise subprocess.TimeoutExpired(process.args, 0)
+        posix_drain(selector, remaining)
+
+
+def posix_finish(process, selector, result):
+    deadline = time.monotonic() + 10
+    try:
+        # The leader has deliberately not been waited/polled: even an exited root
+        # pins the PGID, so teardown cannot signal a recycled unrelated group.
+        try:
+            os.killpg(process.pid, signal.SIGKILL)
+        except ProcessLookupError:
+            pass
+        posix_observe(process, selector, result, deadline)
+    except (Exception, KeyboardInterrupt) as error:
+        result["cleanup_error"] = f"{type(error).__name__}: {error}"
+    finally:
+        try:
+            result["subject_status"] = process.wait(timeout=max(0, deadline - time.monotonic()))
+            result["root_reaped"] = True
+        except (Exception, KeyboardInterrupt) as error:
+            result["cleanup_error"] = f"{type(error).__name__}: {error}"
+    result["cleanup_confirmed"] = ("cleanup_error" not in result and result["root_reaped"]
+                                   and result["group_quiescent"] and result["streams_complete"])
+
+
+def posix_native(request, env, output, result):
+    with ExitStack() as stack:
+        selector = stack.enter_context(selectors.DefaultSelector())
+        stdin = stack.enter_context((output / "stdin.txt").open("rb"))
+        stdout = stack.enter_context((output / "stdout.log").open("wb", buffering=0))
+        stderr = stack.enter_context((output / "stderr.log").open("wb", buffering=0))
+        # Defer SIGINT across Popen's handle handoff. A caught handler resets on exec,
+        # unlike an ignored signal or a blocked mask, so the child keeps normal signals.
+        interrupted = []
+        defer = lambda number, _frame: interrupted.append(number)
+        previous = signal.signal(signal.SIGINT, defer)
+        process = None
+        try:
+            process = subprocess.Popen(request["argv"], cwd=request["cwd"], env=env,
+                                       stdin=stdin, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
+                                       start_new_session=True)
+            result["root_identity"] = {"pid": process.pid, "pgid": process.pid,
+                                       "sid": process.pid, "executable": request["argv"][0]}
+            for stream, target in ((process.stdout, stdout), (process.stderr, stderr)):
+                stack.callback(stream.close)
+                selector.register(stream, selectors.EVENT_READ, target)
+            signal.signal(signal.SIGINT, previous)
+            if interrupted:
+                raise KeyboardInterrupt()
+            posix_observe(process, selector, result, time.monotonic() + request["execution_seconds"])
+        except subprocess.TimeoutExpired:
+            result["failure_category"] = "timeout"
+        except (Exception, KeyboardInterrupt) as error:
+            result.update(failure_category=type(error).__name__, error=str(error))
+        finally:
+            signal.signal(signal.SIGINT, defer)
+            try:
+                if process is not None:
+                    posix_finish(process, selector, result)
+                if interrupted and result["failure_category"] is None:
+                    result["failure_category"] = "KeyboardInterrupt"
+            finally:
+                signal.signal(signal.SIGINT, previous)
+
+
+def posix_owned(argv, *, cwd, env, input, output, timeout):
+    require(signal.getsignal(signal.SIGCHLD) == signal.SIG_DFL,
+            "POSIX owner requires default SIGCHLD handling to reserve its process group identity")
+    executable = shutil.which(argv[0])
+    if executable is None:
+        raise FileNotFoundError(argv[0])
+    output.mkdir()
+    request = {"argv": [executable, *argv[1:]], "cwd": str(cwd),
+               "execution_seconds": timeout, "teardown_seconds": 10}
+    result = {"request": request, "runtime": {"platform": sys.platform, "python": sys.version,
+               "executable": sys.executable}, "source": {"checkout": str(ROOT),
+               "path": str(Path(__file__).resolve()), "sha256": digest(Path(__file__))},
+              "containment": "POSIX session/process group",
+              "containment_limits": "escaped sessions or process groups and abrupt owner death are not contained; "
+                                    "zombie descendants await OS reaping; no Windows Job guarantees",
+              "members_observed": {}, "cleanup_confirmed": False, "root_reaped": False,
+              "group_quiescent": False, "streams_complete": False, "failure_category": None}
+    try:
+        (output / "stdin.txt").write_bytes(input.encode("utf-8"))
+        posix_native(request, env, output, result)
+    except (Exception, KeyboardInterrupt) as error:
+        result.update(failure_category=type(error).__name__, error=str(error))
+        raise
+    finally:
+        write_json(output / "result.json", result)
+    stdout = (output / "stdout.log").read_bytes().decode("utf-8", errors="surrogateescape")
+    stderr = (output / "stderr.log").read_bytes().decode("utf-8", errors="surrogateescape")
+    if not result["cleanup_confirmed"]:
+        raise RuntimeError("Owned process cleanup unconfirmed; retain scratch and inspect evidence")
+    if result["failure_category"] == "KeyboardInterrupt":
+        raise KeyboardInterrupt()
+    if result["failure_category"] == "timeout":
+        raise subprocess.TimeoutExpired(argv, timeout, output=stdout, stderr=stderr)
+    if result["failure_category"]:
+        raise RuntimeError(f"Owned process observation failed: {result['failure_category']}")
+    return subprocess.CompletedProcess(argv, result["subject_status"], stdout, stderr)
+
+
+def run_owned(argv, *, cwd, env, input, output, timeout):
+    adapter = posix_owned if sys.platform in ("linux", "darwin") else owned_process.run_owned
+    return adapter(argv, cwd=cwd, env=env, input=input, output=output, timeout=timeout)
 
 
 def require(condition, message):
