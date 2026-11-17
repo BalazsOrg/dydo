@@ -29,11 +29,11 @@ Feature: Survey a Project's lanes
       | DYD-5  | Todo        |          |        | DYD-4      |          | 0        | Map     |
       | DYD-6  | In Progress |          |        |            |          | 0        | Map     |
       | DYD-7  | Backlog     | Ada      |        |            | Question | 0        | Map     |
-      | DYD-8  | Todo        |          | DYD-1  |            |          | 0        | Map     |
+      | DYD-8  | Todo        |          | DYD-1  |            | Feature  | 0        | Map     |
       | DYD-9  | Backlog     |          |        | DYD-3      |          | 0        | Other   |
       | DYD-10 | Todo        | Ada      |        |            |          | 0        | Map     |
       | DYD-11 | Backlog     | Ada      |        |            | Question | 2        | Map     |
-      | DYD-12 | Backlog     |          |        |            |          | 0        | Map     |
+      | DYD-12 | Backlog     |          |        |            | Feature  | 0        | Map     |
       | DYD-13 | Backlog     |          |        | DYD-1      |          | 0        | Map     |
     When I survey "25acbbb9a90b"
     Then the survey exits 0

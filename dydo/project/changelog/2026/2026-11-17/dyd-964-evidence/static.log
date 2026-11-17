@@ -1,0 +1,4 @@
+Running as unit: run-p389629-i142906638.scope; invocation ID: 38b7138ffd7b46aa9a55d48837a8044c
+dotnet static: PASSED (child exit 0)
+Aggregate: 0
+Result: /home/balazs/.t3/worktrees/DynaDocs/t3-3ae3ad83-9266c9f1446abf64/DynaDocs.Tests/coverage/results/run-1794892225028-2b4f7b32/result.json

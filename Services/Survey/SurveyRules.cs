@@ -12,6 +12,8 @@ using DynaDocs.Services.Map.Contract;
 internal static class SurveyRules
 {
     private static readonly HashSet<string> ClosedTypes = ["completed", "canceled", "duplicate"];
+    private static readonly HashSet<string> AutoOfferTypes = new(StringComparer.OrdinalIgnoreCase)
+        { "Feature", "Bug", "Merge", "Enablement", "Prototype" };
 
     public static List<SurveyFinding> Find(LinearProjectRead read)
     {
@@ -25,14 +27,15 @@ internal static class SurveyRules
             .Where(issue => IsOpen(issue) && issue.Assignee is null && blockers[issue.Id].Any() && blockers[issue.Id].All(IsClosed))
             .ToList();
         var open = graph.Issues.Where(IsOpen).ToList();
+        var offerable = open.Where(CanOffer).ToList();
 
         IEnumerable<SurveyFinding> findings =
         [
             .. unblocked.Select(issue => Finding("unblocked", issue, UnblockedReason(issue, graph, blockers[issue.Id]))),
-            .. open.Where(issue => issue.State.Type == "unstarted" && issue.Assignee is null
+            .. offerable.Where(issue => issue.State.Type == "unstarted" && issue.Assignee is null
                     && blockers[issue.Id].All(IsClosed) && !unblocked.Contains(issue))
                 .Select(issue => Finding("pickable", issue, "unstarted, unassigned, no open blocker")),
-            .. open.Where(issue => issue.State.Type == "backlog" && issue.Assignee is null && blockers[issue.Id].All(IsClosed))
+            .. offerable.Where(issue => issue.State.Type == "backlog" && issue.Assignee is null && blockers[issue.Id].All(IsClosed))
                 .Select(issue => Finding("uncontracted", issue, "Backlog, unassigned, no open blocker")),
             .. open.Where(issue => issue.State.Type == "started" && issue.Assignee is null)
                 .Select(issue => Finding("started-unassigned", issue, $"{issue.State.Name}, with no assignee")),
@@ -88,6 +91,10 @@ internal static class SurveyRules
     private static bool IsClosed(MapIssue issue) => ClosedTypes.Contains(issue.State.Type);
 
     private static bool IsOpen(MapIssue issue) => !IsClosed(issue);
+
+    private static bool CanOffer(MapIssue issue) =>
+        issue.Labels.Any(label => AutoOfferTypes.Contains(label.Name))
+        && !issue.Labels.Any(label => label.Name.Equals("nit", StringComparison.OrdinalIgnoreCase));
 
     private static string KeyPrefix(string key) => key[..(key.LastIndexOf('-') + 1)];
 

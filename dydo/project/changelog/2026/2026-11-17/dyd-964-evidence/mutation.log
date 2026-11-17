@@ -1,0 +1,4 @@
+Running as unit: run-p732224-i143286554.scope; invocation ID: 756a1111ee6a407999b30fed0829a9cf
+dotnet mutation: UNAVAILABLE: Pending DYD-103
+Aggregate: 2
+Result: /home/balazs/.t3/worktrees/DynaDocs/t3-3ae3ad83-9266c9f1446abf64/DynaDocs.Tests/coverage/results/run-1794892916352-94e9ba90/result.json
