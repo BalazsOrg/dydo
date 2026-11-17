@@ -6,7 +6,7 @@ using DynaDocs.Commands;
 /// <summary>
 /// Skill lint: a skill must not tell a sub-agent to run a dydo command the worker lane refuses.
 ///
-/// <para>Which prose is addressed to a sub-agent (the rule, in three lines):</para>
+/// <para>Which prose is addressed to a sub-agent:</para>
 /// <list type="number">
 /// <item>Every markdown file under <c>skills/roles/crew/</c>: crew are spawned as sub-agents.</item>
 /// <item>Every markdown file under <c>skills/engineering/</c>: the method skills crew load and drive
@@ -19,9 +19,11 @@ using DynaDocs.Commands;
 /// sits, the line a file carries when a sub-agent is told to read it alone. In the text before the first
 /// <c>## </c> (the chief of staff's night-survey resource): the whole file is the sub-agent's. In a
 /// <c>## </c> section (the admiral check-in's "Survey - the surveyor"): that section only. The rest of an
-/// officer file is addressed to the officer's own top-level session and stays out, as does
-/// <c>skills/productivity/</c>, whose skills the user or an officer invokes at top level (update-dydo,
-/// overnight-mode, catch-up).</item>
+/// officer file is addressed to the officer's own top-level session and stays out.</item>
+/// <item>Every markdown file in a <c>skills/productivity/</c> skill whose name crew prose mentions
+/// in a code span or skill path. This includes writing-for-agents and its resources. The exact
+/// description of a project's first <c>dydo init</c> in skill-mechanics.md is descriptive, so only
+/// that quoted mention is excluded; instructions elsewhere in that file are still scanned.</item>
 /// </list>
 ///
 /// <para>What counts as telling it to run a command: a code span or fenced-code line in that prose that
@@ -82,7 +84,28 @@ public partial class WorkerLaneSkillLintTests
         foreach (var file in Markdown(Path.Combine(skills, "roles", "officers")))
             foreach (var section in SubAgentSections(File.ReadAllText(file)))
                 yield return (Path.GetRelativePath(skills, file) + " (sub-agent section)", section);
+
+        var crew = string.Join('\n', Markdown(Path.Combine(skills, "roles", "crew")).Select(File.ReadAllText));
+        foreach (var directory in Directory.EnumerateDirectories(Path.Combine(skills, "productivity")).Order(StringComparer.Ordinal))
+        {
+            var name = Path.GetFileName(directory);
+            if (!crew.Contains($"`{name}`", StringComparison.Ordinal)
+                && !crew.Contains($"productivity/{name}/", StringComparison.Ordinal)) continue;
+            foreach (var file in Markdown(directory))
+            {
+                var source = Path.GetRelativePath(skills, file);
+                yield return (source, ProductivityInstructions(source, File.ReadAllText(file)));
+            }
+        }
     }
+
+    private const string InitializationDescription =
+        "project's copy freezes at its first `dydo init` and an adopter reconciles it by hand";
+
+    private static string ProductivityInstructions(string source, string prose) =>
+        source.Replace('\\', '/') == "productivity/writing-for-agents/resources/skill-mechanics.md"
+            ? prose.Replace(InitializationDescription, InitializationDescription.Replace("`", ""), StringComparison.Ordinal)
+            : prose;
 
     /// <summary>
     /// Each inline code span (whitespace collapsed) and each fenced-code line of <paramref name="markdown"/>,
@@ -153,6 +176,59 @@ public partial class WorkerLaneSkillLintTests
             && command.Code.StartsWith("dydo survey ", StringComparison.Ordinal));
         Assert.Contains(commands, command => command.Source.Replace('\\', '/').StartsWith("engineering/statechart/")
             && command.Code.StartsWith("dydo statechart ", StringComparison.Ordinal));
+        Assert.Contains(sources, source => source.Source.Replace('\\', '/') == "productivity/writing-for-agents/SKILL.md");
+        Assert.Contains(sources, source => source.Source.Replace('\\', '/') == "productivity/writing-for-agents/resources/skill-mechanics.md");
+    }
+
+    [Theory]
+    [InlineData("writing-for-agents", "SKILL.md", "dydo index", false)]
+    [InlineData("writing-for-agents", "resources/skill-mechanics.md", "dydo init claude", false)]
+    [InlineData("another-method", "resources/steps.md", "dydo index", false)]
+    [InlineData("another-method", "SKILL.md", "dydo index", true)]
+    public void SubAgentProse_FindsRefusedCommandsInCrewLoadedProductivity(
+        string skill, string resource, string command, bool pathReference)
+    {
+        var skills = Path.Combine(Path.GetTempPath(), "dydo-skill-lint-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            foreach (var directory in new[] { "roles/crew", "roles/officers", "engineering", $"productivity/{skill}/resources",
+                         "productivity/top-level-only" })
+                Directory.CreateDirectory(Path.Combine(skills, directory));
+            var load = pathReference ? $"Load [the method](skills/productivity/{skill}/SKILL.md)." : $"Load `{skill}` when editing prose.";
+            File.WriteAllText(Path.Combine(skills, "roles/crew/SKILL.md"), load);
+            File.WriteAllText(Path.Combine(skills, $"productivity/{skill}/SKILL.md"), "Read resources as needed.");
+            var description = resource == "resources/skill-mechanics.md"
+                ? "A project's copy freezes at its first `dydo init` and an adopter reconciles it by hand. "
+                : "";
+            File.WriteAllText(Path.Combine(skills, $"productivity/{skill}/{resource}"), description + $"Run `{command}`.");
+            File.WriteAllText(Path.Combine(skills, "productivity/top-level-only/SKILL.md"), "Run `dydo adopt 1`.");
+
+            var sources = SubAgentProse(skills).ToList();
+            var violations = sources.SelectMany(source => Violations(source.Prose)
+                .Select(violation => (source.Source, Violation: violation))).ToList();
+
+            var found = Assert.Single(violations);
+            Assert.Equal($"productivity/{skill}/{resource}", found.Source.Replace('\\', '/'));
+            Assert.Equal($"`{command}` (dydo {command.Split(' ')[1]})", found.Violation);
+            Assert.DoesNotContain(sources, source => source.Source.Replace('\\', '/').StartsWith("productivity/top-level-only/"));
+        }
+        finally
+        {
+            TestDirectory.Delete(skills);
+        }
+    }
+
+    [Theory]
+    [InlineData("project's copy freezes at its first `dydo init` and an adopter reconciles it by hand", 0)]
+    [InlineData("project's copy freezes at its first `dydo init` and an adopter reconciles it by hand. Run `dydo init`.", 1)]
+    [InlineData("project's copy freezes at its first `dydo index` and an adopter reconciles it by hand", 1)]
+    [InlineData("Run `dydo init`.", 1)]
+    public void ProductivityInstructions_ExcludesOnlyTheKnownDescription(string prose, int expectedViolations)
+    {
+        var instructions = ProductivityInstructions("productivity/writing-for-agents/resources/skill-mechanics.md", prose);
+
+        Assert.Equal(expectedViolations, Violations(instructions).Count);
+        Assert.NotEmpty(Violations(ProductivityInstructions("productivity/another-method/SKILL.md", prose)));
     }
 
     [Fact]
