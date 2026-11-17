@@ -455,7 +455,12 @@ public sealed class SafeDeleteGitHubTests
         Assert.Equal(SafeDeleteTests.Git(fixture.Main,"rev-parse","main"),SafeDeleteTests.Git(fixture.Main,"rev-parse","topic"));
         Assert.Equal("staged only",SafeDeleteTests.Git(fixture.Tree,"show",":file.txt"));
         Assert.Equal("working bytes\n",File.ReadAllText(Path.Combine(fixture.Tree,"file.txt")));
-        Assert.Contains(fixture.Tree,SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain"));
+        var paths = SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain","-z")
+            .Split('\0',StringSplitOptions.RemoveEmptyEntries)
+            .Where(field => field.StartsWith("worktree ",StringComparison.Ordinal))
+            .Select(field => field[9..].Replace('\\','/'));
+        Assert.Contains(fixture.Tree.Replace('\\','/'),paths,
+            OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
     }
 
     [Theory]

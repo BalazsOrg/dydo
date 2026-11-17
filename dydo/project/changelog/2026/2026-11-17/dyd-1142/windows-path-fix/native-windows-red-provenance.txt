@@ -1,0 +1,7 @@
+Supplied hosted native Windows RED, inspected in this session; not locally reproduced.
+Source: /home/balazs/.cache/agent-scratch/dydo-370-admiral/pr346-sdwin.log
+SHA256 (uncompressed exact bytes): 02b6bdf74403b51c061af4a78e97f781393413c008fa75ff7c4438f3ced57f0b
+Bytes: 171509
+PR: https://github.com/BalazsOrg/dydo/pull/346
+Job: https://github.com/BalazsOrg/dydo/actions/runs/44065346177/job/133977521046
+Tested GitHub merge: 5d269fde (merge of candidate 3fcbcd689a5294ece2fb4270037f0df9cda80260 into reviewed feature base d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d). Not a clean candidate-HEAD checkout.

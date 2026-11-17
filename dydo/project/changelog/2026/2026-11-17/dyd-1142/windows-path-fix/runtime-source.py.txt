@@ -1,0 +1,22 @@
+from pathlib import Path
+import hashlib
+import json
+from urllib.request import urlopen
+
+out = Path('/tmp/dyd1142-windows-runtime-source')
+out.mkdir(exist_ok=False)
+paths = [
+    'src/libraries/System.Private.CoreLib/src/System/IO/Path.Windows.cs',
+    'src/libraries/System.Private.CoreLib/src/System/IO/PathHelper.Windows.cs',
+    'src/libraries/Common/src/System/IO/PathInternal.Windows.cs',
+]
+records = []
+for path in paths:
+    url = 'https://raw.githubusercontent.com/dotnet/runtime/v10.0.14/' + path
+    with urlopen(url, timeout=25) as response:
+        content = response.read()
+    (out / Path(path).name).write_bytes(content)
+    record = {'url': url, 'sha256': hashlib.sha256(content).hexdigest(), 'bytes': len(content)}
+    records.append(record)
+    print(json.dumps(record), flush=True)
+(out / 'provenance.json').write_text(json.dumps(records, indent=2) + '\n')
