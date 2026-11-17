@@ -373,6 +373,26 @@ class ControlDydoContractTests(unittest.TestCase):
             self.assertNotIn("survey", call.args[0])
             self.assertNotIn("statechart", call.args[0])
 
+    def test_worker_lane_probes_feature_map_invocation_variants(self):
+        # Independent of SKILL_COMMANDS: worker-lane.md promises these invocation forms.
+        required_commands = (
+            "dydo check", "dydo fix dydo/guides", "dydo mode show", "dydo pr-ready --body pr-body.md",
+            "dydo merge 123 --match-head-commit 0123abc --match-base-commit 4567def",
+            "dydo survey P-DYD-46",
+            "dydo statechart SPEC.tla --skill skills/engineering/statechart --out chart",
+            "dydo statechart install-skill --root /work/project",
+            "dydo statechart resume --request request.json", "dydo --help")
+        self.ready()
+        self.assertEqual(0, self.invoke("drive", "worker-lane"))
+        probed = set()
+        for path in (self.run / "evidence").glob("guard-*.json"):
+            event, decision = self.sent_and_decided(json.loads(path.read_text()))
+            if event.get("agent_id") and decision == "allow":
+                probed.add(event["tool_input"]["command"])
+        for command in required_commands:
+            with self.subTest(command=command):
+                self.assertIn(command, probed)
+
     def test_worker_lane_fails_when_the_guard_refuses_a_command_a_skill_names(self):
         self.ready()
         self.worker_allowed.remove("survey")
