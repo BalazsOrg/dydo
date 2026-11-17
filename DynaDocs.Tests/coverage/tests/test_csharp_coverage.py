@@ -840,6 +840,8 @@ class CSharpCampaignTests(unittest.TestCase):
     def test_real_campaign_joins_collected_hits_onto_the_authored_source_method(self):
         joined = self.recorded("joined.json")
         self.assertEqual(["dydo", "GateMetrics", "SkillBuild"], [row["assembly"] for row in joined["targets"]])
+        self.assertEqual(["DynaDocs.csproj", "DynaDocs.Tests/coverage/metrics/GateMetrics.csproj",
+                          "tools/SkillBuild/SkillBuild.csproj"], [row["project"] for row in joined["targets"]])
         library = next(row for row in joined["modules"] if row["path"] == "src/Widget.cs")
         method = library["methods"][0]
         self.assertTrue(method["id"].endswith("|System.Int32 Mini.Widget::Classify(System.Int32)"))

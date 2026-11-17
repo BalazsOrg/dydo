@@ -56,6 +56,20 @@ public class SkillShapeTests
         Assert.Equal(fails, violations.Any(violation => violation.Contains("has no contents list")));
     }
 
+    [Theory]
+    [InlineData("")]
+    [InlineData("No entries.\n")]
+    [InlineData("## Later\n- A later list item\n")]
+    [InlineData("# Later\n- A later list item\n")]
+    public void Resource_OverOneHundredLinesWithEmptyContents_Fails(string afterContents)
+    {
+        var resource = "# A\n\n## Contents\n\n" + afterContents
+            + string.Concat(Enumerable.Repeat("Body text.\n", SkillShape.ResourceLimit + 1));
+
+        Assert.Equal(new[] { $"{Resource}: a resource over 100 lines has no contents list ({SkillShape.BestPractices})" },
+            SkillShape.Violations(Tree((Spine, Frontmatter + LinksA), (Resource, resource))));
+    }
+
     // "Claude might partially read files when they're referenced from other referenced files ... `head -100`";
     // D8 keeps a resource reached through another resource short enough for that preview to read whole.
     [Theory]

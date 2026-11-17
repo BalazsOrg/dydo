@@ -335,7 +335,28 @@ def committed_repository(root):
 def dotnet_repository(folder):
     """A repository root carrying the reviewed .NET platform selection fixture."""
     from test_dotnet_platform import write_dotnet_fixture
-    return write_dotnet_fixture(Path(folder) / "repo")
+    root = write_dotnet_fixture(Path(folder) / "repo")
+    write_dotnet_inventory(root)
+    return root
+
+
+def write_dotnet_inventory(root, extra_projects=()):
+    """Inventory from evaluated project fixtures, including every Compile owner."""
+    from gate_inventory import assemble_inventory
+    from test_dotnet_platform import SOURCES
+    projects = [{"path": "Lib/Lib.csproj", "compile": list(SOURCES), "test": False,
+                 "assembly": "bin/Debug/net10.0/dydo.dll"},
+                {"path": "DynaDocs.Tests/Tests.csproj", "test": True,
+                 "compile": ["DynaDocs.Tests/Lib/NativeTests.cs"],
+                 "assembly": "DynaDocs.Tests/bin/Debug/net10.0/Tests.dll"}, *extra_projects]
+    for project in projects:
+        write_file(root, project["path"], '<Project Sdk="Microsoft.NET.Sdk" />')
+    paths = sorted(path.relative_to(root).as_posix() for path in root.rglob("*")
+                   if path.is_file() and path.name != "inventory.json")
+    inventory = assemble_inventory(root, paths, projects, [])
+    if inventory["errors"]:
+        raise AssertionError(inventory["errors"])
+    return write_file(root, "inventory.json", json.dumps(inventory))
 
 
 # The real run_tests.py main() in assurance mode, with git, the campaign and the descendant scan
@@ -1254,6 +1275,108 @@ class CandidateInventoryTests(unittest.TestCase):
         self.assertIsNone(answer["facts"]["currentSourceFingerprint"])
 
 
+class DotnetInventoryCoverageTests(unittest.TestCase):
+    def campaign(self, folder, source, measured=False, omit_source=False, assembly="Future.Library", empty=False):
+        from test_dotnet_platform import joined_modules, write_evidence
+        root = dotnet_repository(folder)
+        if source != "Lib/Neutral.cs":
+            text = ("namespace Future; public interface IMarker { }\n" if source.endswith("Types.cs")
+                    else "namespace Future; public static class Extra { public static int Run() => 1; }\n")
+            write_file(root, source, text)
+        inventory = write_dotnet_inventory(root, [{
+            "path": "tools/Future/Future.csproj", "compile": [source], "test": False,
+            "assembly": f"tools/Future/bin/Debug/net10.0/{assembly}.dll"}])
+        write_evidence(root / "campaign", [] if empty else joined_modules())
+        joined_path = root / "campaign/joined.json"
+        joined = json.loads(joined_path.read_text(encoding="utf-8"))
+        if empty:
+            joined["targets"] = []
+        if measured:
+            module = {"path": source, "executable": False, "lines": {}, "branches": {},
+                      "methods": [], "body_owners": []}
+            joined["targets"].append({"project": "tools/Future/Future.csproj", "assembly": assembly, "accounting": [],
+                                      "modules": [] if omit_source else [module]})
+            if not omit_source:
+                joined["modules"].append(module)
+        joined_path.write_text(json.dumps(joined), encoding="utf-8")
+        write_file(root, "DynaDocs.Tests/coverage/run_tests.py",
+                   "import shutil, sys\nfrom pathlib import Path\n"
+                   "output = Path(sys.argv[sys.argv.index('--assurance-output') + 1])\n"
+                   "shutil.copytree(Path.cwd() / 'campaign', output / 'raw')\n")
+        run = Path(folder) / "output/assurance/run-fixture"
+        run.mkdir(parents=True)
+        inventory = write_file(run, "inventory.json", inventory.read_text(encoding="utf-8"))
+        with mock.patch("dotnet_platform.native_platform", return_value="linux"):
+            report = gate_adapter.collect_coverage(root, run, "dotnet", inventory)
+        summary = Path(folder) / "output/adapters/dotnet-coverage.json"
+        candidate = json.loads(inventory.read_text(encoding="utf-8"))["candidate"]
+        exit_code = publish(summary, run, "dotnet", "coverage", report, candidate, inventory)
+        return exit_code, json.loads(summary.read_text(encoding="utf-8"))
+
+    def test_omitted_project_fails_publication_with_a_named_measurement_gap(self):
+        with tempfile.TemporaryDirectory() as folder:
+            exit_code, payload = self.campaign(folder, "tools/Future/Extra.cs")
+
+        self.assertEqual(2, exit_code, payload)
+        self.assertFalse(payload["measurementComplete"])
+        self.assertEqual([{"gate": "csharp-coverage", "project": "tools/Future/Future.csproj",
+                           "assembly": "Future.Library", "sources": ["tools/Future/Extra.cs"],
+                           "message": "Inventory target assembly absent from native campaign"}], payload["gaps"])
+        self.assertEqual(2, payload["exitCode"])
+
+    def test_shared_source_in_a_measured_assembly_does_not_hide_its_omitted_project(self):
+        with tempfile.TemporaryDirectory() as folder:
+            exit_code, payload = self.campaign(folder, "Lib/Neutral.cs")
+
+        self.assertEqual(2, exit_code, payload)
+        self.assertFalse(payload["measurementComplete"])
+        self.assertEqual("tools/Future/Future.csproj", payload["gaps"][0]["project"])
+        self.assertEqual(["Lib/Neutral.cs"], payload["gaps"][0]["sources"])
+
+    def test_same_assembly_name_and_shared_source_do_not_hide_an_omitted_owner(self):
+        with tempfile.TemporaryDirectory() as folder:
+            exit_code, payload = self.campaign(folder, "Lib/Neutral.cs", assembly="dydo")
+
+        self.assertEqual(2, exit_code, payload)
+        self.assertFalse(payload["measurementComplete"])
+        self.assertEqual("tools/Future/Future.csproj", payload["gaps"][0]["project"])
+
+    def test_another_owners_source_does_not_hide_a_missing_source_in_a_measured_project(self):
+        with tempfile.TemporaryDirectory() as folder:
+            exit_code, payload = self.campaign(folder, "Lib/Neutral.cs", measured=True, omit_source=True)
+
+        self.assertEqual(2, exit_code, payload)
+        self.assertFalse(payload["measurementComplete"])
+        self.assertEqual(["Lib/Neutral.cs"], payload["gaps"][0]["sources"])
+
+    def test_types_only_source_in_an_instrumented_assembly_is_complete(self):
+        with tempfile.TemporaryDirectory() as folder:
+            exit_code, payload = self.campaign(folder, "tools/Future/Types.cs", measured=True)
+
+        self.assertEqual(0, exit_code, payload)
+        self.assertTrue(payload["measurementComplete"])
+        self.assertEqual([], payload["gaps"])
+
+    def test_zero_sources_measured_cannot_publish_complete(self):
+        with tempfile.TemporaryDirectory() as folder:
+            exit_code, payload = self.campaign(folder, "tools/Future/Extra.cs", empty=True)
+
+        self.assertEqual(2, exit_code, payload)
+        self.assertFalse(payload["measurementComplete"])
+        self.assertEqual({"Lib/Lib.csproj", "tools/Future/Future.csproj"},
+                         {gap["project"] for gap in payload["gaps"]})
+        self.assertEqual([], payload["collectors"]["csharp-coverage"]["facts"]["modules"])
+
+    def test_instrumented_assembly_without_its_inventory_source_fails_publication(self):
+        with tempfile.TemporaryDirectory() as folder:
+            exit_code, payload = self.campaign(folder, "tools/Future/Types.cs", measured=True, omit_source=True)
+
+        self.assertEqual(2, exit_code, payload)
+        self.assertFalse(payload["measurementComplete"])
+        self.assertEqual("Inventory target sources absent from native campaign", payload["gaps"][0]["message"])
+        self.assertEqual(["tools/Future/Types.cs"], payload["gaps"][0]["sources"])
+
+
 class CoverageCampaignTests(unittest.TestCase):
     def coverage_gate(self, root, output):
         return subprocess.run([str(STATIC_PYTHON), str(TOOLS / "gate_adapter.py"),
@@ -1372,7 +1495,7 @@ class CoverageCampaignTests(unittest.TestCase):
                 with mock.patch.dict(os.environ, {"APPDATA": str(root / "appdata")}, clear=False), \
                         mock.patch("dotnet_platform.native_platform", return_value=platform), \
                         mock.patch.object(gate_adapter, "run_coverage_command", return_value=0):
-                    answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                    answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
                 self.assertEqual(failing, {row["path"] for row in answer["findings"]})
                 row = collector_row(answer, "csharp-coverage")
@@ -1383,7 +1506,8 @@ class CoverageCampaignTests(unittest.TestCase):
                                  (receipt["platform"], sorted(receipt["denominators"])))
                 self.assertEqual({"passed": 3, "total": 3, "names": [WINDOWS_TEST]} if trx else None,
                                  receipt.get("tests"))
-                self.assertEqual([{"assembly": "dydo", "accounting": []}], row["facts"]["targets"])
+                self.assertEqual([{"project": "Lib/Lib.csproj", "assembly": "dydo", "accounting": []}],
+                                 row["facts"]["targets"])
                 self.assertEqual([{"path": "raw-abc/raw/" + path.name,
                                    "sha256": hashlib.sha256(path.read_bytes()).hexdigest()} for path in evidence],
                                  row["artifacts"])
@@ -1401,7 +1525,7 @@ class CoverageCampaignTests(unittest.TestCase):
                 with mock.patch("dotnet_platform.native_platform", return_value="windows"), \
                         mock.patch.object(gate_adapter, "run_coverage_command", return_value=0), \
                         self.assertRaisesRegex(ValueError, message):
-                    gate_adapter.collect_dotnet_coverage(root, raw)
+                    gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
     def test_a_drifted_selection_or_undeclared_windows_test_stops_before_the_campaign(self):
         for platform, damage in (("linux", "Lib/Mixed.cs"), ("windows", "DynaDocs.Tests/Lib/NativeTests.cs"),
@@ -1413,7 +1537,7 @@ class CoverageCampaignTests(unittest.TestCase):
                 with mock.patch("dotnet_platform.native_platform", return_value=platform), \
                         mock.patch.object(gate_adapter, "run_coverage_command") as campaign, \
                         self.assertRaises(ValueError):
-                    gate_adapter.collect_dotnet_coverage(root, Path(folder) / "run/raw-abc")
+                    gate_adapter.collect_dotnet_coverage(root, Path(folder) / "run/raw-abc", root / "inventory.json")
                 campaign.assert_not_called()
 
     def test_a_failed_csharp_suite_is_a_functional_finding_before_any_join(self):
@@ -1422,7 +1546,7 @@ class CoverageCampaignTests(unittest.TestCase):
             raw.parent.mkdir()
 
             with mock.patch.object(gate_adapter, "run_coverage_command", return_value=1):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
             self.assertEqual([{"gate": "functional", "child_exit": 1, "failingTests": [],
                                "failingTestsSummary": "campaign subject streams unavailable: "
@@ -1441,7 +1565,7 @@ class CoverageCampaignTests(unittest.TestCase):
             write_file(raw, "raw/altcover-runner.stderr", "")
 
             with mock.patch.object(gate_adapter, "run_coverage_command", return_value=1):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
             self.assertEqual([{"gate": "functional", "child_exit": 1,
                                "failingTests": ["DynaDocs.Tests.A.B", "DynaDocs.Tests.C.D(x: 1)"],
@@ -1470,7 +1594,7 @@ class CoverageCampaignTests(unittest.TestCase):
                       "FAILED (failures=1, errors=1)\r\n")
 
             with mock.patch.object(gate_adapter, "run_coverage_command", return_value=1):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
             finding = answer["findings"][0]
             self.assertEqual(["tests.test_csharp_metrics.Case.test_x",
@@ -1487,7 +1611,7 @@ class CoverageCampaignTests(unittest.TestCase):
             write_file(raw, "raw/altcover-runner.stderr", "")
 
             with mock.patch.object(gate_adapter, "run_coverage_command", return_value=1):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
             finding = answer["findings"][0]
             self.assertEqual([f"DynaDocs.Tests.Case.Test{i}" for i in range(10)],
@@ -1507,7 +1631,7 @@ class CoverageCampaignTests(unittest.TestCase):
                     expected_summary = "campaign subject streams unavailable: altcover-runner.stderr"
 
                 with mock.patch.object(gate_adapter, "run_coverage_command", return_value=1):
-                    answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                    answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
                 self.assertEqual("fail", answer["status"])
                 finding = answer["findings"][0]
@@ -1522,7 +1646,7 @@ class CoverageCampaignTests(unittest.TestCase):
                                  "campaign": {"failure_category": "timeout", "error_message": None}}))
 
             with mock.patch.object(gate_adapter, "run_coverage_command", return_value=2):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
             self.assertEqual("error", answer["status"])
             error = answer["errors"][0]
@@ -1544,7 +1668,7 @@ class CoverageCampaignTests(unittest.TestCase):
                                              "error_message": "Owner requires Windows CPython 3.14"}}))
 
             with mock.patch.object(gate_adapter, "run_coverage_command", return_value=2):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
             error = answer["errors"][0]
             self.assertEqual("preflight", error["failureCategory"])
@@ -1557,7 +1681,7 @@ class CoverageCampaignTests(unittest.TestCase):
             raw.mkdir(parents=True)
 
             with mock.patch.object(gate_adapter, "run_coverage_command", return_value=2):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
             error = answer["errors"][0]
             self.assertEqual("identities.json is missing or unreadable", error["diagnosisUnavailable"])
@@ -1577,7 +1701,7 @@ class CoverageCampaignTests(unittest.TestCase):
                 write_file(raw, "identities.json", text)
 
                 with mock.patch.object(gate_adapter, "run_coverage_command", return_value=2):
-                    answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                    answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
                 error = answer["errors"][0]
                 self.assertIsInstance(error["diagnosisUnavailable"], str)
@@ -1593,7 +1717,7 @@ class CoverageCampaignTests(unittest.TestCase):
             write_file(raw, "identities.json", json.dumps({"schema": 1, "campaign": campaign}))
 
             with mock.patch.object(gate_adapter, "run_coverage_command", return_value=2):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
         self.assertEqual(("error", []), (answer["status"], answer["findings"]))
         error = answer["errors"][0]
@@ -1648,7 +1772,7 @@ class CoverageCampaignTests(unittest.TestCase):
                        UNCONFIRMED_CLEANUP_RUNNER.format(tools=str(TOOLS), temp=str(temp)))
 
             with mock.patch("run_tests.contain_descendants", return_value=None):
-                answer = gate_adapter.collect_dotnet_coverage(root, raw)
+                answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
             self.assertEqual(2, collector_row(answer, "csharp-coverage")["facts"]["child_exit"])
             self.assertEqual(("error", []), (answer["status"], answer["findings"]))
