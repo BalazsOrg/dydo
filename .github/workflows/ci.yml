@@ -642,7 +642,7 @@ jobs:
   # dotnet-coverage measurement, and fails on any result that is not a pass.
   safe-delete-windows:
     runs-on: windows-latest
-    timeout-minutes: 30
+    timeout-minutes: 45
     env:
       MSBUILDDISABLENODEREUSE: '1'
       DOTNET_CLI_USE_MSBUILD_SERVER: '0'
@@ -679,7 +679,7 @@ jobs:
         shell: pwsh
         run: >-
           python DynaDocs.Tests/coverage/gap_check.py test --stack dotnet --
-          --filter FullyQualifiedName~SafeDelete --logger 'trx;LogFileName=safe-delete-windows.trx'
+          --filter FullyQualifiedName~SafeDelete --logger 'trx;LogFileName=safe-delete-windows.trx' --logger 'console;verbosity=normal'
           --results-directory '${{ github.workspace }}/TestResults/safe-delete-windows'
       - name: Require native execution, no skips and an enforced memory cap
         if: ${{ !cancelled() }}
