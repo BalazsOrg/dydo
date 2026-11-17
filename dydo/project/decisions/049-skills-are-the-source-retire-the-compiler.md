@@ -8,6 +8,8 @@ participants: [balazs, opencode admiral, Astra]
 
 # 049 - Skills Are the Source: Retire the Compiler
 
+> **§1 amended by [064 - Claims Build the Skills](./064-claims-build-the-skills.md)** (proposed) for the claim-made set only: the officer and crew role skills, the workflow skills they use and the shipped standards are built from a model of claims, and the skill folder is where the built skill is read. §1 stands for every other skill, and the rest remains in force.
+
 dydo stops compiling skills and agents from its own templates. **A skill folder is the source of
 truth**, authored directly in the cross-vendor `SKILL.md` format; distribution is the hosts' job.
 The compiler (`dydo sync`), `template update`, the `dydo.json.skills` switchboard, include tags and
