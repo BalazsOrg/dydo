@@ -20,30 +20,8 @@ public class CommandDocConsistencyTests
     ];
     private static readonly HashSet<string> BuiltInOptionNames = ["--help", "-h", "-?", "--version"];
 
-    private static RootCommand BuildRootCommand()
-    {
-        var root = new RootCommand("Test");
-        var programCs = File.ReadAllText(FindRepoFile("Program.cs"));
-        var assembly = typeof(CheckCommand).Assembly;
-        var pattern = new Regex(@"(\w+Command)\.Create\(\)");
-
-        foreach (Match match in pattern.Matches(programCs))
-        {
-            var type = assembly.GetType($"DynaDocs.Commands.{match.Groups[1].Value}");
-            var method = type?.GetMethod("Create", BindingFlags.Public | BindingFlags.Static);
-            if (method == null || method.GetParameters().Length != 0
-                || !typeof(Command).IsAssignableFrom(method.ReturnType)) continue;
-            root.Subcommands.Add((Command)method.Invoke(null, null)!);
-        }
-
-        return root;
-    }
-
-    private static List<(string Path, Command Cmd)> GetAllCommands()
-    {
-        var root = BuildRootCommand();
-        return WalkCommands(root).ToList();
-    }
+    private static List<(string Path, Command Cmd)> GetAllCommands() =>
+        WalkCommands(DydoRootCommand.Create()).ToList();
 
     private static List<(string Path, Command Cmd)> GetDocumentedCommands() =>
         GetAllCommands().Where(c => !ExcludedFromDocs.Contains(c.Cmd.Name) && !ExcludedPaths.Contains(c.Path)).ToList();

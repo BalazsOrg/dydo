@@ -162,11 +162,43 @@ public class GuardWorkerLaneTests : IntegrationTestBase
     [InlineData("dydo -h")]
     [InlineData("dydo --version")]
     [InlineData("dydo check \\\n  dydo/understand")]
+    [InlineData("dydo survey")]
+    [InlineData("dydo survey P-DYD-46")]
+    [InlineData("dydo survey \"Project ID\" --json")]
+    [InlineData("dydo statechart")]
+    [InlineData("dydo statechart SPEC.tla --skill skills/engineering/statechart --out /tmp/chart")]
+    [InlineData("dydo statechart install-skill --root /work/project")]
+    [InlineData("dydo statechart resume --request /tmp/request.json")]
+    [InlineData("dydo statechart doctor")]
+    [InlineData("./dydo statechart SPEC.tla && dydo survey P-DYD-46")]
     public async Task Worker_GateDydoCommand_Allowed(string command)
     {
         var result = await WorkerShellAsync("Bash", command);
 
         result.AssertPreToolUseAllowed();
+    }
+
+    // The top-level-only list stays refused, and the refusal prints the classification it reads.
+    [Theory]
+    [InlineData("init claude", "init")]
+    [InlineData("adopt 3.7.0", "adopt")]
+    [InlineData("index", "index")]
+    [InlineData("guard --host claude", "guard")]
+    [InlineData("map --no-browser", "map")]
+    [InlineData("completions bash", "completions")]
+    [InlineData("_complete", "_complete")]
+    [InlineData("survey P-DYD-46 && dydo init", "init")]
+    public async Task Worker_TopLevelOnlyDydoCommand_Refused_WithTheClassificationInTheMessage(string arguments, string word)
+    {
+        var result = await WorkerShellAsync("Bash", $"dydo {arguments}");
+
+        result.AssertPreToolUseDenied();
+        result.AssertStderrContains($"Not allowed here: dydo {word}");
+        foreach (var line in GuardCommand.WorkerRefusalLines(word))
+            result.AssertStderrContains(line);
+        result.AssertStderrContains(string.Join(", ", GuardCommand.WorkerAllowedDydoSubcommands));
+        result.AssertStderrContains(string.Join(", ", GuardCommand.TopLevelOnlyDydoSubcommands));
+        Assert.DoesNotContain("Setup, generation and hook commands", result.Stderr);
     }
 
     [Theory]

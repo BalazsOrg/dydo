@@ -12400,6 +12400,47 @@
       "principle": null
     },
     {
+      "id": "inquisition.offer-next-round-after-fixes",
+      "kind": "inquisition",
+      "rule": "Offer the next Inquisition round once every blocker and should fix of the previous round is complete.",
+      "actors": [
+        "map-holder",
+        "admiral"
+      ],
+      "combined": true,
+      "prose": {
+        "admiral": [
+          {
+            "text": "Rounds start from zero: once every blocker and should fix of a round is `Done`, offer the next round as a fresh Inquisition, never a recheck of the old findings.",
+            "source": "skills/roles/officers/admiral/SKILL.md:173",
+            "unit": "skills/roles/officers/admiral/SKILL.md#L173.1",
+            "statement": "L2-344",
+            "combined": true
+          }
+        ],
+        "ticket-captain": [
+          {
+            "text": "The map holder offers the next round once every blocker and should Bug is fixed.",
+            "source": "skills/roles/officers/ticket-captain/resources/inquisition.md:179",
+            "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L179.1",
+            "statement": "L1-302",
+            "combined": false
+          }
+        ]
+      },
+      "drift": [
+        {
+          "type": "scope",
+          "note": "L1-302 gives the offer to the map holder, L2-344 to the admiral."
+        },
+        {
+          "type": "value",
+          "note": "L2-344 says once every blocker and should fix of a round is Done; L1-302 says once every blocker and should Bug is fixed."
+        }
+      ],
+      "principle": null
+    },
+    {
       "id": "inquisition.other-bug-filed-unassigned-pickable",
       "kind": "inquisition",
       "rule": "A Bug whose fix the patch lane will not prepare is filed unassigned and pickable at once.",
@@ -13387,13 +13428,12 @@
     {
       "id": "inquisition.rounds-start-from-zero",
       "kind": "inquisition",
-      "rule": "Each Inquisition round starts from zero: a new round never reads the previous round map or findings, and the next round is a fresh Inquisition offered once every blocker and should Bug of the round is fixed.",
+      "rule": "Each Inquisition round starts from zero, independent of the previous round's map and findings.",
       "actors": [
         "ticket-captain",
-        "map-holder",
         "admiral"
       ],
-      "combined": false,
+      "combined": true,
       "prose": {
         "admiral": [
           {
@@ -13401,7 +13441,7 @@
             "source": "skills/roles/officers/admiral/SKILL.md:173",
             "unit": "skills/roles/officers/admiral/SKILL.md#L173.1",
             "statement": "L2-124",
-            "combined": false
+            "combined": true
           }
         ],
         "ticket-captain": [
@@ -13411,24 +13451,13 @@
             "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L6.1",
             "statement": "L1-206",
             "combined": false
-          },
-          {
-            "text": "The map holder offers the next round once every blocker and should Bug is fixed.",
-            "source": "skills/roles/officers/ticket-captain/resources/inquisition.md:179",
-            "unit": "skills/roles/officers/ticket-captain/resources/inquisition.md#L179.1",
-            "statement": "L1-302",
-            "combined": false
           }
         ]
       },
       "drift": [
         {
-          "type": "scope",
-          "note": "L1-302 gives the offer to the map holder, L2-124 to the admiral."
-        },
-        {
-          "type": "value",
-          "note": "L2-124 says once every blocker and should of a round is Done; L1-302 says once every blocker and should Bug is fixed."
+          "type": "action",
+          "note": "L1-206 explicitly forbids reading the previous round's map or findings; L2-124 says the next round is a fresh Inquisition, never a recheck of the old findings."
         }
       ],
       "principle": null
@@ -30609,15 +30638,6 @@
         "review.rereview-on-scope-change"
       ],
       "note": "L2-101 requires re-review and human approval after scope change but names no reviewer rubric or owner of the approval request."
-    },
-    {
-      "group": "K3",
-      "type": "gap",
-      "claims": [
-        "review.plan-check-shape",
-        "review.spec-review-excludes-wording"
-      ],
-      "note": "L4-169 says \"check the shape of the plan\" with no item list in the statement; the shape is defined outside any statement of this group."
     },
     {
       "group": "K3",

@@ -12,7 +12,8 @@ A new command or required option changes a closed set of code, test, help, and r
 
 | Surface | Required change |
 |---|---|
-| `Program.cs` | Register the top-level command. |
+| `Commands/DydoRootCommand.cs` | Register the top-level command; `Program.cs` runs this tree. |
+| `Commands/GuardCommand.WorkerLane.cs` | Classify the command: add it to `WorkerAllowedDydoSubcommands` or to `TopLevelOnlyDydoSubcommands`. |
 | `Commands/<Name>Command.cs` | Define the command and handler behavior. |
 | `Commands/HelpCommand.cs` | Include the command path in agent-facing help when appropriate. |
 | `DynaDocs.Tests/Commands/CommandSmokeTests.cs` | Exercise the command factory. |
@@ -22,6 +23,18 @@ A new command or required option changes a closed set of code, test, help, and r
 Update focused behavior tests as required by the command's risk. The consistency suite checks command
 discovery, help presence, option coverage, required example flags, template/reference parity, and factory
 smoke coverage.
+
+## Classify the command for sub-agents
+
+A call carrying `agent_id` is a native in-process sub-agent (Claude's `Agent`, Codex's `spawn_agent`),
+and the guard lets it run only the dydo commands on `WorkerAllowedDydoSubcommands`. A T3 `delegate_task`
+child carries no `agent_id`, so the guard reads it as top-level: never use one to test this lane. Decide for the new command: a sub-agent may run it (read-only,
+or a gate or step its skill hands to crew), or it stays with the top-level session
+(`TopLevelOnlyDydoSubcommands`: setup, generation, the hook, a server). The guard compares the first word
+after `dydo`, so a command's verbs share its decision; check that every verb is one a sub-agent may run
+before allowing the command. `WorkerLaneClassificationTests` fails until the command is on exactly one
+list, and `WorkerLaneSkillLintTests` fails when a crew skill, an engineering skill or a sub-agent
+section tells a sub-agent to run a refused command. See [Guard System](../understand/guard-system.md).
 
 ## Product-boundary check
 

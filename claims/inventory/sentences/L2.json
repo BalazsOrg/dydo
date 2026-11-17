@@ -2097,7 +2097,15 @@
         {
           "id": "L2-124",
           "kind": "inquisition",
-          "rule": "Inquisition rounds start from zero: once every blocker and should of a round is `Done`, offer the next round as a fresh Inquisition, never a recheck of the old findings.",
+          "rule": "Each Inquisition round starts from zero as a fresh Inquisition, never a recheck of the old findings.",
+          "actors": [
+            "admiral"
+          ]
+        },
+        {
+          "id": "L2-344",
+          "kind": "inquisition",
+          "rule": "Offer the next Inquisition round once every blocker and should fix of the previous round is `Done`.",
           "actors": [
             "admiral"
           ]
