@@ -1,0 +1,11 @@
+HEAD is now at 01ca32e9 DYD-1172 proof: reconcile hosted failure with existing zero reserves
+
+--- Running tests (worktree-isolated) ---
+  Creating test worktree...
+  Worktree: /tmp/dydo-test-2e9dfc66
+  Cleaning up worktree...
+
+  Tests passed
+dotnet coverage: PASSED (child exit 0)
+Aggregate: 0
+Result: /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/DynaDocs.Tests/coverage/results/run-1794954504113-ee6f87f1/result.json

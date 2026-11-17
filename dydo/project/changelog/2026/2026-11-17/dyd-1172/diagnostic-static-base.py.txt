@@ -1,0 +1,37 @@
+"""Comparable static attribution: pinned source bytes, same prepared toolchain."""
+import hashlib
+import json
+from pathlib import Path
+import signal
+import subprocess
+import sys
+
+EVIDENCE = Path(__file__).resolve().parent
+ROOT = EVIDENCE.parents[5]
+SOURCE = ROOT / "DynaDocs.Tests/Integration/SafeDeleteInputsTests.cs"
+original = SOURCE.read_bytes()
+base = subprocess.check_output(["git", "show", "01ca32e9bdbda6d3477aab3b9c82cefc85d14fea:" + str(SOURCE.relative_to(ROOT))], cwd=ROOT)
+sha = lambda data: hashlib.sha256(data).hexdigest()
+
+
+def interrupted(signum, frame):
+    raise KeyboardInterrupt(f"signal {signum}")
+
+
+signal.signal(signal.SIGTERM, interrupted)
+signal.signal(signal.SIGINT, interrupted)
+receipt = {"candidateSha256": sha(original), "baseSourceSha256": sha(base),
+           "baseHead": "01ca32e9bdbda6d3477aab3b9c82cefc85d14fea",
+           "comparison": "same checkout/toolchain; only assertion source restored to pinned HEAD; inert evidence retained"}
+try:
+    SOURCE.write_bytes(base)
+    receipt["exit"] = subprocess.run([sys.executable, str(EVIDENCE / "diagnostic-gate.py.txt"),
+        "diagnostic-static-base", "gate", str(ROOT / ".static-gates/python/bin/python"),
+        "DynaDocs.Tests/coverage/gap_check.py", "gate", "static", "--stack", "dotnet"], cwd=ROOT).returncode
+finally:
+    SOURCE.write_bytes(original)
+    receipt["restoredSha256"] = sha(SOURCE.read_bytes())
+    receipt["restored"] = SOURCE.read_bytes() == original
+    (EVIDENCE / "diagnostic-static-base-restoration.json").write_text(json.dumps(receipt, indent=2) + "\n")
+print(json.dumps(receipt, indent=2))
+raise SystemExit(receipt["exit"])

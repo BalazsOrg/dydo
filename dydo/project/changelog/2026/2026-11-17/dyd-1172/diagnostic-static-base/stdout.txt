@@ -1,0 +1,3 @@
+dotnet static: FAILED (child exit 1)
+Aggregate: 1
+Result: /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/DynaDocs.Tests/coverage/results/run-1794954382009-6564bb29/result.json

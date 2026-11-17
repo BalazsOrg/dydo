@@ -1,0 +1,91 @@
+"""Transient diagnostic witness; restores candidate bytes even after a failed run.
+
+Run from any cwd: python3 <this-file> UNIQUE_PREFIX
+The sole failing row is deliberately injected, not a Windows reproduction.
+"""
+import hashlib
+import json
+from pathlib import Path
+import signal
+import subprocess
+import sys
+import xml.etree.ElementTree as ET
+
+EVIDENCE = Path(__file__).resolve().parent
+ROOT = EVIDENCE.parents[5]
+SOURCE = ROOT / "DynaDocs.Tests/Integration/SafeDeleteInputsTests.cs"
+PYTHON = ROOT / ".static-gates/python/bin/python"
+FILTER = "FullyQualifiedName~SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged"
+
+
+def digest(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def interrupted(signum, frame):
+    raise KeyboardInterrupt(f"signal {signum}")
+
+
+def main():
+    prefix, = sys.argv[1:]
+    if not prefix or any(c not in "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_" for c in prefix):
+        raise ValueError("Use a unique simple prefix")
+    backup = EVIDENCE / (prefix + "-source.cs.txt")
+    original = SOURCE.read_bytes()
+    with backup.open("xb") as stream:
+        stream.write(original)
+    output = EVIDENCE / (prefix + "-fixture-output.txt")
+    expected = b'        Assert.True(fixture.Output.Contains("proof input",StringComparison.Ordinal),fixture.Output);'
+    checkpoint = b'            if (point == checkpoint) File.AppendAllText(Input(fixture,name),"# changed proof input\\n");'
+    assert original.count(expected) == original.count(checkpoint) == 1
+    message = "DYD-1172 DIAGNOSTIC ONLY: injected deletion refusal; " + "complete-output-witness/" * 24 + "\nEND-DYD-1172-DIAGNOSTIC"
+    replacement = checkpoint.replace(b' File.AppendAllText', b' { File.AppendAllText') + (
+        ' if (!present) throw new IOException(' + json.dumps(message) + '); }').encode()
+    changed = original.replace(checkpoint, replacement).replace(expected, (
+        '        if (!present) File.WriteAllText(' + json.dumps(str(output)) + ',fixture.Output);\n').encode() + expected)
+    signal.signal(signal.SIGTERM, interrupted)
+    signal.signal(signal.SIGINT, interrupted)
+    run = EVIDENCE / "run-proof.py"
+    name = prefix + "-forced"
+    command = [sys.executable, str(run), name, "probe", str(PYTHON),
+               "DynaDocs.Tests/coverage/gap_check.py", "test", "--stack", "dotnet", "--",
+               "--filter", FILTER, "--logger", "trx;LogFileName=diagnostic.trx",
+               "--results-directory", str(EVIDENCE / name / "results")]
+    receipt = {"candidateSha256": digest(original), "probeSha256": digest(changed),
+               "backup": str(backup), "argv": command, "windowsReproduction": False}
+    try:
+        SOURCE.write_bytes(changed)
+        receipt["probeExit"] = subprocess.run(command, cwd=ROOT).returncode
+    finally:
+        SOURCE.write_bytes(original)
+        receipt["restoredSha256"] = digest(SOURCE.read_bytes())
+        receipt["restored"] = SOURCE.read_bytes() == original
+        (EVIDENCE / (prefix + "-restoration.json")).write_text(json.dumps(receipt, indent=2) + "\n")
+    assert receipt["restored"]
+    assert receipt["probeExit"] == 1, receipt
+    fixture = output.read_text()
+    streams = (EVIDENCE / name / "stdout.txt").read_text() + (EVIDENCE / name / "stderr.txt").read_text()
+    trx = ET.parse(EVIDENCE / name / "results/diagnostic.trx")
+    ns = {"t": "http://microsoft.com/schemas/VisualStudio/TeamTest/2010"}
+    counters = trx.find(".//t:Counters", ns).attrib
+    assert (counters["total"], counters["passed"], counters["failed"]) == ("5", "4", "1"), counters
+    failure = trx.find(".//t:ErrorInfo/t:Message", ns).text
+    assert message in fixture
+    assert fixture.strip() in failure, "TRX must contain the entire captured fixture output"
+    position = 0
+    for line in fixture.splitlines():
+        if line.strip():
+            position = streams.index(line.strip(), position) + len(line.strip())
+    receipt.update(fixtureSha256=digest(output.read_bytes()), fixtureBytes=output.stat().st_size,
+                   completeOutputInLog=True, completeOutputInTrx=True, counters=counters)
+    (EVIDENCE / (prefix + "-witness.json")).write_text(json.dumps(receipt, indent=2) + "\n")
+    print(json.dumps(receipt, indent=2))
+    # Rebuild after restoration; never reuse the deliberately changed test assembly.
+    return subprocess.run([sys.executable, str(run), prefix + "-restored", "probe", str(PYTHON),
+                           "DynaDocs.Tests/coverage/gap_check.py", "test", "--stack", "dotnet", "--",
+                           "--filter", FILTER, "--logger", "trx;LogFileName=restored.trx",
+                           "--results-directory", str(EVIDENCE / (prefix + "-restored") / "results")], cwd=ROOT).returncode
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
