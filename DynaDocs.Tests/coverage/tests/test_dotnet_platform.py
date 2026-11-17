@@ -133,6 +133,7 @@ def write_evidence(evidence, modules, stdout=SUMMARY, trx=None):
     files = source_files()
     (evidence / 'source-facts-dydo.json').write_text(json.dumps({'files': files}), encoding='utf-8')
     (evidence / 'source-facts-GateMetrics.json').write_text(json.dumps({'files': []}), encoding='utf-8')
+    (evidence / 'source-facts-SkillBuild.json').write_text(json.dumps({'files': []}), encoding='utf-8')
     (evidence / 'altcover-runner.stdout').write_text(stdout, encoding='utf-8')
     if trx is not None:
         (evidence / dotnet_platform.WINDOWS_RESULTS).write_bytes(trx)
@@ -558,6 +559,9 @@ class UnionTests(unittest.TestCase):
 
 
 class DenominatorTests(unittest.TestCase):
+    def test_the_union_reads_every_target_assemblys_source_facts(self):
+        self.assertEqual(('dydo', 'GateMetrics', 'SkillBuild'), dotnet_platform.SOURCE_FACTS)
+
     def test_the_rebuilt_denominator_is_this_hosts_zero_hit_join_of_the_candidate(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder).resolve()

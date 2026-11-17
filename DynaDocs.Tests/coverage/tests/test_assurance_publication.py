@@ -19,7 +19,9 @@ BINARIES = ["bin/Debug/net10.0/dydo.dll", "bin/Debug/net10.0/dydo.pdb",
             "DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll",
             "DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.pdb",
             "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.dll",
-            "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.pdb"]
+            "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.pdb",
+            "tools/SkillBuild/bin/Debug/net10.0/SkillBuild.dll",
+            "tools/SkillBuild/bin/Debug/net10.0/SkillBuild.pdb"]
 CAMPAIGN = {"complete": True, "cleanup_confirmed": True, "subject_status": 0}
 FOREIGN = b'{"foreign": true}\n'
 FIRST_RAW = "raw/coverage.opencover.xml"
@@ -107,6 +109,8 @@ class AssurancePublicationTests(unittest.TestCase):
             self.assertEqual(tree(worktree / RESULTS), tree(output / "raw"))
             self.assertEqual(tree(worktree / "owner"), tree(output / "owner"))
             self.assertEqual({"raw", "owner", "identities.json"}, {path.name for path in output.iterdir()})
+            self.assertTrue(set(BINARIES).issubset(
+                row["path"] for row in manifest(output / "identities.json")["artifacts"]))
             text = json.dumps(manifest(output / "identities.json"), indent=2, sort_keys=True) + "\n"
             self.assertEqual(text.replace("\n", os.linesep).encode("utf-8"),
                              (output / "identities.json").read_bytes())
