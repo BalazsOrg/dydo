@@ -97,12 +97,15 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 ### Counts
 
 - Files 35; sentences (units) 1798; not-a-rule 163 (framing 87, description 46, rationale 12, example 9,
-  pointer 8, other 1); rule statements 1780.
-- Claims 1024: 979 after phase 2, then 51 cross-group merge sets removed 63 claims and moved 89 statements into
+  pointer 8, other 1); rule statements 1781.
+- Claims 1025: 979 after phase 2, then 51 cross-group merge sets removed 63 claims and moved 89 statements into
   another group (the survivor's kind now owns them), leaving 916; the un-bundling pass then added 99 claims and
-  retired 7 (1008); the narrowing pass added 7 and retired 5 (1010); the sweep pass added 19 and retired 5.
-  Claims with 2+ statements 403; with copies in 2+ carriers 269.
-- Sweep pass: every sentence carrying 2+ rule entries (199, now 204) was read with its sibling statements, with every
+  retired 7 (1008); the narrowing pass added 7 and retired 5 (1010); the sweep pass added 19 and retired 5 (1024);
+  the DYD-1122/DYD-1123 batch split one claim (1025).
+  Claims with 2+ statements 404; with copies in 2+ carriers 270.
+- DYD-1122/DYD-1123 batch: L2-124's context independence and offer timing became separate statements and claims,
+  adding one statement and one combined unit (205 total); the false plan-shape gap was removed against L4-169's continuation.
+- Sweep pass: every sentence carrying 2+ rule entries (199; 204 after the sweep) was read with its sibling statements, with every
   claim holding one of their statements and every claim that received copies in phase 3 or a fix pass. 15 statements
   were added, 14 rewritten to their own obligation and 5 cut back to their own actors; 26 claim rules were rewritten
   to state only what their statements carry, 4 statements regrouped into the claim holding their other copies, and `docs.retire-working-spec` and
@@ -114,8 +117,8 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 - Un-bundling pass: 96 sentences, each stating several independent obligations, carry one rule entry per obligation
   (their rendered prose is `combined`); 93 statements were narrowed to their own obligation; 138 statements were
   added; 24 claims were split into one claim per rule.
-- Claims with drift 221 (a claim may carry several types): scope 144, action 58, wording 69, value 13.
-- Findings 75: drift 25, gap 28, homeless 15, contradiction 7.
+- Claims with drift 222 (a claim may carry several types): scope 144, action 59, wording 69, value 13.
+- Findings 74: drift 25, gap 27, homeless 15, contradiction 7.
 
 ### R1 to R4, as found
 
@@ -155,7 +158,7 @@ Recorded, not fixed: the inventory states what the 35 files say; it advises no c
 ### Rules their actor never reads
 
 Computed from `claims.json` (role actors admiral, chief-of-staff, ticket-captain, code-writer, docs-writer, reviewer,
-inquisitor, research, scout; group actors excluded): of 790 claims with a role actor, 105 have no carrier among their
+inquisitor, research, scout; group actors excluded): of 791 claims with a role actor, 105 have no carrier among their
 actors' own skills. By actor: ticket-captain 57, chief-of-staff 28, admiral 12, reviewer 7, code-writer 4, inquisitor 1
 (a claim counts once per actor). 33 of the 105 are `overnight.*` rules reached only by loading `overnight-mode`. Ten others:
 

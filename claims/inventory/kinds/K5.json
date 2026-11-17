@@ -1547,25 +1547,44 @@
     {
       "id": "inquisition.rounds-start-from-zero",
       "kind": "inquisition",
-      "rule": "Each Inquisition round starts from zero: a new round never reads the previous round map or findings, and the next round is a fresh Inquisition offered once every blocker and should Bug of the round is fixed.",
+      "rule": "Each Inquisition round starts from zero, independent of the previous round's map and findings.",
       "actors": [
         "ticket-captain",
-        "map-holder",
         "admiral"
       ],
       "statements": [
         "L1-206",
-        "L1-302",
         "L2-124"
       ],
       "drift": [
         {
+          "type": "action",
+          "note": "L1-206 explicitly forbids reading the previous round's map or findings; L2-124 says the next round is a fresh Inquisition, never a recheck of the old findings."
+        }
+      ],
+      "principle": null,
+      "group": "K5"
+    },
+    {
+      "id": "inquisition.offer-next-round-after-fixes",
+      "kind": "inquisition",
+      "rule": "Offer the next Inquisition round once every blocker and should fix of the previous round is complete.",
+      "actors": [
+        "map-holder",
+        "admiral"
+      ],
+      "statements": [
+        "L1-302",
+        "L2-344"
+      ],
+      "drift": [
+        {
           "type": "scope",
-          "note": "L1-302 gives the offer to the map holder, L2-124 to the admiral."
+          "note": "L1-302 gives the offer to the map holder, L2-344 to the admiral."
         },
         {
           "type": "value",
-          "note": "L2-124 says once every blocker and should of a round is Done; L1-302 says once every blocker and should Bug is fixed."
+          "note": "L2-344 says once every blocker and should fix of a round is Done; L1-302 says once every blocker and should Bug is fixed."
         }
       ],
       "principle": null,
