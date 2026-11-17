@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-10
 area: project
+applies: [new-ground]
 ---
 
 # 008 - Data-Driven Role Definitions

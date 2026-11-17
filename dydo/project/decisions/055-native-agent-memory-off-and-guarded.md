@@ -3,6 +3,7 @@ area: general
 type: decision
 status: accepted
 date: 2026-10-25
+applies: [new-ground]
 ---
 
 # 055 - Native Agent Memory Off and Guarded

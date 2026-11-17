@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-08
 participants: [balazs, Kate]
+applies: [dydo-verification-independent-evidence]
 ---
 
 # 036 - Task Approval Reform: Verifier Flips Done, the Done Window, and the Archive Sweep

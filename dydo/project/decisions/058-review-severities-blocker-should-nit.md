@@ -3,6 +3,7 @@ area: general
 type: decision
 status: accepted
 date: 2026-10-28
+applies: [dydo-effort-right-sized-bureaucracy]
 ---
 
 # 058 - Review Severities: Blocker, Should, Nit

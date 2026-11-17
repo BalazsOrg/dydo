@@ -5,6 +5,7 @@ status: accepted
 date: 2026-09-04
 accepted: 2026-09-05
 participants: [balazs, Claude (Fable)]
+applies: [dydo-attention-human-decisions]
 ---
 
 # 047 - Supersymmetry, Hop Statuses, Merge Issues, and the Release Protocol

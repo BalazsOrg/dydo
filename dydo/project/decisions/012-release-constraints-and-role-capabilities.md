@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-18
 area: project
+applies: [new-ground]
 ---
 
 # 012 - Release Constraints and Role Capabilities

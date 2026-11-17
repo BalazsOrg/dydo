@@ -3,6 +3,7 @@ area: general
 type: decision
 status: accepted
 date: 2026-10-27
+applies: [dydo-easy-path]
 ---
 
 # 056 - Claude Guard in Committed Settings

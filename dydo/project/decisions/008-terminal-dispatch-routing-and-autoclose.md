@@ -4,6 +4,7 @@ status: accepted
 date: 2026-03-11
 area: project
 supersedes: [001, 004]
+applies: [new-ground]
 ---
 
 # 008 - Terminal Dispatch Routing and Auto-Close Watchdog

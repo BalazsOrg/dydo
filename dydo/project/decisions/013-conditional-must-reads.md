@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-23
 area: project
+applies: [dydo-context-pointers]
 ---
 
 # 013 - Conditional Must-Reads (Hardcoded)

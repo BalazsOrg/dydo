@@ -5,6 +5,7 @@ status: accepted
 date: 2026-09-05
 accepted: 2026-09-05
 participants: [balazs, Claude (Fable)]
+applies: [dydo-easy-path]
 ---
 
 # 048 - One-Level Static Gates: Certainly Wrong, No Escape Hatch

@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-30
 area: project
+applies: [new-ground]
 ---
 
 # 014 - Rename `dydo clean` to `dydo agent clean`

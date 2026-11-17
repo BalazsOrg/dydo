@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-07
 area: project
+applies: [new-ground]
 ---
 
 # 002 - Template Update System

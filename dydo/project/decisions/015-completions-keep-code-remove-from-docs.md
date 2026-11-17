@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-30
 area: project
+applies: [dydo-efficiency]
 ---
 
 # 015 - Shell Completions: Keep Code, Remove from Docs

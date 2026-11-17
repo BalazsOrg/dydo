@@ -3,6 +3,7 @@ area: project
 type: decision
 status: accepted
 date: 2026-10-22
+applies: [dydo-aligned-intent]
 ---
 
 # 054 - What Would Balazs Do: a Tribunal for His Calls

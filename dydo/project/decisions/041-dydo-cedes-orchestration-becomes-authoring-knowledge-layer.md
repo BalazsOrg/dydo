@@ -5,6 +5,7 @@ status: accepted
 date: 2026-07-14
 accepted: 2026-07-16
 participants: [balazs, Adele]
+applies: [dydo-design-reuse-before-build]
 ---
 
 # 041 - dydo Cedes Orchestration: The Vendor-Agnostic Authoring + Knowledge + PM Layer

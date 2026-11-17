@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-03
 participants: [balazs, Brian]
+applies: [dydo-effort-right-sized-bureaucracy]
 ---
 
 # 026 - Tier-1 Agents Are Managers: Code Writes Happen in Workflows

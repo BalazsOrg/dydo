@@ -5,6 +5,7 @@ status: accepted
 date: 2026-09-22
 accepted: 2026-09-22
 participants: [balazs, Claude admiral]
+applies: [new-ground]
 ---
 
 # 050 - Officers, Crew and Skills: Hats Retired

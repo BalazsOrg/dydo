@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-09-12
 participants: [balazs, opencode admiral, Astra]
+applies: [dydo-design-reuse-before-build]
 ---
 
 # 049 - Skills Are the Source: Retire the Compiler

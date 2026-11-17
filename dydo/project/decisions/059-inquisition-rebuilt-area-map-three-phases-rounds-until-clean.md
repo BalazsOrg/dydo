@@ -3,6 +3,7 @@ area: general
 type: decision
 status: accepted
 date: 2026-10-28
+applies: [dydo-verification-independent-evidence]
 ---
 
 # 059 - Inquisition Rebuilt: Area Map, Three Phases, Rounds Until Clean

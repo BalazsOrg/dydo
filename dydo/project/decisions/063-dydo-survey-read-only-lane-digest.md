@@ -5,6 +5,7 @@ status: accepted
 date: 2026-11-04
 accepted: 2026-11-04
 participants: [balazs, Claude ticket-captain]
+applies: [dydo-design-reuse-before-build]
 ---
 
 # 063 - `dydo survey`: a Read-Only Lane Digest

@@ -5,6 +5,7 @@ status: accepted
 date: 2026-08-27
 accepted: 2026-08-27
 participants: [balazs, Codex]
+applies: [dydo-design-reuse-before-build]
 ---
 
 # 044 - Linear-Canonical PM and the dydo Knowledge Boundary

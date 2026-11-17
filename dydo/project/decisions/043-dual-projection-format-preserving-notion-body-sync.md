@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-08-17
 participants: [balazs, Codex]
+applies: [new-ground]
 ---
 
 # 043 - Dual-Projection, Format-Preserving Notion Body Sync

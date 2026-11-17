@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-03-25
 participants: [balazs, Emma]
+applies: [dydo-efficiency]
 ---
 
 # 009 - Claude Code Native `.claude/` Features Evaluation

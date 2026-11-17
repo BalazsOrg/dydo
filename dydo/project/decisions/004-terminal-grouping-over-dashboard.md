@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-09
 area: project
+applies: [dydo-design-reuse-before-build]
 ---
 
 # 004 - Terminal Grouping Over Dashboard

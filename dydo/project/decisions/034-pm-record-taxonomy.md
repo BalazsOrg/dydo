@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-06
 participants: [balazs, Dexter]
+applies: [new-ground]
 ---
 
 # 034 - PM Record Taxonomy: `project/` = Records, the Two-Altitude Work Funnel, the Partition Convention
