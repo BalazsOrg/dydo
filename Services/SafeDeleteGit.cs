@@ -59,13 +59,11 @@ internal static class SafeDeleteGit
         if (process.ExitCode != 0) throw new InvalidDataException($"git {args[0]} stream failed");
     }
 
-    internal static string Status(string cwd, IReadOnlyDictionary<string, string>? config = null) => Convert.ToBase64String(ReadStatus(cwd, config).Output);
+    internal static string Status(string cwd) => Convert.ToBase64String(ReadStatus(cwd).Output);
 
-    private static GitResult ReadStatus(string cwd, IReadOnlyDictionary<string, string>? config)
+    private static GitResult ReadStatus(string cwd)
     {
-        var overrides = (config ?? new Dictionary<string, string>()).SelectMany(pair => new[] { "-c", pair.Key + "=" + pair.Value });
-        var result = Read(cwd, [.. overrides, "-c", "core.excludesFile=", "-c", "core.fsmonitor=false", "-c", "core.untrackedCache=false",
-            "status", "--porcelain=v1", "-z", "--untracked-files=all", "--ignored=matching", "--no-renames"]);
+        var result = Read(cwd, "status", "--porcelain=v1", "-z", "--untracked-files=all", "--ignored=matching", "--no-renames");
         if (!result.Ok) throw new InvalidDataException("Cannot capture Git status");
         return result;
     }

@@ -1,0 +1,152 @@
+DYD-1029 implementation fix hop; code-writer/model: gpt-6.1-sol high
+Parent: ab242bdb33d85c521e5ea1a852de00007bf0ec0d.
+Base: dee4861ae2691e41d9e60985e3e0ffb0c7ea987d (ancestor checked before edits).
+Initial observed checkout: clean DYD-1029-safe-delete, isolated captain checkout
+/home/balazs/.t3/worktrees/DynaDocs/t3-8d7ada1c-88d218c54a54db07, not the main checkout.
+All changed production/tests/docs paths are in the retained 60-path ownership manifest;
+successor evidence is within its contracted ticket-evidence directory. Original evidence intact.
+
+Closed implementation blocker 1 by fail-closed eligibility. A repository pull list is not
+exhaustive cross-repository head evidence, including for forks; search indexing is not used
+as authority. Production remote-backed archive/delete now refuses even after empty or valid
+nonmatching selected-repository pages. Known protected head/base refusals remain specific.
+The realistic regression runs the archive command over a real linked worktree/local bare fork
+remote, with an API-process seam returning empty fork pull pages and an upstream PR using that
+fork's topic head. It proves the selected remote ref, local ref and unique working file remain
+intact, with no archive created. It also validates the upstream response identifies the head.
+Product limitation prepared for captain: no general remote eligibility success is claimed;
+an exhaustive authoritative future mechanism would be a separate implementation decision.
+
+Closed implementation blocker 2 by installing saved required settings in the fresh independent
+proof repository's local config and restored worktree config when extensions.worktreeConfig
+is already enabled. Shared/global config is never changed. With worktree config disabled,
+matching inherited settings require no writes; differing settings refuse restore and retain
+the complete archive. No automatic shared extension migration is attempted.
+All captured/proof/restored status commands now use ordinary Git configuration, no -c overrides.
+The retained regression sets common core.filemode=true, source worktree core.filemode=false,
+chmods file.txt executable while initially clean, archives/deletes, expires reflogs and runs
+source gc, then restores: ordinary status is clean, effective source override is false, and
+common config is byte-identical. Another regression proves changed shared settings are refused
+without rewriting common config. Restore failure may leave newly created refs/registration;
+the archive remains complete; no rollback claim is made.
+
+Meaningful RED/fix/revert proof:
+- fix-blockers-red: exit 1, both new blockers RED on original implementation. Fork expected
+  refusal 2 but got deletion success 0; ordinary restored status expected clean but got M file.txt.
+- fix-exact-config-red: reviewer's exact original CLI probe, exit 0 confirming its bug assertion:
+  before clean, after M file.txt, effective core.filemode=true. Raw child argv/outputs retained.
+- fix-blockers-green and fix-strongest-witness: both blocker regressions pass.
+- fix-exact-config-green: same reviewer script with only its outcome assertion corrected;
+  archive/GC/restore exit 0, before/after clean, effective core.filemode=false.
+- fix-reverted-red: restore only the three implicated implementation files from the parent;
+  all THREE regressions RED, exit 1, then exact successor source bytes restored in finally.
+- fix-regressions-final: all THREE GREEN after restoration, exit 0.
+Both strongest exact witnesses were replayed before expensive broad gates.
+
+Light/static/coverage reach and gates:
+Selection retains all SafeDelete unit/integration/generated executable Gherkin tests, reached
+Git/clean/guard/init/help/completion/CLI/reference/workflow consumers and their shared tests.
+fix-preflight-host pins SDK 10.0.303, runtime 10.0.14 installed, Git 2.53.0, assurance Python
+3.14.4 and nonzero regression discovery. fix-light-discovery retains full nonzero selection.
+No maintained Python executable changed; only .NET gates apply to this hop. Guard performance
+Heavy is dormant and untriggered: no parser/reader architecture or performance behavior changed.
+Whole-stack .NET coverage remains required because the facade lacks ticket selection.
+fix-light failed exit 1 (9 missing-binary/startup-hook failures): writer incorrectly overlapped
+static, whose rebuild removed the binaries used by in-flight child processes. This failed raw
+receipt is preserved. The exact unchanged selection was rerun sequentially, not broadened.
+Final evidence bytes match the gate receipts for every non-evidence source path.
+Sequential Light: 4151 passed, zero failures, 17 platform skips; source-level .NET static
+and full Linux-portion .NET coverage gates both exit0. dydo check: zero errors/warnings in
+894 files. Native platform skips do not prove Windows coverage or execution.
+
+Exact rerun recipe (extract recipe/dyd1029-run.py to /tmp first; use fresh labels):
+python3 /tmp/dyd1029-run.py REPLAY-fix-witness probe dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --filter 'FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~WorktreeFilemodeOverride|FullyQualifiedName~RestoreWithChangedSharedSettings' --logger trx
+python3 /tmp/dyd1029-run.py REPLAY-fix-light gate dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --filter 'FullyQualifiedName~SafeDelete|FullyQualifiedName~Clean|FullyQualifiedName~Git|FullyQualifiedName~Guard|FullyQualifiedName~BashCommandAnalyzer|FullyQualifiedName~DangerousPattern|FullyQualifiedName~InitCommandTests|FullyQualifiedName~Completion|FullyQualifiedName~Help|FullyQualifiedName~CommandSmoke|FullyQualifiedName~CommandDocConsistency|FullyQualifiedName~ReleaseWorkflow' --logger trx
+python3 /tmp/dyd1029-run.py REPLAY-fix-static gate .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate static --stack dotnet
+python3 /tmp/dyd1029-run.py REPLAY-fix-coverage gate .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate coverage --stack dotnet
+python3 /tmp/dyd1029-run.py REPLAY-fix-mutation gate .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate mutation --since dee4861ae2691e41d9e60985e3e0ffb0c7ea987d --stack dotnet
+Run these sequentially: static rebuilds local binaries. Exact CLI config witness:
+python3 /tmp/dyd1029-run.py REPLAY-fix-config probe python3 /tmp/dyd1029-fix-config-probe.py
+Revert recipe/dyd1029-fix-red-replay.py is pinned to parent and mutates only the three owned
+implementation files inside try/finally; its RED receipt pins actual tested original bytes.
+The shared /var/tmp/dydo-gate-lock.sh stays outside systemd scope. Probes: MemoryMax=4G,
+MemorySwapMax=0, OOMPolicy=continue, timeout120. Gates: 8G, swap0, continue, timeout3600.
+Nearest agent slice app-t3code-agents-cbc6c2286251.slice. Environment for .NET:
+MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false.
+Sandbox user-bus denial is retained (fix-preflight); successful runs used escalation of the
+capped wrapper, never an uncapped retry. The only concurrency was two gate operations;
+no crew or subagents were started; no candidate-branch push, PR or ticket status change was made.
+
+Governing reconciliation and outstanding captain proof:
+See fix-contract.txt: exact live Linear description, updatedAt 2026-11-16T23:50:22.766Z,
+including the DECIDED admiral ruling. The original contract.txt remains unchanged.
+fix-review-blocks.txt and fix-linear-snapshot.json retain the original Claude PASS, Codex FAIL,
+merged first-round FAIL disposition, mutation ruling, captain disposition and native T3 report.
+Historical reviewer claims remain verbatim and are qualified by the merged disposition.
+Deferred shoulds DYD-1133/1134/1135 block landing DYD-1076; five parent nits remain out of this hop.
+Mutation is exit 2 fail-closed UNAVAILABLE, inherited owner DYD-103, never PASS, and under
+that ruling does not hold offer. Meaningful RED and fresh cross-vendor review remain required.
+Round 2+ grading follows DR 058: wrong intended behavior blocker; correct behavior/test-only
+gap should. This writer changes no acceptance criteria and claims no mutation assurance.
+Native Windows execution/coverage remains owed to captain and has not passed in this hop.
+No Linux skip/early return is Windows evidence. Fresh independent cross-vendor review and
+captain's rerun of the actual proof recipe remain owed.
+
+T3 evidence supplied by captain, not executed by this fix writer:
+native-t3-67a2060b-evidence.tar.gz is copied byte-identically from the supplied portable archive;
+SHA256 90552ab159f0bdcbcaef4495ac7c7c1b8f2536c352c655744db1d6ba15336bb2.
+native-t3-67a2060b-README.txt is the verbatim supplied README.md (also inside archive).
+It applies ONLY to original ab242bdb33d85c521e5ea1a852de00007bf0ec0d: protective native CLI
+exit2 before network/archive access, all 2478 tracked paths/index/ref/registration/sentinel
+retained, subsequent live retained-target list/read health. Generated build artifacts are
+excluded. No deletion, archive/restore, inactive release or stale-missing-thread health proof
+is claimed. T3_RELEASE_UNPROVEN and production refusal remain unchanged; captain will replay
+relevant proof on successor. This evidence is not silently upgraded to successor proof.
+
+Final observed verification: whole-suite coverage producer ran 7213 tests: 7159 passed,
+54 platform skips, zero failures (raw altcover-runner.stdout, Test Run Successful).
+Post-package validation succeeded: all 220 indexed raw members and 2469 source hashes match;
+all 9 original evidence files are unchanged; native T3 archive and README are byte-identical,
+with no generated build artifacts. Original-candidate T3 evidence is not successor proof.
+
+Observed run receipts (each contains exact argv, environment prefix, cap, dirty bytes, exit,
+timestamps and raw-log path inside fix-raw-evidence.tar.gz):
+fix-blockers-green: exit=0; start=2026-11-16T23:39:27.293074+00:00; end=2026-11-16T23:39:39.859291+00:00; runs/fix-blockers-green/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "dotnet", "test", "DynaDocs.Tests/DynaDocs.Tests.csproj", "--filter", "FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~WorktreeFilemodeOverride", "--logger", "trx", "--results-directory", "/tmp/dyd1029-runs/fix-blockers-green/trx"]
+  TRX counters={"aborted": "0", "completed": "0", "disconnected": "0", "error": "0", "executed": "2", "failed": "0", "inProgress": "0", "inconclusive": "0", "notExecuted": "0", "notRunnable": "0", "passed": "2", "passedButRunAborted": "0", "pending": "0", "timeout": "0", "total": "2", "warning": "0"}
+fix-blockers-red: exit=1; start=2026-11-16T23:38:10.171853+00:00; end=2026-11-16T23:38:13.749364+00:00; runs/fix-blockers-red/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "dotnet", "test", "DynaDocs.Tests/DynaDocs.Tests.csproj", "--no-build", "--filter", "FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~WorktreeFilemodeOverride", "--logger", "trx", "--results-directory", "/tmp/dyd1029-runs/fix-blockers-red/trx"]
+  TRX counters={"aborted": "0", "completed": "0", "disconnected": "0", "error": "0", "executed": "2", "failed": "2", "inProgress": "0", "inconclusive": "0", "notExecuted": "0", "notRunnable": "0", "passed": "0", "passedButRunAborted": "0", "pending": "0", "timeout": "0", "total": "2", "warning": "0"}
+fix-coverage: exit=0; start=2026-11-16T23:48:50.434777+00:00; end=2026-11-16T23:59:34.480749+00:00; runs/fix-coverage/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=8G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "3600", ".static-gates/python/bin/python", "DynaDocs.Tests/coverage/gap_check.py", "gate", "coverage", "--stack", "dotnet"]
+fix-doc-check: exit=0; start=2026-11-16T23:55:38.746595+00:00; end=2026-11-16T23:55:39.234281+00:00; runs/fix-doc-check/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "dotnet", "bin/Debug/net10.0/dydo.dll", "check"]
+fix-exact-config-green: exit=0; start=2026-11-16T23:40:57.828093+00:00; end=2026-11-16T23:40:58.827267+00:00; runs/fix-exact-config-green/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "python3", "/tmp/dyd1029-fix-config-probe.py"]
+fix-exact-config-red: exit=0; start=2026-11-16T23:38:36.703555+00:00; end=2026-11-16T23:38:37.526222+00:00; runs/fix-exact-config-red/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "python3", "/tmp/dyd1029-codex-review/config-probe.py"]
+fix-light: exit=1; start=2026-11-16T23:42:29.503871+00:00; end=2026-11-16T23:45:11.674014+00:00; runs/fix-light/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=8G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "3600", "dotnet", "test", "DynaDocs.Tests/DynaDocs.Tests.csproj", "--no-build", "--filter", "FullyQualifiedName~SafeDelete|FullyQualifiedName~Clean|FullyQualifiedName~Git|FullyQualifiedName~Guard|FullyQualifiedName~BashCommandAnalyzer|FullyQualifiedName~DangerousPattern|FullyQualifiedName~InitCommandTests|FullyQualifiedName~Completion|FullyQualifiedName~Help|FullyQualifiedName~CommandSmoke|FullyQualifiedName~CommandDocConsistency|FullyQualifiedName~ReleaseWorkflow", "--logger", "trx", "--results-directory", "/tmp/dyd1029-runs/fix-light/trx"]
+  TRX counters={"aborted": "0", "completed": "0", "disconnected": "0", "error": "0", "executed": "4151", "failed": "9", "inProgress": "0", "inconclusive": "0", "notExecuted": "0", "notRunnable": "0", "passed": "4142", "passedButRunAborted": "0", "pending": "0", "timeout": "0", "total": "4168", "warning": "0"}
+fix-light-discovery: exit=0; start=2026-11-16T23:41:44.058878+00:00; end=2026-11-16T23:41:55.638017+00:00; runs/fix-light-discovery/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "dotnet", "test", "DynaDocs.Tests/DynaDocs.Tests.csproj", "--list-tests", "--filter", "FullyQualifiedName~SafeDelete|FullyQualifiedName~Clean|FullyQualifiedName~Git|FullyQualifiedName~Guard|FullyQualifiedName~BashCommandAnalyzer|FullyQualifiedName~DangerousPattern|FullyQualifiedName~InitCommandTests|FullyQualifiedName~Completion|FullyQualifiedName~Help|FullyQualifiedName~CommandSmoke|FullyQualifiedName~CommandDocConsistency|FullyQualifiedName~ReleaseWorkflow"]
+fix-light-sequential: exit=0; start=2026-11-16T23:46:12.144381+00:00; end=2026-11-16T23:48:39.007888+00:00; runs/fix-light-sequential/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=8G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "3600", "dotnet", "test", "DynaDocs.Tests/DynaDocs.Tests.csproj", "--no-build", "--filter", "FullyQualifiedName~SafeDelete|FullyQualifiedName~Clean|FullyQualifiedName~Git|FullyQualifiedName~Guard|FullyQualifiedName~BashCommandAnalyzer|FullyQualifiedName~DangerousPattern|FullyQualifiedName~InitCommandTests|FullyQualifiedName~Completion|FullyQualifiedName~Help|FullyQualifiedName~CommandSmoke|FullyQualifiedName~CommandDocConsistency|FullyQualifiedName~ReleaseWorkflow", "--logger", "trx", "--results-directory", "/tmp/dyd1029-runs/fix-light-sequential/trx"]
+  TRX counters={"aborted": "0", "completed": "0", "disconnected": "0", "error": "0", "executed": "4151", "failed": "0", "inProgress": "0", "inconclusive": "0", "notExecuted": "0", "notRunnable": "0", "passed": "4151", "passedButRunAborted": "0", "pending": "0", "timeout": "0", "total": "4168", "warning": "0"}
+fix-mutation: exit=2; start=2026-11-17T00:00:30.110853+00:00; end=2026-11-17T00:00:30.231548+00:00; runs/fix-mutation/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=8G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "3600", ".static-gates/python/bin/python", "DynaDocs.Tests/coverage/gap_check.py", "gate", "mutation", "--since", "dee4861ae2691e41d9e60985e3e0ffb0c7ea987d", "--stack", "dotnet"]
+fix-preflight: exit=1; start=2026-11-16T23:37:10.981011+00:00; end=2026-11-16T23:37:11.006280+00:00; runs/fix-preflight/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "bash", "-c", "dotnet --version; dotnet --list-runtimes; git --version; .static-gates/python/bin/python --version; dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --list-tests --filter \"FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~WorktreeFilemodeOverride\""]
+fix-preflight-host: exit=0; start=2026-11-16T23:37:33.381197+00:00; end=2026-11-16T23:37:40.966255+00:00; runs/fix-preflight-host/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "bash", "-c", "dotnet --version; dotnet --list-runtimes; git --version; .static-gates/python/bin/python --version; dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --list-tests --filter \"FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~WorktreeFilemodeOverride\""]
+fix-regressions-final: exit=0; start=2026-11-16T23:42:07.091187+00:00; end=2026-11-16T23:42:10.380680+00:00; runs/fix-regressions-final/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "dotnet", "test", "DynaDocs.Tests/DynaDocs.Tests.csproj", "--no-build", "--filter", "FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~WorktreeFilemodeOverride|FullyQualifiedName~RestoreWithChangedSharedSettings", "--logger", "trx", "--results-directory", "/tmp/dyd1029-runs/fix-regressions-final/trx"]
+  TRX counters={"aborted": "0", "completed": "0", "disconnected": "0", "error": "0", "executed": "3", "failed": "0", "inProgress": "0", "inconclusive": "0", "notExecuted": "0", "notRunnable": "0", "passed": "3", "passedButRunAborted": "0", "pending": "0", "timeout": "0", "total": "3", "warning": "0"}
+fix-reverted-red: exit=1; start=2026-11-16T23:41:14.538392+00:00; end=2026-11-16T23:41:30.227087+00:00; runs/fix-reverted-red/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "dotnet", "test", "DynaDocs.Tests/DynaDocs.Tests.csproj", "--filter", "FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~WorktreeFilemodeOverride|FullyQualifiedName~RestoreWithChangedSharedSettings", "--logger", "trx", "--results-directory", "/tmp/dyd1029-runs/fix-reverted-red/trx"]
+  TRX counters={"aborted": "0", "completed": "0", "disconnected": "0", "error": "0", "executed": "3", "failed": "3", "inProgress": "0", "inconclusive": "0", "notExecuted": "0", "notRunnable": "0", "passed": "0", "passedButRunAborted": "0", "pending": "0", "timeout": "0", "total": "3", "warning": "0"}
+fix-static: exit=0; start=2026-11-16T23:43:28.497889+00:00; end=2026-11-16T23:45:05.025732+00:00; runs/fix-static/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=8G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "3600", ".static-gates/python/bin/python", "DynaDocs.Tests/coverage/gap_check.py", "gate", "static", "--stack", "dotnet"]
+fix-strongest-witness: exit=0; start=2026-11-16T23:40:28.945562+00:00; end=2026-11-16T23:40:37.705348+00:00; runs/fix-strongest-witness/raw.log
+  argv=["/var/tmp/dydo-gate-lock.sh", "env", "MSBUILDDISABLENODEREUSE=1", "DOTNET_CLI_USE_MSBUILD_SERVER=0", "UseSharedCompilation=false", "systemd-run", "--user", "--scope", "--slice=app-t3code-agents-cbc6c2286251.slice", "-p", "MemoryMax=4G", "-p", "MemorySwapMax=0", "-p", "OOMPolicy=continue", "timeout", "120", "dotnet", "test", "DynaDocs.Tests/DynaDocs.Tests.csproj", "--filter", "FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~WorktreeFilemodeOverride", "--logger", "trx", "--results-directory", "/tmp/dyd1029-runs/fix-strongest-witness/trx"]
+  TRX counters={"aborted": "0", "completed": "0", "disconnected": "0", "error": "0", "executed": "2", "failed": "0", "inProgress": "0", "inconclusive": "0", "notExecuted": "0", "notRunnable": "0", "passed": "2", "passedButRunAborted": "0", "pending": "0", "timeout": "0", "total": "2", "warning": "0"}

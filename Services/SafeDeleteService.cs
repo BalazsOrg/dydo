@@ -310,7 +310,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
             SafeDeleteHistory.CheckDependencies(scratch, manifest);
             if (manifest.Worktree != null)
             {
-                Reconstruct(entry, scratch, manifest);
+                Reconstruct(entry, scratch, manifest, independent: true);
                 CheckReconstruction(scratch, manifest);
             }
             output.WriteLine("Independent proof passed: fresh object store; no alternates or inherited GIT_* variables; captured history, files, index and status verified");
@@ -318,8 +318,9 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         finally { LinkSafeDelete.DeleteTree(scratch); }
     }
 
-    private static void Reconstruct(string entry, string path, SafeDeleteManifest manifest)
+    private static void Reconstruct(string entry, string path, SafeDeleteManifest manifest, bool independent = false)
     {
+        RestoreGitConfig(path, manifest, independent);
         SafeDeleteFiles.Copy(Path.Combine(entry, "files"), path, manifest.Files, true);
         var index = SafeDeleteGit.Require(path, "rev-parse", "--path-format=absolute", "--git-path", "index");
         SafeDeletePaths.NoLinks(index);
@@ -329,9 +330,25 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
 
     private static void CheckReconstruction(string path, SafeDeleteManifest manifest)
     {
-        if (!SafeDeleteFiles.RootMatches(path, manifest) || !SafeDeleteFiles.Capture(path).SequenceEqual(manifest.Files) || SafeDeleteGit.Status(path, manifest.GitConfig) != manifest.Status
+        if (!SafeDeleteFiles.RootMatches(path, manifest) || !SafeDeleteFiles.Capture(path).SequenceEqual(manifest.Files) || SafeDeleteGit.Status(path) != manifest.Status
             || Convert.ToBase64String(SafeDeleteGit.Read(path, "ls-files", "--stage", "-z").Output) != manifest.IndexEntries)
             throw new InvalidDataException("Reconstructed file/index/status snapshot differs");
+    }
+
+    private static void RestoreGitConfig(string path, SafeDeleteManifest manifest, bool independent)
+    {
+        var scoped = SafeDeleteGit.Read(path, "config", "--bool", "--get", "extensions.worktreeConfig").Text.Trim() == "true";
+        if (!independent && !scoped)
+        {
+            foreach (var (key, value) in manifest.GitConfig)
+                if (SafeDeleteGit.Read(path, "config", "--get", key).Text.Trim() != value)
+                    throw new InvalidDataException("Saved Git settings require extensions.worktreeConfig; shared configuration retained");
+            return;
+        }
+        var config = SafeDeleteGit.Require(path, "rev-parse", "--path-format=absolute", "--git-path", independent ? "config" : "config.worktree");
+        SafeDeletePaths.NoLinks(config);
+        foreach (var (key, value) in manifest.GitConfig)
+            SafeDeleteGit.Require(path, "config", independent ? "--local" : "--worktree", "--replace-all", key, value);
     }
 
     private static void Recheck(SafeDeleteRepository repository, SafeDeleteManifest manifest, WorktreeEntry? tree, SafeDeleteDependencies dependencies)

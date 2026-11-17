@@ -7,7 +7,7 @@ using System.Diagnostics;
 public sealed class SafeDeletePolicyTests
 {
     [Theory]
-    [InlineData("[[]]",null)]
+    [InlineData("[[]]","cross-repository PR head eligibility is unproven")]
     [InlineData("[]","incomplete")]
     [InlineData("not json","unavailable")]
     [InlineData("[[{}]]","unavailable")]
@@ -17,14 +17,41 @@ public sealed class SafeDeletePolicyTests
     [InlineData("[[{\"state\":\"open\",\"head\":{\"ref\":\"topic\",\"repo\":null}}]]","identity unavailable")]
     [InlineData("[[{\"state\":\"open\",\"head\":{\"ref\":null,\"repo\":{\"full_name\":\"owner/repo\"}}}]]","incomplete")]
     [InlineData("[[{\"state\":\"open\",\"head\":{\"ref\":\"topic\",\"repo\":{\"full_name\":null}}}]]","incomplete")]
-    [InlineData("[[{\"state\":\"open\",\"head\":{\"ref\":\"topic\",\"repo\":{\"full_name\":\"fork/repo\"}},\"base\":{\"ref\":\"main\",\"repo\":{\"full_name\":\"owner/repo\"}}}]]",null)]
-    public void GitHubEligibility_RequiresCompleteValidatedPages(string response, string? refusal)
+    [InlineData("[[{\"state\":\"open\",\"head\":{\"ref\":\"topic\",\"repo\":{\"full_name\":\"fork/repo\"}},\"base\":{\"ref\":\"main\",\"repo\":{\"full_name\":\"owner/repo\"}}}]]","cross-repository PR head eligibility is unproven")]
+    public void GitHubEligibility_RequiresCompleteValidatedPages(string response, string refusal)
     {
         using var fixture = new SafeDeleteTests();
         var config = Path.Combine(fixture.Root,"query.config");
         SafeDeleteTests.Git(fixture.Main,"config","--file",config,"test.response",response);
         var reason = SafeDeleteGitHub.CheckUsing("https://github.com/owner/repo.git","topic",_ => Start(fixture.Main,"config","--file",config,"--get","test.response"));
-        if (refusal == null) Assert.Null(reason); else Assert.Contains(refusal,reason);
+        Assert.Contains(refusal,reason);
+    }
+
+    [Fact]
+    public void ForkBranchUsedAsUpstreamPullRequestHead_RefusesWithRemoteLocalAndFilesIntact()
+    {
+        using var fixture = new SafeDeleteTests(); fixture.AddRemote(); fixture.AddTree();
+        var tip = SafeDeleteTests.Git(fixture.Tree,"rev-parse","HEAD");
+        var file = Path.Combine(fixture.Tree,"file.txt");
+        File.WriteAllText(file,"unique fork working content\n");
+        var api = Path.Combine(fixture.Root,"github-api.config");
+        SafeDeleteTests.Git(fixture.Main,"config","--file",api,"api.fork/repo.response","[[]]");
+        SafeDeleteTests.Git(fixture.Main,"config","--file",api,"api.upstream/repo.response",
+            """[[{"state":"open","head":{"ref":"topic","repo":{"full_name":"fork/repo"}},"base":{"ref":"main","repo":{"full_name":"upstream/repo"}}}]]""");
+        Assert.Contains("open PR head",SafeDeleteGitHub.CheckUsing("https://github.com/fork/repo.git","topic",
+            _ => Start(fixture.Main,"config","--file",api,"--get","api.upstream/repo.response")));
+        fixture.Dependencies.CheckGitHub = (url, branch) =>
+        {
+            Assert.Equal(fixture.Remote,url);
+            return SafeDeleteGitHub.CheckUsing("https://github.com/fork/repo.git",branch,
+                repository => Start(fixture.Main,"config","--file",api,"--get",$"api.{repository}.response"));
+        };
+        Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
+        Assert.Equal(tip,SafeDeleteTests.Git(fixture.Main,"rev-parse","topic"));
+        Assert.Equal(tip,SafeDeleteTests.Git(fixture.Remote,"rev-parse","topic"));
+        Assert.Equal("unique fork working content\n",File.ReadAllText(file));
+        Assert.False(Directory.Exists(fixture.ArchiveRoot));
+        Assert.Contains("cross-repository PR head eligibility is unproven",fixture.Output);
     }
 
     [Fact]

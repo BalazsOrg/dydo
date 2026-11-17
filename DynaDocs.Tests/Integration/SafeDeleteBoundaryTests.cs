@@ -31,6 +31,46 @@ public sealed class SafeDeleteBoundaryTests
     }
 
     [Fact]
+    public void WorktreeFilemodeOverride_OrdinaryStatusRemainsCleanAfterSourceGcAndRestore()
+    {
+        if (OperatingSystem.IsWindows()) return; // Unix executable-bit witness; Windows proof remains separate.
+        using var fixture = new SafeDeleteTests();
+        SafeDeleteTests.Git(fixture.Main,"config","core.filemode","true");
+        SafeDeleteTests.Git(fixture.Main,"config","extensions.worktreeConfig","true");
+        fixture.AddTree();
+        SafeDeleteTests.Git(fixture.Tree,"config","--worktree","core.filemode","false");
+        var file = Path.Combine(fixture.Tree,"file.txt");
+        File.SetUnixFileMode(file,File.GetUnixFileMode(file) | UnixFileMode.UserExecute | UnixFileMode.GroupExecute | UnixFileMode.OtherExecute);
+        Assert.Equal("",SafeDeleteTests.Git(fixture.Tree,"status","--porcelain=v1"));
+        var commonConfig = File.ReadAllBytes(Path.Combine(fixture.Main,".git","config"));
+        Assert.True(fixture.Run("worktree",fixture.Tree) == 0,fixture.Output);
+        var id = fixture.Id;
+        SafeDeleteTests.Git(fixture.Main,"reflog","expire","--expire=now","--all");
+        SafeDeleteTests.Git(fixture.Main,"gc","--prune=now");
+        Assert.True(fixture.Run("restore",id) == 0,fixture.Output);
+        Assert.Equal("",SafeDeleteTests.Git(fixture.Tree,"status","--porcelain=v1"));
+        Assert.Equal("false",SafeDeleteTests.Git(fixture.Tree,"config","--get","core.filemode"));
+        Assert.Equal("true",SafeDeleteTests.Git(fixture.Main,"config","--get","core.filemode"));
+        Assert.Equal(commonConfig,File.ReadAllBytes(Path.Combine(fixture.Main,".git","config")));
+    }
+
+    [Fact]
+    public void RestoreWithChangedSharedSettings_RefusesWithoutRewritingCommonConfig()
+    {
+        using var fixture = new SafeDeleteTests();
+        SafeDeleteTests.Git(fixture.Main,"config","core.filemode","false");
+        fixture.AddTree();
+        Assert.True(fixture.Run("worktree",fixture.Tree) == 0,fixture.Output);
+        var id = fixture.Id;
+        SafeDeleteTests.Git(fixture.Main,"config","core.filemode","true");
+        var config = File.ReadAllBytes(Path.Combine(fixture.Main,".git","config"));
+        Assert.Equal(2,fixture.Run("restore",id));
+        Assert.Contains("require extensions.worktreeConfig; shared configuration retained",fixture.Output);
+        Assert.Equal(config,File.ReadAllBytes(Path.Combine(fixture.Main,".git","config")));
+        Assert.True(fixture.Manifest().Complete);
+    }
+
+    [Fact]
     public void BranchNameCasing_PreservesDistinctRefsOrRefusesAliases()
     {
         using var fixture = new SafeDeleteTests();

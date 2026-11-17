@@ -387,7 +387,10 @@ targeted; a differently named integration upstream is reported as kept. With no 
 origin, the sole remote, or require `--remote` when ambiguous. Local repositories need no remote.
 The remote's live default, `feature/*` branches and open PR heads/bases are protected. The accepted
 `gh` dependency must establish complete PR eligibility; offline, failed or unsupported lookups retain
-the local target. Remote history is fetched into a temporary ref before a real archive. Dry-run
+the local target. The current GitHub lookup cannot exhaustively prove that a branch is unused as
+a head in another repository; even an empty repository PR list therefore refuses remote-backed
+archive/delete. Search indexing is not treated as exhaustive evidence. Remote history is fetched
+into a temporary ref before an eligible real archive. Dry-run
 fetches nothing and labels missing remote-object estimates unknown/lower-bound.
 
 Entries live in `<absolute git common dir>/dydo/safe-delete-archive/<id>/`, shared by linked
@@ -398,6 +401,10 @@ the original index and a separate pack containing its referenced objects. No com
 Partially staged and working versions remain distinct. The command imports into a fresh object
 store without alternates or inherited Git environment, reconstructs files/index/status and verifies
 the result before publishing a complete archive or deleting anything.
+Saved Git file-mode, case, symlink and line-ending settings are installed in the independent proof
+repository and, where enabled, the restored worktree's `config.worktree`. Verification uses Git
+status without configuration overrides. Restore never changes shared or global Git settings; if
+worktree configuration is disabled and inherited settings differ, restore refuses with a diagnostic.
 
 Deletion uses an expected-OID remote lease, then removes the worktree, then deletes its local branch
 with compare-and-swap. Final snapshot/ref/activity rechecks detect concurrent changes. Busy probes

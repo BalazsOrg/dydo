@@ -49,7 +49,9 @@ internal static class SafeDeleteGitHub
                 var refusal = CheckPullRequest(pr, repository, branch);
                 if (refusal != null) return refusal;
             }
-        return null;
+        // Repository pull lists omit heads used in other repositories. Search indexing is
+        // not exhaustive proof either, including across private repositories/fork networks.
+        return "cross-repository PR head eligibility is unproven; local target retained";
     }
 
     private static string? CheckPullRequest(JsonElement pr, string repository, string branch)
