@@ -15,8 +15,9 @@ public static class Program
             BuiltTree.Write(Path.Combine(claims, "built"), tree);
             return 0;
         }
-        catch (Exception failure) when (failure is InvalidDataException or IOException)
+        catch (Exception failure)
         {
+            if (failure is not (InvalidDataException or IOException)) throw;
             error.WriteLine($"SkillBuild failed: {failure.Message}");
             return 1;
         }

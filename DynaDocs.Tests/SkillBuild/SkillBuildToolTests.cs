@@ -93,6 +93,11 @@ public sealed class SkillBuildToolTests : IDisposable
     }
 
     [Fact]
-    public void Run_DoesNotHideUnexpectedErrors() =>
-        Assert.Throws<ArgumentException>(() => Program.Run("\0", new StringWriter()));
+    public void Run_DoesNotHideUnexpectedErrors()
+    {
+        var error = new StringWriter();
+
+        Assert.Throws<ArgumentException>(() => Program.Run("\0", error));
+        Assert.Empty(error.ToString());
+    }
 }
