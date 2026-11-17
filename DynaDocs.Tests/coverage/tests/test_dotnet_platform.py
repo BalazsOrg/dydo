@@ -158,6 +158,8 @@ class SelectionTests(unittest.TestCase):
                 'DynaDocs.Tests/Integration/SafeDeleteTests.cs',
             'DynaDocs.Tests.Integration.SafeDeleteTests.DetachedHead_RemainsDetached':
                 'DynaDocs.Tests/Integration/SafeDeleteTests.cs',
+            'DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams':
+                'DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs',
         }
         self.assertTrue(archive_tests.keys() <= found.keys())
         for name, path in found.items():
