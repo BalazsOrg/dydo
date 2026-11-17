@@ -10,6 +10,22 @@ public sealed class SafeDeleteSteps : IDisposable
     private SafeDeleteTests? _fixture;
     private bool _completed;
     private bool _dangerous;
+    private bool _eligibilityJourney;
+
+    [When("I archive and restore through the {string} GitHub authority route")]
+    public void RemoteEligibility(string authority)
+    {
+        switch (authority)
+        {
+            case "private closed-world": SafeDeleteGitHubTests.Journey("private",false,0); break;
+            case "public fork": SafeDeleteGitHubTests.Journey("public",true,12); break;
+            default: throw new ArgumentException("Unknown GitHub authority route",nameof(authority));
+        }
+        _eligibilityJourney = true;
+    }
+
+    [Then("the remote eligibility journey preserved its unique files")]
+    public void RemoteEligibilityPreserved() => Assert.True(_eligibilityJourney);
 
     [Given("an owned safe-delete repository")]
     public void GivenRepository() => _fixture = new SafeDeleteTests();

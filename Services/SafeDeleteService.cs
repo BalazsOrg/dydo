@@ -5,6 +5,8 @@ using System.Text.Json;
 
 internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies dependencies, TextWriter output)
 {
+    private SafeDeleteGitHubTarget? _gitHubTarget;
+
     internal int Archive(string kind, string target, string? requestedRemote, bool dryRun) => Execute(() =>
     {
         var repository = new SafeDeleteRepository(directory);
@@ -68,7 +70,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         var local = branch == null ? null : SafeDeleteGit.Ref(directory, "refs/heads/" + branch);
         var remoteOid = remote == null ? null : repository.RemoteOid(remote, branch!);
         if (local == null && remoteOid == null && tree == null) throw new InvalidDataException("Branch is absent locally and on the selected remote");
-        var remoteUrl = EligibleRemote(remote, branch);
+        var remoteUrl = EligibleRemote(remote, branch, remoteOid);
         var now = dependencies.Now().ToUniversalTime();
         var manifest = new SafeDeleteManifest
         {
@@ -77,6 +79,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
             ObjectFormat = SafeDeleteGit.Require(directory, "rev-parse", "--show-object-format"),
             Worktree = tree?.Path, Branch = branch, LocalOid = local, Remote = remote,
             RemoteUrl = remoteUrl == null ? null : SafeDeleteGit.Redact(remoteUrl), RemoteOid = remoteOid,
+            GitHubRepositoryId = _gitHubTarget?.Metadata?.Id,
             PrimaryOid = tree?.Head ?? local ?? remoteOid!
         };
         CaptureWorktree(tree, cwd, manifest);
@@ -99,8 +102,9 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         }
     }
 
-    private string? EligibleRemote(string? remote, string? branch)
+    private string? EligibleRemote(string? remote, string? branch, string? oid)
     {
+        _gitHubTarget = null;
         var remoteUrl = remote == null ? null : SafeDeleteGit.Require(directory, "remote", "get-url", "--push", remote);
         if (remote != null)
         {
@@ -109,7 +113,9 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
             var pushUrls = SafeDeleteGit.Require(directory, "remote", "get-url", "--push", "--all", remote).Split('\n');
             if (fetchUrl != remoteUrl || pushUrls.Length != 1) throw new InvalidDataException("Different/multiple remote push URLs are unsupported");
             if (branch!.StartsWith("feature/", StringComparison.Ordinal)) throw new InvalidDataException("Remote feature/* branch is protected");
-            var refusal = dependencies.CheckGitHub(remoteUrl!, branch!);
+            if (oid == null) throw new InvalidDataException("Initially absent remote ref: PR association authority is unproven; local target retained");
+            _gitHubTarget = new SafeDeleteGitHubTarget(remoteUrl!, branch!, oid);
+            var refusal = dependencies.CheckGitHub(_gitHubTarget);
             if (refusal != null) throw new InvalidDataException(refusal);
         }
         return remoteUrl;
@@ -195,25 +201,20 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
             Recheck(repository, manifest, tree, dependencies);
             // Revalidate persisted bytes, not just the previously verified in-memory snapshot.
             _ = store.Load(manifest.Id);
-            if (manifest.Remote != null)
-            {
-                var url = SafeDeleteGit.Require(directory, "remote", "get-url", "--push", manifest.Remote);
-                if (SafeDeleteGit.Redact(url) != manifest.RemoteUrl) throw new InvalidDataException("Remote identity changed");
-                var reason = dependencies.CheckGitHub(url, manifest.Branch!);
-                if (reason != null) throw new InvalidDataException(reason);
-                if (repository.RemoteOid(manifest.Remote, manifest.Branch!) != manifest.RemoteOid) throw new InvalidDataException("Remote ref changed; local target retained");
-            }
             if (manifest.RemoteOid != null)
             {
                 manifest.DeleteOutcome = "remote deletion pending; local target retained"; store.Save(entry, manifest);
                 dependencies.Checkpoint("before-remote-delete");
+                RecheckRemote(repository, manifest);
                 Recheck(repository, manifest, tree, dependencies);
                 SafeDeleteGit.Require(directory, "push", $"--force-with-lease=refs/heads/{manifest.Branch}:{manifest.RemoteOid}", "--", manifest.Remote!, $":refs/heads/{manifest.Branch}");
+                _gitHubTarget!.DeletedByInvocation = true;
                 manifest.DeleteOutcome = "remote deleted; worktree/local branch retained"; store.Save(entry, manifest);
             }
             if (tree != null)
             {
                 dependencies.Checkpoint("before-worktree-delete");
+                RecheckRemote(repository, manifest);
                 Recheck(repository, manifest, tree, dependencies);
                 manifest.DeleteOutcome += "; worktree removal pending"; store.Save(entry, manifest);
                 // No fallback recursive deletion: Git must successfully unregister exactly this worktree.
@@ -223,6 +224,7 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
             if (manifest.LocalOid != null)
             {
                 dependencies.Checkpoint("before-local-delete");
+                RecheckRemote(repository, manifest);
                 new SafeDeleteRepository(directory).Eligible(manifest.Branch, null, dependencies, false);
                 if (repository.ReadTrees().Any(t => t.Branch == manifest.Branch)) throw new InvalidDataException("Branch became checked out; retained");
                 if (tree == null) Recheck(repository, manifest, null, dependencies);
@@ -349,6 +351,20 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
         SafeDeletePaths.NoLinks(config);
         foreach (var (key, value) in manifest.GitConfig)
             SafeDeleteGit.Require(path, "config", independent ? "--local" : "--worktree", "--replace-all", key, value);
+    }
+
+    private void RecheckRemote(SafeDeleteRepository repository, SafeDeleteManifest manifest)
+    {
+        if (_gitHubTarget == null) return;
+        var remote = manifest.Remote!;
+        var pushUrls = SafeDeleteGit.Require(directory, "remote", "get-url", "--push", "--all", remote).Split('\n');
+        if (pushUrls.Length != 1 || pushUrls[0] != _gitHubTarget.Url || SafeDeleteGit.Require(directory, "remote", "get-url", remote) != _gitHubTarget.Url)
+            throw new InvalidDataException("Remote identity changed");
+        var expected = _gitHubTarget.DeletedByInvocation ? null : _gitHubTarget.Oid;
+        if (repository.RemoteOid(remote, manifest.Branch!) != expected) throw new InvalidDataException("Remote ref changed/recreated; remaining local targets retained");
+        var reason = dependencies.CheckGitHub(_gitHubTarget);
+        if (reason != null) throw new InvalidDataException(reason);
+        if (repository.RemoteOid(remote, manifest.Branch!) != expected) throw new InvalidDataException("Remote ref changed/recreated during eligibility check; remaining local targets retained");
     }
 
     private static void Recheck(SafeDeleteRepository repository, SafeDeleteManifest manifest, WorktreeEntry? tree, SafeDeleteDependencies dependencies)

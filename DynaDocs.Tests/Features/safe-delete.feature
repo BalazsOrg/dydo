@@ -1,5 +1,13 @@
 @SafeDelete
 Feature: Safe delete archives unique work before removal
+  Scenario Outline: Authoritative remote eligibility permits recoverable cleanup
+    When I archive and restore through the "<authority>" GitHub authority route
+    Then the remote eligibility journey preserved its unique files
+    Examples:
+      | authority |
+      | private closed-world |
+      | public fork |
+
   Scenario Outline: Recover history and every worktree version independently
     Given an owned safe-delete repository
     When I archive and restore the "<journey>" journey

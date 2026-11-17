@@ -1908,8 +1908,15 @@
       ]
     },
     {
+      "module": "Services/SafeDeleteGitHubTarget.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs"
+      ]
+    },
+    {
       "module": "Services/SafeDeleteGitHub.cs",
       "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs",
         "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
         "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
         "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
@@ -1973,6 +1980,7 @@
     {
       "module": "Services/SafeDeleteDependencies.cs",
       "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs",
         "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
         "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
         "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
@@ -1991,6 +1999,7 @@
     {
       "module": "Services/SafeDeleteService.cs",
       "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs",
         "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
         "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
         "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
@@ -2027,6 +2036,7 @@
     {
       "module": "Models/SafeDeleteManifest.cs",
       "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs",
         "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
         "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs"
       ]

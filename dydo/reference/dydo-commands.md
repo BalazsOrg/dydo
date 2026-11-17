@@ -387,9 +387,23 @@ targeted; a differently named integration upstream is reported as kept. With no 
 origin, the sole remote, or require `--remote` when ambiguous. Local repositories need no remote.
 The remote's live default, `feature/*` branches and open PR heads/bases are protected. The accepted
 `gh` dependency must establish complete PR eligibility; offline, failed or unsupported lookups retain
-the local target. The current GitHub lookup cannot exhaustively prove that a branch is unused as
-a head in another repository; even an empty repository PR list therefore refuses remote-backed
-archive/delete. Search indexing is not treated as exhaustive evidence. Remote history is fetched
+the local target. Public GitHub repositories use the exact remote ref's complete open-PR head
+associations, including heads used in upstream and other forks, plus the selected repository's
+complete open-PR head/base associations. Private repositories are eligible only under closed-world
+authority: the caller's token must read `fork=false`, `forks_count=0` and consistent private
+visibility/identity. Internal visibility, private forks or private repositories with forks,
+incomplete/error responses and initially absent remote refs refuse. Search indexing supplies no
+authority. Queries are bounded to 30 seconds, 8 MiB of response data and 100 pages per connection;
+exhaustion refuses. Identity, visibility/fork metadata, OID and PR eligibility are rechecked before
+each destructive step; metadata is also reread after pagination immediately before the leased push.
+
+After this invocation's successful expected-OID leased deletion, its internal receipt carries the
+verified pre-push head check into the remaining worktree/local steps. This is distinct from initial
+absence. Those steps reread repository metadata, exact ref absence and complete current own-repository
+head/base associations. A recreated remote ref (even at the old OID), changed metadata or lookup
+failure stops the remaining deletions and retains the complete archive. The command never deletes
+that recreated ref. A PR can still open between the final API read and push without moving the OID;
+the lease does not make PR state and Git deletion atomic. Remote history is fetched
 into a temporary ref before an eligible real archive. Dry-run
 fetches nothing and labels missing remote-object estimates unknown/lower-bound.
 

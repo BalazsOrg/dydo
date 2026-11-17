@@ -3,7 +3,7 @@ namespace DynaDocs.Services;
 internal sealed class SafeDeleteDependencies
 {
     public Func<DateTimeOffset> Now { get; set; } = () => DateTimeOffset.UtcNow;
-    public Func<string, string, string?> CheckGitHub { get; set; } = SafeDeleteGitHub.Check;
+    public Func<SafeDeleteGitHubTarget, string?> CheckGitHub { get; set; } = SafeDeleteGitHub.Check;
     public Func<string, string?> FindUse { get; set; } = WorktreeProcessProbe.FindUse;
     public ISafeDeleteT3Policy T3 { get; set; } = new SafeDeleteT3Policy();
     public Func<string, (long Available, long Total)> Space { get; set; } = path =>

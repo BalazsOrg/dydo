@@ -17,7 +17,7 @@ public sealed class SafeDeleteTests : IDisposable
     internal string ArchiveRoot => Path.Combine(Main, ".git", "dydo", "safe-delete-archive");
     internal readonly SafeDeleteDependencies Dependencies = new()
     {
-        CheckGitHub = (_, _) => null,
+        CheckGitHub = _ => null,
         FindUse = _ => null,
         T3 = new SafeDeleteT3Policy(Path.Combine(Path.GetTempPath(), "dydo-no-t3-settings.json"))
     };
@@ -169,7 +169,7 @@ public sealed class SafeDeleteTests : IDisposable
                 Git(Tree,"branch","-m","feature/protected"); Git(Main,"push","origin","feature/protected");
                 branch = "feature/protected"; expected = "feature/*"; break;
             case "PR head": case "PR base": case "offline GitHub":
-                Dependencies.CheckGitHub = (_,_) => refusal; expected = refusal; break;
+                Dependencies.CheckGitHub = _ => refusal; expected = refusal; break;
             case "fetch failure":
                 Dependencies.Checkpoint = point => { if (point == "before-fetch") throw new IOException("injected fetch failure"); };
                 expected = "fetch failure"; break;

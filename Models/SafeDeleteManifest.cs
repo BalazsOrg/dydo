@@ -15,6 +15,7 @@ internal sealed class SafeDeleteManifest
     public string? Remote { get; set; }
     public string? RemoteUrl { get; set; }
     public string? RemoteOid { get; set; }
+    public string? GitHubRepositoryId { get; set; }
     public string PrimaryOid { get; set; } = "";
     public List<SafeDeleteTip> Tips { get; set; } = [];
     public List<SafeDeleteFile> Files { get; set; } = [];
