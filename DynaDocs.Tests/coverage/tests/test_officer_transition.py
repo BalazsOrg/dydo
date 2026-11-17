@@ -2352,6 +2352,37 @@ class FakeCliTests(unittest.TestCase):
         self.assertEqual('{"overnight": "off"}', store.read_text())
 
 
+class CodexModelTests(unittest.TestCase):
+    def model_from_cli(self, *options):
+        source = '''
+import contextlib, io, json, sys, tempfile
+from pathlib import Path
+from unittest.mock import patch
+import officer_transition as ot
+with tempfile.TemporaryDirectory() as scratch:
+    ot.EVIDENCE = Path(scratch)
+    summary = {"runs": [], "verdicts": {}, "real_store_unchanged": True}
+    with patch.object(ot, "campaign", return_value=summary) as campaign:
+        with contextlib.redirect_stdout(io.StringIO()):
+            code = ot.main(["campaign", "--evidence", str(Path(scratch) / "run"), *sys.argv[1:]])
+        lab = ot.Lab(Path(scratch), "n", Path("/b"), Path("/e"), campaign.call_args.args[2])
+        argv = ot.codex_argv(lab, ot.CASES["codex"], None)
+        print(json.dumps({"exit": code, "model": argv[argv.index("-m") + 1]}))
+'''
+        done = subprocess.run([sys.executable, "-c", source, *options],
+                              cwd=ROOT / "skills/engineering/verify-dydo/scripts",
+                              capture_output=True, text=True, check=True, timeout=30)
+        result = json.loads(done.stdout)
+        self.assertEqual(0, result["exit"])
+        return result["model"]
+
+    def test_cli_defaults_codex_model_to_gpt_6_1_sol(self):
+        self.assertEqual("gpt-6.1-sol", self.model_from_cli())
+
+    def test_cli_preserves_an_explicit_codex_model(self):
+        self.assertEqual("custom-model", self.model_from_cli("--codex-model", "custom-model"))
+
+
 @unittest.skipUnless(LINUX and ROOTLESS, "the harness reads /proc, owns POSIX scratch and relies on file modes")
 class CampaignTests(unittest.TestCase):
     """The whole run path with scripted agents and a fake CLI: real processes and recorders, no model."""
