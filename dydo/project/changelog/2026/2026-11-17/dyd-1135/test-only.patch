@@ -1,0 +1,356 @@
+--- a/DynaDocs.Tests/Steps/SafeDeleteSteps.cs
++++ b/DynaDocs.Tests/Steps/SafeDeleteSteps.cs
+@@ -9,0 +10,3 @@
++    public SafeDeleteSteps() { }
++    internal SafeDeleteSteps(SafeDeleteTests fixture) => _fixture = fixture;
++
+@@ -11 +14 @@
+-    private bool _completed;
++    private Action? _verifyOutcome;
+@@ -97 +100 @@
+-    public void Journey(string journey) { _fixture!.Journey(journey); _completed = true; }
++    public void Journey(string journey) => _verifyOutcome = _fixture!.Journey(journey);
+@@ -103,3 +106,2 @@
+-            SafeDeleteBoundaryTests.AssertNestedRepositoryRefused(_fixture!,"shared clone","nested.git");
+-        else _fixture!.Refusal(refusal);
+-        _completed = true;
++            _verifyOutcome = SafeDeleteBoundaryTests.AssertNestedRepositoryRefused(_fixture!,"shared clone","nested.git");
++        else _verifyOutcome = _fixture!.Refusal(refusal);
+@@ -109 +111 @@
+-    public void Policy(string policy) { _fixture!.Policy(policy); _completed = true; }
++    public void Policy(string policy) => _verifyOutcome = _fixture!.Policy(policy);
+@@ -114 +116,5 @@
+-    public void Completed() => Assert.True(_completed);
++    public void Completed()
++    {
++        Assert.NotNull(_verifyOutcome);
++        _verifyOutcome();
++    }
+--- a/DynaDocs.Tests/Integration/SafeDeleteTests.cs
++++ b/DynaDocs.Tests/Integration/SafeDeleteTests.cs
+@@ -64,10 +64,15 @@
+-    [Fact] public void LocalBranch_RestoresWithoutSourceRefs() => Journey("local branch");
+-    [Fact] public void UnfetchedRemote_RestoresRemoteOnlyTip() => Journey("unfetched remote");
+-    [Fact] public void DivergentAndReflogTips_RemainReachableAfterGc() => Journey("divergent and reflog history");
+-    [Fact] public void PartiallyStagedVersions_IgnoredBinary_EmptyDirectories_RoundTripAfterGc() => Journey("partially staged ignored binary and empty directories");
+-    [Fact] public void DetachedHead_RemainsDetached() => Journey("detached HEAD");
+-    [Fact] public void ResolvedStashConflict_UndoRecreatesConflictAfterGc() => Journey("resolved stash conflict undo");
+-
+-    internal void Journey(string journey)
+-    {
+-        if (journey == "resolved stash conflict undo") { ResolvedStashConflictUndo(); return; }
++    [Fact] public void LocalBranch_RestoresWithoutSourceRefs() => Journey("local branch")();
++    [Fact] public void UnfetchedRemote_RestoresRemoteOnlyTip() => Journey("unfetched remote")();
++    [Fact] public void DivergentAndReflogTips_RemainReachableAfterGc() => Journey("divergent and reflog history")();
++    [Fact] public void PartiallyStagedVersions_IgnoredBinary_EmptyDirectories_RoundTripAfterGc() => Journey("partially staged ignored binary and empty directories")();
++    [Fact] public void DetachedHead_RemainsDetached() => Journey("detached HEAD")();
++    [Fact] public void ResolvedStashConflict_UndoRecreatesConflictAfterGc() => Journey("resolved stash conflict undo")();
++
++    internal Action Journey(string journey)
++    {
++        if (journey is not ("local branch" or "unfetched remote" or "divergent and reflog history"
++            or "partially staged ignored binary and empty directories" or "detached HEAD"
++            or "resolved stash conflict undo" or "local-only restore" or "explicit remote restore"
++            or "proof-enabled settled T3 eligibility"))
++            throw new Xunit.Sdk.XunitException("Unwired journey: " + journey);
++        if (journey == "resolved stash conflict undo") return ResolvedStashConflictUndo();
+@@ -76,0 +82 @@
++            var primary = Git(Tree,"rev-parse","HEAD");
+@@ -81 +87,6 @@
+-            return;
++            return () =>
++            {
++                Assert.Equal(primary,Git(Tree,"rev-parse","HEAD"));
++                Assert.True(Has("refs/heads/topic"));
++                Assert.Equal("base\n",File.ReadAllText(Path.Combine(Tree,"file.txt")));
++            };
+@@ -110,0 +122 @@
++        var primaryTip = Git(journey == "unfetched remote" ? Remote : Main,"rev-parse","refs/heads/topic");
+@@ -120,0 +133,5 @@
++        return () => AssertJourney(journey,staged,divergentRemote,reflogOnly,id,primaryTip);
++    }
++
++    private void AssertJourney(string journey, string? staged, string? divergentRemote, string? reflogOnly, string id, string primaryTip)
++    {
+@@ -122 +139 @@
+-        if (worktree)
++        if (staged != null)
+@@ -131 +148 @@
+-        else Assert.True(Has("refs/heads/topic"));
++        else Assert.Equal(primaryTip,Git(Main,"rev-parse","refs/heads/topic"));
+@@ -146 +163 @@
+-    private void ResolvedStashConflictUndo()
++    private Action ResolvedStashConflictUndo()
+@@ -168,11 +185,14 @@
+-        Assert.Equal(undo,Git(Tree,"ls-files","--resolve-undo"));
+-        Assert.Equal(resolved,Git(Tree,"rev-parse",":file.txt"));
+-        Assert.Equal("resolved working version\n",File.ReadAllText(file));
+-        Assert.Equal("unique stashed version",Git(Tree,"cat-file","blob",stashed));
+-        Git(Tree,"checkout","-m","--","file.txt");
+-        Assert.Equal(undo,Git(Tree,"ls-files","--unmerged"));
+-        var conflict = File.ReadAllText(file);
+-        Assert.Contains("committed topic version",conflict); Assert.Contains("unique stashed version",conflict);
+-    }
+-
+-    internal void Refusal(string refusal)
++        return () =>
++        {
++            Assert.Equal(undo,Git(Tree,"ls-files","--resolve-undo"));
++            Assert.Equal(resolved,Git(Tree,"rev-parse",":file.txt"));
++            Assert.Equal("resolved working version\n",File.ReadAllText(file));
++            Assert.Equal("unique stashed version",Git(Tree,"cat-file","blob",stashed));
++            Git(Tree,"checkout","-m","--","file.txt");
++            Assert.Equal(undo,Git(Tree,"ls-files","--unmerged"));
++            var conflict = File.ReadAllText(file);
++            Assert.Contains("committed topic version",conflict); Assert.Contains("unique stashed version",conflict);
++        };
++    }
++
++    internal Action Refusal(string refusal)
+@@ -197,2 +217,8 @@
+-                Assert.Equal(2,new SafeDeleteService(Tree,Dependencies,_output).Archive("worktree",Tree,null,false));
+-                Assert.Contains("Current worktree",Output); Assert.True(Has("refs/heads/topic")); return;
++                var currentExit = new SafeDeleteService(Tree,Dependencies,_output).Archive("worktree",Tree,null,false);
++                return () =>
++                {
++                    Assert.Equal(2,currentExit);
++                    Assert.Contains("Current worktree",Output);
++                    Assert.True(Has("refs/heads/topic"));
++                    Assert.Equal("base\n",File.ReadAllText(Path.Combine(Tree,"file.txt")));
++                };
+@@ -233 +259 @@
+-        try { AssertRefusal(refusal, expected, branch, command); }
++        try { return AssertRefusal(refusal, expected, branch, command); }
+@@ -275 +301 @@
+-    private void AssertRefusal(string refusal, string? expected, string branch, string[] command)
++    private Action AssertRefusal(string refusal, string? expected, string branch, string[] command)
+@@ -279,10 +305,14 @@
+-        Assert.Equal(2,Run(command));
+-        if (expected != null) Assert.Contains(expected,Output,StringComparison.OrdinalIgnoreCase);
+-        Assert.True(Has("refs/heads/"+branch));
+-        if (refusal != "local ref race") Assert.Equal(originalLocal,Git(Main,"rev-parse","refs/heads/"+branch));
+-        else Assert.Equal(Git(Main,"rev-parse","HEAD"),Git(Main,"rev-parse","refs/heads/topic"));
+-        if (refusal != "remote ref race") Assert.Equal(originalRemote,Git(Remote,"rev-parse","refs/heads/"+branch));
+-        else Assert.Equal(Git(Main,"rev-parse","HEAD"),Git(Remote,"rev-parse","refs/heads/topic"));
+-        if (refusal != "prunable worktree") Assert.True(Directory.Exists(Tree));
+-        if (refusal != "prunable worktree" && refusal != "unreadable source")
+-            Assert.Equal(refusal == "source file race" ? "new concurrent work\n" : "base\n",File.ReadAllText(Path.Combine(Tree,"file.txt")));
++        var exit = Run(command);
++        return () =>
++        {
++            Assert.Equal(2,exit);
++            if (expected != null) Assert.Contains(expected,Output,StringComparison.OrdinalIgnoreCase);
++            Assert.True(Has("refs/heads/"+branch));
++            if (refusal != "local ref race") Assert.Equal(originalLocal,Git(Main,"rev-parse","refs/heads/"+branch));
++            else Assert.Equal(Git(Main,"rev-parse","HEAD"),Git(Main,"rev-parse","refs/heads/topic"));
++            if (refusal != "remote ref race") Assert.Equal(originalRemote,Git(Remote,"rev-parse","refs/heads/"+branch));
++            else Assert.Equal(Git(Main,"rev-parse","HEAD"),Git(Remote,"rev-parse","refs/heads/topic"));
++            if (refusal != "prunable worktree") Assert.True(Directory.Exists(Tree));
++            if (refusal != "prunable worktree" && refusal != "unreadable source")
++                Assert.Equal(refusal == "source file race" ? "new concurrent work\n" : "base\n",File.ReadAllText(Path.Combine(Tree,"file.txt")));
++        };
+@@ -294 +324 @@
+-    internal void Policy(string policy)
++    internal Action Policy(string policy)
+@@ -299 +329 @@
+-                Reserve(policy); return;
++                return Reserve(policy);
+@@ -301 +331 @@
+-                DryRun(policy); return;
++                return DryRun(policy);
+@@ -303 +333 @@
+-                Retention(policy); return;
++                return Retention(policy);
+@@ -305,4 +335,7 @@
+-                Assert.Contains("[\"dydo\", \"dydo.exe\"], \"archive\"",InitCommand.CodexRules);
+-                Assert.Contains("dydo archive branch topic",InitCommand.CodexRules);
+-                Assert.Contains("dydo archive worktree tree",InitCommand.CodexRules);
+-                Assert.Contains("dydo archive restore ID",InitCommand.CodexRules); return;
++                return () =>
++                {
++                    Assert.Contains("[\"dydo\", \"dydo.exe\"], \"archive\"",InitCommand.CodexRules);
++                    Assert.Contains("dydo archive branch topic",InitCommand.CodexRules);
++                    Assert.Contains("dydo archive worktree tree",InitCommand.CodexRules);
++                    Assert.Contains("dydo archive restore ID",InitCommand.CodexRules);
++                };
+@@ -314 +347,5 @@
+-                Assert.Equal(integration,Git(Remote,"rev-parse","refs/heads/feature/integration")); Assert.Contains("upstream",Output); return;
++                return () =>
++                {
++                    Assert.Equal(integration,Git(Remote,"rev-parse","refs/heads/feature/integration"));
++                    Assert.Contains("upstream",Output);
++                };
+@@ -318,3 +355,8 @@
+-                if (OperatingSystem.IsWindows()) { Assert.Equal(2,exit); Assert.True(Directory.Exists(Tree)); return; }
+-                Assert.True(exit == 0,Output); Assert.Equal(0,Run("restore",Id));
+-                Assert.Equal("file.txt",new FileInfo(Path.Combine(Tree,"link")).LinkTarget); return;
++                if (OperatingSystem.IsWindows()) return () => { Assert.Equal(2,exit); Assert.True(Directory.Exists(Tree)); };
++                Assert.True(exit == 0,Output);
++                var restored = Run("restore",Id);
++                return () =>
++                {
++                    Assert.Equal(0,restored);
++                    Assert.Equal("file.txt",new FileInfo(Path.Combine(Tree,"link")).LinkTarget);
++                };
+@@ -323,3 +365,7 @@
+-                Assert.Equal(2,Run("worktree",Tree));
+-                Assert.True(Manifest().Complete); Assert.True(Directory.Exists(Tree)); Assert.True(Has("refs/heads/topic"));
+-                Assert.Empty(Git(Remote,"for-each-ref","refs/heads/topic")); Assert.Contains("remote deleted",Output); return;
++                var partialExit = Run("worktree",Tree);
++                return () =>
++                {
++                    Assert.Equal(2,partialExit);
++                    Assert.True(Manifest().Complete); Assert.True(Directory.Exists(Tree)); Assert.True(Has("refs/heads/topic"));
++                    Assert.Empty(Git(Remote,"for-each-ref","refs/heads/topic")); Assert.Contains("remote deleted",Output);
++                };
+@@ -328 +374,2 @@
+-                Assert.Equal(2,Run("branch","topic")); Assert.True(Has("refs/heads/topic")); return;
++                var symlinkExit = Run("branch","topic");
++                return () => { Assert.Equal(2,symlinkExit); Assert.True(Has("refs/heads/topic")); };
+@@ -345 +392,2 @@
+-                Assert.Equal(2,Run("restore",id,"--remote")); Assert.True(Directory.Exists(Entry)); return;
++                var remoteExit = Run("restore",id,"--remote");
++                return () => { Assert.Equal(2,remoteExit); Assert.True(Directory.Exists(Entry)); };
+@@ -351,5 +399,9 @@
+-        Assert.Equal(2,Run("restore",id)); Assert.True(Directory.Exists(Entry));
+-        if (policy != "restore collision") Assert.False(Has("refs/heads/topic"));
+-    }
+-
+-    private void Reserve(string policy)
++        var restoreExit = Run("restore",id);
++        return () =>
++        {
++            Assert.Equal(2,restoreExit); Assert.True(Directory.Exists(Entry));
++            if (policy != "restore collision") Assert.False(Has("refs/heads/topic"));
++        };
++    }
++
++    private Action Reserve(string policy)
+@@ -366,5 +418,9 @@
+-        Assert.Equal(2,Run("branch","topic")); Assert.True(Has("refs/heads/topic"));
+-        Assert.Contains(policy == "invalid reserve" ? "nonnegative" : "reserve",Output);
+-    }
+-
+-    private void DryRun(string policy)
++        var exit = Run("branch","topic");
++        return () =>
++        {
++            Assert.Equal(2,exit); Assert.True(Has("refs/heads/topic"));
++            Assert.Contains(policy == "invalid reserve" ? "nonnegative" : "reserve",Output);
++        };
++    }
++
++    private Action DryRun(string policy)
+@@ -379,7 +435,11 @@
+-        Assert.True(Run("branch","topic","--dry-run") == 0,Output);
+-        Assert.False(Directory.Exists(ArchiveRoot)); Assert.True(Has("refs/heads/topic"));
+-        Assert.Contains("archiveBytes=",Output); Assert.Contains("proofScratchBytes=",Output); Assert.Contains("sumBytes=",Output);
+-        if (policy == "dry-run remote lower bound") Assert.Contains("unknown; lower-bound",Output);
+-    }
+-
+-    private void Retention(string policy)
++        var exit = Run("branch","topic","--dry-run");
++        return () =>
++        {
++            Assert.True(exit == 0,Output);
++            Assert.False(Directory.Exists(ArchiveRoot)); Assert.True(Has("refs/heads/topic"));
++            Assert.Contains("archiveBytes=",Output); Assert.Contains("proofScratchBytes=",Output); Assert.Contains("sumBytes=",Output);
++            if (policy == "dry-run remote lower bound") Assert.Contains("unknown; lower-bound",Output);
++        };
++    }
++
++    private Action Retention(string policy)
+@@ -399 +459,2 @@
+-            Assert.Equal(0,Run("restore",id)); Assert.True(Directory.Exists(entry));
++            var exit = Run("restore",id);
++            return () => { Assert.Equal(0,exit); Assert.True(Directory.Exists(entry)); };
+@@ -403 +464,2 @@
+-            Git(Main,"branch","third"); Assert.True(Run("branch","third") == 0,Output); Assert.False(Directory.Exists(entry));
++            Git(Main,"branch","third"); var exit = Run("branch","third");
++            return () => { Assert.True(exit == 0,Output); Assert.False(Directory.Exists(entry)); };
+--- a/DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs
++++ b/DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs
+@@ -19,4 +19,4 @@
+-        AssertNestedRepositoryRefused(fixture,layout,name);
+-    }
+-
+-    internal static void AssertNestedRepositoryRefused(SafeDeleteTests fixture, string layout, string name)
++        AssertNestedRepositoryRefused(fixture,layout,name)();
++    }
++
++    internal static Action AssertNestedRepositoryRefused(SafeDeleteTests fixture, string layout, string name)
+@@ -41,12 +41,16 @@
+-        Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
+-        Assert.Contains("Initialized nested repository",fixture.Output);
+-        Assert.Contains(nested,fixture.Output);
+-        Assert.Contains("independent",fixture.Output);
+-        Assert.False(Directory.Exists(fixture.ArchiveRoot));
+-        Assert.Empty(checkpoints);
+-        Assert.Equal(files,Snapshot(fixture.Tree));
+-        Assert.Equal(localRefs,SafeDeleteTests.Git(fixture.Main,"show-ref"));
+-        Assert.Equal(remoteRefs,SafeDeleteTests.Git(fixture.Remote,"show-ref"));
+-        Assert.Equal(nestedRefs,SafeDeleteTests.Git(nested,"--git-dir",nested,"show-ref"));
+-        Assert.Equal(registration,SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain"));
+-        Assert.Equal("unique nested work",SafeDeleteTests.Git(nested,"--git-dir",nested,"show","nested-unique:nested.txt"));
++        var exit = fixture.Run("worktree",fixture.Tree);
++        return () =>
++        {
++            Assert.Equal(2,exit);
++            Assert.Contains("Initialized nested repository",fixture.Output);
++            Assert.Contains(nested,fixture.Output);
++            Assert.Contains("independent",fixture.Output);
++            Assert.False(Directory.Exists(fixture.ArchiveRoot));
++            Assert.Empty(checkpoints);
++            Assert.Equal(files,Snapshot(fixture.Tree));
++            Assert.Equal(localRefs,SafeDeleteTests.Git(fixture.Main,"show-ref"));
++            Assert.Equal(remoteRefs,SafeDeleteTests.Git(fixture.Remote,"show-ref"));
++            Assert.Equal(nestedRefs,SafeDeleteTests.Git(nested,"--git-dir",nested,"show-ref"));
++            Assert.Equal(registration,SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain"));
++            Assert.Equal("unique nested work",SafeDeleteTests.Git(nested,"--git-dir",nested,"show","nested-unique:nested.txt"));
++        };
+--- /dev/null
++++ b/DynaDocs.Tests/Integration/SafeDeleteBindingsTests.cs
+@@ -0,0 +1,43 @@
++namespace DynaDocs.Tests.Steps;
++
++using DynaDocs.Tests.Integration;
++using Xunit.Sdk;
++
++[Collection("Integration")]
++public sealed class SafeDeleteBindingsTests
++{
++    [Theory]
++    [InlineData("local bra nch")]
++    [InlineData("detached HEAD typo")]
++    [InlineData("proof-enabled settled T3 eligibility typo")]
++    [InlineData("LOCAL BRANCH")]
++    [InlineData("")]
++    public void UnknownJourney_RefusesBeforeArchiving(string journey)
++    {
++        using var fixture = new SafeDeleteTests();
++        var original = SafeDeleteTests.Git(fixture.Main,"rev-parse","topic");
++        var error = Assert.Throws<XunitException>(() => fixture.Journey(journey));
++        Assert.Equal("Unwired journey: " + journey,error.Message);
++        Assert.False(Directory.Exists(fixture.ArchiveRoot));
++        Assert.Equal(original,SafeDeleteTests.Git(fixture.Main,"rev-parse","topic"));
++    }
++
++    [Theory]
++    [InlineData("journey")]
++    [InlineData("refusal")]
++    [InlineData("policy")]
++    public void Then_DetectsMissingTargetRefAfterWhen(string binding)
++    {
++        using var fixture = new SafeDeleteTests();
++        using var target = new SafeDeleteSteps(fixture);
++        switch (binding)
++        {
++            case "journey": target.Journey("local branch"); break;
++            case "refusal": target.Refusal("locked worktree"); break;
++            case "policy": target.Policy("dry-run estimates"); break;
++        }
++        target.Completed();
++        SafeDeleteTests.Git(fixture.Main,"update-ref","-d","refs/heads/topic");
++        Assert.ThrowsAny<XunitException>(target.Completed);
++    }
++}

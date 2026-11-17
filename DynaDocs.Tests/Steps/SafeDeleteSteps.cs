@@ -7,8 +7,11 @@ using Reqnroll;
 [Binding]
 public sealed class SafeDeleteSteps : IDisposable
 {
+    public SafeDeleteSteps() { }
+    internal SafeDeleteSteps(SafeDeleteTests fixture) => _fixture = fixture;
+
     private SafeDeleteTests? _fixture;
-    private bool _completed;
+    private Action? _verifyOutcome;
     private bool _dangerous;
     private bool _eligibilityJourney;
     private string? _unpushedStaged;
@@ -94,24 +97,27 @@ public sealed class SafeDeleteSteps : IDisposable
     public void GivenRepository() => _fixture = new SafeDeleteTests();
 
     [When("I archive and restore the {string} journey")]
-    public void Journey(string journey) { _fixture!.Journey(journey); _completed = true; }
+    public void Journey(string journey) => _verifyOutcome = _fixture!.Journey(journey);
 
     [When("I exercise the {string} safe-delete refusal")]
     public void Refusal(string refusal)
     {
         if (refusal == "shared bare nested repository")
-            SafeDeleteBoundaryTests.AssertNestedRepositoryRefused(_fixture!,"shared clone","nested.git");
-        else _fixture!.Refusal(refusal);
-        _completed = true;
+            _verifyOutcome = SafeDeleteBoundaryTests.AssertNestedRepositoryRefused(_fixture!,"shared clone","nested.git");
+        else _verifyOutcome = _fixture!.Refusal(refusal);
     }
 
     [When("I exercise the {string} safe-delete policy")]
-    public void Policy(string policy) { _fixture!.Policy(policy); _completed = true; }
+    public void Policy(string policy) => _verifyOutcome = _fixture!.Policy(policy);
 
     [Then("the safe-delete journey preserves all accepted state")]
     [Then("the safe-delete target refs and files remain intact")]
     [Then("the safe-delete policy outcome is verified")]
-    public void Completed() => Assert.True(_completed);
+    public void Completed()
+    {
+        Assert.NotNull(_verifyOutcome);
+        _verifyOutcome();
+    }
 
     [When("the safe-delete guard examines {string}")]
     public void Guard(string command) => _dangerous = new BashCommandAnalyzer().CheckDangerousPatterns(command).IsDangerous;

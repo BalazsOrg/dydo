@@ -16,10 +16,10 @@ public sealed class SafeDeleteBoundaryTests
     public void InitializedNestedGitDirectory_RefusesBeforePublicationOrDeletion(string layout, string name)
     {
         using var fixture = new SafeDeleteTests();
-        AssertNestedRepositoryRefused(fixture,layout,name);
+        AssertNestedRepositoryRefused(fixture,layout,name)();
     }
 
-    internal static void AssertNestedRepositoryRefused(SafeDeleteTests fixture, string layout, string name)
+    internal static Action AssertNestedRepositoryRefused(SafeDeleteTests fixture, string layout, string name)
     {
         SafeDeleteTests.Git(fixture.Main,"switch","-c","nested-unique");
         File.WriteAllText(Path.Combine(fixture.Main,"nested.txt"),"unique nested work\n");
@@ -38,18 +38,22 @@ public sealed class SafeDeleteBoundaryTests
         var nestedRefs = SafeDeleteTests.Git(nested,"--git-dir",nested,"show-ref");
         var registration = SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain");
         var checkpoints = new List<string>(); fixture.Dependencies.Checkpoint = checkpoints.Add;
-        Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
-        Assert.Contains("Initialized nested repository",fixture.Output);
-        Assert.Contains(nested,fixture.Output);
-        Assert.Contains("independent",fixture.Output);
-        Assert.False(Directory.Exists(fixture.ArchiveRoot));
-        Assert.Empty(checkpoints);
-        Assert.Equal(files,Snapshot(fixture.Tree));
-        Assert.Equal(localRefs,SafeDeleteTests.Git(fixture.Main,"show-ref"));
-        Assert.Equal(remoteRefs,SafeDeleteTests.Git(fixture.Remote,"show-ref"));
-        Assert.Equal(nestedRefs,SafeDeleteTests.Git(nested,"--git-dir",nested,"show-ref"));
-        Assert.Equal(registration,SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain"));
-        Assert.Equal("unique nested work",SafeDeleteTests.Git(nested,"--git-dir",nested,"show","nested-unique:nested.txt"));
+        var exit = fixture.Run("worktree",fixture.Tree);
+        return () =>
+        {
+            Assert.Equal(2,exit);
+            Assert.Contains("Initialized nested repository",fixture.Output);
+            Assert.Contains(nested,fixture.Output);
+            Assert.Contains("independent",fixture.Output);
+            Assert.False(Directory.Exists(fixture.ArchiveRoot));
+            Assert.Empty(checkpoints);
+            Assert.Equal(files,Snapshot(fixture.Tree));
+            Assert.Equal(localRefs,SafeDeleteTests.Git(fixture.Main,"show-ref"));
+            Assert.Equal(remoteRefs,SafeDeleteTests.Git(fixture.Remote,"show-ref"));
+            Assert.Equal(nestedRefs,SafeDeleteTests.Git(nested,"--git-dir",nested,"show-ref"));
+            Assert.Equal(registration,SafeDeleteTests.Git(fixture.Main,"worktree","list","--porcelain"));
+            Assert.Equal("unique nested work",SafeDeleteTests.Git(nested,"--git-dir",nested,"show","nested-unique:nested.txt"));
+        };
     }
 
     private static void CreateNestedRepository(SafeDeleteTests fixture, string layout, string nested, string unique)
