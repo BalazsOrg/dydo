@@ -228,6 +228,22 @@
       ]
     },
     {
+      "module": "Commands/GuardCommand.WorkerLane.cs",
+      "tests": [
+        "DynaDocs.Tests/Commands/WorkerLaneClassificationTests.cs",
+        "DynaDocs.Tests/Commands/WorkerLaneSkillLintTests.cs",
+        "DynaDocs.Tests/Integration/GuardWorkerLaneTests.cs"
+      ]
+    },
+    {
+      "module": "Commands/DydoRootCommand.cs",
+      "tests": [
+        "DynaDocs.Tests/Commands/CommandSmokeTests.cs",
+        "DynaDocs.Tests/Commands/WorkerLaneClassificationTests.cs",
+        "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs"
+      ]
+    },
+    {
       "module": "Commands/GuardCommand.NewFileNudges.cs",
       "tests": [
         "DynaDocs.Tests/Commands/GuardNewFileNudgeTests.cs"

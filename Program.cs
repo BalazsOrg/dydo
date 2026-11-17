@@ -1,6 +1,4 @@
-using System.CommandLine;
 using DynaDocs.Commands;
-using DynaDocs.Utils;
 
 if (args.Length > 0 && args[0] is "__statechart-cleanup" or "__statechart-probe" or
     "__statechart-posix-owner" or "__statechart-posix-anchor" or "__statechart-posix-child")
@@ -46,35 +44,4 @@ if (args.Length > 0 && (args[0] == "gap-check" || args[0] == "statechart" && !ar
     }
 }
 
-var rootCommand = new RootCommand("DynaDocs (dydo) - Durable project knowledge and native skills for AI coding assistants.");
-
-rootCommand.Subcommands.Add(CheckCommand.Create());
-rootCommand.Subcommands.Add(FixCommand.Create());
-rootCommand.Subcommands.Add(IndexCommand.Create());
-rootCommand.Subcommands.Add(InitCommand.Create());
-rootCommand.Subcommands.Add(AdoptCommand.Create());
-rootCommand.Subcommands.Add(GraphCommand.Create());
-rootCommand.Subcommands.Add(GuardCommand.Create());
-rootCommand.Subcommands.Add(CompletionsCommand.Create());
-rootCommand.Subcommands.Add(CompleteCommand.Create());
-rootCommand.Subcommands.Add(ValidateCommand.Create());
-rootCommand.Subcommands.Add(GapCheckCommand.Create());
-rootCommand.Subcommands.Add(MapCommand.Create());
-rootCommand.Subcommands.Add(SurveyCommand.Create());
-rootCommand.Subcommands.Add(ModeCommand.Create());
-rootCommand.Subcommands.Add(CleanCommand.Create());
-rootCommand.Subcommands.Add(PrReadyCommand.Create());
-rootCommand.Subcommands.Add(MergeCommand.Create());
-rootCommand.Subcommands.Add(StatechartCommand.Create());
-
-var versionCommand = new Command("version", "Display version information");
-versionCommand.SetAction(_ =>
-{
-    Console.WriteLine($"dydo version {DydoVersion.Current}");
-    return 0;
-});
-rootCommand.Subcommands.Add(versionCommand);
-
-rootCommand.Subcommands.Add(HelpCommand.Create());
-
-return await CliParsing.Parse(rootCommand, args).InvokeAsync();
+return await CliParsing.Parse(DydoRootCommand.Create(), args).InvokeAsync();
