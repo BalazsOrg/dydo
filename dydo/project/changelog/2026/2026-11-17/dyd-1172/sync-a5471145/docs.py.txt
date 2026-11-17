@@ -1,0 +1,22 @@
+"""Check the exact target-side decision documents with the candidate CLI."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+paths = subprocess.check_output(['git','diff','--name-only','ed2c5f06','a5471145','--','dydo/project/decisions'],text=True).splitlines()
+build = ['dotnet','build','DynaDocs.csproj','--no-restore','--nologo']
+print(json.dumps({'argv':build}),flush=True)
+result = subprocess.run(build)
+if result.returncode:
+    raise SystemExit(result.returncode)
+binary = Path('bin/Debug/net10.0/dydo.dll')
+print(json.dumps({'candidateCli':str(binary),'sha256':hashlib.sha256(binary.read_bytes()).hexdigest()}),flush=True)
+codes=[]
+for path in paths:
+    command=['dotnet',str(binary),'check',path]
+    print(json.dumps({'argv':command,'documentSha256':hashlib.sha256(Path(path).read_bytes()).hexdigest()}),flush=True)
+    result=subprocess.run(command)
+    print(json.dumps({'path':path,'exit':result.returncode}),flush=True)
+    codes.append(result.returncode)
+raise SystemExit(max(codes,default=2))
