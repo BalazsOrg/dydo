@@ -90,7 +90,8 @@ findings are dated hints, "the AI landscape changes every two weeks".
 6. **Two laws per project, tech and product (F16, L1 A8, A9).** "the 'workflow law' is just Dydo's
    own Product law."
    - **Tech law:** technical values and choices. **Product law:** business decisions, what gets built
-     and how. dydo's product law is how agents work; its seven axioms are that law.
+     and how. dydo's product law is how agents work; its seven axioms and the principles under them
+     (`law/dydo/`) are that law.
    - **Layout (A8):** `dydo/law/`, one folder per law, each with `axioms.md`, one file per principle
      group, `cases/` and `retired.md`. The product law's folder takes the product's name (`law/dydo/`
      here, `law/lc/` in LC); the tech law's is `law/tech/`. The scaffold ships the product folder as
