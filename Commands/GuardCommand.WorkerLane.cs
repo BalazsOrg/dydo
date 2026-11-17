@@ -24,12 +24,13 @@ public static partial class GuardCommand
     /// statechart is what crew run to draw a checked model. The guard reads only the word after dydo, so
     /// statechart's install-skill and resume verbs pass with it: install-skill writes the project's
     /// statechart skill and its projections, and resume installs locked prerequisites after the host's own
-    /// authorization.
+    /// authorization. Archive preserves a branch or worktree before deletion, lists saved entries
+    /// and restores them without overwriting existing work.
     /// </summary>
     internal static readonly string[] WorkerAllowedDydoSubcommands =
     [
         "check", "fix", "gap-check", "graph", "validate", "mode", "clean", "pr-ready", "merge",
-        "survey", "statechart", "help", "version"
+        "survey", "statechart", "archive", "help", "version"
     ];
 
     /// <summary>

@@ -221,6 +221,7 @@ SKILL_COMMANDS = (
     "dydo merge 123 --match-head-commit 0123abc --match-base-commit 4567def",
     "dydo survey P-DYD-46", "dydo statechart SPEC.tla --skill skills/engineering/statechart --out chart",
     "dydo statechart install-skill --root /work/project", "dydo statechart resume --request request.json",
+    "dydo archive branch topic", "dydo archive worktree tree", "dydo archive list", "dydo archive restore ID",
     "dydo --help")
 
 
@@ -274,6 +275,63 @@ def activation(run):
                 "state_readback": "requires injected seam tests"})
 
 
+def archive_journey(run):
+    """Real local Git and installed CLI; remote/T3 eligibility belongs to separate native gates."""
+    project = run / "scratch/archive-project"
+    tree = run / "scratch/archive-tree"
+    require(not project.exists() and not tree.exists(), "Archive journey already exists; launch a fresh run")
+    project.mkdir()
+
+    def git(label, *arguments):
+        result = execute(run, label, ["git", *arguments], project)
+        success(result)
+        return result.stdout.strip()
+
+    def archive(label, *arguments):
+        result = execute(run, label, ["dotnet", str(run / "scratch/bin/dydo.dll"), "archive", *arguments], project)
+        success(result)
+        return result.stdout
+
+    git("archive-init", "init", "-b", "primary")
+    git("archive-user", "config", "user.name", "Dydo Verification")
+    git("archive-email", "config", "user.email", "verification@example.invalid")
+    git("archive-signing", "config", "commit.gpgsign", "false")
+    (project / "file.txt").write_bytes(b"base\n")
+    (project / ".gitignore").write_bytes(b"ignored/\n")
+    write_json(project / "dydo.json", {"archive": {"reserveBytes": 0, "reservePercent": 0}})
+    git("archive-add", "add", "file.txt", ".gitignore")
+    git("archive-commit", "commit", "-m", "archive fixture")
+    original = git("archive-original", "rev-parse", "HEAD")
+    git("archive-worktree", "worktree", "add", "-b", "archive-topic", str(tree))
+    (tree / "file.txt").write_bytes(b"staged only\n")
+    success(execute(run, "archive-stage", ["git", "add", "file.txt"], tree))
+    (tree / "file.txt").write_bytes(b"working version\n")
+    (tree / "ignored/empty").mkdir(parents=True)
+    (tree / "ignored/binary").write_bytes(bytes([0, 255, 1, 0]))
+    archive("archive-delete", "worktree", str(tree))
+    require(not tree.exists(), "Archived worktree still exists")
+    root = project / ".git/dydo/safe-delete-archive"
+    entries = [path for path in root.iterdir() if path.is_dir() and not path.name.startswith(".")]
+    require(len(entries) == 1, "Expected exactly one published archive")
+    entry = entries[0]
+    manifest = json.loads((entry / "manifest.json").read_text(encoding="utf-8"))
+    require(manifest["complete"] and (entry / "commits.bundle").stat().st_size > 0, "Archive not complete")
+    archive("archive-list", "list")
+    git("archive-expire-reflogs", "reflog", "expire", "--expire=now", "--all")
+    git("archive-source-gc", "gc", "--prune=now")
+    archive("archive-restore", "restore", entry.name)
+    require((tree / "file.txt").read_bytes() == b"working version\n", "Working version lost")
+    require((tree / "ignored/binary").read_bytes() == bytes([0, 255, 1, 0]), "Ignored binary lost")
+    require((tree / "ignored/empty").is_dir(), "Empty directory lost")
+    staged = execute(run, "archive-restored-index", ["git", "show", ":file.txt"], tree)
+    success(staged)
+    require(staged.stdout == "staged only\n", "Staged-only version lost")
+    require(git("archive-restored-tip", "rev-parse", "archive-topic") == original, "Primary tip changed")
+    write_json(run / "evidence/archive-roundtrip.json", {"archive": entry.name, "original": original,
+               "working_sha256": digest(tree / "file.txt"), "staged": staged.stdout,
+               "source_gc": True, "archive_retained": entry.exists(), "native_platform": os.name})
+
+
 def cleanup(run):
     # Recheck the entire tree immediately before removal; evidence stays outside scratch.
     owned(run)
@@ -289,14 +347,14 @@ def cleanup(run):
 
 def drive(run, journey):
     doctor(run)
-    {"init-docs": init_docs, "guard": guard_journey, "activation": activation, "worker-lane": worker_lane}[journey](run)
+    {"init-docs": init_docs, "guard": guard_journey, "activation": activation, "archive": archive_journey, "worker-lane": worker_lane}[journey](run)
 
 
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("verb", choices=("launch", "doctor", "drive", "cleanup"))
     parser.add_argument("--run")
-    parser.add_argument("--journey", choices=("init-docs", "guard", "activation", "worker-lane"))
+    parser.add_argument("--journey", choices=("init-docs", "guard", "activation", "archive", "worker-lane"))
     args = parser.parse_args(argv)
     require((args.verb == "launch") == (args.run is None), "Only launch allocates a run")
     require((args.verb == "drive") == (args.journey is not None), "Only drive takes a journey")

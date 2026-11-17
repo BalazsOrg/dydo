@@ -82,6 +82,14 @@ public class WorkerLaneClassificationTests
         Assert.DoesNotContain("statechart", TopLevelOnly);
     }
 
+    [Fact]
+    public void Archive_IsRegisteredAndWorkerAllowed()
+    {
+        Assert.Contains("archive", RegisteredNames());
+        Assert.Contains("archive", Allowed);
+        Assert.DoesNotContain("archive", TopLevelOnly);
+    }
+
     // The red case: the check fails on a registry with a command nobody classified.
     [Fact]
     public void Problems_NamesANewUnclassifiedCommand()

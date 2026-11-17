@@ -1,0 +1,44 @@
+from pathlib import Path
+import hashlib
+import json
+
+root = Path.cwd()
+out = root/"dydo/project/changelog/2026/2026-11-16/dyd-1029"
+sources = json.loads((out/"eligibility-source-bytes.json").read_text())
+for name,digest in sources.items():
+    assert hashlib.sha256((root/name).read_bytes()).hexdigest() == digest,name
+results = root/"DynaDocs.Tests/coverage/results"
+static = json.loads((results/"adapters/dotnet-static.json").read_text())
+coverage = json.loads((results/"adapters/dotnet-coverage.json").read_text())
+assert static["candidate"]["sourceFingerprint"] == coverage["candidate"]["sourceFingerprint"]
+run = (results/coverage["inventory"]["path"]).parent
+identities = list(run.glob("raw-*/identities.json"))
+assert len(identities) == 1
+identity = json.loads(identities[0].read_text())
+checked = 0
+for artifact in identity["artifacts"]:
+    name = artifact["path"]
+    if not name.endswith(".cs"): continue
+    assert hashlib.sha256((root/name).read_bytes()).hexdigest() == artifact["sha256"],name
+    checked += 1
+assert checked > 400
+assert not Path("/tmp/dydo-test-9ede6c3f").exists()
+assert not Path("/tmp/dyd1029-review-config-esx_00aj").exists()
+research = Path("/tmp/dyd1029-pr-eligibility-research-20261117")
+for first,second in (
+    ("report.md","eligibility-research-report.txt"),
+    ("evidence-core.tar.gz","eligibility-research-evidence.tar.gz"),
+    ("evidence-index.json","eligibility-research-index.json"),
+    ("eligibility.graphql","eligibility-research.graphql"),
+):
+    assert (research/first).read_bytes() == (out/second).read_bytes(),first
+report = {
+    "nonEvidenceSourcesHashMatched":len(sources),
+    "coverageProducerCSharpSourcesHashMatched":checked,
+    "staticAndCoverageFingerprint":static["candidate"]["sourceFingerprint"],
+    "coverageWorktreeRemoved":True,"nativeConfigFixtureRemoved":True,
+    "researchCopiedUnchanged":True,
+    "archiveSha256":hashlib.sha256((out/"eligibility-raw-evidence.tar.gz").read_bytes()).hexdigest(),
+}
+(out/"eligibility-verification.json").write_text(json.dumps(report,indent=2)+"\n")
+print(json.dumps(report,indent=2))

@@ -1,0 +1,119 @@
+DYD-1029 fix: measure native alternate-stream refusal
+code-writer/model: gpt-6.1-sol, high
+
+Parent: 46e378be3b19cdacfc46ec301e8fdcbce1c848bb, DYD-1029-safe-delete.
+Original ancestor dee4861ae2691e41d9e60985e3e0ffb0c7ea987d verified.
+Started clean in the commissioned isolated worktree. Before any edit or gate, read both
+captain handoff receipts: native summary candidate46e378be, retainedStateEqual true;
+captain-integrated-pr-ready-02 receipt head46e378be, clean status, exit0. Captain explicitly
+released the checkout and extended ownership to the existing platform-test expected map;
+Linear DECIDED comment 76bd2179-6a60-44a6-aebd-bb9bc767fc73 records that extension.
+
+Exactly two source paths changed:
+- DynaDocs.Tests/coverage/dotnet-platforms.json: append the existing
+  DynaDocs.Tests.Integration.SafeDeleteBoundaryTests.WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams.
+- DynaDocs.Tests/coverage/tests/test_dotnet_platform.py: add that declaration/path to the
+  existing committed-selection expected map. Every assertion and prior selected test remains.
+The only other new paths are this proof and windows-selection-evidence.tar.gz.
+
+Native RED and meaningful existing test
+Hosted Windows run44019044292, artifact dotnet-coverage-windows-attempt-1, PR341 head46e378be,
+actual measured merge ref a2d0676c067e36467800af7b4d3052bac98938b5. The native adapter records
+child_exit0, measurementComplete true, exitCode1, exactly one finding: branch coverage
+Services/SafeDeleteWindowsMetadata.cs 59.09090909090909 <60. DR048's floor remains binding.
+OpenCover CheckStreams line48 path0 (alternate-stream rejection) has vc0. The two selected
+SafeDelete round trips do not reach that refusal. This native failure is the RED; no local
+Windows execution or hypothetical improved percentage is claimed.
+
+The report's normalized source SHA256 and the unchanged local/native selection pin agree:
+f9a3c95bb2bcf8e3bbec4a337aefec7358684fa15f5e782cd2f10c52b06ab90e.
+The native platform-selection digest equals the saved before-selection's canonical digest:
+106e552501a2860af7e878fd920c10415be12cbb26dcf4adeebc39b130c47ae0.
+The report records 19/19 passed cases under the old 16-method selection; the new method is absent.
+The original OpenCover artifact SHA256 was checked against its adapter receipt:
+be03c333ad7016a7617f320a122b451dd54a96be2d171c47a6a21a78d3658206.
+
+Existing SafeDeleteBoundaryTests.cs:510 creates an empty directory and a real binary file,
+asserts nonempty metadata for the empty directory, fixture root and file, writes the file's
+NTFS :hidden stream, then requires InvalidDataException containing "Alternate Windows streams".
+That actual assertion reaches the rejected stream branch. The test remains unchanged; its file
+SHA256 is 20b13621f12919f756c1bbced894eed84222a8a350e2b77b018ebdd7ac2ba636.
+It returns early off Windows. Its local Passed result is not native NTFS proof.
+No production code, native member ownership/pins, thresholds, exemptions or existing tests changed.
+
+Observed gates, all exit0
+All commands ran from the commissioned checkout through /tmp/dyd1029-run.py with fresh labels.
+Each receipt records HEAD46e378be, exact dirty inputs/all file hashes, argv, environment, timestamps,
+exit and raw.log. Before is clean; every subsequent gate differs from it in exactly the two source
+paths above. These are precommit tests of the committed source bytes, not clean-parent gate claims.
+
+python3 /tmp/dyd1029-run.py win-selection-before-01 probe
+  .static-gates/python/bin/python /tmp/dyd1029-win-selection-proof.py before
+  Verified handoff, native failure, missing selection, exact existing assertions and native branch
+  points. Recorded .NET SDK10.0.303/runtime10.0.14, AltCover9.0.102, Python3.14.4, Git2.53.0.
+python3 /tmp/dyd1029-run.py win-selection-after-01 probe
+  .static-gates/python/bin/python /tmp/dyd1029-win-selection-proof.py after
+  Exactly one addition, all17 declarations resolve, Linux/Windows selections validate,
+  all native members/pins and boundary-test bytes unchanged.
+python3 /tmp/dyd1029-run.py win-selection-platform-01 probe
+  .static-gates/python/bin/python -m unittest discover
+  -s DynaDocs.Tests/coverage/tests -p test_dotnet_platform.py -v
+  31 tests OK, including committed selection, ownership, fail-closed results and platform union.
+python3 /tmp/dyd1029-win-selection-gates.py windows-discovery
+  dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --list-tests --filter <exact17-method filter>
+  All17 selected methods have nonzero assembly discovery (20 cases including theory rows).
+python3 /tmp/dyd1029-win-selection-gates.py light-discovery
+  Same project, --no-build --list-tests, Light filter below; all14 groups nonzero.
+python3 /tmp/dyd1029-win-selection-gates.py light
+  Same project, --no-build --filter <Light> --logger trx, isolated results directory.
+  4607 passed, 54 skipped, 0 failed of4661. Raw output and TRX retained.
+python3 /tmp/dyd1029-win-selection-gates.py static
+  .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py
+  gate static --stack dotnet,python
+  Both stacks PASSED, measurementComplete true, empty findings/gaps, aggregate0.
+  No production method changed; existing HCRAP/cognitive obligations and floors are unaltered.
+python3 /tmp/dyd1029-run.py win-selection-seal-01 probe
+  .static-gates/python/bin/python /tmp/dyd1029-win-selection-seal.py
+  Audited receipts, source/native identities, discovery, TRX, static reports and sealed raw evidence.
+
+Light is the retained ticket union plus Statechart, reached by the selection/map contract:
+FullyQualifiedName~SafeDelete|FullyQualifiedName~Clean|FullyQualifiedName~Git|
+FullyQualifiedName~Guard|FullyQualifiedName~BashCommandAnalyzer|FullyQualifiedName~DangerousPattern|
+FullyQualifiedName~InitCommandTests|FullyQualifiedName~Completion|FullyQualifiedName~Help|
+FullyQualifiedName~CommandSmoke|FullyQualifiedName~CommandDocConsistency|
+FullyQualifiedName~ReleaseWorkflow|FullyQualifiedName~WorkerLane|FullyQualifiedName~Statechart
+The recipe constructs the native filter from the actual JSON using exact FullyQualifiedName= entries.
+Full argv, filters, per-group discovery counts and source hashes are retained in receipts/audit.json.
+
+Caps and sequencing
+Shared /var/tmp/dydo-gate-lock.sh OUTSIDE each cap; env MSBUILDDISABLENODEREUSE=1,
+DOTNET_CLI_USE_MSBUILD_SERVER=0, UseSharedCompilation=false. systemd-run --user --scope,
+--slice=app-t3code-agents-cbc6c2286251.slice, MemorySwapMax=0, OOMPolicy=continue;
+probes4G/timeout120, gates8G/timeout3600. No cap hit. Systemd access used approved escalation.
+Root tests and static rebuilds ran sequentially. No other captain scratch, binaries or locks touched.
+
+Durable raw evidence and replay
+windows-selection-evidence.tar.gz SHA256
+9503634fdbc325c7f588dfa3e83b407698d05ca935c9d882c8d76099548d3e75
+Contains proof/before-selection.json, after-selection.json, native-red.json (including actual test
+body/branches), selection-check.json, prerequisites, discovery, Light TRX and audit.json; every
+gate's receipt/raw.log; full native adapter/OpenCover/TRX/preflight/identity; both static adapters
+and their raw assurance runs; exact scripts and capped wrapper. Original artifacts remain untouched.
+Seal's own receipt/raw log: /tmp/dyd1029-runs/win-selection-seal-01/.
+
+Captain replay: extract the archive into a fresh /tmp directory; from the fixed checkout run its
+scripts/dyd1029-run.py with a fresh label and the platform unittest command above, then run
+scripts/dyd1029-win-selection-gates.py <phase> <fresh-tag> for windows-discovery, light-discovery,
+light, static, sequentially. The optional tag gives fresh receipts/results without overwriting
+these originals. Both scripts sit together in the archive. Before/after are historical witnesses;
+do not relabel them as successor native measurements.
+
+Remaining boundaries, unchanged
+Hosted corrected-candidate Windows execution must still establish the unchanged floor and full
+Linux/Windows coverage union; fresh whole-candidate cross-vendor review remains captain-owned.
+No whole coverage rerun was commissioned locally. Mutation was not run in this writer hop:
+reviewer-owned inherited exit2 UNAVAILABLE DYD103, non-holding by ruling, never PASS.
+T3_RELEASE_UNPROVEN remains; no managed deletion is enabled or native release success claimed.
+All five shoulds (DYD1133,1134,1135,1142,1143) and eighteen nits remain retained with their owners;
+DYD1142 remains a follow-up outside this fix. DYD1138 report-only proposal remains unapproved.
+No push, PR/status edit, remote merge, new worktree or delegation occurred.

@@ -42,6 +42,6 @@ public class GuardWorktreeRemovalTests : IntegrationTestBase
         var result = await ShellAsync(tool, command, subAgent: false);
 
         var reason = result.AssertPreToolUseDenied();
-        Assert.Contains("dydo clean --dry-run <worktree>, then dydo clean <worktree>", reason);
+        Assert.Contains("dydo archive worktree <path>", reason);
     }
 }

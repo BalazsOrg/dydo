@@ -713,6 +713,13 @@ public static class InitCommand
     // and Windows sessions write either.
     internal const string CodexRules =
         "# Written by dydo init codex; dydo rewrites this file on every init and --join.\n"
+        + "prefix_rule(\n"
+        + "    pattern = [[\"dydo\", \"dydo.exe\"], \"archive\"],\n"
+        + "    decision = \"allow\",\n"
+        + "    justification = \"dydo archive verifies self-contained recovery before deletion; restore is create-only\",\n"
+        + "    match = [\"dydo archive branch topic\", \"dydo archive worktree tree\", \"dydo archive list\", \"dydo archive restore ID\", \"dydo.exe archive list\"],\n"
+        + "    not_match = [\"dydo init codex\"],\n"
+        + ")\n"
         + "# dydo clean archives uncommitted work and keeps unmerged branches before it removes a\n"
         + "# worktree, so it runs without an approval prompt.\n"
         + "prefix_rule(\n"

@@ -78,10 +78,15 @@ python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --
 python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --journey guard
 python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --journey worker-lane
 python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --journey activation
+python skills/engineering/verify-dydo/scripts/control_dydo.py drive --run RUN --journey archive
 ```
 
 Only these named journeys exist. There is no arbitrary shell/CLI passthrough. Dangerous commands
-and mode setters appear only in guard stdin payloads. The installed Claude marker is read from
+and mode setters in guard journeys appear only in stdin payloads. The archive journey executes
+real deletion only in its own disposable local repository, then prunes source objects and restores
+the staged-only and working versions, ignored binary and empty directory. It uses the installed
+candidate CLI and retains each command's receipt. This driver remains Windows-only; Linux archive
+proof uses the executable SafeDelete test journeys. The installed Claude marker is read from
 the fixture's real init output; synthetic events prove the host-independent warning/retry protocol,
 never role authentication, human approval or the live officer workflow.
 

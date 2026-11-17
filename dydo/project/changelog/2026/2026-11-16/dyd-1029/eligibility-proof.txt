@@ -1,0 +1,154 @@
+DYD-1029 first-review blocker 1, public plus commissioned closed-world fix hop.
+code-writer/model: gpt-6.1-sol high
+Parent 785971749b44c2f7147e6250683a5b2ac43cf1e3; original base
+dee4861ae2691e41d9e60985e3e0ffb0c7ea987d.
+
+Working-tree checks before edits: clean DYD-1029-safe-delete, HEAD exactly parent,
+base ancestor, isolated captain checkout
+/home/balazs/.t3/worktrees/DynaDocs/t3-8d7ada1c-88d218c54a54db07.
+No shell-created worktree, no additional crew, no push/PR/status change.
+The coverage facade created/removed its own isolated test checkout as contracted.
+
+Governing inputs: eligibility-contract.txt is the full read-only live DYD-1029
+description, updatedAt exactly 2026-11-17T00:25:57.198Z.
+eligibility-own-deletion-ruling.txt retains the commissioned clarification received
+during this hop. Original contract, reviews and all 20 prior evidence files are
+byte-identical; eligibility-run-summary.json records their hashes.
+
+Behavior:
+- Public exact selected refs use GraphQL Ref.associatedPullRequests(states:OPEN),
+  with selected-repository fully paginated own head/base associations independently.
+  A fork head into upstream or another fork protects regardless of destination.
+- Private selected repos work under the explicit closed-world ruling: authenticated
+  metadata fork=false, forks_count=0, visibility private, exact canonical identity.
+  Public repos work whether or not closed-world. Internal or unsupported/private
+  fork networks, malformed/unreadable/inconsistent metadata and initial absence
+  refuse before archive/delete, keeping local/remote/files.
+- REST metadata node_id pins GraphQL repository/ref identity across pages and all
+  destructive checks. Exact heads prefix/name/OID must match live Git discovery.
+  Required PR identities/state/repositories/names, envelopes/errors, all pages,
+  unique IDs, stable totalCount, advancing cursors and terminal count are validated.
+  No Search, invented visibility flag, response filtering or truncated success.
+- Each check has a shared 30-second deadline, 8-MiB stdout budget, 64-KiB stderr
+  per subprocess and 100-page limit per connection. Failure/exhaustion refuses;
+  process trees are killed on cancellation/read failure. No sleeps, shell or
+  credential-bearing process output is logged.
+- Immediately before every destructive step, reread remote URL, live default/ref,
+  immutable API identity, metadata and applicable head/base eligibility, followed
+  by the original source/ref/history/snapshot/registration/busy rechecks.
+  Remote deletion retains the explicit expected-OID lease.
+- Only this invocation's successful leased deletion sets its internal transition
+  receipt. After that transition, exact absence, unchanged identity/metadata and
+  complete own head/base associations are required before remaining local steps.
+  A recreated ref, even at the same OID, aborts; it is never deleted again.
+  Initial absence and an unproved receipt do not bypass head eligibility.
+- Manifest additionally records selected immutable GitHub repository ID.
+  Existing archive payload/format/restore behavior and config fix remain.
+  PR-open/reopen/retarget between final API read and push is still possible:
+  no atomic API/Git PR-state lease is claimed. Both reference twins state this.
+  T3_RELEASE_UNPROVEN remains unchanged; managed T3 deletion is disabled.
+
+Scope accounting:
+Services/SafeDeleteGitHub.cs and new SafeDeleteGitHubTarget.cs own the API checks
+and invocation receipt; narrowly reached dependencies/service/manifest carry it.
+SafeDeleteGit.cs, Repository, History, Files, Store, Paths and T3Policy match parent
+bytes. Reconstruction/config/ordinary-status methods in SafeDeleteService match
+parent bytes (hash in run-summary). No restore fix was reverted.
+Old repository-list response-shape tests were replaced by production API-process
+seam regressions of the replacement protocol, preserving their head/base/state/
+malformed/null/process-failure behaviors and strongest fork counterexample.
+Only two new Gherkin rows and their strict binding were added; existing deferred
+journey binding should DYD-1135 was not changed. No DYD-1133/1134 or five nits fixed.
+test-associations.json adds only this new/reached test association.
+No maintained Python executable changed, so Python stack gates were not widened.
+Dormant guard Heavy trigger does not apply: no guard reader implementation change.
+
+Proof recipe (run from repository root, fresh labels required):
+Unpack eligibility-raw-evidence.tar.gz in an owned scratch directory. recipe/
+contains exact dyd1029-run.py, toolchain script, RED replay and native config probe.
+The runner records HEAD plus every tracked/untracked source SHA256, exact argv,
+environment, start/end and exit in runs/<label>/receipt.json; raw.log and TRX stay
+beside it. Use the same shared /var/tmp/dydo-gate-lock.sh outside the systemd cap,
+nearest app-t3code-agents-cbc6c2286251.slice; probes MemoryMax4G/swap0/
+OOMPolicycontinue/timeout120, gates 8G/swap0/continue/timeout3600.
+.NET env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0
+UseSharedCompilation=false. Toolchain receipt: SDK10.0.303, runtime10.0.14 installed,
+Git2.53.0, Python3.14.4, gh2.103.3. Nonzero discoveries retained, including Gherkin.
+Sandbox scope-bus denial was escalated, never retried uncapped.
+
+1. python3 /tmp/dyd1029-run.py REPLAY-witness probe dotnet test
+   DynaDocs.Tests/DynaDocs.Tests.csproj --filter
+   'FullyQualifiedName~ForkBranchUsedAsUpstreamPullRequestHead|FullyQualifiedName~PrivateClosedWorld_RealCli|FullyQualifiedName~PublicFork_Leased'
+   --logger trx
+2. python3 /tmp/dyd1029-run.py REPLAY-focused gate dotnet test
+   DynaDocs.Tests/DynaDocs.Tests.csproj --filter FullyQualifiedName~SafeDelete
+   --logger trx
+3. python3 /tmp/dyd1029-run.py REPLAY-light gate dotnet test
+   DynaDocs.Tests/DynaDocs.Tests.csproj --filter
+   'FullyQualifiedName~SafeDelete|FullyQualifiedName~Clean|FullyQualifiedName~Git|FullyQualifiedName~Guard|FullyQualifiedName~BashCommandAnalyzer|FullyQualifiedName~DangerousPattern|FullyQualifiedName~InitCommandTests|FullyQualifiedName~Completion|FullyQualifiedName~Help|FullyQualifiedName~CommandSmoke|FullyQualifiedName~CommandDocConsistency|FullyQualifiedName~ReleaseWorkflow'
+   --logger trx
+4. python3 /tmp/dyd1029-run.py REPLAY-static gate .static-gates/python/bin/python
+   DynaDocs.Tests/coverage/gap_check.py gate static --stack dotnet
+5. python3 /tmp/dyd1029-run.py REPLAY-coverage gate .static-gates/python/bin/python
+   DynaDocs.Tests/coverage/gap_check.py gate coverage --stack dotnet
+6. python3 /tmp/dyd1029-run.py REPLAY-mutation gate .static-gates/python/bin/python
+   DynaDocs.Tests/coverage/gap_check.py gate mutation
+   --since dee4861ae2691e41d9e60985e3e0ffb0c7ea987d --stack dotnet
+7. python3 /tmp/dyd1029-run.py REPLAY-config probe python3
+   /tmp/dyd1029-fix-config-probe.py
+Run sequentially: static rebuild and tests must never share live binaries.
+
+Observed RED/GREEN:
+- eligibility-red exit1: the two availability tests fail on 7859717:
+  public negative gets blanket refusal; private CLI expects0 but gets2.
+- eligibility-witnesses-build/02 exit1: production/test cognitive-complexity and
+  nested-ternary findings. Fixed in owned methods; raw failed builds retained.
+- eligibility-witnesses-build-03 exit0: upstream/other-fork protection plus private
+  closed-world and public non-closed-world CLI/local-bare archive/restore, 4/4,
+  before expensive broad gates.
+- eligibility-boundaries exit0: 69/69 API boundary regressions.
+- eligibility-reverted-red exit1: predecessor blanket-refusal condition reinserted
+  through new typed seam, exact successor public/private availability tests 5/5 RED.
+  Source restored in finally; recipe retains exact original/reverted hashes.
+- eligibility-restored-green exit0: 9/9 availability/fork/config regressions GREEN.
+- eligibility-config-witness exit0: native CLI archive/source-GC/restore,
+  before/after ordinary Git status clean, effective core.filemode=false.
+  Native receipt retained; owned fixture removed after packaging verified its receipt.
+- eligibility-focused exit0: 207/207 SafeDelete, no skips.
+- eligibility-light exit0 on final numeric/UTF-8 validation bytes: 4213 passed,
+  17 platform skips, zero failures; all 209 SafeDelete results passed/no skips.
+- eligibility-static and eligibility-static-final exit0; final facade result
+  run-1794876812432-78bca1c4, no policy findings.
+- eligibility-coverage exit0; whole-stack 7221 passed, 54 platform skips,
+  zero failures. Facade result run-1794876939677-255902bb. All module line/branch
+  and method HCRAP/cognitive thresholds passed. Producer commands/identities,
+  raw joined coverage, OpenCover and native streams retained in evidence.
+- eligibility-mutation exit2: UNAVAILABLE: Pending DYD-103. Inherited owner
+  DYD-103, never PASS; non-holding under DECIDED ruling, not mutation assurance.
+- eligibility-doc-check exit0: 0 errors, 0 warnings, 894 documents.
+
+Evidence:
+eligibility-source-bytes.json binds all 2471 non-evidence tracked/untracked sources
+to final bytes. eligibility-run-summary.json gives full run argv, exits, TRX counts,
+unchanged original evidence and preserved config-method hash.
+eligibility-raw-evidence.tar.gz plus its index retain 318 native artifacts, including
+facade producers/consumers and source identities. Research report/query/core native
+bundle copied unchanged as eligibility-research-* (report stored as .txt to avoid
+turning historical raw research into a documentation page). Research's real upstream,
+five-page/30-PR and nondefault empty receipts are retained; they were not re-created
+by this writer and no live production branch was deleted.
+
+Captain-owned outstanding work: exact proof-recipe replay, fresh whole-candidate
+Claude + Codex review, native Windows/host CI and integration/push/PR/statuses.
+No review PASS, Windows execution, host CI success or T3 managed deletion claimed.
+
+Final evidence checks: eligibility-package-final exit0 under 4G/120 cap;
+eligibility-packaging-receipt.json retains its exact argv/source/exit.
+eligibility-source-verification exit0; standalone receipt/output/recipe and
+eligibility-verification.json preserve its assertions: all 2471 source-map hashes
+match current bytes; all 478 C# sources match coverage producer identities;
+static/coverage fingerprints both
+083415bb091f6c06bb4b63ff7af774e495ef2dd90da6fe1fe1899836bd5ebc63.
+Research copies match their native originals. Coverage/native-config owned scratch
+paths are absent. These checks follow packaging; their standalone files supplement
+the 318-artifact archive rather than claiming to appear inside it.

@@ -1,0 +1,113 @@
+DYD-1029 fix hop: resolve-undo preservation, root allocation volume, Windows stream last-error
+code-writer/model: code-writer / claude-opus-5-5 (Opus 5.5), effort high
+
+Start state: HEAD f604ee51320266bf743fa8277fe4b8a34c5a93a5 on DYD-1029-safe-delete, clean;
+base dee4861ae2691e41d9e60985e3e0ffb0c7ea987d is an ancestor; isolated worktree
+/home/balazs/.t3/worktrees/DynaDocs/t3-8d7ada1c-88d218c54a54db07. The feature target was not integrated.
+All gates ran on the dirty successor bytes before the one fix commit. Each receipt.json records every file's sha256.
+
+Blockers closed
+1. Round-two Codex FAIL (/tmp/dyd1029-r2-codex-review/review.md): the index object pack omitted
+   resolve-undo (REUC) blobs. Write now records `ls-files --resolve-undo -z` as manifest
+   resolveUndoEntries and packs the union of current-stage and resolve-undo blobs.
+   Import (cat-file -e per object) and CheckDependencies (cat-file --batch; LFS/gitlink refusal)
+   check that union in the fresh proof store, so a missing undo blob refuses before publishing
+   or deleting. CheckReconstruction requires both listings of the copied index to equal the
+   manifest. That ties the copied index's object dependencies to the proved set. ls-files
+   failure now refuses instead of recording an empty listing. Gitlink (160000) undo stages
+   refuse, as current gitlink stages already did. Manifests without the field read as "" and
+   fail closed at reconstruction if their index carries an undo record.
+2. Hosted Linux and Windows (run 43997200413, merge 20c84d6f): "Cannot identify allocation volume".
+   SafeDeletePaths.Within appended a separator to TrimEndingDirectorySeparator(root). That
+   cannot trim a volume root, so "/" became "//" and "C:\" became "C:\\". The root volume never
+   matched. A host passes only when its target sits on a non-root mount (local /tmp is tmpfs);
+   hosted Linux /tmp and every Windows drive-letter path failed. The fix adds a separator only
+   when one is missing. An unknown volume (no containing DriveInfo, such as a UNC share) still
+   throws IOException. The reserve arithmetic is unchanged.
+3. Windows coverage job (AltCover --eager): "Cannot establish/Incomplete Windows stream metadata".
+   CheckStreams read Marshal.GetLastWin32Error() in a later statement. Under instrumentation a
+   coverage visit between statements makes its own P/Invoke and replaces the saved error. This
+   is the DYD-558 lesson (commit 40c3fd97, WindowsStatechartFiles). The uninstrumented
+   safe-delete-windows job got past stream capture on the same journeys and failed later at
+   volume. Each FindFirstStreamW/FindNextStreamW error is now read in its call's own statement
+   with Marshal.GetLastPInvokeError(). ERROR_HANDLE_EOF (38) is still the only accepted end, any
+   name other than ::$DATA still refuses, and messages now carry the Win32 error. The
+   dotnet-platforms.json native pin for Services/SafeDeleteWindowsMetadata.cs was re-pinned to
+   f9a3c95bb2bcf8e3bbec4a337aefec7358684fa15f5e782cd2f10c52b06ab90e (LF digest), with the same members.
+
+Native evidence preserved (copied into the tarball under dyd1029-r3-evidence/native, originals untouched)
+- windows-coverage-43997200413-failures.json sha256 595e9fb9e02d2a11a411b0fdaac83d5928464f9a2df8f1885721069f7b599674 (2 failed, 17 passed, 0 skips)
+- safe-delete-windows-133752062217.log sha256 c079070c5ad48242d38cc4a099bc820fccf9b8909dbdc7fc9b4a797bee79768c (65 failed, 144 passed, 0 skips)
+- linux-coverage-43997200413-altcover-runner.stdout sha256 c268316987a9bd8f282e33e32bf6cb0ccd8e46a3c4ef70cbff7a1ef4faf3378f (70 failed, 7160 passed, 45 skipped of 7275)
+
+Regressions added
+- Gherkin row "resolved stash conflict undo" in the worktree journey outline, and the Fact
+  SafeDeleteTests.ResolvedStashConflict_UndoRecreatesConflictAfterGc. Stash, conflicting
+  commit, pop conflict, resolve+add, drop. Archive, reflog expire + gc --prune=now (the stash
+  blob is proven missing), then restore. The undo listing, resolved stage and working bytes are
+  equal; the stash blob reads back. checkout -m recreates stages 1/2/3 exactly with both versions in the file.
+- SafeDeleteBoundaryTests.EveryResolveUndoStage_SurvivesSourceGcAndRecreatesTheConflict: three unique stages.
+- ResolveUndoBlobMissingFromProofPack_RefusesBeforePublishingOrDeleting: a before-proof pack without
+  the undo blobs gives exit 2, source tree/branch/undo record intact, and no published entry.
+- ResolveUndoListingDisagreeingWithTheArchivedIndex_RefusesRestore.
+- DefaultAllocationVolume_IdentifiesTheContainingVolumeOfMissingTargets: missing targets on the
+  root volume and under the temp path (8.3 short-named on hosted Windows).
+- DefaultAllocationVolume_RefusesAnUnknownVolume (Windows UNC; returns early on Unix).
+- WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams (returns early off Windows).
+Existing conflict-stage/intent-to-add and partially staged journeys are unchanged and green.
+
+RED, fix, revert, restored GREEN (wrapper /tmp/dyd1029-run.py sha256 7443cdfc0c6fd167723fe72096041ecc33ff5900c4449bcc66b3f1136819e720)
+- r3-reuc-red-01 (unchanged production): exit 1, 5 failed of 16. Stash Fact and Gherkin row:
+  "git cat-file blob 1e54842107dedac3d4bc8cc6e1c7e378a200231a: bad file". Three-stage test: bad file
+  b702f80a. Missing-pack test: Expected 2, Actual 0. Root volume: IOException "Cannot identify allocation volume".
+- r3-reuc-green-01: exit 0, 20/20.
+- r3-reuc-revert-a-01 (stage-only pack plus old Within): exit 1, 5 failed of 16. The four undo
+  journeys refuse at independent proof ("git cat-file failed"); root volume fails again.
+- r3-reuc-revert-b-01 (drop resolve-undo listing comparison): exit 1, 1 failed of 4: ResolveUndoListingDisagreeing...
+- r3-reuc-revert-c-01 (verify only current stages, pack complete): exit 1, 1 failed of 4: the
+  missing-pack test publishes an entry, and only the later payload-hash reload refuses deletion.
+- Restored: every later run below is on the restored bytes.
+- Windows stream RED is native only: the coverage job above. Linux cannot execute it.
+
+Exact strongest witness (successor dll sha256 76c73ee806e682707299581446c7aa10b1ae1ed58c4834b11ef060208cadf23f)
+- /tmp/dyd1029-r3-witness/stash-probe.py sha256 7b9554e662fe5e0c6fefd68160c8d810fe2d9fe0cccbdd1cc183fec0fa972a8c,
+  adapted from /tmp/dyd1029-r2-stash-probe.py sha256 0e3e0bfc30a73013dec3b6e2e17689fcbe9858ecaf80c768230909caa4f0c535
+  (unchanged): r3-witness-stash-01 exit 0. archiveExit 0, restoreExit 0, complete true. Source blob
+  1e54842107dedac3d4bc8cc6e1c7e378a200231a missing after gc, present after restore. checkout -m exit 0;
+  unmerged stages equal resolve-undo-before; conflict file holds both versions.
+- /tmp/dyd1029-r3-witness/review-probe.py sha256 9aa7a71a48b5785267f36cfc807118d30ca6f038fad04dae6b096347dbaad506,
+  adapted from /tmp/dyd1029-r2-review-probe.py sha256 48fe143e91a99fb1a72b00c0d1594ba316f131be97e6f2c35295bf838df263ce:
+  r3-witness-reuc-01 exit 0. All three unique blobs missing in source after gc, present after
+  restore with exact bytes. checkout -m exit 0 with stages 1/2/3.
+
+Gates (capped: shared lock outside the cap, slice app-t3code-agents-cbc6c2286251.slice, swap 0, OOMPolicy=continue, .NET env set)
+- r3-python-platform-01: unittest test_dotnet_platform.py, 31 tests OK (re-pinned selection data).
+- r3-focused-01: FullyQualifiedName~SafeDelete, exit 0, 218 passed, 0 skipped (209 prior + 9 new).
+  Two new tests return early on Linux by design; they are not Linux proof.
+- r3-light-01: reached Light selection (same filter as captain-final-light-01), exit 0, 4222 passed, 17 skipped.
+- r3-static-01: gap_check gate static --stack dotnet, exit 0, PASSED.
+- r3-coverage-01: gap_check gate coverage --stack dotnet, exit 0. The worktree copied the working
+  changes (candidate dirty true); 7230 passed, 54 skipped of 7284; 0 findings; sourceFingerprint
+  993fa9809cac6db0cba3b1cc2600d285fe29c4a33a05212db7df1283ec774f9d.
+- Python sources are unchanged. Only DynaDocs.Tests/coverage/dotnet-platforms.json (data) changed and was tested above.
+- Mutation: not run. Inherited fail-closed UNAVAILABLE, owner DYD-103, non-holding.
+
+Not claimed
+- Native Windows execution of any new or fixed test, hosted Linux/Windows successor CI, fresh review, T3 replay.
+- Windows volume mount folders map to their drive letter by DriveInfo; such paths are reparse
+  points and are refused by NoLinks on the archive route.
+- Other index extensions: cache-tree trees are revalidated by Git, untracked-cache holds no
+  required objects, and split index stays refused.
+
+Replay: from the worktree at the fix commit run, in order,
+  python3 /tmp/dyd1029-run.py <label> gate dotnet build DynaDocs.csproj --artifacts-path /tmp/dyd1029-r3-witness/artifacts -p:UseSharedCompilation=false
+  python3 /tmp/dyd1029-run.py <label> probe python3 -I /tmp/dyd1029-r3-witness/stash-probe.py
+  python3 /tmp/dyd1029-run.py <label> probe python3 -I /tmp/dyd1029-r3-witness/review-probe.py
+  python3 /tmp/dyd1029-run.py <label> probe .static-gates/python/bin/python -m unittest discover -s DynaDocs.Tests/coverage/tests -p test_dotnet_platform.py
+  python3 /tmp/dyd1029-run.py <label> gate dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --filter FullyQualifiedName~SafeDelete --logger trx
+  python3 /tmp/dyd1029-run.py <label> gate dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --filter "<captain-final-light-01 filter>" --logger trx
+  python3 /tmp/dyd1029-run.py <label> gate .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate static --stack dotnet
+  python3 /tmp/dyd1029-run.py <label> gate .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate coverage --stack dotnet
+  The probes assert HEAD f604ee51 and record dirty-source hashes; at the commit, drop that assertion and record HEAD.
+Raw evidence: reuc-volume-streams-raw-evidence.tar.gz sha256 bec113a6b11268812105f18d58dff1efb8de1e8fb29747046e9e2cf54cec3e98
+(r3-* receipts/raw logs/trx, witness scripts/results/events, native signature copies).

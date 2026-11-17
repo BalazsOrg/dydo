@@ -15,6 +15,7 @@ using DynaDocs.Models;
 [JsonSerializable(typeof(List<NudgeConfig>))]
 [JsonSerializable(typeof(List<string>))]
 [JsonSerializable(typeof(TestingConfig))]
+[JsonSerializable(typeof(ArchiveConfig))]
 internal partial class DydoConfigJsonContext : JsonSerializerContext { }
 
 /// <summary>

@@ -290,19 +290,20 @@ public class BashCommandAnalyzerTests
     [InlineData("Remove-Item -Recurse \"C:\\repo\\.claude\\worktrees\\my tree\"")]
     [InlineData("Remove-Item -Recurse -Force 'C:\\Users\\me\\.t3\\worktrees\\Dyna Docs\\my thread'")]
     [InlineData("bash -c \"rm -rf '/home/me/repo/.claude/worktrees/my tree'\"")]
+    [InlineData("git worktree remove tree")]
+    [InlineData("git -C repo worktree remove tree")]
     public void WorktreeRemoval_RawForms_AreBlockedWithTheDydoCleanHint(string command)
     {
         var (dangerous, reason) = _analyzer.CheckDangerousPatterns(command);
 
         Assert.True(dangerous, $"Expected dangerous: {command}");
-        Assert.Contains("dydo clean --dry-run <worktree>, then dydo clean <worktree>", reason);
+        Assert.Contains("dydo archive worktree <path>", reason);
     }
 
     [Theory]
     [InlineData("dydo clean --dry-run")]
     [InlineData("dydo clean --all")]
     [InlineData("dydo clean .claude/worktrees/dyd-1")]
-    [InlineData("git worktree remove .claude/worktrees/dyd-1")]
     [InlineData("git worktree prune")]
     [InlineData("git worktree list --porcelain")]
     [InlineData("rm -f .claude/worktrees/x/notes.txt")]
@@ -315,7 +316,6 @@ public class BashCommandAnalyzerTests
     [InlineData("rm -rf \"C:/repo/.claude/worktrees/my tree/bin\"")]
     [InlineData("Remove-Item -Recurse \"C:\\repo\\.claude\\worktrees\\my tree\\DynaDocs.Tests\\obj\"")]
     [InlineData("Remove-Item -Recurse 'C:\\Users\\me\\.t3\\worktrees\\Dyna Docs\\my thread\\bin'")]
-    [InlineData("git -C \"C:\\My Repo\" worktree remove \"C:\\My Repo\\.claude\\worktrees\\x\"")]
     public void WorktreeRemoval_SafeForms_AreAllowed(string command)
     {
         var (dangerous, reason) = _analyzer.CheckDangerousPatterns(command);
@@ -328,7 +328,7 @@ public class BashCommandAnalyzerTests
     {
         var (_, reason) = _analyzer.CheckDangerousPatterns("git push origin --delete feature");
 
-        Assert.Contains("dydo clean --dry-run <worktree>, then dydo clean <worktree>", reason);
+        Assert.Contains("dydo archive", reason);
         Assert.DoesNotContain("git worktree remove", reason);
     }
 

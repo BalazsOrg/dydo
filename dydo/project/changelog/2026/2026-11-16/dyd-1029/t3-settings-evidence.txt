@@ -1,0 +1,294 @@
+Additional T3 0.1.9 ownership and authoritative-settings source excerpts. Read-only research; no T3 state changes.
+
+server-bi3w5spO.mjs SHA256 aa634dc27f7117c17e7c59944dd83b4fbfcbe8f09a06738be32cd96406a99435
+Lines 2430-2520
+2430: 		}
+2431: 		const worktreePathReason = fn("StorageCleanup.worktreePathReason")(function* (worktreePath) {
+2432: 			const realPath = yield* fs.realPath(worktreePath);
+2433: 			const realParent = yield* fs.realPath(path.dirname(worktreePath));
+2434: 			if (realPath !== path.join(realParent, path.basename(worktreePath))) return "worktree is a symbolic link";
+2435: 			if (!roots.some((root) => inside(root, realPath))) return "outside the managed worktree folder";
+2436: 			if ((yield* fs.stat(path.join(worktreePath, ".git"))).type !== "File") return "not a linked worktree";
+2437: 			return null;
+2438: 		});
+2439: 		const deletedRows = yield* sql`
+2440:           SELECT t.payload_json, p.workspace_root AS "workspaceRoot"
+2441:           FROM orchestration_v2_projection_threads t
+2442:           JOIN projection_projects p ON p.project_id = t.project_id
+2443:           WHERE t.deleted_at IS NOT NULL
+2444:         `.pipe(readOnly);
+2445: 		const deletedThreads = (yield* forEach(deletedRows, (row) => decodeCleanupThread(row.payload_json).pipe(map((thread) => ({
+2446: 			...thread,
+2447: 			workspaceRoot: row.workspaceRoot
+2448: 		}))))).filter((thread) => thread.worktreePath !== null && thread.branch !== null);
+2449: 		const snapshot = yield* readThreads();
+2450: 		const threadsById = new Map(snapshot.threads.map((thread) => [thread.id, thread]));
+2451: 		const refreshedDefaultRefs = /* @__PURE__ */ new Map();
+2452: 		const defaultBranches = /* @__PURE__ */ new Map();
+2453: 		const groups = Map.groupBy(snapshot.threads.filter((thread) => thread.worktreePath !== null), (thread) => path.resolve(thread.worktreePath));
+2454: 		const deletedByPath = Map.groupBy(deletedThreads, (thread) => path.resolve(thread.worktreePath));
+2455: 		const candidates = [...[...groups].map(([worktreePath, group]) => deletedByPath.get(worktreePath)?.find((deleted) => resolveWorktreeCleanup(serverSettings, deleted.projectId).worktreeOnDelete && worktreeOwner([deleted, ...group]) === deleted) ?? worktreeOwner(group) ?? group[0]), ...deletedThreads.filter((thread) => !groups.has(path.resolve(thread.worktreePath)))];
+2456: 		for (const thread of candidates) {
+2457: 			const settings = resolveWorktreeCleanup(serverSettings, thread.projectId);
+2458: 			if (!worktreeCleanupEnabled(settings)) continue;
+2459: 			const worktreePath = path.resolve(thread.worktreePath);
+2460: 			const group = groups.get(worktreePath) ?? [];
+2461: 			const activityAt = Math.max(...group.map(storageCleanupActivityAt));
+2462: 			const deleted = "workspaceRoot" in thread;
+2463: 			const settlementChain = deleted ? [] : worktreeSettlementChain(thread, threadsById, now, serverSettings);
+2464: 			const settledThread = settlementChain.at(-1);
+2465: 			const members = deleted ? [thread, ...group] : group;
+2466: 			const project = deleted ? { workspaceRoot: thread.workspaceRoot } : snapshot.projects.find((entry) => entry.id === thread.projectId);
+2467: 			const entry = {
+2468: 				kind: "worktree",
+2469: 				outcome: "kept",
+2470: 				reason: "",
+2471: 				path: worktreePath,
+2472: 				projectPath: project?.workspaceRoot ?? null,
+2473: 				threadId: thread.id,
+2474: 				threadTitle: thread.title,
+2475: 				bytes: null,
+2476: 				files: null
+2477: 			};
+2478: 			const keep = (reason) => {
+2479: 				if (deleted && settings.worktreeOnDelete) kept.push(worktreePath);
+2480: 				entries.push({
+2481: 					...entry,
+2482: 					reason: sentence(reason)
+2483: 				});
+2484: 			};
+2485: 			const waitForStop = (reason) => {
+2486: 				if (deleted && settings.worktreeOnDelete) waiting = true;
+2487: 				return reason;
+2488: 			};
+2489: 			yield* gen(function* () {
+2490: 				if (!(yield* fs.exists(worktreePath))) return;
+2491: 				if (deleted && !settings.worktreeOnDelete) return keep("no rules apply");
+2492: 				if (members.length > 1 && worktreeOwner(members) === void 0) return keep(`shared by ${members.length} threads`);
+2493: 				if (project === void 0) return keep("project is unavailable");
+2494: 				if (thread.branch === null || !group.every((member) => storageCleanupThreadIdle(member, now, serverSettings))) return keep(waitForStop("thread is running or has pending work"));
+2495: 				if (group.some((member) => member.branch !== thread.branch)) return keep("a subagent thread's branch differs from this worktree's branch");
+2496: 				if (hasTerminal(worktreePath)) return keep(waitForStop("open terminal"));
+2497: 				if ([...group, ...settlementChain.slice(1)].some((member) => member.settledAt !== null && now - Math.max(toEpochMillis(member.updatedAt), activityAt) < SETTLE_SCRIPT_GRACE_MS)) return keep(waitForStop("settled moments ago"));
+2498: 				const old = !deleted && settings.worktreeAfterDays !== null && activityAt < now - settings.worktreeAfterDays * DAY_MS;
+2499: 				const settledFor = settledThread?.settledAt == null ? null : now - Math.max(toEpochMillis(settledThread.settledAt), activityAt);
+2500: 				const settledDays = settledFor === null ? null : Math.floor(settledFor / DAY_MS);
+2501: 				const settled = settledFor !== null && settings.worktreeSettledAfterDays !== null && settledFor >= settings.worktreeSettledAfterDays * DAY_MS;
+2502: 				let eligible = deleted || old || settled;
+2503: 				let removalReason = deleted ? "thread was deleted" : old ? `inactive for ${Math.floor((now - activityAt) / DAY_MS)} days` : `settled for ${settledDays} days`;
+2504: 				const notDueReason = !deleted && settings.worktreeAfterDays !== null ? `inactive for ${Math.floor((now - activityAt) / DAY_MS)} of ${settings.worktreeAfterDays} days` : settings.worktreeSettledAfterDays !== null ? settledFor === null ? "not settled" : `settled for ${settledDays} of ${settings.worktreeSettledAfterDays} days` : settings.worktreeOnMerge ? "not merged" : settings.worktreeUnchanged ? "has commits beyond the default branch" : "no rules apply";
+2505: 				if (!eligible && !settings.worktreeUnchanged && !settings.worktreeOnMerge) return keep(notDueReason);
+2506: 				const pathReason = yield* worktreePathReason(worktreePath);
+2507: 				if (pathReason !== null) return keep(pathReason);
+2508: 				if (yield* containsProjectRoot(worktreePath, [project, ...snapshot.projects])) return keep("contains a project checkout");
+2509: 				if (yield* branchChanged(worktreePath, thread.branch)) return keep("repository or branch changed");
+2510: 				const changes = yield* localChangesReason(worktreePath, settings);
+2511: 				if (changes !== null) return keep(changes);
+2512: 				const head = yield* git.resolveCommit({
+2513: 					cwd: worktreePath,
+2514: 					revision: "HEAD"
+2515: 				});
+2516: 				if (!eligible) {
+2517: 					const repositoryCwd = path.resolve(project.workspaceRoot);
+2518: 					const remote = (yield* git.execute({
+2519: 						operation: "StorageCleanup.listRemotes",
+2520: 						cwd: repositoryCwd,
+
+ManagedEndpointRuntime-B-62Mn5X.mjs SHA256 5fd72c095729cfa72bc1c8ebe48bbd1d8e1fc22ac203f5d10c92a06f17c68d73
+Lines 119450-119500
+119450: 	const { join } = yield* Path;
+119451: 	const stateDir = join(baseDir, devUrl !== void 0 && !options.baseDirIsExplicit ? "dev" : "userdata");
+119452: 	const dbPath = join(stateDir, "statev2.sqlite");
+119453: 	const attachmentsDir = join(stateDir, "attachments");
+119454: 	const logsDir = join(stateDir, "logs");
+119455: 	const providerLogsDir = join(logsDir, "provider");
+119456: 	const providerStatusCacheDir = join(baseDir, "caches");
+119457: 	return {
+119458: 		stateDir,
+119459: 		dbPath,
+119460: 		keybindingsConfigPath: join(stateDir, "keybindings.json"),
+119461: 		settingsPath: join(stateDir, "settings.json"),
+119462: 		environmentThemesDir: join(stateDir, "themes"),
+119463: 		providerStatusCacheDir,
+119464: 		worktreesDir: join(baseDir, "worktrees"),
+119465: 		worktreeCheckoutCacheDir: join(providerStatusCacheDir, "worktree-checkouts"),
+119466: 		attachmentsDir,
+119467: 		browserArtifactsDir: join(stateDir, "browser-artifacts"),
+119468: 		logsDir,
+119469: 		serverTracePath: join(logsDir, "server.trace.ndjson"),
+119470: 		providerLogsDir,
+119471: 		providerEventLogPath: join(providerLogsDir, "events.log"),
+119472: 		terminalLogsDir: join(logsDir, "terminals"),
+119473: 		anonymousIdPath: join(stateDir, "anonymous-id"),
+119474: 		environmentIdPath: join(stateDir, "environment-id"),
+119475: 		serverRuntimeStatePath: join(stateDir, "server-runtime.json"),
+119476: 		secretsDir: join(stateDir, "secrets")
+119477: 	};
+119478: });
+119479: const ensureServerDirectories = fn(function* (derivedPaths) {
+119480: 	const fs = yield* FileSystem;
+119481: 	const path = yield* Path;
+119482: 	yield* all$6([
+119483: 		fs.makeDirectory(derivedPaths.stateDir, { recursive: true }),
+119484: 		fs.makeDirectory(derivedPaths.logsDir, { recursive: true }),
+119485: 		fs.makeDirectory(derivedPaths.providerLogsDir, { recursive: true }),
+119486: 		fs.makeDirectory(derivedPaths.terminalLogsDir, { recursive: true }),
+119487: 		fs.makeDirectory(derivedPaths.attachmentsDir, { recursive: true }),
+119488: 		fs.makeDirectory(derivedPaths.worktreesDir, { recursive: true }),
+119489: 		fs.makeDirectory(path.dirname(derivedPaths.keybindingsConfigPath), { recursive: true }),
+119490: 		fs.makeDirectory(path.dirname(derivedPaths.settingsPath), { recursive: true }),
+119491: 		fs.makeDirectory(derivedPaths.providerStatusCacheDir, { recursive: true }),
+119492: 		fs.makeDirectory(path.dirname(derivedPaths.anonymousIdPath), { recursive: true }),
+119493: 		fs.makeDirectory(path.dirname(derivedPaths.serverRuntimeStatePath), { recursive: true })
+119494: 	], { concurrency: "unbounded" });
+119495: 	yield* fs.chmod(derivedPaths.stateDir, 448).pipe(catch_((cause) => logWarning("Could not restrict state directory permissions.", { cause })));
+119496: 	const swept = sweepStalePendingAttachments({
+119497: 		attachmentsDir: derivedPaths.attachmentsDir,
+119498: 		nowMs: yield* currentTimeMillis
+119499: 	});
+119500: 	if (swept.deleted > 0) yield* logInfo("Removed expired attachment uploads.", { deleted: swept.deleted });
+
+Lines 136535-136600
+136535: 	return {
+136536: 		events,
+136537: 		effects
+136538: 	};
+136539: });
+136540: // src/worktreesDirectory.ts
+136541: /** Null for filesystem roots or settings not absolute on this host, including synced foreign-platform paths. */
+136542: function resolveWorktreesDirectory(setting, defaultDir, path, home) {
+136543: 	if (setting === "") return defaultDir;
+136544: 	const expanded = expandHomePath(setting, home);
+136545: 	if (!path.isAbsolute(expanded)) return null;
+136546: 	const resolved = path.resolve(expanded);
+136547: 	return isFilesystemRoot(resolved, path) ? null : resolved;
+136548: }
+136549: /** Callers re-check after resolving symlinks: a link can point at a root. */
+136550: function isFilesystemRoot(directory, path) {
+136551: 	return path.dirname(directory) === directory;
+136552: }
+136553: function managedWorktreesDirectories(settings, defaultDir, path, home) {
+136554: 	const directories = /* @__PURE__ */ new Set([defaultDir]);
+136555: 	for (const setting of [settings.worktreesDirectory, ...settings.previousWorktreesDirectories]) {
+136556: 		const directory = resolveWorktreesDirectory(setting, defaultDir, path, home);
+136557: 		if (directory !== null) directories.add(directory);
+136558: 	}
+136559: 	return [...directories];
+136560: }
+136561: const makeIsManagedWorktreePath = gen(function* () {
+136562: 	const fileSystem = yield* FileSystem;
+136563: 	const path = yield* Path;
+136564: 	const serverConfig = yield* ServerConfig;
+136565: 	const serverSettings = yield* ServerSettingsService;
+136566: 	const realLocation = (target) => fileSystem.realPath(target).pipe(catch_(() => {
+136567: 		const parent = path.dirname(target);
+136568: 		return parent === target ? succeed(target) : map$6(realLocation(parent), (real) => path.join(real, path.basename(target)));
+136569: 	}));
+136570: 	return fn("worktreesDirectory.isManagedWorktreePath")(function* (worktreePath) {
+136571: 		if (!path.isAbsolute(worktreePath)) return false;
+136572: 		if (path.resolve(worktreePath) !== worktreePath) return false;
+136573: 		const settings = yield* serverSettings.getSettings.pipe(orElseSucceed(() => ({
+136574: 			worktreesDirectory: "",
+136575: 			previousWorktreesDirectories: []
+136576: 		})));
+136577: 		const roots = yield* forEach(managedWorktreesDirectories(settings, serverConfig.worktreesDir, path, yield* HomeDirectory), realLocation);
+136578: 		const candidate = yield* realLocation(worktreePath);
+136579: 		return roots.some((root) => {
+136580: 			if (isFilesystemRoot(root, path)) return false;
+136581: 			const relative = path.relative(root, candidate);
+136582: 			const segments = relative.split(path.sep);
+136583: 			return !path.isAbsolute(relative) && segments.length === 2 && segments.every((segment) => segment !== "" && segment !== "..");
+136584: 		});
+136585: 	});
+136586: });
+136587: // src/project/ProjectService.ts
+136588: var ProjectNotFoundError = class extends TaggedError$1()("ProjectNotFoundError", { projectId: ProjectId }) {
+136589: 	get message() {
+136590: 		return `Project ${this.projectId} was not found.`;
+136591: 	}
+136592: };
+136593: var ProjectConflictError = class extends TaggedError$1()("ProjectConflictError", {
+136594: 	projectId: ProjectId,
+136595: 	workspaceRoot: String$2,
+136596: 	conflictingProjectId: ProjectId
+136597: }) {
+136598: 	get message() {
+136599: 		return `Workspace ${this.workspaceRoot} already belongs to project ${this.conflictingProjectId}.`;
+136600: 	}
+
+binCli-RoQ2vggd.mjs SHA256 dffe7a7311559f6e94a892f24b2028d13792fce121effb4b43ea2213dae95017
+Lines 7290-7340
+7290: 	if (platform === "linux") return `/proc/self/fd/${fd}`;
+7291: 	if (platform === "win32") return;
+7292: 	return `/dev/fd/${fd}`;
+7293: }
+7294: // src/cli/config.ts
+7295: const modeFlag = Literals("mode", RuntimeMode.literals).pipe(withDescription$1("Runtime mode. `desktop` keeps loopback defaults unless overridden."), optional);
+7296: const portFlag = Int("port").pipe(withSchema(PortSchema), withDescription$1("Port for the HTTP/WebSocket server."), optional);
+7297: const hostFlag = String$1("host").pipe(withDescription$1("Host/interface to bind (for example 127.0.0.1, 0.0.0.0, or a Tailnet IP)."), optional);
+7298: const baseDirFlag = String$1("base-dir").pipe(withDescription$1("Explicit T3 Code data directory; runtime state is stored under userdata (equivalent to T3CODE_HOME)."), optional);
+7299: const devUrlFlag = String$1("dev-url").pipe(withSchema(URLFromString), withDescription$1("Dev web URL to proxy/redirect to (equivalent to VITE_DEV_SERVER_URL)."), optional);
+7300: const noBrowserFlag = Boolean$1("no-browser").pipe(withDescription$1("Disable automatic browser opening."), optional);
+7301: const bootstrapFdFlag = Int("bootstrap-fd").pipe(withSchema(Int$5), withDescription$1("Read one-time bootstrap secrets from the given file descriptor."), optional);
+7302: const autoBootstrapProjectFromCwdFlag = Boolean$1("auto-bootstrap-project-from-cwd").pipe(withDescription$1("Create a project for the current working directory on startup when missing."), optional);
+7303: const logWebSocketEventsFlag = Boolean$1("log-websocket-events").pipe(withDescription$1("Emit server-side logs for outbound WebSocket push traffic (equivalent to T3CODE_LOG_WS_EVENTS)."), withAlias("log-ws-events"), optional);
+7304: const tailscaleServeFlag = Boolean$1("tailscale-serve").pipe(withDescription$1("Configure Tailscale Serve to expose this backend over HTTPS on the Tailnet."), optional);
+7305: const tailscaleServePortFlag$1 = Int("tailscale-serve-port").pipe(withSchema(PortSchema), withDescription$1("HTTPS port for Tailscale Serve when --tailscale-serve is enabled."), optional);
+7306: const lanFlag = Boolean$1("lan").pipe(withDescription$1("Accept connections from your local network and tailnet, not only this machine (equivalent to T3CODE_LAN)."), optional);
+7307: const traceFileConfig = String$7("T3CODE_TRACE_FILE").pipe(option$1, map$5(getOrUndefined));
+7308: const traceMaxFilesConfig = Int$6("T3CODE_TRACE_MAX_FILES").pipe(withDefault$2(10));
+7309: const EnvServerConfig = all$1({
+7310: 	logLevel: LogLevel$1("T3CODE_LOG_LEVEL").pipe(withDefault$2("Info")),
+7311: 	traceMinLevel: LogLevel$1("T3CODE_TRACE_MIN_LEVEL").pipe(withDefault$2("Info")),
+7312: 	traceTimingEnabled: Boolean$5("T3CODE_TRACE_TIMING_ENABLED").pipe(withDefault$2(true)),
+7313: 	traceFile: traceFileConfig,
+7314: 	traceMaxBytes: Int$6("T3CODE_TRACE_MAX_BYTES").pipe(withDefault$2(10485760)),
+7315: 	traceMaxFiles: traceMaxFilesConfig,
+7316: 	traceBatchWindowMs: Int$6("T3CODE_TRACE_BATCH_WINDOW_MS").pipe(withDefault$2(1e3)),
+7317: 	otlpTracesUrl: String$7("T3CODE_OTLP_TRACES_URL").pipe(option$1, map$5(getOrUndefined)),
+7318: 	otlpMetricsUrl: String$7("T3CODE_OTLP_METRICS_URL").pipe(option$1, map$5(getOrUndefined)),
+7319: 	otlpLogsUrl: String$7("T3CODE_OTLP_LOGS_URL").pipe(option$1, map$5(getOrUndefined)),
+7320: 	otlpExportIntervalMs: Int$6("T3CODE_OTLP_EXPORT_INTERVAL_MS").pipe(withDefault$2(1e4)),
+7321: 	otlpHeaders: schema(OtlpHeadersFromString, "T3CODE_OTLP_HEADERS").pipe(option$1, map$5(getOrUndefined)),
+7322: 	otlpProtocol: schema(OtlpProtocol, "T3CODE_OTLP_PROTOCOL").pipe(withDefault$2("http/json")),
+7323: 	mode: schema(RuntimeMode, "T3CODE_MODE").pipe(option$1, map$5(getOrUndefined)),
+7324: 	port: Port("T3CODE_PORT").pipe(option$1, map$5(getOrUndefined)),
+7325: 	host: String$7("T3CODE_HOST").pipe(option$1, map$5(getOrUndefined)),
+7326: 	t3Home: String$7("T3CODE_HOME").pipe(option$1, map$5(getOrUndefined)),
+7327: 	devUrl: URL$1("VITE_DEV_SERVER_URL").pipe(option$1, map$5(getOrUndefined)),
+7328: 	devAllowedOrigins: String$7("T3CODE_DEV_ALLOWED_ORIGINS").pipe(withDefault$2(""), map$5((value) => value.split(",").map((entry) => entry.trim()).filter((entry) => entry.length > 0))),
+7329: 	noBrowser: Boolean$5("T3CODE_NO_BROWSER").pipe(option$1, map$5(getOrUndefined)),
+7330: 	bootstrapFd: Int$6("T3CODE_BOOTSTRAP_FD").pipe(option$1, map$5(getOrUndefined)),
+7331: 	autoBootstrapProjectFromCwd: Boolean$5("T3CODE_AUTO_BOOTSTRAP_PROJECT_FROM_CWD").pipe(option$1, map$5(getOrUndefined)),
+7332: 	logWebSocketEvents: Boolean$5("T3CODE_LOG_WS_EVENTS").pipe(option$1, map$5(getOrUndefined)),
+7333: 	tailscaleServeEnabled: Boolean$5("T3CODE_TAILSCALE_SERVE").pipe(option$1, map$5(getOrUndefined)),
+7334: 	tailscaleServePort: Port("T3CODE_TAILSCALE_SERVE_PORT").pipe(option$1, map$5(getOrUndefined)),
+7335: 	lan: Boolean$5("T3CODE_LAN").pipe(option$1, map$5(getOrUndefined))
+7336: });
+7337: const DevAuthTokenConfig = Redacted("T3CODE_DEV_AUTH_TOKEN").pipe(map$5((token) => make$2(value(token).trim())), mapEffect$1((token) => value(token).length === 0 || value(token).length >= 32 ? succeed$1(token) : fail(new ConfigError(new SchemaError(new InvalidValue({ message: "T3CODE_DEV_AUTH_TOKEN must contain at least 32 characters." }))))), option$1, map$5(filter((token) => value(token).length > 0)), map$5(getOrUndefined));
+7338: const authLocationFlags = {
+7339: 	baseDir: baseDirFlag,
+7340: 	devUrl: devUrlFlag
+
+Lines 7395-7415
+7395: 		onSome: (value) => succeed$1(value),
+7396: 		onNone: () => {
+7397: 			if (mode === "desktop") return succeed$1(DEFAULT_PORT);
+7398: 			return selectAutomaticPort(DEFAULT_PORT);
+7399: 		}
+7400: 	});
+7401: 	const devUrl = getOrElse(resolveOptionPrecedence(normalizedFlags.devUrl, fromUndefinedOr(env.devUrl)), () => void 0);
+7402: 	const devAuthToken = mode === "web" && devUrl !== void 0 ? yield* DevAuthTokenConfig : void 0;
+7403: 	const explicitBaseDir = resolveOptionPrecedence(normalizedFlags.baseDir, fromUndefinedOr(env.t3Home)).pipe(filter((value) => value.trim().length > 0));
+7404: 	const baseDir = yield* resolveBaseDir(getOrUndefined(resolveOptionPrecedence(explicitBaseDir, fromUndefinedOr(bootstrap?.t3Home))));
+7405: 	const rawCwd = getOrElse(normalizedFlags.cwd, () => process.cwd());
+7406: 	const cwd = path.resolve(yield* expandHomePath(rawCwd.trim()));
+7407: 	const derivedPaths = yield* deriveServerPaths(baseDir, devUrl, { baseDirIsExplicit: isSome(explicitBaseDir) });
+7408: 	if (options?.rejectRunningServer && mode === "web") {
+7409: 		const runtime = yield* readPersistedServerRuntimeState(derivedPaths.serverRuntimeStatePath);
+7410: 		if (isSome(runtime) && runtime.value.pid > 0 && runtime.value.pid !== process.pid && isProcessAlive(runtime.value.pid)) return yield* new UserError({ cause: `A T3 Code server is already running for ${baseDir} (pid ${runtime.value.pid}, ${runtime.value.origin}). Connect to that server, stop it before starting another, or use a different --base-dir.` });
+7411: 	}
+7412: 	yield* fs.makeDirectory(cwd, { recursive: true });
+7413: 	yield* ensureServerDirectories(derivedPaths);
+7414: 	const persistedObservabilitySettings = yield* loadPersistedObservabilitySettings(derivedPaths.settingsPath);
+7415: 	const serverTracePath = env.traceFile ?? derivedPaths.serverTracePath;

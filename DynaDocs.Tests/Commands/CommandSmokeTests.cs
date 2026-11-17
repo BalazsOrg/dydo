@@ -14,6 +14,7 @@ public class CommandSmokeTests
         var commands = new Func<System.CommandLine.Command>[]
         {
             AdoptCommand.Create,
+            ArchiveCommand.Create,
             CheckCommand.Create,
             CleanCommand.Create,
             CompleteCommand.Create,
@@ -49,8 +50,8 @@ public class CommandSmokeTests
         {
             var rootCommand = DydoRootCommand.Create();
 
-            // 19 Create() commands + 1 inline (version) = 20
-            Assert.Equal(20, rootCommand.Subcommands.Count);
+            // 20 Create() commands + 1 inline (version) = 21
+            Assert.Equal(21, rootCommand.Subcommands.Count);
         });
 
         Assert.Null(exception);

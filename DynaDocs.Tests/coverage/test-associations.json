@@ -1913,6 +1913,158 @@
     {
       "module": "skills/engineering/statechart/scripts/test/corpus/TwoPhaseFixed/view.mjs",
       "tests": ["DynaDocs.Tests/coverage/tests/statechart-corpus-views.test.cjs"]
+    },
+    {
+      "module": "Services/SafeDeleteRepository.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteGitHubTarget.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteGitHub.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteGit.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteT3Policy.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteHistory.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteFiles.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeletePaths.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteWindowsMetadata.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteDependencies.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteStore.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/SafeDeleteService.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Services/ISafeDeleteT3Policy.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Commands/ArchiveCommand.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Models/ArchiveConfig.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
+    },
+    {
+      "module": "Models/SafeDeleteManifest.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs"
+      ]
+    },
+    {
+      "module": "Models/SafeDeleteTip.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/SafeDeleteTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs",
+        "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs"
+      ]
     }
   ]
 }
