@@ -9,6 +9,8 @@ participants: [balazs, Claude (Fable)]
 
 # 048 - One-Level Static Gates: Certainly Wrong, No Escape Hatch
 
+> **Partially superseded by [067 - What Tests Are For](./067-what-tests-are-for.md)** for §3's Tests row clause *every non-trivial module has a test file*: a job-tag lint replaces it. The rest remains in force.
+
 Replaces the three-tier coverage system (T1/T2/T3 with CRAP thresholds 30/15/5) with one set of
 static gates applied to every module of every stack, admitted by a single rule: a gate exists only
 where a violation is certainly wrong, at a threshold where no exception would be accepted, with no
