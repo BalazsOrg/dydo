@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-17
 applies: [dydo-review-high-impact, dydo-verification-independent-evidence, dydo-aligned-intent, dydo-efficiency, dydo-effort-right-agent, dydo-effort-right-sized-bureaucracy, dydo-scarce-attention, dydo-attention-human-decisions]
 weighed:
@@ -20,8 +20,9 @@ on 2026-11-11 (B1 to B10), as superseded in part by
 [grilling D](https://linear.app/bodnar-balazs/document/370-grilling-d-hierarchy-t3-inbox-captain-autonomy-sub-captains-a5cb8f0b5a86)
 (2026-11-13 to 15), plus his spec-anchored review rule of 2026-11-16
 ([DYD-1120](https://linear.app/bodnar-balazs/issue/DYD-1120)). Recorded under
-[DYD-1085](https://linear.app/bodnar-balazs/issue/DYD-1085); awaiting his approval (F10). The
-grillings say 3.7.0; that release is 4.0.0. Every rule is written once, through claims
+[DYD-1085](https://linear.app/bodnar-balazs/issue/DYD-1085);
+[approved by Balazs on 2026-11-17](https://linear.app/bodnar-balazs/issue/DYD-1085#comment-187d65dd-5d90-4441-9cb6-28ec238f691e)
+(F10). The grillings say 3.7.0; that release is 4.0.0. Every rule is written once, through claims
 ([DR 064](./064-claims-build-the-skills.md), A-D13).
 
 ---

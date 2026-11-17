@@ -9,7 +9,7 @@ date: 2026-10-28
 
 > **Partially superseded by [059 - Inquisition Rebuilt: Area Map, Three Phases, Rounds Until Clean](./059-inquisition-rebuilt-area-map-three-phases-rounds-until-clean.md)** for §1's *a nit gets no Linear ticket*, in inquisitions only: an inquisition's nits go on its round's nit ticket. The rest remains in force.
 
-> **§2 superseded by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)** (proposed), the review rounds: seats scale with the breadth and depth of the work instead of two on every first round, and the fifth-FAIL stop gives way to a checkpoint after round 3. The rest remains in force.
+> **Partially superseded by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)** for §2's *round 1 still seats two reviewers* and *the fifth consecutive FAIL still stops the loop* only: seats scale with the breadth and depth of the work instead of two on every first round, and the fifth-FAIL stop gives way to a checkpoint after round 3. The rest remains in force.
 
 Every review finding carries one of three severities, `blocker`, `should` or `nit`, and only a
 blocker makes the verdict FAIL. Should and nit findings are deferred, never dropped. Ruled by Balazs

@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-17
 applies: [dydo-aligned-intent, dydo-scarce-attention, dydo-attention-human-decisions, dydo-verification-independent-evidence, dydo-everything-evolves, dydo-efficiency, dydo-effort-right-agent, dydo-effort-right-sized-bureaucracy]
 weighed:
@@ -19,8 +19,9 @@ to principles, axioms, skill prose and larger architecture are his. Decided by B
 on 2026-11-15 (F0 to F17), as reconciled with his L1 sitting of 2026-11-17
 ([DYD-1078 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1078#comment-9ac278c0-00f3-4688-9971-2693bfc14e38),
 A1 to A9), which wins where they differ. Recorded under
-[DYD-1088](https://linear.app/bodnar-balazs/issue/DYD-1088); awaiting his approval (F10). The
-grillings say 3.7.0; that release is 4.0.0.
+[DYD-1088](https://linear.app/bodnar-balazs/issue/DYD-1088);
+[approved by Balazs on 2026-11-17](https://linear.app/bodnar-balazs/issue/DYD-1088#comment-9692966d-3c36-4810-b5f4-8ff7239e2e2f)
+(F10). The grillings say 3.7.0; that release is 4.0.0.
 
 ---
 
@@ -76,10 +77,10 @@ findings are dated hints, "the AI landscape changes every two weeks".
 4. **Every new DR cites the law: `applies:` and `weighed:` (F1, F2, F13).** Every new DR records
    `applies:`, the principles or axioms it applies, or `new-ground`. For each tension it resolved, it
    records `weighed: <slug> over <slug>, because <reason>`; the reason clause is what a council
-   reuses. "this is the case law's spine." `weighed:` appears only where the DR states the trade-off,
-   quoted, never reconstructed. `dydo check` validates the slugs. A council's method in a value call:
-   map each option to the axioms it serves, find the DRs that weighed the same tension, predict from
-   them; if he weighed it both ways, the call is prepared for him as an amendment candidate.
+   reuses. "this is the case law's spine." `dydo check` validates the slugs. A council's method in a
+   value call: map each option to the axioms it serves, find the DRs that weighed the same tension,
+   predict from them; if he weighed it both ways, the call is prepared for him as an amendment
+   candidate.
 5. **Case law is DRs plus case studies (L1 A5, A6).** The definition of a DR is not broadened. A
    **case study** is an optional markdown file in git beside the law: a Question, grilling decision
    or idea that shaped it, linking its Linear origin, "kind of like a post-mortem and an origin story
@@ -89,7 +90,8 @@ findings are dated hints, "the AI landscape changes every two weeks".
 6. **Two laws per project, tech and product (F16, L1 A8, A9).** "the 'workflow law' is just Dydo's
    own Product law."
    - **Tech law:** technical values and choices. **Product law:** business decisions, what gets built
-     and how. dydo's product law is how agents work; its seven axioms are that law.
+     and how. dydo's product law is how agents work; its seven axioms and the principles under them
+     (`law/dydo/`) are that law.
    - **Layout (A8):** `dydo/law/`, one folder per law, each with `axioms.md`, one file per principle
      group, `cases/` and `retired.md`. The product law's folder takes the product's name (`law/dydo/`
      here, `law/lc/` in LC); the tech law's is `law/tech/`. The scaffold ships the product folder as
@@ -127,8 +129,8 @@ findings are dated hints, "the AI landscape changes every two weeks".
      an adopter with DRs runs the same backfill; a new project starts empty.
 8. **The accepted DRs are backfilled once, and he reviews the result (F13, F14).** "Although I would
    have to review these somehow, this is important." After he approves the sorted principles, cheap-tier
-   crew drafts `applies:` on each accepted DR and `weighed:` where the DR states the trade-off;
-   superseded DRs keep their history untagged. A reviewer checks every citation as a doc claim, then
+   crew drafts `applies:` on each accepted DR and `weighed:` where the DR states the trade-off,
+   quoted, never reconstructed; superseded DRs keep their history untagged. A reviewer checks every citation as a doc claim, then
    he reviews one page per batch: a table with one row per DR (title linked, `applies:`, `weighed:`
    with the DR's own sentence quoted beside it), doubted and `new-ground` rows first. He marks each
    row ✓, ✗ or "retag"; only approved rows merge.

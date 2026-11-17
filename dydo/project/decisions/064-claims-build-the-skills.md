@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-17
 applies: [dydo-aligned-intent, dydo-verify-own-work, dydo-verification-independent-evidence, dydo-everything-evolves, dydo-context-pointers, dydo-context-lean-skills]
 weighed:
@@ -19,7 +19,8 @@ on 2026-11-10 (A-D1 to A-D15), with the lines of
 [grilling D](https://linear.app/bodnar-balazs/document/370-grilling-d-hierarchy-t3-inbox-captain-autonomy-sub-captains-a5cb8f0b5a86)
 (2026-11-13 to 15) and [grilling F](https://linear.app/bodnar-balazs/document/370-grilling-f-law-and-council-b135b45ac6bb)
 (2026-11-15) that touch it. Recorded under [DYD-1084](https://linear.app/bodnar-balazs/issue/DYD-1084);
-awaiting his approval (F10). The grillings say 3.7.0; that release is 4.0.0.
+[approved by Balazs on 2026-11-17](https://linear.app/bodnar-balazs/issue/DYD-1084#comment-01b9debe-ca41-4ab9-a64e-a9edf9a3aca6)
+(F10). The grillings say 3.7.0; that release is 4.0.0.
 
 ---
 
