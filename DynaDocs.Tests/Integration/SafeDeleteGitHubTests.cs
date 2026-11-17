@@ -210,6 +210,68 @@ public sealed class SafeDeleteGitHubTests
         Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
     }
 
+    [Fact]
+    public void AfterOwnDeletion_ApiRefSurvivesWhileGitIsAbsent_RetainsVerifiedArchiveAndLocalTarget()
+    {
+        using var fixture = new SafeDeleteTests(); fixture.AddRemote(); fixture.AddTree();
+        var tip = SafeDeleteTests.Git(fixture.Main,"rev-parse","topic");
+        File.WriteAllText(Path.Combine(fixture.Tree,"unique.txt"),"receipt witness bytes\n");
+        var afterLease = false;
+        var receiptRefReads = 0;
+        fixture.Dependencies.Checkpoint = point =>
+        {
+            if (point != "before-worktree-delete") return;
+            Assert.Empty(SafeDeleteTests.Git(fixture.Main,"ls-remote","origin","refs/heads/topic"));
+            afterLease = true;
+        };
+        fixture.Dependencies.CheckGitHub = target => Check(fixture,target,start =>
+        {
+            if (afterLease && IsGraph(start))
+            {
+                Assert.True(target.DeletedByInvocation);
+                Assert.NotNull(target.Metadata);
+                Assert.False(IsHeads(start));
+                Assert.Empty(SafeDeleteTests.Git(fixture.Main,"ls-remote","origin","refs/heads/topic"));
+                receiptRefReads++;
+            }
+            return Response(start,target,"public",true,12,apiRefPresent: true);
+        });
+
+        var exit = fixture.Run("worktree",fixture.Tree);
+
+        Assert.True(afterLease);
+        Assert.True(receiptRefReads > 0);
+        Assert.Equal(2,exit);
+        Assert.Contains("Remote ref recreated or own-deletion receipt is invalid",fixture.Output);
+        Assert.Contains("remote deleted; worktree/local branch retained",fixture.Output);
+        Assert.Contains("Independent proof passed",fixture.Output);
+        Assert.Empty(SafeDeleteTests.Git(fixture.Main,"ls-remote","origin","refs/heads/topic"));
+        Assert.Equal(tip,SafeDeleteTests.Git(fixture.Main,"rev-parse","topic"));
+        Assert.Equal(tip,SafeDeleteTests.Git(fixture.Tree,"rev-parse","HEAD"));
+        Assert.Equal("base\n",File.ReadAllText(Path.Combine(fixture.Tree,"file.txt")));
+        Assert.Equal("receipt witness bytes\n",File.ReadAllText(Path.Combine(fixture.Tree,"unique.txt")));
+        Assert.True(new SafeDeleteStore(fixture.ArchiveRoot,TextWriter.Null).Load(fixture.Id).Complete);
+        Assert.Equal("receipt witness bytes\n",File.ReadAllText(Path.Combine(fixture.Entry,"files","unique.txt")));
+    }
+
+    [Theory]
+    [InlineData("missing metadata","own-deletion receipt is invalid")]
+    [InlineData("unrelated repository","metadata changed")]
+    [InlineData("without lease","authority is unproven")]
+    public void OwnDeletionReceipt_MissingOrUnownedContextCannotAuthorizeApiAbsence(string context, string reason)
+    {
+        using var fixture = new SafeDeleteTests();
+        var target = Target(fixture);
+        Assert.Null(Check(fixture,target,start => Response(start,target,"public",true,12,apiRefPresent: true)));
+        target.DeletedByInvocation = context != "without lease";
+        if (context == "missing metadata") target.Metadata = null;
+        if (context == "unrelated repository") target.Metadata = ("R_unrelated","public",true,12);
+
+        var result = Check(fixture,target,start => Response(start,target,"public",true,12,apiRefPresent: false));
+
+        Assert.Contains(reason,result);
+    }
+
     [Theory]
     [InlineData("public")]
     [InlineData("private")]
@@ -620,7 +682,7 @@ public sealed class SafeDeleteGitHubTests
     private static bool IsHeads(ProcessStartInfo start) => IsGraph(start) && start.ArgumentList.Any(arg => arg.StartsWith("query=",StringComparison.Ordinal) && arg.Contains("associatedPullRequests",StringComparison.Ordinal));
     private static bool IsOwn(ProcessStartInfo start) => IsGraph(start) && !IsHeads(start);
 
-    private static JsonObject Response(ProcessStartInfo start, SafeDeleteGitHubTarget target, string visibility = "public", bool fork = false, int forks = 0)
+    private static JsonObject Response(ProcessStartInfo start, SafeDeleteGitHubTarget target, string visibility = "public", bool fork = false, int forks = 0, bool? apiRefPresent = null)
     {
         Assert.Equal("gh",start.FileName);
         Assert.Contains("github.com",start.ArgumentList);
@@ -634,7 +696,7 @@ public sealed class SafeDeleteGitHubTests
         var reference = new JsonObject { ["id"] = "REF_topic", ["name"] = "topic", ["prefix"] = "refs/heads/", ["repository"] = repo.DeepClone(), ["target"] = new JsonObject { ["oid"] = target.Oid } };
         if (IsHeads(start)) reference["associatedPullRequests"] = EmptyConnection();
         else repo["pullRequests"] = EmptyConnection();
-        repo["ref"] = target.DeletedByInvocation ? null : reference;
+        repo["ref"] = (apiRefPresent ?? !target.DeletedByInvocation) ? reference : null;
         return new JsonObject { ["data"] = new JsonObject { ["repository"] = repo } };
     }
 

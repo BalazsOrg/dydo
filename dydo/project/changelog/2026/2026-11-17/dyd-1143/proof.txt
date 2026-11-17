@@ -1,0 +1,104 @@
+IMPLEMENTED - DYD-1143 fifth/final serial implementation hop
+code-writer/model: gpt-6.1-sol high
+Candidate: the commit containing this record; raw receipts bind hop base plus exact dirty source hashes.
+Hop base: b6c4e323ee9be824c3f02574098b9ed2fa7b5b6c
+Batch base: d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d
+Branch: DYD-1142-safe-delete-shoulds
+Checkout: /home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605
+
+Behavior and owned files
+Only DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs and evidence in this directory changed.
+Response gains an explicit optional apiRefPresent override, independent of DeletedByInvocation.
+Existing callers retain their default response. All production bytes and feature rows stay unchanged.
+
+AfterOwnDeletion_ApiRefSurvivesWhileGitIsAbsent_RetainsVerifiedArchiveAndLocalTarget crosses the
+real CLI command with owned real Git repositories/bare remote and an injected external API process.
+The public fork/forks_count=12 target starts with a real remote ref. Production performs the expected-OID
+leased push; before-worktree-delete observes actual ls-remote absence. The subsequent GraphQL callback
+observes DeletedByInvocation=true, nonnull saved metadata, the own-association query (not heads), and
+again real Git absence while the fake independently returns a nonnull API ref. A reached-query witness
+is required, so an earlier Git recreation refusal cannot satisfy this regression. It asserts exit 2,
+the specific receipt/API error, remote-deleted partial outcome, successful independent archive proof,
+unchanged local branch/worktree HEAD and file bytes, retained complete/hash-validated archive via Load,
+and the unique archived file bytes. Remote ref remains absent. No real remote ref is recreated.
+
+OwnDeletionReceipt_MissingOrUnownedContextCannotAuthorizeApiAbsence has three direct cases:
+missing pre-deletion metadata with a claimed deletion flag refuses at the implicated receipt check;
+an unrelated saved repository identity refuses rather than reusing context; and successful prior
+metadata/eligibility without the invocation-owned deletion flag cannot authorize a newly absent API ref.
+These cover accidents under the real target contract, without inventing adversarial memory forgery rules.
+The existing PublicFork_LeasedOwnDeletionAuthorizesRemainingLocalSteps success control is explicitly
+included with every focused/mutation run. Initially absent closed-world behavior remains in Light.
+
+Native evidence and observed results
+prerequisites exit 0: SDK 10.0.303/runtime 10.0.14, Git 2.53.0, Python 3.14.4, Node v26.13.0,
+pnpm 12.16.1; locked installed closure: 8 Python, 228 JavaScript, 23 metrics NuGet packages.
+discovery-base exit 0: 331 native SafeDelete tests, including executable Gherkin, clean at hop base.
+discovery-new exit 0: 335 native tests, including four new cases and all existing feature cases.
+focused-green exit 0: 5 passed, 0 failed/skipped; current behavior was already correct.
+red-api-null child exit 1: ONLY the reference.ValueKind != JsonValueKind.Null predicate is removed.
+  Exactly 1 failed, 4 passed, 0 skipped. CLI regression: Expected 2, Actual 0.
+red-receipt-metadata child exit 1: ONLY the target.Metadata == null predicate is removed.
+  Exactly 1 failed, 4 passed, 0 skipped. Missing-metadata case: expected refusal substring, actual null.
+red-both-checks child exit 1: ONLY the complete implicated guard line is removed.
+  Exactly 2 failed, 3 passed, 0 skipped: both failures above. Public non-closed-world success stays green.
+Every mutation orchestrator exit is 0 because it verified the intended native RED, not because tests
+passed; receipt.json retains the actual child exit 1. proof.json, mutation.patch and restoration.json
+retain exact changed hashes, failure identities and child-completion/restoration ordering. No source
+bytes were restored while a child test process was running. Each original production hash matches base.
+light-final exit 0 after restoration/rebuild: 335 passed, 0 failed/skipped, including all 82 executable
+SafeDelete Gherkin cases, all four prior hops, all four new cases and the public success control.
+static-final child/aggregate exit 0: seven collectors completed with zero findings/errors.
+evidence-verification exit 0: source hashes, counts, failure identities, restore ordering, Gherkin test IDs,
+native static adapter/producer/aggregate and ALL repository input hashes verified. Light and static
+inputs are identical; all repo bytes frozen through static. Evidence files added only afterward.
+
+Reach and gates
+Only the existing SafeDelete API-process fake and its regression consumers change. No production/shared
+contract, configuration, executable Python/JavaScript or package lock is edited. All users of Response,
+all SafeDelete direct regressions and all generated feature scenarios are selected by the commissioned
+FullyQualifiedName~SafeDelete Light baseline. No wider reach or Heavy trigger. Dotnet static applies.
+Evidence scripts are inert .py.txt receipts, not a new maintained executable stack.
+
+Complete captain replay recipe, from repository root; use unused labels and finish each command first
+Copy run.py.txt, probe.py.txt and static-prerequisites.py.txt to /tmp/dyd1143-run.py,
+/tmp/dyd1143-probe.py and /tmp/dyd1143-static-prerequisites.py. Use host user-systemd bus access.
+The runner acquires /var/tmp/dydo-gate-lock.sh OUTSIDE env/systemd, binds HEAD/full source hashes/status,
+argv/environment/start/end/actual exit; nearest agent slice, swap off/OOMPolicy=continue. Probes use
+4G/timeout120, gates 8G/timeout3600. No cap increase or lock bypass. Silent queueing is not failure.
+
+1. Pins/installed locked dependencies:
+python3 /tmp/dyd1143-run.py replay-pins probe bash -c 'dotnet --info && git --version && python3 --version && node --version && pnpm --version && .static-gates/python/bin/python /tmp/dyd1143-static-prerequisites.py'
+2. Discovery/rebuild (335 cases, including 82 Gherkin cases):
+python3 /tmp/dyd1143-run.py replay-discovery probe dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --no-restore --list-tests --filter FullyQualifiedName~SafeDelete
+3. Correct focused behavior (5 passed):
+python3 /tmp/dyd1143-run.py replay-focused probe dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --no-restore --filter 'FullyQualifiedName~AfterOwnDeletion_ApiRefSurvivesWhileGitIsAbsent|FullyQualifiedName~OwnDeletionReceipt_MissingOrUnownedContextCannotAuthorizeApiAbsence|FullyQualifiedName~PublicFork_LeasedOwnDeletionAuthorizesRemainingLocalSteps' --logger trx --results-directory /tmp/dyd1143-runs/replay-focused/results
+4. Each temporary production predicate/guard removal, expected native RED, then exact restoration:
+python3 /tmp/dyd1143-probe.py api-null replay-api-null
+python3 /tmp/dyd1143-probe.py receipt-metadata replay-receipt-metadata
+python3 /tmp/dyd1143-probe.py both-checks replay-both-checks
+The wrapper returns 0 only after checking child exit 1, exact TRX failure/pass counts and expected
+failing test names. Read the child receipt and TRX for the actual RED. finally restores after completion.
+5. Restored/rebuilt affected Light, including all executable scenarios and prior hops:
+python3 /tmp/dyd1143-run.py replay-light gate dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --filter FullyQualifiedName~SafeDelete --logger trx --results-directory /tmp/dyd1143-runs/replay-light/results
+6. Freeze ALL repository inputs, including evidence, until the static child completes:
+python3 /tmp/dyd1143-run.py replay-static gate .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate static --stack dotnet
+No final whole-stack coverage is part of this writer recipe.
+
+Original-session evidence audit
+summarize.py.txt records the exact original audit (run via evidence-verification after static, before
+repo evidence creation). It is pinned to original labels/hop-base/whole-repo bytes; it is not a fresh
+captain-replay driver. summary.json preserves its output. The replay above accepts a new candidate HEAD,
+binds that HEAD in new receipts and reruns all actual deciding commands with unused labels.
+raw-evidence.tar.gz includes /tmp/dyd1143-runs and pre-edit /tmp/dyd1143-preflight, full receipts/logs/TRX,
+mutation patches and restoration receipts, complete static producer command logs/SARIFs/report/inventory,
+static adapter and aggregate result. Digest:
+8183901b1734a14c6bf65ff15d55bd777267893425962d486beb0b2e2e4f9004
+
+Limitations / handoff
+No independent PASS. Captain replay, independent reviewer mutation readback, final whole-batch coverage
+and hosted exact-head Linux-Windows remain owed later. DYD-103 remains inherited fail-closed UNAVAILABLE,
+never PASS; unmet local statechart proof never PASS. No native Windows or managed-T3 deletion claim.
+T3_RELEASE_UNPROVEN and destructive safety/archive-independence checks are unchanged.
+All prior hops remain ancestors; no branch/push/PR/merge/ticket-status edits or subagents.
+Blocker: none in this implementation hop; later batch assurance/review remains owed.
