@@ -1,5 +1,6 @@
 """Use the existing capped runner; retain raw facade artifacts before another gate."""
 import json
+from importlib.machinery import SourceFileLoader
 import importlib.util
 from pathlib import Path
 import shutil
@@ -14,13 +15,14 @@ name, level, *command = sys.argv[1:]
 before = set(RESULTS.glob("run-*")) | set((RESULTS / "assurance").glob("run-*"))
 # The facade fingerprints all nonignored inputs. Its live streams must stay in
 # ignored artifacts until collection ends, or output itself changes the inputs.
-spec = importlib.util.spec_from_file_location("historical_runner", EVIDENCE / "run-proof.py")
+loader = SourceFileLoader("historical_runner", str(EVIDENCE / "run-proof.py.txt"))
+spec = importlib.util.spec_from_loader(loader.name, loader)
 runner = importlib.util.module_from_spec(spec)
 sys.dont_write_bytecode = True
 spec.loader.exec_module(runner)
 runner.EVIDENCE = ROOT / "artifacts/dyd-1172-diagnostic"
 runner.EVIDENCE.mkdir(parents=True, exist_ok=True)
-sys.argv = [str(EVIDENCE / "run-proof.py"), name, level, *command]
+sys.argv = [str(EVIDENCE / "run-proof.py.txt"), name, level, *command]
 status = runner.main()
 after = set(RESULTS.glob("run-*")) | set((RESULTS / "assurance").glob("run-*"))
 paths = sorted(after - before)

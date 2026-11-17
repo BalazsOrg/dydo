@@ -45,7 +45,7 @@ def main():
         '        if (!present) File.WriteAllText(' + json.dumps(str(output)) + ',fixture.Output);\n').encode() + expected)
     signal.signal(signal.SIGTERM, interrupted)
     signal.signal(signal.SIGINT, interrupted)
-    run = EVIDENCE / "run-proof.py"
+    run = EVIDENCE / "run-proof.py.txt"
     name = prefix + "-forced"
     command = [sys.executable, str(run), name, "probe", str(PYTHON),
                "DynaDocs.Tests/coverage/gap_check.py", "test", "--stack", "dotnet", "--",

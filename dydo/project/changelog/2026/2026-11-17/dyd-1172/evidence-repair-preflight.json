@@ -1,0 +1,80 @@
+{
+  "pin": "5663d5edaf6668bab1d41a3fa8b1d25df60c9cc4",
+  "base": "ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8",
+  "branch": "DYD-1172-safe-delete-disk-independent",
+  "root": "/home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a",
+  "trackedClean": true,
+  "captainUntrackedExplicitlyAuthorized": {
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-fixture-output.txt": {
+      "bytes": 1711,
+      "sha256": "0819dab6cc71563fb07787984e0c6c8232ddc082eafc4d1d47b2690f8e5c1b76"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/command.json": {
+      "bytes": 2568,
+      "sha256": "803ad097ecbd7063b1cb74df198530586400abbd06a63f8aa3f17db0630c1b9e"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/exit.json": {
+      "bytes": 12,
+      "sha256": "8ef199e2ba32edcf45464649ce4dae0f2106f394db6f819c55faa6df8200c959"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/results/diagnostic.trx": {
+      "bytes": 14637,
+      "sha256": "87cc89e9a76784be9790187f30464fc80b756646b304ea9ee7c8597e92ec0875"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/stderr.txt": {
+      "bytes": 356,
+      "sha256": "ec8283fde58dffd082c39b58b0b3230e089ed0236c78b1bd4a6f899c64a06480"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/stdout.txt": {
+      "bytes": 4240,
+      "sha256": "e691c290f8ad101e60c0bf6d50e122119caff63e41706b37ec51f541c91db789"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-restoration.json": {
+      "bytes": 1271,
+      "sha256": "bd51bb0f64c610cc10f365f929ab2fbf58e8e44da58b52fda8f38c86b33c6dc6"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-restored/command.json": {
+      "bytes": 2854,
+      "sha256": "419f004f25ccb58b85b4b0467e5b43ebc7e07008a3da3e1d25cc6a78b9f845d2"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-restored/exit.json": {
+      "bytes": 12,
+      "sha256": "5bc232b82de377a5655a39a2af9d7ae0fc868de5b9df957e18905cb914606c88"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-restored/results/restored.trx": {
+      "bytes": 9362,
+      "sha256": "417f472df4162789b2e316e9248e4675021ade87c97a6def2bdc70fa5ab0375c"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-restored/stderr.txt": {
+      "bytes": 140,
+      "sha256": "12fffa78bac072b14b259cdb935239952d456fdb8bf8b199a740a98bca09405d"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-restored/stdout.txt": {
+      "bytes": 1809,
+      "sha256": "23e85dec5b53d48d033c7f4c5ccd4effb9314a3348ca3267afa48d97ac0a057f"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-source.cs.txt": {
+      "bytes": 9637,
+      "sha256": "327bc0bf68293e7b20845af7418b38918c457fd208c5f3aade8a899b162d6d2c"
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-witness.json": {
+      "bytes": 1814,
+      "sha256": "66e905af15985cd9957dd766400d77e1c4b6d88cfd522fc43cfb80bf2fa036c3"
+    }
+  },
+  "captainWitnessValidatedNotRerun": true,
+  "captainForcedExit": 1,
+  "captainRestoredExit": 0,
+  "captainFixtureBytes": 1711,
+  "ownedPaths": "dydo/project/changelog/2026/2026-11-17/dyd-1172/",
+  "initialStatus": "?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-fixture-output.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-restoration.json\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-restored/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-source.cs.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-witness.json\n",
+  "packaging": {
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/results/diagnostic.trx": {
+      "currentPath": "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/results/diagnostic.trx.gz",
+      "uncompressedBytes": 14637,
+      "uncompressedSha256": "87cc89e9a76784be9790187f30464fc80b756646b304ea9ee7c8597e92ec0875",
+      "compressedSha256": "40d60cbe570d8dfe74af882e4cf45e5d21a457823fba56bee2b8185ea2ed47e8",
+      "roundTripEqual": true
+    }
+  }
+}

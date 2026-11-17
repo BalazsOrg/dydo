@@ -22,7 +22,7 @@ def main():
     changed = original.replace(anchor, anchor + b"\n        Space = _ => (1024L * 1024 * 1024, 100L * 1024 * 1024 * 1024),")
     try:
         SOURCE.write_bytes(changed)
-        command = [sys.executable, str(EVIDENCE / "run-proof.py"), name, "probe", "dotnet", "test",
+        command = [sys.executable, str(EVIDENCE / "run-proof.py.txt"), name, "probe", "dotnet", "test",
                    "DynaDocs.Tests/DynaDocs.Tests.csproj", "--no-restore", "--filter", selection,
                    "--logger", "trx", "--results-directory", str(EVIDENCE / name / "results")]
         result = subprocess.run(command, cwd=ROOT)
