@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-17
 applies: [dydo-aligned-intent, dydo-scarce-attention, dydo-attention-human-decisions, dydo-verification-independent-evidence, dydo-everything-evolves, dydo-efficiency, dydo-effort-right-agent, dydo-effort-right-sized-bureaucracy]
 weighed:
@@ -19,8 +19,9 @@ to principles, axioms, skill prose and larger architecture are his. Decided by B
 on 2026-11-15 (F0 to F17), as reconciled with his L1 sitting of 2026-11-17
 ([DYD-1078 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1078#comment-9ac278c0-00f3-4688-9971-2693bfc14e38),
 A1 to A9), which wins where they differ. Recorded under
-[DYD-1088](https://linear.app/bodnar-balazs/issue/DYD-1088); awaiting his approval (F10). The
-grillings say 3.7.0; that release is 4.0.0.
+[DYD-1088](https://linear.app/bodnar-balazs/issue/DYD-1088);
+[approved by Balazs on 2026-11-17](https://linear.app/bodnar-balazs/issue/DYD-1088#comment-9692966d-3c36-4810-b5f4-8ff7239e2e2f)
+(F10). The grillings say 3.7.0; that release is 4.0.0.
 
 ---
 

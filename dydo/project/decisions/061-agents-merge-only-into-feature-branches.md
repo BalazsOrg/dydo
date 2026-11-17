@@ -7,7 +7,7 @@ date: 2026-10-29
 
 # 061 - Agents Merge Only into Feature Branches, Only through dydo merge
 
-> **Amended by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)** (proposed): the captain runs `dydo merge` with no merge review after it (§6); a PASS on an ancestor stands after clean syncs (§4); `dydo merge` checks the combined tree and DYTEST's receipt and refuses a hand-shaped merge; and two-way PRs into master merge AFK, so only one-way PRs need the user's click (§1). The rest remains in force.
+> **Amended by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)**: the captain runs `dydo merge` with no merge review after it (§6); a PASS on an ancestor stands after clean syncs (§4); `dydo merge` checks the combined tree and DYTEST's receipt and refuses a hand-shaped merge; and two-way PRs into master merge AFK, so only one-way PRs need the user's click (§1). The rest remains in force.
 
 An agent merges a reviewed PR into a `feature/*` branch through `dydo merge`, whose refusals are code
 with no override flag. A merge into the default branch stays the user's click. Designed in

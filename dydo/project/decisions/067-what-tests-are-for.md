@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-17
 applies: [dydo-aligned-intent, dydo-verification-independent-evidence, dydo-efficiency, dydo-design-outcomes-over-methods]
 ---
@@ -14,7 +14,8 @@ tagged with its job. A red check replaces test-first ordering, and a tag lint re
 "every non-trivial module has a test file". Decided by Balazs in grilling G on 2026-11-16/17, rules
 T1-T8 of the
 [DYD-971 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-971#comment-022a5db3-9f53-4ab1-aec8-d88569caab56).
-Recorded under [DYD-1137](https://linear.app/bodnar-balazs/issue/DYD-1137); awaiting his approval
+Recorded under [DYD-1137](https://linear.app/bodnar-balazs/issue/DYD-1137);
+[approved by Balazs on 2026-11-17](https://linear.app/bodnar-balazs/issue/DYD-1137#comment-d9968c1b-2753-4920-bb5a-39e141e57621)
 (F10).
 
 ---

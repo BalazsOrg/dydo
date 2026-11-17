@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-17
 applies: [dydo-verify-own-work, dydo-verification-independent-evidence, dydo-everything-evolves, dydo-efficiency]
 weighed: ['dydo-efficiency over dydo-verify-own-work, because "one of the big mistakes I made is that I set a coverage gate", accepting that "until Mutation lands, the only gate on test quality is the red check"']
@@ -14,7 +14,8 @@ quality. Every static gate checks changed files only, at every stage, the landin
 other statics stay as [DR 048](./048-one-level-static-gates-certainly-wrong-no-escape-hatch.md) set
 them. Decided by Balazs in grilling G on 2026-11-16/17, rules G1-G6 and D1-D2 of the
 [DYD-971 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-971#comment-022a5db3-9f53-4ab1-aec8-d88569caab56).
-Recorded under [DYD-1138](https://linear.app/bodnar-balazs/issue/DYD-1138); awaiting his approval
+Recorded under [DYD-1138](https://linear.app/bodnar-balazs/issue/DYD-1138);
+[approved by Balazs on 2026-11-17](https://linear.app/bodnar-balazs/issue/DYD-1138#comment-66f49999-18d5-4bb9-86d6-e41dc836cbdb)
 (F10).
 
 ---

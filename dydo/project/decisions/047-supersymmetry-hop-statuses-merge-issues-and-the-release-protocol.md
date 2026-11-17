@@ -15,7 +15,7 @@ participants: [balazs, Claude (Fable)]
 
 > **Partially superseded by [060 - Milestone Walkthroughs and the Walking Skeleton](./060-milestone-walkthroughs-and-the-walking-skeleton.md)** for the *Walkthrough Type* and *the single walkthrough after landing* questions only: the user now walks the whole product at each Milestone, the landing's last. The rest remains in force.
 
-> **§6 superseded by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)** (proposed), *merges are Issues*: a merge into the feature branch is a Merge hop sub-ticket the captain runs, with no review under it; a real red gate reverts the merge; only the landing keeps a merge review, and a two-way landing merges AFK after his walkthrough acceptance. The rest remains in force.
+> **§6 superseded by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)**, *merges are Issues*: a merge into the feature branch is a Merge hop sub-ticket the captain runs, with no review under it; a real red gate reverts the merge; only the landing keeps a merge review, and a two-way landing merges AFK after his walkthrough acceptance. The rest remains in force.
 
 Reshapes the dydo 3 operating model where the control-flow map found its contracts disagreeing: a
 captain's Issue is a Project one level down and the same Types, statuses and chain hold at both

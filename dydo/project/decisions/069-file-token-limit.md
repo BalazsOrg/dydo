@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-17
 applies: [dydo-finite-context, dydo-efficiency, dydo-attention-human-decisions]
 ---
@@ -14,7 +14,9 @@ ignored through a reviewed entry; authored code is ignored only through its own 
 and Balazs's blessing. Decided by Balazs in grilling G on 2026-11-16/17, rules L1-L3 of the
 [DYD-971 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-971#comment-022a5db3-9f53-4ab1-aec8-d88569caab56),
 which promoted [DYD-342](https://linear.app/bodnar-balazs/issue/DYD-342) into dydo 4.0.0. Recorded
-under [DYD-1139](https://linear.app/bodnar-balazs/issue/DYD-1139); awaiting his approval (F10).
+under [DYD-1139](https://linear.app/bodnar-balazs/issue/DYD-1139);
+[approved by Balazs on 2026-11-17](https://linear.app/bodnar-balazs/issue/DYD-1139#comment-4ae8f212-8324-45a3-b395-1606cfb9369c)
+(F10).
 
 ---
 
