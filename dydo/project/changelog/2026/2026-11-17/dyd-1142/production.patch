@@ -1,0 +1,30 @@
+diff --git a/Services/SafeDeleteGitHub.cs b/Services/SafeDeleteGitHub.cs
+index aec543ff..22ffcdde 100644
+--- a/Services/SafeDeleteGitHub.cs
++++ b/Services/SafeDeleteGitHub.cs
+@@ -20 +19,0 @@ internal static class SafeDeleteGitHub
+-        if (target.Oid == null) return "initially absent remote ref: PR association authority is unproven; local target retained";
+@@ -36 +35,3 @@ internal static class SafeDeleteGitHub
+-            if (!target.DeletedByInvocation) Traverse(true, target, repository, identity.Id, Read);
++            if (target.Oid == null && (identity.Fork || identity.Forks != 0))
++                throw new InvalidDataException("Initially absent remote ref is outside closed-world authority");
++            if (target.Oid != null && !target.DeletedByInvocation) Traverse(true, target, repository, identity.Id, Read);
+@@ -123,0 +125,5 @@ internal static class SafeDeleteGitHub
++        if (target.Oid == null)
++        {
++            if (reference.ValueKind != JsonValueKind.Null) throw new InvalidDataException("Initially absent remote ref appeared; local target retained");
++            return;
++        }
+diff --git a/Services/SafeDeleteGitHubTarget.cs b/Services/SafeDeleteGitHubTarget.cs
+index dcb02aad..1c865b2d 100644
+--- a/Services/SafeDeleteGitHubTarget.cs
++++ b/Services/SafeDeleteGitHubTarget.cs
+@@ -10 +10 @@ internal sealed class SafeDeleteGitHubTarget(string url, string branch, string?
+-    // absence never supplies the pre-deletion head-association proof.
++    // absence instead requires closed-world own-repository associations.
+diff --git a/Services/SafeDeleteService.cs b/Services/SafeDeleteService.cs
+index efd9dd47..22e72061 100644
+--- a/Services/SafeDeleteService.cs
++++ b/Services/SafeDeleteService.cs
+@@ -116 +115,0 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
+-            if (oid == null) throw new InvalidDataException("Initially absent remote ref: PR association authority is unproven; local target retained");

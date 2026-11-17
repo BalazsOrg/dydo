@@ -11,6 +11,33 @@ public sealed class SafeDeleteSteps : IDisposable
     private bool _completed;
     private bool _dangerous;
     private bool _eligibilityJourney;
+    private string? _unpushedStaged;
+
+    [When("I archive the unpushed worktree in a {string} closed-world repository")]
+    public void ArchiveUnpushed(string visibility)
+    {
+        if (visibility is not ("public" or "private")) throw new ArgumentException("Unknown closed-world visibility",nameof(visibility));
+        SafeDeleteGitHubTests.PrepareInitiallyAbsent(_fixture!,visibility,true);
+        _unpushedStaged = SafeDeleteTests.Git(_fixture!.Tree,"rev-parse",":file.txt");
+        Assert.True(_fixture!.Run("worktree",_fixture.Tree) == 0,_fixture.Output);
+    }
+
+    [Then("the absent remote ref required no push and the archived worktree restores independently")]
+    public void RestoreUnpushed()
+    {
+        var fixture = _fixture!;
+        Assert.False(Directory.Exists(fixture.Tree));
+        Assert.False(fixture.Has("refs/heads/topic"));
+        Assert.Contains("Independent proof passed",fixture.Output);
+        SafeDeleteTests.Git(fixture.Main,"reflog","expire","--expire=now","--all");
+        SafeDeleteTests.Git(fixture.Main,"gc","--prune=now");
+        Assert.False(GitRunner.RunIsolated(fixture.Main,new Dictionary<string,string>(),"cat-file","-e",_unpushedStaged!).Ok);
+        Assert.True(fixture.Run("restore",fixture.Id) == 0,fixture.Output);
+        Assert.True(fixture.Has("refs/heads/topic"));
+        Assert.Equal("staged only",SafeDeleteTests.Git(fixture.Tree,"show",":file.txt"));
+        Assert.Equal("working bytes\n",File.ReadAllText(Path.Combine(fixture.Tree,"file.txt")));
+        Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
+    }
 
     [When("I archive and restore through the {string} GitHub authority route")]
     public void RemoteEligibility(string authority)

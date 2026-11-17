@@ -113,7 +113,6 @@ internal sealed class SafeDeleteService(string directory, SafeDeleteDependencies
             var pushUrls = SafeDeleteGit.Require(directory, "remote", "get-url", "--push", "--all", remote).Split('\n');
             if (fetchUrl != remoteUrl || pushUrls.Length != 1) throw new InvalidDataException("Different/multiple remote push URLs are unsupported");
             if (branch!.StartsWith("feature/", StringComparison.Ordinal)) throw new InvalidDataException("Remote feature/* branch is protected");
-            if (oid == null) throw new InvalidDataException("Initially absent remote ref: PR association authority is unproven; local target retained");
             _gitHubTarget = new SafeDeleteGitHubTarget(remoteUrl!, branch!, oid);
             var refusal = dependencies.CheckGitHub(_gitHubTarget);
             if (refusal != null) throw new InvalidDataException(refusal);

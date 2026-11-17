@@ -1,0 +1,35 @@
+code-writer/model: gpt-6.1-sol, high
+
+Before the first edit, the read-only bootstrap observed:
+pwd and git rev-parse --show-toplevel:
+/home/balazs/.t3/worktrees/DynaDocs/t3-fd307a84-103deb456c25d605
+git branch --show-current:
+DYD-1142-safe-delete-shoulds
+git rev-parse HEAD:
+d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d
+git status --short:
+(no output; clean)
+git rev-parse --git-common-dir:
+/home/balazs/Desktop/Projects/DynaDocs/.git
+git merge-base --is-ancestor d97c1b4fe9a7a843de8aceecfed5b9ad97ea2c9d HEAD:
+exit 0
+git merge-base --is-ancestor 2ffb74b65f2a3435d84c293d82aab828d182b2d0 HEAD:
+exit 0
+
+The root is the captain-provided isolated T3 worktree, separate from the main checkout.
+Owned planned edits were Services/SafeDelete* absent-ref eligibility, SafeDelete API/CLI/Gherkin
+regressions, the active/scaffold archive command-reference paragraphs, and this evidence folder.
+No branch creation, PR, push, merge, ticket status change, subagent, skill/DR/axiom edit, or T3
+worktree removal was commissioned or performed by this writer.
+
+Agent slice observed in /proc/self/cgroup:
+app-t3code-agents-cbc6c2286251.slice
+Shared host lock discovered by reading the existing runner and host script:
+/var/tmp/dydo-gate-lock.sh
+The lock stays outside each systemd cap. Probe limits: 4G/120s. Gate limits: 8G/3600s.
+All scopes set MemorySwapMax=0 and OOMPolicy=continue; all .NET calls disable build servers/reuse.
+
+Scratch ownership: /tmp/dyd1142-runs and /tmp/dyd1142-*.py/.patch belong to this hop and are retained
+as proof material. The existing SafeDeleteTests fixture owns its GUID-named temporary repositories,
+bare remotes, archives and proof scratch, and its Dispose removes its fixture tree. No live T3
+target is a deletion fixture. No existing shared service/process/worktree was cleaned up.

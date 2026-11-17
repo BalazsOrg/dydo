@@ -17,7 +17,6 @@ internal static class SafeDeleteGitHub
         if (target.Branch.StartsWith("feature/", StringComparison.Ordinal)) return "remote feature/* branches are protected";
         var repository = Repository(target.Url);
         if (repository == null) return "remote host is unsupported; GitHub PR eligibility is unknown";
-        if (target.Oid == null) return "initially absent remote ref: PR association authority is unproven; local target retained";
         try
         {
             using var deadline = new CancellationTokenSource(TimeSpan.FromSeconds(30));
@@ -33,7 +32,9 @@ internal static class SafeDeleteGitHub
             using var metadata = Read("api", "--hostname", "github.com", $"repos/{repository}");
             var identity = Metadata(metadata.RootElement, repository);
             if (target.Metadata != null && target.Metadata != identity) throw new InvalidDataException("GitHub repository identity/visibility/fork metadata changed");
-            if (!target.DeletedByInvocation) Traverse(true, target, repository, identity.Id, Read);
+            if (target.Oid == null && (identity.Fork || identity.Forks != 0))
+                throw new InvalidDataException("Initially absent remote ref is outside closed-world authority");
+            if (target.Oid != null && !target.DeletedByInvocation) Traverse(true, target, repository, identity.Id, Read);
             Traverse(false, target, repository, identity.Id, Read);
             // Metadata is read again at the end of every eligibility check, including the
             // final pre-push check; a fork appearing during pagination invalidates authority.
@@ -121,6 +122,11 @@ internal static class SafeDeleteGitHub
 
     private static void ValidateRef(JsonElement reference, SafeDeleteGitHubTarget target, string id, string repository)
     {
+        if (target.Oid == null)
+        {
+            if (reference.ValueKind != JsonValueKind.Null) throw new InvalidDataException("Initially absent remote ref appeared; local target retained");
+            return;
+        }
         if (target.DeletedByInvocation)
         {
             if (target.Metadata == null || reference.ValueKind != JsonValueKind.Null) throw new InvalidDataException("Remote ref recreated or own-deletion receipt is invalid");

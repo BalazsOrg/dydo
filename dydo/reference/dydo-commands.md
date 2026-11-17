@@ -392,14 +392,19 @@ associations, including heads used in upstream and other forks, plus the selecte
 complete open-PR head/base associations. Private repositories are eligible only under closed-world
 authority: the caller's token must read `fork=false`, `forks_count=0` and consistent private
 visibility/identity. Internal visibility, private forks or private repositories with forks,
-incomplete/error responses and initially absent remote refs refuse. Search indexing supplies no
-authority. Queries are bounded to 30 seconds, 8 MiB of response data and 100 pages per connection;
+and incomplete/error responses refuse. An initially absent same-name remote ref is eligible only
+in a public or private closed-world repository (`fork=false`, `forks_count=0`), read with the
+caller's token. Complete own-repository open-PR head/base listings must prove no PR uses the name,
+even when its head ref was deleted. The command performs no push and archives/cleans up locally;
+all other unproved initial absence refuses. Search indexing supplies no authority.
+Queries are bounded to 30 seconds, 8 MiB of response data and 100 pages per connection;
 exhaustion refuses. Identity, visibility/fork metadata, OID and PR eligibility are rechecked before
 each destructive step; metadata is also reread after pagination immediately before the leased push.
 
 After this invocation's successful expected-OID leased deletion, its internal receipt carries the
-verified pre-push head check into the remaining worktree/local steps. This is distinct from initial
-absence. Those steps reread repository metadata, exact ref absence and complete current own-repository
+verified pre-push head check into the remaining worktree/local steps. Initially absent refs require
+closed-world authority at every check. Both routes reread repository metadata, exact ref absence
+and complete current own-repository
 head/base associations. A recreated remote ref (even at the old OID), changed metadata or lookup
 failure stops the remaining deletions and retains the complete archive. The command never deletes
 that recreated ref. A PR can still open between the final API read and push without moving the OID;
