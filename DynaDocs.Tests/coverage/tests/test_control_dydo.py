@@ -350,6 +350,9 @@ class ControlDydoContractTests(unittest.TestCase):
         self.assertEqual(0, self.invoke("drive", "worker-lane"))
         receipts = [json.loads(path.read_text()) for path in (self.run / "evidence").glob("guard-*.json")]
         sent =[self.sent_and_decided(row) for row in receipts]
+        for event, _ in sent:
+            self.assertEqual("Bash", event.get("tool_name"), event)
+            self.assertEqual("PreToolUse", event.get("hook_event_name"), event)
         sub_agent = [(event, decision) for event, decision in sent if "agent_id" in event]
         for event, _ in sub_agent:
             self.assertTrue(event["agent_id"], f"empty agent_id sent with {event['tool_input']['command']!r}")
