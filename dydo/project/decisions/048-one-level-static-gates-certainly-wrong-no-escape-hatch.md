@@ -11,6 +11,8 @@ participants: [balazs, Claude (Fable)]
 
 > **Partially superseded by [068 - The Gate Set: Mutation Over Coverage, Changed Files Only](./068-gate-set-mutation-over-coverage-changed-files-only.md)** for §3's gate set (the Coverage floor, HCRAP and Tests rows and the HCRAP note) and §4's per-project mutation thresholds; it amends §2, whose set the gates now check on changed files only, and the three amendments' coverage thresholds are no longer gates. §3's other rows stand, and §2's `gap_check.py` line is an open question for Balazs.
 >
+> **Amended by [069 - File Token Limit](./069-file-token-limit.md)** for §3's "Not gated" note and the Consequences' rejection of file length as a gate: file size, in tokens, is now gated. Method length is untouched.
+>
 > **Partially superseded by [067 - What Tests Are For](./067-what-tests-are-for.md)** for §3's Tests row clause *every non-trivial module has a test file*: a job-tag lint replaces it. The rest remains in force.
 
 Replaces the three-tier coverage system (T1/T2/T3 with CRAP thresholds 30/15/5) with one set of
