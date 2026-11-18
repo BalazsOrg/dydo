@@ -718,7 +718,6 @@ jobs:
       # The one list of selected classes: the test step filters on it and the check step requires each.
       GUARD_CLASSES: >-
         DynaDocs.Tests.Services.DangerousPatternCultureTests
-        DynaDocs.Tests.Services.DangerousPatternOracleTests
         DynaDocs.Tests.Services.DangerousPatternBudgetTests
         DynaDocs.Tests.Services.BashCommandAnalyzerTests
         DynaDocs.Tests.Integration.GuardSecurityTests

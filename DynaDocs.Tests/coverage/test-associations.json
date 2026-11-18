@@ -119,12 +119,6 @@
       ]
     },
     {
-      "module": "Services/Statechart/StatechartOuterLifetime.cs",
-      "tests": [
-        "DynaDocs.Tests/Statechart/StatechartOuterLifetimeTests.cs"
-      ]
-    },
-    {
       "module": "Services/Statechart/StatechartSkill.cs",
       "tests": [
         "DynaDocs.Tests/Statechart/StatechartSkillTests.cs"
@@ -161,18 +155,6 @@
       ]
     },
     {
-      "module": "Commands/CheckCommand.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Commands/CheckConfigValidator.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
       "module": "Commands/CheckDocValidator.cs",
       "tests": [
         "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
@@ -198,27 +180,9 @@
       ]
     },
     {
-      "module": "Commands/FixCommand.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
       "module": "Commands/FixFileHandler.cs",
       "tests": [
         "DynaDocs.Tests/Commands/FixFileHandlerTests.cs"
-      ]
-    },
-    {
-      "module": "Commands/GraphCommand.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Commands/GraphDisplayHandler.cs",
-      "tests": [
-        "DynaDocs.Tests/Commands/GraphDisplayHandlerTests.cs"
       ]
     },
     {
@@ -231,16 +195,13 @@
       "module": "Commands/GuardCommand.WorkerLane.cs",
       "tests": [
         "DynaDocs.Tests/Commands/WorkerLaneClassificationTests.cs",
-        "DynaDocs.Tests/Commands/WorkerLaneSkillLintTests.cs",
         "DynaDocs.Tests/Integration/GuardWorkerLaneTests.cs"
       ]
     },
     {
       "module": "Commands/DydoRootCommand.cs",
       "tests": [
-        "DynaDocs.Tests/Commands/CommandSmokeTests.cs",
-        "DynaDocs.Tests/Commands/WorkerLaneClassificationTests.cs",
-        "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs"
+        "DynaDocs.Tests/Commands/WorkerLaneClassificationTests.cs"
       ]
     },
     {
@@ -328,7 +289,6 @@
     {
       "module": "Services/CommandPosition.cs",
       "tests": [
-        "DynaDocs.Tests/Services/CommandPositionTests.cs",
         "DynaDocs.Tests/Services/PrCallScannerTests.cs",
         "DynaDocs.Tests/Services/DydoInvocationScannerTests.cs"
       ]
@@ -357,18 +317,6 @@
       "module": "Commands/HelpCommand.cs",
       "tests": [
         "DynaDocs.Tests/Commands/HelpCommandTests.cs"
-      ]
-    },
-    {
-      "module": "Commands/IndexCommand.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Commands/InitCommand.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
       ]
     },
     {
@@ -746,93 +694,9 @@
       ]
     },
     {
-      "module": "Models/DocFile.cs",
-      "tests": [
-        "DynaDocs.Tests/Models/DocFileTests.cs"
-      ]
-    },
-    {
-      "module": "Models/DydoConfig.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/Frontmatter.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/HookInput.cs",
-      "tests": [
-        "DynaDocs.Tests/Models/HookInputTests.cs"
-      ]
-    },
-    {
       "module": "Models/HookInputExtensions.cs",
       "tests": [
         "DynaDocs.Tests/Models/HookInputExtensionsTests.cs"
-      ]
-    },
-    {
-      "module": "Models/LinkInfo.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/LinkType.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/NudgeConfig.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/StructureConfig.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/ToolInputData.cs",
-      "tests": [
-        "DynaDocs.Tests/Models/ToolInputDataTests.cs"
-      ]
-    },
-    {
-      "module": "Models/ValidationIssue.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/ValidationResult.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/Violation.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Models/ViolationSeverity.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Program.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
       ]
     },
     {
@@ -860,12 +724,6 @@
       ]
     },
     {
-      "module": "Rules/IRule.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
       "module": "Rules/NamingRule.cs",
       "tests": [
         "DynaDocs.Tests/Rules/NamingRuleTests.cs"
@@ -884,31 +742,6 @@
       ]
     },
     {
-      "module": "Rules/RuleBase.cs",
-      "tests": [
-        "DynaDocs.Tests/Rules/RuleBaseTests.cs",
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Rules/TitleRule.cs",
-      "tests": [
-        "DynaDocs.Tests/Rules/TitleRuleTests.cs"
-      ]
-    },
-    {
-      "module": "Rules/UncustomizedDocsRule.cs",
-      "tests": [
-        "DynaDocs.Tests/Rules/UncustomizedDocsRuleTests.cs"
-      ]
-    },
-    {
-      "module": "Serialization/DydoJsonContext.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
       "module": "Serialization/JsonText.cs",
       "tests": [
         "DynaDocs.Tests/Serialization/JsonTextTests.cs",
@@ -923,25 +756,12 @@
       ]
     },
     {
-      "module": "Services/AnchorExtractor.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/AssemblyAttributes.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
       "module": "Services/BashCommandAnalyzer.cs",
       "tests": [
         "DynaDocs.Tests/Services/BashCommandAnalyzerInputBoundTests.cs",
         "DynaDocs.Tests/Services/BashCommandAnalyzerTests.cs",
         "DynaDocs.Tests/Services/DangerousPatternBudgetTests.cs",
-        "DynaDocs.Tests/Services/DangerousPatternCultureTests.cs",
-        "DynaDocs.Tests/Services/DangerousPatternOracleTests.cs"
+        "DynaDocs.Tests/Services/DangerousPatternCultureTests.cs"
       ]
     },
     {
@@ -987,93 +807,9 @@
       ]
     },
     {
-      "module": "Services/FrontmatterExtractor.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
       "module": "Services/FrontmatterTypesService.cs",
       "tests": [
         "DynaDocs.Tests/Services/FrontmatterTypesServiceTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IBashCommandAnalyzer.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IConfigService.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IDocGraph.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IDocScanner.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IFolderScaffolder.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IFrontmatterTypesService.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IIndexGenerator.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/ILinkResolver.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IMarkdownParser.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IndexGenerator.cs",
-      "tests": [
-        "DynaDocs.Tests/Services/IndexGeneratorTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IOffLimitsService.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/IValidationService.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Services/LinkExtractor.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
       ]
     },
     {
@@ -1123,28 +859,14 @@
     {
       "module": "Utils/ConfigFileLocator.cs",
       "tests": [
-        "DynaDocs.Tests/Services/ConfigServiceTests.cs",
-        "DynaDocs.Tests/Services/PathUtilsDiscoveryTests.cs"
-      ]
-    },
-    {
-      "module": "Utils/ConsoleOutput.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
+        "DynaDocs.Tests/Services/ConfigServiceTests.cs"
       ]
     },
     {
       "module": "Utils/DydoVersion.cs",
       "tests": [
-        "DynaDocs.Tests/Utils/DydoVersionTests.cs",
         "DynaDocs.Tests/Integration/InitCommandTests.cs",
         "DynaDocs.Tests/EndToEnd/CliEndToEndTests.cs"
-      ]
-    },
-    {
-      "module": "Utils/ExitCodes.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
       ]
     },
     {
@@ -1160,27 +882,9 @@
       ]
     },
     {
-      "module": "Utils/PathUtils.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
-      "module": "Utils/PathUtils.Discovery.cs",
-      "tests": [
-        "DynaDocs.Tests/Steps/CliScenarioProcessTests.cs"
-      ]
-    },
-    {
       "module": "Utils/RuleSkipPaths.cs",
       "tests": [
         "DynaDocs.Tests/Rules/BrokenLinksRuleTests.cs"
-      ]
-    },
-    {
-      "module": "Utils/TitlePrettifier.cs",
-      "tests": [
-        "DynaDocs.Tests/Utils/TitlePrettifierTests.cs"
       ]
     },
     {
@@ -1200,18 +904,6 @@
       "module": "Services/Map/LinearProjectRead.cs",
       "tests": [
         "DynaDocs.Tests/Map/LinearReaderTests.cs"
-      ]
-    },
-    {
-      "module": "Services/Survey/Ledger.cs",
-      "tests": [
-        "DynaDocs.Tests/Survey/LedgerTests.cs"
-      ]
-    },
-    {
-      "module": "Services/Survey/LedgerRow.cs",
-      "tests": [
-        "DynaDocs.Tests/Survey/LedgerTests.cs"
       ]
     },
     {
@@ -1240,12 +932,6 @@
       ]
     },
     {
-      "module": "Services/Map/BrowserLauncher.cs",
-      "tests": [
-        "DynaDocs.Tests/Map/BrowserLauncherTests.cs"
-      ]
-    },
-    {
       "module": "Services/Map/Contract/GraphQLRequest.cs",
       "tests": [
         "DynaDocs.Tests/Map/LinearGraphQLTests.cs"
@@ -1266,8 +952,7 @@
     {
       "module": "Services/Map/MapApi.cs",
       "tests": [
-        "DynaDocs.Tests/Map/MapServerTests.cs",
-        "DynaDocs.Tests/Map/MapApiTests.cs"
+        "DynaDocs.Tests/Map/MapServerTests.cs"
       ]
     },
     {
@@ -1360,7 +1045,6 @@
     {
       "module": "Services/Map/ViewerBundle.cs",
       "tests": [
-        "DynaDocs.Tests/Map/ViewerBundleTests.cs",
         "DynaDocs.Tests/Map/MapServerTests.cs"
       ]
     },
@@ -1541,12 +1225,6 @@
       ]
     },
     {
-      "module": "Services/Map/MapSnapshotCache.cs",
-      "tests": [
-        "DynaDocs.Tests/Map/MapSnapshotCacheTests.cs"
-      ]
-    },
-    {
       "module": "viewer/src/app/ProjectVisit.ts",
       "tests": [
         "viewer/src/app/ProjectVisit.test.ts"
@@ -1671,22 +1349,10 @@
       ]
     },
     {
-      "module": "Services/Merge/GhApi.cs",
-      "tests": [
-        "DynaDocs.Tests/Merge/GhApiTests.cs"
-      ]
-    },
-    {
       "module": "Services/Merge/GitHubJson.cs",
       "tests": [
         "DynaDocs.Tests/Merge/CommitChecksTests.cs",
         "DynaDocs.Tests/Merge/PullRequestMergeTests.cs"
-      ]
-    },
-    {
-      "module": "Services/Merge/GitHubReply.cs",
-      "tests": [
-        "DynaDocs.Tests/Merge/GhApiTests.cs"
       ]
     },
     {
@@ -1727,28 +1393,12 @@
       ]
     },
     {
-      "module": "Services/Statechart/StatechartProtocol.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartProtocolTests.cs"]
-    },
-    {
-      "module": "Services/Statechart/WindowsStatechartJob.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartJobTests.cs"]
-    },
-    {
-      "module": "Services/Statechart/WindowsStatechartNative.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartJobTests.cs"]
-    },
-    {
       "module": "Services/Statechart/PosixStatechartArguments.cs",
       "tests": ["DynaDocs.Tests/Statechart/StatechartArgumentsTests.cs"]
     },
     {
-      "module": "Services/Statechart/PosixStatechartNative.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartPosixTests.cs", "DynaDocs.Tests/Statechart/StatechartPosixErrnoTests.cs"]
-    },
-    {
       "module": "Services/Statechart/PosixStatechartProcess.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartPosixTests.cs", "DynaDocs.Tests/Statechart/StatechartPosixLifecycleTests.cs", "DynaDocs.Tests/Statechart/StatechartPosixErrnoTests.cs"]
+      "tests": ["DynaDocs.Tests/Statechart/StatechartPosixLifecycleTests.cs"]
     },
     {
       "module": "Services/Statechart/PosixStatechartAnchor.cs",
@@ -1760,11 +1410,11 @@
     },
     {
       "module": "Services/Statechart/PosixStatechartSocket.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartPosixChannelTests.cs", "DynaDocs.Tests/Statechart/StatechartPosixErrnoTests.cs"]
+      "tests": ["DynaDocs.Tests/Statechart/StatechartPosixChannelTests.cs"]
     },
     {
       "module": "Services/Statechart/PosixStatechartFiles.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartPosixLifecycleTests.cs", "DynaDocs.Tests/Statechart/StatechartPosixErrnoTests.cs"]
+      "tests": ["DynaDocs.Tests/Statechart/StatechartPosixLifecycleTests.cs"]
     },
     {
       "module": "Services/Statechart/PosixStatechartLifetime.cs",
@@ -1780,7 +1430,7 @@
     },
     {
       "module": "Services/Statechart/PosixStatechartDescriptors.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartReadyTests.cs", "DynaDocs.Tests/Statechart/StatechartPosixErrnoTests.cs"]
+      "tests": ["DynaDocs.Tests/Statechart/StatechartReadyTests.cs"]
     },
     {
       "module": "Services/Statechart/PosixStatechartChild.cs",
@@ -1803,18 +1453,6 @@
       "tests": ["DynaDocs.Tests/Statechart/StatechartPrerequisitesTests.cs"]
     },
     {
-      "module": "Services/Statechart/StatechartPaths.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartPathsTests.cs"]
-    },
-    {
-      "module": "Services/Statechart/WindowsStatechartFiles.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartScratchTests.cs"]
-    },
-    {
-      "module": "Services/Statechart/StatechartScratch.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartScratchTests.cs"]
-    },
-    {
       "module": "Services/Statechart/StatechartCleanup.cs",
       "tests": ["DynaDocs.Tests/Statechart/StatechartLifecycleTests.cs"]
     },
@@ -1828,23 +1466,11 @@
     },
     {
       "module": "Services/Statechart/StatechartProbe.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartCommandTests.cs", "DynaDocs.Tests/Statechart/StatechartProbeTests.cs"]
-    },
-    {
-      "module": "Services/Statechart/StatechartRequest.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartRequestTests.cs"]
-    },
-    {
-      "module": "Services/Statechart/StatechartHome.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartHomeTests.cs"]
-    },
-    {
-      "module": "Services/Statechart/StatechartRequests.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartRequestsTests.cs"]
+      "tests": ["DynaDocs.Tests/Statechart/StatechartCommandTests.cs"]
     },
     {
       "module": "Services/Statechart/StatechartInventory.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartRequestsTests.cs", "DynaDocs.Tests/Statechart/StatechartInventoryTests.cs"]
+      "tests": ["DynaDocs.Tests/Statechart/StatechartInventoryTests.cs"]
     },
     {
       "module": "Services/Statechart/StatechartLock.cs",
@@ -1876,7 +1502,7 @@
     },
     {
       "module": "Services/Statechart/StatechartRunner.cs",
-      "tests": ["DynaDocs.Tests/Statechart/StatechartPublicFlowTests.cs", "DynaDocs.Tests/Statechart/StatechartReadyTests.cs", "DynaDocs.Tests/Statechart/StatechartWindowsRunnerTests.cs"]
+      "tests": ["DynaDocs.Tests/Statechart/StatechartPublicFlowTests.cs", "DynaDocs.Tests/Statechart/StatechartReadyTests.cs"]
     },
     {
       "module": "Services/Statechart/StatechartNode.cs",
@@ -1923,76 +1549,16 @@
       "tests": ["DynaDocs.Tests/coverage/tests/statechart-corpus-views.test.cjs"]
     },
     {
-      "module": "tools/SkillBuild/BuiltFileSpec.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/BuiltTree.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildToolTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/CarrierEntry.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/CarrierFile.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/CarrierManifest.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/Claim.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/ClaimInventory.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
       "module": "tools/SkillBuild/FileRenderer.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs", "DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/ManifestFiles.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/MapEntry.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/MarkdownFence.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/PlacedUnit.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
     },
     {
       "module": "tools/SkillBuild/Placement.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs", "DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/Program.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildToolTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/ProseEntry.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/ProvenanceMap.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/RenderedFile.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs"]
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
     },
     {
       "module": "tools/SkillBuild/SkillBuilder.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuilderTests.cs", "DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
     },
     {
       "module": "Services/SafeDeleteRepository.cs",

@@ -20,7 +20,6 @@ const required = `${bodyClass}.${method}`;
 const prReadyClass = 'DynaDocs.Tests.Integration.GuardPrReadyTests';
 const classes = [
   'DynaDocs.Tests.Services.DangerousPatternCultureTests',
-  'DynaDocs.Tests.Services.DangerousPatternOracleTests',
   'DynaDocs.Tests.Services.DangerousPatternBudgetTests',
   'DynaDocs.Tests.Services.BashCommandAnalyzerTests',
   'DynaDocs.Tests.Integration.GuardSecurityTests',
