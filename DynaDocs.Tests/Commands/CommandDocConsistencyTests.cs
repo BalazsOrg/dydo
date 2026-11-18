@@ -9,101 +9,8 @@ using DynaDocs.Commands;
 /// Meta-tests that dynamically discover commands/flags from the System.CommandLine tree
 /// and verify they appear in docs, help text, templates, and examples.
 /// </summary>
-public class CommandDocConsistencyTests
+public partial class CommandDocConsistencyTests
 {
-    private static readonly HashSet<string> ExcludedFromDocs = ["_complete"];
-    // Commands intentionally hidden from agent-facing quick reference
-    private static readonly HashSet<string> ExcludedPaths =
-    [
-        "guard lift", "guard restore", "completions", "help",
-        "worktree cleanup", "worktree merge", "worktree init-settings", "worktree prune", "worktree status"
-    ];
-    private static readonly HashSet<string> BuiltInOptionNames = ["--help", "-h", "-?", "--version"];
-
-    private static List<(string Path, Command Cmd)> GetAllCommands() =>
-        WalkCommands(DydoRootCommand.Create()).ToList();
-
-    private static List<(string Path, Command Cmd)> GetDocumentedCommands() =>
-        GetAllCommands().Where(c => !ExcludedFromDocs.Contains(c.Cmd.Name) && !ExcludedPaths.Contains(c.Path)).ToList();
-
-    private static IEnumerable<(string Path, Command Cmd)> WalkCommands(Command root, string prefix = "")
-    {
-        foreach (var sub in root.Subcommands)
-        {
-            var path = string.IsNullOrEmpty(prefix) ? sub.Name : $"{prefix} {sub.Name}";
-            yield return (path, sub);
-            foreach (var child in WalkCommands(sub, path))
-                yield return child;
-        }
-    }
-
-    private static string FindRepoFile(string relativePath)
-    {
-        var dir = AppContext.BaseDirectory;
-        while (dir != null)
-        {
-            var candidate = Path.Combine(dir, relativePath);
-            if (File.Exists(candidate)) return candidate;
-            dir = Path.GetDirectoryName(dir);
-        }
-        throw new FileNotFoundException(
-            $"Could not find {relativePath} walking up from {AppContext.BaseDirectory}");
-    }
-
-    private static string FindRepoDir(string relativePath)
-    {
-        var dir = AppContext.BaseDirectory;
-        while (dir != null)
-        {
-            var candidate = Path.Combine(dir, relativePath);
-            if (Directory.Exists(candidate)) return candidate;
-            dir = Path.GetDirectoryName(dir);
-        }
-        throw new DirectoryNotFoundException(
-            $"Could not find {relativePath} walking up from {AppContext.BaseDirectory}");
-    }
-
-    private static HashSet<string> GetAllNames(Option opt)
-    {
-        var names = new HashSet<string>(opt.Aliases) { opt.Name };
-        return names;
-    }
-
-    private static List<Option> GetUserOptions(Command cmd) =>
-        cmd.Options.Where(o => !GetAllNames(o).Any(BuiltInOptionNames.Contains)).ToList();
-
-    /// <summary>
-    /// Extract sections keyed by command path from a reference doc.
-    /// Sections start with "### dydo &lt;path&gt;" and end at the next "### " or "---" or "## ".
-    /// </summary>
-    private static Dictionary<string, string> ExtractDocSections(string content)
-    {
-        var sections = new Dictionary<string, string>();
-        var headerPattern = new Regex(@"^### dydo (.+?)$", RegexOptions.Multiline);
-        var matches = headerPattern.Matches(content);
-
-        for (int i = 0; i < matches.Count; i++)
-        {
-            var name = matches[i].Groups[1].Value.Trim();
-            var start = matches[i].Index + matches[i].Length;
-            var end = i + 1 < matches.Count ? matches[i + 1].Index : content.Length;
-
-            var nextBoundary = Regex.Match(content[start..end], @"^(---|## )", RegexOptions.Multiline);
-            if (nextBoundary.Success)
-                end = start + nextBoundary.Index;
-
-            sections[name] = content[start..end];
-        }
-
-        return sections;
-    }
-
-    private static HashSet<string> ExtractFlags(string text)
-    {
-        var pattern = new Regex(@"`(--[\w-]+)(?:\s[^`]*)?`");
-        return pattern.Matches(text).Select(m => m.Groups[1].Value).ToHashSet();
-    }
-
     [Fact]
     public void AllCommands_AppearInHelpText()
     {
@@ -124,8 +31,7 @@ public class CommandDocConsistencyTests
     public void AllOptions_AppearInReferenceDoc()
     {
         var commands = GetDocumentedCommands();
-        var refDoc = File.ReadAllText(FindRepoFile(Path.Combine("dydo", "reference", "dydo-commands.md")));
-        var sections = ExtractDocSections(refDoc);
+        var sections = ReadCommandSections(Path.Combine("dydo", "reference", "dydo-commands.md"));
 
         var missing = new List<string>();
         foreach (var (path, cmd) in commands)
@@ -154,11 +60,8 @@ public class CommandDocConsistencyTests
     [Fact]
     public void ReferenceDocAndTemplate_HaveSameOptions()
     {
-        var refDoc = File.ReadAllText(FindRepoFile(Path.Combine("dydo", "reference", "dydo-commands.md")));
-        var template = File.ReadAllText(FindRepoFile(Path.Combine("Scaffold", "dydo", "reference", "dydo-commands.md")));
-
-        var refSections = ExtractDocSections(refDoc);
-        var tmplSections = ExtractDocSections(template);
+        var refSections = ReadCommandSections(Path.Combine("dydo", "reference", "dydo-commands.md"));
+        var tmplSections = ReadCommandSections(Path.Combine("Scaffold", "dydo", "reference", "dydo-commands.md"));
 
         var allSectionNames = refSections.Keys.Union(tmplSections.Keys).ToHashSet();
         var mismatches = new List<string>();
@@ -199,11 +102,11 @@ public class CommandDocConsistencyTests
     public void Examples_IncludeAllRequiredFlags()
     {
         var commands = GetDocumentedCommands();
-        var refDoc = File.ReadAllText(FindRepoFile(Path.Combine("dydo", "reference", "dydo-commands.md")));
-        var sections = ExtractDocSections(refDoc);
+        var sections = ReadCommandSections(Path.Combine("dydo", "reference", "dydo-commands.md"));
 
         var commandPaths = commands.Select(c => c.Path).ToHashSet();
         var missing = new List<string>();
+        var exampleCount = 0;
 
         foreach (var (path, cmd) in commands)
         {
@@ -224,6 +127,7 @@ public class CommandDocConsistencyTests
                 }
             }
 
+            exampleCount += exampleLines.Count;
             foreach (var opt in requiredOptions)
             {
                 var foundInAnyExample = exampleLines.Any(line =>
@@ -234,6 +138,7 @@ public class CommandDocConsistencyTests
             }
         }
 
+        Assert.True(exampleCount > 0, "No command examples with required options were discovered");
         Assert.True(missing.Count == 0,
             $"Required flags missing from examples in dydo-commands.md:\n  {string.Join("\n  ", missing)}");
     }
@@ -320,9 +225,10 @@ public class CommandDocConsistencyTests
             RegexOptions.IgnoreCase);
         var hits = new List<string>();
 
-        foreach (var file in files)
+        foreach (var file in files.SelectMany(file => Path.GetFileName(file) == "dydo-commands.md"
+                     ? CommandReferenceFamily.Paths(FindRepoFile(file)) : [FindRepoFile(file)]))
         {
-            var content = File.ReadAllText(FindRepoFile(file));
+            var content = File.ReadAllText(file);
             foreach (Match match in forbidden.Matches(content))
                 hits.Add($"{file}: {match.Value}");
         }

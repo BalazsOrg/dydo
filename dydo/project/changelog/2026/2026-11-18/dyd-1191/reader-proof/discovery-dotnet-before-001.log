@@ -1,0 +1,48 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=4G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "120",
+    "--full",
+    "python3",
+    "DynaDocs.Tests/coverage/run_tests.py",
+    "-c",
+    "Release",
+    "--filter",
+    "FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~OneProjectLocalInterfaceRunsTestsAndAssuranceHonestlyFeature",
+    "--list-tests"
+  ],
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4",
+  "head": "c3f914dff9a36426b722f05058eb3cbc7b967312",
+  "sources": {
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs": "f9ba5af4f728f7e4e201f80e52616d206559a5a29c5532eadb43238359159314",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.cs": "d8f4a4bcf57139400613656a43083b1f0993d923c670f3d1a509cf56c977a905",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.cs": "9c801f12609135f56e073c93422ec50525af268151fb939425c40090edb75cfc",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade.py": "92056b339408a1070af37e7eab3558e8f0f5e56eaee7b3a50d390f8c6b330435"
+  },
+  "exit": 125,
+  "dotnet_env": {
+    "MSBUILDDISABLENODEREUSE": "1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
+    "UseSharedCompilation": "false"
+  }
+}
+Running as unit: run-p3803645-i158879230.scope; invocation ID: a7b7f26a4b2d4cf8909d3ead9b62c0ec
+error: unexpected argument '--full' found
+
+  tip: to pass '--full' as a value, use '-- --full'
+
+Usage: timeout [OPTION] DURATION COMMAND...
+
+For more information, try '--help'.
+
+EXIT: 125

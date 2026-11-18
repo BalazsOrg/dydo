@@ -1,0 +1,113 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=8G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "3600",
+    "python3",
+    "DynaDocs.Tests/coverage/run_tests.py",
+    "-c",
+    "Release",
+    "--filter",
+    "FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~OneProjectLocalInterfaceRunsTestsAndAssuranceHonestlyFeature",
+    "--list-tests"
+  ],
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4",
+  "head": "c3f914dff9a36426b722f05058eb3cbc7b967312",
+  "sources": {
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs": "f9ba5af4f728f7e4e201f80e52616d206559a5a29c5532eadb43238359159314",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.cs": "d8f4a4bcf57139400613656a43083b1f0993d923c670f3d1a509cf56c977a905",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.cs": "9c801f12609135f56e073c93422ec50525af268151fb939425c40090edb75cfc",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade.py": "92056b339408a1070af37e7eab3558e8f0f5e56eaee7b3a50d390f8c6b330435"
+  },
+  "exit": 0,
+  "dotnet_env": {
+    "MSBUILDDISABLENODEREUSE": "1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
+    "UseSharedCompilation": "false"
+  }
+}
+Running as unit: run-p3839709-i158891770.scope; invocation ID: 573c6516294948f79b6aa201b576b839
+Preparing worktree (detached HEAD c3f914df)
+HEAD is now at c3f914df DYD-1191 implement: split reference pages and preserve navigation
+  Determining projects to restore...
+  Restored /tmp/dydo-test-e473dcf7/tools/SkillBuild/SkillBuild.csproj (in 281 ms).
+  Restored /tmp/dydo-test-e473dcf7/DynaDocs.csproj (in 301 ms).
+  Restored /tmp/dydo-test-e473dcf7/DynaDocs.Tests/DynaDocs.Tests.csproj (in 312 ms).
+  SkillBuild -> /tmp/dydo-test-e473dcf7/tools/SkillBuild/bin/Release/net10.0/SkillBuild.dll
+  DynaDocs -> /tmp/dydo-test-e473dcf7/bin/Release/net10.0/dydo.dll
+  DynaDocs.Tests -> /tmp/dydo-test-e473dcf7/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll
+Test run for /tmp/dydo-test-e473dcf7/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+The following Tests are available:
+    Project whole skill directories into Claude and Codex
+    Re-point a host link left by the previous category layout
+    Keep both hosts' metadata and resources beside one body
+    Resolve skill links from canonical and projected locations
+    Remove stale two-source guidance
+    Refuse a human-owned host directory before changing another host
+    Preflight every deterministic collision before creating a projection
+    Refuse a host link that targets another skill tree
+    DynaDocs.Tests.Services.ScaffoldTreeTests.EmbeddedScaffoldResources_AreExactlyTheTreeOnDisk
+    DynaDocs.Tests.Services.ScaffoldTreeTests.EveryScaffoldFileOnDisk_ReadsBackThroughItsResourceName
+    DynaDocs.Tests.Services.ScaffoldTreeTests.WriteDydoTree_WithoutEmbeddedScaffold_Throws
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkillTree_SortsEverySkillExactlyOnceByKind
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkills_WalkCategoriesToAnyDepthButNeverIntoASkill
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkills_RefuseAnEmptyNestedCategory
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkills_RefuseOneNameReachedThroughTwoCategories
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkillTree_HasNoAuthoredHostCopies
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.ProjectKnowledgePaths_AreRepositoryRootLiteralsNotSkillRelativeLinks
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CodeWriter_InlinesTheWorkingTreeChecksAndTheImplementedFormVerbatim
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.ThirdPartyNotices_AdaptedInPathsExistOnDisk
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CategoryReadme_ListsEveryLocalSkillOnceWithItsInvocationMode(category: "roles")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CategoryReadme_ListsEveryLocalSkillOnceWithItsInvocationMode(category: "engineering")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CategoryReadme_ListsEveryLocalSkillOnceWithItsInvocationMode(category: "productivity")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.EveryCanonicalSkill_PairsItsClaudeInvocationFrontmatterWithCodexOpenAiYaml
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.SkillsReadme_CategoryCountsMatchTheRealDirectoriesAndSumTo41
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "see `skills/reviewer/SKILL.md` for the shape", stale: "skills/reviewer")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "edit `skills/teach/resources/mission-format.md` di"···, stale: "skills/teach")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "authored at `skills/admiral`", stale: "skills/admiral")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "canonical folder is `skills/orchestration/reviewer"···, stale: "skills/orchestration/reviewer")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "see `skills/engineering/code-writer/` for the meth"···, stale: "skills/engineering/code-writer")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "see `skills/roles/scout/`", stale: "skills/roles/scout")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "canonical folder is `skills/roles/crew/reviewer/SK"···)
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "edit `skills/productivity/teach/resources/mission-"···)
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "authored at `skills/roles/officers/admiral`")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "see `skills/roles/officers/` and `skills/engineeri"···)
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "projected at `.claude/skills/reviewer/` and `.agen"···)
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "nothing here names a skills/<category>/<name>/ lit"···)
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllCommands_AppearInHelpText
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllOptions_AppearInReferenceDoc
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.ReferenceDocAndTemplate_HaveSameOptions
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.Examples_IncludeAllRequiredFlags
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllCommandFactories_InSmokeTests
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.AboutReference_DefinesLinearBoundaryAndLinksCommandReference
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.RegisteredCommands_ExcludeRetiredRepositoryWorkCommands
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.ActiveProductDocs_ExcludeRetiredCommandsAndRepositoryWorkPaths
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.ScaffoldExamples_UseRequiredFlags
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.LicenseSection_ConsistentAcrossAllReadmes
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.LicenseMetadata_UsesMitConsistently
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.ExtractFlags_HandlesFlagValuePatterns
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.InstalledAboutDoc_MatchesTemplate
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_ListsAllTopLevelCommands
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_DoesNotListRetiredWorkCommands
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_ContainsReferenceToDocumentation
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_DocumentsExitCodes
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_HasCategorizedSections
+
+--- Running tests (worktree-isolated) ---
+  Creating test worktree...
+  Worktree: /tmp/dydo-test-e473dcf7
+  Running: dotnet test DynaDocs.sln -c Release --filter FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~OneProjectLocalInterfaceRunsTestsAndAssuranceHonestlyFeature --list-tests -- RunConfiguration.TreatNoTestsAsError=true
+  Cleaning up worktree...
+
+  Tests passed
+
+EXIT: 0

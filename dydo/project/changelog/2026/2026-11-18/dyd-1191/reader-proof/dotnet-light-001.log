@@ -1,0 +1,75 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=8G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "3600",
+    "python3",
+    "DynaDocs.Tests/coverage/run_tests.py",
+    "-c",
+    "Release",
+    "--filter",
+    "FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~RunsTestsAndAssuranceHonestlyFeature"
+  ],
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4",
+  "head": "c3f914dff9a36426b722f05058eb3cbc7b967312",
+  "sources": {
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs": "a3d68dac698c3e692b0b2ab954d72990a40f6545ffeb60d33db140bc25433ff4",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Family.cs": "871d306b4724f7d8ecfbfa508783fb1e9804e9afb395fc523a07fe5f95139fd0",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs": "64165e6e4cc2d03c19f3bfd559a939d270d52089a8fbe8d1b50a91b6ad003ec8",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.Hosts.cs": "99b3c0d494e1dc9a7525b0719e8dfd4dab43e0d5ce57a98da86537aa72657f69",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.cs": "d7591a74ac92eeb2df89b16b932d342d6ccde166eb58fa622c5430ac345137ec",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.Metadata.cs": "123ecc3e31531687cafb035cd7d4640bf81e61c534af6acd90980cbe8572b753",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.cs": "c0516f1660d64f208cc0cc95d9bb3bb78e51e34f4fa40b212865d12230d28925",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_04.py": "497e9d5097cdfcd8a96e83223a40c6a7933575e0c547364c62b59864ae245c2e",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_2.py": "128f02d10ccd8660b99fea8569bf4dbce38480610627d394ce70dce09ada8083",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_08.py": "17b410e1b81b4c02c3b696f09acfb3905cb8b6e51ab6fee2fff0e3836aff3da4",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade.py": "024df954049db8da62ceb978f3df883163a49c4a5ccbda1e004a6b66cc5bc9e9",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_07.py": "3b74fe16a21c75eee39d1b38cf9e6519845d84b31eac196ef1a28743d331b23e",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_05.py": "b55c852f575da25e3cf60437923b2dab241773763f0c2033b7c5fdaa799ba538",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_06.py": "47d1ad03afe5add4e1c6c6b01d6d5e92d05fccf039174d4162d1638955cde306",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_02.py": "18a7ca36240343fbf0a51c062bb78fabf665cf86af1f547967f2651831d24952",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_01.py": "d1aebaa5b79439f7061a148be4fe11e1b9c3806cc4f1e999adaebcc211fadb95",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_support.py": "9b3f1064d930f9453346c5ba82f939a92101388a09515d500e4544f68fc0cffc",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_03.py": "581bdab096df9f825036923eab1e3a68668768238c0347c481510e866515923d",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_1.py": "55a698c2f832daffa95e12e88eb4b42fd870667c458f338e6d5b27485b803424"
+  },
+  "exit": 0,
+  "dotnet_env": {
+    "MSBUILDDISABLENODEREUSE": "1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
+    "UseSharedCompilation": "false"
+  }
+}
+Running as unit: run-p3914383-i159037021.scope; invocation ID: 805c0cd6fe4a46b0884374db379f546f
+Preparing worktree (detached HEAD c3f914df)
+HEAD is now at c3f914df DYD-1191 implement: split reference pages and preserve navigation
+  Determining projects to restore...
+  Restored /tmp/dydo-test-d1ba3cf2/tools/SkillBuild/SkillBuild.csproj (in 128 ms).
+  Restored /tmp/dydo-test-d1ba3cf2/DynaDocs.csproj (in 144 ms).
+  Restored /tmp/dydo-test-d1ba3cf2/DynaDocs.Tests/DynaDocs.Tests.csproj (in 149 ms).
+  SkillBuild -> /tmp/dydo-test-d1ba3cf2/tools/SkillBuild/bin/Release/net10.0/SkillBuild.dll
+  DynaDocs -> /tmp/dydo-test-d1ba3cf2/bin/Release/net10.0/dydo.dll
+  DynaDocs.Tests -> /tmp/dydo-test-d1ba3cf2/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll
+Test run for /tmp/dydo-test-d1ba3cf2/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:   116, Skipped:     0, Total:   116, Duration: 43 s - DynaDocs.Tests.dll (net10.0)
+
+--- Running tests (worktree-isolated) ---
+  Creating test worktree...
+  Worktree: /tmp/dydo-test-d1ba3cf2
+  Running: dotnet test DynaDocs.sln -c Release --filter FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~RunsTestsAndAssuranceHonestlyFeature -- RunConfiguration.TreatNoTestsAsError=true
+  Cleaning up worktree...
+
+  Tests passed
+
+EXIT: 0
