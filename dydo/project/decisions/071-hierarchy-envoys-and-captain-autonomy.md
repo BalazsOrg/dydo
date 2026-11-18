@@ -115,13 +115,18 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
      decision 8), big cross-Project
      thinking, and investigating an unknown on his machine. By day it is mostly idle, not a standing
      inbox he must check.
-5. **Continuous Projects are ticket groupings with no overseer or envoys (D6, replaced 2026-11-18).**
+5. **Continuous Projects are ticket groupings with no overseer or envoys (D6; its default replaced 2026-11-18).**
    Balazs: "No one. The continuous projects are not really projects. They are only technically projects in linear. They are a place where certain tickets or work is grouped and the officers working on things and having open lanes, they may pull inside relevant tickets if it fits their job."
    ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-ab4c5a40-8c08-48fd-9474-112c0b177c0f);
    [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982020734)).
    A continuous Project (Agent friction, CI findings) groups tickets in Linear; it has no
-   destination, overseeing officer or envoys. An officer with an open lane may pull a relevant
-   ticket into its own work when it fits its job; the ticket then follows that officer's chain.
+   destination, overseeing officer or envoys.
+   - D6's accepted "b and c" stands: the chief of staff lists its open tickets with their age;
+     Balazs gives a ticket out, or tells the chief of staff to.
+   - An officer with an open lane may pull a relevant ticket into its own work when it fits its
+     job, within a standing rule Balazs sets once (for example, Bugs up to Severity should, no
+     HITL Mode); outside the rule it asks. Each such ticket still gets a captain, and review and
+     merge as usual; the ticket then follows that officer's chain.
 6. **The officer-above chain (D7, D9).** "c" (D7). The officer above, per level: sub-captain →
    captain → admiral → chief of staff. The same chain carries liveness (C14), re-plans (B6) and
    escalations. Above the admirals the chief of staff takes liveness only and catches an open HITL
@@ -304,6 +309,7 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
   `AGENTS.md`'s "an admiral only when invoked".
 - The two continuous Projects need creating as ticket groupings in the Dydo team. Rule 5 governs
   officers pulling relevant tickets into their work; the groupings get no overseer or envoys.
+  The standing rule's text is his to set.
 - Still open from D: a sub-captain's brief and return line (DYD-1114 settled its depth and budget
   split only); which skill or built resource an envoy loads per job, to be named in the envoy
   template; and, to verify at build, that an officer can see he closed a T3 thread.
