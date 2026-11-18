@@ -22,7 +22,7 @@ entry file → dydo/index.md → authored navigation → ticket-relevant durable
 5. An invoked skill adds the methodology for the current kind of work.
 
 Linear supplies current ticket/Project state. Repository documents supply durable context and reviewed
-plans. Copying volatile Linear state into Markdown creates drift and is not part of this model.
+proof. Copying volatile Linear state into Markdown creates drift and is not part of this model.
 
 ## Folder purposes
 
@@ -31,12 +31,12 @@ plans. Copying volatile Linear state into Markdown creates drift and is not part
 | `understand/` | Domain concepts, architecture, system overview | Building a mental model |
 | `guides/` | Procedures and coding conventions | Performing a known activity |
 | `reference/` | Exact commands, schemas, and rules | Looking up precise behavior |
-| `project/` | Decisions, reviewed plans, audits, changelog, pitfalls | Needing durable intent or proof |
+| `project/` | Decisions, audits, changelog, pitfalls | Needing durable intent or proof |
 
 ## Project knowledge
 
 The `project/` tree contains information that remains valuable after current execution state changes:
-accepted Decisions, reviewed coordinated-work plans, audits, assimilation briefs, migration evidence,
+accepted Decisions, audits, assimilation briefs, migration evidence,
 release history, pitfalls, and legacy FutureFeature records.
 
 A FutureFeature is an unscheduled strategic possibility, not actionable work: a Linear ticket in

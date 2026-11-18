@@ -20,7 +20,7 @@ second writer in a tree someone else owns.
 
 **Rule:** an admiral sequences captains and wires their Merge Tickets. Every edit inside a ticket's
 owned paths belongs to its crew; its captain directs, and a fresh reviewer judges. The map holder
-updates Linear and writes the dated amendments of a repository plan, where one exists.
+updates the map in Linear and reconciles affected ticket contracts and feature specs.
 
 ## 2. A branch cut from the wrong base
 
@@ -93,14 +93,13 @@ answers arrives at the user.
 **Mechanism:** an agent that meets fog can neither wait for an answer nor invent one. Both failures come
 from skipping the middle: discovery first, then a question that is on the record.
 
-**Rule:** run bounded discovery - the Decision Records, the plan, the ticket's links, the glossary, the
+**Rule:** run bounded discovery - the Decision Records, the feature specs, the ticket's links, the glossary, the
 code - and only when it comes up empty file a Question Ticket listing what you searched, wire it as a
 blocker, then release with branch pushed, resume SHA posted, the worktrees the captain or its crew
 made (lanes, merge checkouts, temp checkouts) cleaned with `dydo clean --dry-run <worktree>`, then
 `dydo clean <worktree>`, run from outside that tree, parent Todo and unassigned. The worktree the
 captain's thread runs in belongs to T3: leave it. The admiral resumes blocker-cleared work on the next captain return or user word. Settle operational conflicts by
-precedence: the user's live instruction, then the Decision Record, the reviewed plan at its governing
-commit, the pinned feature spec, the ticket contract, coding standards, existing code. The ladder is crew → Ticket Captain → admiral → user, and the user is
+precedence: the user's live instruction, then the Decision Record, the pinned feature spec, the ticket contract, coding standards, existing code. The ladder is crew → its Ticket Captain → commissioning officers → user, and the user is
 reached for a conflict with a Decision Record, live external state no agent can coordinate, or authority
 the contract cannot supply.
 

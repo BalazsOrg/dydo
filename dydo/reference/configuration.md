@@ -84,7 +84,7 @@ than 90 days are pruned whatever the cap. See [CLI Commands](./dydo-commands.md#
 
 There is no Linear token, object schema, cache path, poll interval, webhook, or synchronization field in
 the active configuration. Linear owns Initiatives, Projects, tickets, FutureFeatures, optional Milestones and Cycles,
-along with live workflow state. Git owns Decisions, reviewed Project plans, guides, audits, assimilation
+along with live workflow state. Git owns Decisions, guides, audits, assimilation
 briefs, and changelog.
 
 ## Hook configuration

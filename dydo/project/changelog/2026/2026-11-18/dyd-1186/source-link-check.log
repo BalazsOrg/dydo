@@ -1,0 +1,224 @@
+Running as unit: run-p2784559-i157882807.scope; invocation ID: 0ab709e50bb84243a3d0513bed620647
+OK: ticket branch
+OK: isolated worktree root
+OK: posted base is an ancestor
+OK: no excluded-path edits
+OK: every edited path is owned documentation or its evidence
+OK: no source/runtime code or tests edited
+OK: exact eleven plan files deleted
+OK: plans index retained alone
+OK: principle statement and description match governing comment verbatim
+OK: principle citation and origin
+OK: cited axiom anchor exists
+OK: no abolished plan kind in live doc: README.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/files-off-limits.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/glossary.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/guides/_guides.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/guides/coding-standards.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/guides/testing-strategy.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/guides/working-tree-standard.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/index.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/_reference.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/about-dynadocs.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/dydo-commands.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/dydo-glossary.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/feature-spec-convention.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/working-specs/_working-specs.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/writing-docs.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/understand/_understand.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/understand/about.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/understand/architecture.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/welcome.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd141-capacity-evidence.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd141-capacity-spec.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd164-portable-wip/captain-packet-2026-09-11.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd164-portable-wip/specification.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd86-host-agent-settings-spec.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/PROGRESS.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/adoption-specification.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/implementation-producer-brief.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/README.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/cfg-probe/results.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/child-diagnosis-commands.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/child-diagnosis-research.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/physical-probe-commands.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/physical-probe-research.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/pdb-document-classification-evidence.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/showgenerated-marker-evidence.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/spec-review.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/specifier-return.md
+OK: no abolished plan kind in live doc: dydo/files-off-limits.md
+OK: no abolished plan kind in live doc: dydo/glossary.md
+OK: no abolished plan kind in live doc: dydo/guides/_guides.md
+OK: no abolished plan kind in live doc: dydo/guides/adding-a-command.md
+OK: no abolished plan kind in live doc: dydo/guides/coding-standards.md
+OK: no abolished plan kind in live doc: dydo/guides/customizing-roles.md
+OK: no abolished plan kind in live doc: dydo/guides/getting-started.md
+OK: no abolished plan kind in live doc: dydo/guides/orchestration-pitfalls.md
+OK: no abolished plan kind in live doc: dydo/guides/testing-strategy.md
+OK: no abolished plan kind in live doc: dydo/guides/troubleshooting.md
+OK: no abolished plan kind in live doc: dydo/guides/working-tree-standard.md
+OK: no abolished plan kind in live doc: dydo/guides/writing-good-briefs.md
+OK: no abolished plan kind in live doc: dydo/index.md
+OK: no abolished plan kind in live doc: dydo/law/_law.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/_dydo.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/attention.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/axioms.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/cases/readme.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/context.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/design.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/effort.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/retired.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/review.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/verification.md
+OK: no abolished plan kind in live doc: dydo/law/tech/_tech.md
+OK: no abolished plan kind in live doc: dydo/law/tech/axioms.md
+OK: no abolished plan kind in live doc: dydo/law/tech/cases/readme.md
+OK: no abolished plan kind in live doc: dydo/law/tech/retired.md
+OK: no abolished plan kind in live doc: dydo/reference/_reference.md
+OK: no abolished plan kind in live doc: dydo/reference/about-dynadocs.md
+OK: no abolished plan kind in live doc: dydo/reference/configuration.md
+OK: no abolished plan kind in live doc: dydo/reference/coverage-tools.md
+OK: no abolished plan kind in live doc: dydo/reference/dydo-commands.md
+OK: no abolished plan kind in live doc: dydo/reference/dydo-glossary.md
+OK: no abolished plan kind in live doc: dydo/reference/feature-spec-convention.md
+OK: no abolished plan kind in live doc: dydo/reference/linear-workspace-standard.md
+OK: no abolished plan kind in live doc: dydo/reference/working-specs/_working-specs.md
+OK: no abolished plan kind in live doc: dydo/reference/working-specs/dydo-3-6-0/safe-feature-merging.md
+OK: no abolished plan kind in live doc: dydo/reference/writing-docs.md
+OK: no abolished plan kind in live doc: dydo/understand/_understand.md
+OK: no abolished plan kind in live doc: dydo/understand/about.md
+OK: no abolished plan kind in live doc: dydo/understand/architecture.md
+OK: no abolished plan kind in live doc: dydo/understand/axioms.md
+OK: no abolished plan kind in live doc: dydo/understand/control-flow.md
+OK: no abolished plan kind in live doc: dydo/understand/documentation-model.md
+OK: no abolished plan kind in live doc: dydo/understand/guard-system.md
+OK: no abolished plan kind in live doc: dydo/understand/scaffold-and-customization.md
+OK: no abolished plan kind in live doc: dydo/understand/task-lifecycle.md
+OK: no abolished plan kind in live doc: dydo/understand/work-model.md
+OK: no abolished plan kind in live doc: dydo/welcome.md
+OK: no contradictory one-level or sibling-only rule: dydo/guides/working-tree-standard.md
+OK: no hard cap: dydo/guides/working-tree-standard.md
+OK: officer above: dydo/guides/working-tree-standard.md
+OK: too big, re-cut: dydo/guides/working-tree-standard.md
+OK: no contradictory one-level or sibling-only rule: Scaffold/dydo/guides/working-tree-standard.md
+OK: no hard cap: Scaffold/dydo/guides/working-tree-standard.md
+OK: officer above: Scaffold/dydo/guides/working-tree-standard.md
+OK: too big, re-cut: Scaffold/dydo/guides/working-tree-standard.md
+OK: no contradictory one-level or sibling-only rule: dydo/understand/control-flow.md
+OK: no hard cap: dydo/understand/control-flow.md
+OK: officer above: dydo/understand/control-flow.md
+OK: too big, re-cut: dydo/understand/control-flow.md
+OK: no contradictory one-level or sibling-only rule: dydo/reference/linear-workspace-standard.md
+OK: no hard cap: dydo/reference/linear-workspace-standard.md
+OK: officer above: dydo/reference/linear-workspace-standard.md
+OK: too big, re-cut: dydo/reference/linear-workspace-standard.md
+OK: no contradictory one-level or sibling-only rule: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: no hard cap: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: officer above: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: too big, re-cut: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: self-similar: dydo/guides/working-tree-standard.md
+OK: admiral → captain → sub-captain → second-order sub-captain → crew: dydo/guides/working-tree-standard.md
+OK: without a separate pilot: dydo/guides/working-tree-standard.md
+OK: self-similar: Scaffold/dydo/guides/working-tree-standard.md
+OK: admiral → captain → sub-captain → second-order sub-captain → crew: Scaffold/dydo/guides/working-tree-standard.md
+OK: without a separate pilot: Scaffold/dydo/guides/working-tree-standard.md
+OK: self-similar: dydo/understand/control-flow.md
+OK: admiral → captain → sub-captain → second-order sub-captain → crew: dydo/understand/control-flow.md
+OK: without a separate pilot: dydo/understand/control-flow.md
+OK: canonical twin receives identical amended lines: dydo/guides/working-tree-standard.md
+OK: canonical twin receives identical amended lines: dydo/reference/dydo-glossary.md
+OK: canonical twin receives identical amended lines: dydo/reference/about-dynadocs.md
+OK: canonical twin receives identical amended lines: dydo/reference/feature-spec-convention.md
+OK: canonical twin receives identical amended lines: dydo/reference/linear-workspace-standard.md
+OK: historical Git permalink object: dydo/project/changelog/2026/2026-09-25/dydo-3-1-0-linear-project-map.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/visual-linear-project-map.md
+OK: historical Git permalink object: dydo/project/decisions/045-flow-map-hats-review-tiers-and-working-tree-contract.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-skill-craftsmanship-restoration.md
+OK: historical Git permalink object: dydo/project/decisions/046-executable-specifications-specifier-and-commit-addressed-hops.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-skill-harmonization.md
+OK: historical Git permalink object: dydo/project/decisions/047-supersymmetry-hop-statuses-merge-issues-and-the-release-protocol.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-skill-harmonization.md
+OK: historical Git permalink object: dydo/project/decisions/052-dydo-map-read-only-linear-view.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/visual-linear-project-map.md
+OK: historical Git permalink object: dydo/project/decisions/052-dydo-map-read-only-linear-view.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/visual-linear-project-map.md
+OK: historical Git permalink object: dydo/project/decisions/055-native-agent-memory-off-and-guarded.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-skill-craftsmanship-restoration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.json -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.json -> 1cf75a219e4a7a30397174e0ab79f4aff1326547:dydo/project/plans/dydo-3-linear-native-work-model.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.json -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.json -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.json -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.json -> cc0198ac:dydo/project/plans/dydo-3-notion-runtime-removal.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.json -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.md -> 1cf75a219e4a7a30397174e0ab79f4aff1326547:dydo/project/plans/dydo-3-linear-native-work-model.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.md -> cc0198ac:dydo/project/plans/dydo-3-notion-runtime-removal.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-bootstrap.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-pm-dogfood-assimilation.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-pm-dogfood.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-pm-dogfood-assimilation.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-pm-dogfood.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-work-model-assimilation.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-native-work-model.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-work-model.md -> 1cf75a219e4a7a30397174e0ab79f4aff1326547:dydo/project/plans/dydo-3-linear-native-work-model.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-work-model.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-native-work-model.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-linear-work-model.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-notion-freeze.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-notion-runtime-removal.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-notion-freeze.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-linear-migration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-skill-craftsmanship-assimilation.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-skill-craftsmanship-restoration.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-skill-model-simplification-assimilation.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-skill-model-simplification.md
+OK: historical Git permalink object: dydo/project/migrations/3.0-v2-corpus-migration-assimilation.md -> b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c:dydo/project/plans/dydo-3-v2-corpus-migration.md
+OK: no excluded skill/claim deleted-plan inbound link sites
+Validated historical plan permalink occurrences: 33
+OK: historical meaning preserved; link-only diff: dydo/project/changelog/2026/2026-09-25/dydo-3-1-0-linear-project-map.md
+OK: historical meaning preserved; link-only diff: dydo/project/decisions/045-flow-map-hats-review-tiers-and-working-tree-contract.md
+OK: historical meaning preserved; link-only diff: dydo/project/decisions/046-executable-specifications-specifier-and-commit-addressed-hops.md
+OK: historical meaning preserved; link-only diff: dydo/project/decisions/047-supersymmetry-hop-statuses-merge-issues-and-the-release-protocol.md
+OK: historical meaning preserved; link-only diff: dydo/project/decisions/052-dydo-map-read-only-linear-view.md
+OK: historical meaning preserved; link-only diff: dydo/project/decisions/055-native-agent-memory-off-and-guarded.md
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-linear-bootstrap.json
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-linear-bootstrap.md
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-linear-pm-dogfood-assimilation.md
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-linear-work-model-assimilation.md
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-linear-work-model.md
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-notion-freeze.md
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-skill-craftsmanship-assimilation.md
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-skill-model-simplification-assimilation.md
+OK: historical meaning preserved; link-only diff: dydo/project/migrations/3.0-v2-corpus-migration-assimilation.md
+OK: approval-batch site exists: skills/roles/README.md:23
+OK: approval-batch site exists: skills/roles/officers/admiral/SKILL.md:27
+OK: approval-batch site exists: skills/roles/officers/admiral/SKILL.md:59
+OK: approval-batch site exists: skills/roles/officers/admiral/SKILL.md:88
+OK: approval-batch site exists: skills/roles/officers/admiral/SKILL.md:96
+OK: approval-batch site exists: skills/roles/officers/admiral/SKILL.md:138
+OK: approval-batch site exists: skills/roles/officers/chief-of-staff/SKILL.md:45
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/SKILL.md:18
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/SKILL.md:65
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/SKILL.md:142
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/resources/inquisition.md:14
+OK: approval-batch site exists: skills/roles/crew/code-writer/SKILL.md:15
+OK: approval-batch site exists: skills/roles/crew/docs-writer/SKILL.md:12
+OK: approval-batch site exists: skills/roles/crew/research/SKILL.md:33
+OK: approval-batch site exists: skills/roles/crew/research/SKILL.md:43
+OK: approval-batch site exists: skills/roles/crew/inquisitor/resources/read.md:11
+OK: approval-batch site exists: skills/roles/crew/inquisitor/resources/read.md:19
+OK: approval-batch site exists: skills/roles/crew/reviewer/SKILL.md:3
+OK: approval-batch site exists: skills/roles/crew/reviewer/SKILL.md:30
+OK: approval-batch site exists: skills/roles/crew/reviewer/SKILL.md:69
+OK: approval-batch site exists: skills/roles/crew/reviewer/resources/project-plan.md:1
+OK: approval-batch site exists: skills/roles/crew/reviewer/resources/project-plan.md:3
+OK: approval-batch site exists: skills/roles/crew/reviewer/resources/project-plan.md:35
+OK: approval-batch site exists: skills/roles/crew/reviewer/resources/code.md:6
+OK: approval-batch site exists: skills/roles/crew/reviewer/resources/code.md:11
+OK: approval-batch site exists: skills/roles/crew/reviewer/resources/docs.md:13
+OK: approval-batch site exists: skills/roles/crew/reviewer/resources/spec.md:5
+OK: approval-batch site exists: skills/roles/crew/reviewer/resources/merge.md:31
+OK: approval-batch site exists: skills/productivity/to-project/SKILL.md:21
+OK: approval-batch site exists: skills/productivity/to-ticket/SKILL.md:41
+OK: approval-batch site exists: skills/productivity/to-ticket/SKILL.md:116
+OK: approval-batch site exists: skills/productivity/wayfinder/SKILL.md:148
+OK: approval-batch site exists: skills/productivity/wayfinder/SKILL.md:199
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/SKILL.md:31
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/SKILL.md:93
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/SKILL.md:96
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/SKILL.md:73
+OK: approval-batch site exists: skills/roles/officers/ticket-captain/SKILL.md:99
+Approval-batch inventory rows: 38
+Source/link checks complete.

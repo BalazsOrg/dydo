@@ -19,7 +19,7 @@ officer never becomes another officer ([Decision 050](../project/decisions/050-o
 | Stage | Who | Output | Gate |
 |---|---|---|---|
 | Think | any session, loading co-thinker | ripe intent, and a Decision Record when the choice earns one | - |
-| Chart and plan a Project | the map holder, the user or an invoked admiral, with wayfinder | the map in the Linear Project, first tickets, Questions; a repository plan only for a cross-cutting architecture plan | project-plan review of that plan, then user approval |
+| Chart and plan a Project | the map holder, the user or an invoked admiral, with wayfinder | the map in the Linear Project, first tickets, Questions | user approval of the charted route |
 | Make a ticket exact | ticket-captain, through its compact acceptance contract | a just-in-time contract with no hidden implementation decisions; the route stays the writer's | optional spec review |
 | Implement | ticket-captain | a ticket branch, a PR into the feature branch, or into main for an atomic ticket, evidence on the ticket | reviewer PASS |
 | Coordinate | the map holder, the user or an invoked admiral | captains in flight, wired Merge Sub-tickets, plan amendments | each captain directs its own merge review |
@@ -59,7 +59,7 @@ the inbox; an admiral wakes on a captain's return, the user's word or its schedu
 |---|---|
 | Initiatives, Projects, tickets, optional Milestones and Cycles | Linear |
 | Status, priority, assignee, dependencies, updates, review state | Linear |
-| Decisions, reviewed architecture plans, guides, temporary feature specs | dydo/Git |
+| Decisions, guides, temporary feature specs | dydo/Git |
 | Audit, inquisition, migration, and assimilation evidence | dydo/Git |
 | Release tags and changelog | Git |
 | FutureFeatures and their promotion state | Linear |
@@ -75,11 +75,9 @@ its official MCP, UI, API, and integrations.
 
 No implementation begins without a contract another agent can review independently.
 
-- One atomic ticket can be its own reviewed contract. Cross-cutting architecture gets a reviewed
-  repository plan; shared multi-ticket behavior may use a [feature spec](../reference/feature-spec-convention.md); a Project the admiral scaffolds always has one ([DR 053](../project/decisions/053-temporary-feature-specs.md)).
-- The plan carries one `linear-project` URL, and its Linear Project links back to the published plan.
-- An implementation ticket under a Project plan records the plan's exact governing commit before
-  execution, including applicable feature-spec commit and sections; a review pins the ticket's
+- One atomic ticket can be its own reviewed contract. Shared multi-ticket behavior may use a [feature spec](../reference/feature-spec-convention.md); a Project the admiral scaffolds always has one ([DR 053](../project/decisions/053-temporary-feature-specs.md)).
+- An implementation ticket records governing Decisions and applicable feature-spec commit and
+  sections before execution; a review pins the ticket's
   contract as its description as of a Linear `updatedAt`.
 - The two planning resolutions, the fields a ticket must carry, and the Question Ticket that clears
   fog are in the [Linear Ticket Lifecycle](./task-lifecycle.md).
@@ -90,11 +88,11 @@ to a ticket. They are not extra levels in the work graph.
 ## Review and inquisition
 
 1. **Ticket review** - a fresh reviewer with the rubric the candidate targets: code or docs
-   before merge; `project-plan` before Project approval; `spec` on the contract before any code
+   before merge; `spec` on the contract before any code
    only for one risk the Ticket Captain records in the contract.
 2. **Merge review** - a reviewer with the `merge` rubric after every merge that has a Merge Ticket
    (a lane into its parent, a ticket into the feature, the landing): a mechanical spot check
-   scaled to what landed, which at the final feature merge also proves governing plan and feature-spec acceptance criteria.
+   scaled to what landed, which at the final feature merge also proves Project and feature-spec acceptance criteria.
    An atomic ticket's merge into main has none; its ticket review PASS, green CI and the user's
    click stand in its place.
 3. **Inquisition** - user-confirmed and captain-conducted: the captain maps the landed work into
@@ -108,8 +106,7 @@ to a ticket. They are not extra levels in the work graph.
    ([DR 059](../project/decisions/059-inquisition-rebuilt-area-map-three-phases-rounds-until-clean.md)).
    It catches what got through; it never proves zero defects.
 
-Every reviewer verdict is the same **review block**: a Project update for a plan, on the Merge
-Ticket for a merge, otherwise on its ticket, and in the PR body when one exists; its one-line form is locked in the
+Every reviewer verdict is the same **review block**: on the Merge Ticket for a merge, otherwise on its ticket, and in the PR body when one exists; its one-line form is locked in the
 [Linear Workspace Standard](../reference/linear-workspace-standard.md#communication-and-evidence). Independence here is independence of *context*: the
 reviewer arrives fresh and reads the candidate itself rather than the story told about it. Every
 finding carries a [severity](../reference/dydo-glossary.md), `blocker`, `should` or `nit`, and only
@@ -130,7 +127,7 @@ Use a branch-following GitHub URL for current human navigation, and an exact com
 governing contract or historical proof. The ticket branch carries its Linear ticket key, so Linear's
 GitHub integration attaches branch and PR to the ticket natively; the
 [Working-Tree Standard](../guides/working-tree-standard.md) is the procedure. Durable knowledge
-discovered during work is extracted to a Decision, guide, Project plan, audit, or assimilation brief
+discovered during work is extracted to a Decision, guide, audit, or assimilation brief
 rather than left in a comment thread or a session transcript.
 
 ## FutureFeatures

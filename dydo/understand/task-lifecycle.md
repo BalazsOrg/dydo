@@ -11,8 +11,8 @@ a ticket carries, how it is planned, claimed, reviewed and merged, and the user'
 ## Two kinds of ticket
 
 An **implementation ticket** carries five required fields - outcome, owned paths, blockers, exact
-gates, base branch - plus the relevant context, and it links the governing Decision and the exact plan
-commit when a Project plan applies, plus applicable feature-spec commit and sections. Use a
+gates, base branch - plus the relevant context, and it links the governing Decisions and
+applicable feature-spec commit and sections. Use a
 Sub-ticket only when the child needs its own status, owner,
 dependency, or review evidence; a checklist is enough for mechanical steps that cannot progress
 independently.
@@ -20,7 +20,7 @@ independently.
 A **Question Ticket** (Linear Type `Question`, body under `## Question`) is an open question that
 blocks planning or implementation and is too big or too uncertain to settle inline. The rule is *fog →
 discovery → Question Ticket*: an agent in fog first runs a bounded discovery - the Decision index, the
-Project plan, the ticket's own links, the glossary, the code - and only when that comes up empty does
+feature specs, the ticket's own links, the glossary, the code - and only when that comes up empty does
 the question become a ticket that records what was searched and blocks every named plan or
 implementation ticket awaiting its answer. A crew member raises a hand to its captain. Captains file
 local Question Sub-tickets; the Project's map holder, the user or an invoked admiral, alone files
@@ -36,10 +36,8 @@ Decision Records carry decisions, and the two are linked rather than copied.
 - **Project** - low resolution: the Linear Project and its tickets are the plan, charted by the map
   holder with `wayfinder`: destination, the first pickable tracer-bullet tickets, and fog written
   down in `## Not yet specified`, with blocking Question Tickets instead of a pretended complete
-  route. Only a cross-cutting architecture plan earns a repository plan file, written by the
-  map holder; a fresh reviewer passes it against `project-plan` before user approval, and dated
-  amendments return only changes to destination, scope, acceptance criteria, or governing
-  architecture for fresh review and user approval. Shared multi-ticket behavior may use a
+  route. The user approves the charted route; changes to destination, scope, acceptance
+  criteria, or governing architecture return for user approval. Shared multi-ticket behavior may use a
   [feature spec](../reference/feature-spec-convention.md); reconcile affected contracts when intent shifts.
 - **Ticket** - high resolution, just in time: the Ticket Captain's compact acceptance contract on the
   parent ticket or a direct lane Sub-ticket, with its scenarios where the ticket carries Gherkin, owned
@@ -89,14 +87,15 @@ commits and fresh reviews. From either verdict, the captain files each should as
 records each nit as one line on the ticket ([severity](../reference/dydo-glossary.md)). Merge FAIL
 fixes integration defects inside Merge. A source defect is reverted there, Merge closes Canceled
 and source returns to Implementing; if a later merge depends on it, a following fix ticket replaces
-the revert. Plan review has its own two-round cap before the user chooses.
+the revert.
 
 ## Raising a hand
 
-The ladder runs crew → Ticket Captain → an invoked admiral → user when one holds the map; without an
-invoked admiral, the Ticket Captain escalates straight to the user, already the map holder. Agents
+The ladder runs crew → its Ticket Captain → commissioning officers → user. A sub-captain
+raises a hand to the captain above it; a top-level captain reaches an invoked admiral, or the
+user as Project map holder when no admiral is invoked. Agents
 settle operational conflicts themselves by precedence, highest first: the user's live instruction, a
-Decision Record, the reviewed architecture plan, the feature spec (both pinned), the ticket contract,
+Decision Record, the feature spec (pinned), the ticket contract,
 coding standards, existing code. The user
 is reached only for a conflict with a Decision Record - is it truth, or is it obsolete? - for live
 external state agents cannot coordinate, or for authority the contract cannot supply.
@@ -113,7 +112,7 @@ user's own return to the board when none is invoked - picks up blocker-cleared w
 
 ## Where the user is asked
 
-Project-plan approval; Questions and HITL work; an escalation that survived the ladder; each
+Project route approval; Questions and HITL work; an escalation that survived the ladder; each
 Milestone's Walkthrough, where only the walking skeleton's verdict holds back the work built on it,
 except overnight; confirming an Inquisition and its commission, a model per phase and the swarm
 width; the feature → main merge-commit click; and the landing's Walkthrough after it. A Milestone's

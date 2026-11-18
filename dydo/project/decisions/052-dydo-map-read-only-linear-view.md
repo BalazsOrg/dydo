@@ -13,7 +13,7 @@ participants: [balazs, Claude admiral]
 the user's `LINEAR_API_KEY` when the page loads. It never writes, polls, subscribes to or mirrors
 Linear. The 2026-10-04 amendment below permits disposable saved maps across process restarts. [DR 044](./044-linear-canonical-pm-and-dydo-knowledge-boundary.md)'s
 ownership rule stands: Linear owns live work, and this command only shows it. Settled by the human for
-the [Visual Linear project map](../plans/visual-linear-project-map.md) Project, 2026-09-25.
+the [Visual Linear project map](https://github.com/BalazsOrg/dydo/blob/b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c/dydo/project/plans/visual-linear-project-map.md) Project, 2026-09-25.
 
 ---
 
@@ -141,4 +141,4 @@ DR 044's canonical ownership and its no-mirror rule are unchanged.
 - [Adding a Command](../../guides/adding-a-command.md)
 - [Troubleshooting](../../guides/troubleshooting.md)
 - [DynaDocs](../../reference/about-dynadocs.md)
-- [Visual Linear project map](../plans/visual-linear-project-map.md)
+- [Visual Linear project map](https://github.com/BalazsOrg/dydo/blob/b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c/dydo/project/plans/visual-linear-project-map.md)
