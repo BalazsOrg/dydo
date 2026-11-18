@@ -74,7 +74,7 @@ public class SkillBuildWriteTests
         var (exit, _, error) = root.Run(DemoModel.With(typeof(DemoClash)));
 
         Assert.Equal(1, exit);
-        Assert.StartsWith("SkillBuild failed: demo: claim:DemoClash.SameOrder takes order 1", error);
+        Assert.StartsWith($"SkillBuild failed: demo: claim:{nameof(DemoClash)}.{nameof(DemoClash.SameOrder)} takes order 1", error);
         Assert.Empty(root.Files());
     }
 
