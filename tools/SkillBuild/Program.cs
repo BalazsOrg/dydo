@@ -1,23 +1,30 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary><c>dotnet run --project tools/SkillBuild</c>, from the repository root.</summary>
+/// <summary>
+/// <c>dotnet run --project tools/SkillBuild</c>, from the repository root, writes the production
+/// model's built files; <c>-- map</c> prints the line-to-claim map instead (K23) and writes nothing.
+/// </summary>
 public static class Program
 {
-    public static int Main() => Run(Directory.GetCurrentDirectory(), Console.Error);
+    public static int Main(string[] args) =>
+        Run(ProductionModel.Model, Directory.GetCurrentDirectory(), args, Console.Out, Console.Error);
 
-    public static int Run(string root, TextWriter error)
+    public static int Run(Model model, string root, string[] args, TextWriter output, TextWriter error)
     {
-        var claims = Path.Combine(root, "claims");
+        if (args is not ([] or ["map"]))
+        {
+            error.WriteLine("usage: dotnet run --project tools/SkillBuild [-- map]");
+            return 2;
+        }
         try
         {
-            var tree = SkillBuilder.Build(File.ReadAllBytes(Path.Combine(claims, "inventory", "claims.json")),
-                File.ReadAllBytes(Path.Combine(claims, "carriers.json")));
-            BuiltTree.Write(Path.Combine(claims, "built"), tree);
+            var tree = SkillBuilder.Build(model);
+            if (args.Length == 0) tree.Write(root);
+            else foreach (var line in tree.Map) output.WriteLine(line);
             return 0;
         }
-        catch (Exception failure)
+        catch (InvalidDataException failure)
         {
-            if (failure is not (InvalidDataException or IOException)) throw;
             error.WriteLine($"SkillBuild failed: {failure.Message}");
             return 1;
         }

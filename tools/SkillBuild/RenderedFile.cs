@@ -1,7 +1,7 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>A built file's text and the provenance of each prose line in it.</summary>
-internal sealed record RenderedFile(string Text, IReadOnlyList<MapEntry> Map)
+/// <summary>A built file, named relative to its carrier's folder, with the claim-stating lines in it.</summary>
+internal sealed record RenderedFile(string Local, string Text, IReadOnlyList<(int Line, string Text, Placed Placed)> Stated)
 {
     public int LineCount => Text.Count(character => character == '\n');
 }

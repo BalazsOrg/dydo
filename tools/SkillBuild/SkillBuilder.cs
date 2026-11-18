@@ -1,51 +1,39 @@
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// The build: claims.json and carriers.json bytes in, the built tree out, keyed by path under
-/// <c>claims/built/</c>. Any missing or inconsistent input throws <see cref="InvalidDataException"/>;
-/// the build never emits a silent empty.
+/// The build: a model in, every built file out, keyed by its path under the repository root, with
+/// the map of each claim-stating line. A model the rules reject throws <see cref="InvalidDataException"/>;
+/// the build never emits a partial tree.
 /// </summary>
 public static class SkillBuilder
 {
-    public const string MapPath = "claims.map.json";
-
-    private static readonly UTF8Encoding Utf8 = new(encoderShouldEmitUTF8Identifier: false);
-
-    public static IReadOnlyDictionary<string, byte[]> Build(byte[] claimsJson, byte[] carriersJson)
+    public static BuiltTree Build(Model model)
     {
-        var inventory = Read<ClaimInventory>(claimsJson, "claims.json", JsonUnmappedMemberHandling.Skip);
-        var manifest = Read<CarrierManifest>(carriersJson, "carriers.json", JsonUnmappedMemberHandling.Disallow);
-        if (manifest.Base != inventory.Base)
-            throw new InvalidDataException($"carriers.json: base {manifest.Base} is not the inventory's base {inventory.Base}");
-        var specs = ManifestFiles.Read(manifest);
-        var units = Placement.Place(inventory.Claims, specs.ToDictionary(spec => spec.File.Path, spec => spec.Carrier, StringComparer.Ordinal));
-        var files = new SortedDictionary<string, RenderedFile>(StringComparer.Ordinal);
-        foreach (var spec in specs) files.Add(spec.File.Path, FileRenderer.Render(spec, units[spec.File.Path]));
-        var tree = files.ToDictionary(file => file.Key, file => Utf8.GetBytes(file.Value.Text), StringComparer.Ordinal);
-        tree.Add(MapPath, Utf8.GetBytes(ProvenanceMap.Render(files)));
-        return tree;
+        var files = new SortedDictionary<string, string>(StringComparer.Ordinal);
+        var map = new List<MapLine>();
+        foreach (var (skill, lines) in ModelIndex.LinesBySkill(model))
+        {
+            var rendered = SkillRenderer.Render(skill, new SkillLayout(skill, lines)).ToArray();
+            StatesEachClaimOnce(skill, lines, rendered);
+            foreach (var file in rendered)
+                foreach (var path in skill.PathsOf(file.Local))
+                {
+                    files.Add(path, file.Text);
+                    map.AddRange(file.Stated.Select(stated => new MapLine(path, stated.Line, stated.Text, stated.Placed.Claims)));
+                }
+        }
+        return new BuiltTree(files, map);
     }
 
-    private static T Read<T>(byte[] json, string name, JsonUnmappedMemberHandling unmapped)
+    // K4: each claim a skill carries is stated by exactly one line of its built files; a combined
+    // line counts once for each claim it names.
+    private static void StatesEachClaimOnce(SkillSpec skill, IEnumerable<Placed> carried, IEnumerable<RenderedFile> rendered)
     {
-        var options = new JsonSerializerOptions(JsonSerializerDefaults.Web)
-        {
-            AllowDuplicateProperties = false,
-            RespectNullableAnnotations = true,
-            RespectRequiredConstructorParameters = true,
-            UnmappedMemberHandling = unmapped
-        };
-        try
-        {
-            return JsonSerializer.Deserialize<T>(json, options) ?? throw new InvalidDataException($"{name}: the document is null");
-        }
-        catch (JsonException error)
-        {
-            throw new InvalidDataException($"{name}: {error.Message}", error);
-        }
+        var stated = rendered.SelectMany(file => file.Stated.Select(line => line.Placed)).Distinct()
+            .SelectMany(placed => placed.Claims).CountBy(id => id).ToDictionary();
+        foreach (var id in carried.SelectMany(placed => placed.Claims).Distinct())
+            if (stated.GetValueOrDefault(id) != 1)
+                throw new InvalidDataException(
+                    $"{skill.Name} states claim:{id} {stated.GetValueOrDefault(id)} times; a skill states each claim it carries on exactly one line");
     }
 }

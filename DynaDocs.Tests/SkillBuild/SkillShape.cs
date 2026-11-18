@@ -20,6 +20,10 @@ internal static partial class SkillShape
     // D8 keeps a resource reached from another resource within that preview, so any read is a whole read.
     public const int ResourceLimit = 100;
 
+    // DYD-968 keeps a skill folder to its runtime files; K26 keeps the agents/openai.yaml Codex reads.
+    public const string FolderRule =
+        "a skill folder holds only SKILL.md, resources/*.md and agents/openai.yaml, runtime files and never tests or fixtures (DYD-968, K26)";
+
     [GeneratedRegex(@"\]\((?<target>[^)\s#]+)(?:#[^)\s]*)?\)")]
     private static partial Regex Link();
 
@@ -41,9 +45,12 @@ internal static partial class SkillShape
             var folder = spine[..^"SKILL.md".Length];
             var linked = Links(spine, tree[spine]);
             foreach (var path in tree.Keys.Where(path => path != spine && path.StartsWith(folder, StringComparison.Ordinal)))
-                violations.AddRange(path[folder.Length..] is var local && ResourcePath().IsMatch(local)
-                    ? ResourceViolations(tree, path, linked)
-                    : [$"{path}: a skill folder holds only SKILL.md and resources/*.md, runtime resources and never tests or fixtures (DYD-968)"]);
+                violations.AddRange(path[folder.Length..] switch
+                {
+                    var local when ResourcePath().IsMatch(local) => ResourceViolations(tree, path, linked),
+                    "agents/openai.yaml" => [],
+                    _ => [$"{path}: {FolderRule}"]
+                });
         }
         return violations;
     }

@@ -173,6 +173,12 @@
       ]
     },
     {
+      "module": "Commands/GuardCommand.BuiltFileNudge.cs",
+      "tests": [
+        "DynaDocs.Tests/Integration/GuardBuiltFileNudgeTests.cs"
+      ]
+    },
+    {
       "module": "Commands/GuardCommand.Refusal.cs",
       "tests": [
         "DynaDocs.Tests/Integration/GuardRefusalContractTests.cs"
@@ -1113,16 +1119,28 @@
       "tests": ["DynaDocs.Tests/Statechart/StatechartReadyTests.cs"]
     },
     {
-      "module": "tools/SkillBuild/FileRenderer.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
-    },
-    {
-      "module": "tools/SkillBuild/Placement.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
-    },
-    {
       "module": "tools/SkillBuild/SkillBuilder.cs",
-      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillModelRulesTests.cs", "DynaDocs.Tests/SkillBuild/MigrationFixtureTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/SkillLayout.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillModelRulesTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/SkillRenderer.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SpineLayoutTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/BuiltTree.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildWriteTests.cs", "DynaDocs.Tests/SkillBuild/SkillBuildGoldenTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/Program.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/SkillBuildWriteTests.cs"]
+    },
+    {
+      "module": "tools/SkillBuild/StrayClaims.cs",
+      "tests": ["DynaDocs.Tests/SkillBuild/StrayClaimsTests.cs"]
     },
     {
       "module": "Services/SafeDeleteRepository.cs",

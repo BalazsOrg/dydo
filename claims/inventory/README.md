@@ -1,9 +1,11 @@
 # Claim inventory
 
-Raw material for the skill builder (DYD-1081): every sentence of 35 skill and doc files mapped to the
-rule it states, the rules grouped into claims, drifted copies side by side. It is step 1 of Grilling A
-D13, under D14: a faithful-enough source, not a faithful translation, and no permanent faithfulness
-test. Nothing here is a skill; edit no skill or doc prose while inventorying.
+Every sentence of 35 skill and doc files mapped to the rule it states, the rules grouped into claims,
+drifted copies side by side. It is one-time input to the C# claim model's rebuild (K2) and the
+checklist for the 4.0.0 push (K19). Nothing in the build reads it: the model is static C# classes in
+`tools/SkillBuild`, and DYD-1196 translated `claims.json` once into the builder's test fixture. It is
+a faithful-enough source, not a faithful translation, and no permanent faithfulness test (Grilling A
+D13, D14). Nothing here is a skill; edit no skill or doc prose while inventorying.
 
 ## Scope at base `dee4861a`
 
@@ -56,7 +58,7 @@ The checker cuts each file into units; you never cut, edit or reorder them.
    one claim with a `drift` entry. Contradictions, rules with no home and gaps go in `findings`.
 3. `claims.json`: `check.mjs render > claims.json`, never hand-edited. Each claim carries its prose per
    carrier (the skill or doc it came from), with source `path:line`, unit, statement and a `combined`
-   flag. DYD-1081 reads this file.
+   flag. Only DYD-1196's one-time, uncommitted translation read it.
 
 ## The rule test
 
