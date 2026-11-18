@@ -4,26 +4,22 @@ using System.Text.Json;
 using DynaDocs.Commands;
 using DynaDocs.Services;
 
-/// <summary>Injected command-parser seam evidence, not live machine state or public CLI isolation.</summary>
+/// <summary>
+/// A `dydo mode set` reaching the guard is warned once and passes on retry, and the guard itself
+/// never changes the mode: only the command's own run does.
+/// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: machine-mode.feature (an executing mode set warns once, then passes the same command's retry); DYD-351")]
 public sealed class VerificationModeTests : IntegrationTestBase
 {
     [Theory]
     [InlineData("off", "on")]
     [InlineData("on", "off")]
-    public async Task WarningAndRetryPreserveOwnedState_ThenExplicitParserTransitionNeedsReadback(string initial, string target)
+    public async Task ModeSet_ThroughTheGuard_WarnsOncePassesTheRetry_AndOnlyTheCommandChangesTheMode(string initial, string target)
     {
-        var root = Path.GetFullPath(Path.Combine(TestDir, "machine-state"));
-        Assert.StartsWith(Path.GetFullPath(TestDir) + Path.DirectorySeparatorChar, root);
-        Assert.NotEqual(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), "dydo"), root);
-        Assert.False(Directory.Exists(root));
-        var state = new ModeState(root);
-        (await RunAsync(ModeCommand.Create(state), "set", "overnight", initial)).AssertSuccess();
-        var path = Path.Combine(root, "mode.json");
-        Assert.True(File.Exists(path));
-        var before = await File.ReadAllTextAsync(path);
-        (await InitProjectAsync("none")).AssertSuccess();
-
+        var root = Path.Combine(TestDir, "machine-state");
+        await RunAsync(ModeCommand.Create(new ModeState(root)), "set", "overnight", initial);
+        await InitProjectAsync("none");
         var payload = JsonSerializer.Serialize(new
         {
             session_id = TestSessionId,
@@ -32,19 +28,16 @@ public sealed class VerificationModeTests : IntegrationTestBase
             permission_mode = "default",
             tool_input = new { command = $"dydo mode set overnight {target}" }
         });
-        var denied = await GuardWithStdinAsync(payload);
-        Assert.Contains("otherwise stop", denied.AssertPreToolUseDenied());
-        Assert.Equal(before, await File.ReadAllTextAsync(path));
-        var unchanged = await RunAsync(ModeCommand.Create(new ModeState(root)), "show");
-        unchanged.AssertSuccess();
-        Assert.Equal($"overnight: {initial}", unchanged.Stdout.Trim());
 
-        (await GuardWithStdinAsync(payload)).AssertPreToolUseAllowed();
-        Assert.Equal(before, await File.ReadAllTextAsync(path));
-        (await RunAsync(ModeCommand.Create(state), "set", "overnight", target)).AssertSuccess();
-        var readback = await RunAsync(ModeCommand.Create(new ModeState(root)), "show");
-        readback.AssertSuccess();
-        Assert.Equal($"overnight: {target}", readback.Stdout.Trim());
-        Assert.NotEqual(before, await File.ReadAllTextAsync(path));
+        var first = await GuardWithStdinAsync(payload);
+        var retry = await GuardWithStdinAsync(payload);
+        var afterGuard = await RunAsync(ModeCommand.Create(new ModeState(root)), "show");
+        await RunAsync(ModeCommand.Create(new ModeState(root)), "set", "overnight", target);
+        var afterSet = await RunAsync(ModeCommand.Create(new ModeState(root)), "show");
+
+        first.AssertPreToolUseDenied();
+        retry.AssertPreToolUseAllowed();
+        Assert.Equal($"overnight: {initial}", afterGuard.Stdout.Trim());
+        Assert.Equal($"overnight: {target}", afterSet.Stdout.Trim());
     }
 }

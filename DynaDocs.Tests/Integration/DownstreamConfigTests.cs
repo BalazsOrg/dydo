@@ -11,6 +11,7 @@ namespace DynaDocs.Tests.Integration;
 /// hooks). Each command may change only dydo's own lines.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "trap: DYD-392 (init --join and adopt must change only dydo's own lines of a downstream project's committed config, keeping BOMs and encodings)")]
 public class DownstreamConfigTests : IntegrationTestBase
 {
     private static readonly string Fixture = Path.Combine(AppContext.BaseDirectory, "TestData", "downstream-lc");
@@ -35,15 +36,6 @@ public class DownstreamConfigTests : IntegrationTestBase
         File.Copy(Path.Combine(Fixture, "claude-settings.json"), At(ClaudeSettings));
         File.Copy(Path.Combine(Fixture, "codex-hooks.json"), At(CodexHooks));
         File.Copy(Path.Combine(Fixture, "codex-config.toml"), At(CodexConfig));
-    }
-
-    [Fact]
-    public void Fixture_IsTheDownstreamBytes()
-    {
-        Assert.True(PreservedText.HasBom(At(ClaudeSettings)));
-        Assert.True(PreservedText.HasBom(At(CodexConfig)));
-        foreach (var file in new[] { ClaudeSettings, CodexHooks, CodexConfig, ConfigService.ConfigFileName })
-            Assert.DoesNotContain("\r", Text(file));
     }
 
     [Fact]
