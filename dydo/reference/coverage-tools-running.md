@@ -33,7 +33,10 @@ Where a stack's coverage row declares `suiteVerdict`, `--force-run` derives that
 from the coverage row's single instrumented run instead of launching the suite a second time.
 
 Rows run one at a time, stack by stack and capability by capability. Each row gets a fresh deadline
-of 1800 seconds of execution plus 30 seconds of cleanup, and the facade exports `DYDO_ROW_DEADLINE`
+of 1800 seconds of execution plus 30 seconds of cleanup. Windows `python` coverage alone gets
+2700 seconds of execution: hosted green runs reached 1783 seconds and repeated runs exhausted the
+old budget (DYD-1157). The 50% margin over the exhausted 1800-second budget remains finite; a hung
+adapter still interrupts its row and prevents later dispatch. The facade exports `DYDO_ROW_DEADLINE`
 and `PYTHON` (the caller's own interpreter) to the child. An interrupted row stops every row after
 it.
 
@@ -87,8 +90,8 @@ through the shared cap, preventing .NET build and compiler servers from outlivin
 The rerun keeps the process, its stdio, exit code and signals, and argv bytes, `$(` included.
 `OOMPolicy=continue` lets the facade outlive a child that the kernel kills at the cap, so it can
 record the hit. An unknown `OOMPolicy` counts as `stop`, and such an outer scope gets a scope of its
-own. On every platform each row keeps its 1800-second deadline, and `run_tests.py` keeps its
-1800-second limit for the C# campaign.
+own. Row deadlines remain enforced, including Windows Python coverage's 2700-second budget, and
+`run_tests.py` keeps its 1800-second limit for the C# campaign.
 
 On Windows the facade always creates its own nested Job object and assigns itself before running
 children. `JOB_OBJECT_LIMIT_JOB_MEMORY` limits committed memory for the job, including descendants.

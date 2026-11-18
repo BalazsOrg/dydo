@@ -1,7 +1,0 @@
-PASS: branch DYD-1191-split-reference-pages
-PASS: isolated root /home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4
-PASS: HEAD/base 56b9fd8dee8c7af7d4174572454e0f9670a9d27f; ancestor verified
-PASS: status --porcelain empty before first repository edit
-PASS: owned paths: three doc families, existing Scaffold counterparts, inbound doc navigation/link targets outside skills/ and claims/, and ticket evidence. No test writes.
-Contract: DYD-1191 updatedAt 2026-11-18T01:56:17.734Z; DYD-1187 DECIDED ddba537f-6fc2-4e7b-b2c9-e83c03b0e52a
-Target: feature/dydo-4-0-0; no main/master/tag/publish/push/PR/merge

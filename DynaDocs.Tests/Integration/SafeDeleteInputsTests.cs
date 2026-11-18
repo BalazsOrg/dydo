@@ -15,8 +15,8 @@ public sealed class SafeDeleteInputsTests
     public void ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(string name, string checkpoint, bool present)
     {
         using var fixture = new SafeDeleteTests();
-        Prepare(fixture);
-        if (!present) File.Delete(Input(fixture,name));
+        // An absent input is never written, so no entry is staged under rules that later vanish.
+        Prepare(fixture,exclude: present || name != "exclude",attributes: present || name != "attributes");
         var status = SafeDeleteTests.Git(fixture.Tree,"status","--porcelain=v1","--ignored");
         fixture.Dependencies.Checkpoint = point =>
         {
@@ -28,6 +28,37 @@ public sealed class SafeDeleteInputsTests
         Assert.Equal(status,SafeDeleteTests.Git(fixture.Tree,"status","--porcelain=v1","--ignored"));
         Assert.True(fixture.Output.Contains("proof input",StringComparison.Ordinal),fixture.Output);
         Assert.EndsWith("# changed proof input\n",File.ReadAllText(Input(fixture,name)));
+    }
+
+    // file.txt is staged as LF under `text eol=lf`; removing the rule leaves CRLF bytes whose
+    // stat-clean index entry Git trusts in the source but re-hashes in the proof's fresh files.
+    // The bytes and index round-trip, yet Git's view of the worktree cannot be reproduced: refuse.
+    [Fact]
+    public void StatCleanEntryStaleUnderRemovedAttributes_RefusesAtProofAndRetainsTarget()
+    {
+        using var fixture = new SafeDeleteTests();
+        Prepare(fixture);
+        // Older than the index by far more than Git's racy-timestamp granularity, so the source trusts stat.
+        File.SetLastWriteTimeUtc(Path.Combine(fixture.Tree,"file.txt"),DateTime.UtcNow.AddHours(-1));
+        SafeDeleteTests.Git(fixture.Tree,"update-index","-q","--refresh");
+        File.Delete(Input(fixture,"attributes"));
+        var status = SafeDeleteTests.Git(fixture.Tree,"status","--porcelain=v1","--ignored");
+        Assert.DoesNotContain("file.txt",status);
+        // The archive records no timestamps; moving the payload's mtime makes the proof's copied stat
+        // differ on every platform (File.Copy keeps mtime, and Windows reports no inode), so it re-hashes.
+        fixture.Dependencies.Checkpoint = point =>
+        {
+            if (point != "before-proof") return;
+            var payload = Directory.GetFiles(fixture.ArchiveRoot,"file.txt",SearchOption.AllDirectories).Single();
+            File.SetLastWriteTimeUtc(payload,DateTime.UtcNow.AddHours(-2));
+        };
+        Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
+        Assert.True(fixture.Output.Contains("Reconstructed file/index/status snapshot differs",StringComparison.Ordinal),fixture.Output);
+        Assert.DoesNotContain("Verified archive",fixture.Output);
+        Assert.True(fixture.Has("refs/heads/topic"));
+        Assert.True(Directory.Exists(fixture.Tree));
+        Assert.Equal(status,SafeDeleteTests.Git(fixture.Tree,"status","--porcelain=v1","--ignored"));
+        Assert.Equal("base\r\n",File.ReadAllText(Path.Combine(fixture.Tree,"file.txt")));
     }
 
     [Theory]
