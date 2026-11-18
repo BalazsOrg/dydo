@@ -931,16 +931,19 @@ class ViewerGateTests(unittest.TestCase):
         with mock.patch.object(gate_adapter, "run_coverage_command", side_effect=child):
             return gate_adapter.collect_viewer_coverage(root, raw, inventory)
 
-    def test_an_uncovered_viewer_module_fails_the_coverage_floors_it_misses(self):
+    def test_an_uncovered_viewer_module_is_reported_without_failing(self):
+        # Contract: DR068 G1-G2, coverage stays measured without floors or HCRAP.
         with tempfile.TemporaryDirectory() as folder:
             answer = self.coverage(folder, fake_vitest(report=vitest_report()))
 
         row = collector_row(answer, "typescript-coverage")
-        self.assertEqual("fail", answer["status"], json.dumps(answer["errors"]))
+        self.assertEqual("pass", answer["status"], json.dumps(answer["errors"]))
         self.assertEqual(["viewer/src/sum.ts", "viewer/src/types.ts", "viewer/src/unused.ts"],
                          [module["path"] for module in row["facts"]["modules"]])
-        self.assertEqual({("viewer/src/unused.ts", "line-coverage"), ("viewer/src/unused.ts", "branch-coverage")},
-                         {(finding["path"], finding["gate"]) for finding in answer["findings"]})
+        self.assertEqual([], answer["findings"])
+        unused = row["facts"]["modules"][-1]
+        self.assertTrue(unused["lines"])
+        self.assertFalse(any(unused["lines"].values()))
         self.assertEqual(0, row["facts"]["suite_exit"])
 
     def test_a_failing_viewer_suite_is_named_before_any_policy(self):
@@ -1075,6 +1078,7 @@ class StatechartGateTests(unittest.TestCase):
         return root, raw, inventory
 
     def test_statechart_coverage_runs_the_package_script_and_judges_only_its_own_targets(self):
+        # Contract: DR068 G1, coverage shortfalls are report-only.
         child = fake_node_test(tap=node_tap())
         with tempfile.TemporaryDirectory() as folder:
             root, raw, inventory = self.repository(folder)
@@ -1082,10 +1086,9 @@ class StatechartGateTests(unittest.TestCase):
                 answer = gate_adapter.collect_statechart_coverage(root, raw, inventory)
 
             row = collector_row(answer, "typescript-coverage")
-            self.assertEqual("fail", answer["status"], json.dumps(answer["errors"]))
+            self.assertEqual("pass", answer["status"], json.dumps(answer["errors"]))
             self.assertEqual([f"{STATECHART}/run.ts"], [module["path"] for module in row["facts"]["modules"]])
-            self.assertEqual({(f"{STATECHART}/run.ts", "branch-coverage")},
-                             {(finding["path"], finding["gate"]) for finding in answer["findings"]})
+            self.assertEqual([], answer["findings"])
             self.assertEqual((0, 1), (row["facts"]["suite_exit"], row["facts"]["skipped"]))
             argv, cwd = child.calls[0]
             self.assertEqual(root / STATECHART, cwd)
@@ -1410,7 +1413,7 @@ class CoverageCampaignTests(unittest.TestCase):
 
     def test_node_coverage_measures_what_the_inventory_publishes_as_a_target(self):
         for exempt, targets, status in ((("lib/driver.cjs",), ["lib/sum.cjs"], "pass"),
-                                        ((), ["lib/driver.cjs", "lib/sum.cjs"], "fail")):
+                                        ((), ["lib/driver.cjs", "lib/sum.cjs"], "pass")):
             with self.subTest(exempt=exempt), tempfile.TemporaryDirectory() as folder:
                 root = self.node_repository(folder, NODE_SOURCE)
                 write_file(root, "lib/driver.cjs", NODE_SOURCE_WITH_GAP)
@@ -1427,7 +1430,8 @@ class CoverageCampaignTests(unittest.TestCase):
                                            collector_row(answer, "javascript-coverage")["facts"]["modules"]])
                 self.assertEqual(status, answer["status"], json.dumps(answer["findings"]))
 
-    def test_python_coverage_gate_publishes_measured_findings_beside_inventory_gaps(self):
+    def test_python_coverage_report_keeps_inventory_gaps_without_coverage_findings(self):
+        # Contract: DR068 G1-G2; broken measurements still fail.
         with tempfile.TemporaryDirectory() as folder:
             root = python_repository(folder)
             output = Path(folder) / "results"
@@ -1436,9 +1440,7 @@ class CoverageCampaignTests(unittest.TestCase):
 
             self.assertEqual(2, process.returncode, process.stderr)
             payload = json.loads((output / "adapters/python-coverage.json").read_text(encoding="utf-8"))
-            expected = [{"actual": 0.0, "gate": "line-coverage", "member": None,
-                         "path": "lib/arithmetic.py", "threshold": 80}] if sys.platform == 'linux' else []
-            self.assertEqual(expected, payload["findings"])
+            self.assertEqual([], payload["findings"])
             self.assertEqual([{"message": "No evaluated C# projects"}], payload["gaps"])
             self.assertFalse(payload["measurementComplete"])
             self.assertEqual(str(STATIC_PYTHON),
@@ -1482,10 +1484,10 @@ class CoverageCampaignTests(unittest.TestCase):
                 gate_adapter.collect_coverage(root, Path(folder), "elixir", inventory)
 
     def test_a_measured_csharp_campaign_publishes_its_platform_portion_evidence_and_command(self):
+        # Contract: DR068 G1-G2, both platforms report uncovered code without gating.
         from test_dotnet_platform import PASSING, WINDOWS_TEST, joined_modules, write_evidence
-        for platform, measured, failing in (("linux", ["Lib/Mixed.cs", "Lib/Neutral.cs"], set()),
-                                            ("windows", ["Lib/Mixed.cs", "Lib/Native.cs"],
-                                             {"Lib/Mixed.cs", "Lib/Native.cs"})):
+        for platform, measured in (("linux", ["Lib/Mixed.cs", "Lib/Neutral.cs"]),
+                                   ("windows", ["Lib/Mixed.cs", "Lib/Native.cs"])):
             with self.subTest(platform=platform), tempfile.TemporaryDirectory() as folder:
                 root, raw = dotnet_repository(folder), Path(folder) / "run/raw-abc"
                 trx = PASSING if platform == "windows" else None
@@ -1497,9 +1499,9 @@ class CoverageCampaignTests(unittest.TestCase):
                         mock.patch.object(gate_adapter, "run_coverage_command", return_value=0):
                     answer = gate_adapter.collect_dotnet_coverage(root, raw, root / "inventory.json")
 
-                self.assertEqual(failing, {row["path"] for row in answer["findings"]})
+                self.assertEqual([], answer["findings"])
                 row = collector_row(answer, "csharp-coverage")
-                self.assertEqual(("fail" if failing else "pass", "raw-abc"), (row["status"], row["facts"]["raw"]))
+                self.assertEqual(("pass", "raw-abc"), (row["status"], row["facts"]["raw"]))
                 self.assertEqual(measured, [module["path"] for module in row["facts"]["modules"]])
                 receipt = row["facts"]["platform_selection"]
                 self.assertEqual((platform, ["Lib/Mixed.cs", "Lib/Native.cs", "Lib/Neutral.cs"]),
@@ -1808,6 +1810,7 @@ class CoverageCampaignTests(unittest.TestCase):
                              artifacts[raw.name + "/joined.json"])
 
     def test_node_coverage_reports_uncovered_targets_beside_extensionless_gaps(self):
+        # Contract: DR068 G1, shortfalls do not become findings; measurement gaps remain.
         with tempfile.TemporaryDirectory() as folder:
             root = self.node_repository(folder, NODE_SOURCE_WITH_GAP)
             write_file(root, "bin/launcher", "#!/usr/bin/env node\n")
@@ -1817,7 +1820,7 @@ class CoverageCampaignTests(unittest.TestCase):
             answer = gate_adapter.collect_node_coverage(root, raw, self.node_inventory(root))
 
             self.assertEqual("error", answer["status"])
-            self.assertEqual(["line-coverage"], [row["gate"] for row in answer["findings"]])
+            self.assertEqual([], answer["findings"])
             self.assertEqual([{"gate": "extensionless-javascript", "path": "bin/launcher",
                                "message": "Native analyzer filename identity pending DYD-105"}],
                              answer["errors"])
