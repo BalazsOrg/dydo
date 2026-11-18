@@ -2,14 +2,13 @@ namespace DynaDocs.Tests.Services;
 
 using System.Reflection;
 using System.Text.Json;
-using DynaDocs.Tests.Workflow;
 
 // DYD-840: every numerical proof that leaves instrumented coverage for the Release lane is mapped,
 // and its coverage witness reads the same cases; the lane runs exactly the mapped proofs.
 public class ReleaseProofMapTests
 {
     private static readonly JsonElement Map = JsonDocument.Parse(
-        File.ReadAllText(ReleaseWorkflowTests.RepositoryFile("DynaDocs.Tests", "coverage", "release-proofs.json"))).RootElement;
+        File.ReadAllText(RepositoryFiles.Locate("DynaDocs.Tests", "coverage", "release-proofs.json"))).RootElement;
 
     private static readonly MethodInfo[] TestMethods = typeof(ReleaseProofMapTests).Assembly.GetTypes()
         .SelectMany(type => type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly))
