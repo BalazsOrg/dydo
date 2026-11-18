@@ -85,8 +85,15 @@ internal static partial class SkillShape
     }
 
     // The contents list is a `## Contents` section before any other section.
-    private static bool HasContents(string text) =>
-        text.Split('\n').FirstOrDefault(line => line.StartsWith("## ", StringComparison.Ordinal)) == "## Contents";
+    private static bool HasContents(string text)
+    {
+        var section = text.Split('\n').SkipWhile(line => !line.StartsWith("## ", StringComparison.Ordinal)).ToArray();
+        return section.FirstOrDefault() == "## Contents"
+            && section.Skip(1)
+                .TakeWhile(line => !line.StartsWith("## ", StringComparison.Ordinal)
+                                   && !line.StartsWith("# ", StringComparison.Ordinal))
+                .Any(line => line.StartsWith("- ", StringComparison.Ordinal));
+    }
 
     private static HashSet<string> Links(string from, string text)
     {

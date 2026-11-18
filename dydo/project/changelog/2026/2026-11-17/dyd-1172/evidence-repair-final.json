@@ -1,0 +1,108 @@
+{
+  "sourceHead": "5663d5edaf6668bab1d41a3fa8b1d25df60c9cc4",
+  "base": "ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8",
+  "ownedPaths": "dydo/project/changelog/2026/2026-11-17/dyd-1172/",
+  "preflight": "dydo/project/changelog/2026/2026-11-17/dyd-1172/evidence-repair-preflight.json",
+  "trackedFilesOutsideEvidenceEqualToPinnedHead": 2737,
+  "outsideEvidencePathHashMapSha256": "ca6c7922bbf8b0ee5d1fc10370643db9f7e2883cb77f8f929c1708d220d63f4d",
+  "allCSharpProductionEffectiveTestSelectionAndGateConfigurationUnchanged": true,
+  "allOriginalPreflightSourceHashesMatch": true,
+  "affectedAssertionSha256": "327bc0bf68293e7b20845af7418b38918c457fd208c5f3aade8a899b162d6d2c",
+  "historicalTrackedEvidenceUnchangedExceptExplicitRecipeMigration": true,
+  "runnerSourceByteEqualToPriorPathAtPinnedHead": true,
+  "lowSpaceSourceOnlyRunnerPathChanged": true,
+  "noSourceInventoryExclusionsOrTestAssociationsAdded": true,
+  "captainReceiptsByteEqualAfterPackaging": true,
+  "captainWitnessRerun": false,
+  "captainSnapshotsAbsentAndUnregistered": [
+    "/tmp/dydo-test-f2461c75",
+    "/tmp/dydo-test-e68a33ca"
+  ],
+  "captainScratchAbsent": "/tmp/dydo-safe-delete-cee22a854cdf4b5c928e3076d87d2864",
+  "gates": {
+    "evidence-loader-probe": {
+      "exit": 0,
+      "command": "dydo/project/changelog/2026/2026-11-17/dyd-1172/evidence-loader-probe/command.json"
+    },
+    "evidence-static-dotnet": {
+      "exit": 0,
+      "command": "dydo/project/changelog/2026/2026-11-17/dyd-1172/evidence-static-dotnet/command.json",
+      "repositoryInputs": {
+        "artifacts": [],
+        "errors": [],
+        "facts": {
+          "currentSourceFingerprint": "1703b864a6d0ff8a2907448f0de6e32a33f5013e7380017676703f04c1248bba",
+          "initialSourceFingerprint": "1703b864a6d0ff8a2907448f0de6e32a33f5013e7380017676703f04c1248bba"
+        },
+        "findings": [],
+        "status": "pass"
+      },
+      "findings": []
+    },
+    "evidence-static-python": {
+      "exit": 0,
+      "command": "dydo/project/changelog/2026/2026-11-17/dyd-1172/evidence-static-python/command.json",
+      "repositoryInputs": {
+        "artifacts": [],
+        "errors": [],
+        "facts": {
+          "currentSourceFingerprint": "1206b3052ae285446ae942e61eba3c6f4ced2768829ddbc87cebcd1be4c66d85",
+          "initialSourceFingerprint": "1206b3052ae285446ae942e61eba3c6f4ced2768829ddbc87cebcd1be4c66d85"
+        },
+        "findings": [],
+        "status": "pass"
+      },
+      "findings": []
+    }
+  },
+  "previousEvidence": {
+    "diagnostic-light": {
+      "exit": 0,
+      "receiptSha256": "5bc232b82de377a5655a39a2af9d7ae0fc868de5b9df957e18905cb914606c88",
+      "receiptAt": "5663d5edaf6668bab1d41a3fa8b1d25df60c9cc4:dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-light/exit.json"
+    },
+    "diagnostic-coverage": {
+      "exit": 0,
+      "receiptSha256": "5bc232b82de377a5655a39a2af9d7ae0fc868de5b9df957e18905cb914606c88",
+      "receiptAt": "5663d5edaf6668bab1d41a3fa8b1d25df60c9cc4:dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-coverage/exit.json"
+    },
+    "diagnostic-static": {
+      "exit": 2,
+      "receiptSha256": "038e27db5b811e5f415e53a0f414b3f26f1c3da565e96ae78d384c8a69de25e4",
+      "receiptAt": "5663d5edaf6668bab1d41a3fa8b1d25df60c9cc4:dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-static/exit.json"
+    },
+    "diagnostic-static-stable": {
+      "exit": 1,
+      "receiptSha256": "8ef199e2ba32edcf45464649ce4dae0f2106f394db6f819c55faa6df8200c959",
+      "receiptAt": "5663d5edaf6668bab1d41a3fa8b1d25df60c9cc4:dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-static-stable/exit.json"
+    },
+    "diagnostic-static-base": {
+      "exit": 1,
+      "receiptSha256": "8ef199e2ba32edcf45464649ce4dae0f2106f394db6f819c55faa6df8200c959",
+      "receiptAt": "5663d5edaf6668bab1d41a3fa8b1d25df60c9cc4:dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-static-base/exit.json"
+    }
+  },
+  "packaging": {
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/results/diagnostic.trx": {
+      "currentPath": "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-captain-forced/results/diagnostic.trx.gz",
+      "uncompressedBytes": 14637,
+      "uncompressedSha256": "87cc89e9a76784be9790187f30464fc80b756646b304ea9ee7c8597e92ec0875",
+      "compressedSha256": "40d60cbe570d8dfe74af882e4cf45e5d21a457823fba56bee2b8185ea2ed47e8",
+      "roundTripEqual": true
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/evidence-static-dotnet/adapters/dotnet-static.json": {
+      "currentPath": "dydo/project/changelog/2026/2026-11-17/dyd-1172/evidence-static-dotnet/adapters/dotnet-static.json.gz",
+      "uncompressedBytes": 9473007,
+      "uncompressedSha256": "33d72b335a642d04f8eb3892c4ffa1fb7b15a947e5e13947622cd30ebf8891ac",
+      "compressedSha256": "fe8d294a5c10dab17b4cefabcfd45b8d8053d60bce13c4d614cae43931c58847",
+      "roundTripEqual": true
+    },
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/evidence-static-python/adapters/python-static.json": {
+      "currentPath": "dydo/project/changelog/2026/2026-11-17/dyd-1172/evidence-static-python/adapters/python-static.json.gz",
+      "uncompressedBytes": 2178765,
+      "uncompressedSha256": "eba80b73d5eac523dd9cc46532b75d6f797ba02d62da3a53d53c2069c06a632a",
+      "compressedSha256": "529066bdb1b05f6ad9bc21112aaa99cb7067fb6407fe692c9cfbc53c60d70397",
+      "roundTripEqual": true
+    }
+  }
+}

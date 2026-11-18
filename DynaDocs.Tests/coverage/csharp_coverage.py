@@ -391,7 +391,8 @@ def _join_campaign(root, result_root, report, pre, producer):
     targets = []
     for name in ("dydo", "GateMetrics", "SkillBuild"):
         assembly = next(row["facts"] for row in pre if row["facts"]["assembly_name"] == name)
-        targets.append({"assembly": name, **join_methods(root, sources[name], assembly, normalized[name])})
+        targets.append({"project": ASSEMBLY_PROJECTS[name], "assembly": name,
+                        **join_methods(root, sources[name], assembly, normalized[name])})
     modules = [module for target in targets for module in target["modules"]]
     return {"schema": 1, "targets": targets, "modules": modules,
             "findings": evaluate_policy(modules)}

@@ -1,0 +1,34 @@
+"""Read the captured gate receipts without changing repository inputs."""
+import gzip
+import json
+from pathlib import Path
+import re
+import tarfile
+import xml.etree.ElementTree as ET
+
+live=Path('artifacts/dyd-1172-sync')
+for path in sorted(live.glob('sync-*/exit.json')):
+    name=path.parent.name
+    print(name,path.read_text().strip())
+    expected={'sync-static-dotnet':'dotnet-static','sync-static-python':'python-static','sync-coverage':'dotnet-coverage'}.get(name)
+    if expected:
+        report=json.loads(gzip.decompress((path.parent/'adapters'/(expected+'.json.gz')).read_bytes()))
+        print(json.dumps({k:report.get(k) for k in ['candidate','status','exitCode','findings','errors']},indent=2))
+        for key,value in report.get('collectors',{}).items():
+            if isinstance(value,dict):
+                print(key,json.dumps({k:value.get(k) for k in ['status','findings','errors']})[:3000])
+        if expected=='dotnet-coverage':
+            print('Suite facts:',json.dumps(report.get('collectors',{}).get('csharp-coverage',{}).get('facts',{}))[:3000])
+for path in live.glob('sync-light/results/*.trx'):
+    tree=ET.parse(path)
+    counter=tree.find('.//{*}Counters')
+    print('Light counters:',counter.attrib)
+archive_path=live/'sync-coverage/facade-raw.tar.gz'
+if (live/'sync-coverage/exit.json').exists():
+    with tarfile.open(archive_path,'r:gz') as archive:
+        for member in archive:
+            if member.isfile() and member.name.endswith(('.stdout','.log')):
+                text=archive.extractfile(member).read().decode(errors='replace')
+                for line in text.splitlines():
+                    if 'Passed!' in line or ('Failed!' in line and 'Total:' in line) or re.match(r'^\s*(Total tests|Passed|Failed|Skipped|Total time):',line):
+                        print(member.name,line)

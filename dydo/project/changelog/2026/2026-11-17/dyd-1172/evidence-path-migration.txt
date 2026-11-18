@@ -1,0 +1,71 @@
+DYD-1172 evidence-path repair
+code-writer/model: GPT-6.1 sol high
+
+Source HEAD: 5663d5edaf6668bab1d41a3fa8b1d25df60c9cc4
+Feature base: ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8
+Scope: this evidence directory only. The commit containing this report is the fix.
+
+Current paths (relative to this directory)
+  run-proof.py -> run-proof.py.txt (identical source bytes)
+  probe-low-space.py -> probe-low-space.py.txt (only runner path literal changed)
+  diagnostic-probe.py.txt uses run-proof.py.txt
+  diagnostic-gate.py.txt imports run-proof.py.txt with SourceFileLoader
+  diagnostic-captain-forced/results/diagnostic.trx -> diagnostic.trx.gz
+
+The two .py helpers were introduced by DYD-1172 against the original feature
+base. Their association failures were this ticket's, not inherited feature debt.
+The older report's comparison with 01ca32e9 did not establish feature-base debt.
+The .txt names retain the proof sources consistently with the newer evidence
+artifacts. No source-inventory exclusions, associations, manifests, thresholds,
+C#, production code, assertions or effective test selections were changed.
+Original paths/bytes remain readable at source HEAD above; no commits rewritten.
+Historical raw receipts/reports remain unchanged, including their failed exits.
+
+Captain-provided receipts
+  Preflight explicitly accounts for all 14 initially untracked captain files.
+  Inspected, not rerun: forced exit 1, 4/5 passing; full 1711-byte fixture output
+  occurs in both log and TRX; restored source hash matches source HEAD exactly;
+  rebuilt original five rows pass, exit 0. This is not a Windows reproduction.
+  Large raw TRX/JSON receipts are gzip packaged with round-trip byte equality;
+  evidence-repair-preflight.json and evidence-repair-final.json bind old/current
+  paths, original sizes and hashes. Receipt contents were not edited.
+
+Verification (actual commands from repository root)
+  python3 <this-dir>/diagnostic-gate.py.txt evidence-loader-probe probe
+    python3 <this-dir>/evidence-loader-probe.py.txt
+  python3 <this-dir>/diagnostic-gate.py.txt evidence-static-dotnet gate
+    .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py
+    gate static --stack dotnet
+  python3 <this-dir>/diagnostic-gate.py.txt evidence-static-python gate
+    .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py
+    gate static --stack python
+All three exit 0. Loader probe exercises the migrated gate recipe and .txt
+runner import without C# edits/tests. Both static collectors report no findings
+and equal initial/current repository-input fingerprints. Each directory retains
+command.json, stdout.txt, stderr.txt, exit.json, and native facade archives.
+Only the selected static adapter sidecar is retained; stale copies are omitted.
+The wrapper writes live logs in ignored artifacts, copying them once after exit.
+Host lock is outside env/systemd; gate caps are 8G/3600s, focused probe 4G/120s,
+swap disabled, OOMPolicy=continue, commissioned session slice; caps never raised.
+
+Rerun with fresh result names; <this-dir> is
+dydo/project/changelog/2026/2026-11-17/dyd-1172.
+Captain diagnostic recipe remains:
+  python3 <this-dir>/diagnostic-probe.py.txt UNIQUE_FRESH_PREFIX
+Do not run it concurrently with edits/tests. This repair did not rerun it.
+
+Evidence reuse and limits
+  evidence-repair-final.json verifies every tracked file outside this directory
+  equals source HEAD, including C#, production, test selectors and gate config;
+  all diagnostic-preflight source hashes also match. On the captain's explicit
+  evidence-only reconciliation, reuse diagnostic-light (335/335, exit 0) and
+  diagnostic-coverage (supported whole-.NET route, exit 0); their raw receipts
+  are unchanged and bound to source HEAD. No broader suites were repeated.
+  Prior diagnostic-static exit 2 and stable/base exits 1 stay failed. New static
+  passes are separate receipts. Historical finalizer scripts/reports describe
+  their prior candidate and are not the current migration verifier.
+  Mutation remains reviewer-owned UNAVAILABLE, pending DYD-103. Windows diagnosis,
+  hosted attempts, review and integration remain captain/admiral-owned.
+
+Integrity: evidence-repair-preflight.json, evidence-repair-final.json,
+evidence-repair-artifacts.json. Staged whitespace/scope checks exit 0.

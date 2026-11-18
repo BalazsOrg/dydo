@@ -1,0 +1,83 @@
+"""Capture DYD-1172 sync gates in ignored artifacts until final retention."""
+import gzip
+import hashlib
+import importlib.util
+from importlib.machinery import SourceFileLoader
+import json
+from pathlib import Path
+import shutil
+import subprocess
+import sys
+import tarfile
+from datetime import datetime, timezone
+
+ROOT = Path.cwd()
+EVIDENCE = ROOT / 'dydo/project/changelog/2026/2026-11-17/dyd-1172'
+LIVE = ROOT / 'artifacts/dyd-1172-sync'
+RESULTS = ROOT / 'DynaDocs.Tests/coverage/results'
+LIVE.mkdir(parents=True, exist_ok=True)
+
+def git(*args):
+    return subprocess.check_output(['git', *args], text=True).strip()
+
+def hashes():
+    return {p: hashlib.sha256((ROOT / p).read_bytes()).hexdigest()
+            for p in git('ls-files').splitlines() if p.endswith('.cs')}
+
+if sys.argv[1] == 'prepare':
+    assert git('rev-parse', 'HEAD') == 'c6150e353d59cc3279f556f6ef8197c386359100'
+    assert git('rev-parse', 'FETCH_HEAD') == 'a5471145eb4b05b18f0829d1f7c5a00460ab5125'
+    assert git('branch', '--show-current') == 'DYD-1172-safe-delete-disk-independent'
+    assert not git('status', '--porcelain=v1')
+    assert git('merge-base', 'HEAD', 'FETCH_HEAD') == 'ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8'
+    (LIVE / 'premerge.json').write_text(json.dumps({
+        'source': git('rev-parse','HEAD'), 'target':git('rev-parse','FETCH_HEAD'),
+        'originalBase':git('merge-base','HEAD','FETCH_HEAD'), 'status':'clean',
+        'root':str(ROOT), 'gitCommonDir':git('rev-parse','--git-common-dir'),
+        'targetPinOrigin':'User-supplied git ls-remote pin dated 2026-11-17; local FETCH_HEAD exact match. Remote re-read unavailable: DNS could not resolve github.com.',
+        'sourcePass':'No source PASS yet; authorized pre-review local sync.',
+        'sourceCsSha256':hashes(),
+        'targetDiff':git('diff','ed2c5f06','a5471145'),
+        'sourceAssertionDiff':git('diff','ed2c5f06','HEAD','--','DynaDocs.Tests/Integration/SafeDeleteInputsTests.cs'),
+    }, indent=2)+'\n')
+    print('Pin/clean/base/source-hash checks passed')
+    raise SystemExit(0)
+
+name, level, *command = sys.argv[1:]
+before = set(RESULTS.glob('run-*')) | set((RESULTS / 'assurance').glob('run-*'))
+loader = SourceFileLoader('historical_runner', str(EVIDENCE / 'run-proof.py.txt'))
+spec = importlib.util.spec_from_loader(loader.name, loader)
+runner = importlib.util.module_from_spec(spec)
+sys.dont_write_bytecode = True
+spec.loader.exec_module(runner)
+runner.EVIDENCE = LIVE
+initial = {'head':git('rev-parse','HEAD'), 'tree':git('rev-parse','HEAD^{tree}'),
+           'parents':git('show','-s','--format=%P','HEAD').split(),
+           'status':git('status','--porcelain=v1'), 'csSha256':hashes(),
+           'startedUtc':datetime.now(timezone.utc).isoformat()}
+inputs = {str(p):p.read_bytes() for arg in command for p in [Path(arg)]
+          if p.is_file() and p.suffix in {'.py', '.sh', '.txt'}}
+sys.argv = [str(EVIDENCE / 'run-proof.py.txt'), name, level, *command]
+status = runner.main()
+destination = LIVE / name
+for index, (path, content) in enumerate(inputs.items()):
+    (destination / ('input-' + str(index) + '-' + Path(path).name + '.txt')).write_bytes(content)
+after = set(RESULTS.glob('run-*')) | set((RESULTS / 'assurance').glob('run-*'))
+paths = sorted(after - before)
+if (RESULTS / 'adapters').exists():
+    (destination / 'adapters').mkdir()
+    for path in (RESULTS / 'adapters').glob('*.json'):
+        with gzip.open(destination / 'adapters' / (path.name + '.gz'), 'wb') as stream:
+            stream.write(path.read_bytes())
+with tarfile.open(destination / 'facade-raw.tar.gz', 'w:gz') as archive:
+    for path in paths:
+        archive.add(path, arcname=path.relative_to(ROOT))
+initial.update(exit=status, afterHead=git('rev-parse','HEAD'),
+               afterStatus=git('status','--porcelain=v1'), afterCsSha256=hashes(),
+               retained=[str(p.relative_to(ROOT)) for p in paths],
+               endedUtc=datetime.now(timezone.utc).isoformat(),
+               commandInputSha256={p:hashlib.sha256(b).hexdigest() for p,b in inputs.items()})
+assert initial['csSha256'] == initial['afterCsSha256']
+assert initial['head'] == initial['afterHead']
+(destination / 'identity.json').write_text(json.dumps(initial,indent=2)+'\n')
+raise SystemExit(status)

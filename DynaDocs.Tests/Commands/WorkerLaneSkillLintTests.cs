@@ -6,7 +6,7 @@ using DynaDocs.Commands;
 /// <summary>
 /// Skill lint: a skill must not tell a sub-agent to run a dydo command the worker lane refuses.
 ///
-/// <para>Which prose is addressed to a sub-agent (the rule, in three lines):</para>
+/// <para>Which prose is addressed to a sub-agent:</para>
 /// <list type="number">
 /// <item>Every markdown file under <c>skills/roles/crew/</c>: crew are spawned as sub-agents.</item>
 /// <item>Every markdown file under <c>skills/engineering/</c>: the method skills crew load and drive
@@ -19,9 +19,11 @@ using DynaDocs.Commands;
 /// sits, the line a file carries when a sub-agent is told to read it alone. In the text before the first
 /// <c>## </c> (the chief of staff's night-survey resource): the whole file is the sub-agent's. In a
 /// <c>## </c> section (the admiral check-in's "Survey - the surveyor"): that section only. The rest of an
-/// officer file is addressed to the officer's own top-level session and stays out, as does
-/// <c>skills/productivity/</c>, whose skills the user or an officer invokes at top level (update-dydo,
-/// overnight-mode, catch-up).</item>
+/// officer file is addressed to the officer's own top-level session and stays out.</item>
+/// <item>Every markdown file in a <c>skills/productivity/</c> skill whose name crew prose mentions
+/// in a code span or skill path. This includes writing-for-agents and its resources. The exact
+/// description of a project's first <c>dydo init</c> in skill-mechanics.md is descriptive, so only
+/// that quoted mention is excluded; instructions elsewhere in that file are still scanned.</item>
 /// </list>
 ///
 /// <para>What counts as telling it to run a command: a code span or fenced-code line in that prose that
@@ -82,11 +84,32 @@ public partial class WorkerLaneSkillLintTests
         foreach (var file in Markdown(Path.Combine(skills, "roles", "officers")))
             foreach (var section in SubAgentSections(File.ReadAllText(file)))
                 yield return (Path.GetRelativePath(skills, file) + " (sub-agent section)", section);
+
+        var crew = string.Join('\n', Markdown(Path.Combine(skills, "roles", "crew")).Select(File.ReadAllText));
+        foreach (var directory in Directory.EnumerateDirectories(Path.Combine(skills, "productivity")).Order(StringComparer.Ordinal))
+        {
+            var name = Path.GetFileName(directory);
+            if (!crew.Contains($"`{name}`", StringComparison.Ordinal)
+                && !crew.Contains($"productivity/{name}/", StringComparison.Ordinal)) continue;
+            foreach (var file in Markdown(directory))
+            {
+                var source = Path.GetRelativePath(skills, file);
+                yield return (source, ProductivityInstructions(source, File.ReadAllText(file)));
+            }
+        }
     }
+
+    private const string InitializationDescription =
+        "project's copy freezes at its first `dydo init` and an adopter reconciles it by hand";
+
+    private static string ProductivityInstructions(string source, string prose) =>
+        source.Replace('\\', '/') == "productivity/writing-for-agents/resources/skill-mechanics.md"
+            ? prose.Replace(InitializationDescription, InitializationDescription.Replace("`", ""), StringComparison.Ordinal)
+            : prose;
 
     /// <summary>
     /// Each inline code span (whitespace collapsed) and each fenced-code line of <paramref name="markdown"/>,
-    /// the lines of one fenced block joined across continuations by the guard's own rule.
+    /// continuations within each span or fenced block joined by the guard's own rule before whitespace folding.
     /// </summary>
     internal static IEnumerable<string> CodeText(string markdown)
     {
@@ -96,6 +119,7 @@ public partial class WorkerLaneSkillLintTests
         foreach (var line in markdown.Split('\n'))
         {
             var trimmed = line.Trim();
+            if (!inFence) trimmed = ListMarkerRegex().Replace(trimmed, "");
             var isFence = trimmed.StartsWith("```", StringComparison.Ordinal) || trimmed.StartsWith("~~~", StringComparison.Ordinal);
             if (isFence)
             {
@@ -110,7 +134,7 @@ public partial class WorkerLaneSkillLintTests
         foreach (var code in FencedLines(block)) yield return code;
 
         foreach (Match span in InlineCodeRegex().Matches(string.Join('\n', outside)))
-            yield return WhitespaceRegex().Replace(span.Groups[1].Value, " ").Trim();
+            yield return WhitespaceRegex().Replace(GuardCommand.JoinLineContinuations(span.Groups["code"].Value), " ").Trim();
     }
 
     private static IEnumerable<string> FencedLines(List<string> block) =>
@@ -153,6 +177,59 @@ public partial class WorkerLaneSkillLintTests
             && command.Code.StartsWith("dydo survey ", StringComparison.Ordinal));
         Assert.Contains(commands, command => command.Source.Replace('\\', '/').StartsWith("engineering/statechart/")
             && command.Code.StartsWith("dydo statechart ", StringComparison.Ordinal));
+        Assert.Contains(sources, source => source.Source.Replace('\\', '/') == "productivity/writing-for-agents/SKILL.md");
+        Assert.Contains(sources, source => source.Source.Replace('\\', '/') == "productivity/writing-for-agents/resources/skill-mechanics.md");
+    }
+
+    [Theory]
+    [InlineData("writing-for-agents", "SKILL.md", "dydo index", false)]
+    [InlineData("writing-for-agents", "resources/skill-mechanics.md", "dydo init claude", false)]
+    [InlineData("another-method", "resources/steps.md", "dydo index", false)]
+    [InlineData("another-method", "SKILL.md", "dydo index", true)]
+    public void SubAgentProse_FindsRefusedCommandsInCrewLoadedProductivity(
+        string skill, string resource, string command, bool pathReference)
+    {
+        var skills = Path.Combine(Path.GetTempPath(), "dydo-skill-lint-" + Guid.NewGuid().ToString("N"));
+        try
+        {
+            foreach (var directory in new[] { "roles/crew", "roles/officers", "engineering", $"productivity/{skill}/resources",
+                         "productivity/top-level-only" })
+                Directory.CreateDirectory(Path.Combine(skills, directory));
+            var load = pathReference ? $"Load [the method](skills/productivity/{skill}/SKILL.md)." : $"Load `{skill}` when editing prose.";
+            File.WriteAllText(Path.Combine(skills, "roles/crew/SKILL.md"), load);
+            File.WriteAllText(Path.Combine(skills, $"productivity/{skill}/SKILL.md"), "Read resources as needed.");
+            var description = resource == "resources/skill-mechanics.md"
+                ? "A project's copy freezes at its first `dydo init` and an adopter reconciles it by hand. "
+                : "";
+            File.WriteAllText(Path.Combine(skills, $"productivity/{skill}/{resource}"), description + $"Run `{command}`.");
+            File.WriteAllText(Path.Combine(skills, "productivity/top-level-only/SKILL.md"), "Run `dydo adopt 1`.");
+
+            var sources = SubAgentProse(skills).ToList();
+            var violations = sources.SelectMany(source => Violations(source.Prose)
+                .Select(violation => (source.Source, Violation: violation))).ToList();
+
+            var found = Assert.Single(violations);
+            Assert.Equal($"productivity/{skill}/{resource}", found.Source.Replace('\\', '/'));
+            Assert.Equal($"`{command}` (dydo {command.Split(' ')[1]})", found.Violation);
+            Assert.DoesNotContain(sources, source => source.Source.Replace('\\', '/').StartsWith("productivity/top-level-only/"));
+        }
+        finally
+        {
+            TestDirectory.Delete(skills);
+        }
+    }
+
+    [Theory]
+    [InlineData("project's copy freezes at its first `dydo init` and an adopter reconciles it by hand", 0)]
+    [InlineData("project's copy freezes at its first `dydo init` and an adopter reconciles it by hand. Run `dydo init`.", 1)]
+    [InlineData("project's copy freezes at its first `dydo index` and an adopter reconciles it by hand", 1)]
+    [InlineData("Run `dydo init`.", 1)]
+    public void ProductivityInstructions_ExcludesOnlyTheKnownDescription(string prose, int expectedViolations)
+    {
+        var instructions = ProductivityInstructions("productivity/writing-for-agents/resources/skill-mechanics.md", prose);
+
+        Assert.Equal(expectedViolations, Violations(instructions).Count);
+        Assert.NotEmpty(Violations(ProductivityInstructions("productivity/another-method/SKILL.md", prose)));
     }
 
     [Fact]
@@ -182,6 +259,110 @@ public partial class WorkerLaneSkillLintTests
         var violation = Assert.Single(Violations(prose));
 
         Assert.Contains(expected, violation);
+    }
+
+    [Fact]
+    public void Violations_ReadsTheDoubleBacktickContinuationFromDyd1148()
+    {
+        const string prose = """
+            Run ``dydo `
+              init claude``.
+            """;
+
+        Assert.Equal("dydo init claude", Assert.Single(CodeText(prose)));
+        Assert.Equal("`dydo init claude` (dydo init)", Assert.Single(Violations(prose)));
+    }
+
+    [Theory]
+    [InlineData("Run ``dydo init claude``.", "dydo init claude")]
+    [InlineData("Run ```dydo index```.", "dydo index")]
+    [InlineData("Run ````dydo map````.", "dydo map")]
+    [InlineData("Run ``dydo `\r\n  init claude``.", "dydo init claude")]
+    [InlineData("Run ``dy`\ndo init claude``.", "dydo init claude")]
+    [InlineData("Run ``dydo in`\nit claude``.", "dydo init claude")]
+    [InlineData("Run ``dydo \\\n  init claude``.", "dydo init claude")]
+    [InlineData("Run `dydo \\\n  init claude`.", "dydo init claude")]
+    [InlineData("Run ``echo `marker`; dydo init claude``.", "echo `marker`; dydo init claude")]
+    public void Violations_ReadsMatchingInlineDelimiterRuns(string prose, string expectedCode)
+    {
+        Assert.Equal(expectedCode, Assert.Single(CodeText(prose)));
+        Assert.Single(Violations(prose));
+    }
+
+    [Theory]
+    [InlineData("Use ``echo `literal` ``.", "echo `literal`")]
+    [InlineData("Use ```echo ``literal`` and `one` ```.", "echo ``literal`` and `one`")]
+    [InlineData("Use `echo \\literal`.", "echo \\literal")]
+    public void CodeText_PreservesInternalBackticksAndNonContinuationBackslashes(string prose, string expectedCode)
+    {
+        Assert.Equal(expectedCode, Assert.Single(CodeText(prose)));
+    }
+
+    [Theory]
+    [InlineData("Run ``dydo init claude`.")]
+    [InlineData("Run `dydo init claude``.")]
+    [InlineData("Run ``dydo init claude```.")]
+    [InlineData("Run ```dydo init claude``.")]
+    [InlineData("Run ``dydo init claude.")]
+    public void CodeText_DoesNotCloseAnInlineSpanWithADifferentLengthRun(string prose)
+    {
+        Assert.Empty(CodeText(prose));
+        Assert.Empty(Violations(prose));
+    }
+
+    [Theory]
+    [InlineData("Run ``dydo `\n  survey P-DYD-46``.", "dydo survey P-DYD-46")]
+    [InlineData("Run ``dydo statechart install-skill --root /p``.", "dydo statechart install-skill --root /p")]
+    [InlineData("Read ``dydo/guides`` and ```dydo.json```.", "dydo/guides", "dydo.json")]
+    [InlineData("Run ``dydo \\\n`` then ``init claude``.", "dydo", "init claude")]
+    [InlineData("Run ``dydo `\n`` then ``init claude``.", "dydo", "init claude")]
+    public void Violations_PreservesAllowedInlineSpansAndTheirBoundaries(string prose, params string[] expectedCode)
+    {
+        Assert.Equal(expectedCode, CodeText(prose));
+        Assert.Empty(Violations(prose));
+    }
+
+    [Fact]
+    public void Violations_ReadsTheListAdjacentFenceFromDyd1147()
+    {
+        const string prose = """
+            - ```sh
+              dydo \
+                init claude
+              ```
+            """;
+
+        Assert.Matches(@"^dydo +init claude$", Assert.Single(CodeText(prose)));
+        Assert.EndsWith("(dydo init)", Assert.Single(Violations(prose)));
+    }
+
+    [Theory]
+    [InlineData("  - ", "```")]
+    [InlineData("    + ", "~~~")]
+    [InlineData("  * ", "```")]
+    [InlineData("1. ", "```")]
+    [InlineData("  2) ", "~~~")]
+    public void Violations_ReadsIndentedListAdjacentFences(string prefix, string fence)
+    {
+        var prose = $"{prefix}{fence}sh\n      dydo \\\n        init claude\n      {fence}";
+
+        Assert.Matches(@"^dydo +init claude$", Assert.Single(CodeText(prose)));
+        Assert.EndsWith("(dydo init)", Assert.Single(Violations(prose)));
+    }
+
+    [Theory]
+    [InlineData("- ", "```")]
+    [InlineData("  1. ", "~~~")]
+    public void Violations_PreservesAllowedCommandsAndListFenceBoundaries(string prefix, string fence)
+    {
+        var prose = $"{prefix}{fence}sh\n  dydo survey \\\n    P-DYD-46\n  dydo check\n  dydo statechart install-skill --root /p\n  dydo \\\n  {fence}\n\n{prefix}{fence}sh\n  init claude\n  {fence}\nRun `dydo --help`.";
+
+        var code = CodeText(prose).ToList();
+
+        Assert.Equal(6, code.Count);
+        Assert.Matches(@"^dydo survey +P-DYD-46$", code[0]);
+        Assert.Equal(["dydo check", "dydo statechart install-skill --root /p", "dydo \\", "init claude", "dydo --help"], code.Skip(1));
+        Assert.Empty(Violations(prose));
     }
 
     [Theory]
@@ -727,8 +908,11 @@ public partial class WorkerLaneSkillLintTests
     [GeneratedRegex(@"(?m)^(?=## )")]
     private static partial Regex SectionStartRegex();
 
-    [GeneratedRegex(@"(?<!`)`([^`]+)`(?!`)")]
+    [GeneratedRegex(@"(?<!`)(?<delimiter>`+)(?!`)(?<code>.*?)(?<!`)\k<delimiter>(?!`)", RegexOptions.Singleline)]
     private static partial Regex InlineCodeRegex();
+
+    [GeneratedRegex(@"^(?:[-+*]|[0-9]+[.)])[ \t]+")]
+    private static partial Regex ListMarkerRegex();
 
     [GeneratedRegex(@"\s+")]
     private static partial Regex WhitespaceRegex();

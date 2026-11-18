@@ -1,0 +1,61 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="8bf93f96-b101-4613-9569-e6259bd8e472" name="@Nightfury 2026-11-17 23:44:09" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-11-17T23:44:09.5781663+01:00" queuing="2026-11-17T23:44:09.5781663+01:00" start="2026-11-17T23:44:06.8133408+01:00" finish="2026-11-17T23:44:09.5826222+01:00" />
+  <TestSettings name="default" id="ae90d93d-ef86-46f0-8810-959dc3d67d37">
+    <Deployment runDeploymentRoot="_Nightfury_2026-11-17_23_44_09" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="ee18c7eb-0db5-4cff-9019-25c40078b2fe" testId="8847cc9d-5f69-a9d8-b504-94b4a9376026" testName="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;exclude&quot;, checkpoint: &quot;before-copy&quot;, present: True)" computerName="Nightfury" duration="00:00:00.1056062" startTime="2026-11-17T23:44:09.1996291+01:00" endTime="2026-11-17T23:44:09.3050750+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ee18c7eb-0db5-4cff-9019-25c40078b2fe" />
+    <UnitTestResult executionId="ad0e5cd2-90db-40a5-a4b7-17b7acc20d95" testId="7214cc77-2ff1-5214-3f9f-1de2ab466e32" testName="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;attributes&quot;, checkpoint: &quot;before-worktree-delete&quot;, present: False)" computerName="Nightfury" duration="00:00:00.4758482" startTime="2026-11-17T23:44:08.0960175+01:00" endTime="2026-11-17T23:44:08.5767863+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ad0e5cd2-90db-40a5-a4b7-17b7acc20d95" />
+    <UnitTestResult executionId="25d11f7d-85c6-4a91-a047-9ff52c50bba2" testId="53587aa7-16c8-698d-c3c5-3917119efe2b" testName="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;attributes&quot;, checkpoint: &quot;before-proof&quot;, present: True)" computerName="Nightfury" duration="00:00:00.2011019" startTime="2026-11-17T23:44:09.3052993+01:00" endTime="2026-11-17T23:44:09.5063593+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="25d11f7d-85c6-4a91-a047-9ff52c50bba2" />
+    <UnitTestResult executionId="e0d0fe7e-1c13-4169-a4b6-31beb9204ca1" testId="b2fb7bef-8c8f-0e18-a549-5ce8f271dbd9" testName="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;exclude&quot;, checkpoint: &quot;before-delete&quot;, present: True)" computerName="Nightfury" duration="00:00:00.2887030" startTime="2026-11-17T23:44:08.9114261+01:00" endTime="2026-11-17T23:44:09.1993687+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e0d0fe7e-1c13-4169-a4b6-31beb9204ca1" />
+    <UnitTestResult executionId="40f7bccd-9de1-4f1c-85ed-64881e88cb48" testId="80f425a9-e8cf-f5a9-93b6-8822cb2da4b5" testName="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;attributes&quot;, checkpoint: &quot;before-worktree-delete&quot;, present: True)" computerName="Nightfury" duration="00:00:00.3338911" startTime="2026-11-17T23:44:08.5871568+01:00" endTime="2026-11-17T23:44:08.9105570+01:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="40f7bccd-9de1-4f1c-85ed-64881e88cb48" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;exclude&quot;, checkpoint: &quot;before-delete&quot;, present: True)" storage="/tmp/dydo-test-e68a33ca/dynadocs.tests/bin/debug/net10.0/dynadocs.tests.dll" id="b2fb7bef-8c8f-0e18-a549-5ce8f271dbd9">
+      <Execution id="e0d0fe7e-1c13-4169-a4b6-31beb9204ca1" />
+      <TestMethod codeBase="/tmp/dydo-test-e68a33ca/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="DynaDocs.Tests.Integration.SafeDeleteInputsTests" name="ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged" />
+    </UnitTest>
+    <UnitTest name="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;attributes&quot;, checkpoint: &quot;before-worktree-delete&quot;, present: True)" storage="/tmp/dydo-test-e68a33ca/dynadocs.tests/bin/debug/net10.0/dynadocs.tests.dll" id="80f425a9-e8cf-f5a9-93b6-8822cb2da4b5">
+      <Execution id="40f7bccd-9de1-4f1c-85ed-64881e88cb48" />
+      <TestMethod codeBase="/tmp/dydo-test-e68a33ca/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="DynaDocs.Tests.Integration.SafeDeleteInputsTests" name="ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged" />
+    </UnitTest>
+    <UnitTest name="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;attributes&quot;, checkpoint: &quot;before-worktree-delete&quot;, present: False)" storage="/tmp/dydo-test-e68a33ca/dynadocs.tests/bin/debug/net10.0/dynadocs.tests.dll" id="7214cc77-2ff1-5214-3f9f-1de2ab466e32">
+      <Execution id="ad0e5cd2-90db-40a5-a4b7-17b7acc20d95" />
+      <TestMethod codeBase="/tmp/dydo-test-e68a33ca/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="DynaDocs.Tests.Integration.SafeDeleteInputsTests" name="ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged" />
+    </UnitTest>
+    <UnitTest name="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;attributes&quot;, checkpoint: &quot;before-proof&quot;, present: True)" storage="/tmp/dydo-test-e68a33ca/dynadocs.tests/bin/debug/net10.0/dynadocs.tests.dll" id="53587aa7-16c8-698d-c3c5-3917119efe2b">
+      <Execution id="25d11f7d-85c6-4a91-a047-9ff52c50bba2" />
+      <TestMethod codeBase="/tmp/dydo-test-e68a33ca/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="DynaDocs.Tests.Integration.SafeDeleteInputsTests" name="ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged" />
+    </UnitTest>
+    <UnitTest name="DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: &quot;exclude&quot;, checkpoint: &quot;before-copy&quot;, present: True)" storage="/tmp/dydo-test-e68a33ca/dynadocs.tests/bin/debug/net10.0/dynadocs.tests.dll" id="8847cc9d-5f69-a9d8-b504-94b4a9376026">
+      <Execution id="ee18c7eb-0db5-4cff-9019-25c40078b2fe" />
+      <TestMethod codeBase="/tmp/dydo-test-e68a33ca/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll" adapterTypeName="executor://xunit/VsTestRunner3/netcore/" className="DynaDocs.Tests.Integration.SafeDeleteInputsTests" name="ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="8847cc9d-5f69-a9d8-b504-94b4a9376026" executionId="ee18c7eb-0db5-4cff-9019-25c40078b2fe" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="7214cc77-2ff1-5214-3f9f-1de2ab466e32" executionId="ad0e5cd2-90db-40a5-a4b7-17b7acc20d95" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="53587aa7-16c8-698d-c3c5-3917119efe2b" executionId="25d11f7d-85c6-4a91-a047-9ff52c50bba2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b2fb7bef-8c8f-0e18-a549-5ce8f271dbd9" executionId="e0d0fe7e-1c13-4169-a4b6-31beb9204ca1" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="80f425a9-e8cf-f5a9-93b6-8822cb2da4b5" executionId="40f7bccd-9de1-4f1c-85ed-64881e88cb48" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="5" executed="5" passed="5" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>[xUnit.net 00:00:00.00] xUnit.net VSTest Adapter v3.1.5+1b188a7b0a (64-bit .NET 10.0.14)
+[xUnit.net 00:00:00.10]   Discovering: DynaDocs.Tests
+[xUnit.net 00:00:00.82]   Discovered:  DynaDocs.Tests
+[xUnit.net 00:00:00.85]   Starting:    DynaDocs.Tests
+-&gt; Loading plugin /tmp/dydo-test-e68a33ca/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll
+-&gt; Loading plugin /tmp/dydo-test-e68a33ca/DynaDocs.Tests/bin/Debug/net10.0/Reqnroll.xUnit.ReqnrollPlugin.dll
+-&gt; Using reqnroll.json
+[xUnit.net 00:00:02.43]   Finished:    DynaDocs.Tests
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

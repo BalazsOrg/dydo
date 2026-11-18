@@ -1,0 +1,15 @@
+DYD-1172 local pre-review sync: 2078622fe2e22169898f06836929b2faf9e68f8c
+Parents: c6150e353d59cc3279f556f6ef8197c386359100 a5471145eb4b05b18f0829d1f7c5a00460ab5125
+Tested tree: 8c70345a0bb92346b44a3e48ad5f767531289d42
+All C# files and the complete refusal-output assertion are byte-identical to source.
+Required gates: sync-prerequisites-final exit 0, sync-discovery exit 0, sync-safe-discovery exit 0, sync-selection-final exit 0, sync-light exit 0, sync-static-dotnet exit 0, sync-coverage exit 0, sync-static-python exit 0, sync-docs exit 0
+SafeDelete Light: 335 passed, 0 failed, 0 skipped.
+Whole-.NET suite verdict: coverage producer child_exit=0; native totals retained in coverage raw archive.
+Early failed probes remain failed; see receipt.json for each exact diagnosis.
+Pre-review local sync only; no source PASS, PR, push or remote merge.
+Ticket coverage selection unavailable; supported whole-dotnet coverage producer and consumer used. Its child_exit=0 supplies the whole-suite verdict; no duplicate whole-suite run.
+No Heavy trigger. Mutation remains reviewer-owned UNAVAILABLE, Pending DYD-103; never claimed passing.
+Hosted Windows/Linux Actions and fresh Claude whole-head review remain captain-owned.
+Target pin supplied from 2026-11-17 remote read; exact local FETCH_HEAD verified. Sandbox remote read failed DNS; no retarget.
+Gates ran on the clean merge tree. Following hop adds only this inert evidence directory; C# hashes map that hop to the tested merge.
+code-writer/model: GPT-6.1 sol high

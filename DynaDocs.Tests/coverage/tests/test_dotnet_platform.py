@@ -129,7 +129,8 @@ def write_evidence(evidence, modules, stdout=SUMMARY, trx=None):
     evidence.mkdir(parents=True, exist_ok=True)
     (evidence / 'joined.json').write_text(json.dumps({
         'schema': 1, 'modules': modules, 'findings': evaluate_policy(modules),
-        'targets': [{'assembly': 'dydo', 'modules': modules, 'accounting': []}]}), encoding='utf-8')
+        'targets': [{'project': 'Lib/Lib.csproj', 'assembly': 'dydo', 'modules': modules, 'accounting': []}]}),
+        encoding='utf-8')
     files = source_files()
     (evidence / 'source-facts-dydo.json').write_text(json.dumps({'files': files}), encoding='utf-8')
     (evidence / 'source-facts-GateMetrics.json').write_text(json.dumps({'files': []}), encoding='utf-8')

@@ -1,0 +1,9 @@
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 38)         Git(Main, "config", "maintenance.auto", "false");
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 39)         File.WriteAllText(Path.Combine(Main, "file.txt"), "base\n");
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 40)         File.WriteAllText(Path.Combine(Main, ".gitignore"), "ignored/\n");
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 41)         Git(Main, "add", ".");
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 42)         Git(Main, "commit", "-m", "seed");
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 43)         Git(Main, "branch", "topic");
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 44)         File.WriteAllText(Path.Combine(Main, "dydo.json"), "{\"archive\":{\"reserveBytes\":0,\"reservePercent\":0}}");
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 45)     }
+ab242bdb3 (balazsbodnar 2026-11-17 00:19:30 +0100 46)

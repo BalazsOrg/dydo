@@ -1,0 +1,9 @@
+{
+  "candidateSha256": "327bc0bf68293e7b20845af7418b38918c457fd208c5f3aade8a899b162d6d2c",
+  "baseSourceSha256": "c79913806209fcce3eeced9bee8a5350edae7c704930876a8fd770b7a2c193a8",
+  "baseHead": "01ca32e9bdbda6d3477aab3b9c82cefc85d14fea",
+  "comparison": "same checkout/toolchain; only assertion source restored to pinned HEAD; inert evidence retained",
+  "exit": 1,
+  "restoredSha256": "327bc0bf68293e7b20845af7418b38918c457fd208c5f3aade8a899b162d6d2c",
+  "restored": true
+}

@@ -1,0 +1,38 @@
+{
+  "sourceHead": "01ca32e9bdbda6d3477aab3b9c82cefc85d14fea",
+  "sourceSha256": "327bc0bf68293e7b20845af7418b38918c457fd208c5f3aade8a899b162d6d2c",
+  "historicalEvidenceUnchanged": true,
+  "allPreflightSourceHashesMatch": true,
+  "staticFindingsIdenticalOnPinnedSource": [
+    {
+      "collector": "associations",
+      "gate": "test-association",
+      "path": "dydo/project/changelog/2026/2026-11-17/dyd-1172/probe-low-space.py",
+      "reason": "non-trivial target has no associated test file"
+    },
+    {
+      "collector": "associations",
+      "gate": "test-association",
+      "path": "dydo/project/changelog/2026/2026-11-17/dyd-1172/run-proof.py",
+      "reason": "non-trivial target has no associated test file"
+    }
+  ],
+  "gates": {
+    "diagnostic-light": 0,
+    "diagnostic-static": 2,
+    "diagnostic-static-stable": 1,
+    "diagnostic-static-base": 1,
+    "diagnostic-coverage": 0
+  },
+  "ownedSnapshotsAbsentAndUnregistered": [
+    "/tmp/dydo-test-33763677",
+    "/tmp/dydo-test-3beda6e3",
+    "/tmp/dydo-test-d6d99026",
+    "/tmp/dydo-test-532d8d32",
+    "/tmp/dydo-test-a1675819",
+    "/tmp/dydo-test-2e9dfc66"
+  ],
+  "probeScratchAbsent": "/tmp/dydo-safe-delete-52e10fb18daf4451ae4c1288a66959a5",
+  "windowsReproduction": false,
+  "mutation": "reviewer-owned UNAVAILABLE: Pending DYD-103"
+}

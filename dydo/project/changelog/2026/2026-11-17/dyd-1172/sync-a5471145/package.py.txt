@@ -1,0 +1,34 @@
+"""Compress native whitespace-bearing logs losslessly and refresh the evidence manifest."""
+import gzip
+import hashlib
+import json
+from pathlib import Path
+import shutil
+import subprocess
+
+root=Path('dydo/project/changelog/2026/2026-11-17/dyd-1172/sync-a5471145')
+check=subprocess.run(['git','diff','--cached','--check'],capture_output=True)
+(root/'raw-whitespace-check.txt.gz').write_bytes(gzip.compress(check.stdout+check.stderr,mtime=0))
+(root/'raw-whitespace-check.txt').unlink(missing_ok=True)
+changes={}
+for name in ['sync-prerequisites-corrected','sync-prerequisites-final','sync-prerequisites-host','sync-prerequisites-valid']:
+    path=root/name/'stdout.txt'
+    raw=path.read_bytes() if path.exists() else gzip.decompress(path.with_suffix('.txt.gz').read_bytes())
+    packed=gzip.compress(raw,mtime=0)
+    assert gzip.decompress(packed)==raw
+    destination=path.with_suffix('.txt.gz')
+    destination.write_bytes(packed)
+    changes[str(path.relative_to(root))]={'retained':str(destination.relative_to(root)),
+        'uncompressedSha256':hashlib.sha256(raw).hexdigest(),
+        'compressedSha256':hashlib.sha256(packed).hexdigest(),'roundTripEqual':True}
+    path.unlink(missing_ok=True)
+receipt=json.loads((root/'receipt.json').read_text())
+receipt['rawPackaging']={'reason':'Native dotnet tool-list output contains trailing whitespace and a terminal blank line. Preserve raw bytes compressed, with hashes and round-trip proof.',
+    'priorGitDiffCheck':{'argv':['git','diff','--cached','--check'],'exit':check.returncode,
+                        'raw':'raw-whitespace-check.txt.gz'},'files':changes}
+(root/'receipt.json').write_text(json.dumps(receipt,indent=2)+'\n')
+shutil.copy2(__file__,root/'package.py.txt')
+manifest={str(path.relative_to(root)):{'bytes':path.stat().st_size,'sha256':hashlib.sha256(path.read_bytes()).hexdigest()}
+          for path in sorted(root.rglob('*')) if path.is_file() and path.name!='artifacts.json'}
+(root/'artifacts.json').write_text(json.dumps(manifest,indent=2)+'\n')
+print(json.dumps({'priorRawWhitespaceCheckExit':check.returncode,'losslesslyCompressed':changes},indent=2))

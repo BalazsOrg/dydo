@@ -2223,7 +2223,7 @@ def main(argv=None):
     parser.add_argument("--cases", nargs="+", choices=tuple(CASES), default=list(CASES))
     parser.add_argument("--directions", nargs="+", choices=tuple(DIRECTIONS), default=list(DIRECTIONS))
     parser.add_argument("--model", default="claude-opus-5-5", help="the Claude officer's model")
-    parser.add_argument("--codex-model", default="gpt-6-astra")
+    parser.add_argument("--codex-model", default="gpt-6.1-sol")
     parser.add_argument("--report", help="recorders: the harness's receipt FIFO")
     parser.add_argument("--dotnet")
     parser.add_argument("--dll")
