@@ -720,6 +720,7 @@ jobs:
         DynaDocs.Tests.Services.DangerousPatternCultureTests
         DynaDocs.Tests.Services.DangerousPatternOracleTests
         DynaDocs.Tests.Integration.GuardShellCorpusTests
+        DynaDocs.Tests.Commands.GuardCommandTests
         DynaDocs.Tests.Integration.GuardSecurityTests
         DynaDocs.Tests.Integration.GuardMergeRouteTests
         DynaDocs.Tests.Integration.GuardPrReadyTests

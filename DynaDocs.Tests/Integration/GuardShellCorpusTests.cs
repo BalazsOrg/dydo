@@ -108,7 +108,7 @@ public class GuardShellCorpusTests : GuardHookTestBase
     private static readonly string[] DangerousWherePwshRunsIt =
     [
         "echo x\rpass show bank", "echo ‘a'; pass show bank; ’b'", "echo x\rpython -", "echo ‘a'; python -; ’b'",
-        "@'\npass show x\n'@ | pwsh -Command -",
+        "@'\npass show x\n'@ | pwsh -Command -", GuardRetroCommands.Gs04LightLanesDeclarations,
     ];
 
     public static TheoryData<string, string> Dangerous => Join(

@@ -399,7 +399,7 @@ public class GuardSecurityTests : IntegrationTestBase
         File.WriteAllText(path, config.ToJsonString());
 
         for (var attempt = 0; attempt < 2; attempt++)
-            (await GuardWithStdinAsync(BashJson("npx dydo agent claim auto"))).AssertPreToolUseDenied();
+            (await GuardWithStdinAsync(BashJson("npx dydo check"))).AssertPreToolUseDenied();
     }
 
     [Trait("Job", "trap: issue #60, shell reads and writes honour the off-limits tier")]

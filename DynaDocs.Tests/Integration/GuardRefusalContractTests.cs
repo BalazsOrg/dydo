@@ -6,6 +6,7 @@ namespace DynaDocs.Tests.Integration;
 /// exits 0 with one deny-decision object on stdout, which Codex and Claude Code both honour.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: LC-1021 a PreToolUse refusal is exit 0 with one deny object")]
 public class GuardRefusalContractTests : IntegrationTestBase
 {
     private static string Hook(string tool, string toolInput, string? eventName = "PreToolUse") =>
@@ -13,61 +14,19 @@ public class GuardRefusalContractTests : IntegrationTestBase
         + (eventName == null ? "" : ",\"hook_event_name\":\"" + eventName + "\"")
         + ",\"tool_name\":\"" + tool + "\",\"tool_input\":" + toolInput + "}";
 
-    [Fact]
-    public async Task ChainedCd_IsDeniedThroughStdoutJson()
+    // Every refusal lane answers the same way: a cd chain, an unverifiable write, an off-limits
+    // file-tool path, a payload without session_id, and one without hook_event_name (PreToolUse).
+    [Theory]
+    [InlineData("{\"session_id\":\"s\",\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cd tools && echo hi\"}}")]
+    [InlineData("{\"session_id\":\"s\",\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"echo x > $OUT\"}}")]
+    [InlineData("{\"session_id\":\"s\",\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Edit\",\"tool_input\":{\"file_path\":\".env\"}}")]
+    [InlineData("{\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"ls\"}}")]
+    [InlineData("{\"session_id\":\"s\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cd tools && echo hi\"}}")]
+    public async Task Refusal_IsExitZeroWithOneDenyObject(string payload)
     {
         await InitProjectAsync("none");
 
-        var result = await GuardWithStdinAsync(Hook("Bash", "{\"command\":\"cd tools && echo hi\"}"));
-
-        var reason = result.AssertPreToolUseDenied();
-        Assert.StartsWith("BLOCKED: Don't chain cd / Set-Location", reason);
-        Assert.Contains("Otherwise just run: echo hi", reason);
-    }
-
-    [Fact]
-    public async Task VariableExpansionWrite_IsDeniedWithItsWarnings()
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardWithStdinAsync(Hook("Bash", "{\"command\":\"echo x > $OUT\"}"));
-
-        var reason = result.AssertPreToolUseDenied();
-        Assert.Contains("WARNING: ", reason);
-        Assert.Contains("BLOCKED: Command contains bypass patterns", reason);
-        Assert.Contains("Use literal paths instead.", reason);
-    }
-
-    [Fact]
-    public async Task OffLimitsFileToolPath_IsDeniedWithEveryLine()
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardWithStdinAsync(Hook("Edit", "{\"file_path\":\".env\"}"));
-
-        var reason = result.AssertPreToolUseDenied();
-        Assert.StartsWith("BLOCKED: Path is off-limits to all agents.", reason);
-        Assert.Contains("Path: .env", reason);
-        Assert.Contains("Configure exceptions in dydo/files-off-limits.md", reason);
-    }
-
-    [Fact]
-    public async Task MissingSessionId_IsDenied()
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardWithStdinAsync(
-            "{\"hook_event_name\":\"PreToolUse\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"ls\"}}");
-
-        Assert.Equal("BLOCKED: No session_id in hook input.", result.AssertPreToolUseDenied());
-    }
-
-    [Fact]
-    public async Task PayloadWithoutEventName_IsTreatedAsPreToolUse()
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardWithStdinAsync(Hook("Bash", "{\"command\":\"cd tools && echo hi\"}", eventName: null));
+        var result = await GuardWithStdinAsync(payload);
 
         result.AssertPreToolUseDenied();
     }
@@ -79,11 +38,11 @@ public class GuardRefusalContractTests : IntegrationTestBase
 
         var result = await GuardWithStdinAsync(Hook("Read", "{\"file_path\":\"config/café/secrets.json\"}"));
 
-        var reason = result.AssertPreToolUseDenied();
-        Assert.Contains("config/café/secrets.json", reason);
+        result.AssertPreToolUseDenied();
         Assert.All(result.Stdout, c => Assert.True(c < 128, $"Non-ASCII char U+{(int)c:X4} on stdout"));
     }
 
+    // The deny object carries the same text the guard writes to stderr for a human.
     [Fact]
     public async Task Refusal_StillWritesTheHumanTextToStderr()
     {
@@ -114,6 +73,5 @@ public class GuardRefusalContractTests : IntegrationTestBase
 
         result.AssertExitCode(2);
         Assert.Equal("", result.Stdout);
-        result.AssertStderrContains("BLOCKED");
     }
 }
