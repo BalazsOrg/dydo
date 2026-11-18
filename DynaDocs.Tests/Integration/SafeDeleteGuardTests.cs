@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Integration;
 using System.Text.Json;
 
 [Collection("Integration")]
+[Trait("Job", "contract: spec N10; DYD-1029 (safe-delete through the guard)")]
 public sealed class SafeDeleteGuardTests : IntegrationTestBase
 {
     [Theory]

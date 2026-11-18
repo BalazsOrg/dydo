@@ -7,6 +7,7 @@ using System.Diagnostics;
 // read the TAP summary. These tests run the committed guard under pwsh against reports shaped like
 // node's own. pwsh is found on PATH. Without it they skip locally and fail on a GitHub Actions runner,
 // where every dotnet test leg already runs its own pwsh steps.
+[Trait("Job", "trap: DYD-622 (node exits 0 on skipped tests)")]
 public sealed class NodeTestGuardTests : IDisposable
 {
     private const int MinimumTests = 6;

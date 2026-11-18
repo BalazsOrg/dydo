@@ -4,6 +4,7 @@ using DynaDocs.Models;
 using DynaDocs.Rules;
 using Xunit;
 
+[Trait("Job", "contract: writing-docs.md Links (relative paths, no wikilinks or absolute paths)")]
 public class RelativeLinksRuleTests
 {
     private readonly RelativeLinksRule _rule = new();

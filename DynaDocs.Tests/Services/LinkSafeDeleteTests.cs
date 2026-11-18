@@ -2,6 +2,7 @@ namespace DynaDocs.Tests.Services;
 
 using DynaDocs.Services;
 
+[Trait("Job", "trap: DYD-362 (deleting a tree removes a link, never its target)")]
 public sealed class LinkSafeDeleteTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-linksafe-" + Guid.NewGuid().ToString("N")[..8]);
