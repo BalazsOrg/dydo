@@ -13,7 +13,7 @@ public sealed class ViewerPackTests : IDisposable
     public ViewerPackTests()
     {
         // Keep the real packaging configuration and viewer items, with a tiny dependency-free app.
-        var source = ReleaseWorkflowTests.RepositoryFile("DynaDocs.csproj");
+        var source = RepositoryFiles.Locate("DynaDocs.csproj");
         var project = XDocument.Load(source);
         project.Root!.Elements("ItemGroup")
             .Where(group => !group.Elements("EmbeddedResource").Any(item =>
