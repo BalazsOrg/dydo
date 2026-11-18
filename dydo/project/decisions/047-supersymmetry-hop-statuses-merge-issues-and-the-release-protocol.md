@@ -17,6 +17,8 @@ participants: [balazs, Claude (Fable)]
 
 > **§6 superseded by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)**, *merges are Issues*: a merge into the feature branch is a Merge hop sub-ticket the captain runs, with no review under it; a real red gate reverts the merge; only the landing keeps a merge review, and a two-way landing merges AFK after his walkthrough acceptance. The rest remains in force.
 
+> **§3 superseded by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)**, *statuses*: each step of a review loop is a hop sub-ticket (Implement, Review per round, Fix, Merge) that goes Todo → In Progress → Done once; `Implementing`, `In Review` and `Ready to Merge` are deleted, leaving seven statuses; whoever starts a step sets its hop In Progress and closes it; the Mode label says who a step waits on. The rest remains in force.
+
 Reshapes the dydo 3 operating model where the control-flow map found its contracts disagreeing: a
 captain's Issue is a Project one level down and the same Types, statuses and chain hold at both
 levels; every spawn flips a status; every merge is an Issue with its own review; a captain returns a

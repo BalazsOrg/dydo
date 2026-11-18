@@ -9,6 +9,8 @@ participants: [balazs, Claude admiral]
 
 # 052 - `dydo map`: a Read-Only Linear View
 
+> **§5 amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)**: the map opens on the top-level tickets, open plus those closed in the last 3 days, with the view held in the URL; expanding a card lays out its children the same way, at any depth; the order is computed from blocking relations and createdAt; reads filter server-side on state and completedAt. The rest remains in force.
+
 `dydo map` is a read-only, on-demand view of one Linear Project. It reads Linear's GraphQL API with
 the user's `LINEAR_API_KEY` when the page loads. It never writes, polls, subscribes to or mirrors
 Linear. The 2026-10-04 amendment below permits disposable saved maps across process restarts. [DR 044](./044-linear-canonical-pm-and-dydo-knowledge-boundary.md)'s
