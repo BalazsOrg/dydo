@@ -25,11 +25,13 @@ jobs:
           - os: ubuntu-24.04
             platform: linux
             python: .static-gates/python/bin/python
+            timeout: 45
           - os: windows-latest
             platform: windows
             python: .static-gates/python/Scripts/python.exe
+            timeout: 60
     runs-on: ${{ matrix.os }}
-    timeout-minutes: 45
+    timeout-minutes: ${{ matrix.timeout }}
     steps:
       - uses: actions/checkout@v4
         with:
