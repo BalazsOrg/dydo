@@ -15,7 +15,7 @@ using static DynaDocs.Tests.Integration.PushedRepository;
 /// </summary>
 [Collection("Integration")]
 [Trait("Job", "contract: DYD-374/DYD-391 pr-ready guard, DR 061")]
-public class GuardPrReadyTests : IntegrationTestBase
+public class GuardPrReadyTests(PushedProjectTemplates templates) : IntegrationTestBase, IClassFixture<PushedProjectTemplates>
 {
     public enum Tree
     {
@@ -67,17 +67,22 @@ public class GuardPrReadyTests : IntegrationTestBase
 
     // The origin is a bare repository on disk; after the pushes it is renamed to LC's URL so a
     // call naming acme/lc names this tree's repository. Upstream refs stay local, so nothing fetches.
+    // Each row gets its own copy of the class's built tree; the copied worktree's links are repaired.
     private async Task InitPushedProject(bool withWorktree = false)
     {
-        await InitProjectAsync("none");
-        File.AppendAllText(Path.Combine(TestDir, ".gitignore"), "\n/origin.git/\n/wt/\n");
-        Create(TestDir, Path.Combine(TestDir, "origin.git"));
-        if (withWorktree)
+        await templates.CopyInto(withWorktree ? "pushed-with-worktree" : "pushed", TestDir, async tree =>
         {
-            Git(TestDir, "worktree", "add", "-b", "topic", Worktree);
-            Git(Worktree, "push", "-u", "origin", "topic");
-        }
-        Git(TestDir, "remote", "set-url", "origin", Origin);
+            await InitProjectAsync("none");
+            File.AppendAllText(Path.Combine(tree, ".gitignore"), "\n/origin.git/\n/wt/\n");
+            Create(tree, Path.Combine(tree, "origin.git"));
+            if (withWorktree)
+            {
+                Git(tree, "worktree", "add", "-b", "topic", Path.Combine(tree, "wt"));
+                Git(Path.Combine(tree, "wt"), "push", "-u", "origin", "topic");
+            }
+            Git(tree, "remote", "set-url", "origin", Origin);
+        });
+        if (withWorktree) Git(TestDir, "worktree", "repair", Worktree);
     }
 
     private async Task Arrange(Tree tree)
