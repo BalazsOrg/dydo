@@ -10,6 +10,8 @@ weighed:
 
 # 065 - Review Placement and the Merge-Review Cut
 
+> **Decision 7's "Shoulds go to the should collection" amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)**: a should is its own ticket under the ticket where it was found, collected later in a Shoulds batch; there is no standing collection ticket (C9). The rest remains in force.
+
 The feature is the review unit, reviewed once when it can be observed, and every review also checks
 the change against the governing spec's problem statement. A conflict-free merge into the feature
 branch is proved by deterministic gates and hosted CI, with no merge review; only the landing keeps

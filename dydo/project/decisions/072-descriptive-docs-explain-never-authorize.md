@@ -53,8 +53,8 @@ the admiral's Project closeout. The DECIDED records it as a finding, not a desig
    grilling F's F12 rename ("architecture plan").
 2. **Specs are unchanged (§1).** He restated them as they stand: one main spec per Project, with
    linked specs for sub-features that need them, the source of truth and "measuring stick" for the
-   implementation tickets, moving to Linear in 4.0.0 and deleted at landing. The rule is DR 070's
-   (`070-statuses-as-sub-tickets-shoulds-and-the-map.md`, grilling C's C8, DR 053's successor);
+   implementation tickets, moving to Linear in 4.0.0 and deleted at landing. The rule is
+   [DR 070](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)'s (grilling C's C8, DR 053's successor);
    this record does not restate it.
 3. **Docs are just docs, of two kinds (§2).** "We call them 'documentation'. 'docs' for short." They
    live in their usual homes, with no special name or folder.
@@ -161,6 +161,6 @@ record leaves their text as it is.
 
 - [DR 051 - Captains by Default, the Admiral on Invocation](./051-captains-by-default-admiral-on-invocation.md) - §6 withdrawn
 - [DR 053 - Temporary Feature Specs](./053-temporary-feature-specs.md)
-- DR 070 (`070-statuses-as-sub-tickets-shoulds-and-the-map.md`) - Specs (C8)
+- [DR 070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md) - Specs (C8)
 - [DR 066 - The Law, Councils and the Tribunal](./066-the-law-councils-and-the-tribunal.md) - Principles are his (F10)
 - [DYD-1100 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1100#comment-bdb6b643-f33d-4bd0-b801-c33566d63bca)

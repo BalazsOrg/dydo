@@ -72,7 +72,7 @@ Grilling B left open where the spec lives and what "deleted" means for it.
      map toward the destination, sized to what one agent can handle within its context."
    - **D11 retired.** D11 held sub-captains back until the T3 nesting experiment reported.
      DYD-1114 DECIDED replaced that: sub-captains are allowed now, with no hard cap. C2 stands
-     without D11's note; depth is DR 071's ([DYD-1087](https://linear.app/bodnar-balazs/issue/DYD-1087)).
+     without D11's note; depth is [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s.
 2. **Each step of a review loop is a hop sub-ticket (C1, C2a).** "before the implementation
    finishes the review ticket can already be there (in a todo or a not started way). So it's legible
    and quite simple."
@@ -245,8 +245,8 @@ The loop itself is DR 065 decision 7 (B6). C3 says how each outcome shows.
   decision 15).
 - Amends [DR 052](./052-dydo-map-read-only-linear-view.md) §5: the map's default view and order
   (C10 to C12).
-- Changes, without a banner here: [DR 058](./058-review-severities-blocker-should-nit.md) §1, where a
-  blocker returns the ticket to `Implementing` and a should is filed in the Project (C3, C9); and
+- Amends [DR 058](./058-review-severities-blocker-should-nit.md) §1, where a blocker returns the
+  ticket to `Implementing` and a should is filed in the Project's `Backlog` (C1, C3, C9); and
   [DR 065](./065-review-placement-and-the-merge-review-cut.md) decision 7's "should collection" (C9).
 
 ## Related
