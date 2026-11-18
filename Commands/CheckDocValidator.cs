@@ -7,7 +7,7 @@ using DynaDocs.Utils;
 
 internal static class CheckDocValidator
 {
-    public static ValidationResult Validate(string basePath, string? reportScope = null)
+    public static ValidationResult Validate(string basePath, string? reportScope = null, string? baseRef = null)
     {
         var parser = new MarkdownParser();
         var scanner = new DocScanner(parser);
@@ -28,6 +28,10 @@ internal static class CheckDocValidator
 
         var rules = CreateRules(linkResolver, typesService);
         var result = new ValidationResult { TotalFilesChecked = docsToValidate.Count };
+        result.AddRange(ExplainsCheck.Validate(docsToValidate, basePath));
+        if (baseRef != null)
+            result.AddRange(ExplainsCheck.Warnings(docsToValidate, basePath, baseRef)
+                .Select(message => new Violation("explains", "Explains", message, ViolationSeverity.Warning)));
 
         foreach (var doc in docsToValidate)
         {

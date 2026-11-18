@@ -9,7 +9,7 @@ using DynaDocs.Commands;
 /// Meta-tests that dynamically discover commands/flags from the System.CommandLine tree
 /// and verify they appear in docs, help text, templates, and examples.
 /// </summary>
-public class CommandDocConsistencyTests
+public partial class CommandDocConsistencyTests
 {
     private static readonly HashSet<string> ExcludedFromDocs = ["_complete"];
     // Commands intentionally hidden from agent-facing quick reference
@@ -36,41 +36,6 @@ public class CommandDocConsistencyTests
                 yield return child;
         }
     }
-
-    private static string FindRepoFile(string relativePath)
-    {
-        var dir = AppContext.BaseDirectory;
-        while (dir != null)
-        {
-            var candidate = Path.Combine(dir, relativePath);
-            if (File.Exists(candidate)) return candidate;
-            dir = Path.GetDirectoryName(dir);
-        }
-        throw new FileNotFoundException(
-            $"Could not find {relativePath} walking up from {AppContext.BaseDirectory}");
-    }
-
-    private static string FindRepoDir(string relativePath)
-    {
-        var dir = AppContext.BaseDirectory;
-        while (dir != null)
-        {
-            var candidate = Path.Combine(dir, relativePath);
-            if (Directory.Exists(candidate)) return candidate;
-            dir = Path.GetDirectoryName(dir);
-        }
-        throw new DirectoryNotFoundException(
-            $"Could not find {relativePath} walking up from {AppContext.BaseDirectory}");
-    }
-
-    private static HashSet<string> GetAllNames(Option opt)
-    {
-        var names = new HashSet<string>(opt.Aliases) { opt.Name };
-        return names;
-    }
-
-    private static List<Option> GetUserOptions(Command cmd) =>
-        cmd.Options.Where(o => !GetAllNames(o).Any(BuiltInOptionNames.Contains)).ToList();
 
     /// <summary>
     /// Extract sections keyed by command path from a reference doc.
@@ -121,10 +86,11 @@ public class CommandDocConsistencyTests
     }
 
     [Fact]
+    [Trait("Job", "trap: split command references must not hide option/example inconsistencies")]
     public void AllOptions_AppearInReferenceDoc()
     {
         var commands = GetDocumentedCommands();
-        var refDoc = File.ReadAllText(FindRepoFile(Path.Combine("dydo", "reference", "dydo-commands.md")));
+        var refDoc = ReadCommandReference("dydo");
         var sections = ExtractDocSections(refDoc);
 
         var missing = new List<string>();
@@ -152,10 +118,11 @@ public class CommandDocConsistencyTests
     }
 
     [Fact]
+    [Trait("Job", "trap: split command references must not hide option/example inconsistencies")]
     public void ReferenceDocAndTemplate_HaveSameOptions()
     {
-        var refDoc = File.ReadAllText(FindRepoFile(Path.Combine("dydo", "reference", "dydo-commands.md")));
-        var template = File.ReadAllText(FindRepoFile(Path.Combine("Scaffold", "dydo", "reference", "dydo-commands.md")));
+        var refDoc = ReadCommandReference("dydo");
+        var template = ReadCommandReference("Scaffold/dydo");
 
         var refSections = ExtractDocSections(refDoc);
         var tmplSections = ExtractDocSections(template);
@@ -196,10 +163,11 @@ public class CommandDocConsistencyTests
     }
 
     [Fact]
+    [Trait("Job", "trap: split command references must not hide option/example inconsistencies")]
     public void Examples_IncludeAllRequiredFlags()
     {
         var commands = GetDocumentedCommands();
-        var refDoc = File.ReadAllText(FindRepoFile(Path.Combine("dydo", "reference", "dydo-commands.md")));
+        var refDoc = ReadCommandReference("dydo");
         var sections = ExtractDocSections(refDoc);
 
         var commandPaths = commands.Select(c => c.Path).ToHashSet();
@@ -448,16 +416,17 @@ public class CommandDocConsistencyTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1187 mechanical declarations preserve existing descriptive prose")]
     public void InstalledAboutDoc_MatchesTemplate()
     {
         var aboutDynadocs = File.ReadAllText(
-                FindRepoFile(Path.Combine("dydo", "reference", "about-dynadocs.md")))
-            .ReplaceLineEndings("\n").TrimEnd();
+                FindRepoFile(Path.Combine("dydo", "reference", "about-dynadocs.md")));
         var aboutTemplate = File.ReadAllText(
-                FindRepoFile(Path.Combine("Scaffold", "dydo", "reference", "about-dynadocs.md")))
-            .ReplaceLineEndings("\n").TrimEnd();
+                FindRepoFile(Path.Combine("Scaffold", "dydo", "reference", "about-dynadocs.md")));
 
-        Assert.Equal(aboutTemplate, aboutDynadocs);
+        Assert.Equal(
+            Regex.Replace(aboutTemplate, @"(?m)^explains:.*\r?\n", "").ReplaceLineEndings("\n").TrimEnd(),
+            Regex.Replace(aboutDynadocs, @"(?m)^explains:.*\r?\n", "").ReplaceLineEndings("\n").TrimEnd());
     }
 
     /// <summary>

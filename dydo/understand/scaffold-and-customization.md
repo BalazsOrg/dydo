@@ -1,6 +1,7 @@
 ---
 area: understand
 type: concept
+explains: ["Commands/InitCommand*.cs", "Services/FolderScaffolder.cs", "Services/ScaffoldTree.cs", "setup-skills.mjs", "Scaffold/**"]
 ---
 
 # Scaffold and Customization

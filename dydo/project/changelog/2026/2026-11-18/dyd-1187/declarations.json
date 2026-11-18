@@ -1,0 +1,239 @@
+[
+  {
+    "doc": "dydo/guides/customizing-roles.md",
+    "globs": [
+      "setup-skills.mjs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/about-dynadocs.md",
+    "globs": [
+      "Commands/**",
+      "Services/**",
+      "Models/**",
+      "Rules/**",
+      "setup-skills.mjs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/configuration.md",
+    "globs": [
+      "Models/*Config*.cs",
+      "Services/Config*.cs",
+      "Services/ClaudeGuardWiring.cs",
+      "Commands/InitCommand.cs",
+      "Services/DocScanner.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/coverage-tools-measurement.md",
+    "globs": [
+      "DynaDocs.Tests/coverage/**",
+      "Commands/GapCheckCommand.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/coverage-tools-results.md",
+    "globs": [
+      "DynaDocs.Tests/coverage/**",
+      "Commands/GapCheckCommand.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/coverage-tools-running.md",
+    "globs": [
+      "DynaDocs.Tests/coverage/**",
+      "Commands/GapCheckCommand.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/coverage-tools-statics.md",
+    "globs": [
+      "DynaDocs.Tests/coverage/**",
+      "Commands/GapCheckCommand.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/coverage-tools-toolchain.md",
+    "globs": [
+      "DynaDocs.Tests/coverage/**",
+      "Commands/GapCheckCommand.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/coverage-tools.md",
+    "globs": [
+      "DynaDocs.Tests/coverage/**",
+      "Commands/GapCheckCommand.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/dydo-commands-core.md",
+    "globs": [
+      "Commands/InitCommand.cs",
+      "Commands/AdoptCommand.cs",
+      "Commands/Check*.cs",
+      "Commands/FixCommand.cs",
+      "Commands/IndexCommand.cs",
+      "Commands/Graph*.cs",
+      "Commands/GuardCommand*.cs",
+      "Commands/MapCommand.cs",
+      "Commands/SurveyCommand.cs",
+      "Services/Doc*.cs",
+      "Services/Map/**",
+      "Services/Survey/**",
+      "Rules/**",
+      "Services/Explains*.cs",
+      "Services/FolderScaffolder.cs",
+      "Services/ScaffoldTree.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/dydo-commands-delivery.md",
+    "globs": [
+      "Commands/CleanCommand*.cs",
+      "Commands/PrReadyCommand.cs",
+      "Commands/MergeCommand.cs",
+      "Commands/ValidateCommand.cs",
+      "Services/WorktreeCleaner*.cs",
+      "Services/Clean*.cs",
+      "Services/Merge/**",
+      "Services/PrReadyCheck.cs",
+      "Services/Explains*.cs",
+      "Services/ValidationService.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/dydo-commands-mode-and-archive.md",
+    "globs": [
+      "Commands/ModeCommand.cs",
+      "Commands/ArchiveCommand*.cs",
+      "Services/Mode*.cs",
+      "Services/Archive*.cs",
+      "Services/SafeDelete*.cs"
+    ]
+  },
+  {
+    "doc": "dydo/reference/dydo-commands-utilities.md",
+    "globs": [
+      "Commands/GapCheckCommand.cs",
+      "Commands/StatechartCommand*.cs",
+      "Commands/CompletionsCommand.cs",
+      "Commands/HelpCommand.cs",
+      "Services/Statechart/**"
+    ]
+  },
+  {
+    "doc": "dydo/reference/dydo-commands.md",
+    "globs": [
+      "Commands/**",
+      "Services/**"
+    ]
+  },
+  {
+    "doc": "dydo/reference/writing-docs.md",
+    "globs": [
+      "Rules/**",
+      "Services/DocScanner.cs",
+      "Services/Explains*.cs",
+      "Commands/Check*.cs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/about.md",
+    "globs": [
+      "Commands/**",
+      "Services/**",
+      "setup-skills.mjs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/architecture.md",
+    "globs": [
+      "Commands/**",
+      "Services/**",
+      "Models/**",
+      "Rules/**",
+      "Utils/**",
+      "DynaDocs.csproj",
+      "setup-skills.mjs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/documentation-model.md",
+    "globs": [
+      "Services/DocScanner.cs",
+      "Services/MarkdownParser.cs",
+      "Rules/**",
+      "Commands/Check*.cs",
+      "Commands/FixCommand.cs",
+      "Commands/GraphCommand.cs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/guard-system-denylist-audit.md",
+    "globs": [
+      "Services/BashCommandAnalyzer*.cs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/guard-system-hook-and-paths.md",
+    "globs": [
+      "Commands/GuardCommand.cs",
+      "Commands/GuardCommand.Refusal.cs",
+      "Services/OffLimitsService.cs",
+      "Services/BashCommandAnalyzer*.cs",
+      "Services/ClaudeGuardWiring.cs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/guard-system-nudges.md",
+    "globs": [
+      "Commands/GuardCommand*.cs",
+      "Services/ConfigFactory.cs",
+      "Models/NudgeConfig.cs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/guard-system-other-checks.md",
+    "globs": [
+      "Commands/GuardCommand*.cs",
+      "Services/PrReadyCheck.cs",
+      "Services/PrCallScanner.cs",
+      "Services/Explains*.cs",
+      "Services/PrCallScanner*.cs",
+      "Services/SafeDelete*.cs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/guard-system-shell.md",
+    "globs": [
+      "Services/BashCommandAnalyzer*.cs",
+      "Services/ShellReader.cs",
+      "Services/Shell*.cs",
+      "Services/CommandPosition.cs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/guard-system.md",
+    "globs": [
+      "Commands/GuardCommand*.cs",
+      "Services/*Analyzer*.cs",
+      "Services/OffLimitsService.cs",
+      "Models/NudgeConfig.cs",
+      "Commands/GuardCommand.NewFileNudges.cs",
+      "Services/PrReadyCheck.cs",
+      "Services/Explains*.cs"
+    ]
+  },
+  {
+    "doc": "dydo/understand/scaffold-and-customization.md",
+    "globs": [
+      "Commands/InitCommand*.cs",
+      "Services/FolderScaffolder.cs",
+      "Services/ScaffoldTree.cs",
+      "setup-skills.mjs",
+      "Scaffold/**"
+    ]
+  }
+]

@@ -1,6 +1,7 @@
 ---
 area: reference
 type: reference
+explains: ["Models/*Config*.cs", "Services/Config*.cs", "Services/ClaudeGuardWiring.cs", "Commands/InitCommand.cs", "Services/DocScanner.cs"]
 ---
 
 # Configuration Reference
