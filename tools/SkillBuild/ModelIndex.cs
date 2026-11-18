@@ -4,11 +4,12 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// Reads a model's kind classes: each <c>public static</c> <see cref="Claim"/> field is a claim whose id
-/// is <c>Kind.Field</c>. Hands every line, with the ids it states, to the skill it names.
+/// is <c>Kind.Field</c>. Hands every line, with the ids it states, to the skill it names, and keeps every
+/// declared id, so a claim no line states is still seen.
 /// </summary>
 internal static class ModelIndex
 {
-    public static Dictionary<SkillSpec, List<Placed>> LinesBySkill(Model model)
+    public static (Dictionary<SkillSpec, List<Placed>> Lines, IReadOnlyCollection<string> Claims) Read(Model model)
     {
         var skills = new Dictionary<Enum, SkillSpec>();
         foreach (var skill in model.Skills)
@@ -23,14 +24,14 @@ internal static class ModelIndex
                     throw new InvalidDataException($"claim:{id} has a line for {Names.Of(line.Skill)}, which the model does not declare");
                 lines[skill].Add(new Placed(line, [id, .. line.Also().Select(other => IdOf(ids, other, id))]));
             }
-        return lines;
+        return (lines, ids.Values);
     }
 
     private static Dictionary<Claim, string> ClaimIds(IEnumerable<Type> kinds)
     {
         var ids = new Dictionary<Claim, string>();
         var taken = new HashSet<string>(StringComparer.Ordinal);
-        foreach (var kind in kinds.Distinct())
+        foreach (var kind in kinds)
         {
             if (!kind.IsClass || !kind.IsAbstract || !kind.IsSealed)
                 throw new InvalidDataException($"kind {kind.Name} is not a static class");

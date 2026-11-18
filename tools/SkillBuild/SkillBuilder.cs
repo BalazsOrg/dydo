@@ -11,7 +11,8 @@ public static class SkillBuilder
     {
         var files = new SortedDictionary<string, string>(StringComparer.Ordinal);
         var map = new List<MapLine>();
-        foreach (var (skill, lines) in ModelIndex.LinesBySkill(model))
+        var (bySkill, claims) = ModelIndex.Read(model);
+        foreach (var (skill, lines) in bySkill)
         {
             var rendered = SkillRenderer.Render(skill, new SkillLayout(skill, lines)).ToArray();
             StatesEachClaimOnce(skill, lines, rendered);
@@ -22,7 +23,18 @@ public static class SkillBuilder
                     map.AddRange(file.Stated.Select(stated => new MapLine(path, stated.Line, stated.Text, stated.Placed.Claims)));
                 }
         }
+        StatesEveryClaim(claims, map);
         return new BuiltTree(files, map);
+    }
+
+    // K4 and DYD-1196 A4's "zero": a declared claim that no line of any built skill states, neither
+    // its own line nor a combined line naming it, would vanish from the prose and the map.
+    private static void StatesEveryClaim(IEnumerable<string> claims, IEnumerable<MapLine> map)
+    {
+        var stated = map.SelectMany(line => line.Claims).ToHashSet(StringComparer.Ordinal);
+        foreach (var id in claims)
+            if (!stated.Contains(id))
+                throw new InvalidDataException($"claim:{id} is stated by no line; a claim is stated in every skill that carries it");
     }
 
     // K4: each claim a skill carries is stated by exactly one line of its built files; a combined
