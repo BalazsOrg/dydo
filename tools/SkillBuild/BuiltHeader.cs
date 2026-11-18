@@ -46,7 +46,7 @@ public static class BuiltHeader
 
     /// <summary>
     /// Every <c>.md</c> and <c>.yaml</c> file under <c>skills/</c>, <c>dydo/</c> and <c>Scaffold/</c>, and every
-    /// chart file under <c>claims/statechart/</c>, that carries the header.
+    /// chart file in a machine's folder under <c>claims/statechart/</c>, that carries the header.
     /// </summary>
     public static IReadOnlyDictionary<string, byte[]> Committed(string root) => Roots
         .Select(rootFolder => (Folder: Path.Combine(root, rootFolder.Folder), rootFolder.Extensions))

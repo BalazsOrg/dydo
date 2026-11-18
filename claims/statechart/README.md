@@ -6,8 +6,8 @@ The whole of dydo 4.0.0 as 26 machines, generated from the C# claim model in `to
 skills' moves are the same claims as these arrows, so the two cannot drift. The skills are kept
 barebones; the chart is not, and it holds behaviour the skills leave unsaid.
 
-Everything here except this README and the `chart.mmd` files is built: `transitions.json`, and in
-each machine's folder its `<Machine>.tla`, `<Machine>.cfg` and `view.mjs`. Edit the model, never the
+Everything here except this README and the `chart.mmd` files is built: in each machine's folder
+its `transitions.json`, `<Machine>.tla`, `<Machine>.cfg` and `view.mjs`. Edit the model, never the
 files.
 
 ## Rebuild

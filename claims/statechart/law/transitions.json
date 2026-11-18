@@ -1,0 +1,183 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Law",
+  "title": "How the law grows",
+  "initial": "Evidence",
+  "finals": [
+    "Mechanical",
+    "Enacted",
+    "Retired",
+    "CaseLaw"
+  ],
+  "states": [
+    {
+      "id": "Evidence",
+      "title": "Evidence for the law",
+      "spec": [
+        "L11"
+      ]
+    },
+    {
+      "id": "Candidate",
+      "title": "Amendment candidate",
+      "spec": [
+        "L7",
+        "L11"
+      ]
+    },
+    {
+      "id": "Mechanical",
+      "title": "A test, lint or gate",
+      "spec": [
+        "L7",
+        "L13"
+      ]
+    },
+    {
+      "id": "Proposed",
+      "title": "Principle proposed to him",
+      "spec": [
+        "L7",
+        "L13"
+      ]
+    },
+    {
+      "id": "Enacted",
+      "title": "Principle enacted",
+      "spec": [
+        "L3",
+        "L6",
+        "L13"
+      ]
+    },
+    {
+      "id": "Retired",
+      "title": "Principle retired",
+      "spec": [
+        "L11"
+      ]
+    },
+    {
+      "id": "CaseStudy",
+      "title": "Case study prepared",
+      "spec": [
+        "L9"
+      ]
+    },
+    {
+      "id": "CaseLaw",
+      "title": "Case study approved",
+      "spec": [
+        "L9"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Law.Approve",
+      "from": "CaseStudy",
+      "to": "CaseLaw",
+      "arrow": "he approves it",
+      "spec": [
+        "L9",
+        "L4"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Law.Departs",
+      "from": "Evidence",
+      "to": "Candidate",
+      "arrow": "his answer departs from his precedent or his law, or other evidence arrives",
+      "spec": [
+        "L7",
+        "L11"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Law.Enact",
+      "from": "Proposed",
+      "to": "Enacted",
+      "arrow": "he enacts it under a new slug",
+      "spec": [
+        "L13",
+        "L1",
+        "L2",
+        "L3",
+        "L5",
+        "L6",
+        "L10"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Law.Mechanical",
+      "from": "Candidate",
+      "to": "Mechanical",
+      "arrow": "no reasonable person would choose otherwise",
+      "spec": [
+        "L7",
+        "L13"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Law.Precedential",
+      "from": "Evidence",
+      "to": "CaseStudy",
+      "arrow": "a call looks precedential",
+      "spec": [
+        "L9",
+        "L8"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Law.Propose",
+      "from": "Candidate",
+      "to": "Proposed",
+      "arrow": "a reasonable person could choose otherwise and still be right",
+      "spec": [
+        "L7",
+        "L13"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Law.Retire",
+      "from": "Enacted",
+      "to": "Retired",
+      "arrow": "he retires or supersedes it",
+      "spec": [
+        "L11",
+        "L13"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

@@ -1,0 +1,83 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "SafeDelete",
+  "title": "Safe delete",
+  "initial": "Live",
+  "finals": [
+    "Purged"
+  ],
+  "states": [
+    {
+      "id": "Live",
+      "title": "Branch or worktree in use, a T3 worktree included",
+      "spec": [
+        "N10"
+      ]
+    },
+    {
+      "id": "Archived",
+      "title": "Archived for 30 days",
+      "spec": [
+        "N10"
+      ]
+    },
+    {
+      "id": "Purged",
+      "title": "Purged",
+      "spec": [
+        "N10"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:SafeDelete.Archive",
+      "from": "Live",
+      "to": "Archived",
+      "arrow": "after its merge, its captain safe-deletes it",
+      "spec": [
+        "N10",
+        "N12 DR 045 §8"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:SafeDelete.ArchiveT3",
+      "from": "Live",
+      "to": "Archived",
+      "arrow": "a T3 worktree is archived without breaking T3",
+      "spec": [
+        "N10"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:SafeDelete.Purge",
+      "from": "Archived",
+      "to": "Purged",
+      "arrow": "30 days pass",
+      "spec": [
+        "N10"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": [
+    {
+      "action": "Gap1",
+      "from": "Archived",
+      "to": "Live",
+      "note": "N10 names no restore from the archive; the built command has one"
+    }
+  ]
+}

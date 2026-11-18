@@ -1,0 +1,95 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Council",
+  "title": "A council",
+  "initial": "Convened",
+  "finals": [
+    "Synthesised"
+  ],
+  "states": [
+    {
+      "id": "Convened",
+      "title": "Council convened",
+      "spec": [
+        "L14",
+        "L15",
+        "L16"
+      ]
+    },
+    {
+      "id": "Waiting",
+      "title": "Merge confidence waiting for both families",
+      "spec": [
+        "L22"
+      ]
+    },
+    {
+      "id": "Answered",
+      "title": "Every member answered, sealed",
+      "spec": [
+        "L14"
+      ]
+    },
+    {
+      "id": "Synthesised",
+      "title": "Synthesised by a non-member",
+      "spec": [
+        "L14"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Council.Answer",
+      "from": "Convened",
+      "to": "Answered",
+      "arrow": "every member answers alone, sealed",
+      "spec": [
+        "L14",
+        "L15",
+        "L16"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Council.FamilyOut",
+      "from": "Convened",
+      "to": "Waiting",
+      "arrow": "Merge confidence with one family out",
+      "spec": [
+        "L22"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Council.Proceed",
+      "from": "Waiting",
+      "to": "Answered",
+      "arrow": "something blocks: it runs on one family",
+      "spec": [
+        "L22"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Council.Synthesise",
+      "from": "Answered",
+      "to": "Synthesised",
+      "arrow": "a non-member synthesises",
+      "spec": [
+        "L14"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

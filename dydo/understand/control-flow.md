@@ -605,7 +605,7 @@ and reviewed once in that Bug's chain; that Bug stays assigned to the inquisitio
 until the patch is attached; the inquisition merges only its own record. The steps are
 `skills/roles/officers/ticket-captain/resources/inquisition.md`'s. The Inquisition then delivers its
 own record to `dydo/project/inquisitions/` through a docs-writer, docs review and its Merge
-Sub-ticket. The [working-tree standard](../guides/working-tree-standard.md#retaining-an-inquisitions-record-and-proofs)
+Sub-ticket. The [working-tree standard](../guides/working-tree-standard.md)
 owns its branches, the independent Bug proof refs and the checks before it closes; its returns are
 `done <key>: PR ready`, then `done <key>: merged`. There is no PASS or FAIL: Project acceptance is
 proved by the landing's merge review, and the Project lands only after a round that finds no

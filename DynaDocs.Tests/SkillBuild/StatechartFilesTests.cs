@@ -167,7 +167,7 @@ public class StatechartFilesTests
         Assert.Equal(0, root.Run(ChartModel.With()).Exit);
 
         Assert.Equal("", GoldenDiff.Describe(Lease.Bytes(), BuiltHeader.Committed(root.Path)));
-        Assert.Contains("claims/statechart/transitions.json", BuiltHeader.Committed(root.Path).Keys);
+        Assert.Contains("claims/statechart/lease/transitions.json", BuiltHeader.Committed(root.Path).Keys);
     }
 
     [Fact]

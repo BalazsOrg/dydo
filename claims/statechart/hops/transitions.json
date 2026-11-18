@@ -1,0 +1,210 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Hops",
+  "title": "A step's hops, by Type label",
+  "initial": "Cut",
+  "finals": [
+    "StepDone",
+    "AfkMerge",
+    "HitlMerge"
+  ],
+  "states": [
+    {
+      "id": "Cut",
+      "title": "A step is cut",
+      "spec": [
+        "S1",
+        "S2",
+        "S7"
+      ]
+    },
+    {
+      "id": "OneTicket",
+      "title": "One ticket, no hops",
+      "spec": [
+        "S4",
+        "R12"
+      ]
+    },
+    {
+      "id": "EvidenceCheck",
+      "title": "Evidence check beside the leaf",
+      "spec": [
+        "S4",
+        "R6"
+      ]
+    },
+    {
+      "id": "CheckFix",
+      "title": "Fix rN beside the leaf",
+      "spec": [
+        "S9",
+        "R8"
+      ]
+    },
+    {
+      "id": "Chain",
+      "title": "Hop sub-tickets in step order",
+      "spec": [
+        "S3"
+      ]
+    },
+    {
+      "id": "StepDone",
+      "title": "Step Done",
+      "spec": [
+        "S6"
+      ]
+    },
+    {
+      "id": "AfkMerge",
+      "title": "AFK Merge hop",
+      "spec": [
+        "S12"
+      ]
+    },
+    {
+      "id": "HitlMerge",
+      "title": "HITL Merge hop",
+      "spec": [
+        "S12",
+        "R27"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Hops.AddCheck",
+      "from": "OneTicket",
+      "to": "EvidenceCheck",
+      "arrow": "the officer adds an evidence-check seat",
+      "spec": [
+        "S4",
+        "R6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard",
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:Hops.AfkType",
+      "from": "Chain",
+      "to": "AfkMerge",
+      "arrow": "the step merges into the feature branch, or two-way into main",
+      "spec": [
+        "S12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Hops.Chain",
+      "from": "Cut",
+      "to": "Chain",
+      "arrow": "the step has its own review loop",
+      "spec": [
+        "S3",
+        "S4"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Hops.CheckAgain",
+      "from": "CheckFix",
+      "to": "EvidenceCheck",
+      "arrow": "Fix rN Done; the next check runs",
+      "spec": [
+        "R8",
+        "S9"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Hops.CheckDone",
+      "from": "EvidenceCheck",
+      "to": "StepDone",
+      "arrow": "the evidence check's Review hop is Done",
+      "spec": [
+        "S4",
+        "S6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Hops.CheckFail",
+      "from": "EvidenceCheck",
+      "to": "CheckFix",
+      "arrow": "the evidence check finds a blocker",
+      "spec": [
+        "S9",
+        "R11"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Hops.HitlType",
+      "from": "Chain",
+      "to": "HitlMerge",
+      "arrow": "a one-way main merge",
+      "spec": [
+        "S12",
+        "R27"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Hops.LeafDone",
+      "from": "OneTicket",
+      "to": "StepDone",
+      "arrow": "its holder closes it Done",
+      "spec": [
+        "S6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Hops.Single",
+      "from": "Cut",
+      "to": "OneTicket",
+      "arrow": "the step has no review loop of its own",
+      "spec": [
+        "S4"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral",
+        "linear-workspace-standard",
+        "ticket-captain"
+      ]
+    }
+  ],
+  "gaps": []
+}

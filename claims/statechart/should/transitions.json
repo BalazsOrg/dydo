@@ -1,0 +1,155 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Should",
+  "title": "A should",
+  "initial": "Found",
+  "finals": [
+    "Known",
+    "Done",
+    "Duplicate",
+    "Canceled",
+    "Moved"
+  ],
+  "states": [
+    {
+      "id": "Found",
+      "title": "A round finds a should",
+      "spec": [
+        "R11",
+        "S17"
+      ]
+    },
+    {
+      "id": "Known",
+      "title": "Already open",
+      "spec": [
+        "S17"
+      ]
+    },
+    {
+      "id": "Open",
+      "title": "Open should",
+      "spec": [
+        "S17"
+      ]
+    },
+    {
+      "id": "Done",
+      "title": "Should fixed",
+      "spec": [
+        "S17",
+        "S18"
+      ]
+    },
+    {
+      "id": "Duplicate",
+      "title": "Should marked Duplicate",
+      "spec": [
+        "S17"
+      ]
+    },
+    {
+      "id": "Canceled",
+      "title": "Should canceled with a reason",
+      "spec": [
+        "S18"
+      ]
+    },
+    {
+      "id": "Moved",
+      "title": "Should moved out by his call",
+      "spec": [
+        "S18"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Should.AlreadyOpen",
+      "from": "Found",
+      "to": "Known",
+      "arrow": "a duplicate is already open",
+      "spec": [
+        "S17"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Should.Cancel",
+      "from": "Open",
+      "to": "Canceled",
+      "arrow": "at the landing: canceled with a reason",
+      "spec": [
+        "S18"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Should.Dup",
+      "from": "Open",
+      "to": "Duplicate",
+      "arrow": "the batch captain finds it a duplicate",
+      "spec": [
+        "S17"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Should.Fixed",
+      "from": "Open",
+      "to": "Done",
+      "arrow": "fixed in place, when a lane is free, before a round, or at the landing",
+      "spec": [
+        "S17"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Should.Move",
+      "from": "Open",
+      "to": "Moved",
+      "arrow": "at the landing: moved out by his call",
+      "spec": [
+        "S18"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Should.Register",
+      "from": "Found",
+      "to": "Open",
+      "arrow": "no duplicate open: registered under the ticket where found",
+      "spec": [
+        "S17"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard",
+        "reviewer",
+        "ticket-captain"
+      ]
+    }
+  ],
+  "gaps": []
+}

@@ -1,0 +1,142 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Project",
+  "title": "A Project and its admiral",
+  "initial": "Unheld",
+  "finals": [
+    "Landing"
+  ],
+  "states": [
+    {
+      "id": "Unheld",
+      "title": "No live admiral: not started, idle or closed",
+      "spec": [
+        "H4"
+      ]
+    },
+    {
+      "id": "Charting",
+      "title": "Charting the spec and the map",
+      "spec": [
+        "S14",
+        "S15",
+        "S16",
+        "N12 DR 060 §1"
+      ]
+    },
+    {
+      "id": "Watching",
+      "title": "Watching the survey, the board and liveness",
+      "spec": [
+        "H5",
+        "H10",
+        "H11",
+        "R25"
+      ]
+    },
+    {
+      "id": "Replanning",
+      "title": "Re-planning after a fundamental blocker or a new requirement",
+      "spec": [
+        "R9",
+        "S10"
+      ]
+    },
+    {
+      "id": "Landing",
+      "title": "All delivery merged: the landing runs",
+      "spec": [
+        "N5"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Project.Charted",
+      "from": "Charting",
+      "to": "Watching",
+      "arrow": "the spec exists and the first tickets are contracted",
+      "spec": [
+        "S14",
+        "S15"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Project.Replan",
+      "from": "Watching",
+      "to": "Replanning",
+      "arrow": "a blocker is fundamental, or a new requirement",
+      "spec": [
+        "R9"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Project.Replanned",
+      "from": "Replanning",
+      "to": "Watching",
+      "arrow": "dead hops Canceled with a reason",
+      "spec": [
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral",
+        "linear-workspace-standard"
+      ]
+    },
+    {
+      "claim": "claim:Project.StartLanding",
+      "from": "Watching",
+      "to": "Landing",
+      "arrow": "every delivery ticket is merged into the feature branch",
+      "spec": [
+        "N5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Project.Take",
+      "from": "Unheld",
+      "to": "Charting",
+      "arrow": "the Project opens; it has a live admiral",
+      "spec": [
+        "H4"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "action": "Gap1",
+      "from": "Watching",
+      "to": "Unheld",
+      "note": "H4 names idle Projects but never defines when a Project goes idle"
+    },
+    {
+      "action": "Gap2",
+      "from": "Unheld",
+      "to": "Watching",
+      "note": "H4 says who holds a live Project, not who starts or wakes its admiral"
+    }
+  ]
+}

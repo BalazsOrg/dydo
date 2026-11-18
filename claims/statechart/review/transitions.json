@@ -1,0 +1,300 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Review",
+  "title": "The review loop",
+  "initial": "Wired",
+  "finals": [
+    "Ended",
+    "Replan",
+    "Escalated"
+  ],
+  "states": [
+    {
+      "id": "Wired",
+      "title": "Parts wired, before the Merge hop",
+      "spec": [
+        "R1",
+        "R2",
+        "R6"
+      ]
+    },
+    {
+      "id": "Round",
+      "title": "Review round",
+      "spec": [
+        "R3",
+        "R5",
+        "R6",
+        "R8",
+        "R12",
+        "R15",
+        "R33"
+      ]
+    },
+    {
+      "id": "Verdict",
+      "title": "Verdict posted",
+      "spec": [
+        "R11",
+        "R17",
+        "S8"
+      ]
+    },
+    {
+      "id": "Fixing",
+      "title": "Fix rN",
+      "spec": [
+        "S9",
+        "R8"
+      ]
+    },
+    {
+      "id": "Checkpoint",
+      "title": "Round-3 checkpoint",
+      "spec": [
+        "R10",
+        "S10"
+      ]
+    },
+    {
+      "id": "Replan",
+      "title": "Sent up to re-plan",
+      "spec": [
+        "R9",
+        "S10"
+      ]
+    },
+    {
+      "id": "Escalated",
+      "title": "Escalated up the chain",
+      "spec": [
+        "R9",
+        "R10",
+        "S10"
+      ]
+    },
+    {
+      "id": "Ended",
+      "title": "Review phase ended",
+      "spec": [
+        "R8",
+        "R6"
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "round",
+      "initial": "1",
+      "bound": "round <= 4"
+    },
+    {
+      "name": "kind",
+      "initial": "\"none\"",
+      "bound": "kind \\in {\"none\", \"broken\", \"security\", \"fundamental\", \"balazs\"}"
+    },
+    {
+      "name": "securityFirst",
+      "initial": "FALSE",
+      "bound": "securityFirst \\in BOOLEAN"
+    }
+  ],
+  "transitions": [
+    {
+      "claim": "claim:Review.Broken",
+      "from": "Verdict",
+      "to": "Fixing",
+      "arrow": "a blocker is broken or against the spec",
+      "spec": [
+        "R9",
+        "S9"
+      ],
+      "guard": "kind = \"broken\" /\\ round # 3",
+      "effect": null,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.CheckpointEscalate",
+      "from": "Checkpoint",
+      "to": "Escalated",
+      "arrow": "a fundamental break, a new requirement, or a need for Balazs",
+      "spec": [
+        "R10",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.CheckpointGoOn",
+      "from": "Checkpoint",
+      "to": "Fixing",
+      "arrow": "checkpoint: one more round",
+      "spec": [
+        "R10",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.Clean",
+      "from": "Verdict",
+      "to": "Ended",
+      "arrow": "no new blocker this round",
+      "spec": [
+        "R8"
+      ],
+      "guard": "kind = \"none\"",
+      "effect": null,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.FixDone",
+      "from": "Fixing",
+      "to": "Round",
+      "arrow": "Fix rN is Done: its blockers Done, proof run on the head",
+      "spec": [
+        "S9",
+        "R8"
+      ],
+      "guard": null,
+      "effect": "round' = round + 1",
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.Fundamental",
+      "from": "Verdict",
+      "to": "Replan",
+      "arrow": "a blocker is fundamental, or a new requirement",
+      "spec": [
+        "R9"
+      ],
+      "guard": "kind = \"fundamental\"",
+      "effect": null,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.NeedsBalazs",
+      "from": "Verdict",
+      "to": "Escalated",
+      "arrow": "a blocker needs Balazs",
+      "spec": [
+        "R9"
+      ],
+      "guard": "kind = \"balazs\"",
+      "effect": null,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.OneMore",
+      "from": "Verdict",
+      "to": "Round",
+      "arrow": "no new blocker, but the officer orders one more round",
+      "spec": [
+        "R8"
+      ],
+      "guard": "kind = \"none\"",
+      "effect": "round' = round + 1",
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.Open",
+      "from": "Wired",
+      "to": "Round",
+      "arrow": "the parts are wired; Review r1 opens",
+      "spec": [
+        "R2",
+        "R3",
+        "R6"
+      ],
+      "guard": null,
+      "effect": "round' = 1",
+      "skills": [
+        "reviewer",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.Post",
+      "from": "Round",
+      "to": "Verdict",
+      "arrow": "the verdict and the PR line are posted",
+      "spec": [
+        "R11",
+        "R17",
+        "S8"
+      ],
+      "guard": null,
+      "effect": "kind' \\in {\"none\", \"broken\", \"security\", \"fundamental\", \"balazs\"}",
+      "skills": [
+        "linear-workspace-standard",
+        "reviewer",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.Security",
+      "from": "Verdict",
+      "to": "Fixing",
+      "arrow": "a blocker is a security hole",
+      "spec": [
+        "R9"
+      ],
+      "guard": "kind = \"security\" /\\ round # 3",
+      "effect": "securityFirst' = TRUE",
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.Skip",
+      "from": "Wired",
+      "to": "Ended",
+      "arrow": "the parent only groups its parts",
+      "spec": [
+        "R6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Review.ToCheckpoint",
+      "from": "Verdict",
+      "to": "Checkpoint",
+      "arrow": "round 3 ends with a blocker",
+      "spec": [
+        "R10"
+      ],
+      "guard": "round = 3 /\\ kind # \"none\"",
+      "effect": null,
+      "skills": [
+        "ticket-captain"
+      ]
+    }
+  ],
+  "gaps": []
+}

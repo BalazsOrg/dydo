@@ -5,9 +5,10 @@ using System.Text.Json;
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// <c>claims/statechart/transitions.json</c> (K1): every machine with its states, initial and final
-/// states, variables, transitions (claim id, arrow, spec ids, guard, effect and the skills that carry
-/// it) and gaps. JSON has no comments, so the built header is its first member, <c>$comment</c>.
+/// A machine's <c>transitions.json</c> (K1), one per machine so each stays under T15's limit: its
+/// states, initial and final states, variables, transitions (claim id, arrow, spec ids, guard, effect
+/// and the skills that carry it) and gaps. JSON has no comments, so the built header is its first
+/// member, <c>$comment</c>.
 /// </summary>
 internal static class TransitionsJson
 {
@@ -18,24 +19,18 @@ internal static class TransitionsJson
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
 
-    public static string Render(Statechart chart, ClaimIndex claims)
+    public static string Render(Machine machine, IReadOnlyList<(string Id, Claim Claim)> transitions, ClaimIndex claims)
     {
         using var stream = new MemoryStream();
         using (var json = new Utf8JsonWriter(stream, Options))
-        {
-            json.WriteStartObject();
-            json.WriteString("$comment", BuiltHeader.Text);
-            json.WriteStartArray("machines");
-            foreach (var machine in chart.Machines) Machine(json, machine, chart.TransitionsOf(machine), claims);
-            json.WriteEndArray();
-            json.WriteEndObject();
-        }
+            Machine(json, machine, transitions, claims);
         return Encoding.UTF8.GetString(stream.ToArray()) + "\n";
     }
 
     private static void Machine(Utf8JsonWriter json, Machine machine, IReadOnlyList<(string Id, Claim Claim)> transitions, ClaimIndex claims)
     {
         json.WriteStartObject();
+        json.WriteString("$comment", BuiltHeader.Text);
         json.WriteString("id", machine.Id.ToString());
         json.WriteString("title", machine.Title);
         json.WriteString("initial", TlaModule.Value(machine.Initial));

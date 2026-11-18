@@ -135,8 +135,8 @@ public class WhyDocTests
         [
             "claims/statechart/lease/Lease.cfg",
             "claims/statechart/lease/Lease.tla",
+            "claims/statechart/lease/transitions.json",
             "claims/statechart/lease/view.mjs",
-            "claims/statechart/transitions.json",
             "dydo/reference/claims/lease-moves.md"
         ], unshipped);
     }

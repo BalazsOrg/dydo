@@ -101,7 +101,7 @@ to a ticket. They are not extra levels in the work graph.
    blockers and shoulds become Bugs, nits go on one nit ticket per round, judgment calls become
    Questions. The Inquisition then delivers its own record through the normal docs chain and
    closes once; see the
-   [working-tree standard](../guides/working-tree-standard.md#retaining-an-inquisitions-record-and-proofs).
+   [working-tree standard](../guides/working-tree-standard.md).
    Rounds repeat from zero until one finds no blocker and no should
    ([DR 059](../project/decisions/059-inquisition-rebuilt-area-map-three-phases-rounds-until-clean.md)).
    It catches what got through; it never proves zero defects.

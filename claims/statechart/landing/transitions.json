@@ -1,0 +1,327 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Landing",
+  "title": "The landing",
+  "initial": "Integrated",
+  "finals": [
+    "Tagged"
+  ],
+  "states": [
+    {
+      "id": "Integrated",
+      "title": "Delivery merged into the feature branch",
+      "spec": [
+        "N5"
+      ]
+    },
+    {
+      "id": "Inquisition",
+      "title": "Inquisition round from zero, held by the admiral",
+      "spec": [
+        "N5",
+        "S8"
+      ]
+    },
+    {
+      "id": "RoundFixes",
+      "title": "Fixing the round's blockers and shoulds",
+      "spec": [
+        "N5",
+        "S9",
+        "S17"
+      ]
+    },
+    {
+      "id": "Prerequisites",
+      "title": "Landing prerequisites",
+      "spec": [
+        "N7",
+        "S18",
+        "T12",
+        "T8",
+        "N14",
+        "N15",
+        "Y2",
+        "Y6",
+        "L6",
+        "L12",
+        "N8",
+        "N9"
+      ]
+    },
+    {
+      "id": "MergeReview",
+      "title": "Landing merge review: a Merge-confidence council",
+      "spec": [
+        "N6",
+        "R20",
+        "L16"
+      ]
+    },
+    {
+      "id": "Walkthrough",
+      "title": "Balazs walks the landing candidate",
+      "spec": [
+        "N6",
+        "N4",
+        "N3"
+      ]
+    },
+    {
+      "id": "Merging",
+      "title": "Landing PR into master",
+      "spec": [
+        "N6",
+        "R26",
+        "R27"
+      ]
+    },
+    {
+      "id": "Landed",
+      "title": "Landed on master",
+      "spec": [
+        "N6",
+        "S14",
+        "D11"
+      ]
+    },
+    {
+      "id": "Tagged",
+      "title": "Release tag pushed by Balazs",
+      "spec": [
+        "R28",
+        "N2",
+        "N15"
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "round",
+      "initial": "1",
+      "bound": "round <= 3"
+    },
+    {
+      "name": "fixFrom",
+      "initial": "\"none\"",
+      "bound": "fixFrom \\in {\"none\", \"inquisition\", \"merge\"}"
+    },
+    {
+      "name": "prereqs",
+      "initial": "0",
+      "bound": "prereqs <= 10"
+    },
+    {
+      "name": "hardened",
+      "initial": "FALSE",
+      "bound": "hardened \\in BOOLEAN"
+    }
+  ],
+  "transitions": [
+    {
+      "claim": "claim:Landing.Accepted",
+      "from": "Walkthrough",
+      "to": "Merging",
+      "arrow": "Balazs accepts the landing candidate",
+      "spec": [
+        "N6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.CleanRound",
+      "from": "Inquisition",
+      "to": "Prerequisites",
+      "arrow": "a round finds no blocker and no should",
+      "spec": [
+        "N5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.Confident",
+      "from": "MergeReview",
+      "to": "Walkthrough",
+      "arrow": "the Merge-confidence council passes the landing candidate",
+      "spec": [
+        "N6",
+        "L16",
+        "R20",
+        "H22"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.Hardened",
+      "from": "Landed",
+      "to": "Landed",
+      "arrow": "the Guard hardening Project lands",
+      "spec": [
+        "N2"
+      ],
+      "guard": "~hardened",
+      "effect": "hardened' = TRUE",
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.Merged",
+      "from": "Merging",
+      "to": "Landed",
+      "arrow": "the landing PR is in master",
+      "spec": [
+        "N6",
+        "R26"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.NextMergeRound",
+      "from": "RoundFixes",
+      "to": "MergeReview",
+      "arrow": "the fixes are merged; a full-lens merge-review round",
+      "spec": [
+        "R8",
+        "R9"
+      ],
+      "guard": "fixFrom = \"merge\"",
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.NextRound",
+      "from": "RoundFixes",
+      "to": "Inquisition",
+      "arrow": "the fixes are merged; the next round starts from zero",
+      "spec": [
+        "N5"
+      ],
+      "guard": "fixFrom = \"inquisition\"",
+      "effect": "round' = round + 1",
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.PrerequisiteMet",
+      "from": "Prerequisites",
+      "to": "Prerequisites",
+      "arrow": "a prerequisite met: shoulds closed, mutation clean, purge done, evidence rewritten on his click, DYTEST wired in, principle descriptions written, backfill page passed, law shipped, Upgrade note and re-measure, statuses Enablement",
+      "spec": [
+        "N7",
+        "S18",
+        "T12",
+        "N15",
+        "T8",
+        "N14",
+        "Y2",
+        "Y6",
+        "L6",
+        "L12",
+        "N8",
+        "N9"
+      ],
+      "guard": "prereqs < 10",
+      "effect": "prereqs' = prereqs + 1",
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.Ready",
+      "from": "Prerequisites",
+      "to": "MergeReview",
+      "arrow": "every landing prerequisite met",
+      "spec": [
+        "N7",
+        "S18",
+        "T12",
+        "N15"
+      ],
+      "guard": "prereqs = 10",
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.ReviewFail",
+      "from": "MergeReview",
+      "to": "RoundFixes",
+      "arrow": "the landing merge review finds a blocker",
+      "spec": [
+        "R9",
+        "R11"
+      ],
+      "guard": null,
+      "effect": "fixFrom' = \"merge\"",
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.RoundFound",
+      "from": "Inquisition",
+      "to": "RoundFixes",
+      "arrow": "the round finds a blocker or a should",
+      "spec": [
+        "N5",
+        "S8",
+        "S9",
+        "S17"
+      ],
+      "guard": null,
+      "effect": "fixFrom' = \"inquisition\"",
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.Staff",
+      "from": "Integrated",
+      "to": "Inquisition",
+      "arrow": "the admiral staffs a round",
+      "spec": [
+        "N5",
+        "R13",
+        "R14"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.Tag",
+      "from": "Landed",
+      "to": "Tagged",
+      "arrow": "Balazs pushes the release tag",
+      "spec": [
+        "R28",
+        "N2",
+        "N15"
+      ],
+      "guard": "hardened",
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": [
+    {
+      "action": "Gap1",
+      "from": "Walkthrough",
+      "to": null,
+      "note": "N6 gives only his acceptance; the route when he does not accept is unstated"
+    }
+  ]
+}

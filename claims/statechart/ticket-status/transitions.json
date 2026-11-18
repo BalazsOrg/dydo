@@ -1,0 +1,197 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "TicketStatus",
+  "title": "A ticket's status",
+  "initial": "New",
+  "finals": [
+    "Done",
+    "Canceled",
+    "Duplicate"
+  ],
+  "states": [
+    {
+      "id": "New",
+      "title": "Not yet on the board",
+      "spec": [
+        "S2"
+      ]
+    },
+    {
+      "id": "FutureFeature",
+      "title": "FutureFeature",
+      "spec": [
+        "S5"
+      ]
+    },
+    {
+      "id": "Backlog",
+      "title": "Backlog",
+      "spec": [
+        "S5"
+      ]
+    },
+    {
+      "id": "Todo",
+      "title": "Todo",
+      "spec": [
+        "S3",
+        "S5"
+      ]
+    },
+    {
+      "id": "InProgress",
+      "title": "In Progress",
+      "spec": [
+        "S5",
+        "S6"
+      ]
+    },
+    {
+      "id": "Done",
+      "title": "Done",
+      "spec": [
+        "S5",
+        "S6"
+      ]
+    },
+    {
+      "id": "Canceled",
+      "title": "Canceled, with its reason",
+      "spec": [
+        "S5",
+        "S10",
+        "S12"
+      ]
+    },
+    {
+      "id": "Duplicate",
+      "title": "Duplicate",
+      "spec": [
+        "S5",
+        "S17"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:TicketStatus.CancelDead",
+      "from": "Todo",
+      "to": "Canceled",
+      "arrow": "a re-plan cancels a dead hop",
+      "spec": [
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.CancelRunning",
+      "from": "InProgress",
+      "to": "Canceled",
+      "arrow": "a re-plan, or a reverted Merge",
+      "spec": [
+        "S10",
+        "S12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.Close",
+      "from": "InProgress",
+      "to": "Done",
+      "arrow": "whoever started it closes it",
+      "spec": [
+        "S6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.Contract",
+      "from": "Backlog",
+      "to": "Todo",
+      "arrow": "the admiral contracts an uncontracted ticket",
+      "spec": [
+        "N12 DR 063 §4"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.MarkDuplicate",
+      "from": "Todo",
+      "to": "Duplicate",
+      "arrow": "a duplicate should",
+      "spec": [
+        "S17"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.Open",
+      "from": "New",
+      "to": "Todo",
+      "arrow": "opened in Todo, ahead of its turn if a hop",
+      "spec": [
+        "S3"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.Start",
+      "from": "Todo",
+      "to": "InProgress",
+      "arrow": "whoever starts the step sets it In Progress",
+      "spec": [
+        "S6",
+        "S13",
+        "S3"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.Stopped",
+      "from": "InProgress",
+      "to": "Todo",
+      "arrow": "liveness finds it stopped",
+      "spec": [
+        "S24"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": [
+    {
+      "action": "Gap1",
+      "from": "New",
+      "to": "FutureFeature",
+      "note": "S5 lists FutureFeature, but no rule says what enters it"
+    },
+    {
+      "action": "Gap2",
+      "from": "FutureFeature",
+      "to": null,
+      "note": "S5 lists FutureFeature, but no rule says how a ticket leaves it"
+    },
+    {
+      "action": "Gap3",
+      "from": "New",
+      "to": "Backlog",
+      "note": "S5 lists Backlog, but no rule says when a ticket is filed there"
+    }
+  ]
+}

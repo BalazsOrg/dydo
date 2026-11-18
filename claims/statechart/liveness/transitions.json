@@ -1,0 +1,114 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Liveness",
+  "title": "Liveness",
+  "initial": "Live",
+  "finals": [],
+  "states": [
+    {
+      "id": "Live",
+      "title": "Hop In Progress, recently changed",
+      "spec": [
+        "S24"
+      ]
+    },
+    {
+      "id": "Quiet",
+      "title": "A liveness finding",
+      "spec": [
+        "S24",
+        "S23"
+      ]
+    },
+    {
+      "id": "Restarted",
+      "title": "Hop back in Todo, restarting",
+      "spec": [
+        "S24"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Liveness.FoundAlive",
+      "from": "Quiet",
+      "to": "Live",
+      "arrow": "alive: the finding snoozes one window",
+      "spec": [
+        "S24",
+        "H12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral",
+        "chief-of-staff",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Liveness.FoundBehind",
+      "from": "Quiet",
+      "to": "Live",
+      "arrow": "the record is behind: brought up to date",
+      "spec": [
+        "S24",
+        "H12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral",
+        "chief-of-staff",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Liveness.FoundStopped",
+      "from": "Quiet",
+      "to": "Restarted",
+      "arrow": "stopped: the hop back to Todo",
+      "spec": [
+        "S24",
+        "H12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral",
+        "chief-of-staff",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Liveness.Quiet",
+      "from": "Live",
+      "to": "Quiet",
+      "arrow": "2 hours with no change and no liveness comment",
+      "spec": [
+        "S24",
+        "S23"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "linear-workspace-standard"
+      ]
+    },
+    {
+      "claim": "claim:Liveness.Resumed",
+      "from": "Restarted",
+      "to": "Live",
+      "arrow": "the resumed or fresh agent attaches its thread link",
+      "spec": [
+        "S24",
+        "S13"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

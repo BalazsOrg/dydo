@@ -33,14 +33,13 @@ internal sealed class Statechart
 
     public static string FolderOf(Machine machine) => $"claims/statechart/{Names.Kebab(machine.Id)}";
 
-    /// <summary><c>transitions.json</c>, then each machine's module, config and view; nothing for a model with no machines.</summary>
+    /// <summary>Each machine's <c>transitions.json</c>, module, config and view; nothing for a model with no machines.</summary>
     public IEnumerable<(string Path, string Text)> Files(ClaimIndex claims)
     {
-        if (_transitions.Count == 0) yield break;
-        yield return ("claims/statechart/transitions.json", TransitionsJson.Render(this, claims));
         foreach (var machine in Machines)
         {
             var transitions = TransitionsOf(machine);
+            yield return ($"{FolderOf(machine)}/transitions.json", TransitionsJson.Render(machine, transitions, claims));
             yield return ($"{FolderOf(machine)}/{machine.Id}.tla", TlaModule.Module(machine, transitions));
             yield return ($"{FolderOf(machine)}/{machine.Id}.cfg", TlaModule.Config(machine));
             yield return ($"{FolderOf(machine)}/view.mjs", ChartView.Module(machine, transitions));

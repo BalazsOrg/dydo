@@ -1,0 +1,316 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Proof",
+  "title": "Proof tests and gates",
+  "initial": "Start",
+  "finals": [
+    "Graduated",
+    "Dropped",
+    "Finding"
+  ],
+  "states": [
+    {
+      "id": "Start",
+      "title": "A test enters the suite",
+      "spec": [
+        "T1"
+      ]
+    },
+    {
+      "id": "Written",
+      "title": "A proof test in the ticket's commits",
+      "spec": [
+        "T5",
+        "T4"
+      ]
+    },
+    {
+      "id": "Red",
+      "title": "Shown failing without the code",
+      "spec": [
+        "T3"
+      ]
+    },
+    {
+      "id": "Gated",
+      "title": "dydo test gate and dydo code-check on changed files",
+      "spec": [
+        "T2",
+        "T13",
+        "T21",
+        "Y6",
+        "T11",
+        "T10",
+        "T14",
+        "Y7"
+      ]
+    },
+    {
+      "id": "GateRed",
+      "title": "A gate red: a failing test, or a static gate",
+      "spec": [
+        "T23",
+        "T19"
+      ]
+    },
+    {
+      "id": "Receipt",
+      "title": "A green receipt keyed by tree; coverage only reported",
+      "spec": [
+        "Y4",
+        "T9",
+        "T23"
+      ]
+    },
+    {
+      "id": "Graduated",
+      "title": "Graduated with its job tag",
+      "spec": [
+        "T5",
+        "T1",
+        "T7"
+      ]
+    },
+    {
+      "id": "Dropped",
+      "title": "Dropped",
+      "spec": [
+        "T5",
+        "T6",
+        "T8"
+      ]
+    },
+    {
+      "id": "Finding",
+      "title": "A finding: an untraced pin, or a missing tag",
+      "spec": [
+        "T1",
+        "R3",
+        "T5"
+      ]
+    },
+    {
+      "id": "Old",
+      "title": "An old test measured against the new requirements",
+      "spec": [
+        "T8",
+        "T20",
+        "T22"
+      ]
+    },
+    {
+      "id": "Conformance",
+      "title": "A rewrite's conformance assertion",
+      "spec": [
+        "T6"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Testing.Delete",
+      "from": "Old",
+      "to": "Dropped",
+      "arrow": "deleted, with one line in the commit when it blocks 4.0.0 work",
+      "spec": [
+        "T8",
+        "T22"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Drop",
+      "from": "Receipt",
+      "to": "Dropped",
+      "arrow": "the merge drops a test that does not graduate",
+      "spec": [
+        "T5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.GoRed",
+      "from": "Gated",
+      "to": "GateRed",
+      "arrow": "a selected test or a static gate fails",
+      "spec": [
+        "T23",
+        "T19"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Graduate",
+      "from": "Receipt",
+      "to": "Graduated",
+      "arrow": "it graduates with its job tag",
+      "spec": [
+        "T5",
+        "T4"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Green",
+      "from": "Gated",
+      "to": "Receipt",
+      "arrow": "all selected tests pass and the statics hold",
+      "spec": [
+        "T23",
+        "Y4",
+        "T9"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Keep",
+      "from": "Old",
+      "to": "Graduated",
+      "arrow": "it meets the new test requirements: kept",
+      "spec": [
+        "T8",
+        "T22"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Legacy",
+      "from": "Start",
+      "to": "Old",
+      "arrow": "an old test meets the purge",
+      "spec": [
+        "T8",
+        "T20"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.MatchesOld",
+      "from": "Conformance",
+      "to": "Dropped",
+      "arrow": "a matches-old-implementation assertion goes at the rewrite's landing",
+      "spec": [
+        "T6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Refix",
+      "from": "GateRed",
+      "to": "Gated",
+      "arrow": "fixed; the gates run again",
+      "spec": [
+        "T23"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Rewrite",
+      "from": "Start",
+      "to": "Conformance",
+      "arrow": "a rewrite gets a conformance assertion",
+      "spec": [
+        "T6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Rewritten",
+      "from": "Old",
+      "to": "Written",
+      "arrow": "rewritten to meet them",
+      "spec": [
+        "T8"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.RunGates",
+      "from": "Red",
+      "to": "Gated",
+      "arrow": "the code goes in; the gates run on changed files",
+      "spec": [
+        "T13",
+        "T21",
+        "Y6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.ShowRed",
+      "from": "Written",
+      "to": "Red",
+      "arrow": "shown failing without the code",
+      "spec": [
+        "T3"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Traced",
+      "from": "Conformance",
+      "to": "Graduated",
+      "arrow": "a traced assertion graduates",
+      "spec": [
+        "T6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Untraced",
+      "from": "Graduated",
+      "to": "Finding",
+      "arrow": "an untraced pin, or a missing job tag",
+      "spec": [
+        "T1",
+        "R3",
+        "T5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Testing.Write",
+      "from": "Start",
+      "to": "Written",
+      "arrow": "a proof test is written for a hop",
+      "spec": [
+        "T5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

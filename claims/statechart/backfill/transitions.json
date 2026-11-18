@@ -1,0 +1,130 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Backfill",
+  "title": "The DR backfill",
+  "initial": "Untagged",
+  "finals": [
+    "Merged",
+    "Rejected"
+  ],
+  "states": [
+    {
+      "id": "Untagged",
+      "title": "Accepted DR, untagged",
+      "spec": [
+        "L12"
+      ]
+    },
+    {
+      "id": "Drafted",
+      "title": "Tags drafted",
+      "spec": [
+        "L12"
+      ]
+    },
+    {
+      "id": "Checked",
+      "title": "Citations checked",
+      "spec": [
+        "L12"
+      ]
+    },
+    {
+      "id": "OnPage",
+      "title": "On his review page",
+      "spec": [
+        "L12"
+      ]
+    },
+    {
+      "id": "Merged",
+      "title": "Row approved and merged",
+      "spec": [
+        "L12"
+      ]
+    },
+    {
+      "id": "Rejected",
+      "title": "Row rejected",
+      "spec": [
+        "L12"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Backfill.Approve",
+      "from": "OnPage",
+      "to": "Merged",
+      "arrow": "he marks the row approved",
+      "spec": [
+        "L12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Backfill.Check",
+      "from": "Drafted",
+      "to": "Checked",
+      "arrow": "a reviewer checks every citation",
+      "spec": [
+        "L12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Backfill.Draft",
+      "from": "Untagged",
+      "to": "Drafted",
+      "arrow": "cheap-tier crew drafts the tags",
+      "spec": [
+        "L12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Backfill.Page",
+      "from": "Checked",
+      "to": "OnPage",
+      "arrow": "batched onto one review page",
+      "spec": [
+        "L12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Backfill.Reject",
+      "from": "OnPage",
+      "to": "Rejected",
+      "arrow": "he rejects the row",
+      "spec": [
+        "L12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Backfill.Retag",
+      "from": "OnPage",
+      "to": "Drafted",
+      "arrow": "he marks the row retag",
+      "spec": [
+        "L12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}
