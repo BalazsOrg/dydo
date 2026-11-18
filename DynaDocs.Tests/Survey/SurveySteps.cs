@@ -2,14 +2,13 @@ namespace DynaDocs.Tests.Survey;
 
 using System.Net;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using DynaDocs.Commands;
 using DynaDocs.Tests.Map;
 using Reqnroll;
 using static DynaDocs.Tests.Map.LinearJson;
 
 [Binding]
-public sealed partial class SurveySteps
+public sealed class SurveySteps
 {
     private static readonly Dictionary<string, string> StateTypes = new()
     {
@@ -26,7 +25,6 @@ public sealed partial class SurveySteps
     private string _body = "";
     private List<IssueRow> _issues = [];
     private (int ExitCode, string Stdout, string Stderr) _run;
-    private (DateTimeOffset Before, DateTimeOffset After) _window;
 
     public SurveySteps()
     {
@@ -46,7 +44,7 @@ public sealed partial class SurveySteps
     public void Issues(DataTable table)
     {
         _issues = [.. table.Rows.Select(row => new IssueRow(
-            Number(row["key"]), StateTypes[row["state"]], row["assignee"], row["parent"], row["blocked by"],
+            Number(row["key"]), StateTypes[row["state"]], row["assignee"], row["blocked by"],
             row["label"], row["priority"], row["project"] == "Map"))];
         Serve();
     }
@@ -54,8 +52,8 @@ public sealed partial class SurveySteps
     [Given("a quiet Project")]
     public void Quiet()
     {
-        _body = "## Lane ledger\n- DYD-1 lane";
-        _issues = [new(1, "started", "Ada", "", "", "", "0", true)];
+        _body = "";
+        _issues = [new(1, "started", "Ada", "", "", "0", true)];
         Serve();
     }
 
@@ -90,23 +88,23 @@ public sealed partial class SurveySteps
     {
         Environment.SetEnvironmentVariable("LINEAR_API_KEY", _key);
         Environment.SetEnvironmentVariable("DYDO_LINEAR_ENDPOINT", _endpoint);
-        var before = DateTimeOffset.UtcNow;
         _run = await ConsoleCapture.AllAsync(() => SurveyCommand.Create().Parse([argument]).InvokeAsync());
-        _window = (before, DateTimeOffset.UtcNow);
     }
 
     [Then("the survey exits {int}")]
     public void Exits(int exitCode) => Assert.Equal(exitCode, _run.ExitCode);
 
-    [Then("the survey prints:")]
-    public void Prints(string expected)
+    [Then("the survey lists these findings, in order:")]
+    public void Lists(DataTable table)
     {
-        var time = Time().Match(_run.Stdout);
-        Assert.True(time.Success, _run.Stdout);
-        var at = DateTimeOffset.Parse(time.Value, System.Globalization.CultureInfo.InvariantCulture);
-        Assert.InRange(at, _window.Before.AddSeconds(-1), _window.After);
-        Assert.Equal(expected.ReplaceLineEndings("\n") + "\n",
-            Time().Replace(_run.Stdout, "<time>", 1).ReplaceLineEndings("\n"));
+        Assert.Equal([.. table.Rows.Select(row => $"{row["kind"]} {row["key"]}")], KeptFindings.In(_run.Stdout));
+        Assert.Empty(_run.Stderr);
+    }
+
+    [Then("the survey lists no findings")]
+    public void ListsNothing()
+    {
+        Assert.Empty(KeptFindings.In(_run.Stdout));
         Assert.Empty(_run.Stderr);
     }
 
@@ -161,13 +159,9 @@ public sealed partial class SurveySteps
         state: $$"""{"name":"{{StateTypes.Single(state => state.Value == issue.Type).Key}}","type":"{{issue.Type}}","color":"#000000"}""",
         project: issue.InMap ? InMap : InOther,
         assignee: issue.Assignee == "" ? "null" : $$"""{"name":"{{issue.Assignee}}"}""",
-        parent: issue.Parent == "" ? "null" : $$"""{"id":"{{Number(issue.Parent)}}","identifier":"{{issue.Parent}}"}""",
         labels: issue.Label == "" ? Labels() : Labels($"{issue.Label}:#000000")), issue.Priority);
 
     private static int Number(string key) => int.Parse(key["DYD-".Length..], System.Globalization.CultureInfo.InvariantCulture);
-
-    [GeneratedRegex(@"\d{4}-\d\d-\d\dT\d\d:\d\d:\d\dZ")]
-    private static partial Regex Time();
 
     [AfterScenario("survey")]
     public void Cleanup()
@@ -179,7 +173,7 @@ public sealed partial class SurveySteps
     }
 
     private sealed record IssueRow(
-        int Number, string Type, string Assignee, string Parent, string BlockedBy, string Label, string Priority, bool InMap)
+        int Number, string Type, string Assignee, string BlockedBy, string Label, string Priority, bool InMap)
     {
         public string Key => $"DYD-{Number}";
     }

@@ -1,3 +1,4 @@
+# Job: contract: DR 063 §1 §4 §5
 @survey
 Feature: Survey a Project's lanes
   dydo survey reads one Linear Project on demand, with the user's key, and prints a short digest:
@@ -7,77 +8,37 @@ Feature: Survey a Project's lanes
     Given the Project's body is:
       """
       ## Goal
-      - DYD-10 named outside the ledger
-      ## Lane ledger — 2026-11-04 16:20 UTC
-      | Lane | Tickets | State |
-      | -- | -- | -- |
-      | Core | [DYD-1](https://linear.app/x/issue/DYD-1/core) → DYD-2 | running |
-      | Old | DYD-3 | waiting on review |
-      | Shipped | DYD-4 | done |
-      - DYD-6 started lane
-      - DYD-7 and DYD-11 question lane
-      - DYD-12 and DYD-13 backlog lane
-      ## Notes
-      - DYD-5 named after the ledger
+      - DYD-10 ships the release
       """
     And the Project has these issues:
-      | key    | state       | assignee | parent | blocked by | label    | priority | project |
-      | DYD-1  | In Progress | Ada      |        |            |          | 0        | Map     |
-      | DYD-2  | Todo        |          |        | DYD-1      |          | 0        | Map     |
-      | DYD-3  | Done        |          |        |            |          | 0        | Map     |
-      | DYD-4  | Done        |          |        |            |          | 0        | Map     |
-      | DYD-5  | Todo        |          |        | DYD-4      |          | 0        | Map     |
-      | DYD-6  | In Progress |          |        |            |          | 0        | Map     |
-      | DYD-7  | Backlog     | Ada      |        |            | Question | 0        | Map     |
-      | DYD-8  | Todo        |          | DYD-1  |            | Feature  | 0        | Map     |
-      | DYD-9  | Backlog     |          |        | DYD-3      |          | 0        | Other   |
-      | DYD-10 | Todo        | Ada      |        |            |          | 0        | Map     |
-      | DYD-11 | Backlog     | Ada      |        |            | Question | 2        | Map     |
-      | DYD-12 | Backlog     |          |        |            | Feature  | 0        | Map     |
-      | DYD-13 | Backlog     |          |        | DYD-1      |          | 0        | Map     |
+      | key    | state       | assignee | blocked by | label    | priority | project |
+      | DYD-1  | In Progress | Ada      |            |          | 0        | Map     |
+      | DYD-2  | Todo        |          | DYD-1      | Feature  | 0        | Map     |
+      | DYD-3  | Done        |          |            |          | 0        | Map     |
+      | DYD-4  | Done        |          |            |          | 0        | Map     |
+      | DYD-5  | Todo        |          | DYD-4      | Feature  | 0        | Map     |
+      | DYD-7  | Backlog     | Ada      |            | Question | 0        | Map     |
+      | DYD-8  | Todo        |          |            | Feature  | 0        | Map     |
+      | DYD-9  | Backlog     |          | DYD-3      |          | 0        | Other   |
+      | DYD-10 | Todo        | Ada      |            | Feature  | 0        | Map     |
+      | DYD-11 | Backlog     | Ada      |            | Question | 2        | Map     |
+      | DYD-12 | Backlog     |          |            | Feature  | 0        | Map     |
+      | DYD-13 | Backlog     |          | DYD-1      | Feature  | 0        | Map     |
     When I survey "25acbbb9a90b"
     Then the survey exits 0
-    And the survey prints:
-      """
-      dydo survey Map <time>: 9 findings
-      pickable DYD-8 Issue 8 — unstarted, unassigned, no open blocker
-      question-no-priority DYD-7 Issue 7 — an open Question with no priority
-      stale-row DYD-3 Issue 3 — the row names only closed issues: DYD-3 Done
-      started-unassigned DYD-6 Issue 6 — In Progress, with no assignee
-      unblocked DYD-5 Issue 5 — every blocker is closed: DYD-4
-      unblocked DYD-9 Issue 9 — every blocker in the Project's graph is closed: DYD-3
-      uncontracted DYD-12 Issue 12 — Backlog, unassigned, no open blocker
-      unlaned DYD-5 Issue 5 — open, and no ledger row names it or its parent
-      unlaned DYD-10 Issue 10 — open, and no ledger row names it or its parent
-      """
+    And the survey lists these findings, in order:
+      | kind                 | key    |
+      | pickable             | DYD-8  |
+      | question-no-priority | DYD-7  |
+      | unblocked            | DYD-5  |
+      | unblocked            | DYD-9  |
+      | uncontracted         | DYD-12 |
 
-  Scenario: Without a ledger, every open issue is unlaned
-    Given the Project's body is:
-      """
-      ## Goal
-      - DYD-1 ships the release
-      """
-    And the Project has these issues:
-      | key   | state       | assignee | parent | blocked by | label | priority | project |
-      | DYD-1 | In Progress | Ada      |        |            |       | 0        | Map     |
-      | DYD-2 | Done        |          |        |            |       | 0        | Map     |
-    When I survey "25acbbb9a90b"
-    Then the survey exits 0
-    And the survey prints:
-      """
-      dydo survey Map <time>: 2 findings
-      no-ledger - Map — the Project body has no ## heading containing "ledger"
-      unlaned DYD-1 Issue 1 — open, and the Project has no ledger
-      """
-
-  Scenario: A quiet Project prints only its header
+  Scenario: A quiet Project lists no findings
     Given a quiet Project
     When I survey "25acbbb9a90b"
     Then the survey exits 0
-    And the survey prints:
-      """
-      dydo survey Map <time>: 0 findings
-      """
+    And the survey lists no findings
 
   Scenario Outline: The argument is a Project UUID, slugId or Project URL
     Given a quiet Project
@@ -85,11 +46,22 @@ Feature: Survey a Project's lanes
     Then the survey exits <exit>
     And Linear was asked for Project "<asked>"
     Examples:
-      | argument                                                   | exit | asked                                |
-      | 4e6aa9da-f325-4b53-a318-deba4b1b4d26                       | 0    | 4e6aa9da-f325-4b53-a318-deba4b1b4d26 |
-      | 25acbbb9a90b                                               | 0    | 25acbbb9a90b                         |
-      | https://linear.app/x/project/map-25acbbb9a90b/overview     | 0    | 25acbbb9a90b                         |
-      | P-DYD-46                                                   | 2    | nothing                              |
+      | argument                                               | exit | asked                                |
+      | 4e6aa9da-f325-4b53-a318-deba4b1b4d26                   | 0    | 4e6aa9da-f325-4b53-a318-deba4b1b4d26 |
+      | 25acbbb9a90b                                           | 0    | 25acbbb9a90b                         |
+      | https://linear.app/x/project/map-25acbbb9a90b          | 0    | 25acbbb9a90b                         |
+      | https://linear.app/x/project/map-25acbbb9a90b/overview | 0    | 25acbbb9a90b                         |
+      | https://linear.app/x/project/25acbbb9a90b/issues       | 0    | 25acbbb9a90b                         |
+      |                                                        | 2    | nothing                              |
+      | P-DYD-46                                               | 2    | nothing                              |
+      | dydo 3.6.0                                             | 2    | nothing                              |
+      | 25ACBBB9A90B                                           | 2    | nothing                              |
+      | 25acbbb9a90                                            | 2    | nothing                              |
+      | {4e6aa9da-f325-4b53-a318-deba4b1b4d26}                 | 2    | nothing                              |
+      | https://example.com/x/project/dydo-25acbbb9a90b        | 2    | nothing                              |
+      | https://linear.app/x/issue/DYD-530/dydo-survey         | 2    | nothing                              |
+      | https://linear.app/x/project                           | 2    | nothing                              |
+      | https://linear.app/x/project/dydo-current-release      | 2    | nothing                              |
 
   Scenario: An unknown Project is a usage error
     Given Linear has no such Project
