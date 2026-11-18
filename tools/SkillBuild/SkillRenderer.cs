@@ -10,6 +10,9 @@ internal static class SkillRenderer
     // Anthropic's skill authoring best practices: a reference file over 100 lines gets a table of contents.
     private const int ContentsThreshold = 100;
 
+    // K9 / DR 064 §9: "Appendices stay under 100 lines." A contents list does not lift it.
+    private const int AppendixLimit = 100;
+
     public static IEnumerable<RenderedFile> Render(SkillSpec skill, SkillLayout layout)
     {
         if (skill.IsStandard)
@@ -17,7 +20,7 @@ internal static class SkillRenderer
         return [
             Spine(skill, layout),
             .. skill.Resources.Select(resource => Resource(resource, layout)),
-            .. skill.Appendices.Select(appendix => Appendix(appendix, layout)),
+            .. skill.Appendices.Select(appendix => Appendix(skill, appendix, layout)),
             .. OpenAi(skill)
         ];
     }
@@ -67,11 +70,15 @@ internal static class SkillRenderer
         return Sections(page, titled, layout).Done(FileOf(resource.Id));
     }
 
-    private static RenderedFile Appendix(Slot appendix, SkillLayout layout)
+    private static RenderedFile Appendix(SkillSpec skill, Slot appendix, SkillLayout layout)
     {
         var page = new Page([], appendix.Title!);
         foreach (var placed in layout.In(appendix.Id)) page.State(placed);
-        return page.Done(FileOf(appendix.Id));
+        var file = page.Done(FileOf(appendix.Id));
+        return file.LineCount < AppendixLimit
+            ? file
+            : throw new InvalidDataException(
+                $"{skill.Name}: appendix {Names.Of(appendix.Id)} is {file.LineCount} lines; an appendix stays under {AppendixLimit} lines");
     }
 
     private static Page Sections(Page page, IEnumerable<Slot> sections, SkillLayout layout)
