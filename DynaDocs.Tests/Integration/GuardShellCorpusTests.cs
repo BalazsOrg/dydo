@@ -314,6 +314,64 @@ public class GuardShellCorpusTests : GuardHookTestBase
         AssertAllowed(lane, await ShellAsync(lane, command));
     }
 
+    // Each dialect's reading, at the hook (DYD-641, DYD-665, DYD-723, DYD-881): pwsh ends a statement
+    // at a bare carriage return outside quotes and at a backtick before CRLF inside a word; groups
+    // nest only to the bound; an unclosed backtick here-word fails the reading closed instead of
+    // throwing past the fail-open boundary.
+    public static TheoryData<string, string, bool> DialectReadings => new()
+    {
+        { "PowerShell", "echo @'\rabc\r'@\rrm dydo/index.md", true },
+        { "PowerShell", "echo a\r\nrm dydo/index.md", true },
+        { "Bash", "echo a\r\nrm dydo/index.md", true },
+        { "PowerShell", "echo 'a\rrm dydo/index.md'", false },
+        { "PowerShell", "echo \"a\rrm dydo/index.md\"", false },
+        { "PowerShell", "x`\r\nrm dydo/index.md", true },
+        { "PowerShell", "Write-Output " + Repeat("@(", 33) + "y" + Repeat(")", 33), true },
+        { "PowerShell", "Write-Output " + Repeat("@(", 32) + "y" + Repeat(")", 32), false },
+        { "PowerShell", "Write-Output " + Repeat("a (", 33) + "y" + Repeat(")", 33), true },
+        { "PowerShell", "Write-Output " + Repeat("a (", 32) + "y" + Repeat(")", 32), false },
+        { "Bash", Repeat("(", 33) + "x" + Repeat(")", 33), true },
+        { "Bash", Repeat("(", 32) + "x" + Repeat(")", 32), false },
+        { "Bash", "<<<`\nrm dydo.json", true },
+        { "Bash", "cat <<< `\nrm dydo.json", true },
+        { "Bash", "cat <<< `echo hi\nrm dydo.json", true },
+        { "Bash", "cat <<< `echo hi`", false },
+        { "Bash", "cat <<< `echo hi`\nls", false },
+    };
+
+    [Theory]
+    [Trait("Job", "trap: DYD-641/665 pwsh line breaks, DYD-723 nesting bound, DYD-881 unclosed here-word")]
+    [MemberData(nameof(DialectReadings))]
+    public async Task DialectReading_DecidesTheOutcome(string lane, string command, bool refused)
+    {
+        await InitProjectAsync("none");
+
+        var result = await ShellAsync(lane, command);
+
+        if (refused) AssertRefused(lane, result);
+        else AssertAllowed(lane, result);
+    }
+
+    // pwsh reads '' in a single-quoted string as one quote; the reading recursed once per pair, so
+    // 10,000 pairs overflowed a 1 MB stack, a Windows main thread's size (DYD-723). The hook reads
+    // 50,000 pairs on such a thread.
+    [Fact]
+    [Trait("Job", "trap: DYD-723 doubled single quotes overflowed a 1 MB stack")]
+    public async Task DoubledSingleQuotes_AreReadOnAOneMegabyteStack()
+    {
+        await InitProjectAsync("none");
+        var json = ShellJson("PowerShell", "echo '" + Repeat("''", 50_000) + "'");
+        CommandResult? result = null;
+
+        var thread = new Thread(() => result = GuardWithStdinAsync(json).GetAwaiter().GetResult(), 1 << 20);
+        thread.Start();
+        thread.Join();
+
+        AssertAllowed("PowerShell", result!);
+    }
+
+    private static string Repeat(string unit, int count) => string.Concat(Enumerable.Repeat(unit, count));
+
     // DYD-610: long literal data is verified inside the 250 ms rule budget instead of failing closed as
     // too complex. Each run below was quadratic for a backtracking rule: { ! or \ runs for every
     // command-shaped rule, and a repeated command word for a rule that scans the rest after the word.
