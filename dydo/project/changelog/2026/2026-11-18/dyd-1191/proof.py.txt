@@ -2,6 +2,7 @@
 """Run and retain the bounded DYD-1191 docs-writer proof (including expected reader red)."""
 import argparse
 import importlib.util
+import importlib.machinery
 import os
 from pathlib import Path
 import subprocess
@@ -15,7 +16,7 @@ SLICE = 'app-t3code-agents-cbc6c2286251.slice'
 FILTER = ('FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|'
           'FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature')
 sys.dont_write_bytecode = True
-spec = importlib.util.spec_from_file_location('audit', EVIDENCE / 'audit.py')
+spec = importlib.util.spec_from_loader('audit', importlib.machinery.SourceFileLoader('audit', str(EVIDENCE / 'audit.py.txt')))
 audit = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(audit)
 
@@ -30,7 +31,7 @@ def run(label, command, full=False, cwd=ROOT):
     result = subprocess.run(cap + command, cwd=cwd, env=environment,
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
     output = ('COMMAND: ' + repr(cap + command) + '\n'
-              'CANDIDATE: pinned base + docs-writer working tree; verify with audit.py\n'
+              'CANDIDATE: pinned base + docs-writer working tree; verify with audit.py.txt\n'
               'DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false\n'
               + result.stdout + f'\nEXIT: {result.returncode}\n')
     audit.split_raw(label, output)
@@ -89,4 +90,4 @@ if __name__ == '__main__':
                                ('dydo-version', ['dydo', 'version'])]:
             run(label, command)
     else:
-        sys.exit(run('audit', [sys.executable, str(EVIDENCE / 'audit.py')]))
+        sys.exit(run('audit', [sys.executable, str(EVIDENCE / 'audit.py.txt')]))

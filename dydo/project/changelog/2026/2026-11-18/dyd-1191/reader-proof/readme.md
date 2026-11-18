@@ -78,7 +78,7 @@ downloaded); preflight verifies every installed package and link against the loc
 dependency was installed. The restore receipt is `node-locked-restore`; final preflight is
 `preflight-locked`.
 
-Each `proof.py` call derives the nearest session slice from `/proc/self/cgroup`, sets
+Each `proof.py.txt` call derives the nearest session slice from `/proc/self/cgroup`, sets
 `MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false`, and runs
 `systemd-run --user --scope --slice=<nearest slice> -p MemoryMax=8G -p MemorySwapMax=0
 -p OOMPolicy=continue timeout 3600 <command>` for `--full`, or 4G/120 seconds otherwise.
@@ -88,29 +88,29 @@ names are unused in this hop. Expected-red commands return 1; the rest return 0.
 
 ```bash
 p=dydo/project/changelog/2026/2026-11-18/dyd-1191/reader-proof
-python3 -B "$p/proof.py" captain-preflight .static-gates/python/bin/python -B "$p/preflight.py"
-python3 -B "$p/proof.py" captain-python-discovery python3 -B "$p/discover.py"
-python3 -B "$p/proof.py" captain-baseline-red python3 -B "$p/baseline.py"
-python3 -B "$p/proof.py" captain-option-red python3 -B "$p/negative.py" option
-python3 -B "$p/proof.py" captain-parity-red python3 -B "$p/negative.py" parity
-python3 -B "$p/proof.py" captain-example-red python3 -B "$p/negative.py" example
-python3 -B "$p/proof.py" captain-negative-red python3 -B "$p/negative.py" negative
-python3 -B "$p/proof.py" captain-canonical-red python3 -B "$p/negative.py" canonical
-python3 -B "$p/proof.py" --full captain-python-light python3 -m unittest discover -s DynaDocs.Tests/coverage/tests -p 'test_testing_facade*.py' -v
-python3 -B "$p/proof.py" --full captain-dotnet-discovery python3 DynaDocs.Tests/coverage/run_tests.py -c Release --filter 'FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~RunsTestsAndAssuranceHonestlyFeature' --list-tests
-python3 -B "$p/proof.py" --full captain-dotnet-light python3 DynaDocs.Tests/coverage/run_tests.py -c Release --filter 'FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~RunsTestsAndAssuranceHonestlyFeature'
-python3 -B "$p/proof.py" --full captain-statics .static-gates/python/bin/python -B "$p/statics.py" captain-static
-python3 -B "$p/proof.py" captain-docs-audit python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/audit.py --docs-only
-python3 -B "$p/proof.py" captain-docs-check dydo check
-python3 -B "$p/proof.py" captain-preservation python3 -B "$p/preservation.py"
-python3 -B "$p/proof.py" captain-whitespace git diff --check
+python3 -B "$p/proof.py.txt" captain-preflight .static-gates/python/bin/python -B "$p/preflight.py.txt"
+python3 -B "$p/proof.py.txt" captain-python-discovery python3 -B "$p/discover.py.txt"
+python3 -B "$p/proof.py.txt" captain-baseline-red python3 -B "$p/baseline.py.txt"
+python3 -B "$p/proof.py.txt" captain-option-red python3 -B "$p/negative.py.txt" option
+python3 -B "$p/proof.py.txt" captain-parity-red python3 -B "$p/negative.py.txt" parity
+python3 -B "$p/proof.py.txt" captain-example-red python3 -B "$p/negative.py.txt" example
+python3 -B "$p/proof.py.txt" captain-negative-red python3 -B "$p/negative.py.txt" negative
+python3 -B "$p/proof.py.txt" captain-canonical-red python3 -B "$p/negative.py.txt" canonical
+python3 -B "$p/proof.py.txt" --full captain-python-light python3 -m unittest discover -s DynaDocs.Tests/coverage/tests -p 'test_testing_facade*.py' -v
+python3 -B "$p/proof.py.txt" --full captain-dotnet-discovery python3 DynaDocs.Tests/coverage/run_tests.py -c Release --filter 'FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~RunsTestsAndAssuranceHonestlyFeature' --list-tests
+python3 -B "$p/proof.py.txt" --full captain-dotnet-light python3 DynaDocs.Tests/coverage/run_tests.py -c Release --filter 'FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~RunsTestsAndAssuranceHonestlyFeature'
+python3 -B "$p/proof.py.txt" --full captain-statics .static-gates/python/bin/python -B "$p/statics.py.txt" captain-static
+python3 -B "$p/proof.py.txt" captain-docs-audit python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/audit.py.txt --docs-only
+python3 -B "$p/proof.py.txt" captain-docs-check dydo check
+python3 -B "$p/proof.py.txt" captain-preservation python3 -B "$p/preservation.py.txt"
+python3 -B "$p/proof.py.txt" captain-whitespace git diff --check
 ```
 
-`preservation.py` compares current ASTs with the pinned source and retained before/final native IDs,
+`preservation.py.txt` compares current ASTs with the pinned source and retained before/final native IDs,
 checks test roles and owned paths, and enforces strictly less than 20,000 bytes on every changed or
 new file across the whole ticket. It works before and after this hop's commit. Docs audit verifies
 the earlier snapshot digest `bc6f2a7cdd8f7562e694fc5bdc9b6096ae311cc2ee41bca57edead72563d87b2`.
-`proof.py` receipts carry exact argv, source SHA-256, HEAD, environment, native output and exit.
+`proof.py.txt` receipts carry exact argv, source SHA-256, HEAD, environment, native output and exit.
 Raw text is losslessly split into at most 16,000-byte parts. Static native commands and reports are
 losslessly gzip-compressed and split into the same bound; concatenate a manifest's `gzip_parts`,
 decompress, and verify its SHA-256 to recover the exact raw bytes. `static-v4/static-manifest.json`

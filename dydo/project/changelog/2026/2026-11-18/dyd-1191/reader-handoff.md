@@ -124,7 +124,7 @@ clean themselves up. No full suite, coverage campaign or mutation pass is claime
 
 Use the [implementation recipe](./implementation.md#exact-rerun-recipe-and-remaining-gates), retain
 the original red receipts, then record next-hop green and changed-code/test statics separately.
-Default `audit.py` checks this docs-only scope; `audit.py --docs-only` after the code hop still checks
+Default `audit.py.txt` checks this docs-only scope; `audit.py.txt --docs-only` after the code hop still checks
 every resulting documentation byte and anchor without claiming to validate the test edits. No
 `--write` is needed for proof. New helper paths must be owned and reviewed by the captain.
 

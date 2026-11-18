@@ -189,7 +189,7 @@ def split_raw(name, text):
         (EVIDENCE / f'{name}-{i:02}.log').write_text(part)
 
 
-def run(write=False, docs_only=False):
+def run(write=False, docs_only=False, scope_base=BASE):
     fs = families()
     owners = owner_map(fs)
     files, mappings = expected(fs, owners)
@@ -263,7 +263,7 @@ def run(write=False, docs_only=False):
             assert fragment in {anchor(t) for _, _, t in headings((ROOT / resolved).read_text())}, (path, target)
             inbound += 1
     # Enforce scope, including staged edits and untracked evidence.
-    changed = set(git('diff', BASE, '--name-only').decode().splitlines())
+    changed = set(git('diff', scope_base, '--name-only').decode().splitlines())
     changed.update(git('ls-files', '--others', '--exclude-standard').decode().splitlines())
     for path in changed:
         if docs_only and path.startswith('DynaDocs.Tests/'):
@@ -271,9 +271,9 @@ def run(write=False, docs_only=False):
         assert path in files or path.startswith(str(EVIDENCE.relative_to(ROOT)) + '/'), f'Out of scope: {path}'
         if (ROOT / path).is_file():
             assert (ROOT / path).stat().st_size < 20000, ('changed-file size', path)
-    assert not git('diff', BASE, '--', 'skills/', 'claims/')
+    assert not git('diff', scope_base, '--', 'skills/', 'claims/')
     if not docs_only:
-        assert not git('diff', BASE, '--', 'DynaDocs.Tests/')
+        assert not git('diff', scope_base, '--', 'DynaDocs.Tests/')
     identity = '\n'.join(p + '\t' + hashlib.sha256((ROOT / p).read_bytes()).hexdigest() for p in sorted(files))
     print('DOC SNAPSHOT SHA256:', hashlib.sha256(identity.encode()).hexdigest())
     print(f'PASS {len(mappings)} byte-range moves, {anchor_count} old hub anchors, {inbound} inbound family fragment links')
@@ -288,5 +288,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--write', action='store_true')
     parser.add_argument('--docs-only', action='store_true')
+    parser.add_argument('--scope-base', default=BASE)
     args = parser.parse_args()
-    run(args.write, args.docs_only)
+    print('SCOPE BASE:', args.scope_base, 'ORIGINAL PROSE BASE:', BASE)
+    run(args.write, args.docs_only, args.scope_base)

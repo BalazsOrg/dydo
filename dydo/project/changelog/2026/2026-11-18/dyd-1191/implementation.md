@@ -58,7 +58,7 @@ pages in Contents.
 
 ## Mapping and byte proof
 
-`audit.py` reads all four originals directly from the pinned Git commit. It verifies a
+`audit.py.txt` reads all four originals directly from the pinned Git commit. It verifies a
 complete, nonoverlapping partition of each original, with no omitted tail. Each moved range is
 recorded by original byte offsets, SHA-256 and destination:
 
@@ -95,7 +95,7 @@ The audit computes this digest from sorted path/file-SHA pairs; evidence itself 
 
 `all-consumers-01.log` and `all-consumers-02.log` explicitly
 classify all 175 pinned tracked files matching the three family names, including historical raw
-evidence. `consumer-map.py` regenerates that inventory. The earlier bounded
+evidence. `consumer-map.py.txt` regenerates that inventory. The earlier bounded
 `rg` discovery is retained in `consumers-before-01.log` and `consumers-before-02.log`.
 Implicit wildcard, runtime, parser and test consumers are mapped in the
 [reader handoff](./reader-handoff.md).
@@ -135,15 +135,15 @@ for full discovery/test runs. They set the three required .NET environment value
 was acquired inside a cap and no concurrent full gate was launched.
 
 ```bash
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py audit
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py docs
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py scaffold
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py scaffold-baseline
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py help
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py statics
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py discovery
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py dotnet
-python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py python
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt audit
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt docs
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt scaffold
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt scaffold-baseline
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt help
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt statics
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt discovery
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt dotnet
+python3 -B dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt python
 ```
 
 The wrapper scripts are orchestration only: each actual probe/gate runs under the recorded cap.

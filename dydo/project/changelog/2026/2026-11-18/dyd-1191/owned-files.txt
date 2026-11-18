@@ -13,9 +13,9 @@ dydo/project/changelog/2026/2026-11-18/dyd-1191/anchors-dydo-reference-coverage-
 dydo/project/changelog/2026/2026-11-18/dyd-1191/anchors-dydo-reference-dydo-commands.json
 dydo/project/changelog/2026/2026-11-18/dyd-1191/anchors-dydo-understand-guard-system.json
 dydo/project/changelog/2026/2026-11-18/dyd-1191/audit-01.log
-dydo/project/changelog/2026/2026-11-18/dyd-1191/audit.py
+dydo/project/changelog/2026/2026-11-18/dyd-1191/audit.py.txt
 dydo/project/changelog/2026/2026-11-18/dyd-1191/check-01.log
-dydo/project/changelog/2026/2026-11-18/dyd-1191/consumer-map.py
+dydo/project/changelog/2026/2026-11-18/dyd-1191/consumer-map.py.txt
 dydo/project/changelog/2026/2026-11-18/dyd-1191/consumers-before-01.log
 dydo/project/changelog/2026/2026-11-18/dyd-1191/consumers-before-02.log
 dydo/project/changelog/2026/2026-11-18/dyd-1191/discovery-01.log
@@ -31,7 +31,7 @@ dydo/project/changelog/2026/2026-11-18/dyd-1191/mapping-dydo-reference-dydo-comm
 dydo/project/changelog/2026/2026-11-18/dyd-1191/mapping-dydo-understand-guard-system.json
 dydo/project/changelog/2026/2026-11-18/dyd-1191/owned-files.txt
 dydo/project/changelog/2026/2026-11-18/dyd-1191/pre-edit.log
-dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py
+dydo/project/changelog/2026/2026-11-18/dyd-1191/proof.py.txt
 dydo/project/changelog/2026/2026-11-18/dyd-1191/python-reader-red-01.log
 dydo/project/changelog/2026/2026-11-18/dyd-1191/python-version-01.log
 dydo/project/changelog/2026/2026-11-18/dyd-1191/reader-handoff.md
