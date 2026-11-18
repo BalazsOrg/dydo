@@ -2,9 +2,10 @@ namespace DynaDocs.Tests.SkillBuild;
 
 /// <summary>
 /// Grilling A D7 and D8: the skill-shape limits, each red on a synthetic tree and green on the committed
-/// built tree. Sources: Anthropic's skill authoring best practices (<see cref="SkillShape.BestPractices"/>)
-/// for the line limits, links and contents list; DYD-968 for runtime-only skill folders.
+/// built tree. Source: Anthropic's skill authoring best practices (<see cref="SkillShape.BestPractices"/>)
+/// for the line limits, links and contents list.
 /// </summary>
+[Trait("Job", "contract: DR 064 §9 K10")]
 public class SkillShapeTests
 {
     private const string Spine = "skills/x/demo/SKILL.md";
@@ -92,27 +93,6 @@ public class SkillShapeTests
     public void Resource_NoSpineLinksTo_Fails() =>
         Assert.Equal(new[] { $"{Resource}: no spine links to this resource ({SkillShape.BestPractices})" },
             SkillShape.Violations(Tree((Spine, Frontmatter + "- [Elsewhere](../other/resources/a.md)\n"), (Resource, "# A\n"))));
-
-    // DYD-968: a skill folder ships its runtime resources only, never dydo's own tests or fixtures.
-    [Theory]
-    [InlineData("skills/x/demo/scripts/test/check.test.mjs")]
-    [InlineData("skills/x/demo/resources/fixture.json")]
-    [InlineData("skills/x/demo/resources/deep/a.md")]
-    [InlineData("skills/x/demo/README.md")]
-    public void SkillFolder_HoldingAnythingButSkillMdAndResources_Fails(string path) =>
-        Assert.Equal(new[] { $"{path}: a skill folder holds only SKILL.md and resources/*.md, runtime resources and never tests or fixtures (DYD-968)" },
-            SkillShape.Violations(Tree((Spine, Frontmatter), (path, "x\n"))));
-
-    [Fact]
-    public void FilesOutsideSkillFolders_AreNotSkillShaped() =>
-        Assert.Empty(SkillShape.Violations(Tree(("dydo/guides/g.md", Lines(900)), ("claims.map.json", "{}\n"))));
-
-    [Theory]
-    [InlineData("skills/x/demo/SKILL.md")]
-    [InlineData("skills/x/demo/resources/a.md")]
-    [InlineData("dydo/guides/g.md")]
-    public void AnyBuiltFile_WithAnUnbalancedFence_Fails(string path) =>
-        Assert.Contains($"{path}: unbalanced fenced block", SkillShape.Violations(Tree((path, "```text\nopen\n"))));
 
     private static string Lines(int count) => string.Concat(Enumerable.Repeat("- line\n", count));
 

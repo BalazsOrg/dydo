@@ -505,7 +505,7 @@
     {
       "module": "Services/Survey/ProjectReference.cs",
       "tests": [
-        "DynaDocs.Tests/Survey/ProjectReferenceTests.cs"
+        "DynaDocs.Tests/Survey/SurveySteps.cs"
       ]
     },
     {

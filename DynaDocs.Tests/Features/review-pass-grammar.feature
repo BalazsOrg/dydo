@@ -1,3 +1,4 @@
+# Job: contract: DR 061 §4; DYD-618; DYD-624 (one PASS grammar for pr-ready and merge)
 @DYD-624 @DYD-618
 Feature: Shared independent review PASS grammar
   PR readiness and merge read the same review fields.

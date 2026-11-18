@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Statechart;
 using System.Runtime.InteropServices;
 using DynaDocs.Services.Statechart;
 
+[Trait("Job", "trap: a NUL inside a native argument vector would silently truncate the argument")]
 public class StatechartArgumentsTests
 {
     [Fact]

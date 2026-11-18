@@ -2,6 +2,7 @@ namespace DynaDocs.Tests.Statechart;
 
 using DynaDocs.Services.Statechart;
 
+[Trait("Job", "trap: an installed link whose followed path leaves the root must be rejected")]
 public class StatechartInventoryTests
 {
     // The filesystem follows a link before it applies `..`; each lexical target names an existing decoy entry.

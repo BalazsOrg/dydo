@@ -2,6 +2,7 @@ namespace DynaDocs.Tests.Statechart;
 
 using DynaDocs.Services.Statechart;
 
+[Trait("Job", "contract: DR 062 §1 §2")]
 public class StatechartPrerequisitesTests
 {
     [Theory]

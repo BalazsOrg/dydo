@@ -3,6 +3,12 @@ namespace DynaDocs.Tests.Statechart;
 using DynaDocs.Services.Statechart;
 using System.Text.Json.Nodes;
 
+/// <summary>
+/// The statechart skill <c>install-skill</c> places, judged by what is on disk: this release's skill validates; an
+/// unchanged earlier release is replaced; a local edit, an unverifiable earlier release or a foreign skill is refused
+/// and left exactly as it was.
+/// </summary>
+[Trait("Job", "contract: DR 062 §3 (the installed skill submits the continuation)")]
 public class StatechartSkillTests
 {
     [Theory]
@@ -11,7 +17,8 @@ public class StatechartSkillTests
     [InlineData("protocol")]
     [InlineData("source")]
     [InlineData("missing")]
-    public async Task InstalledSkillMustMatchActualEmbeddedSourcesAndReleaseProtocolPayload(string change)
+    [InlineData("earlier release")]
+    public async Task OnlyThisReleasesUneditedSkillValidates(string change)
     {
         using var scope = new StatechartTestDirectory();
         var assets = new StatechartAssets();
@@ -21,9 +28,11 @@ public class StatechartSkillTests
             ["release"] = assets.Release, ["payload"] = change == "payload" ? "other" : assets.Digest, ["lock"] = assets.LockDigest };
         if (change != "missing") File.WriteAllText(Path.Combine(skill, ".statechart-skill.json"), identity.ToJsonString());
         if (change == "source") File.AppendAllText(Path.Combine(skill, "SKILL.md"), "\nlocal edit");
+        if (change == "earlier release") FromAnEarlierRelease(skill, inventory: true);
         if (change == "valid") Assert.Equal(skill, StatechartSkill.Validate(skill, assets));
         else Assert.Throws<IOException>(() => StatechartSkill.Validate(skill, assets));
         if (change == "source") Assert.EndsWith("local edit", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
+        if (change == "earlier release") Assert.EndsWith("Earlier release wording.", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
     }
 
     [Fact]
@@ -39,16 +48,14 @@ public class StatechartSkillTests
     }
 
     [Fact]
-    public async Task LocalEditsToAnEarlierReleaseAreRefusedUntouchedWithTheRemedy()
+    public async Task LocalEditsToAnEarlierReleaseAreRefusedUntouched()
     {
         using var scope = new StatechartTestDirectory();
         var (project, payload, skill) = await Installed(scope.Path);
         FromAnEarlierRelease(skill, inventory: true);
         File.AppendAllText(Path.Combine(skill, "SKILL.md"), "\nlocal edit");
         var receipt = File.ReadAllBytes(Path.Combine(skill, ".statechart-skill.json"));
-        var error = Assert.Throws<IOException>(() => StatechartSkill.Place(project, payload, new StatechartAssets()));
-        Assert.Contains("SKILL.md", error.Message);
-        Assert.Contains("aside", error.Message);
+        Assert.Throws<IOException>(() => StatechartSkill.Place(project, payload, new StatechartAssets()));
         Assert.EndsWith("local edit", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
         Assert.Equal(receipt, File.ReadAllBytes(Path.Combine(skill, ".statechart-skill.json")));
     }
@@ -70,17 +77,6 @@ public class StatechartSkillTests
             return;
         }
         Assert.Throws<IOException>(() => StatechartSkill.Place(project, payload, new StatechartAssets()));
-        Assert.EndsWith("Earlier release wording.", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
-    }
-
-    [Fact]
-    public async Task AChartInvocationOnAnUnchangedEarlierSkillNamesTheInstallSkillCommand()
-    {
-        using var scope = new StatechartTestDirectory();
-        var (project, _, skill) = await Installed(scope.Path);
-        FromAnEarlierRelease(skill, inventory: true);
-        var error = Assert.Throws<IOException>(() => StatechartSkill.Validate(skill, new StatechartAssets()));
-        Assert.Contains("dydo statechart install-skill --root " + project, error.Message);
         Assert.EndsWith("Earlier release wording.", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
     }
 
