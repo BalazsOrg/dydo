@@ -10,11 +10,16 @@ weighed:
 
 # 065 - Review Placement and the Merge-Review Cut
 
+> **Decision 7's "Shoulds go to the should collection" amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)**: a should is its own ticket under the ticket where it was found, collected later in a Shoulds batch; there is no standing collection ticket (C9). The rest remains in force.
+
+> **Narrowed by [071 - Hierarchy, Envoys and Captain Autonomy](./071-hierarchy-envoys-and-captain-autonomy.md)** ([DYD-1177](https://linear.app/bodnar-balazs/issue/DYD-1177)): which merges need Balazs, the one-way list, release tags, pacing, every weed becomes a rule, PR watching and the quiet tick moved to 071 rules 13 to 19; sub-captain depth (decisions 2 and 15) to its rule 7; who makes a hard call (decision 7) to its rule 3. Decision 19 keeps only the landing. The opening paragraph, decisions 2, 7, 15 and 19, the Consequences and the DR 061 amendment were edited in place; that narrowed text is proposed with 071 and awaits his acceptance, so the 2026-11-17 approval below does not cover it. The rest remains in force.
+
 The feature is the review unit, reviewed once when it can be observed, and every review also checks
 the change against the governing spec's problem statement. A conflict-free merge into the feature
 branch is proved by deterministic gates and hosted CI, with no merge review; only the landing keeps
-one. The captain runs the Merge hop itself. Only irreversible PRs and release tags need Balazs's
-click. Decided by Balazs in
+one. The captain runs the Merge hop itself. A two-way landing merges AFK once Balazs accepts it at
+his walkthrough; which other merges need his click is
+[DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s. Decided by Balazs in
 [grilling B](https://linear.app/bodnar-balazs/document/370-grilling-b-review-placement-and-the-merge-review-cut-f9088dfe7680)
 on 2026-11-11 (B1 to B10), as superseded in part by
 [grilling D](https://linear.app/bodnar-balazs/document/370-grilling-d-hierarchy-t3-inbox-captain-autonomy-sub-captains-a5cb8f0b5a86)
@@ -56,10 +61,8 @@ one run per project per machine
    whole: each part correct, the parts correct together, and in harmony (one home per contract and
    model, no duplicated DTOs, efficient flow across the seam, deep modules). Every merge into the
    feature branch still carries an independent PASS, and `dydo merge` needs no new verdict kind.
-   **As superseded in part by D-D11:** no sub-captains until the T3 nesting experiment reports;
-   meanwhile a ticket too big for one captain is cut into sibling tickets with their own captains,
-   under a parent the admiral holds, and the admiral orders that parent's review once its parts are
-   in; a fresh reviewer holds it.
+   **As superseded in part by D-D11, itself replaced by DYD-1114:** sub-captains and how deep they
+   go are [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s (rule 7).
 3. **Every review is spec-anchored (DYD-1120).** Balazs, at the DYTEST walkthrough: "the new dydo
    should patch this loophole and failure mode that we drift from the spec, because only the ticket
    spec is compared to."
@@ -136,10 +139,11 @@ one run per project per machine
    - After round 3, a checkpoint, not a stop: the officer running the rounds decides on purpose.
      Default: one more round; escalate only for the last two kinds. It is not named or framed as a
      FAIL stop.
-   - **As refined by D-D9 and D-D15:** a captain or sub-captain never reaches Balazs on its own; its
+   - **As refined by D-D9:** a captain or sub-captain never reaches Balazs on its own; its
      need goes to the officer above, which decides whether he is needed and, if so, prepares the
-     decision first. A hard call goes to the council
-     ([DR 066](./066-the-law-councils-and-the-tribunal.md)).
+     decision first. Who makes a hard call (D-D15) is
+     [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s and
+     [DR 066](./066-the-law-councils-and-the-tribunal.md)'s.
 8. **Seats and models scale with the work (B7).** "Each review round's seats should depend on the
    breadth and depth of the work. And we should also choose models wisely."
    - No constant pair. A small leaf may need no review; if it gets one, a quick check that it is what
@@ -202,8 +206,9 @@ one run per project per machine
     skill and never promotes itself; a crew agent whose job is too big returns "too big, re-cut". A
     Linear unit goes by `delegate_task`; a native sub-agent never gets one and shares its holder's
     checkout, and the holder commits. Parallel lanes and sub-tickets with children get their own
-    worktree; serial hops share their ticket's. **As superseded in part by D-D11:** no sub-captains
-    yet (decision 2).
+    worktree; serial hops share their ticket's. **As superseded in part by D-D11, itself replaced
+    by DYD-1114:** sub-captain depth is [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s
+    (rule 7).
 16. **`dydo merge` is the one entry point and runs every pre-merge check (B8b).** It refuses unless
     the PASS names the head, the branch merges cleanly with the feature tip, and the gates are green
     on that combined tree; a refusal states its reason. After the merge, the existing hosted CI on
@@ -218,36 +223,14 @@ one run per project per machine
     commit's tree and hosted CI is green on the merge SHA. No `--verify` flag; dydo reads no receipts
     itself.
 
-### Which merges need Balazs
+### The landing
 
-19. **Only irreversible PRs and release tags need his click (D-D14, D-D16).** "me clicking merge is a
-    bottleneck and reducing that bottleneck is probably a good idea." "Only irreversible PRs should
-    need my click." "That I'm not the one who has to do the proving, but the agents can do it
-    reliably."
-    - **The agents prove the code; Balazs sets the course.** Walkthroughs are his product review and
-      his look at the code.
-    - **A two-way PR merges to master AFK** when its evidence is complete: an independent PASS on the
-      head, or on an ancestor when every later commit is a clean sync (decision 17); gates green on
-      the combined tree with current master; CI green; the PR body declaring two-way. **The captain
-      merges it.** This covers an atomic ticket's PR and a Project's landing PR; a Project's own
-      tickets still merge into its feature branch first, which is the admiral's.
-    - **One-way** means reverting the commit does not undo the effect. These always need his click:
-      data migrations; publishing a package or a public API; anything that sends or publishes outside
-      the repository; secrets; history rewrites; changes to what guards main (CI, branch protection,
-      release workflows, the guard). Paths flag them where possible; otherwise the captain declares.
-      A one-way PR carries a recovery plan in its body; revert applies to two-way changes only.
-    - **Release tags are his,** per Project.
-    - **Pacing:** main-bound PRs re-check against current master just before landing; the admiral
-      lands its Project's main-bound PRs one at a time; a PR forced to re-sync a third time is held
-      and the admiral sequences the colliding work. Recorded as a default, not asked: across Projects,
-      `dydo merge` re-checking the combined tree with master is the serialiser.
-    - **The landing:** "a". Merge review, then his walkthrough acceptance, then AFK when two-way; a
-      one-way landing still needs his click.
-    - **Every weed becomes a rule:** a mistake found after landing is fixed with a lint, test or rule
-      too, so it can't land again.
-    - Before his click, the captain watches its own CI in-turn and opens the HITL Merge only when
-      green; nobody watches for the click; the survey sees "PR merged, HITL Merge open" and wakes the
-      captain; a tick that finds nothing ends in one line and wakes no one (D-D14).
+19. **The landing: merge review, then his walkthrough acceptance, then AFK when two-way (D-D16).**
+    "a". The landing's merge review proves acceptance (decision 11), then Balazs accepts the landing
+    at its walkthrough; once he has, a two-way landing PR merges AFK. A one-way landing still needs
+    his click. Which other merges need him (two-way PRs into master, the one-way list, release tags,
+    pacing, every weed becomes a rule) and PR watching and the quiet tick (D-D14) are
+    [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s.
 
 ## Consequences
 
@@ -260,10 +243,12 @@ one run per project per machine
   ([DYD-741](https://linear.app/bodnar-balazs/issue/DYD-741)).
 - The reviewer stops re-running the author's gates. Review rubrics, the inquisitor's Drive phase, the
   captain's review brief and the landing step gain the spec-anchored checks.
-- Most two-way PRs into master land without him; his attention goes to walkthroughs, one-way
-  merges and tags. How an agent merges into the default branch feeds
-  [DYD-944](https://linear.app/bodnar-balazs/issue/DYD-944).
-- Still open in grilling B: where the spec lives and what "deleted" means for it.
+- A two-way landing lands without his click once he accepts it at the walkthrough. Which other
+  merges need him, and how an agent merges into the default branch
+  ([DYD-944](https://linear.app/bodnar-balazs/issue/DYD-944)), is
+  [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s.
+- Still open in grilling B: where the spec lives and what "deleted" means for it; answered by
+  [DR 070](./070-statuses-as-sub-tickets-shoulds-and-the-map.md) decision 10 (C8).
 
 ## Supersedes and amends
 
@@ -278,12 +263,14 @@ one run per project per machine
   feature merge goes (B1); the captain runs `dydo merge`, a code-writer only for a conflict or a red
   gate (§6, B3a); a PASS on an ancestor stands after clean syncs (§4, B9); `dydo merge` checks the
   combined tree and DYTEST's receipt before landing and refuses a hand-shaped merge (B2, B8b, B10);
-  and a merge into the default branch is no longer always the user's click: two-way PRs into master
-  merge AFK (§1, D-D16).
+  and a two-way landing PR merges AFK after the user's walkthrough acceptance (§1, D-D16). Which
+  other merges into the default branch need him is
+  [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s.
 
 ## Related
 
 - [DR 064 - Claims Build the Skills](./064-claims-build-the-skills.md) - Every rule here is written once, through claims
 - [DR 066 - The Law, Councils and the Tribunal](./066-the-law-councils-and-the-tribunal.md) - Review councils and hard calls
+- [DR 071 - Hierarchy, Envoys and Captain Autonomy](./071-hierarchy-envoys-and-captain-autonomy.md) - Which merges need Balazs, sub-captain depth
 - [Review Principles](../../law/dydo/review.md) - `dydo-review-high-impact`
 - [Working-Tree Standard](../../guides/working-tree-standard.md)

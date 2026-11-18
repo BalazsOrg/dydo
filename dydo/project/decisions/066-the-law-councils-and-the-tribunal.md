@@ -282,7 +282,7 @@ settled decisions.
   set (the officer is no longer a sealed member, rounds drop from up to four to one exchange, the case
   file goes neutral, two judges and a clerk), and F8 replaces its ratification of every tribunal
   output with provisional rulings.
-- [DR 065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md): the review seats it scales, and the hard calls it sends to the council.
+- [DR 065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md): the review seats it scales. Which hard calls reach the council is [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s (rule 3).
 
 ## Related
 
