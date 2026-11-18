@@ -174,6 +174,29 @@ public sealed class ExplainsCommandTests : IDisposable
         Assert.Contains("All checks passed.", updated.Stdout);
     }
 
+    [Fact]
+    [Trait("Job", "contract: DYD-1189; DYD-1100 DECIDED bdb6b643 §3 rules 4/6 (advisory explains check)")]
+    public async Task PrReady_MissingBaseWarnsWithoutBlocking()
+    {
+        var (exit, stdout, stderr) = await ConsoleCapture.AllAsync(() => PrReadyCommand.Create()
+            .Parse([_tree, "--base", "refs/heads/missing-explains-base"]).InvokeAsync());
+
+        Assert.Equal(0, exit);
+        Assert.Contains("ready: ", stdout);
+        Assert.Contains("warning: explains comparison unavailable", stderr);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1189; DYD-1100 DECIDED bdb6b643 §3 rules 4/6 (advisory explains check)")]
+    public void Check_MissingBaseWarnsWithoutBlocking()
+    {
+        var (exit, stdout, stderr) = Check("--base", "refs/heads/missing-explains-base");
+
+        Assert.Equal(0, exit);
+        Assert.Contains("Found warnings (no errors).", stdout);
+        Assert.Contains("explains comparison unavailable", stdout + stderr);
+    }
+
     private void WriteDoc(string declaration) => File.WriteAllText(_doc,
         $"---\narea: reference\ntype: reference\nexplains: {declaration}\n---\n\n# Authentication\n\nThe login flow.\n");
 
