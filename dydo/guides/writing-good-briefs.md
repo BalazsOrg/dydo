@@ -10,7 +10,7 @@ and an independent reviewer can decide PASS or FAIL from the same text, without 
 conversation that produced it.
 
 Two things get briefed: a **Linear ticket**, picked up and owned end to end, and a **crew prompt**, one
-bounded job that returns to whoever spawned it. Everything else - a Project plan, a Decision Record, a
+bounded job that returns to whoever spawned it. Everything else - a feature spec, a Decision Record, a
 guide - is context the brief links, never a substitute for it.
 
 ---
@@ -64,7 +64,7 @@ and PASS means no blocker; its should and nit findings are deferred, never dropp
 
 Every reviewer brief names rubric, `Contract: <KEY> description as of <Linear updatedAt>`,
 Candidate SHA and Base SHA, plus the writer's `IMPLEMENTED` line where a writer produced the
-candidate (not a pre-code spec or Project-plan review). Write the brief so every field of the block can be filled from it. Gates that are not commands cannot
+candidate (not a pre-code spec review). Write the brief so every field of the block can be filled from it. Gates that are not commands cannot
 be rerun; an outcome with no observable form cannot be judged; a candidate with no owned paths has no
 boundary to be judged against.
 

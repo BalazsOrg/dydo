@@ -46,4 +46,4 @@ and run `dydo map`. No project files change.
 ## Related
 
 - [dydo Commands](../../../../reference/dydo-commands.md) - `dydo map` reference.
-- [Visual Linear project map](../../../plans/visual-linear-project-map.md) - The reviewed plan.
+- [Visual Linear project map](https://github.com/BalazsOrg/dydo/blob/b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c/dydo/project/plans/visual-linear-project-map.md) - The reviewed plan.

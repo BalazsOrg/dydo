@@ -12,8 +12,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 
 - **Initiative** - an optional workspace-level goal spanning independently meaningful Projects.
 - **Project** - a bounded product or technical outcome owned by one Linear team. The Linear Project
-  and its tickets are its plan; cross-cutting architecture adds one reviewed repository
-  architecture plan.
+  and its tickets are its plan.
 - **Milestone** - a meaningful checkpoint inside a Linear Project, a chunk of work where a drift
   from the user's intent would show. The map holder places few; every delivery ticket belongs to
   one, and each has a Walkthrough Ticket. The first is the **walking skeleton**, the rough
@@ -32,7 +31,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 ## Fog and Question Tickets
 
 - **Fog** - the unknown unknowns: relevant uncertainty not yet sharp enough to state as a question.
-  The rule is *fog → discovery → Question Ticket*. Search the Decision Records, the Project plan, the
+  The rule is *fog → discovery → Question Ticket*. Search the Decision Records, the feature specs, the
   ticket's own links, the glossary, and the code first; file only what that leaves open.
 - **Question Ticket** - a Linear ticket of Type `Question` in `Todo` carrying one judgment left to the user
   after discovery. It records the homework, options, recommendation and named waiters, and resolves
@@ -55,10 +54,6 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   decisions, and the two are linked rather than copied.
 - **Feature spec** - a temporary current anchor for shared multi-ticket behavior under
   `dydo/reference/working-specs/<project-slug>/`; the [spec convention](./feature-spec-convention.md) owns its lifecycle.
-- **Project plan** - a reviewed repository document the map holder writes only for cross-cutting
-  architecture work, at low resolution: destination, acceptance, architecture, and a ticket
-  map. Its `linear-project` URL is provenance, not synchronization.
-- **Architecture plan** - a Project plan written only for cross-cutting architecture.
 - **FutureFeature** - an unscheduled strategic possibility recorded as a Linear ticket, distinct from
   a generic idea or delivery contract. It stays in `FutureFeature` until the user promotes or cancels it.
 - **Assimilation brief** - the durable account of what changed, what was learned, and what remains.
@@ -90,14 +85,14 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   grill-me, bro, improve-codebase-architecture, create-verification-skill,
   create-formal-verification-skill, statechart, update-dydo.
 - **Rubric** - the one named standard a reviewer judges a candidate against: code, docs,
-  project-plan, spec, or merge.
+  spec, or merge.
 
 ## Execution and proof
 
 - **Supersymmetry** - a captain's ticket is a Project one level down: the same Types, statuses and
   chain hold at both levels, and only the map holder changes.
 - **Reviewed intent** - the rule that implementation begins only from an independently reviewable
-  contract: an atomic ticket, or a Project's tickets with any reviewed Project plan they link.
+  contract: an atomic ticket, or a Project's tickets with their applicable feature specs and Decisions.
 - **Scenario** - one acceptance criterion at the product's boundary, written in Gherkin in the
   ticket's feature files by the code-writer, where the ticket's contract calls for Gherkin. It is
   contract: the captain decides the set and the writer wires it without weakening it; a change to it
@@ -118,7 +113,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   ticket instead (DR 059). The fix-hop author checks each label against
   the source and may change it with evidence; the captain records the change and its reason.
 - **Merge review** - the `merge` rubric run after every merge that has a Merge Ticket: a mechanical
-  spot check of the integrated state that also proves the plan's acceptance criteria at a feature's
+  spot check of the integrated state that also proves the Project's acceptance criteria at a feature's
   final merge. An atomic ticket's merge into main has none; its ticket review PASS, green CI and the
   user's click stand in its place.
 - **Inquisition** - a user-confirmed Type held by a captain: one round of audit of the integrated
@@ -158,7 +153,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 - **Review block** - the reviewer's whole return, and the only thing that fills a Ticket Captain's
   review slot, in the one-line `PASS` or `FAIL` form of the
   [Linear Workspace Standard](./linear-workspace-standard.md#communication-and-evidence). A PASS binds one candidate under one contract; a change to
-  either calls for a fresh review. It lives on the work judged: a Project update for a plan, its Merge Ticket for a merge, otherwise
+  either calls for a fresh review. It lives on the work judged: its Merge Ticket for a merge, otherwise
   its ticket; a PR carries the block when one exists.
 - **Evidence** - a commit, PR, test result, review verdict, or audit artifact linked to a ticket; it
   is not another work item.
