@@ -7,6 +7,7 @@ using System.Diagnostics;
 /// a '@' text reaching `dydo guard` must be shown to survive the real parse, not only a test's.
 /// </summary>
 [Collection("EndToEnd")]
+[Trait("Job", "edge: DYD-675 the @ argument through a real dydo process")]
 public class GuardAtCommandProcessTests : IDisposable
 {
     private readonly string _projectDir;

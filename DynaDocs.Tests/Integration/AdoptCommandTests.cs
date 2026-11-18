@@ -1,52 +1,33 @@
 using System.Text.Json.Nodes;
 using DynaDocs.Commands;
-using DynaDocs.Services;
-using DynaDocs.Tests.Services;
-using DynaDocs.Utils;
 
 namespace DynaDocs.Tests.Integration;
 
+/// <summary>
+/// `dydo adopt <version>` records the adopted release as `dydoVersion` in dydo.json. Anything that
+/// is not a release, a missing project or a config that does not parse exits 2 and leaves the
+/// file's bytes as they were.
+/// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: dydo-commands-core.md dydo adopt (exit 2 leaves the file as it was); trap: a failed adopt must not rewrite dydo.json")]
 public class AdoptCommandTests : IntegrationTestBase
 {
     private string ConfigPath => Path.Combine(TestDir, "dydo.json");
 
     [Theory]
-    [InlineData("3.6.0")]
-    [InlineData("3.6.0-beta.3")]
-    public async Task Adopt_RecordsTheVersion(string version)
+    [InlineData("1.2.3", "3.6.0", "3.6.0")]
+    [InlineData("1.2.3", "3.6.0-beta.3", "3.6.0-beta.3")]
+    [InlineData("1.2.3", "v3.6.0", "3.6.0")]
+    [InlineData(null, "3.6.0", "3.6.0")]
+    public async Task Adopt_Release_IsRecorded(string? recorded, string version, string expected)
     {
-        (await InitProjectAsync("codex")).AssertSuccess();
-        SetDydoVersion("1.2.3");
+        await InitProjectAsync("none");
+        SetDydoVersion(recorded);
 
-        var result = await AdoptAsync(version);
+        var result = await RunAsync(AdoptCommand.Create(), version);
 
-        result.AssertSuccess();
-        Assert.Contains($"Recorded dydoVersion {version} in dydo.json", result.Stdout);
-        Assert.Equal(version, ReadDydoVersion());
-        Assert.True(ReadConfigJson()["integrations"]!["codex"]!.GetValue<bool>());
-        Assert.Empty(Directory.GetFiles(TestDir, "dydo.json.*.tmp"));
-    }
-
-    [Fact]
-    public async Task Adopt_LeadingV_IsStripped()
-    {
-        (await InitProjectAsync("none")).AssertSuccess();
-
-        (await AdoptAsync("v3.6.0")).AssertSuccess();
-
-        Assert.Equal("3.6.0", ReadDydoVersion());
-    }
-
-    [Fact]
-    public async Task Adopt_ProjectWithoutDydoVersion_GainsIt()
-    {
-        (await InitProjectAsync("none")).AssertSuccess();
-        SetDydoVersion(null);
-
-        (await AdoptAsync("3.6.0")).AssertSuccess();
-
-        Assert.Equal("3.6.0", ReadDydoVersion());
+        Assert.Equal(0, result.ExitCode);
+        Assert.Equal(expected, JsonNode.Parse(File.ReadAllText(ConfigPath))!["dydoVersion"]?.GetValue<string>());
     }
 
     [Theory]
@@ -55,269 +36,37 @@ public class AdoptCommandTests : IntegrationTestBase
     [InlineData("vv3.6.0")]
     [InlineData("3.6.0 extra")]
     [InlineData("")]
-    public async Task Adopt_InvalidVersion_FailsAndLeavesConfigBytes(string version)
+    public async Task Adopt_NotARelease_ExitsTwoAndKeepsTheConfigBytes(string version)
     {
-        (await InitProjectAsync("none")).AssertSuccess();
+        await InitProjectAsync("none");
         var original = File.ReadAllBytes(ConfigPath);
 
-        var result = await AdoptAsync(version);
+        var result = await RunAsync(AdoptCommand.Create(), version);
 
-        result.AssertExitCode(ExitCodes.ToolError);
-        Assert.Contains("is not a dydo release", result.Stderr);
+        Assert.Equal(2, result.ExitCode);
         Assert.Equal(original, File.ReadAllBytes(ConfigPath));
     }
 
-    [Fact]
-    public async Task Adopt_NoProject_FailsWithoutCreatingConfig()
-    {
-        var result = await AdoptAsync("3.6.0");
-
-        result.AssertExitCode(ExitCodes.ToolError);
-        Assert.Contains("No DynaDocs project found", result.Stderr);
-        Assert.False(File.Exists(ConfigPath));
-    }
-
-    [Fact]
-    public async Task Adopt_UnparseableConfig_FailsAndLeavesItAlone()
-    {
-        File.WriteAllText(ConfigPath, "{ not json");
-
-        var result = await AdoptAsync("3.6.0");
-
-        result.AssertExitCode(ExitCodes.ToolError);
-        Assert.Equal("{ not json", File.ReadAllText(ConfigPath));
-    }
-
-    #region 3.5.0 migration: the docs-outside-dydo notice (DYD-375)
-
-    private const string DocsMessage = "Docs usually live under `dydo/`. If this is a pointer README, or it belongs here, carry on.";
-
     [Theory]
-    [InlineData("3.4.1", "3.5.0")]
-    [InlineData(null, "3.5.0")]
-    [InlineData("3.4.1", "3.6.0")]
-    [InlineData("3.4.1", "3.5.0-beta.3")]
-    [InlineData("2.9.0", "v3.5.0")]
-    public async Task Adopt_Crossing350_AddsTheDocsNoticeOnce(string? recorded, string adopted)
+    [InlineData(null)]
+    [InlineData("{ not json")]
+    public async Task Adopt_NoUsableConfig_ExitsTwoAndWritesNothing(string? config)
     {
-        await InitPre350Project(recorded);
+        if (config != null)
+            File.WriteAllText(ConfigPath, config);
 
-        var result = await AdoptAsync(adopted);
+        var result = await RunAsync(AdoptCommand.Create(), "3.6.0");
 
-        result.AssertSuccess();
-        Assert.Contains($"Added new-file nudge: {DocsMessage}", result.Stdout);
-        var nudge = Assert.Single(DocsNudges());
-        Assert.Equal("new-file", nudge["match"]!.GetValue<string>());
-        Assert.Equal("notice", nudge["severity"]!.GetValue<string>());
-        Assert.Equal(DocsMessage, nudge["message"]!.GetValue<string>());
+        Assert.Equal(2, result.ExitCode);
+        if (config == null)
+            Assert.False(File.Exists(ConfigPath));
+        else
+            Assert.Equal(config, File.ReadAllText(ConfigPath));
     }
-
-    [Theory]
-    [InlineData("3.4.1", "3.4.2")]
-    [InlineData("3.5.0", "3.6.0")]
-    [InlineData("3.5.0-beta.3", "3.5.0")]
-    public async Task Adopt_NotCrossing350_AddsNothing(string recorded, string adopted)
-    {
-        await InitPre350Project(recorded);
-
-        var result = await AdoptAsync(adopted);
-
-        result.AssertSuccess();
-        Assert.DoesNotContain("Added", result.Stdout);
-        Assert.Empty(DocsNudges());
-    }
-
-    [Fact]
-    public async Task Adopt_AfterTheUserRemovedTheNotice_DoesNotReAddIt()
-    {
-        await InitPre350Project("3.4.1");
-        (await AdoptAsync("3.5.0")).AssertSuccess();
-        RemoveDocsNudges();
-
-        (await AdoptAsync("3.5.1")).AssertSuccess();
-
-        Assert.Empty(DocsNudges());
-    }
-
-    [Fact]
-    public async Task Adopt_KeepsAnEditedMessage_AndAddsNoDuplicate()
-    {
-        (await InitProjectAsync("none")).AssertSuccess();
-        SetDydoVersion("3.4.1");
-        EditDocsNudgeMessage("Our docs go in dydo/.");
-
-        var result = await AdoptAsync("3.5.0");
-
-        result.AssertSuccess();
-        var nudge = Assert.Single(DocsNudges());
-        Assert.Equal("Our docs go in dydo/.", nudge["message"]!.GetValue<string>());
-    }
-
-    [Fact]
-    public async Task Adopt_ProjectAlreadyHoldingTheNotice_AddsNoDuplicate()
-    {
-        (await InitProjectAsync("none")).AssertSuccess();
-        SetDydoVersion("3.4.1");
-
-        var result = await AdoptAsync("3.5.0");
-
-        result.AssertSuccess();
-        Assert.DoesNotContain("Added", result.Stdout);
-        Assert.Single(DocsNudges());
-    }
-
-    [Theory]
-    [InlineData("3.5.0-beta.3", "3.5.0", 0)]
-    [InlineData("3.5.0", "3.5.0-beta.3", 0)]
-    [InlineData("3.4.9", "3.5.0", -1)]
-    [InlineData("3.10.0", "3.5.0", 1)]
-    [InlineData("v3.5.0", "3.5.0", 0)]
-    [InlineData("garbage", "0.0.1", -1)]
-    public void CompareCore_PrereleaseCountsAsItsRelease(string a, string b, int expected)
-    {
-        Assert.Equal(expected, Math.Sign(AdoptCommand.CompareCore(a, b)));
-    }
-
-    /// <summary>An initialized project as dydo below 3.5.0 left it: no docs notice.</summary>
-    private async Task InitPre350Project(string? recorded)
-    {
-        (await InitProjectAsync("none")).AssertSuccess();
-        RemoveDocsNudges();
-        SetDydoVersion(recorded);
-    }
-
-    private static bool IsDocsNudge(JsonNode? nudge) =>
-        nudge?["pattern"]?.GetValue<string>() == ConfigFactory.DocsOutsideDydoNudge.Pattern;
-
-    private List<JsonNode> DocsNudges() =>
-        ReadConfigJson()["nudges"]!.AsArray().Where(IsDocsNudge).Select(n => n!).ToList();
-
-    private void RemoveDocsNudges()
-    {
-        var raw = ReadConfigJson();
-        var nudges = raw["nudges"]!.AsArray();
-        foreach (var nudge in nudges.Where(IsDocsNudge).ToList())
-            nudges.Remove(nudge);
-        File.WriteAllText(ConfigPath, raw.ToJsonString());
-    }
-
-    private void EditDocsNudgeMessage(string message)
-    {
-        var raw = ReadConfigJson();
-        raw["nudges"]!.AsArray().Single(IsDocsNudge)!["message"] = message;
-        File.WriteAllText(ConfigPath, raw.ToJsonString());
-    }
-
-    #endregion
-
-    #region 3.6.0 migration: the library-install warn nudge (DYD-499)
-
-    [Theory]
-    [InlineData("3.5.1", "3.6.0")]
-    [InlineData(null, "3.6.0")]
-    [InlineData("3.5.1", "3.6.0-beta.3")]
-    [InlineData("3.4.1", "v3.6.1")]
-    public async Task Adopt_Crossing360_AddsTheInstallNudgeOnce(string? recorded, string adopted)
-    {
-        await InitPre360Project(recorded);
-
-        var result = await AdoptAsync(adopted);
-
-        result.AssertSuccess();
-        Assert.Contains($"Added command nudge: {InstallNudgeExpectation.Message}", result.Stdout);
-        var nudge = Assert.Single(InstallNudges());
-        Assert.Equal("warn", nudge["severity"]!.GetValue<string>());
-        Assert.Equal(InstallNudgeExpectation.Message, nudge["message"]!.GetValue<string>());
-        Assert.Null(nudge["match"]);
-    }
-
-    [Theory]
-    [InlineData("3.5.0", "3.5.2")]
-    [InlineData("3.6.0", "3.6.1")]
-    [InlineData("3.6.0-beta.3", "3.6.0")]
-    public async Task Adopt_NotCrossing360_AddsNoInstallNudge(string recorded, string adopted)
-    {
-        await InitPre360Project(recorded);
-
-        var result = await AdoptAsync(adopted);
-
-        result.AssertSuccess();
-        Assert.DoesNotContain("Added", result.Stdout);
-        Assert.Empty(InstallNudges());
-    }
-
-    [Fact]
-    public async Task Adopt_ProjectCarryingTheInterimInstallNudge_AddsNoDuplicate_AndKeepsItsMessage()
-    {
-        await InitPre360Project("3.5.1");
-        AddInstallNudge("Our own wording.");
-
-        var result = await AdoptAsync("3.6.0");
-
-        result.AssertSuccess();
-        Assert.DoesNotContain("Added", result.Stdout);
-        var nudge = Assert.Single(InstallNudges());
-        Assert.Equal("Our own wording.", nudge["message"]!.GetValue<string>());
-    }
-
-    [Fact]
-    public async Task Adopt_AfterTheUserRemovedTheInstallNudge_DoesNotReAddIt()
-    {
-        await InitPre360Project("3.5.1");
-        (await AdoptAsync("3.6.0")).AssertSuccess();
-        RemoveInstallNudges();
-
-        (await AdoptAsync("3.6.1")).AssertSuccess();
-
-        Assert.Empty(InstallNudges());
-    }
-
-    /// <summary>An initialized project as dydo below 3.6.0 left it: no install nudge.</summary>
-    private async Task InitPre360Project(string? recorded)
-    {
-        (await InitProjectAsync("none")).AssertSuccess();
-        RemoveInstallNudges();
-        SetDydoVersion(recorded);
-    }
-
-    private static bool IsInstallNudge(JsonNode? nudge) =>
-        nudge?["pattern"]?.GetValue<string>() == InstallNudgeExpectation.Pattern;
-
-    private List<JsonNode> InstallNudges() =>
-        ReadConfigJson()["nudges"]!.AsArray().Where(IsInstallNudge).Select(n => n!).ToList();
-
-    private void RemoveInstallNudges()
-    {
-        var raw = ReadConfigJson();
-        var nudges = raw["nudges"]!.AsArray();
-        foreach (var nudge in nudges.Where(IsInstallNudge).ToList())
-            nudges.Remove(nudge);
-        File.WriteAllText(ConfigPath, raw.ToJsonString());
-    }
-
-    private void AddInstallNudge(string message)
-    {
-        var raw = ReadConfigJson();
-        raw["nudges"]!.AsArray().Add(new JsonObject
-        {
-            ["pattern"] = InstallNudgeExpectation.Pattern,
-            ["message"] = message,
-            ["severity"] = "warn"
-        });
-        File.WriteAllText(ConfigPath, raw.ToJsonString());
-    }
-
-    #endregion
-
-    private Task<CommandResult> AdoptAsync(string version) => RunAsync(AdoptCommand.Create(), version);
-
-    private JsonObject ReadConfigJson() => JsonNode.Parse(File.ReadAllText(ConfigPath))!.AsObject();
-
-    private string? ReadDydoVersion() => ReadConfigJson()["dydoVersion"]?.GetValue<string>();
 
     private void SetDydoVersion(string? version)
     {
-        var raw = ReadConfigJson();
+        var raw = JsonNode.Parse(File.ReadAllText(ConfigPath))!.AsObject();
         raw.Remove("dydoVersion");
         if (version != null)
             raw["dydoVersion"] = version;

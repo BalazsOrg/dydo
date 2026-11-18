@@ -1,3 +1,4 @@
+# Job: trap: DYD-501 a Claude project ran without its guard hook, DR 056
 @DYD-501
 Feature: Validation reports a Claude project that runs without the dydo guard
   A project that records the Claude integration commits its guard hook in .claude/settings.json.

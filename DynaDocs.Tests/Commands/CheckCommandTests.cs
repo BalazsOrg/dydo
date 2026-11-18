@@ -1,168 +1,85 @@
 namespace DynaDocs.Tests.Commands;
 
-using DynaDocs.Commands;
-using DynaDocs.Utils;
-
+/// <summary>
+/// `--root` on the documentation commands: the command reads the project that contains the given
+/// directory or file, never the current one, and a root in no dydo project is a tool error.
+/// </summary>
 [Collection("Integration")]
-public class CheckCommandTests : IDisposable
+[Trait("Job", "contract: dydo-commands-core.md dydo check/dydo graph --root; dydo-commands-utilities.md dydo validate --root; exit codes 0/1/2")]
+public sealed class CheckCommandTests : IDisposable
 {
-    private readonly string _root;
-    private readonly string _original;
+    private static string Hub(string guide) => $"---\narea: general\ntype: hub\n---\n\n# Index\n\n[Guide](./guides/{guide})\n";
+    private const string Guide = "---\narea: guides\ntype: guide\n---\n\n# Setup\n\nHow to set up.\n";
+
+    // The current project is valid and still carries the retired audit exclusion, which stays accepted.
+    private const string ValidConfig =
+        """{"version":1,"structure":{"root":"dydo"},"integrations":{"claude":false,"codex":false},"scanExclude":["_system/.local/","_system/audit/","agents/"],"nudges":[]}""";
+
+    // The other project's config breaks the scanExclude invariant.
+    private const string BrokenConfig =
+        """{"version":1,"structure":{"root":"dydo"},"scanExclude":["agents/"]}""";
+
+    // A third project's config holds an empty testing runner, which `dydo validate` rejects.
+    private const string InvalidRunnerConfig = """{"testing":{"runner":[]}}""";
+
+    private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-root-option-" + Guid.NewGuid().ToString("N"));
+    private readonly string _original = Environment.CurrentDirectory;
 
     public CheckCommandTests()
     {
-        _root = Path.Combine(Path.GetTempPath(), "dydo-check-config-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(_root);
-        _original = Environment.CurrentDirectory;
-        Environment.CurrentDirectory = _root;
+        Environment.CurrentDirectory = CreateProject("here", ValidConfig, "intro.md");
+        CreateProject("other", BrokenConfig);
+        CreateProject("invalid", InvalidRunnerConfig);
+        Directory.CreateDirectory(Path.Combine(_root, "nowhere"));
     }
 
-    [Fact]
-    public void Check_MissingRequiredScanExclusionFailsInsteadOfReportingSuccess()
+    [Theory]
+    [InlineData(0, null, "check")]
+    [InlineData(1, "_system/.local/", "check", "--root", "{other}")]
+    [InlineData(1, "_system/.local/", "check", "--root", "{other}/dydo/guides")]
+    [InlineData(1, "_system/.local/", "check", "--root", "{other}/dydo/index.md")]
+    [InlineData(2, "No dydo project found", "check", "--root", "{nowhere}")]
+    [InlineData(2, "No dydo project found", "check", "--root", "{missing}")]
+    [InlineData(2, "outside the docs tree", "check", "{other}/dydo")]
+    [InlineData(0, null, "validate")]
+    [InlineData(1, "testing.runner", "validate", "--root", "{invalid}/dydo/guides")]
+    [InlineData(2, "No dydo project found", "validate", "--root", "{nowhere}")]
+    [InlineData(0, "setup.md", "graph", "stats", "--root", "{other}")]
+    [InlineData(0, "index.md", "graph", "guides/setup.md", "--incoming", "--root", "{other}/dydo/guides")]
+    [InlineData(2, "No dydo project found", "graph", "stats", "--root", "{nowhere}")]
+    public void RootOption_ReadsTheProjectContainingTheRoot(int expectedExit, string? expectedFinding, params string[] args)
     {
-        File.WriteAllText(Path.Combine(_root, "dydo.json"),
-            "{\"version\":1,\"structure\":{\"root\":\"dydo\"},\"scanExclude\":[\"agents/\"]}");
-        Directory.CreateDirectory(Path.Combine(_root, "dydo"));
+        var (code, output) = DydoCli.RunCombined(args.Select(Expand).ToArray());
 
-        var (code, stdout, stderr) = ConsoleCapture.All(() => CheckCommand.Create().Parse("").Invoke());
-
-        Assert.NotEqual(0, code);
-        Assert.Contains("_system/.local/", stderr);
-        Assert.DoesNotContain("All checks passed", stdout);
+        Assert.True(expectedExit == code, $"exit {code}, expected {expectedExit}:\n{output}");
+        if (expectedFinding is null)
+            Assert.DoesNotContain("_system/.local/", output);
+        else
+            Assert.Contains(expectedFinding, output);
     }
 
-    private const string ValidConfig =
-        """{"version":1,"structure":{"root":"dydo"},"scanExclude":["_system/.local/","agents/"]}""";
-    private const string StaleAuditEntryConfig =
-        """{"version":1,"structure":{"root":"dydo"},"scanExclude":["_system/.local/","_system/audit/","agents/"]}""";
-    private const string MissingExclusionConfig =
-        """{"version":1,"structure":{"root":"dydo"},"scanExclude":["agents/"]}""";
-    private const string MissingExclusionError = "scanExclude is missing required entry";
+    private string Expand(string arg) => arg
+        .Replace("{other}", Path.Combine(_root, "other"))
+        .Replace("{invalid}", Path.Combine(_root, "invalid"))
+        .Replace("{nowhere}",Path.Combine(_root, "nowhere"))
+        .Replace("{missing}", Path.Combine(_root, "missing"))
+        .Replace('/', Path.DirectorySeparatorChar);
 
-    private string CreateProject(string name, string config)
+    private string CreateProject(string name, string config, string guide = "setup.md")
     {
         var project = Path.Combine(_root, name);
         Directory.CreateDirectory(Path.Combine(project, "dydo", "guides"));
+        Directory.CreateDirectory(Path.Combine(project, "dydo", "_system"));
         File.WriteAllText(Path.Combine(project, "dydo.json"), config);
-        File.WriteAllText(Path.Combine(project, "dydo", "index.md"), "# Index\n");
+        File.WriteAllText(Path.Combine(project, "dydo", "index.md"), Hub(guide));
+        File.WriteAllText(Path.Combine(project, "dydo", "guides", guide), Guide);
         return project;
-    }
-
-    private static (int Code, string Stdout, string Stderr) Check(params string[] args) =>
-        ConsoleCapture.All(() => CheckCommand.Create().Parse(args).Invoke());
-
-    [Fact]
-    public void Check_ExplicitRoot_ReadsConfigAndDocsFromThatProjectNotCwd()
-    {
-        Environment.CurrentDirectory = CreateProject("here", MissingExclusionConfig);
-        var other = CreateProject("other", ValidConfig);
-
-        var (code, stdout, stderr) = Check("--root", other);
-
-        Assert.NotEqual(2, code);
-        Assert.Contains($"Root: {other}", stdout);
-        Assert.Contains($"Checking {Path.Combine(other, "dydo")}...", stdout);
-        Assert.DoesNotContain(MissingExclusionError, stderr);
-    }
-
-    [Fact]
-    public void Check_RootInsideAnotherProjectsSubfolder_RootsAtItsDydoJson()
-    {
-        Environment.CurrentDirectory = CreateProject("here", ValidConfig);
-        var other = CreateProject("other", MissingExclusionConfig);
-
-        var (code, stdout, stderr) = Check("--root", Path.Combine(other, "dydo", "guides"));
-
-        Assert.Equal(1, code);
-        Assert.Contains($"Root: {other}", stdout);
-        Assert.Contains($"Checking {Path.Combine(other, "dydo")}...", stdout);
-        Assert.Contains(MissingExclusionError, stderr);
-    }
-
-    [Fact]
-    public void Check_RootGivenAFileInsideAnotherProject_ResolvesToThatProjectsRoot()
-    {
-        Environment.CurrentDirectory = CreateProject("here", ValidConfig);
-        var other = CreateProject("other", MissingExclusionConfig);
-
-        var (code, stdout, stderr) = Check("--root", Path.Combine(other, "dydo", "index.md"));
-
-        Assert.Equal(1, code);
-        Assert.Contains($"Root: {other}", stdout);
-        Assert.Contains(MissingExclusionError, stderr);
-    }
-
-    [Fact]
-    public void Check_RootInNoDydoProject_IsToolError()
-    {
-        var nowhere = Path.Combine(_root, "nowhere");
-        Directory.CreateDirectory(nowhere);
-
-        var (code, stdout, stderr) = Check("--root", nowhere);
-
-        Assert.Equal(2, code);
-        Assert.Contains($"No dydo project found at {nowhere}", stderr);
-        Assert.DoesNotContain("Checking", stdout);
-    }
-
-    [Fact]
-    public void Check_RootThatDoesNotExist_IsToolError()
-    {
-        var missing = Path.Combine(_root, "missing");
-
-        var (code, _, stderr) = Check("--root", missing);
-
-        Assert.Equal(2, code);
-        Assert.Contains($"No dydo project found at {missing}", stderr);
-    }
-
-    [Fact]
-    public void Check_WithoutRoot_ChecksCwdProjectAndPrintsNoRootLine()
-    {
-        var here = CreateProject("here", MissingExclusionConfig);
-        CreateProject("other", ValidConfig);
-        Environment.CurrentDirectory = here;
-
-        var (code, stdout, stderr) = Check();
-
-        Assert.Equal(1, code);
-        Assert.DoesNotContain("Root:", stdout);
-        Assert.Contains($"Checking {Path.Combine(here, "dydo")}...", stdout);
-        Assert.Contains(MissingExclusionError, stderr);
-    }
-
-    [Fact]
-    public void Check_WithoutRoot_StillRefusesAPathInAnotherProject()
-    {
-        Environment.CurrentDirectory = CreateProject("here", ValidConfig);
-        var other = CreateProject("other", ValidConfig);
-        var otherDocs = Path.Combine(other, "dydo");
-
-        var (code, stdout, stderr) = Check(otherDocs);
-
-        Assert.Equal(2, code);
-        Assert.Contains($"Path is outside the docs tree: {otherDocs}", stderr);
-        Assert.DoesNotContain("Root:", stdout);
-    }
-
-    [Fact]
-    public void Check_ConfigStillCarryingStaleAuditEntry_PassesTheScanExcludeInvariant()
-    {
-        var project = CreateProject("stale", StaleAuditEntryConfig);
-        File.WriteAllText(Path.Combine(project, "dydo", "index.md"),
-            "---\narea: general\ntype: hub\n---\n\n# Index\n\nA valid hub.\n");
-        Environment.CurrentDirectory = project;
-
-        var (code, _, stderr) = Check();
-
-        Assert.Equal(ExitCodes.Success, code);
-        Assert.DoesNotContain("scanExclude", stderr);
     }
 
     public void Dispose()
     {
         Environment.CurrentDirectory = _original;
-        if (Directory.Exists(_root))
-            Directory.Delete(_root, true);
+        TestDirectory.Delete(_root);
     }
 }

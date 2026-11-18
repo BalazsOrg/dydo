@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Xml.Linq;
 
+[Trait("Job", "trap: DYD-687 (a tool package without the embedded map viewer)")]
 public sealed class ViewerPackTests : IDisposable
 {
     private readonly string _directory = Directory.CreateTempSubdirectory("dydo-viewer-pack-").FullName;

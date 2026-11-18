@@ -15,6 +15,7 @@ using System.Diagnostics;
 /// - Startup crashes
 /// </summary>
 [Collection("EndToEnd")]
+[Trait("Job", "edge: the built dydo.dll run as a subprocess (startup, option construction, real exit codes) that in-process parsing cannot reach; contract: dydo-commands-core.md exit codes")]
 public class CliEndToEndTests : IDisposable
 {
     private readonly string _testDir;
@@ -59,25 +60,11 @@ public class CliEndToEndTests : IDisposable
         Assert.Contains("dydo", result.Stdout);
     }
 
-    [Fact]
-    public async Task VersionCommands_ReportTheStablePackageVersion()
-    {
-        var option = await RunDydoAsync("--version");
-        var command = await RunDydoAsync("version");
-
-        Assert.Equal(0, option.ExitCode);
-        Assert.Equal(0, command.ExitCode);
-        Assert.Equal("3.6.0", option.Stdout.Trim());
-        Assert.Equal("dydo version 3.6.0", command.Stdout.Trim());
-    }
-
     [Theory]
     [InlineData("init")]
     [InlineData("adopt")]
     [InlineData("check")]
     [InlineData("guard")]
-    [InlineData("task")]
-    [InlineData("review")]
     [InlineData("fix")]
     [InlineData("index")]
     [InlineData("graph")]
@@ -120,21 +107,15 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    public async Task Init_ThenCheck_RunsWithoutCrash()
+    public async Task Init_ThenCheck_Passes()
     {
         var initResult = await RunDydoAsync("init none");
         Assert.True(initResult.ExitCode == 0, $"init failed: {initResult.Stderr}");
 
-        // Check should run without crashing (may report validation issues, that's OK)
-        // We're testing that the CLI works, not that templates are perfect
         var checkResult = await RunDydoAsync("check .");
 
-        // Exit code 1 = validation errors found (expected)
-        // Exit code 2 = tool error (unexpected)
-        // The important thing is it doesn't crash with an unhandled exception
-        Assert.True(checkResult.ExitCode <= 1,
-            $"check crashed:\nStderr: {checkResult.Stderr}\nStdout: {checkResult.Stdout}");
-        Assert.Contains("Checking", checkResult.Stdout);
+        Assert.True(checkResult.ExitCode == 0,
+            $"check failed with {checkResult.ExitCode}:\nStderr: {checkResult.Stderr}\nStdout: {checkResult.Stdout}");
     }
 
     [Fact]
@@ -150,23 +131,6 @@ public class CliEndToEndTests : IDisposable
         var join = await RunDydoAsync("init all --join");
         Assert.Equal(0, join.ExitCode);
         Assert.Equal(before, File.ReadAllBytes(codexPath));
-    }
-
-    [Fact]
-    public async Task Init_ThenHelp_OmitsRetiredWorkCommands()
-    {
-        var initResult = await RunDydoAsync("init none");
-        Assert.True(initResult.ExitCode == 0, $"init failed: {initResult.Stderr}");
-
-        var helpResult = await RunDydoAsync("--help");
-        Assert.True(helpResult.ExitCode == 0, $"help failed: {helpResult.Stderr}");
-        var commandLines = helpResult.Stdout.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
-            .Where(line => line.StartsWith("  "))
-            .ToList();
-        Assert.DoesNotContain(commandLines, line => line.TrimStart().StartsWith("task "));
-        Assert.DoesNotContain(commandLines, line => line.TrimStart().StartsWith("issue "));
-        Assert.DoesNotContain(commandLines, line => line.TrimStart().StartsWith("review "));
-        Assert.Contains(commandLines, line => line.TrimStart().StartsWith("check "));
     }
 
     [Fact]

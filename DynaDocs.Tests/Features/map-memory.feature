@@ -1,3 +1,4 @@
+# Job: contract: DR 052 amendment 2026-10-04 (disposable saved maps)
 @map-memory
 Feature: Remember project maps
   Linear owns live work. A saved map is a disposable picture of the last successful fetch.

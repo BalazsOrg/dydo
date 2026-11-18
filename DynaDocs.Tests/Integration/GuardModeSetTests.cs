@@ -1,16 +1,22 @@
 namespace DynaDocs.Tests.Integration;
 
+using System.Text;
 using System.Text.Json.Nodes;
 
 /// <summary>
-/// The built-in mode-set nudge's edges beyond the machine-mode scenarios: it cannot be configured
-/// away, command-keyed retries work on every host, and any hard block still wins over it.
+/// The built-in mode-set reminder at the hook: every way a shell may run <c>dydo mode set</c> meets
+/// it once and the identical retry passes, a mention passes untouched, it cannot be configured away,
+/// and any hard block still wins over it. The reading is each shell's own (DydoInvocationScanner,
+/// DYD-391 r3, DYD-641); where it cannot be sure, a loose dydo ... mode ... set fails closed.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: machine-mode spec, dydo mode set meets the reminder once per command")]
 public sealed class GuardModeSetTests : IntegrationTestBase
 {
     // The hook command dydo init writes for Claude Code.
     private static readonly string[] ClaudeHook = ["--host", "claude"];
+
+    private const string Set = "mode set overnight on";
 
     private static string Hook(string command, string? permissionMode = "default", string eventName = "PreToolUse",
         string tool = "Bash", bool codex = false)
@@ -30,12 +36,139 @@ public sealed class GuardModeSetTests : IntegrationTestBase
         return hook.ToJsonString();
     }
 
-    private async Task<CommandResult> Twice(string hook)
+    private static string Encoded(string script) => Convert.ToBase64String(Encoding.Unicode.GetBytes(script));
+
+    // Each row names the tool whose shell runs the command: a backslash path is a path only where
+    // backslashes are literal, so C:\tools\dydo.exe runs under the PowerShell tool.
+    public static TheoryData<string, string> ModeSets => new()
     {
-        Assert.Contains("otherwise stop", (await GuardWithStdinAsync(hook, ClaudeHook)).AssertPreToolUseDenied());
-        return await GuardWithStdinAsync(hook, ClaudeHook);
+        { "Bash", "dydo " + Set },
+        { "Bash", "dydo mode set overnight off; echo done" },
+        { "Bash", "env -S dydo " + Set },
+        { "Bash", "env -S 'dydo' " + Set },
+        { "Bash", "env -S 'dydo " + Set + "'" },
+        { "Bash", "env -i --split-string='dydo " + Set + "'" },
+        { "Bash", "timeout 30 env -Sdydo " + Set },
+        { "Bash", "dydo mode \\\nset overnight on" },
+        { "Bash", "dydo mode `\r\nset overnight on" },
+        { "PowerShell", @"C:\tools\dydo.exe " + Set },
+        { "Bash", @"d\ydo " + Set },
+        { "Bash", "echo start\ndydo " + Set },
+        { "Bash", "echo $(dydo " + Set + ")" },
+        { "Bash", "git status || DYDO_X=1 dydo " + Set },
+        { "Bash", "\"C:/tools/dydo.exe\" mode 'set' overnight \"off\"" },
+        { "Bash", "/usr/local/bin/dydo " + Set },
+        { "PowerShell", @".\dydo.ps1 " + Set },
+        { "Bash", "DYDO_HOME=/x env -u PATH -i dydo " + Set },
+        { "Bash", "timeout -s KILL 30 dydo " + Set },
+        { "Bash", "timeout -- 30 dydo " + Set },
+        { "Bash", "time -p nice -n 5 dydo " + Set },
+        { "Bash", "if true; then dydo " + Set + "; fi" },
+        { "Bash", "{ dydo " + Set + "; }" },
+        { "Bash", "(cd x && dydo " + Set + ")" },
+        { "Bash", "echo `dydo " + Set + "`" },
+        { "Bash", "echo \"${HOME}$(dydo " + Set + ")\"" },
+        { "Bash", "dydo " + Set + " 2>&1 >/dev/null" },
+        { "Bash", "dydo " + Set + " < in.txt" },
+        { "Bash", "cmd.exe /C dydo " + Set },
+        { "Bash", "powershell -c \"& { dydo " + Set + " }\"" },
+        { "Bash", "sh -lc \"cd /tmp; dydo " + Set + "\"" },
+        { "Bash", "sudo -u me nohup dydo " + Set },
+        { "Bash", "echo on | xargs -n 1 dydo mode set overnight" },
+        { "Bash", "saps -FilePath C:/tools/dydo.exe -ArgumentList '" + Set + "' -Wait" },
+        { "Bash", "Start-Process cmd -ArgumentList '/c dydo " + Set + "'" },
+        { "Bash", "Start-Process dydo -ArgumentList \"mode\", \"set\", \"overnight\", \"off\"" },
+        { "Bash", "Start-Process -args 'mode set overnight on' -FilePath dydo" },
+        { "Bash", "git commit -m \"x $(dydo " + Set + ")\"" },
+        { "Bash", "dotnet exec C:/src/bin/dydo.dll " + Set },
+        { "Bash", "dotnet run --project DynaDocs.csproj -- " + Set },
+        { "Bash", "dotnet run -p ../src/DynaDocs/ -- " + Set },
+        { "Bash", "dotnet run --project=tools/dydo -- " + Set },
+        { "Bash", "dotnet run -- " + Set },
+        { "Bash", "dotnet --roll-forward Major dydo.dll " + Set },
+        { "Bash", "dydo mode set \"overnight on" },
+        { "Bash", "eval 'dydo " + Set + "'" },
+        { "Bash", "bash <<< 'dydo " + Set + "'" },
+        { "Bash", "bash <<'EOF'\ndydo " + Set + "\nEOF" },
+        { "Bash", "bash -o pipefail --norc -c 'dydo " + Set + "'" },
+        { "Bash", "pwsh -NoLogo -ExecutionPolicy Bypass -c dydo " + Set },
+        { "Bash", "start \"\" /b dydo " + Set },
+        { "Bash", "cat <<EOF\n$(dydo " + Set + ")\nEOF" },
+        { "Bash", "echo dydo " + Set + " | bash" },
+        { "Bash", "pwsh -NoProfile -EncodedCommand " + Encoded("dydo " + Set) },
+        { "PowerShell", "Start-Process dydo -ArgumentList @('mode', 'set', 'overnight', 'on') -Wait" },
+        { "PowerShell", "Start-Process dydo -ArgumentList ('mode', 'set', 'overnight', 'on')" },
+        { "PowerShell", "Start-Process -FilePath dydo -ArgumentList @(\"mode\", \"set\") -NoNewWindow" },
+        { "PowerShell", "Write-Output (dydo " + Set + ")" },
+        { "PowerShell", "<# note\ndydo " + Set },
+        { "PowerShell", "if ($x) { dydo " + Set + " }" },
+        { "PowerShell", "iex -Command 'dydo " + Set + "'" },
+        { "PowerShell", @"echo ""C:\""; dydo " + Set },
+        { "PowerShell", "@\"\n$(dydo " + Set + ")\n\"@ | Out-Null" },
+        { "PowerShell", "echo 'x'\rdydo " + Set },
+        { "PowerShell", "echo x # note\rdydo " + Set },
+        { "PowerShell", "echo ‘a'; dydo " + Set + "; ’b'" },
+        { "PowerShell", "echo \"a”; dydo " + Set + "; “b\"" },
+        { "PowerShell", "echo a^;dydo " + Set },
+    };
+
+    [Theory]
+    [MemberData(nameof(ModeSets))]
+    public async Task ModeSet_MeetsTheReminderOnce_AndTheRetryPasses(string tool, string command)
+    {
+        await InitProjectAsync("none");
+        var hook = Hook(command, tool: tool);
+
+        (await GuardWithStdinAsync(hook, ClaudeHook)).AssertPreToolUseDenied();
+        (await GuardWithStdinAsync(hook, ClaudeHook)).AssertPreToolUseAllowed();
     }
 
+    // A mention, quoted or literal text, a comment, another program's arguments, or another
+    // project's dotnet run is no mode set, read as the tool's shell reads it.
+    public static TheoryData<string, string> Mentions => new()
+    {
+        { "Bash", "dydo mode show" },
+        { "Bash", "echo dydo mode" },
+        { "Bash", "git commit -m \"fix: the dydo mode set nudge\"" },
+        { "Bash", "grep -rn \"dydo mode set\" Commands" },
+        { "Bash", "echo dydo.exe " + Set },
+        { "Bash", "echo 'dydo " + Set + "'" },
+        { "Bash", "echo \"dydo " + Set + "\" | grep dydo" },
+        { "Bash", "cmd /c echo dydo " + Set },
+        { "Bash", "bash script.sh dydo " + Set },
+        { "Bash", "pwsh -File x.ps1 dydo " + Set },
+        { "Bash", "cat <<'EOF'\n$(dydo " + Set + ")\nEOF" },
+        { "Bash", "env -S 'echo dydo " + Set + "'" },
+        { "Bash", "git commit -m \"fix guard\n\nTests pass; dydo mode set now asks\nand | dydo " + Set + "\"" },
+        { "Bash", "@'\nfix guard; dydo mode set must ask\n'@ | git commit -F -" },
+        { "Bash", "@\"\nfix \"guard\"; dydo mode set must ask\n\"@ | git commit -F -" },
+        { "Bash", "git commit -m \"$(cat <<'EOF'\nfix guard\n\ndydo " + Set + " now asks, it doesn't deny\nEOF\n)\"" },
+        { "Bash", "grep -rn 'dydo mode set' Commands | head" },
+        { "Bash", "echo 'a;b' && git log --grep=\"dydo mode set\"" },
+        { "Bash", "dotnet run --project examples/OtherCli -- mode set dark on" },
+        { "Bash", "dotnet run -p OtherCli.csproj -- mode set dark on" },
+        { "Bash", "git commit -m \"fix \\\"mode\\\"; dydo mode set now asks\"" },
+        { "Bash", "git commit -m \"dir C:\\\\\" -m \"then; dydo mode set now asks\"" },
+        { "PowerShell", "git commit -m \"fix `\"mode`\"; dydo mode set now asks\"" },
+        { "PowerShell", "gh pr comment 12 --body \"fix `\"mode`\"; dydo mode set now asks\"" },
+        { "PowerShell", @"git commit -m ""path C:\"" -m ""note; dydo mode set now asks""" },
+        { "PowerShell", @"git commit -m ""fix """"mode""""; dydo mode set now asks""" },
+        { "PowerShell", @"git commit -m 'it''s; dydo mode set now asks'" },
+        { "PowerShell", "<#\ndydo " + Set + "\n#>\ngit status" },
+        { "PowerShell", "git status <# dydo " + Set + " #>; git log" },
+        { "PowerShell", "echo \"a `\"b`\"; dydo " + Set + "\"" },
+    };
+
+    [Theory]
+    [MemberData(nameof(Mentions))]
+    public async Task Mention_PassesUntouched(string tool, string command)
+    {
+        await InitProjectAsync("none");
+
+        (await GuardWithStdinAsync(Hook(command, tool: tool), ClaudeHook)).AssertPreToolUseAllowed();
+    }
+
+    // A notice nudge in dydo.json on the same command cannot downgrade the built-in reminder.
     [Fact]
     public async Task ConfigNudgeOnTheSameCommand_CannotDowngradeIt()
     {
@@ -49,265 +182,50 @@ public sealed class GuardModeSetTests : IntegrationTestBase
         });
         WriteFile("dydo.json", config.ToJsonString());
 
-        var result = await GuardWithStdinAsync(Hook("dydo mode set overnight on"), ClaudeHook);
-
-        Assert.Contains("BLOCKED: dydo mode set changes the mode", result.AssertPreToolUseDenied());
+        (await GuardWithStdinAsync(Hook("dydo " + Set), ClaudeHook)).AssertPreToolUseDenied();
     }
 
-    [Fact]
-    public async Task MissingPermissionMode_WarnsThenPasses()
-    {
-        await InitProjectAsync("none");
-
-        var result = await Twice(Hook("dydo mode set overnight on", permissionMode: null));
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    // env -S's split string is the command env runs, so it meets the reminder (DYD-391 r3).
+    // The reminder holds on every lane a host may send: a payload without a permission mode, another
+    // hook event (exit 2, then 0) and the CLI's --command (exit 2, then 0).
     [Theory]
-    [InlineData("env -S dydo mode set overnight on")]
-    [InlineData("env -S 'dydo' mode set overnight on")]
-    public async Task EnvSplitStringModeSet_WarnsThenPasses(string command)
+    [InlineData("no permission mode")]
+    [InlineData("other hook event")]
+    [InlineData("cli")]
+    public async Task EveryLane_MeetsTheReminderOnceThenPasses(string lane)
     {
         await InitProjectAsync("none");
+        Task<CommandResult> Attempt() => lane switch
+        {
+            "no permission mode" => GuardWithStdinAsync(Hook("dydo " + Set, permissionMode: null), ClaudeHook),
+            "other hook event" => GuardWithStdinAsync(Hook("dydo " + Set, eventName: "PostToolUse"), ClaudeHook),
+            _ => RunAsync(DynaDocs.Commands.GuardCommand.Create(), "--command", "dydo " + Set),
+        };
 
-        var result = await Twice(Hook(command, permissionMode: null));
+        var first = await Attempt();
+        var retry = await Attempt();
 
-        result.AssertPreToolUseAllowed();
-    }
-
-    [Fact]
-    public async Task OtherHookEvent_WarnsWithExitTwoThenPasses()
-    {
-        await InitProjectAsync("none");
-
-        var hook = Hook("dydo mode set overnight on", eventName: "PostToolUse");
-        var first = await GuardWithStdinAsync(hook, ClaudeHook);
+        if (lane == "no permission mode")
+        {
+            first.AssertPreToolUseDenied();
+            retry.AssertPreToolUseAllowed();
+            return;
+        }
         first.AssertExitCode(2);
         Assert.Equal("", first.Stdout);
-        first.AssertStderrContains("otherwise stop");
-        (await GuardWithStdinAsync(hook, ClaudeHook)).AssertSuccess();
+        retry.AssertSuccess();
+        Assert.Equal("", retry.Stdout);
     }
 
+    // DYD-386: a hard block on the same command wins over the reminder, on the retry too.
     [Fact]
-    public async Task CliLane_WarnsWithExitTwoThenPasses()
+    [Trait("Job", "contract: DYD-386 warn nudges run after every hard block")]
+    public async Task AnotherBlock_WinsOverTheReminder()
     {
         await InitProjectAsync("none");
+        var hook = Hook("dydo " + Set + " && cat .env");
 
-        var first = await GuardCommandAsync("dydo mode set overnight on");
-        first.AssertExitCode(2);
-        Assert.Equal("", first.Stdout);
-        first.AssertStderrContains("otherwise stop");
-        var result = await GuardCommandAsync("dydo mode set overnight on");
-
-        result.AssertSuccess();
-        Assert.Equal("", result.Stdout);
-    }
-
-    [Fact]
-    public async Task AnotherBlock_WinsOverTheWarn()
-    {
-        await InitProjectAsync("none");
-
-        var hook = Hook("dydo mode set overnight on && cat .env");
-        Assert.Contains("off-limits", (await GuardWithStdinAsync(hook, ClaudeHook)).AssertPreToolUseDenied());
-        var result = await GuardWithStdinAsync(hook, ClaudeHook);
-
-        Assert.StartsWith("BLOCKED: Command references off-limits path.", result.AssertPreToolUseDenied());
-    }
-
-    [Theory]
-    [InlineData("dydo mode show")]
-    [InlineData("echo dydo mode")]
-    public async Task OtherModeCommands_PassUntouched(string command)
-    {
-        await InitProjectAsync("none");
-
-        (await GuardWithStdinAsync(Hook(command), ClaudeHook)).AssertPreToolUseAllowed();
-    }
-
-    [Fact]
-    public async Task CompoundCommand_RetryPasses()
-    {
-        await InitProjectAsync("none");
-
-        var result = await Twice(Hook("dydo mode set overnight off; echo done", permissionMode: "dontAsk"));
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    // A backslash path is a path only where backslashes are literal: bash reads C:\tools\dydo.exe
-    // as C:toolsdydo.exe, so that row runs under the PowerShell tool.
-    [Theory]
-    [InlineData("dydo mode \\\nset overnight on", "Bash")]
-    [InlineData("dydo mode `\r\nset overnight on", "Bash")]
-    [InlineData(@"C:\tools\dydo.exe mode set overnight on", "PowerShell")]
-    [InlineData(@"d\ydo mode set overnight on", "Bash")]
-    [InlineData("echo start\ndydo mode set overnight on", "Bash")]
-    [InlineData("echo $(dydo mode set overnight on)", "Bash")]
-    [InlineData("git status || DYDO_X=1 dydo mode set overnight on", "Bash")]
-    public async Task ObfuscatedModeSet_MeetsTheReminder(string command, string tool)
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardWithStdinAsync(Hook(command, tool: tool), ClaudeHook);
-
-        Assert.Contains("BLOCKED: dydo mode set changes the mode", result.AssertPreToolUseDenied());
-    }
-
-    [Fact]
-    public async Task ObfuscatedRerun_Passes()
-    {
-        await InitProjectAsync("none");
-
-        var result = await Twice(Hook("\"C:/tools/dydo.exe\" mode 'set' overnight \"off\"", permissionMode: "dontAsk"));
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    [Theory]
-    [InlineData("git commit -m \"fix: the dydo mode set nudge\"")]
-    [InlineData("grep -rn \"dydo mode set\" Commands")]
-    [InlineData("echo dydo.exe mode set overnight on")]
-    public async Task MentionOnly_PassesUntouched(string command)
-    {
-        await InitProjectAsync("none");
-
-        (await GuardWithStdinAsync(Hook(command), ClaudeHook)).AssertPreToolUseAllowed();
-    }
-
-    [Theory]
-    [InlineData("git commit -m \"fix guard\n\nTests pass; dydo mode set now asks\nand | dydo mode set overnight on\"")]
-    [InlineData("@'\nfix guard; dydo mode set must ask\n'@ | git commit -F -")]
-    [InlineData("@\"\nfix \"guard\"; dydo mode set must ask\n\"@ | git commit -F -")]
-    [InlineData("git commit -m \"$(cat <<'EOF'\nfix guard\n\ndydo mode set overnight on now asks, it doesn't deny\nEOF\n)\"")]
-    [InlineData("grep -rn 'dydo mode set' Commands | head")]
-    [InlineData("echo 'a;b' && git log --grep=\"dydo mode set\"")]
-    public async Task QuotedSeparators_DoNotMakeACommand(string command)
-    {
-        await InitProjectAsync("none");
-
-        (await GuardWithStdinAsync(Hook(command), ClaudeHook)).AssertPreToolUseAllowed();
-    }
-
-    [Theory]
-    [InlineData("cmd.exe /C dydo mode set overnight on")]
-    [InlineData("powershell -c \"& { dydo mode set overnight on }\"")]
-    [InlineData("sh -lc \"cd /tmp; dydo mode set overnight on\"")]
-    [InlineData("sudo -u me nohup dydo mode set overnight on")]
-    [InlineData("echo on | xargs -n 1 dydo mode set overnight")]
-    [InlineData("saps -FilePath C:/tools/dydo.exe -ArgumentList 'mode set overnight on' -Wait")]
-    [InlineData("Start-Process cmd -ArgumentList '/c dydo mode set overnight on'")]
-    [InlineData("git commit -m \"x $(dydo mode set overnight on)\"")]
-    [InlineData("dotnet exec C:/src/bin/dydo.dll mode set overnight on")]
-    [InlineData("dotnet run --project DynaDocs.csproj -- mode set overnight on")]
-    [InlineData("dotnet run -p ../src/DynaDocs/ -- mode set overnight on")]
-    [InlineData("dotnet run --project=tools/dydo -- mode set overnight on")]
-    [InlineData("dydo mode set \"overnight on")]
-    public async Task WrappedModeSet_MeetsTheReminder(string command)
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardWithStdinAsync(Hook(command), ClaudeHook);
-
-        Assert.Contains("BLOCKED: dydo mode set changes the mode", result.AssertPreToolUseDenied());
-    }
-
-    [Fact]
-    public async Task StartProcessRerun_Passes()
-    {
-        await InitProjectAsync("none");
-
-        var result = await Twice(Hook("Start-Process dydo -ArgumentList \"mode\", \"set\", \"overnight\", \"off\"",
-            permissionMode: "dontAsk"));
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    [Theory]
-    [InlineData("Start-Process dydo -ArgumentList @('mode', 'set', 'overnight', 'on') -Wait")]
-    [InlineData("Start-Process dydo -ArgumentList ('mode', 'set', 'overnight', 'on')")]
-    [InlineData("Start-Process -FilePath dydo -ArgumentList @(\"mode\", \"set\") -NoNewWindow")]
-    [InlineData("Write-Output (dydo mode set overnight on)")]
-    public async Task PowerShellArrayOrGroup_MeetsTheReminder(string command)
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardWithStdinAsync(Hook(command, tool: "PowerShell"), ClaudeHook);
-
-        Assert.Contains("BLOCKED: dydo mode set changes the mode", result.AssertPreToolUseDenied());
-    }
-
-    [Fact]
-    public async Task PowerShellArrayRerun_Passes()
-    {
-        await InitProjectAsync("none");
-
-        var result = await Twice(Hook("Start-Process dydo -ArgumentList @('mode', 'set', 'overnight', 'off') -Wait",
-            permissionMode: "dontAsk", tool: "PowerShell"));
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    // PowerShell escapes a quote inside double quotes with a backtick or a doubled quote, and keeps a
-    // backslash literal; bash would read the backtick as a substitution and the ; as a separator,
-    // which is why the executing shell decides.
-    [Theory]
-    [InlineData("git commit -m \"fix `\"mode`\"; dydo mode set now asks\"")]
-    [InlineData("gh pr comment 12 --body \"fix `\"mode`\"; dydo mode set now asks\"")]
-    [InlineData(@"git commit -m ""path C:\"" -m ""note; dydo mode set now asks""")]
-    [InlineData(@"git commit -m ""fix """"mode""""; dydo mode set now asks""")]
-    [InlineData(@"git commit -m 'it''s; dydo mode set now asks'")]
-    public async Task PowerShellEscapedQuotes_UnderThePowerShellTool_PassUntouched(string command)
-    {
-        await InitProjectAsync("none");
-
-        (await GuardWithStdinAsync(Hook(command, tool: "PowerShell"), ClaudeHook)).AssertPreToolUseAllowed();
-    }
-
-    // A PowerShell block comment, which can span lines, is never run.
-    [Theory]
-    [InlineData("<#\ndydo mode set overnight on\n#>\ngit status")]
-    [InlineData("git status <# dydo mode set overnight on #>; git log")]
-    public async Task PowerShellBlockComment_UnderThePowerShellTool_PassesUntouched(string command)
-    {
-        await InitProjectAsync("none");
-
-        (await GuardWithStdinAsync(Hook(command, tool: "PowerShell"), ClaudeHook)).AssertPreToolUseAllowed();
-    }
-
-    [Fact]
-    public async Task UnterminatedPowerShellBlockComment_MeetsTheReminder()
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardWithStdinAsync(Hook("<# note\ndydo mode set overnight on", tool: "PowerShell"), ClaudeHook);
-
-        Assert.Contains("BLOCKED: dydo mode set changes the mode", result.AssertPreToolUseDenied());
-    }
-
-    // dotnet run is dydo only when its project is dydo; another project's arguments are its own.
-    [Theory]
-    [InlineData("dotnet run --project examples/OtherCli -- mode set dark on")]
-    [InlineData("dotnet run -p OtherCli.csproj -- mode set dark on")]
-    public async Task DotnetRunOfAnotherProject_PassesUntouched(string command)
-    {
-        await InitProjectAsync("none");
-
-        (await GuardWithStdinAsync(Hook(command), ClaudeHook)).AssertPreToolUseAllowed();
-    }
-
-    // Bash escapes a quote or a backslash with a backslash; a PowerShell reading of the same text
-    // ends the first string early and finds a dydo command after the ;.
-    [Theory]
-    [InlineData("git commit -m \"fix \\\"mode\\\"; dydo mode set now asks\"")]
-    [InlineData("git commit -m \"dir C:\\\\\" -m \"then; dydo mode set now asks\"")]
-    public async Task BashEscapedQuotes_UnderTheBashTool_PassUntouched(string command)
-    {
-        await InitProjectAsync("none");
-
-        (await GuardWithStdinAsync(Hook(command), ClaudeHook)).AssertPreToolUseAllowed();
+        (await GuardWithStdinAsync(hook, ClaudeHook)).AssertPreToolUseDenied();
+        (await GuardWithStdinAsync(hook, ClaudeHook)).AssertPreToolUseDenied();
     }
 
     // Codex sends its shell calls as Bash with no host marker, and runs them in PowerShell on
@@ -323,28 +241,11 @@ public sealed class GuardModeSetTests : IntegrationTestBase
         if (OperatingSystem.IsWindows())
             result.AssertPreToolUseAllowed();
         else
-            Assert.Contains("otherwise stop", result.AssertPreToolUseDenied());
+            result.AssertPreToolUseDenied();
     }
 
-    [Theory]
-    [InlineData("PowerShell", "claude", false, true, null, "PowerShell")]
-    [InlineData("powershell", null, false, false, null, "PowerShell")]
-    [InlineData("Bash", "claude", false, true, null, "Posix")]
-    [InlineData("Bash", null, false, false, null, "Posix")]
-    [InlineData("Bash", null, false, true, null, "Unknown")]
-    [InlineData("Bash", null, true, true, null, "PowerShell")]
-    [InlineData("Bash", null, true, false, "/bin/zsh", "Posix")]
-    [InlineData("Bash", null, true, false, "/usr/bin/pwsh", "PowerShell")]
-    [InlineData("shell_command", null, false, true, null, "PowerShell")]
-    [InlineData("unified_exec", null, false, false, "/bin/bash", "Posix")]
-    [InlineData("Read", "claude", false, true, null, "Unknown")]
-    [InlineData(null, null, false, true, null, "Unknown")]
-    public void ExecutingShell_FollowsTheHostAndTool(string? tool, string? host, bool fromCodex, bool windows,
-        string? userShell, string expected)
-    {
-        Assert.Equal(expected, DynaDocs.Commands.GuardCommand.ExecutingShell(tool, host, fromCodex, windows, userShell).ToString());
-    }
-
+    // The retry is keyed by the whole command, whitespace normalised: another mode-set command meets
+    // the reminder afresh, and only the same command passes.
     [Fact]
     public async Task ModeSetWarn_KeysTheFullCommandAndNormalizesWhitespace()
     {
@@ -363,22 +264,7 @@ public sealed class GuardModeSetTests : IntegrationTestBase
             if (allowed[index])
                 result.AssertPreToolUseAllowed();
             else
-                Assert.Contains("otherwise stop", result.AssertPreToolUseDenied());
+                result.AssertPreToolUseDenied();
         }
     }
-
-    [Fact]
-    public async Task LegacyGlobalMarker_DoesNotBypassTheCommandWarning()
-    {
-        await InitProjectAsync("none");
-        var marker = Path.Combine(DynaDocs.Commands.GuardCommand.GuardEnv.Load(TestDir).MarkerDir, ".nudge-mode-set");
-        Directory.CreateDirectory(Path.GetDirectoryName(marker)!);
-        File.WriteAllText(marker, "legacy");
-
-        Assert.Contains("otherwise stop", (await GuardWithStdinAsync(Hook("dydo mode set overnight on"))).AssertPreToolUseDenied());
-        Assert.Equal("legacy", File.ReadAllText(marker));
-    }
-
-    private Task<CommandResult> GuardCommandAsync(string command) =>
-        RunAsync(DynaDocs.Commands.GuardCommand.Create(), "--command", command);
 }

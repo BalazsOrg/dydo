@@ -4,6 +4,11 @@ using DynaDocs.Services.Map;
 using DynaDocs.Services.Map.Contract;
 using DynaDocs.Services.Survey;
 
+/// <summary>
+/// DR 063 §4's graph findings over one Project read. The lane ledger and its findings retire in 4.0.0,
+/// so the Project body here is empty and only the findings 4.0.0 keeps are read.
+/// </summary>
+[Trait("Job", "contract: DR 063 §4")]
 public class SurveyRulesTests
 {
     private static readonly Dictionary<string, string> StateNames = new()
@@ -13,32 +18,18 @@ public class SurveyRulesTests
     };
 
     private static MapIssue Issue(
-        int number, string type = "unstarted", string? assignee = null, int? parent = null,
-        bool external = false, params string[] labels)
-    {
-        if (labels.Length == 0)
-            labels = ["Feature"];
-        return new(
-            $"id-{number}", $"DYD-{number}", $"Issue {number}", $"https://linear.app/x/issue/DYD-{number}",
-            new MapIssueState(StateNames[type], type, "#000000"), assignee, parent is { } p ? $"id-{p}" : null,
+        int number, string type = "unstarted", string? assignee = null, bool external = false, string label = "Feature") =>
+        new($"id-{number}", $"DYD-{number}", $"Issue {number}", $"https://linear.app/x/issue/DYD-{number}",
+            new MapIssueState(StateNames[type], type, "#000000"), assignee, null,
             new MapIssueTeam("t-dyd", "DYD"),
             external ? new MapIssueProject("p-other", "Other") : new MapIssueProject("p-map", "Map"),
-            [.. labels.Select(label => new MapLabel(label, "#000000"))]);
-    }
+            [new MapLabel(label, "#000000")]);
 
     private static MapRelation Blocks(int from, int to) => new($"r-{from}-{to}", "blocks", $"id-{from}", $"id-{to}");
 
-    private static MapRelation Related(int from, int to) => new($"r-{from}-{to}", "related", $"id-{from}", $"id-{to}");
-
-    // A ledger naming every open Project issue, so tests about other kinds see no unlaned findings.
-    private static string LedgerOf(IEnumerable<MapIssue> issues) =>
-        "## Lane ledger\n" + string.Concat(issues
-            .Where(issue => issue.State.Type is not ("completed" or "canceled" or "duplicate"))
-            .Select(issue => $"- {issue.Identifier} lane, in progress\n"));
-
     private static List<SurveyFinding> Survey(
         List<MapIssue> issues, List<MapIssue>? external = null, List<MapRelation>? relations = null,
-        string? content = null, Dictionary<string, double>? priorities = null)
+        Dictionary<string, double>? priorities = null)
     {
         external ??= [];
         var graph = new MapGraph(new MapGraphProject("p-map", "Map", "https://linear.app/x/project/map"),
@@ -46,14 +37,11 @@ public class SurveyRulesTests
         priorities ??= [];
         foreach (var issue in issues.Concat(external))
             priorities.TryAdd(issue.Id, 0);
-        var parents = issues.Where(issue => issue.ParentId != null)
-            .ToDictionary(issue => issue.Id, issue => "DYD-" + issue.ParentId!["id-".Length..]);
-        return SurveyRules.Find(new LinearProjectRead(graph, content ?? LedgerOf(issues), priorities, parents));
+        return [.. SurveyRules.Find(new LinearProjectRead(graph, "", priorities, new Dictionary<string, string>()))
+            .Where(finding => KeptFindings.Kinds.Contains(finding.Kind))];
     }
 
-    private static List<string> Lines(List<SurveyFinding> findings) => [.. findings.Select(finding => finding.ToString())];
-
-    private static List<string> Kinds(List<SurveyFinding> findings, string kind) =>
+    private static List<string> Keys(List<SurveyFinding> findings, string kind) =>
         [.. findings.Where(finding => finding.Kind == kind).Select(finding => finding.Key)];
 
     [Theory]
@@ -61,13 +49,13 @@ public class SurveyRulesTests
     [InlineData("backlog")]
     [InlineData("unstarted")]
     [InlineData("started")]
-    public void Unblocked_AnOpenUnassignedIssue_WhoseEveryBlockerIsClosed(string type)
+    public void Unblocked_AnOpenUnassignedIssue_WhoseEveryBlockerIsClosed_IsListedOnce(string type)
     {
         var findings = Survey(
             [Issue(1, type), Issue(2, "completed"), Issue(3, "canceled")],
-            relations: [Blocks(2, 1), Blocks(3, 1)]);
+            relations: [Blocks(2, 1), Blocks(3, 1), new("r-again", "blocks", "id-2", "id-1")]);
 
-        Assert.Contains("unblocked DYD-1 Issue 1 — every blocker is closed: DYD-2, DYD-3", Lines(findings));
+        Assert.Equal(["DYD-1"], Keys(findings, "unblocked"));
     }
 
     [Fact]
@@ -76,18 +64,7 @@ public class SurveyRulesTests
         var findings = Survey([Issue(1, "duplicate")], external: [Issue(9, "backlog", external: true)],
             relations: [Blocks(1, 9)]);
 
-        Assert.Equal(["unblocked DYD-9 Issue 9 — every blocker in the Project's graph is closed: DYD-1"],
-            Lines(findings).Where(line => line.StartsWith("unblocked", StringComparison.Ordinal)));
-    }
-
-    [Fact]
-    public void Unblocked_NamesEachBlockerOnce_InKeyOrder_WhateverTheRelationOrder()
-    {
-        var findings = Survey(
-            [Issue(1, "backlog"), Issue(2, "completed"), Issue(3, "completed"), Issue(10, "canceled")],
-            relations: [Blocks(10, 1), Blocks(3, 1), new("r-again", "blocks", "id-2", "id-1"), Blocks(2, 1)]);
-
-        Assert.Contains("unblocked DYD-1 Issue 1 — every blocker is closed: DYD-2, DYD-3, DYD-10", Lines(findings));
+        Assert.Equal(["DYD-9"], Keys(findings, "unblocked"));
     }
 
     [Fact]
@@ -95,9 +72,9 @@ public class SurveyRulesTests
     {
         var findings = Survey(
             [Issue(1), Issue(2, "completed"), Issue(3, "backlog"), Issue(4, assignee: "Ada"), Issue(5, "canceled"), Issue(6)],
-            relations: [Blocks(2, 1), Blocks(3, 1), Blocks(2, 4), Blocks(2, 5), Related(2, 6)]);
+            relations: [Blocks(2, 1), Blocks(3, 1), Blocks(2, 4), Blocks(2, 5), new("r-2-6", "related", "id-2", "id-6")]);
 
-        Assert.Empty(Kinds(findings, "unblocked"));
+        Assert.Empty(Keys(findings, "unblocked"));
     }
 
     [Fact]
@@ -108,248 +85,12 @@ public class SurveyRulesTests
             external: [Issue(9, external: true)],
             relations: [Blocks(3, 2), Blocks(4, 5)]);
 
-        Assert.Equal(["DYD-1"], Kinds(findings, "pickable"));
-        Assert.Equal(["DYD-2"], Kinds(findings, "unblocked"));
-        Assert.Contains("pickable DYD-1 Issue 1 — unstarted, unassigned, no open blocker", Lines(findings));
-    }
-
-    [Theory]
-    [InlineData("Feature")]
-    [InlineData("Bug")]
-    [InlineData("Merge")]
-    [InlineData("Enablement")]
-    [InlineData("Prototype")]
-    [InlineData("bUg")]
-    public void Offers_OnlyUnassignedCaptainHeldTickets(string label)
-    {
-        var findings = Survey(
-            [Issue(1, labels: ["AFK", label, "should"]), Issue(2, "backlog", labels: label),
-                Issue(3, assignee: "Balazs", labels: label), Issue(4, "backlog", "Balazs", labels: label)]);
-
-        Assert.Equal(["DYD-1"], Kinds(findings, "pickable"));
-        Assert.Equal(["DYD-2"], Kinds(findings, "uncontracted"));
-    }
-
-    [Theory]
-    [InlineData("Question", "unstarted", "pickable")]
-    [InlineData("Question", "backlog", "uncontracted")]
-    [InlineData("Research", "unstarted", "pickable")]
-    [InlineData("Research", "backlog", "uncontracted")]
-    [InlineData("Grilling", "unstarted", "pickable")]
-    [InlineData("Grilling", "backlog", "uncontracted")]
-    [InlineData("Walkthrough", "unstarted", "pickable")]
-    [InlineData("Walkthrough", "backlog", "uncontracted")]
-    [InlineData("Inquisition", "unstarted", "pickable")]
-    [InlineData("Inquisition", "backlog", "uncontracted")]
-    [InlineData("iNqUiSiTiOn", "unstarted", "pickable")]
-    [InlineData("iNqUiSiTiOn", "backlog", "uncontracted")]
-    [InlineData("Unknown", "unstarted", "pickable")]
-    [InlineData("Unknown", "backlog", "uncontracted")]
-    public void Offers_SkipMapHolderTypesAndInquisitions(string label, string state, string kind)
-    {
-        var findings = Survey([Issue(1, state, labels: label)]);
-
-        Assert.Empty(Kinds(findings, kind));
+        Assert.Equal(["DYD-1"], Keys(findings, "pickable"));
+        Assert.Equal(["DYD-2"], Keys(findings, "unblocked"));
     }
 
     [Fact]
-    public void Offers_DoNotRecommissionAReleasedTodoInquisition_OnRepeatedTicks()
-    {
-        List<MapIssue> issues = [Issue(1, labels: "Inquisition")];
-        const string content = "## Lane ledger\n- DYD-1 released DYD-1: verification skill first\n";
-
-        for (var tick = 0; tick < 2; tick++)
-        {
-            var findings = Survey(issues, content: content);
-
-            Assert.Empty(Kinds(findings, "pickable"));
-            Assert.Empty(Kinds(findings, "uncontracted"));
-        }
-    }
-
-    [Fact]
-    public void Offers_RequireACaptainHeldType_NotJustAModeOrNoLabels()
-    {
-        var findings = Survey(
-            [Issue(1) with { Labels = [] }, Issue(2, "backlog") with { Labels = [] },
-                Issue(3, labels: "AFK"), Issue(4, "backlog", labels: "AFK")]);
-
-        Assert.Empty(Kinds(findings, "pickable"));
-        Assert.Empty(Kinds(findings, "uncontracted"));
-    }
-
-    [Theory]
-    [InlineData("Feature", "nit")]
-    [InlineData("Bug", "NIT")]
-    [InlineData("Merge", "nit")]
-    [InlineData("Enablement", "nit")]
-    [InlineData("Prototype", "nit")]
-    public void Offers_SkipNitTickets_EvenWithACaptainHeldType(string label, string severity)
-    {
-        var findings = Survey(
-            [Issue(1, labels: ["AFK", severity, label]), Issue(2, "backlog", labels: [label, severity])]);
-
-        Assert.Empty(Kinds(findings, "pickable"));
-        Assert.Empty(Kinds(findings, "uncontracted"));
-    }
-
-    [Fact]
-    public void Unlaned_AnOpenProjectIssueNoLedgerRowNames_UnlessItsParentIsNamed()
-    {
-        var findings = Survey(
-            [Issue(1, "started", "Ada"), Issue(2, "backlog", "Ada"), Issue(3, "unstarted", "Ada", parent: 1),
-                Issue(4, "unstarted", "Ada", parent: 2), Issue(5, "completed")],
-            external: [Issue(9, "started", "Ada", external: true)],
-            content: "## Lane ledger\n| Lane | Ticket |\n| -- | -- |\n| Core | [DYD-1](https://linear.app/x/issue/DYD-1/core) |\n");
-
-        Assert.Equal(["DYD-2", "DYD-4"], Kinds(findings, "unlaned"));
-        Assert.Contains("unlaned DYD-2 Issue 2 — open, and no ledger row names it or its parent", Lines(findings));
-    }
-
-    [Fact]
-    public void Unlaned_NotWhenTheLedgerNamesAParentOutsideTheGraph()
-    {
-        var findings = Survey([Issue(1, "started", "Ada", parent: 99)], content: "## Ledger\n- DYD-99 owns this lane\n");
-
-        Assert.Empty(Kinds(findings, "unlaned"));
-    }
-
-    [Fact]
-    public void StaleRow_NamesOnlyClosedIssues_AndDoesNotReadAsDone()
-    {
-        var findings = Survey(
-            [Issue(1, "completed"), Issue(2, "canceled"), Issue(3, "completed"), Issue(4, "completed"), Issue(5, "started", "Ada"),
-                Issue(6, "completed")],
-            content: """
-                ## Lane ledger
-                | Lane | Tickets | State |
-                | -- | -- | -- |
-                | Lane | DYD-1, DYD-2 | waiting on review |
-                | Shipped | DYD-6 | done |
-                - DYD-3 lane: Done
-                - DYD-4 and DYD-5, still running
-                """);
-
-        Assert.Equal(
-            ["stale-row DYD-1 Issue 1 — the row names only closed issues: DYD-1 Done, DYD-2 Canceled",
-                "stale-row DYD-3 Issue 3 — the row names only closed issues: DYD-3 Done"],
-            Lines(findings).Where(line => line.StartsWith("stale-row", StringComparison.Ordinal)));
-    }
-
-    [Theory]
-    [InlineData("done")]
-    [InlineData("Done")]
-    [InlineData("`done`")]
-    [InlineData("  DONE  ")]
-    public void StaleRow_ATableRowWhoseStateCellIsDone_IsNotStale(string state)
-    {
-        var findings = Survey([Issue(1, "completed")],
-            content: $"## Lane ledger\n| Lane | Tickets | State |\n| -- | -- | -- |\n| Core | DYD-1 | {state} |\n");
-
-        Assert.Empty(Kinds(findings, "stale-row"));
-    }
-
-    [Theory]
-    [InlineData("moving")]
-    [InlineData("not fully done")]
-    [InlineData("waiting to be merged")]
-    [InlineData("done?")]
-    [InlineData("")]
-    public void StaleRow_AStateCellOtherThanDone_IsStale(string state)
-    {
-        var findings = Survey([Issue(1, "completed")],
-            content: $"## Lane ledger\n| Lane | Tickets | State |\n| -- | -- | -- |\n| Core | DYD-1 | {state} |\n");
-
-        Assert.Equal(["DYD-1"], Kinds(findings, "stale-row"));
-    }
-
-    [Theory]
-    [InlineData("done")]
-    [InlineData("lane: Done")]
-    [InlineData("merged and closed")]
-    [InlineData("State: done")]
-    public void StaleRow_AListItemNamingOnlyClosedIssues_IsStale_WhateverItSays(string words)
-    {
-        var findings = Survey([Issue(1, "completed")], content: $"## Lane ledger\n- DYD-1 {words}\n");
-
-        Assert.Equal(["DYD-1"], Kinds(findings, "stale-row"));
-    }
-
-    [Fact]
-    public void StaleRow_ATableWithNoStateColumn_IsStale()
-    {
-        var findings = Survey([Issue(1, "completed")],
-            content: "## Lane ledger\n| Lane | Tickets | Status |\n| -- | -- | -- |\n| Core | DYD-1 | done |\n");
-
-        Assert.Equal(["DYD-1"], Kinds(findings, "stale-row"));
-    }
-
-    [Theory]
-    [InlineData("| Lane | Tickets | State |\n| -- | -- | -- |\n| done | DYD-1 done | waiting |")]
-    [InlineData("| State | Note | Tickets |\n| -- | -- | -- |\n| moving | done | DYD-1 |")]
-    [InlineData("| Lane | Tickets | State |\n| -- | -- | -- |\n| Core | DYD-1, done |")]
-    public void StaleRow_ADoneWordInAnotherColumn_DoesNotHideTheRow(string table)
-    {
-        var findings = Survey([Issue(1, "completed")], content: $"## Lane ledger\n{table}\n");
-
-        Assert.Equal(["DYD-1"], Kinds(findings, "stale-row"));
-    }
-
-    [Fact]
-    public void StaleRow_TheStateColumnIsFoundByItsHeader_WhereverItSits()
-    {
-        var findings = Survey([Issue(1, "completed")],
-            content: "## Lane ledger\n| State | Tickets |\n| -- | -- |\n| done | DYD-1 |\n");
-
-        Assert.Empty(Kinds(findings, "stale-row"));
-    }
-
-    [Theory]
-    [InlineData("not done")]
-    [InlineData("not merged")]
-    [InlineData("not yet merged")]
-    [InlineData("isn't merged")]
-    [InlineData("hasn't been merged")]
-    [InlineData("never landed")]
-    public void StaleRow_ANegatedDoneWord_DoesNotReadAsDone(string phrase)
-    {
-        var findings = Survey([Issue(2, "completed")], content: $"## Lane ledger\n- DYD-2: awaiting review; {phrase}\n");
-
-        Assert.Equal(["DYD-2"], Kinds(findings, "stale-row"));
-    }
-
-    [Theory]
-    [InlineData("[DYD-2](https://linear.app/x/issue/DYD-2/inquisition-completed) waiting for review")]
-    [InlineData("DYD-2 waiting for review, see https://example.com/merged")]
-    [InlineData("DYD-2 waiting for review, see <https://example.com/done>")]
-    public void StaleRow_ADoneWordInALinkTargetOrUrl_DoesNotReadAsDone(string row)
-    {
-        var findings = Survey([Issue(2, "completed")], content: $"## Lane ledger\n- {row}\n");
-
-        Assert.Equal(["DYD-2"], Kinds(findings, "stale-row"));
-    }
-
-    [Fact]
-    public void StaleRow_JudgesOnlyTheKeysInTheGraph()
-    {
-        var findings = Survey(
-            [Issue(1, "completed"), Issue(2, "completed"), Issue(3, "started", "Ada")],
-            content: """
-                ## Lane ledger
-                - DYD-1 checksums as SHA-256 over UTF-8, waiting
-                - DYD-2 and LC-77, waiting on another team
-                - UTF-8 and SHA-256 notes, waiting
-                - DYD-1 and DYD-3, waiting
-                """);
-
-        Assert.Equal(
-            ["stale-row DYD-1 Issue 1 — the row names only closed issues: DYD-1 Done",
-                "stale-row DYD-2 Issue 2 — the row names only closed issues: DYD-2 Done"],
-            Lines(findings).Where(line => line.StartsWith("stale-row", StringComparison.Ordinal)));
-    }
-
-    [Fact]
-    public void Uncontracted_AnUnassignedBacklogProjectIssue_WithNoOpenBlocker()
+    public void Uncontracted_AnUnassignedBacklogProjectIssue_WithNoOpenBlocker_IsNeverPickable()
     {
         var findings = Survey(
             [Issue(1, "backlog"), Issue(2, "backlog"), Issue(3, "started", "Ada"), Issue(4, "backlog", "Ada"),
@@ -357,63 +98,35 @@ public class SurveyRulesTests
             external: [Issue(9, "backlog", external: true)],
             relations: [Blocks(3, 2), Blocks(6, 5)]);
 
-        Assert.Equal(["DYD-1", "DYD-5"], Kinds(findings, "uncontracted"));
-        Assert.Contains("uncontracted DYD-1 Issue 1 — Backlog, unassigned, no open blocker", Lines(findings));
-        Assert.Equal(["DYD-7"], Kinds(findings, "pickable"));
-    }
-
-    [Fact]
-    public void StartedUnassigned_AStartedIssueWithNoAssignee()
-    {
-        var findings = Survey([Issue(1, "started"), Issue(2, "started", "Ada"), Issue(3)]);
-
-        Assert.Equal(["started-unassigned DYD-1 Issue 1 — In Progress, with no assignee"],
-            Lines(findings).Where(line => line.StartsWith("started-unassigned", StringComparison.Ordinal)));
+        Assert.Equal(["DYD-1", "DYD-5"], Keys(findings, "uncontracted"));
+        Assert.Contains("uncontracted DYD-1 Issue 1 — Backlog, unassigned, no open blocker",
+            findings.Select(finding => finding.ToString()));
+        Assert.Equal(["DYD-7"], Keys(findings, "pickable"));
     }
 
     [Fact]
     public void QuestionNoPriority_AnOpenQuestionWithNoPriority()
     {
         var findings = Survey(
-            [Issue(1, "backlog", "Ada", labels: "Question"), Issue(2, "backlog", "Ada", labels: "Question"),
-                Issue(3, "completed", labels: "Question"), Issue(4, "backlog", "Ada", labels: "Feature")],
+            [Issue(1, "backlog", "Ada", label: "Question"), Issue(2, "backlog", "Ada", label: "Question"),
+                Issue(3, "completed", label: "Question"), Issue(4, "backlog", "Ada")],
             priorities: new() { ["id-2"] = 3 });
 
-        Assert.Equal(["question-no-priority DYD-1 Issue 1 — an open Question with no priority"],
-            Lines(findings).Where(line => line.StartsWith("question-no-priority", StringComparison.Ordinal)));
-    }
-
-    [Fact]
-    public void NoLedger_IsOneFinding_AndEveryOpenProjectIssueIsUnlaned()
-    {
-        var findings = Survey([Issue(1, "started", "Ada"), Issue(2, "completed"), Issue(3, "backlog", "Ada")],
-            content: "## Lanes\n- DYD-1 lane\n");
-
-        Assert.Equal(
-            [
-                "no-ledger - Map — the Project body has no ## heading containing \"ledger\"",
-                "unlaned DYD-1 Issue 1 — open, and the Project has no ledger",
-                "unlaned DYD-3 Issue 3 — open, and the Project has no ledger",
-            ],
-            Lines(findings));
+        Assert.Equal(["DYD-1"], Keys(findings, "question-no-priority"));
     }
 
     [Fact]
     public void Findings_AreSortedByKind_ThenByKeyNumber()
     {
         var findings = Survey(
-            [Issue(10, "started"), Issue(9, "started"), Issue(3, "backlog"), Issue(2), Issue(1, "started", "Ada")],
-            content: "## Ledger\n- DYD-1 lane\n");
+            [Issue(10, "backlog"), Issue(9), Issue(3, "backlog"), Issue(2), Issue(1, "backlog", "Ada", label: "Question")]);
 
         Assert.Equal(
-            ["pickable DYD-2", "started-unassigned DYD-9", "started-unassigned DYD-10", "uncontracted DYD-3",
-                "unlaned DYD-2", "unlaned DYD-3", "unlaned DYD-9", "unlaned DYD-10"],
+            ["pickable DYD-2", "pickable DYD-9", "question-no-priority DYD-1", "uncontracted DYD-3", "uncontracted DYD-10"],
             findings.Select(finding => $"{finding.Kind} {finding.Key}"));
     }
 
     [Fact]
-    public void AQuietProject_HasNoFindings()
-    {
+    public void AQuietProject_HasNoFindings() =>
         Assert.Empty(Survey([Issue(1, "started", "Ada"), Issue(2, "completed")]));
-    }
 }
