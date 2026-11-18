@@ -2,8 +2,9 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// The build: a model in, every built file out, keyed by its path under the repository root, with
-/// the map of each claim-stating line. A model the rules reject throws <see cref="InvalidDataException"/>;
-/// the build never emits a partial tree.
+/// the map of each claim-stating skill line: the skills, the machines' chart files and one why doc per
+/// kind. A model the rules reject throws <see cref="InvalidDataException"/>; the build never emits a
+/// partial tree.
 /// </summary>
 public static class SkillBuilder
 {
@@ -11,7 +12,10 @@ public static class SkillBuilder
     {
         var files = new SortedDictionary<string, string>(StringComparer.Ordinal);
         var map = new List<MapLine>();
-        foreach (var (skill, lines) in ModelIndex.LinesBySkill(model))
+        var bySkill = ModelIndex.LinesBySkill(model);
+        var claims = new ClaimIndex(ModelIndex.ClaimIds(model.Kinds));
+        var chart = new Statechart(model, claims);
+        foreach (var (skill, lines) in bySkill)
         {
             var rendered = SkillRenderer.Render(skill, new SkillLayout(skill, lines)).ToArray();
             StatesEachClaimOnce(skill, lines, rendered);
@@ -22,6 +26,8 @@ public static class SkillBuilder
                     map.AddRange(file.Stated.Select(stated => new MapLine(path, stated.Line, stated.Text, stated.Placed.Claims)));
                 }
         }
+        foreach (var (path, text) in chart.Files(claims).Concat(WhyDocs.Render(model.Kinds, claims, chart)))
+            files.Add(path, text);
         return new BuiltTree(files, map);
     }
 

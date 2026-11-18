@@ -12,4 +12,13 @@ public sealed class Claim(string rule, Enum[] actors, Line[] lines)
     public IReadOnlyList<Enum> Actors { get; } = actors;
 
     public IReadOnlyList<Line> Lines { get; } = lines;
+
+    /// <summary>The spec rule ids the claim states, such as <c>K4</c> (<see cref="SpecCitation"/>).</summary>
+    public IReadOnlyList<string> Spec { get; init; } = [];
+
+    /// <summary>
+    /// The machine move the claim is (K1). Its lines are moves: an exit in its from-state or an arrival
+    /// in its to-state. With no lines it is a system transition, run by a command or by Linear.
+    /// </summary>
+    public Transition? Transition { get; init; }
 }

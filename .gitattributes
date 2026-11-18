@@ -8,6 +8,10 @@ skills/**/agents/openai.yaml text eol=lf
 setup-skills.mjs text eol=lf
 .codex/agents/*.toml text=auto eol=lf
 
+# The skill builder writes its chart files and why docs with LF, and the golden test compares bytes (K7).
+claims/statechart/** text eol=lf
+dydo/reference/claims/*.md text eol=lf
+
 # The retained DYD-96 native evidence packet is hashed, not read: its SHA256SUMS
 # is authoritative for every other file in that directory, and the assurance
 # gate's fixture exclusion (gate_inventory._fixture_exclusion) hashes the bytes

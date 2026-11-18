@@ -16,10 +16,13 @@ internal sealed class Page
         _lines.AddRange([BuiltHeader.Markdown, "", "# " + title, ""]);
     }
 
-    public void Heading(string text)
+    public void Heading(string text) => Block(text);
+
+    /// <summary>Lines that state no claim, set off by blank lines.</summary>
+    public void Block(params string[] lines)
     {
         Blank();
-        _lines.AddRange([text, ""]);
+        _lines.AddRange([.. lines, ""]);
     }
 
     public void Link(string title, string target) => _lines.Add($"- [{title}]({target})");

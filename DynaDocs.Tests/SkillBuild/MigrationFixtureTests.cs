@@ -29,7 +29,7 @@ public class MigrationFixtureTests
     }
 
     [Fact]
-    [Trait("Job", "contract: K6/AR1 every path the fixture builds is one the real layout holds today (C17, B9)")]
+    [Trait("Job", "contract: K6/AR1 every skill and standard path the fixture builds is one the real layout holds today (C17, B9)")]
     public void FixtureBuild_WritesOnlyPathsTheRealLayoutHolds()
     {
         using var root = new TempRoot();
@@ -38,7 +38,10 @@ public class MigrationFixtureTests
 
         var written = root.Files().Keys.Order(StringComparer.Ordinal).ToArray();
         Assert.Equal(Migration.Tree.Files.Keys.Order(StringComparer.Ordinal), written);
-        Assert.All(written, path => Assert.True(File.Exists(Path.Combine(CommittedTree.Root, path)), $"{path} is not in the real layout"));
+        // K13's why docs are new with DYD-1082: one per kind, and nowhere else.
+        var whyDocs = written.Where(path => path.StartsWith("dydo/reference/claims/", StringComparison.Ordinal)).ToArray();
+        Assert.Equal(FixtureModel.Model.Kinds.Count, whyDocs.Length);
+        Assert.All(written.Except(whyDocs), path => Assert.True(File.Exists(Path.Combine(CommittedTree.Root, path)), $"{path} is not in the real layout"));
         Assert.Contains("skills/roles/officers/admiral/agents/openai.yaml", written);
         Assert.Contains("skills/roles/officers/chief-of-staff/agents/openai.yaml", written);
     }

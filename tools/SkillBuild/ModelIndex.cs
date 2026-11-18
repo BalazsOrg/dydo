@@ -26,7 +26,7 @@ internal static class ModelIndex
         return lines;
     }
 
-    private static Dictionary<Claim, string> ClaimIds(IEnumerable<Type> kinds)
+    public static Dictionary<Claim, string> ClaimIds(IEnumerable<Type> kinds)
     {
         var ids = new Dictionary<Claim, string>();
         var taken = new HashSet<string>(StringComparer.Ordinal);
