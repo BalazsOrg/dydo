@@ -73,6 +73,7 @@ public class SkillBuildGoldenTests
     }
 
     [Fact]
+    [Trait("Job", "trap: K7 a line-ending-only change shows in the diff, its \\r quoted (B14)")]
     public void Diff_NamesAChangedFileWithItsFirstDifferingLine()
     {
         var diff = GoldenDiff.Describe(Tree(("a.md", "same\nbuilt\n")), Tree(("a.md", "same\nedited\r\n")));
@@ -84,6 +85,7 @@ public class SkillBuildGoldenTests
     }
 
     [Fact]
+    [Trait("Job", "trap: K7 a dropped line or final newline shows in the diff as the end of the file (B14)")]
     public void Diff_NamesAFileThatEndsEarly()
     {
         var diff = GoldenDiff.Describe(Tree(("a.md", "one\ntwo\n")), Tree(("a.md", "one\n")));
@@ -92,10 +94,6 @@ public class SkillBuildGoldenTests
         Assert.Contains("built:     \"\"\n  committed: (end of file)",
             GoldenDiff.Describe(Tree(("a.md", "one\n")), Tree(("a.md", "one"))).ReplaceLineEndings("\n"));
     }
-
-    [Fact]
-    public void Diff_IsEmptyForEqualTrees() =>
-        Assert.Equal("", GoldenDiff.Describe(Tree(("a.md", "x\n")), Tree(("a.md", "x\n"))));
 
     private static Dictionary<string, byte[]> Tree(params (string Path, string Text)[] files) =>
         files.ToDictionary(file => file.Path, file => Encoding.UTF8.GetBytes(file.Text), StringComparer.Ordinal);

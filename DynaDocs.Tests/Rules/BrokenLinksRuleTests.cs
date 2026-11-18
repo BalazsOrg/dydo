@@ -5,6 +5,7 @@ using DynaDocs.Rules;
 using DynaDocs.Services;
 using Xunit;
 
+[Trait("Job", "contract: writing-docs.md Rules Enforced (Links: no broken links)")]
 public class BrokenLinksRuleTests
 {
     private readonly BrokenLinksRule _rule;

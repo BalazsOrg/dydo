@@ -144,26 +144,10 @@ diagnostics, cognitive complexity, parameter counts, clone detection and knip ac
 Issue that recorded this amendment fixed two real `no-nested-ternary` findings in
 `run-host-canaries.mjs` because that row runs.
 
-The exemption is conditional, and both conditions are machine-checked per driver by
-`_coverage_exemption` in `DynaDocs.Tests/coverage/gate_inventory.py`, which sits beside
-`_structural_exclusion` under the same contract - return reproducible exclusion evidence, or a gap
-that denies exclusion:
-
-1. the driver's pure logic is extracted into tested modules, required per driver rather than as a
-   flat list: `run-host-canaries.mjs` requires `path-containment.mjs` and
-   `run-host-canaries-args.mjs`, `openai-sse-provider.mjs` requires `openai-sse-provider-args.mjs`,
-   all under `DynaDocs.Tests/HostCanaries/`;
-2. the driver itself stays associated in `DynaDocs.Tests/coverage/test-associations.json`.
-
-"Tested" is proved by a row in that manifest, which the association gate in turn proves names a
-discovered native test file - not by a coverage number on the extraction. When both conditions hold,
-the inventory `source` row carries `coverageExemption` with the reason
-`external-host-driver-as-embedded-source` and its origin, and `_target_paths` in
-`DynaDocs.Tests/coverage/gate_adapter.py` filters that row out of the coverage targets;
-`collect_node_coverage` now selects its targets through the inventory, as `collect_python_coverage`
-already did. A failed condition emits the typed gap `host-driver-logic-untested` or
-`host-driver-unassociated` and denies the exemption, so the file is measured again rather than
-silently exempt.
+The historical exemption required the driver's pure logic to be extracted into tested modules
+and the driver itself to name a discovered native test file. The 4.0.0 purge deleted both drivers.
+[DYD-1192](https://linear.app/bodnar-balazs/issue/DYD-1192) retires their conditional exemption
+machinery; [DR 067 T5](./067-what-tests-are-for.md) owns the replacement job-tag rule.
 
 This is a correction, not a waiver. Nothing in the measured source changes, the two paths are exact,
 and adding a third file is another §5 triage to record, not a routine edit. Reach for it to shelter

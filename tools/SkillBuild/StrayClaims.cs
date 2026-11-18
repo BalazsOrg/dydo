@@ -24,7 +24,8 @@ public static partial class StrayClaims
         var built = tree.Map
             .Select(line => (Text: Whitespace().Replace(line.Text, " ").Trim(), line.Claims))
             .Where(line => line.Text.Length >= MinimumLength)
-            .DistinctBy(line => line.Text)
+            .GroupBy(line => line.Text, StringComparer.Ordinal)
+            .Select(same => (same.Key, (IReadOnlyList<string>)[.. same.SelectMany(line => line.Claims).Distinct(StringComparer.Ordinal)]))
             .ToArray();
         if (built.Length == 0) return [];
         return [.. tracked.Select(path => path.Replace('\\', '/')).Where(path => IsHandWritten(root, path, tree))

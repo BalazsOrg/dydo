@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using DynaDocs.Services.Statechart;
 
+[Trait("Job", "contract: DR 062 §4 (the sealed checker is verified, never raw TLC)")]
 public class StatechartCheckerTests
 {
     public static TheoryData<bool> Inputs => new() { true, false };

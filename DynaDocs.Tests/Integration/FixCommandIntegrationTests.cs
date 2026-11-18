@@ -5,6 +5,7 @@ using DynaDocs.Services;
 using DynaDocs.Utils;
 
 [Collection("Integration")]
+[Trait("Job", "trap: DYD-134 (a failed or no-op dydo fix keeps dydo.json bytes); contract: dydo-commands-core.md dydo fix")]
 public class FixCommandIntegrationTests : IntegrationTestBase
 {
     [Fact]

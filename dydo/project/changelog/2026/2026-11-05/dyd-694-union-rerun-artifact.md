@@ -87,7 +87,7 @@ fails silently.
 `.github/workflows/ci.yml` (only the python-coverage and dotnet-coverage stamp and upload steps, and
 the union jobs' permissions, download, job record and selection steps),
 `DynaDocs.Tests/coverage/coverage_artifacts.py`,
-`DynaDocs.Tests/coverage/tests/test_coverage_artifacts.py`, `DynaDocs.Tests/coverage/test-associations.json`,
+`DynaDocs.Tests/coverage/tests/test_coverage_artifacts.py`,
 `dydo/reference/coverage-tools.md`, and this entry.
 
 ## Related

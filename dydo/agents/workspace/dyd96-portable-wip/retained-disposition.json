@@ -38,14 +38,6 @@
       "reason": "Retained compatible native mechanism or focused proof; adapt to the exact new contract and re-test, never assume prior PASS."
     },
     {
-      "path": "DynaDocs.Tests/coverage/associations.py",
-      "sha256": "234FD670A5CC150EE511F4DA1C66495DDACF0410D30070670D8E1AC3069AAE07",
-      "bytes": 4546,
-      "disposition": "rewrite-at-same-seam",
-      "destination": "DynaDocs.Tests/coverage/associations.py",
-      "reason": "Retain strict exact-path schema checks, replace selected case IDs/groups/witnesses with simple source-to-test-file map."
-    },
-    {
       "path": "DynaDocs.Tests/coverage/coverage.runsettings",
       "sha256": "479CCD458C3C5D432459F3F7ECAB68749BC888401237D51973EE96E14771F49A",
       "bytes": 600,
@@ -459,14 +451,6 @@
       "bytes": 716,
       "disposition": "adopt-adapt",
       "destination": "DynaDocs.Tests/coverage/tests/knip_reporter.test.cjs",
-      "reason": "Retained compatible native mechanism or focused proof; adapt to the exact new contract and re-test, never assume prior PASS."
-    },
-    {
-      "path": "DynaDocs.Tests/coverage/tests/test_associations.py",
-      "sha256": "F7FF7CCF51ACE0A659FBFD7BFE138302122748095862169741D23936176A373F",
-      "bytes": 3529,
-      "disposition": "adopt-adapt",
-      "destination": "DynaDocs.Tests/coverage/tests/test_associations.py",
       "reason": "Retained compatible native mechanism or focused proof; adapt to the exact new contract and re-test, never assume prior PASS."
     },
     {

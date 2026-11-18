@@ -1,211 +1,128 @@
 namespace DynaDocs.Tests.Commands;
 
-using DynaDocs.Services;
+using System.Runtime.Versioning;
 
+/// <summary>
+/// `dydo validate` at the command line: a broken `dydo.json` or nudge exits 1 with a finding; a
+/// recorded Claude integration whose committed settings do not run the guard warns and exits 0.
+/// `--root` is covered with check and graph in <see cref="CheckCommandTests"/>.
+/// </summary>
 [Collection("Integration")]
-public class ValidateCommandTests : IDisposable
+[Trait("Job", "contract: dydo-commands-utilities.md dydo validate (nudge fields, exit 1 on errors); DYD-501 / DR 056 (Claude guard wiring warning, exit 0)")]
+public sealed class ValidateCommandTests : IDisposable
 {
-    private readonly string _testDir;
-    private readonly string _originalDir;
+    private const string Base = "\"version\":1,\"structure\":{\"root\":\"dydo\"}";
+    private const string Claude = "{" + Base + ""","integrations":{"claude":true}}""";
+    private const string Wired = """
+        {"hooks":{"PreToolUse":[
+          {"matcher":"Bash","hooks":[{"type":"command","command":"echo before"}]},
+          {"matcher":"Anything","hooks":[{"type":"command","command":"echo mixed"},{"type":"command","command":"dydo guard --host claude"}]}
+        ]}}
+        """;
+    private const string NoGuard = "no PreToolUse hook running 'dydo guard --host claude'";
+    private const string FixJson = "Fix the JSON, then run 'dydo init claude --join'";
+
+    private readonly string _dir = Path.Combine(Path.GetTempPath(), "dydo-validate-" + Guid.NewGuid().ToString("N")[..8]);
+    private readonly string _original = Environment.CurrentDirectory;
 
     public ValidateCommandTests()
     {
-        _testDir = Path.Combine(Path.GetTempPath(), "dydo-validate-test-" + Guid.NewGuid().ToString("N")[..8]);
-        Directory.CreateDirectory(_testDir);
-        _originalDir = Environment.CurrentDirectory;
-        Environment.CurrentDirectory = _testDir;
+        Directory.CreateDirectory(Path.Combine(_dir, "dydo", "_system"));
+        Environment.CurrentDirectory = _dir;
+    }
+
+    [Theory]
+    // dydo.json itself
+    [InlineData(1, "not found", null)]
+    [InlineData(1, "Invalid JSON", "{not valid json}")]
+    [InlineData(1, "root must be an object", "null")]
+    [InlineData(1, "testing.runner", """{"testing":{"runner":[]}}""")]
+    [InlineData(0, null, """{"testing":{"runner":["runner",""]}}""")]
+    // nudges
+    [InlineData(1, "invalid regex", "{" + Base + ""","nudges":[{"pattern":"[invalid(regex","message":"m","severity":"block"}]}""")]
+    [InlineData(1, "invalid regex", "{" + Base + ""","nudges":[{"pattern":"^tools/(","message":"m","severity":"block","match":"new-file"}]}""")]
+    [InlineData(1, "empty pattern", "{" + Base + ""","nudges":[{"pattern":"","message":"m","severity":"block"}]}""")]
+    [InlineData(1, "empty message", "{" + Base + ""","nudges":[{"pattern":"x","message":"","severity":"block"}]}""")]
+    [InlineData(1, "invalid severity", "{" + Base + ""","nudges":[{"pattern":"x","message":"m","severity":"invalid"}]}""")]
+    [InlineData(1, "invalid audience", "{" + Base + ""","nudges":[{"pattern":"x","message":"m","severity":"notice","audience":"team"}]}""")]
+    [InlineData(1, "invalid audience", "{" + Base + ""","nudges":[{"pattern":"x","message":"m","severity":"notice","audience":null}]}""")]
+    [InlineData(1, "invalid match 'path'", "{" + Base + ""","nudges":[{"pattern":"x","message":"m","severity":"warn","match":"path"}]}""")]
+    [InlineData(1, "invalid match ''", "{" + Base + ""","nudges":[{"pattern":"x","message":"m","severity":"warn","match":""}]}""")]
+    [InlineData(0, null, "{" + Base + ""","nudges":[{"pattern":"^tools/(?!one-off/)","message":"m","severity":"warn","match":"NEW-FILE"},{"pattern":"dotnet test","message":"m","severity":"warn","match":"command"},{"pattern":"^src/","message":"m","severity":"notice","audience":"WORKER"}]}""")]
+    // Claude guard wiring: a warning, exit 0
+    [InlineData(0, null, Claude, Wired)]
+    [InlineData(0, null, Claude, "﻿" + Wired)]
+    [InlineData(0, "the file is missing", Claude)]
+    [InlineData(0, "the file is missing", Claude, null, Wired)]
+    [InlineData(0, NoGuard, Claude, "{}")]
+    [InlineData(0, NoGuard, Claude, """{"hooks":{"PreToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"dydo guard"}]}]}}""")]
+    [InlineData(0, NoGuard, Claude, """{"hooks":{"PostToolUse":[{"matcher":"Bash","hooks":[{"type":"command","command":"dydo guard --host claude"}]}]}}""")]
+    [InlineData(0, NoGuard, Claude, """{"hooks":{"PreToolUse":[{"matcher":"Bash","hooks":["dydo guard --host claude"]}]}}""")]
+    [InlineData(0, FixJson, Claude, "{not valid json")]
+    [InlineData(0, FixJson, Claude, """{"hooks":{},"hooks":{}}""")]
+    [InlineData(0, FixJson, Claude, "[]")]
+    [InlineData(0, FixJson, Claude, """{"hooks":[]}""")]
+    [InlineData(0, FixJson, Claude, """{"hooks":{"PreToolUse":{"matcher":"Bash"}}}""")]
+    [InlineData(0, null, "{" + Base + ""","integrations":{"claude":false,"codex":true}}""")]
+    [InlineData(0, null, "{" + Base + "}")]
+    public void Validate_ReportsTheFindingAndExitCode(
+        int expectedExit, string? expectedFinding, string? dydoJson, string? settings = null, string? localSettings = null)
+    {
+        if (dydoJson != null)
+            File.WriteAllText(Path.Combine(_dir, "dydo.json"), dydoJson);
+        WriteClaudeSettings("settings.json", settings);
+        WriteClaudeSettings("settings.local.json", localSettings);
+
+        var (code, output) = DydoCli.RunCombined("validate");
+
+        Assert.True(expectedExit == code, $"exit {code}, expected {expectedExit}:\n{output}");
+        if (expectedFinding is null)
+            Assert.Contains("Validation passed", output);
+        else
+            Assert.Contains(expectedFinding, output);
+    }
+
+    [Fact]
+    public void Validate_InvalidDydoJson_ReportsItWithoutCheckingClaudeSettings()
+    {
+        File.WriteAllText(Path.Combine(_dir, "dydo.json"), """{"integrations":{"claude":true},"testing":{"runner":[]}}""");
+
+        var (code, output) = DydoCli.RunCombined("validate");
+
+        Assert.Equal(1, code);
+        Assert.Contains("testing.runner", output);
+        Assert.DoesNotContain(".claude/settings.json", output);
+    }
+
+    [SkippableFact]
+    [UnsupportedOSPlatform("windows")]
+    public void Validate_UnreadableClaudeSettings_WarnsToMakeThemReadable()
+    {
+        Skip.If(OperatingSystem.IsWindows(), "POSIX modes decide whether the file can be read.");
+        File.WriteAllText(Path.Combine(_dir, "dydo.json"), Claude);
+        WriteClaudeSettings("settings.json", Wired);
+        File.SetUnixFileMode(Path.Combine(_dir, ".claude", "settings.json"), UnixFileMode.None);
+
+        var (code, output) = DydoCli.RunCombined("validate");
+
+        Assert.Equal(0, code);
+        Assert.Contains("Make it readable", output);
+    }
+
+    private void WriteClaudeSettings(string fileName, string? content)
+    {
+        if (content == null)
+            return;
+        Directory.CreateDirectory(Path.Combine(_dir, ".claude"));
+        File.WriteAllText(Path.Combine(_dir, ".claude", fileName), content);
     }
 
     public void Dispose()
     {
-        Environment.CurrentDirectory = _originalDir;
-        try
-        {
-            if (Directory.Exists(_testDir))
-                Directory.Delete(_testDir, true);
-        }
-        catch (IOException) { }
-    }
-
-    [Fact]
-    public void Create_ReturnsValidateCommand()
-    {
-        var command = DynaDocs.Commands.ValidateCommand.Create();
-
-        Assert.Equal("validate", command.Name);
-    }
-
-    [Fact]
-    public void Validate_NoIssues_ReturnsZero()
-    {
-        SetupValidProjectNoWarnings();
-
-        var command = DynaDocs.Commands.ValidateCommand.Create();
-        var exitCode = command.Parse("").Invoke();
-
-        Assert.Equal(0, exitCode);
-    }
-
-    [Fact]
-    public void Validate_NoIssues_PrintsPassedMessage()
-    {
-        SetupValidProjectNoWarnings();
-
-        var (stdout, _) = CaptureOutput(() =>
-        {
-            var command = DynaDocs.Commands.ValidateCommand.Create();
-            return command.Parse("").Invoke();
-        });
-
-        Assert.Contains("Validation passed", stdout);
-    }
-
-    [Fact]
-    public void Validate_WithErrors_ReturnsOne()
-    {
-        var command = DynaDocs.Commands.ValidateCommand.Create();
-        var exitCode = command.Parse("").Invoke();
-
-        Assert.Equal(1, exitCode);
-    }
-
-    [Fact]
-    public void Validate_WithErrors_PrintsErrorCount()
-    {
-        var (_, stderr) = CaptureOutput(() =>
-        {
-            var command = DynaDocs.Commands.ValidateCommand.Create();
-            return command.Parse("").Invoke();
-        });
-
-        Assert.Contains("Errors", stderr);
-    }
-
-    [Fact]
-    public void Validate_AcceptsValidTestingRunner()
-    {
-        SetupValidProjectNoWarnings();
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"),
-            "{\"testing\":{\"runner\":[\"runner\",\"\"]}}");
-
-        var exitCode = DynaDocs.Commands.ValidateCommand.Create().Parse("").Invoke();
-
-        Assert.Equal(0, exitCode);
-    }
-
-    [Fact]
-    public void Validate_RejectsInvalidTestingRunner()
-    {
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"), "{\"testing\":{\"runner\":[]}}");
-
-        var exitCode = DynaDocs.Commands.ValidateCommand.Create().Parse("").Invoke();
-
-        Assert.Equal(1, exitCode);
-    }
-
-    [Fact]
-    public void Validate_AcceptsNewFileNudge()
-    {
-        SetupValidProjectNoWarnings();
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"), """
-            {"version":1,"structure":{"root":"dydo"},"nudges":[
-              {"pattern":"^tools/(?!one-off/)","message":"New tools go under tools/one-off/.","severity":"warn","match":"new-file"}]}
-            """);
-
-        var (stdout, _) = CaptureOutput(() => DynaDocs.Commands.ValidateCommand.Create().Parse("").Invoke());
-
-        Assert.Contains("Validation passed", stdout);
-    }
-
-    [Fact]
-    public void Validate_RejectsUnknownNudgeMatch()
-    {
-        SetupValidProjectNoWarnings();
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"), """
-            {"version":1,"structure":{"root":"dydo"},"nudges":[
-              {"pattern":"^tools/","message":"m","severity":"warn","match":"path"}]}
-            """);
-
-        var exitCode = 0;
-        var (_, stderr) = CaptureOutput(() => exitCode = DynaDocs.Commands.ValidateCommand.Create().Parse("").Invoke());
-
-        Assert.Equal(1, exitCode);
-        Assert.Contains("Nudge [0] has invalid match 'path'. Must be 'command' or 'new-file'.", stderr);
-    }
-
-    [Fact]
-    public void Validate_ClaudeRecordedWithoutGuard_WarnsWithFixAndExitsZero()
-    {
-        SetupValidProjectNoWarnings();
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"),
-            """{"version":1,"structure":{"root":"dydo"},"integrations":{"claude":true}}""");
-
-        var exitCode = -1;
-        var (stdout, stderr) = CaptureOutput(() => exitCode = DynaDocs.Commands.ValidateCommand.Create().Parse("").Invoke());
-
-        Assert.Equal(0, exitCode);
-        Assert.Equal("", stdout);
-        Assert.Equal(
-            "Warnings (1):\n  .claude/settings.json: Claude agents run without the dydo guard: the file is missing. " +
-            "Run 'dydo init claude --join'.\n",
-            stderr.ReplaceLineEndings("\n"));
-    }
-
-    private static (string stdout, string stderr) CaptureOutput(Func<int> action)
-    {
-        var (_, stdout, stderr) = ConsoleCapture.All(action);
-        return (stdout, stderr);
-    }
-
-    private void SetupValidProjectNoWarnings()
-    {
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"),
-            """{"version":1,"structure":{"root":"dydo"},"integrations":{"claude":false,"codex":false},"scanExclude":["_system/.local/","agents/"],"nudges":[],"frameworkHashes":{}}""");
-        Directory.CreateDirectory(Path.Combine(_testDir, "dydo", "_system"));
-    }
-
-    [Fact]
-    public void Validate_Root_ReadsDydoJsonFromThatProjectNotCwd()
-    {
-        SetupValidProjectNoWarnings();
-        var other = Path.Combine(_testDir, "other");
-        Directory.CreateDirectory(Path.Combine(other, "dydo", "guides"));
-        File.WriteAllText(Path.Combine(other, "dydo.json"), "{\"testing\":{\"runner\":[]}}");
-
-        var (code, stdout, _) = ConsoleCapture.All(() =>
-            DynaDocs.Commands.ValidateCommand.Create().Parse(["--root", Path.Combine(other, "dydo", "guides")]).Invoke());
-
-        Assert.Equal(1, code);
-        Assert.Contains($"Root: {other}", stdout);
-    }
-
-    [Fact]
-    public void Validate_RootInNoDydoProject_IsToolError()
-    {
-        SetupValidProjectNoWarnings();
-        var nowhere = Path.Combine(Path.GetTempPath(), "dydo-validate-nowhere-" + Guid.NewGuid().ToString("N")[..8]);
-        Directory.CreateDirectory(nowhere);
-        try
-        {
-            var (code, _, stderr) = ConsoleCapture.All(() =>
-                DynaDocs.Commands.ValidateCommand.Create().Parse(["--root", nowhere]).Invoke());
-
-            Assert.Equal(2, code);
-            Assert.Contains($"No dydo project found at {nowhere}", stderr);
-        }
-        finally
-        {
-            Directory.Delete(nowhere, true);
-        }
-    }
-
-    [Fact]
-    public void Validate_WithoutRoot_PrintsNoRootLine()
-    {
-        SetupValidProjectNoWarnings();
-
-        var (stdout, _) = CaptureOutput(() => DynaDocs.Commands.ValidateCommand.Create().Parse("").Invoke());
-
-        Assert.DoesNotContain("Root:", stdout);
+        Environment.CurrentDirectory = _original;
+        var settings = Path.Combine(_dir, ".claude", "settings.json");
+        if (!OperatingSystem.IsWindows() && File.Exists(settings))
+            File.SetUnixFileMode(settings, UnixFileMode.UserRead | UnixFileMode.UserWrite);
+        TestDirectory.Delete(_dir);
     }
 }

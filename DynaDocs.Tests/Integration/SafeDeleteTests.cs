@@ -8,6 +8,7 @@ using DynaDocs.Models;
 using DynaDocs.Serialization;
 
 [Collection("Integration")]
+[Trait("Job", "contract: spec N10; DYD-1029 (archive a branch or worktree, then purge)")]
 public sealed class SafeDeleteTests : IDisposable
 {
     internal readonly string Root = Path.Combine(Path.GetTempPath(), "dydo-safe-delete-" + Guid.NewGuid().ToString("N"));

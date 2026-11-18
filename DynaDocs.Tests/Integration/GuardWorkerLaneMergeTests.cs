@@ -5,6 +5,7 @@ namespace DynaDocs.Tests.Integration;
 /// Sub-ticket's code-writer, a sub-agent, so the lane allows it in every shell form.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: DYD-424 dydo merge runs in the worker lane")]
 public class GuardWorkerLaneMergeTests : IntegrationTestBase
 {
     [Theory]

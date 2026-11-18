@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Text.Json.Nodes;
 
 [Collection("Integration")]
+[Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
 public sealed class SafeDeleteGitHubTests
 {
     [Theory]

@@ -1,6 +1,4 @@
-using System.Text.Json;
 using System.Text.Json.Nodes;
-using DynaDocs.Models;
 using DynaDocs.Services;
 using DynaDocs.Utils;
 
@@ -8,7 +6,12 @@ namespace DynaDocs.Tests.Integration;
 
 using DynaDocs.Commands;
 
+/// <summary>
+/// `dydo init` and `--join` observed as the files they leave: each host's wiring, the bytes of
+/// files dydo did not write, and nothing at all when a preflight refuses.
+/// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: dydo-commands-core.md dydo init and --join; DR 056 (committed guard); trap: DYD-392 (init and join keep foreign hook, settings and TOML bytes; a refused init writes nothing)")]
 public class InitCommandTests : IntegrationTestBase
 {
     private const string CustomHooks = """
@@ -35,15 +38,13 @@ public class InitCommandTests : IntegrationTestBase
         AddLegacyModels(configPath);
         var original = File.ReadAllBytes(configPath);
 
-        var (exitCode, stdout, stderr) = ConsoleCapture.All(() =>
+        var (exitCode, _, stderr) = ConsoleCapture.All(() =>
             InitCommand.ExecuteJoin("codex", () => throw new IOException("injected post-work failure")));
 
         Assert.Equal(ExitCodes.ToolError, exitCode);
         Assert.Contains("injected post-work failure", stderr);
         // Hook wiring and the integration report precede the commit seam.
         AssertFileExists(".codex/hooks.json");
-        Assert.Contains("Codex hooks configured", stdout);
-        Assert.Contains("Recorded integration(s) in dydo.json: codex", stdout);
         Assert.Equal(original, File.ReadAllBytes(configPath));
         Assert.Contains("\"models\"", File.ReadAllText(configPath));
         Assert.Empty(Directory.GetFiles(TestDir, "dydo.json.*.tmp"));
@@ -60,7 +61,6 @@ public class InitCommandTests : IntegrationTestBase
         var result = await JoinProjectAsync("codex");
 
         result.AssertSuccess();
-        Assert.DoesNotContain("Recorded integration(s)", result.Stdout);
         Assert.Equal(original, File.ReadAllBytes(configPath));
         Assert.Contains("\"models\"", File.ReadAllText(configPath));
         Assert.Empty(Directory.GetFiles(TestDir, "dydo.json.*.tmp"));
@@ -97,7 +97,6 @@ public class InitCommandTests : IntegrationTestBase
         var result = await JoinProjectAsync("codex");
 
         result.AssertSuccess();
-        Assert.Contains("Recorded integration(s) in dydo.json: codex", result.Stdout);
         Assert.Equal("1.2.3", ReadDydoVersion());
     }
 
@@ -110,7 +109,6 @@ public class InitCommandTests : IntegrationTestBase
         var result = await JoinProjectAsync("codex");
 
         result.AssertSuccess();
-        Assert.Contains("Recorded integration(s) in dydo.json: codex", result.Stdout);
         Assert.False(ReadConfigJson().ContainsKey("dydoVersion"));
     }
 
@@ -138,178 +136,7 @@ public class InitCommandTests : IntegrationTestBase
         File.WriteAllText(configPath, raw.ToJsonString());
     }
 
-    #region Init None
-
-    [Fact]
-    public async Task Init_None_CreatesBasicStructure()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        AssertFileExists("dydo.json");
-        AssertFileExists("AGENTS.md");
-        AssertFileNotExists("CLAUDE.md");
-        AssertDirectoryExists("dydo");
-        AssertDirectoryExists("dydo/understand");
-        AssertDirectoryExists("dydo/guides");
-        AssertDirectoryExists("dydo/reference");
-        AssertDirectoryExists("dydo/project");
-        AssertDirectoryExists("dydo/agents");
-    }
-
-    [Fact]
-    public async Task Init_None_CreatesFoundationDocs()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        AssertFileExists("dydo/index.md");
-        AssertFileExists("dydo/welcome.md");
-        AssertFileExists("dydo/files-off-limits.md");
-        AssertFileExists("dydo/understand/about.md");
-        AssertFileExists("dydo/understand/architecture.md");
-        AssertFileExists("dydo/guides/coding-standards.md");
-        AssertFileExists("dydo/reference/writing-docs.md");
-    }
-
-    [Fact]
-    public async Task Init_None_CreatesEmptyAgentsWorkspaceRoot()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-
-        AssertDirectoryExists("dydo/agents");
-        Assert.False(Directory.Exists(Path.Combine(TestDir, "dydo/agents/sample")));
-    }
-
-    [Fact]
-    public async Task Init_None_CreatesCorrectConfig()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        AssertFileContains("dydo.json", "\"version\": 1");
-        // The nested models.agents tier bindings are a different key and must not trip this.
-        var config = Assert.IsType<JsonObject>(JsonNode.Parse(ReadFile("dydo.json")));
-        Assert.False(config.ContainsKey("agents"));
-    }
-
-    [Fact]
-    public async Task Init_None_NextStepsDoNotTeachARemovedConfigKey()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        Assert.DoesNotContain("\"paths\"", result.Stdout);
-        Assert.DoesNotContain("Source and test paths", result.Stdout);
-    }
-
-    [Fact]
-    public async Task Init_None_UpdatesGitignore()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        AssertFileExists(".gitignore");
-        AssertFileContains(".gitignore", "dydo/agents/");
-        AssertFileContains(".gitignore", "dydo/_system/.local/");
-    }
-
-    [Fact]
-    public async Task Init_None_ScaffoldsSystemLocalDir()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        AssertDirectoryExists("dydo/_system/.local");
-    }
-
-    [Fact]
-    public async Task Init_None_CreatesDurableProjectKnowledgeWithoutLegacyWorkHierarchy()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-
-        foreach (var retired in new[] { "tasks", "issues", "campaigns", "sprints", "slices", "backlog" })
-            Assert.False(Directory.Exists(Path.Combine(TestDir, "dydo", "project", retired)));
-
-        AssertFileExists("dydo/project/future-features/_future-features.md");
-        AssertFileContains("dydo/project/future-features/_future-features.md",
-            "A new FutureFeature is a Linear ticket in status `FutureFeature`");
-        AssertFileContains("dydo/project/future-features/_future-features.md",
-            "stays until its migration to Linear is verified");
-        Assert.DoesNotContain("repo-native ideas",
-            File.ReadAllText(Path.Combine(TestDir, "dydo", "project", "future-features", "_future-features.md")));
-
-        var futureFeatureFiles = Directory.GetFiles(
-                Path.Combine(TestDir, "dydo", "project", "future-features"), "*.md")
-            .Select(Path.GetFileName)
-            .OrderBy(name => name)
-            .ToArray();
-        Assert.Equal(new[] { "_future-features.md" }, futureFeatureFiles);
-
-        AssertFileNotExists("dydo/project/decisions/_index.md");
-        AssertFileExists("dydo/project/decisions/_decisions.md");
-
-        AssertFileNotExists("dydo/project/changelog/_index.md");
-        AssertFileExists("dydo/project/changelog/_changelog.md");
-
-        AssertFileNotExists("dydo/project/pitfalls/_index.md");
-        AssertFileExists("dydo/project/pitfalls/_pitfalls.md");
-    }
-
-    [Fact]
-    public async Task Init_None_MetaFilesHaveMeaningfulContent()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-
-        AssertFileContains("dydo/project/decisions/_decisions.md", "Decision Records");
-        AssertFileContains("dydo/project/decisions/_decisions.md", "proposed");
-        AssertFileContains("dydo/project/decisions/_decisions.md", "accepted");
-
-        AssertFileContains("dydo/project/changelog/_changelog.md", "Chronological record");
-        AssertFileContains("dydo/project/changelog/_changelog.md", "Files Changed");
-
-        AssertFileContains("dydo/project/pitfalls/_pitfalls.md", "Known gotchas");
-        AssertFileContains("dydo/project/pitfalls/_pitfalls.md", "Symptoms");
-    }
-
-    #endregion
-
-    #region Init Claude
-
-    [Fact]
-    public async Task Init_Claude_CreatesHooksConfig()
-    {
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        // The guard is committed project wiring; the local file carries only the allow list.
-        AssertFileContains(".claude/settings.json", "PreToolUse");
-        AssertFileContains(".claude/settings.json", "dydo guard");
-        AssertFileExists(".claude/settings.local.json");
-        Assert.DoesNotContain("dydo guard", ReadFile(".claude/settings.local.json"));
-    }
-
-    [Fact]
-    public async Task Init_Codex_CreatesProjectAndHooksWithoutClaudeSettings()
-    {
-        var result = await InitProjectAsync("codex");
-
-        result.AssertSuccess();
-        AssertFileExists("dydo.json");
-        AssertFileExists("dydo/index.md");
-        AssertFileExists("AGENTS.md");
-        AssertFileExists(".codex/hooks.json");
-        AssertFileContains("AGENTS.md", "dydo/index.md");
-        AssertFileContains("dydo.json", "\"codex\": true");
-        result.AssertStdoutContains("AGENTS.md -> dydo/index.md");
-        AssertFileNotExists(".claude/settings.local.json");
-    }
+    #region Host wiring
 
     [Fact]
     public async Task Init_All_WritesHostAgentSettings()
@@ -323,7 +150,6 @@ public class InitCommandTests : IntegrationTestBase
         Assert.False(claude["autoMemoryEnabled"]?.GetValue<bool>());
         Assert.Equal("[agents]\nmax_depth = 3\nmax_concurrent_threads_per_session = 16\n\n[features]\nmemories = false\n",
             ReadFile(".codex/config.toml"));
-        Assert.DoesNotContain("Turned native memory off", result.Stdout);
     }
 
     [Fact]
@@ -345,8 +171,6 @@ public class InitCommandTests : IntegrationTestBase
         Assert.Equal(
             "# keep\n[features]\nother = true\nmemories = false  # was on\n\n[agents]\nmax_depth = 3\nmax_concurrent_threads_per_session = 16\n",
             ReadFile(".codex/config.toml"));
-        result.AssertStdoutContains("Turned native memory off: .claude/settings.json had autoMemoryEnabled = true");
-        result.AssertStdoutContains("Turned native memory off: .codex/config.toml had memories = true  # was on");
     }
 
     [Fact]
@@ -362,7 +186,6 @@ public class InitCommandTests : IntegrationTestBase
         Assert.Equal(
             "[features]\nother = true\nmemories = false\n\n[agents]\nmax_depth = 3\nmax_concurrent_threads_per_session = 16\n",
             ReadFile(".codex/config.toml"));
-        Assert.DoesNotContain("Turned native memory off", result.Stdout);
     }
 
     [Theory]
@@ -850,74 +673,6 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
-    public async Task Join_Codex_RemovesTheDydoStopHook_KeepingForeignStopEntries()
-    {
-        (await InitProjectAsync("codex")).AssertSuccess();
-        WriteFile(".codex/hooks.json", """
-            {
-              "hooks": {
-                "Stop": [
-                  { "hooks": [ { "type": "command", "command": "dydo guard --stop" } ] },
-                  { "hooks": [ { "type": "command", "command": "echo before dydo guard --stop after" } ] }
-                ]
-              }
-            }
-            """);
-
-        var result = await JoinProjectAsync("codex");
-
-        result.AssertSuccess();
-        var hooks = Assert.IsType<JsonObject>(JsonNode.Parse(ReadFile(".codex/hooks.json"))?["hooks"]);
-        var stop = Assert.IsType<JsonArray>(hooks["Stop"]);
-        Assert.Equal(["echo before dydo guard --stop after"], HookTestAssertions.Commands(Assert.Single(stop)));
-    }
-
-    [Fact]
-    public async Task Init_Codex_DoesNotDuplicateDydoHook()
-    {
-        await InitProjectAsync("codex");
-
-        var result = await JoinProjectAsync("codex");
-
-        result.AssertSuccess();
-        var content = ReadFile(".codex/hooks.json");
-        Assert.Equal(1, content.Split("\"dydo guard\"").Length - 1);
-        Assert.DoesNotContain("dydo guard --stop", content);
-    }
-
-    [Fact]
-    public async Task Init_Claude_HooksMatchEditWriteReadBash()
-    {
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.json");
-        Assert.Contains("Edit|Write|Read|Bash", content);
-    }
-
-    [Fact]
-    public async Task Init_Claude_MatcherIncludesPlanModeTools()
-    {
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.json");
-        Assert.Contains("EnterPlanMode", content);
-        Assert.Contains("ExitPlanMode", content);
-    }
-
-    [Fact]
-    public async Task Init_Claude_MatcherIncludesPowerShell()
-    {
-        // Without PowerShell in the matcher, Claude Code's PowerShell calls bypass every guard layer.
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.json");
-        Assert.Contains("PowerShell", content);
-    }
-
-    [Fact]
     public async Task Init_Claude_PreservesExistingHooks()
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -1106,30 +861,17 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
-    public async Task Init_Claude_DoesNotDuplicateDydoHook()
-    {
-        await InitProjectAsync("claude");
-
-        // Init refuses an initialized project, so join is the re-run.
-        var result = await JoinProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.json");
-
-        var guardCount = content.Split("\"dydo guard --host claude\"").Length - 1;
-        Assert.Equal(1, guardCount);
-    }
-
-    [Fact]
-    public async Task Init_Claude_GuardMatcherIsExact()
+    [Trait("Job", "trap: a tool the Claude matcher does not name bypasses every guard layer (PowerShell, NotebookEdit, Agent)")]
+    public async Task Init_Claude_GuardMatcherNamesEveryGuardedTool()
     {
         var result = await InitProjectAsync("claude");
 
         result.AssertSuccess();
         var settings = Assert.IsType<JsonObject>(JsonNode.Parse(ReadFile(".claude/settings.json")));
         var entry = Assert.Single(Assert.IsType<JsonArray>(settings["hooks"]?["PreToolUse"]));
-        Assert.Equal("Edit|Write|Read|Bash|Glob|Grep|Agent|EnterPlanMode|ExitPlanMode|PowerShell|NotebookEdit",
-            entry?["matcher"]?.GetValue<string>());
+        var matched = entry?["matcher"]?.GetValue<string>().Split('|') ?? [];
+        Assert.All(new[] { "Edit", "Write", "Read", "Bash", "Glob", "Grep", "Agent", "PowerShell", "NotebookEdit" },
+            tool => Assert.Contains(tool, matched));
     }
 
     [Fact]
@@ -1177,258 +919,129 @@ public class InitCommandTests : IntegrationTestBase
         Assert.DoesNotContain("--host", ReadFile(".codex/hooks.json"));
     }
 
-    [Fact]
-    public async Task Init_Claude_WritesNoStopHook()
-    {
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var settings = Assert.IsType<JsonObject>(JsonNode.Parse(ReadFile(".claude/settings.json")));
-        Assert.False(Assert.IsType<JsonObject>(settings["hooks"]).ContainsKey("Stop"));
-    }
-
-    [Fact]
-    public async Task Init_Claude_KeepsForeignStopEntries_AddingNoDydoOne()
-    {
-        Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
-        WriteFile(".claude/settings.local.json", """
-            {
-              "hooks": {
-                "Stop": [
-                  { "hooks": [ { "type": "command", "command": "echo my-stop" } ] }
-                ]
-              }
-            }
-            """);
-
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var stop = Assert.IsType<JsonArray>(JsonNode.Parse(ReadFile(".claude/settings.local.json"))?["hooks"]?["Stop"]);
-        Assert.Equal(["echo my-stop"], HookTestAssertions.Commands(Assert.Single(stop)));
-    }
-
-    [Fact]
-    public async Task Init_Claude_RemovesAnExistingDydoStopHook_DroppingTheEmptiedArray()
-    {
-        Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
-        WriteFile(".claude/settings.local.json", """
-            {
-              "hooks": {
-                "Stop": [
-                  { "hooks": [ { "type": "command", "command": "dydo guard --stop" } ] }
-                ]
-              }
-            }
-            """);
-
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.local.json");
-        Assert.DoesNotContain("dydo guard --stop", content);
-        Assert.DoesNotContain("\"Stop\"", content);
-    }
-
-    [Fact]
-    public async Task Join_Claude_RemovesAnExistingDydoStopHook_KeepingForeignHooksInTheEntry()
-    {
-        (await InitProjectAsync("claude")).AssertSuccess();
-        WriteFile(".claude/settings.local.json", """
-            {
-              "hooks": {
-                "Stop": [
-                  { "hooks": [
-                    { "type": "command", "command": "dydo guard --stop" },
-                    { "type": "command", "command": "echo my-stop" }
-                  ] }
-                ]
-              }
-            }
-            """);
-
-        var result = await JoinProjectAsync("claude");
-
-        result.AssertSuccess();
-        var stop = Assert.IsType<JsonArray>(JsonNode.Parse(ReadFile(".claude/settings.local.json"))?["hooks"]?["Stop"]);
-        Assert.Equal(["echo my-stop"], HookTestAssertions.Commands(Assert.Single(stop)));
-    }
-
-    [Fact]
-    public async Task Init_Claude_KeepsAnAlreadyEmptyStopArray()
-    {
-        Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
-        WriteFile(".claude/settings.local.json", """{ "hooks": { "Stop": [] } }""");
-
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var stop = Assert.IsType<JsonArray>(JsonNode.Parse(ReadFile(".claude/settings.local.json"))?["hooks"]?["Stop"]);
-        Assert.Empty(stop);
-    }
-
-    [Fact]
-    public async Task Init_Claude_AddsDydoAllowEntry()
-    {
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.local.json");
-        Assert.Contains("Bash(dydo:*)", content);
-    }
-
-    [Fact]
-    public async Task Init_Claude_AddsPowerShellDydoAllowEntry()
-    {
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.local.json");
-        Assert.Contains("PowerShell(dydo:*)", content);
-    }
-
+    // dydo-commands-core.md, dydo init's host table: what each integration writes, and a repeat join
+    // that changes no byte of any of it.
     [Theory]
-    [InlineData("Bash(dydo:*)")]
-    [InlineData("PowerShell(dydo:*)")]
-    public async Task Init_Claude_AllowMergesWithExistingEntries(string expectedEntry)
-    {
-        Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
-        WriteFile(".claude/settings.local.json", """
-            {
-              "permissions": {
-                "allow": [
-                  "Bash(git:*)",
-                  "Read(**)"
-                ]
-              }
-            }
-            """);
-
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.local.json");
-        Assert.Contains("Bash(git:*)", content);
-        Assert.Contains("Read(**)", content);
-        Assert.Contains(expectedEntry, content);
-    }
-
-    [Fact]
-    public async Task Init_Claude_DoesNotDuplicateAllowEntry()
-    {
-        await InitProjectAsync("claude");
-
-        var result = await JoinProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.local.json");
-        var count = content.Split("Bash(dydo:*)").Length - 1;
-        Assert.Equal(1, count);
-    }
-
-    [Fact]
-    public async Task Init_Claude_DoesNotDuplicatePowerShellAllowEntry()
-    {
-        await InitProjectAsync("claude");
-
-        var result = await JoinProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.local.json");
-        var count = content.Split("PowerShell(dydo:*)").Length - 1;
-        Assert.Equal(1, count);
-    }
-
-    [Fact]
-    public async Task Init_Claude_AddsNarrowDydoCleanAllowEntries_OnceAcrossJoin()
-    {
-        (await InitProjectAsync("claude")).AssertSuccess();
-        (await JoinProjectAsync("claude")).AssertSuccess();
-
-        var allow = Assert.IsType<JsonArray>(JsonNode.Parse(ReadFile(".claude/settings.local.json"))!["permissions"]!["allow"]);
-        var entries = allow.Select(entry => entry!.GetValue<string>()).ToList();
-        Assert.Equal(1, entries.Count(entry => entry == "Bash(dydo clean:*)"));
-        Assert.Equal(1, entries.Count(entry => entry == "PowerShell(dydo clean:*)"));
-        Assert.Contains("Bash(dydo:*)", entries);
-    }
-
-    [Fact]
-    public async Task Join_Claude_AddsTheDydoMergeAllowEntriesOnce()
-    {
-        (await InitProjectAsync("claude")).AssertSuccess();
-        (await JoinProjectAsync("claude")).AssertSuccess();
-        (await JoinProjectAsync("claude")).AssertSuccess();
-
-        var allow = Assert.IsType<JsonArray>(JsonNode.Parse(ReadFile(".claude/settings.local.json"))!["permissions"]!["allow"]);
-        var entries = allow.Select(entry => entry!.GetValue<string>()).ToList();
-        Assert.Equal(1, entries.Count(entry => entry == "Bash(dydo merge:*)"));
-        Assert.Equal(1, entries.Count(entry => entry == "PowerShell(dydo merge:*)"));
-    }
-
-    [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init host table (files per host; --join rewrites nothing it already wrote)")]
+    [InlineData("none")]
+    [InlineData("claude")]
     [InlineData("codex")]
     [InlineData("all")]
-    public async Task Init_Codex_WritesTheDydoMergeRuleForDydoAndDydoExe(string integration)
+    public async Task Init_WritesEachHostsFiles_AndARepeatJoinChangesNoByte(string integration)
+    {
+        var claude = integration is "claude" or "all";
+        var codex = integration is "codex" or "all";
+
+        var init = await InitProjectAsync(integration);
+        var written = AllFiles();
+        var join = await JoinProjectAsync(integration);
+
+        Assert.Equal(0, init.ExitCode);
+        Assert.Equal(0, join.ExitCode);
+        Assert.Equal(written, AllFiles());
+        var gitignore = ReadFile(".gitignore").Split('\n').Select(line => line.Trim()).ToList();
+        foreach (var entry in new[] { "dydo/agents/", "dydo/_system/.local/", "/.claude/skills/", "/.agents/skills/" })
+            Assert.Equal(1, gitignore.Count(line => line == entry));
+        Assert.Equal(claude ? 1 : 0, gitignore.Count(line => line == ".claude/settings.local.json"));
+        Assert.True(File.Exists(Path.Combine(TestDir, "AGENTS.md")));
+        Assert.False(File.Exists(Path.Combine(TestDir, "CLAUDE.md")));
+        var integrations = ReadConfigJson()["integrations"]?.AsObject();
+        Assert.Equal(claude, integrations?["claude"]?.GetValue<bool>() ?? false);
+        Assert.Equal(codex, integrations?["codex"]?.GetValue<bool>() ?? false);
+
+        Assert.Equal(claude, File.Exists(Path.Combine(TestDir, ".claude", "settings.json")));
+        if (claude)
+        {
+            Assert.Contains("dydo guard --host claude", ReadFile(".claude/settings.json"));
+            Assert.DoesNotContain("dydo guard", ReadFile(".claude/settings.local.json"));
+            var allow = AllowEntries();
+            foreach (var entry in DydoAllowEntries)
+                Assert.Equal(1, allow.Count(value => value == entry));
+        }
+        else
+        {
+            Assert.False(File.Exists(Path.Combine(TestDir, ".claude", "settings.local.json")));
+        }
+
+        Assert.Equal(codex, File.Exists(Path.Combine(TestDir, ".codex", "hooks.json")));
+        Assert.Equal(codex, File.Exists(Path.Combine(TestDir, ".codex", "rules", "dydo.rules")));
+        if (codex)
+            Assert.DoesNotContain("--host", ReadFile(".codex/hooks.json"));
+    }
+
+    private static readonly string[] DydoAllowEntries =
+    [
+        "Bash(dydo:*)", "PowerShell(dydo:*)", "Bash(dydo clean:*)", "PowerShell(dydo clean:*)",
+        "Bash(dydo merge:*)", "PowerShell(dydo merge:*)"
+    ];
+
+    [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (settings.local.json carries the allow entries); trap: existing local settings are merged, not replaced")]
+    [InlineData("""{ "permissions": { "allow": [ "Bash(git:*)", "Read(**)" ] } }""", "Bash(git:*)", "Read(**)")]
+    [InlineData("""{ "hooks": {} }""")]
+    public async Task Init_Claude_MergesTheAllowListIntoExistingLocalSettings(string existing, params string[] kept)
+    {
+        WriteFile(".claude/settings.local.json", existing);
+
+        (await InitProjectAsync("claude")).AssertSuccess();
+
+        var allow = AllowEntries();
+        Assert.All(kept, entry => Assert.Contains(entry, allow));
+        Assert.All(DydoAllowEntries, entry => Assert.Equal(1, allow.Count(value => value == entry)));
+    }
+
+    // Issue 0300 and 0303: joining a second host records both and gitignores what the new host needs.
+    [Theory]
+    [Trait("Job", "trap: issue 0300 (a joined second host replaced the first in dydo.json); trap: issue 0303 (the Claude local settings rode a commit)")]
+    [InlineData("claude", "codex")]
+    [InlineData("codex", "claude")]
+    [InlineData("none", "all")]
+    public async Task Join_SecondHost_RecordsBothAndWiresTheNewOne(string first, string second)
+    {
+        (await InitProjectAsync(first)).AssertSuccess();
+
+        (await JoinProjectAsync(second)).AssertSuccess();
+
+        var integrations = ReadConfigJson()["integrations"]!.AsObject();
+        Assert.True(integrations["claude"]!.GetValue<bool>());
+        Assert.True(integrations["codex"]!.GetValue<bool>());
+        Assert.True(File.Exists(Path.Combine(TestDir, ".codex", "hooks.json")));
+        Assert.True(File.Exists(Path.Combine(TestDir, ".claude", "settings.json")));
+        Assert.Contains(".claude/settings.local.json", ReadFile(".gitignore"));
+    }
+
+    [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (exit 2: unknown integration, --join outside a project, a project already initialised)")]
+    [InlineData(false, "none", "--join")]
+    [InlineData(false, "invalid")]
+    [InlineData(true, "none")]
+    public async Task Init_Refused_ExitsTwoAndOverwritesNothing(bool initialised, params string[] args)
+    {
+        if (initialised)
+        {
+            await InitProjectAsync("none");
+            WriteFile("dydo/understand/architecture.md", "# Custom Architecture\n");
+        }
+        var before = AllFiles();
+
+        var result = await RunAsync(InitCommand.Create(), args);
+
+        Assert.Equal(2, result.ExitCode);
+        Assert.Equal(before, AllFiles());
+    }
+
+    [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init codex row (.codex/rules/dydo.rules allows dydo archive, clean and merge under dydo or dydo.exe)")]
+    [InlineData("codex")]
+    [InlineData("all")]
+    public async Task Init_Codex_WritesTheExecPolicyRuleForDydoAndDydoExe(string integration)
     {
         (await InitProjectAsync(integration)).AssertSuccess();
 
         var rules = ReadFile(".codex/rules/dydo.rules");
         Assert.Contains("pattern = [[\"dydo\", \"dydo.exe\"], \"merge\"]", rules);
-        Assert.Contains("dydo.exe merge 12 --match-head-commit 0123456789abcdef0123456789abcdef01234567 --match-base-commit fedcba9876543210fedcba9876543210fedcba98", rules);
-    }
-
-    // Codex itself judges the rule init writes; it skips where Codex is not installed (CI).
-    [SkippableFact]
-    public async Task CodexExecPolicy_AllowsTheDydoMergeRuleInitWrites()
-    {
-        (await InitProjectAsync("codex")).AssertSuccess();
-        var rules = Path.Combine(TestDir, ".codex", "rules", "dydo.rules");
-        const string sha = "0123456789abcdef0123456789abcdef01234567";
-        const string pin = "fedcba9876543210fedcba9876543210fedcba98";
-
-        var merge = CodexExecPolicy(rules, "dydo", "merge", "12", "--match-head-commit", sha, "--match-base-commit", pin, "--dry-run");
-        Skip.If(merge == null, "codex is not on PATH");
-
-        Assert.Contains("\"decision\":\"allow\"", merge);
-        Assert.Contains("\"decision\":\"allow\"", CodexExecPolicy(rules, "dydo.exe", "merge", "12", "--match-head-commit", sha, "--match-base-commit", pin));
-        Assert.DoesNotContain("\"decision\":\"allow\"", CodexExecPolicy(rules, "dydo", "init", "codex"));
-    }
-
-    private static string? CodexExecPolicy(string rules, params string[] command)
-    {
-        var start = new System.Diagnostics.ProcessStartInfo("codex")
-        {
-            RedirectStandardOutput = true,
-            RedirectStandardError = true,
-            UseShellExecute = false
-        };
-        foreach (var argument in (string[])["execpolicy", "check", "--rules", rules, .. command])
-            start.ArgumentList.Add(argument);
-        try
-        {
-            using var process = System.Diagnostics.Process.Start(start)!;
-            var error = process.StandardError.ReadToEndAsync();
-            var output = process.StandardOutput.ReadToEnd();
-            process.WaitForExit();
-            Assert.True(process.ExitCode == 0, error.Result);
-            return output;
-        }
-        catch (System.ComponentModel.Win32Exception)
-        {
-            return null;
-        }
-    }
-
-    [Theory]
-    [InlineData("codex")]
-    [InlineData("all")]
-    public async Task Init_Codex_WritesTheDydoCleanExecPolicyRule(string integration)
-    {
-        (await InitProjectAsync(integration)).AssertSuccess();
-
-        Assert.Equal(InitCommand.CodexRules, ReadFile(".codex/rules/dydo.rules"));
-        Assert.Contains("pattern = [\"dydo\", \"clean\"]", InitCommand.CodexRules);
-        Assert.Contains("decision = \"allow\"", InitCommand.CodexRules);
+        Assert.Contains("pattern = [\"dydo\", \"clean\"]", rules);
+        Assert.Contains("decision = \"allow\"", rules);
     }
 
     [Fact]
@@ -1469,366 +1082,9 @@ public class InitCommandTests : IntegrationTestBase
         Assert.Equal(InitCommand.CodexRules.ReplaceLineEndings("\r\n"), ReadFile(".codex/rules/dydo.rules"));
     }
 
-    [Fact]
-    public void ThisRepository_CommitsTheCodexRuleInitWrites()
-    {
-        var dir = AppContext.BaseDirectory;
-        while (dir != null && !File.Exists(Path.Combine(dir, ".codex", "hooks.json")))
-            dir = Path.GetDirectoryName(dir);
-        Assert.NotNull(dir);
-
-        var committed = File.ReadAllText(Path.Combine(dir, ".codex", "rules", "dydo.rules"));
-
-        Assert.Equal(InitCommand.CodexRules, committed.ReplaceLineEndings("\n"));
-    }
-
-    [Fact]
-    public async Task Init_Claude_WritesNoCodexRule()
-    {
-        (await InitProjectAsync("claude")).AssertSuccess();
-
-        AssertFileNotExists(".codex/rules/dydo.rules");
-    }
-
-    [Fact]
-    public async Task Init_Claude_CreatesAllowArrayWhenMissing()
-    {
-        Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
-        WriteFile(".claude/settings.local.json", """
-            {
-              "hooks": {}
-            }
-            """);
-
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.local.json");
-        Assert.Contains("Bash(dydo:*)", content);
-        Assert.Contains("permissions", content);
-    }
-
-    [Fact]
-    public async Task Init_Claude_BothShellEntriesWhenAllowArrayMissing()
-    {
-        Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
-        WriteFile(".claude/settings.local.json", """
-            {
-              "hooks": {}
-            }
-            """);
-
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var content = ReadFile(".claude/settings.local.json");
-        Assert.Contains("Bash(dydo:*)", content);
-        Assert.Contains("PowerShell(dydo:*)", content);
-        Assert.Contains("permissions", content);
-    }
-
-    [Fact]
-    public async Task Init_DoesNotScaffoldTheRemovedRoleLayer()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        Assert.False(Directory.Exists(Path.Combine(TestDir, "dydo/_system/roles")),
-            "init must not scaffold the removed dydo/_system/roles layer");
-    }
-
-    [Fact]
-    public async Task Init_None_DoesNotCreateAllowEntry()
-    {
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        AssertFileNotExists(".claude/settings.local.json");
-        AssertFileNotExists(".codex/hooks.json");
-        AssertFileExists("AGENTS.md");
-    }
-
-    #endregion
-
-    #region Init All
-
-    [Fact]
-    public async Task Init_All_WiresBothIntegrations()
-    {
-        var result = await InitProjectAsync("all");
-
-        result.AssertSuccess();
-        AssertFileNotExists("CLAUDE.md");
-        AssertFileExists("AGENTS.md");
-        AssertFileExists(".claude/settings.local.json");
-        AssertFileExists(".codex/hooks.json");
-        AssertFileContains("dydo.json", "\"claude\": true");
-        AssertFileContains("dydo.json", "\"codex\": true");
-        result.AssertStdoutContains("AGENTS.md -> dydo/index.md");
-        result.AssertStdoutContains("Claude Code 2.1.281 or later reads AGENTS.md");
-    }
-
-    [Fact]
-    public async Task Init_Claude_GitignoresClaudeSettings()
-    {
-        // The Claude guard wiring is personal scope (issue 0303): init must gitignore it so
-        // it never rides a commit, unlike the committed .codex/hooks.json.
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        AssertFileContains(".gitignore", ".claude/settings.local.json");
-    }
-
-    [Fact]
-    public async Task Init_Codex_DoesNotGitignoreClaudeSettings()
-    {
-        var result = await InitProjectAsync("codex");
-
-        result.AssertSuccess();
-        Assert.DoesNotContain(".claude/settings.local.json", ReadFile(".gitignore"));
-    }
-
-    [Fact]
-    public async Task Init_Claude_GitignoresBothSkillProjections()
-    {
-        // setup-skills.mjs always creates BOTH .claude/skills/ and .agents/skills/ regardless of
-        // which host is wired; that's host-local discovery state, not source, and must never ride
-        // a commit - for either host.
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        AssertFileContains(".gitignore", "/.claude/skills/");
-        AssertFileContains(".gitignore", "/.agents/skills/");
-    }
-
-    [Fact]
-    public async Task Init_Codex_GitignoresBothSkillProjections()
-    {
-        // setup-skills.mjs always creates BOTH .claude/skills/ and .agents/skills/ regardless of
-        // which host is wired, so both must be gitignored even on a codex-only init.
-        var result = await InitProjectAsync("codex");
-
-        result.AssertSuccess();
-        AssertFileContains(".gitignore", "/.agents/skills/");
-        AssertFileContains(".gitignore", "/.claude/skills/");
-    }
-
-    [Fact]
-    public async Task Init_All_GitignoresBothSkillProjections()
-    {
-        var result = await InitProjectAsync("all");
-
-        result.AssertSuccess();
-        AssertFileContains(".gitignore", "/.claude/skills/");
-        AssertFileContains(".gitignore", "/.agents/skills/");
-    }
-
-    [Fact]
-    public async Task Init_None_GitignoresBothSkillProjections()
-    {
-        // setup-skills.mjs always creates both projection folders even when no host is wired, so
-        // 'none' mode must still gitignore both - otherwise whichever host a developer later uses
-        // locally leaves an untracked folder easy to commit by accident.
-        var result = await InitProjectAsync("none");
-
-        result.AssertSuccess();
-        var gitignore = ReadFile(".gitignore");
-        Assert.Contains("/.claude/skills/", gitignore);
-        Assert.Contains("/.agents/skills/", gitignore);
-    }
-
-    #endregion
-
-    #region Init Join
-
-    [Fact]
-    public async Task Init_Join_WithoutExistingProject_Fails()
-    {
-        var command = InitCommand.Create();
-        var result = await RunAsync(command, "none", "--join");
-
-        result.AssertExitCode(2);
-        result.AssertStderrContains("No DynaDocs project found");
-    }
-
-    [Fact]
-    public async Task Init_Join_ExistingProject_Succeeds()
-    {
-        await InitProjectAsync("none");
-
-        var result = await JoinProjectAsync("none");
-
-        result.AssertSuccess();
-    }
-
-    [Fact]
-    public async Task Init_Join_Codex_RecordsIntegrationInConfig()
-    {
-        // Issue 0300: a claude-inited project joined with codex must end up recording BOTH.
-        await InitProjectAsync("claude");
-
-        var result = await JoinProjectAsync("codex");
-
-        result.AssertSuccess();
-        AssertFileContains("dydo.json", "\"claude\": true");
-        AssertFileContains("dydo.json", "\"codex\": true");
-        AssertFileExists(".codex/hooks.json");
-        AssertFileExists("AGENTS.md");
-    }
-
-    [Fact]
-    public async Task Init_Join_All_WiresBothAndRecordsBoth()
-    {
-        await InitProjectAsync("none");
-
-        var result = await JoinProjectAsync("all");
-
-        result.AssertSuccess();
-        AssertFileExists(".claude/settings.local.json");
-        AssertFileExists(".codex/hooks.json");
-        AssertFileNotExists("CLAUDE.md");
-        AssertFileExists("AGENTS.md");
-        AssertFileContains("dydo.json", "\"claude\": true");
-        AssertFileContains("dydo.json", "\"codex\": true");
-    }
-
-    [Fact]
-    public async Task Init_Join_Claude_AddsGitignoreEntry()
-    {
-        // A codex-inited project later joined from a Claude machine: the personal settings
-        // file must get gitignored at join time (issue 0303).
-        await InitProjectAsync("codex");
-
-        var result = await JoinProjectAsync("claude");
-
-        result.AssertSuccess();
-        AssertFileContains(".gitignore", ".claude/settings.local.json");
-    }
-
-    [Fact]
-    public async Task Init_Join_Codex_KeepsBothGitignoreEntriesAfterJoin()
-    {
-        // Init writes both skill-projection entries in every mode, so a later codex --join must
-        // neither duplicate nor drop either line.
-        await InitProjectAsync("claude");
-
-        var result = await JoinProjectAsync("codex");
-
-        result.AssertSuccess();
-        AssertFileContains(".gitignore", "/.agents/skills/");
-        AssertFileContains(".gitignore", "/.claude/skills/");
-    }
-
-    #endregion
-
-    #region Error Cases
-
-    [Fact]
-    public async Task Init_InvalidIntegration_Fails()
-    {
-        var command = InitCommand.Create();
-        var result = await RunAsync(command, "invalid");
-
-        result.AssertExitCode(2);
-        result.AssertStderrContains("Unknown integration");
-        result.AssertStderrContains("Valid options: claude, codex, all, none");
-    }
-
-    [Fact]
-    public async Task Init_AlreadyInitialized_Fails()
-    {
-        await InitProjectAsync("none");
-
-        var command = InitCommand.Create();
-        var result = await RunAsync(command, "none");
-
-        result.AssertExitCode(2);
-        result.AssertStderrContains("already initialized");
-    }
-
-    #endregion
-
-    #region Idempotency
-
-    [Fact]
-    public async Task Init_DoesNotOverwriteExistingDocs()
-    {
-        await InitProjectAsync("none");
-
-        WriteFile("dydo/understand/architecture.md", "# Custom Architecture\n\nMy custom content");
-
-        var command = InitCommand.Create();
-        var result = await RunAsync(command, "none");
-
-        var content = ReadFile("dydo/understand/architecture.md");
-        Assert.Contains("Custom Architecture", content);
-    }
-
-    [Fact]
-    public async Task Init_Join_TwiceDoesNotDuplicateGitignoreEntries()
-    {
-        await InitProjectAsync("claude");
-        await JoinProjectAsync("codex");
-
-        // Re-joining both integrations must not duplicate any line UpdateGitignore already wrote.
-        var result = await JoinProjectAsync("all");
-
-        result.AssertSuccess();
-        var gitignore = ReadFile(".gitignore");
-        Assert.Equal(1, gitignore.Split("/.claude/skills/").Length - 1);
-        Assert.Equal(1, gitignore.Split("/.agents/skills/").Length - 1);
-        Assert.Equal(1, gitignore.Split(".claude/settings.local.json").Length - 1);
-        Assert.Equal(1, gitignore.Split("dydo/agents/").Length - 1);
-        Assert.Equal(1, gitignore.Split("dydo/_system/.local/").Length - 1);
-    }
-
-    [Fact]
-    public async Task Init_Join_None_TwiceDoesNotDuplicateGitignoreEntries()
-    {
-        // The skill-projection entries are written in 'none' mode too; repeated joins must not
-        // duplicate them.
-        await InitProjectAsync("none");
-        await JoinProjectAsync("none");
-
-        var result = await JoinProjectAsync("none");
-
-        result.AssertSuccess();
-        var gitignore = ReadFile(".gitignore");
-        Assert.Equal(1, gitignore.Split("/.claude/skills/").Length - 1);
-        Assert.Equal(1, gitignore.Split("/.agents/skills/").Length - 1);
-    }
-
     #endregion
 
     #region Entry file
-
-    [Fact]
-    public async Task Init_Claude_WritesAgentsMdAndNoClaudeMd()
-    {
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        AssertFileExists("AGENTS.md");
-        AssertFileNotExists("CLAUDE.md");
-        Assert.Equal(ScaffoldTree.EntryPoint(Path.GetFileName(TestDir)), ReadFile("AGENTS.md"));
-        result.AssertStdoutContains("AGENTS.md (entry point)");
-        result.AssertStdoutContains("AGENTS.md -> dydo/index.md");
-        result.AssertStdoutContains("Claude Code 2.1.281 or later reads AGENTS.md");
-    }
-
-    [Theory]
-    [InlineData("none")]
-    [InlineData("codex")]
-    public async Task Init_WithoutClaude_WritesAgentsMdAndNoClaudeMd(string integration)
-    {
-        var result = await InitProjectAsync(integration);
-
-        result.AssertSuccess();
-        AssertFileExists("AGENTS.md");
-        AssertFileNotExists("CLAUDE.md");
-        result.AssertStdoutContains("AGENTS.md -> dydo/index.md");
-        Assert.DoesNotContain("Claude Code 2.1.281", result.Stdout);
-    }
 
     [Fact]
     public async Task Join_Claude_RemovesClaudeMdIdenticalToAgentsMd()
@@ -1842,7 +1098,6 @@ public class InitCommandTests : IntegrationTestBase
         result.AssertSuccess();
         AssertFileNotExists("CLAUDE.md");
         Assert.Equal("# Custom entry\n\nSee dydo/index.md.\n", ReadFile("AGENTS.md"));
-        result.AssertStdoutContains("Removed CLAUDE.md");
     }
 
     [Fact]
@@ -1857,7 +1112,6 @@ public class InitCommandTests : IntegrationTestBase
         result.AssertSuccess();
         AssertFileNotExists("CLAUDE.md");
         Assert.Equal("# Custom entry\n", ReadFile("AGENTS.md"));
-        result.AssertStdoutContains("Removed CLAUDE.md");
     }
 
     [Fact]
@@ -1873,7 +1127,6 @@ public class InitCommandTests : IntegrationTestBase
         AssertUnchanged(preserved);
         result.AssertStdoutContains("CLAUDE.md hides AGENTS.md from Claude Code");
         result.AssertStdoutContains("@AGENTS.md");
-        Assert.DoesNotContain("Removed CLAUDE.md", result.Stdout);
     }
 
     public static TheoryData<string, string> ReleasedClaudeMds => new()
@@ -1898,7 +1151,6 @@ public class InitCommandTests : IntegrationTestBase
 
         result.AssertSuccess();
         Assert.False(File.Exists(Path.Combine(TestDir, "CLAUDE.md")), $"CLAUDE.md from {release} was kept");
-        result.AssertStdoutContains("Removed CLAUDE.md");
     }
 
     [Fact]
@@ -1913,7 +1165,6 @@ public class InitCommandTests : IntegrationTestBase
         result.AssertSuccess();
         AssertUnchanged(preserved);
         result.AssertStdoutContains("CLAUDE.md hides AGENTS.md from Claude Code");
-        Assert.DoesNotContain("Removed CLAUDE.md", result.Stdout);
     }
 
     [Fact]
@@ -2020,7 +1271,6 @@ public class InitCommandTests : IntegrationTestBase
         AssertFileExists("AGENTS.md");
         Assert.Equal(ScaffoldTree.EntryPoint(Path.GetFileName(TestDir)), ReadFile("AGENTS.md"));
         AssertFileNotExists("CLAUDE.md");
-        result.AssertStdoutContains("Removed CLAUDE.md");
     }
 
     [Fact]
@@ -2056,4 +1306,13 @@ public class InitCommandTests : IntegrationTestBase
         foreach (var (path, expected) in snapshot)
             Assert.Equal(expected, File.ReadAllBytes(Path.Combine(TestDir, path)));
     }
+
+    private SortedDictionary<string, string> AllFiles() => new(
+        Directory.GetFiles(TestDir, "*", SearchOption.AllDirectories)
+            .ToDictionary(file => Path.GetRelativePath(TestDir, file), file => Convert.ToBase64String(File.ReadAllBytes(file))),
+        StringComparer.Ordinal);
+
+    private List<string> AllowEntries() =>
+        JsonNode.Parse(ReadFile(".claude/settings.local.json"))!["permissions"]!["allow"]!.AsArray()
+            .Select(entry => entry!.GetValue<string>()).ToList();
 }

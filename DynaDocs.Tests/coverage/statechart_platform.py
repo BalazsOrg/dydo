@@ -140,7 +140,7 @@ def _source_modules(root, commit):
     with tempfile.TemporaryDirectory(prefix='dydo-statechart-union-') as folder:
         raw = Path(folder)
         targets = [row['path'] for row in inventory['sources']
-                   if row['role'] != 'test' and not row.get('coverageExemption')]
+                   if row['role'] != 'test']
         collector = Collectors(root, raw / 'walker')
         collector.inventory = {**inventory, 'sources': [row for row in inventory['sources']
                                                        if row['path'] in targets]}

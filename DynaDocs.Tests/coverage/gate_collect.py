@@ -187,22 +187,9 @@ class Collectors:
         return result({'projects': self.project_rows}, errors=errors)
 
     def source_inventory(self):
-        manifest_path = self.coverage / 'test-associations.json'
-        manifest = read_json(manifest_path) if manifest_path.is_file() else {'schema': 1, 'modules': []}
         self.inventory = assemble_inventory(self.root, self.paths, self.project_rows, self.discovery,
-                                            self.deleted, manifest)
+                                            self.deleted)
         return result(self.inventory, errors=self.inventory['errors'])
-
-    def associations(self):
-        from associations import validate_associations
-        if self.inventory is None:
-            return result(errors=[{'message': 'Source inventory unavailable'}])
-        manifest = read_json(self.coverage / 'test-associations.json')
-        try:
-            findings = validate_associations(self.inventory['sources'], manifest)
-            return result({'manifest': manifest}, findings=findings)
-        except (ValueError, KeyError, OSError) as error:
-            return result(errors=[{'message': str(error)}])
 
     def sources(self, language):
         if self.inventory is None:

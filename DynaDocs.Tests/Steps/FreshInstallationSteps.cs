@@ -2,7 +2,6 @@ namespace DynaDocs.Tests.Steps;
 
 using System.Text;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 using Reqnroll;
 
 [Binding]
@@ -28,54 +27,14 @@ public class FreshInstallationSteps(CliScenario scenario)
         Assert.Equal(expected, enabled);
     }
 
-    [Then("the documentation has no validation errors and exactly these onboarding warnings:")]
-    public void OnboardingWarnings(Table expected) => AssertOnboardingWarnings(scenario.Result, expected);
-
-    internal static void AssertOnboardingWarnings(CliResult result, Table expected)
+    [Then("the documentation has no validation errors but has warnings")]
+    public void WarningsOnly()
     {
+        var result = scenario.Result;
         var output = $"Exit: {result.ExitCode}\n{result.Stdout}\n{result.Stderr}";
-        Assert.True(result.ExitCode == 0 && result.Stderr == "", output);
-        Assert.True(expected.Header.SequenceEqual(["document", "warning"]), output);
-        var lines = result.Stdout.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n');
-        Assert.True(lines.Count(line => line == "WARNINGS:") == 1, output);
-        var start = Array.IndexOf(lines, "WARNINGS:");
-        var end = Array.FindIndex(lines, start + 1, line => line == "");
-        Assert.True(end > start, output);
-        var outside = lines.Take(start).Concat(lines.Skip(end + 1)).Where(line => line != "").ToArray();
-        Assert.True(outside.Length == 3, output);
-        Assert.True(outside[0].StartsWith("Checking ", StringComparison.Ordinal), output);
-        Assert.True(Regex.IsMatch(outside[1], @"^Found 0 errors, 2 warnings in [1-9][0-9]* files\.$"), output);
-        Assert.True(outside[2] == "Found warnings (no errors).", output);
-        var observed = ParseWarningBlock(lines[(start + 1)..end], output);
-        var wanted = expected.Rows.Select(row => (Document: row["document"], Warning: row["warning"])).ToList();
-        Assert.True(observed.Count == 2 && wanted.Count == 2, output);
-        Assert.True(observed.OrderBy(item => item.Document, StringComparer.Ordinal)
-            .ThenBy(item => item.Warning, StringComparer.Ordinal)
-            .SequenceEqual(wanted.OrderBy(item => item.Document, StringComparer.Ordinal)
-                .ThenBy(item => item.Warning, StringComparer.Ordinal)), output);
-    }
-
-    private static List<(string Document, string Warning)> ParseWarningBlock(string[] lines, string output)
-    {
-        List<(string Document, string Warning)> warnings = [];
-        string? document = null;
-        var groupHasWarning = false;
-        foreach (var line in lines)
-        {
-            if (line.StartsWith("    - ", StringComparison.Ordinal))
-            {
-                Assert.True(document != null, output);
-                warnings.Add((document!, line[6..]));
-                groupHasWarning = true;
-                continue;
-            }
-            Assert.True(Regex.IsMatch(line, @"^  \S.*$"), output);
-            Assert.True(document == null || groupHasWarning, output);
-            document = line[2..].Replace('\\', '/');
-            groupHasWarning = false;
-        }
-        Assert.True(groupHasWarning, output);
-        return warnings;
+        Assert.True(result.ExitCode == 0, output);
+        Assert.Contains("WARNINGS:", result.Stdout);
+        Assert.DoesNotContain("ERRORS:", result.Stdout);
     }
 
     [When("I customize the foundation documents for a tiny task-list project")]

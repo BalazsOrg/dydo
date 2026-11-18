@@ -68,7 +68,7 @@ Guards stop accidents, not rogue agents.
 `DynaDocs.Tests/Services/ShellReaderTests.cs`, `DynaDocs.Tests/Services/BashCommandAnalyzerTests.cs`,
 `DynaDocs.Tests/Services/CommandPositionTests.cs`, `DynaDocs.Tests/Services/DydoInvocationScannerTests.cs`,
 `DynaDocs.Tests/Services/PrCallScannerTests.cs`, `DynaDocs.Tests/Services/MergeRouteScannerTests.cs`,
-`DynaDocs.Tests/Integration/GuardSecurityTests.cs`, `DynaDocs.Tests/coverage/test-associations.json`,
+`DynaDocs.Tests/Integration/GuardSecurityTests.cs`,
 `dydo/understand/guard-system.md`, and this entry.
 
 ## Related

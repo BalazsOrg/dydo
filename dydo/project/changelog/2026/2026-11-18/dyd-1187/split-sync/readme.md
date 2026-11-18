@@ -20,8 +20,7 @@ descriptive split pages gain frontmatter-only `explains:` lists, for 26 local
 declarations overall. The three navigation hubs have no declarations; Scaffold
 has no repository-specific declarations. Every other page body matches the live
 base byte-for-byte. `body-audit.json` records the hashes, sizes and test-file
-resolution. The only over-limit changed file is the preexisting association
-manifest; DYD-1192 is a nonblocking should by the Admiral's ruling, not a size pass.
+resolution. DYD-1192 records the separate preexisting file-size finding and its later deletion ruling.
 
 ## Proof
 
