@@ -25,7 +25,7 @@ public sealed class SafeDeleteInputsTests
         Assert.True(fixture.Has("refs/heads/topic"));
         Assert.True(Directory.Exists(fixture.Tree));
         Assert.Equal(status,SafeDeleteTests.Git(fixture.Tree,"status","--porcelain=v1","--ignored"));
-        Assert.Contains("proof input",fixture.Output);
+        Assert.True(fixture.Output.Contains("proof input",StringComparison.Ordinal),fixture.Output);
         Assert.EndsWith("# changed proof input\n",File.ReadAllText(Input(fixture,name)));
     }
 

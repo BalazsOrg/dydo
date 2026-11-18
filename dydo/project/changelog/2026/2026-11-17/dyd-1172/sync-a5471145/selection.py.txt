@@ -1,0 +1,24 @@
+"""Bind actual native discovery and unchanged C# hashes to the merge candidate."""
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+
+root = Path.cwd()
+live = root / 'artifacts/dyd-1172-sync'
+names = [s.strip() for s in (live/'sync-discovery/stdout.txt').read_text().splitlines() if s.startswith('    ')]
+safe = [s.strip() for s in (live/'sync-safe-discovery/stdout.txt').read_text().splitlines() if s.startswith('    ')]
+focused = [s for s in safe if 'SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged' in s]
+assert len(names) > len(safe)
+assert len(safe) == 335, len(safe)
+assert len(focused) == 5, len(focused)
+before = json.loads((live/'premerge.json').read_text())['sourceCsSha256']
+after = {p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in before}
+assert before == after
+data = {'merge':subprocess.check_output(['git','rev-parse','HEAD'],text=True).strip(),
+        'nativeDiscovered':len(names), 'safeDeleteDiscovered':len(safe),
+        'focusedDiscovered':focused, 'safeDeleteSelection':'FullyQualifiedName~SafeDelete',
+        'coverageSelection':'Supported whole-dotnet route; ticket selector unavailable',
+        'allCsIdenticalToSource':True, 'csSha256':after}
+(live/'selection.json').write_text(json.dumps(data,indent=2)+'\n')
+print(json.dumps({k:v for k,v in data.items() if k!='csSha256'},indent=2))

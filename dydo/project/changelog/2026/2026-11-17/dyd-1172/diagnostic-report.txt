@@ -1,0 +1,151 @@
+DYD-1172 diagnostic implementation evidence, 2026-11-17
+code-writer/model: GPT-6.1 sol high
+
+Contract: Linear updatedAt 2026-11-17T22:13:31.367Z, read live this session.
+Pinned source HEAD: 01ca32e9bdbda6d3477aab3b9c82cefc85d14fea.
+Original feature base: ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8.
+Branch: DYD-1172-safe-delete-disk-independent; no branch creation, PR, push or merge.
+The implementation commit containing this report is the candidate. Its .NET source
+bytes match diagnostic-preflight.json and diagnostic-final.json. Gate receipts name
+the pinned source HEAD plus the dirty candidate's exact hashes, not a fabricated
+already-committed candidate SHA.
+
+Behavior
+--------
+Only SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged
+changes: Assert.True(fixture.Output.Contains("proof input",StringComparison.Ordinal),fixture.Output).
+The case-sensitive intended substring and every existing state assertion remain.
+There are no production edits, permanent formatting tests, Gherkin edits or causal fixes.
+The withdrawn reserve diagnosis is not revived. Historical evidence is unchanged.
+
+Source SHA-256:
+  pinned assertion: c79913806209fcce3eeced9bee8a5350edae7c704930876a8fd770b7a2c193a8
+  candidate/restored: 327bc0bf68293e7b20845af7418b38918c457fd208c5f3aade8a899b162d6d2c
+  transient diagnostic: b63097677d3697910bf2271bf71ebb335ab265c69c862820cf95b286ba63a7a0
+
+Diagnostic witness
+------------------
+The owned transient probe throws a deliberately labeled IOException at the absent
+attributes row's before-worktree-delete checkpoint, after the existing input append.
+The unchanged exit/ref/target/status assertions pass; the message assertion fails.
+The other four rows pass. The exact complete 1711-byte fixture.Output was captured
+independently and observed in both native failure log and TRX, including its final
+sentinel. The witness checks every output line in log order and the whole string
+in TRX. This is a diagnostic-only injected refusal, NOT a Windows reproduction or
+the RED for an actual cause. No causal claim follows from it.
+
+The probe restores original bytes in finally, retains the pre-probe bytes, and
+records equal SHA-256 values. It then rebuilds and all original five rows pass.
+Native forced exit 1 remains failed/expected; the wrapper's witness/restoration
+verification returned 0. See diagnostic-writer-witness.json, -restoration.json,
+-fixture-output.txt, -source.cs.txt, -forced/ and -restored/.
+
+Captain's rerunnable recipe (Linux, same prepared checkout; no concurrent edits):
+  python3 dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-probe.py.txt diagnostic-captain
+Use a fresh simple prefix for every run. It uses the current supported facade,
+host lock outside each focused 4G/120s cap, captures log/TRX, restores bytes even
+when the command or verification fails, and rebuilds the original five rows.
+SIGINT/SIGTERM go through finally; an uncatchable kill cannot execute finally, so
+the retained PREFIX-source.cs.txt is the recovery copy in that exceptional case.
+This recipe is solely diagnostic reporting evidence and is Linux-specific.
+
+Commands and exits
+------------------
+All actual workloads use env MSBUILDDISABLENODEREUSE=1
+DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false and:
+  /var/tmp/dydo-gate-lock.sh env <the three assignments above> systemd-run --user
+    --scope --slice=app-t3code-agents-cbc6c2286251.slice
+    -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 <argv>
+Focused workloads use MemoryMax=4G and timeout 120. No cap was raised.
+Each named directory retains exact argv/cwd/source hashes in command.json,
+raw stdout.txt/stderr.txt and exit.json. Facade raw archives retain native
+collector inputs/outputs, producer/consumer receipts and cleanup evidence.
+
+Let PY=.static-gates/python/bin/python and F=DynaDocs.Tests/coverage/gap_check.py.
+The argv below is passed directly, without unsupported selectors:
+
+1. diagnostic-prerequisites: bash diagnostic-prerequisites.sh.txt, exit 0.
+   Python 3.14.4 venv; pip -r requirements.lock; pnpm coverage install
+   --frozen-lockfile; dotnet tool restore; metrics restore --locked-mode.
+   Pins observed: CPython 3.14.4, Node 26.13.0, SDK 10.0.303,
+   Microsoft.NETCore.App 10.0.14. Lock/version logs retained.
+2. diagnostic-discovery: PY F test --stack dotnet -- --list-tests, exit 0;
+   7640 native names. diagnostic-safe-discovery adds
+   --filter FullyQualifiedName~SafeDelete, exit 0; 335 native names.
+   Five affected theory rows were discovered. Selection/source manifest:
+   diagnostic-preflight.json.
+3. diagnostic-selection: initial counting helper exit 1 (it counted only
+   namespace-prefixed names and omitted Gherkin display names). This failed
+   receipt is retained. The corrected helper counts the exact native filtered
+   listing: diagnostic-selection-corrected exit 0, 335 and 5 confirmed.
+4. diagnostic-writer-forced: PY F test --stack dotnet -- --filter
+   FullyQualifiedName~SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged
+   --logger trx;LogFileName=diagnostic.trx --results-directory <forced/results>,
+   exit 1; 4 passed, 1 deliberately failed. Full log and diagnostic.trx retained.
+5. diagnostic-writer-restored: same selector, restored.trx, exit 0;
+   5 passed, 0 failed, 0 skipped after rebuilding restored source.
+6. diagnostic-light: PY F test --stack dotnet -- --filter
+   FullyQualifiedName~SafeDelete --logger trx;LogFileName=light.trx
+   --results-directory <diagnostic-light/results>, exit 0;
+   335 passed, 0 failed, 0 skipped. light.trx and facade-raw.tar.gz retained.
+7. diagnostic-static: PY F gate static --stack dotnet, exit 2 INVALID.
+   I added an evidence helper during collection, causing the correct
+   repository-inputs error. Two historical association findings also appeared.
+   This run is not waived or reported as passing.
+8. diagnostic-static-stable: same supported argv, exit 1 FAILED.
+   Live gate logs now stay in ignored artifacts until collection ends;
+   initial/current input fingerprints match. Only the two historical evidence
+   helpers lack test associations. No C# analyzer/complexity findings or errors.
+9. diagnostic-static-base: same supported argv and environment, assertion
+   source temporarily restored to pinned 01ca32e9, exit 1 FAILED; identical
+   two findings, stable inputs. Candidate bytes restored in finally. This is a
+   source comparison in the same checkout, retaining inert new evidence files,
+   not a claim to have created a separate clean base checkout.
+10. diagnostic-coverage: PY F gate coverage --stack dotnet, exit 0 PASS.
+    Instrumented suite: 7664 total, 7610 passed, 54 skipped, zero failed;
+    native test run successful, 7.3052 minutes. Skips remain reported as skips.
+    Native producer child exit 0; measurementComplete true; 244 Linux-scoped
+    target modules measured, findings [], gaps []. The 14 MB facade-raw.tar.gz
+    retains instrumented suite output, OpenCover, joins, commands, identity pins
+    and owner cleanup receipt. adapters/dotnet-coverage.json.gz retains the consumer.
+11. diagnostic-finalize: capped diagnostic-finalize.py.txt, exit 0; source
+    equality, restored 5/5, Light 335/335 and owned snapshot cleanup verified.
+    git diff --check returned 0 before staging. Native TRX whitespace is preserved
+    by gzip packaging rather than editing raw output. The large JSON sidecars
+    and forced diagnostic.trx are retained as .gz with round-trip byte equality.
+    Generated bytecode is removed and future harness imports disable its creation.
+    diagnostic-finalize-packaged repeated final checks on packaged receipts,
+    exit 0. The final staged diff check also returned 0 after packaging.
+    diagnostic-artifacts.json binds retained bytes;
+    it is generated last to include complete runner logs and receipts.
+
+Static attribution and blocker
+------------------------------
+The failed stable candidate and pinned-source comparison both name only:
+  dydo/project/changelog/2026/2026-11-17/dyd-1172/probe-low-space.py
+  dydo/project/changelog/2026/2026-11-17/dyd-1172/run-proof.py
+Reason: non-trivial target has no associated test file. The dotnet static route's
+association collector checks this shared inventory as implemented by the facade.
+Both helpers and the association manifest already exist unchanged at 01ca32e9.
+Their SHA-256 values are respectively:
+  cfe8459d7e6e249e3e7b4e36200656928da54b7cc3d4369c31ab3d411e6185f0
+  bff09079efd1caeb018291092b09ab176bbb0cb0c9a3db1830b6fa2e9d8b2db6
+Historical evidence cannot be rewritten in this commission. No association,
+threshold, source inventory or gate was altered. Static remains FAILED, with
+repair/disposition returned to the commissioning captain. Attribution is not PASS.
+
+Limits and remaining ownership
+------------------------------
+Current facade lacks ticket-scoped coverage. Captain explicitly reconciled the
+contract to the supported whole-.NET coverage route, which was used unchanged.
+No Heavy trigger applies to this diagnostic-only change. Mutation was not run
+by this writer: reviewer-owned UNAVAILABLE, Pending DYD-103, never PASS.
+No hosted runs were attempted by this writer. The actual Windows refusal remains
+undiagnosed; at most two own-PR hosted attempts, actual-cause RED/fix if justified,
+fresh review, hosted checks, PR and merge remain captain/admiral-owned.
+Local Linux evidence does not establish Windows behavior or platform union.
+
+Raw evidence integrity and cleanup: diagnostic-final.json and diagnostic-artifacts.json.
+All source hashes from preflight are checked again; only the intended tracked
+assertion differs. Owned snapshot absence/unregistration and diagnostic fixture
+scratch cleanup are checked explicitly. No other processes/worktrees are touched.

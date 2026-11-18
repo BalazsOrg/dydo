@@ -1,0 +1,30 @@
+DYD-1172 implement commission; code-writer/model: GPT-6.1 sol high.
+Contract read from Linear: updatedAt 2026-11-17T21:59:54.220Z (linear-contract.json).
+Parent DYD-1029 contract and rulings read in Linear (parent-contract.json).
+Only this writer active; no subagents, branch creation, PR, push or merge.
+
+Before first edit, observed using git and pwd in this session:
+1. git branch --show-current: DYD-1172-safe-delete-disk-independent.
+2. pwd and git rev-parse --show-toplevel both:
+   /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a
+   git worktree list separately identifies the main checkout:
+   /home/balazs/Desktop/Projects/DynaDocs (master).
+3. git rev-parse HEAD: ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8.
+   git merge-base --is-ancestor ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8 HEAD: exit 0.
+4. git status --porcelain=v1: empty; clean.
+5. Planned source edits were exclusively DynaDocs.Tests/Integration/SafeDelete*.cs,
+   DynaDocs.Tests/Steps/SafeDeleteSteps.cs only if fixture reach required, and this evidence
+   directory. The only source edit actually made was a temporary Space hook injection in
+   DynaDocs.Tests/Integration/SafeDeleteTests.cs; probe-low-space.py restores its exact bytes.
+
+Processes and temporary data: the writer owns these capped dotnet test processes,
+their disposable SafeDelete repositories, local ignored build outputs and results retained here.
+No external archive driver: verify-dydo's archive driver is Windows-only; Linux uses the mapped
+SafeDelete tests. All test/probe invocations take the existing /var/tmp/dydo-gate-lock.sh
+outside systemd's 4G/120s cap, with swap disabled and OOMPolicy=continue. Required .NET
+environment is explicit. Agent slice confirmed from /proc/self/cgroup:
+app-t3code-agents-cbc6c2286251.slice.
+
+First prerequisite attempt could not reach the systemd user bus inside the sandbox: exit 1.
+The justified escalated retry succeeded with the same cap and shared lock; see prerequisites-host/.
+SDK 10.0.303 and Microsoft.NETCore.App 10.0.14 are available. No cap increase occurred.

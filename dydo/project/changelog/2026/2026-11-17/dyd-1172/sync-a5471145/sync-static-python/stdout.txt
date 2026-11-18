@@ -1,0 +1,3 @@
+python static: PASSED (child exit 0)
+Aggregate: 0
+Result: /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/DynaDocs.Tests/coverage/results/run-1794957108855-7b26c55c/result.json

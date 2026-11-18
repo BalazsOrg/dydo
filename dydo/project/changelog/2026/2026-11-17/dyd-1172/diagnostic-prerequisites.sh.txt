@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+set -euo pipefail
+python3.14 --version
+dotnet --version
+dotnet --list-runtimes
+node --version
+pnpm --version
+python3.14 -m venv .static-gates/python
+.static-gates/python/bin/python -m pip install -r DynaDocs.Tests/coverage/requirements.lock
+pnpm -C DynaDocs.Tests/coverage install --frozen-lockfile
+dotnet tool restore --tool-manifest .config/dotnet-tools.json
+dotnet restore DynaDocs.Tests/coverage/metrics/GateMetrics.csproj --locked-mode

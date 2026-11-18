@@ -1,0 +1,131 @@
+DYD-1172 HAND-RAISE — required RED is not reproduced at the commissioned base
+code-writer/model: GPT-6.1 sol high
+
+Candidate source: ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8.
+Branch: DYD-1172-safe-delete-disk-independent.
+No permanent production, test, step or Gherkin changes. This hop retains evidence only.
+No branch creation, PR, push, merge, Linear write or subagent.
+
+Deciding observation
+-------------------
+The fixture already writes {"archive":{"reserveBytes":0,"reservePercent":0}} to
+Main/dydo.json at SafeDeleteTests.cs:44, after creating the seed commit and topic branch.
+git blame attributes this line to ab242bdb3 (the original safe-delete implementation),
+so the setting is already present at the commissioned base, not introduced by this hop.
+
+Forced ONLY Dependencies.Space to (1 GiB available, 100 GiB total), using its existing hook.
+This is below both default floors: 1 GiB < 5 GiB, and 1 GiB < 10 GiB (10% of 100 GiB).
+It remains ample for these tiny archives when reserveBytes and reservePercent are both zero.
+No config was removed/replaced, no assertion changed and no synthetic assertion added.
+
+1. All five existing ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged rows PASSED.
+   This includes the reported attributes/before-worktree-delete/present:false case.
+   Existing Assert.Contains("proof input",fixture.Output) and all target/status/input assertions
+   ran unchanged. Exit 0, 5 passed, 0 failed, 0 skipped; test duration 1 s.
+2. Widened that SAME hook-only probe to FullyQualifiedName~SafeDelete to check siblings.
+   Exit 0, 335 passed, 0 failed, 0 skipped; test duration 46 s.
+   Includes executable Gherkin and dedicated default byte/percentage, configured and invalid
+   reserve policies, plus PostFetchReserveShortfall_KeepsLocalRemoteAndFiles.
+3. Finally restored SafeDeleteTests.cs to identical bytes after EACH probe.
+   Original/restored SHA256: 06435d393618503ac319f327236ed3c22186a422b6481ac8ca05b06b5dca249e.
+   git diff --exit-code -- DynaDocs.Tests/Integration DynaDocs.Tests/Steps/SafeDeleteSteps.cs: 0.
+
+This is NOT the commissioned RED. The affected assertion is already green before a fix.
+Deleting the existing low-reserve config to manufacture a failure would change the pre-fix
+fixture and falsely attribute a regression to this candidate; that was not done.
+No test-only code change is justified by these observations. Return to the captain to reconcile
+the hosted Windows observation with the pinned source/run identity before commissioning a fix.
+The original hosted Windows failure is NOT explained or disproved by this Linux result.
+
+Whole fixture audit
+-------------------
+Inspected all nine Integration/SafeDelete*.cs files and Steps/SafeDeleteSteps.cs.
+Full raw search is fixture-audit.txt; tested source hashes are in each command.json.
+
+- SafeDeleteTests.cs: common constructor sets zero byte AND percentage reserves. Run creates
+  ArchiveCommand with explicit Main as its config directory. AddTree adds only a linked worktree;
+  AddRemote creates a bare remote and pushes main/topic. Neither removes/replaces Main/dydo.json.
+  Journey's Tree reset and local Git commits leave Main/dydo.json in place. Refusal's races create
+  empty Main commits, update refs or change Tree/file.txt; they leave Main/dydo.json in place.
+  Policy archive/restore failures all reuse that fixture. Reserve(policy) is the deliberate
+  exception: it replaces config and supplies controlled Space values to prove defaults,
+  configured percentage and invalid reserve. Retained untouched.
+  The current-worktree refusal invokes SafeDeleteService(Tree) directly; Tree lacks dydo.json,
+  but this eligibility refusal occurs before space is queried. It also passes the forced probe.
+- SafeDeleteInputsTests.cs: every command test uses new SafeDeleteTests. Prepare changes Git's
+  autocrlf, info/exclude, info/attributes, adds Tree and stages unique.txt/file.txt. It never
+  touches Main/dydo.json. The absent-input row deletes only info/exclude or info/attributes.
+  Restore manifest corruptions change only archive manifest.json. No lost reserve setting found.
+- SafeDeleteBoundaryTests.cs: command fixtures use new SafeDeleteTests. Nested repo layouts,
+  Tree resets, staged/index/resolve-undo mutation, shared Git config changes, archive payload
+  corruption, restore collisions and final races do not remove/replace Main/dydo.json.
+  Deliberate reserve exceptions: AllocationVolumeUnavailable supplies a throwing Space hook;
+  PostFetchReserveShortfall supplies a controlled high/high/zero sequence;
+  InvalidReserveConfiguration intentionally writes malformed/out-of-range reserve settings.
+  DefaultAllocationVolume directly tests new SafeDeleteDependencies.Space, without archiving.
+- SafeDeleteGitHubTests.cs: real archive/refusal helpers and initially-absent-remote setup use
+  new SafeDeleteTests and preserve Main/dydo.json. Refusal API fixtures that call CheckUsing
+  directly never reach the archive reserve path. Git/API metadata edits don't replace dydo.json.
+- SafeDeletePathsTests.cs: command journey uses new SafeDeleteTests; path-validation seams
+  call SafeDeletePaths.Child directly and allocate no archive.
+- SafeDeleteBindingsTests.cs: uses the same fixture; typo/missing-outcome assertions don't
+  erase its config. Existing known journey/refusal/policy bindings retain their assertions.
+- SafeDeletePolicyTests.cs: uses the same fixture for T3 settings tests, which write only
+  Root/settings.json; these direct policy checks don't archive. Redaction is a direct seam.
+- SafeDeleteGuardTests.cs: uses IntegrationTestBase to invoke guard/init, not the archive
+  allocation path. Reserve configuration cannot mask a guard refusal there.
+- SafeDeleteFakeT3Policy.cs: only the injected T3 eligibility policy, no config or archive I/O.
+- SafeDeleteSteps.cs: GivenRepository creates SafeDeleteTests; all actual archive/refusal/
+  policy journeys use it or SafeDeleteGitHubTests.Journey, which creates the same fixture.
+  Nested-refusal binding passes that fixture through. No config deletion/replacement/commit.
+
+Selection plan and gates
+------------------------
+Read verify-dydo and its archive feature map; Linux proof is the executable SafeDelete selection.
+Cheap discovery: dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --list-tests
+  --filter FullyQualifiedName~SafeDelete
+  exit 0; named affected tests, executable feature rows and dedicated reserve tests discovered.
+  The forced full selection then executed 335 cases, proving discovery is nonzero.
+
+Applicable code-hop commands, if the captain commissions an actual patch:
+  .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py test --stack dotnet --
+    --filter FullyQualifiedName~SafeDelete --logger trx
+  .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate static --stack dotnet
+Run through the same host lock outside the required 8G/3600s cap and .NET env.
+These facade Light/static gates were NOT RUN: the commissioned implement hop stops on a
+hard unknown, with no source change or implementation offer. Direct probes above aren't
+misreported as facade Light/static gate passes.
+
+Ticket-scoped coverage: UNSUPPORTED by the CURRENT facade at the commissioned base.
+gap_check.json exposes only gate_adapter.py --stack dotnet --gate coverage. gap_check.py's
+gate row forwards no native args; coverage-tools.md says coverage rejects suite narrowing.
+testing-strategy.md explicitly records the same whole-stack coverage gap. No --feature,
+--ticket or --filter coverage flag was invented, no hand-edited adapter was used, and no
+whole unrelated suite launched. Only supported substitute:
+  .static-gates/python/bin/python DynaDocs.Tests/coverage/gap_check.py gate coverage --stack dotnet
+This would run the whole .NET suite. Return this selection gap for captain disposition before
+expensive execution, as commissioned. Coverage gate NOT RUN; no invented numeric exit.
+No Heavy trigger: no product behavior or guard parser/performance change exists in this hop.
+Mutation: UNAVAILABLE inherited DYD-103, reviewer-owned; NOT RUN here, never PASS.
+Hosted Linux/Windows PR proof remains captain/admiral-owned and NOT RUN in this hop.
+
+Rerunnable deciding recipe
+-------------------------
+From this worktree, with no concurrent edits to SafeDeleteTests.cs:
+  python3 dydo/project/changelog/2026/2026-11-17/dyd-1172/probe-low-space.py \
+    captain-space-inputs \
+    FullyQualifiedName~SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged
+  python3 dydo/project/changelog/2026/2026-11-17/dyd-1172/probe-low-space.py \
+    captain-space-all FullyQualifiedName~SafeDelete
+
+Use fresh first arguments on reruns; existing evidence dirs are refused, not overwritten.
+The script inserts ONE existing Space hook, rebuilds/runs the original assertions under the
+shared host lock and 4G/120s cap, then restores source bytes in finally. command.json holds
+exact expanded argv, cwd, HEAD, status and source hashes; stdout.txt/stderr.txt/exit.json
+and results/*.trx hold raw results. The systemd user bus needs approved host access in this
+sandbox. See forced-space-inputs/ and forced-space-safe-delete/ for actual observed outputs,
+and adjacent *-restoration.json for byte equality. run-proof.py is the retained command recorder.
+
+An honest revert-fix/fail/restore/pass recipe is UNAVAILABLE: there is no reproduced RED and
+no fixture fix. Captain should not treat either observed passing baseline as completion of
+that obligation. Handoff is HAND-RAISE, not IMPLEMENTED.

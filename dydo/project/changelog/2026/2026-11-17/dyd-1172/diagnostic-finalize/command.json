@@ -1,0 +1,39 @@
+{
+  "head": "01ca32e9bdbda6d3477aab3b9c82cefc85d14fea",
+  "branch": "DYD-1172-safe-delete-disk-independent",
+  "status": "M DynaDocs.Tests/Integration/SafeDeleteInputsTests.cs\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/__pycache__/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-coverage/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-discovery/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-finalize.py.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-gate.py.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-light/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-preflight.json\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-preflight.py.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-prerequisites.sh.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-prerequisites/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-probe.py.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-safe-discovery/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-selection-corrected/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-selection/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-static-base-restoration.json\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-static-base.py.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-static-base/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-static-stable/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-static/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-working-tree.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-writer-fixture-output.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-writer-forced/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-writer-restoration.json\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-writer-restored/\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-writer-source.cs.txt\n?? dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-writer-witness.json",
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a",
+  "argv": [
+    "/var/tmp/dydo-gate-lock.sh",
+    "env",
+    "MSBUILDDISABLENODEREUSE=1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+    "UseSharedCompilation=false",
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=4G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "120",
+    "python3",
+    "dydo/project/changelog/2026/2026-11-17/dyd-1172/diagnostic-finalize.py.txt"
+  ],
+  "sourceSha256": {
+    "DynaDocs.Tests/Integration/SafeDeleteBindingsTests.cs": "263ec2f35a0499d0be8b4f969f2a8d97fad6e2a00026f60f88374fdb3a2e6cf5",
+    "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs": "c97d4f8edc6325fa585bddcaae8173a3a63df5537286cb85293cecca21185609",
+    "DynaDocs.Tests/Integration/SafeDeleteFakeT3Policy.cs": "7911914ce5fd4cf1a48a62ce0e0e561519fed8950d92273542b6d00350285b1d",
+    "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs": "de988cff72f7a30ff372148819f2eaf7d03e4a583a260df99fcbe6fc00f86535",
+    "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs": "67829dcd6a04e6a0e2f9c5b86be85a168e13f6caf05362a2a85926085e59640d",
+    "DynaDocs.Tests/Integration/SafeDeleteInputsTests.cs": "327bc0bf68293e7b20845af7418b38918c457fd208c5f3aade8a899b162d6d2c",
+    "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+    "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs": "89ce6cfddfd7a7938d99587113b28e5bf40c3c76b9dc49ccfeacea765eabc304",
+    "DynaDocs.Tests/Integration/SafeDeleteTests.cs": "06435d393618503ac319f327236ed3c22186a422b6481ac8ca05b06b5dca249e",
+    "DynaDocs.Tests/Steps/SafeDeleteSteps.cs": "661cf676c7d7f8a16738144bbce66305101d41cd0bdf0c68b5239f41434034cb"
+  }
+}

@@ -1,0 +1,24 @@
+
+--- Running tests (worktree-isolated) ---
+  Creating test worktree...
+HEAD is now at 2078622f DYD-1172 merge: sync pinned feature tip before review
+  Worktree: /tmp/dydo-test-9b896352
+  Running: dotnet test DynaDocs.sln --filter FullyQualifiedName~SafeDelete --logger trx;LogFileName=light.trx --results-directory /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/artifacts/dyd-1172-sync/sync-light/results -- RunConfiguration.TreatNoTestsAsError=true
+  Determining projects to restore...
+  Restored /tmp/dydo-test-9b896352/tools/SkillBuild/SkillBuild.csproj (in 147 ms).
+  Restored /tmp/dydo-test-9b896352/DynaDocs.Tests/DynaDocs.Tests.csproj (in 153 ms).
+  Restored /tmp/dydo-test-9b896352/DynaDocs.csproj (in 150 ms).
+  SkillBuild -> /tmp/dydo-test-9b896352/tools/SkillBuild/bin/Debug/net10.0/SkillBuild.dll
+  DynaDocs -> /tmp/dydo-test-9b896352/bin/Debug/net10.0/dydo.dll
+  DynaDocs.Tests -> /tmp/dydo-test-9b896352/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll
+Test run for /tmp/dydo-test-9b896352/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Results File: /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/artifacts/dyd-1172-sync/sync-light/results/light.trx
+
+Passed!  - Failed:     0, Passed:   335, Skipped:     0, Total:   335, Duration: 48 s - DynaDocs.Tests.dll (net10.0)
+  Cleaning up worktree...
+
+  Tests passed
+dotnet test: PASSED (child exit 0)
+Aggregate: 0
+Result: /home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a/DynaDocs.Tests/coverage/results/run-1794956304929-4fd0cf88/result.json

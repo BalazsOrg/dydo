@@ -1,0 +1,43 @@
+{
+  "head": "ed2c5f06eac5e950deabb0e14ad4945a3c27aaa8",
+  "branch": "DYD-1172-safe-delete-disk-independent",
+  "status": "?? dydo/project/changelog/2026/2026-11-17/dyd-1172/",
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-af19064a-6d143b41bd5a572a",
+  "argv": [
+    "/var/tmp/dydo-gate-lock.sh",
+    "env",
+    "MSBUILDDISABLENODEREUSE=1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+    "UseSharedCompilation=false",
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=4G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "120",
+    "dotnet",
+    "test",
+    "DynaDocs.Tests/DynaDocs.Tests.csproj",
+    "--list-tests",
+    "--filter",
+    "FullyQualifiedName~SafeDelete"
+  ],
+  "sourceSha256": {
+    "DynaDocs.Tests/Integration/SafeDeleteBindingsTests.cs": "263ec2f35a0499d0be8b4f969f2a8d97fad6e2a00026f60f88374fdb3a2e6cf5",
+    "DynaDocs.Tests/Integration/SafeDeleteBoundaryTests.cs": "c97d4f8edc6325fa585bddcaae8173a3a63df5537286cb85293cecca21185609",
+    "DynaDocs.Tests/Integration/SafeDeleteFakeT3Policy.cs": "7911914ce5fd4cf1a48a62ce0e0e561519fed8950d92273542b6d00350285b1d",
+    "DynaDocs.Tests/Integration/SafeDeleteGitHubTests.cs": "de988cff72f7a30ff372148819f2eaf7d03e4a583a260df99fcbe6fc00f86535",
+    "DynaDocs.Tests/Integration/SafeDeleteGuardTests.cs": "67829dcd6a04e6a0e2f9c5b86be85a168e13f6caf05362a2a85926085e59640d",
+    "DynaDocs.Tests/Integration/SafeDeleteInputsTests.cs": "c79913806209fcce3eeced9bee8a5350edae7c704930876a8fd770b7a2c193a8",
+    "DynaDocs.Tests/Integration/SafeDeletePathsTests.cs": "6a149f4f55dbfddc1705d24efb35e9babc19bcb40eddeb3f28b76123bc73c165",
+    "DynaDocs.Tests/Integration/SafeDeletePolicyTests.cs": "89ce6cfddfd7a7938d99587113b28e5bf40c3c76b9dc49ccfeacea765eabc304",
+    "DynaDocs.Tests/Integration/SafeDeleteTests.cs": "06435d393618503ac319f327236ed3c22186a422b6481ac8ca05b06b5dca249e",
+    "DynaDocs.Tests/Steps/SafeDeleteSteps.cs": "661cf676c7d7f8a16738144bbce66305101d41cd0bdf0c68b5239f41434034cb"
+  }
+}

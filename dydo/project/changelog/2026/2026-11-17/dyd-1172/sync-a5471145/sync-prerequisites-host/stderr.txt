@@ -1,0 +1,2 @@
+Running as unit: run-p1205917-i156316807.scope; invocation ID: 6488bfdfaa3c4e1a872747966e810166
+sha256sum: global.json: No such file or directory
