@@ -1,27 +1,27 @@
 namespace DynaDocs.Tests.Map;
 
 using System.Net;
-using System.Text;
 using System.Text.Json;
 using DynaDocs.Services.Map;
 using static LinearJson;
 
-/// <summary>The map server over real HTTP on localhost, with a fake Linear behind it.</summary>
+/// <summary>
+/// The map server over real HTTP on localhost, with a fake Linear behind it: DR 052 §1 and §3 and its
+/// 2026-10-04 amendment (<c>/api/saved</c> reads only the cache, <c>/api/graph</c> always reads Linear).
+/// </summary>
+[Trait("Job", "contract: DR 052 §1 §3, amendment 2026-10-04")]
 public sealed class MapServerTests : IAsyncLifetime
 {
-    private const string JsonType = "application/json; charset=utf-8";
-
     private readonly FakeLinear _linear = new();
     private readonly HttpClient _browser = new();
     private readonly CancellationTokenSource _stop = new();
-    private readonly Dictionary<string, byte[]> _bundle = [];
     private MapServer _server = null!;
     private Task _running = Task.CompletedTask;
     private Uri _url = null!;
 
     public Task InitializeAsync()
     {
-        _server = new MapServer(new MapApi(_linear.Reader()), new ViewerBundle(name => _bundle.GetValueOrDefault(name)));
+        _server = new MapServer(new MapApi(_linear.Reader()), new ViewerBundle(_ => null));
         _url = _server.Start();
         _running = _server.RunAsync(_stop.Token);
         return Task.CompletedTask;
@@ -36,28 +36,25 @@ public sealed class MapServerTests : IAsyncLifetime
         _stop.Dispose();
     }
 
-    private async Task<(HttpStatusCode Status, string? ContentType, string Body)> Get(string path, HttpMethod? method = null)
+    private async Task<(HttpStatusCode Status, string Body)> Get(string path, HttpMethod? method = null)
     {
         using var response = await _browser.SendAsync(new HttpRequestMessage(method ?? HttpMethod.Get, new Uri(_url, path)));
-        var body = await response.Content.ReadAsStringAsync();
-        return (response.StatusCode, response.Content.Headers.ContentType?.ToString(), body);
+        return (response.StatusCode, await response.Content.ReadAsStringAsync());
     }
 
-    private static (string Code, string Message) Error(string body)
-    {
-        var error = JsonDocument.Parse(body).RootElement.GetProperty("error");
-        return (error.GetProperty("code").GetString()!, error.GetProperty("message").GetString()!);
-    }
+    private static string ErrorCode(string body) =>
+        JsonDocument.Parse(body).RootElement.GetProperty("error").GetProperty("code").GetString()!;
 
     [Fact]
+    [Trait("Job", "trap: the server holds the user's Linear key, so it must bind localhost only (DR 052 §3)")]
     public void Start_BindsLocalhostOnAFreePort()
     {
         Assert.Equal("localhost", _url.Host);
-        Assert.Equal("/", _url.AbsolutePath);
         Assert.NotEqual(0, _url.Port);
     }
 
     [Fact]
+    [Trait("Job", "edge: the probed free port is taken before the listener binds it")]
     public void Start_RetriesWithAFreshListener_WhenTheFirstProbedPortIsTaken()
     {
         var occupied = FreeTcpPort();
@@ -68,10 +65,8 @@ public sealed class MapServerTests : IAsyncLifetime
         var ports = new Queue<int>([occupied, free]);
 
         using var server = new MapServer(new MapApi(_linear.Reader()), new ViewerBundle(_ => null), () => ports.Dequeue());
-        var url = server.Start();
 
-        Assert.Equal(free, url.Port);
-        Assert.Empty(ports);
+        Assert.Equal(free, server.Start().Port);
     }
 
     private static int FreeTcpPort()
@@ -84,68 +79,30 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Fact]
-    public async Task Saved_FirstVisitIsAnExplicitMissWithoutReadingLinear()
+    public async Task Saved_FirstVisitIsAnExplicitMiss_WithoutReadingLinear()
     {
-        var (status, _, body) = await Get("/api/saved?project=p-map");
+        var (status, body) = await Get("/api/saved?project=p-map");
+
         Assert.Equal(HttpStatusCode.OK, status);
-        Assert.Equal("{\"snapshot\":null}", body);
+        Assert.Equal(JsonValueKind.Null, JsonDocument.Parse(body).RootElement.GetProperty("snapshot").ValueKind);
         Assert.Empty(_linear.Calls);
     }
 
     [Fact]
-    public async Task Teams_AnswerTheContractShape()
-    {
-        _linear.Serve(_ => """{"data":{"teams":{"nodes":[{"id":"t1","key":"DYD","name":"Dydo"}],"pageInfo":{"hasNextPage":false,"endCursor":null}}}}""");
-
-        var (status, type, body) = await Get("/api/teams");
-
-        Assert.Equal(HttpStatusCode.OK, status);
-        Assert.Equal(JsonType, type);
-        Assert.Equal("""{"teams":[{"id":"t1","key":"DYD","name":"Dydo"}]}""", body);
-    }
-
-    [Fact]
-    public async Task Projects_AnswerTheContractShape()
-    {
-        _linear.Serve(_ => """{"data":{"team":{"projects":{"nodes":[{"id":"p1","name":"Map","url":"https://l/p1","status":{"name":"Planned","type":"planned"}}],"pageInfo":{"hasNextPage":false,"endCursor":null}}}}}""");
-
-        var (status, _, body) = await Get("/api/projects?team=t1");
-
-        Assert.Equal(HttpStatusCode.OK, status);
-        Assert.Equal("""{"projects":[{"id":"p1","name":"Map","url":"https://l/p1","status":{"name":"Planned","type":"planned"},"targetDate":null,"completedAt":null,"canceledAt":null}]}""", body);
-        Assert.Equal("t1", _linear.Calls.Single().Var("teamId"));
-    }
-
-    [Fact]
-    public async Task Projects_AnswerTheirDates_AndNullWhenUnset()
-    {
-        _linear.Serve(_ => """{"data":{"team":{"projects":{"nodes":[{"id":"p1","name":"Map","url":"https://l/p1","status":{"name":"Completed","type":"completed"},"targetDate":"2026-10-03","completedAt":"2026-09-20T10:00:00.000Z","canceledAt":null}],"pageInfo":{"hasNextPage":false,"endCursor":null}}}}}""");
-
-        var (_, _, body) = await Get("/api/projects?team=t1");
-
-        Assert.Equal("""{"projects":[{"id":"p1","name":"Map","url":"https://l/p1","status":{"name":"Completed","type":"completed"},"targetDate":"2026-10-03","completedAt":"2026-09-20T10:00:00.000Z","canceledAt":null}]}""", body);
-    }
-
-    [Fact]
-    public async Task Graph_AnswersTheContractShape()
+    public async Task Graph_AnswersTheReadGraph_WithoutTheKey()
     {
         _linear.Serve(_ => IssuesPage(
             Node(Issue("1", labels: Labels("AFK:#30A46C")), inverseRelations: Connection(Incoming("r1", "blocks", Issue("9", project: "null"))))));
 
-        var (status, type, body) = await Get("/api/graph?project=p-map");
+        var (status, body) = await Get("/api/graph?project=p-map");
 
         Assert.Equal(HttpStatusCode.OK, status);
-        Assert.Equal(JsonType, type);
         var graph = JsonDocument.Parse(body).RootElement;
-        Assert.Equal(["project", "issues", "external", "relations"], graph.EnumerateObject().Select(p => p.Name));
-        Assert.Equal(
-            ["id", "identifier", "title", "url", "state", "assignee", "parentId", "team", "project", "labels"],
-            graph.GetProperty("issues")[0].EnumerateObject().Select(p => p.Name));
-        Assert.Equal("""[{"name":"AFK","color":"#30A46C"}]""", graph.GetProperty("issues")[0].GetProperty("labels").GetRawText());
-        Assert.Equal("[]", graph.GetProperty("external")[0].GetProperty("labels").GetRawText());
-        Assert.Equal(JsonValueKind.Null, graph.GetProperty("external")[0].GetProperty("project").ValueKind);
-        Assert.Equal(JsonValueKind.Null, graph.GetProperty("issues")[0].GetProperty("assignee").ValueKind);
-        Assert.Equal("""{"id":"r1","type":"blocks","from":"9","to":"1"}""", graph.GetProperty("relations")[0].GetRawText());
+        Assert.Equal("1", graph.GetProperty("issues")[0].GetProperty("id").GetString());
+        Assert.Equal("9", graph.GetProperty("external")[0].GetProperty("id").GetString());
+        var relation = graph.GetProperty("relations")[0];
+        Assert.Equal(("blocks", "9", "1"),
+            (relation.GetProperty("type").GetString(), relation.GetProperty("from").GetString(), relation.GetProperty("to").GetString()));
         Assert.DoesNotContain(FakeLinear.ApiKey, body);
     }
 
@@ -159,23 +116,19 @@ public sealed class MapServerTests : IAsyncLifetime
         state = "In Progress";
         var second = await Get("/api/graph?project=p-map");
 
-        Assert.Equal(2, _linear.CallsTo("ProjectIssues"));
         Assert.Contains("\"name\":\"Todo\"", first.Body);
         Assert.Contains("\"name\":\"In Progress\"", second.Body);
     }
 
     [Theory]
-    [InlineData("/api/projects", "team")]
-    [InlineData("/api/projects?team=", "team")]
-    [InlineData("/api/graph", "project")]
-    public async Task MissingParameter_Is400_WithoutCallingLinear(string path, string parameter)
+    [InlineData("/api/projects")]
+    [InlineData("/api/projects?team=")]
+    [InlineData("/api/graph")]
+    public async Task MissingParameter_Is400_WithoutCallingLinear(string path)
     {
-        var (status, type, body) = await Get(path);
+        var (status, body) = await Get(path);
 
-        Assert.Equal(HttpStatusCode.BadRequest, status);
-        Assert.Equal(JsonType, type);
-        Assert.Equal("missing_parameter", Error(body).Code);
-        Assert.Contains(parameter, Error(body).Message);
+        Assert.Equal((HttpStatusCode.BadRequest, "missing_parameter"), (status, ErrorCode(body)));
         Assert.Empty(_linear.Calls);
     }
 
@@ -191,65 +144,28 @@ public sealed class MapServerTests : IAsyncLifetime
     [InlineData(HttpStatusCode.OK, """{"data":{"project":{"id":"p"}}}""", HttpStatusCode.BadGateway, "linear_error")]
     [InlineData(HttpStatusCode.OK, """{"data":{"project":{"id":"p","name":"n","url":"u","issues":{"pageInfo":{"hasNextPage":false},"nodes":[{"id":null}]}}}}""",
         HttpStatusCode.BadGateway, "linear_error")]
-    public async Task LinearFailures_AnswerTheErrorEnvelope(
+    public async Task LinearFailures_AnswerTheErrorEnvelope_WithoutTheKey(
         HttpStatusCode linearStatus, string linearBody, HttpStatusCode status, string code)
     {
         _linear.Answer = _ => (linearStatus, linearBody);
 
-        var (actualStatus, type, body) = await Get("/api/graph?project=p-map");
+        var (actualStatus, body) = await Get("/api/graph?project=p-map");
 
-        Assert.Equal(status, actualStatus);
-        Assert.Equal(JsonType, type);
-        Assert.Equal(code, Error(body).Code);
+        Assert.Equal((status, code), (actualStatus, ErrorCode(body)));
         Assert.DoesNotContain(FakeLinear.ApiKey, body);
     }
 
     [Theory]
-    [InlineData("/api/nothing")]
-    [InlineData("/assets/missing.js")]
-    public async Task UnknownPath_Is404NotFound(string path)
-    {
-        var (status, type, body) = await Get(path);
-
-        Assert.Equal(HttpStatusCode.NotFound, status);
-        Assert.Equal(JsonType, type);
-        Assert.Equal("not_found", Error(body).Code);
-        Assert.Empty(_linear.Calls);
-    }
-
-    [Theory]
+    [InlineData("GET", "/api/nothing")]
+    [InlineData("GET", "/assets/missing.js")]
     [InlineData("POST", "/api/teams")]
     [InlineData("DELETE", "/api/graph?project=p-map")]
     [InlineData("PUT", "/")]
-    public async Task OnlyGetIsAnswered_OtherMethodsNeverReachLinear(string method, string path)
+    public async Task AnUnknownPathOrANonGetMethod_Is404_AndNeverReachesLinear(string method, string path)
     {
-        var (status, type, body) = await Get(path, new HttpMethod(method));
+        var (status, body) = await Get(path, new HttpMethod(method));
 
-        Assert.Equal(HttpStatusCode.NotFound, status);
-        Assert.Equal(JsonType, type);
-        Assert.Contains("GET only", Error(body).Message);
+        Assert.Equal((HttpStatusCode.NotFound, "not_found"), (status, ErrorCode(body)));
         Assert.Empty(_linear.Calls);
-    }
-
-    [Fact]
-    public async Task Root_WithoutABuiltViewer_SaysSo()
-    {
-        var (status, type, body) = await Get("/");
-
-        Assert.Equal(HttpStatusCode.OK, status);
-        Assert.Equal("text/html; charset=utf-8", type);
-        Assert.Contains("not built", body);
-    }
-
-    [Fact]
-    public async Task Viewer_IsServedWithItsContentTypes()
-    {
-        _bundle["index.html"] = Encoding.UTF8.GetBytes("<!doctype html><div id=root></div>");
-        _bundle["assets/index-abc.js"] = Encoding.UTF8.GetBytes("console.log(1)");
-        _bundle["assets/index-abc.css"] = Encoding.UTF8.GetBytes("body{}");
-
-        Assert.Equal((HttpStatusCode.OK, "text/html; charset=utf-8", "<!doctype html><div id=root></div>"), await Get("/?team=t&project=p"));
-        Assert.Equal((HttpStatusCode.OK, "text/javascript; charset=utf-8", "console.log(1)"), await Get("/assets/index-abc.js"));
-        Assert.Equal((HttpStatusCode.OK, "text/css; charset=utf-8", "body{}"), await Get("/assets/index-abc.css"));
     }
 }

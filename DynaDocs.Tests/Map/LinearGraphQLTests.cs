@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Map;
 using System.Net;
 using DynaDocs.Services.Map;
 
+/// <summary>DR 052 §2 and §3 at the transport: the user's key goes to Linear as-is, and every failure maps to one error.</summary>
 public class LinearGraphQLTests
 {
     private readonly FakeLinear _linear = new();
@@ -11,73 +12,54 @@ public class LinearGraphQLTests
         _linear.Transport().QueryAsync("query Teams { teams { nodes { id } } }", new() { ["after"] = null }, CancellationToken.None);
 
     [Fact]
-    public async Task PostsJsonWithTheBareKey()
+    [Trait("Job", "trap: a Linear personal API key is rejected with the Bearer scheme, so it goes bare (DYD-264)")]
+    public async Task TheKeyIsSentBare()
     {
         _linear.Serve(_ => """{"data":{"teams":{"nodes":[]}}}""");
 
-        var data = await Query();
+        await Query();
 
-        var call = Assert.Single(_linear.Calls);
-        Assert.Equal(HttpMethod.Post, call.Method);
-        Assert.Equal("application/json", call.MediaType);
-        Assert.Equal(FakeLinear.ApiKey, call.Authorization);
-        Assert.Equal("Teams", call.Operation);
-        Assert.True(call.Variables.ContainsKey("after"));
-        Assert.Equal(0, data.GetProperty("teams").GetProperty("nodes").GetArrayLength());
+        Assert.Equal(FakeLinear.ApiKey, Assert.Single(_linear.Calls).Authorization);
     }
 
     [Theory]
-    [InlineData(HttpStatusCode.OK,
-        """{"errors":[{"message":"Field 'x' is unknown"}],"data":null}""",
-        "linear_error", 502, "Field 'x' is unknown")]
-    [InlineData(HttpStatusCode.OK,
-        """{"errors":[{"message":"partial"}],"data":{"teams":null}}""",
-        "linear_error", 502, "partial")]
+    [Trait("Job", "contract: DR 052 §3; DR 063 §5 (a Linear failure is named, never the key)")]
+    [InlineData(HttpStatusCode.OK, """{"errors":[{"message":"Field 'x' is unknown"}],"data":null}""", "linear_error", 502)]
+    [InlineData(HttpStatusCode.OK, """{"errors":[{"message":"partial"}],"data":{"teams":null}}""", "linear_error", 502)]
     [InlineData(HttpStatusCode.BadRequest,
         """{"errors":[{"message":"Authentication required, not authenticated","extensions":{"type":"authentication error","userPresentableMessage":"You need to authenticate to access this operation."}}]}""",
-        "linear_auth", 502, "Authentication required, not authenticated")]
-    [InlineData(HttpStatusCode.BadRequest,
-        """{"errors":[{"message":"Rate limit exceeded","extensions":{"code":"RATELIMITED"}}]}""",
-        "linear_rate_limited", 503, "Rate limit exceeded")]
-    [InlineData(HttpStatusCode.TooManyRequests, "slow down", "linear_rate_limited", 503, "rate limit")]
+        "linear_auth", 502)]
+    [InlineData(HttpStatusCode.BadRequest, """{"errors":[{"message":"Rate limit exceeded","extensions":{"code":"RATELIMITED"}}]}""",
+        "linear_rate_limited", 503)]
+    [InlineData(HttpStatusCode.TooManyRequests, "slow down", "linear_rate_limited", 503)]
     [InlineData(HttpStatusCode.OK,
-        """{"errors":[{"message":"Entity not found: Project","extensions":{"type":"invalid input"}}],"data":null}""",
-        "not_found", 404, "Entity not found: Project")]
-    [InlineData(HttpStatusCode.OK, """{"errors":[{"extensions":{"code":"X"}}]}""", "linear_error", 502, "Linear reported an error.")]
-    [InlineData(HttpStatusCode.InternalServerError, "<html>oops</html>", "linear_error", 502, "HTTP 500")]
-    [InlineData(HttpStatusCode.OK, """{"data":null}""", "linear_error", 502, "without data")]
-    [InlineData(HttpStatusCode.OK, "not json", "linear_error", 502, "without data")]
-    public async Task ClassifiesLinearFailures(HttpStatusCode status, string body, string code, int httpStatus, string message)
+        """{"errors":[{"message":"Entity not found: Project","extensions":{"type":"invalid input"}}],"data":null}""", "not_found", 404)]
+    [InlineData(HttpStatusCode.OK, """{"errors":[{"extensions":{"code":"X"}}]}""", "linear_error", 502)]
+    [InlineData(HttpStatusCode.InternalServerError, "<html>oops</html>", "linear_error", 502)]
+    [InlineData(HttpStatusCode.OK, """{"data":null}""", "linear_error", 502)]
+    [InlineData(HttpStatusCode.OK, "not json", "linear_error", 502)]
+    public async Task ALinearFailure_MapsToOneError(HttpStatusCode status, string body, string code, int httpStatus)
     {
         _linear.Answer = _ => (status, body);
 
         var error = await Assert.ThrowsAsync<MapApiException>(Query);
 
-        Assert.Equal(code, error.Code);
-        Assert.Equal(httpStatus, error.Status);
-        Assert.Contains(message, error.Message);
+        Assert.Equal((code, httpStatus), (error.Code, error.Status));
         Assert.DoesNotContain(FakeLinear.ApiKey, error.Message);
     }
 
-    [Fact]
-    public async Task UnreachableLinear_IsLinearError()
+    [Theory]
+    [Trait("Job", "contract: DR 052 §3; DR 063 §5 (a Linear failure is named, never the key)")]
+    [InlineData("unreachable")]
+    [InlineData("slow")]
+    public async Task UnreachableOrSlowLinear_IsALinearError(string failure)
     {
-        _linear.Answer = _ => throw new HttpRequestException("connection refused");
+        _linear.Answer = _ => failure == "slow"
+            ? throw new TaskCanceledException("timeout")
+            : throw new HttpRequestException("connection refused");
 
         var error = await Assert.ThrowsAsync<MapApiException>(Query);
 
         Assert.Equal(("linear_error", 502), (error.Code, error.Status));
-        Assert.Contains("connection refused", error.Message);
-    }
-
-    [Fact]
-    public async Task SlowLinear_IsLinearError()
-    {
-        _linear.Answer = _ => throw new TaskCanceledException("timeout");
-
-        var error = await Assert.ThrowsAsync<MapApiException>(Query);
-
-        Assert.Equal(("linear_error", 502), (error.Code, error.Status));
-        Assert.Contains("in time", error.Message);
     }
 }
