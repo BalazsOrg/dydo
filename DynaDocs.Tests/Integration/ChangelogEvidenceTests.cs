@@ -48,9 +48,30 @@ public sealed class ChangelogEvidenceTests : IDisposable
         Assert.Equal((1, 1), (check, ready));
         Assert.Contains("gate evidence", checkError);
         Assert.Contains(relative, checkError);
-        Assert.Equal(1, ready);
         Assert.Contains("gate evidence", readyError);
         Assert.Contains(relative, readyError);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task SymlinkedProjectPath_CannotHideCommittedEvidence(bool linkedParent)
+    {
+        File.WriteAllText(Path.Combine(_tree, "dydo", "project", "changelog", "gate.log"), "gate output");
+        Commit(_tree, "commit receipt for symlink-root trap");
+        Git(_tree, "push");
+        var alias = Path.Combine(_root, "alias");
+        DirectoryLinks.Create(alias, linkedParent ? _root : _tree);
+        var project = linkedParent ? Path.Combine(alias, "tree") : alias;
+
+        var (check, _, checkError) = ConsoleCapture.All(() =>
+            CheckCommand.Create().Parse(["--root", project]).Invoke());
+        var (ready, _, readyError) = await ConsoleCapture.AllAsync(() =>
+            PrReadyCommand.Create().Parse([project]).InvokeAsync());
+
+        Assert.Equal((1, 1), (check, ready));
+        Assert.Contains("gate evidence", checkError);
+        Assert.Contains("gate evidence", readyError);
     }
 
     [Fact]

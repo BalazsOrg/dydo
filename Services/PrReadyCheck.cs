@@ -83,8 +83,8 @@ internal static class PrReadyCheck
         var root = GitRunner.Run(directory, "rev-parse", "--show-toplevel");
         if (!root.Ok) return [];
         var gitRoot = root.Text.Trim();
-        var docs = PathUtils.FindDydoRoot(directory) ?? Path.Combine(gitRoot, "dydo");
-        var prefix = PathUtils.NormalizePath(Path.GetRelativePath(gitRoot, Path.Combine(docs, "project", "changelog"))) + "/";
+        var prefix = ChangelogPrefix(directory, gitRoot);
+        if (prefix == null) return ["cannot inspect changelog gate evidence: docs root is missing or outside this repository"];
         var tracked = GitRunner.Run(gitRoot, "ls-files", "--stage", "-z", "--", ":(top,literal)" + prefix);
         if (!tracked.Ok) return [$"cannot inspect changelog gate evidence: {tracked.Error}"];
 
@@ -104,6 +104,18 @@ internal static class PrReadyCheck
             }
         }
         return problems;
+    }
+
+    private static string? ChangelogPrefix(string directory, string gitRoot)
+    {
+        var docs = PathUtils.FindDydoRoot(directory);
+        if (docs == null) return "dydo/project/changelog/";
+        // Git resolves symlinked ancestors before reporting a repository-relative prefix.
+        var location = GitRunner.Run(docs, "rev-parse", "--show-toplevel", "--show-prefix");
+        var lines = location.Text.Replace("\r\n", "\n").Split('\n');
+        return location.Ok && lines.Length >= 2 && lines[0] == gitRoot
+            ? lines[1] + "project/changelog/"
+            : null;
     }
 
     private static bool IsEvidencePath(string path) =>

@@ -6,6 +6,12 @@ date: 2026-11-06
 
 # DYD-805: give the Bash expansion fixture its real host
 
+> DYD-1206 removed all generated evidence named in this record. The filenames and
+> command blocks below describe the historical proof; they are not retained artifacts or
+> current rerun instructions. The one-time rewrite leaves the removed files only under
+> its backup tag. The human-written observations remain the record.
+
+
 ## Change
 
 The original three body-file expansion commands now enter the real hook with `--host claude`.
@@ -106,15 +112,15 @@ On another machine, put its supported `pwsh` on PATH. No tool was installed for 
 
 | Observation | Exit | Result | Raw evidence |
 | --- | --- | --- | --- |
-| Original and reverted diagnostic | 1 | One failed test; PowerShell and Unknown hard denials disagree with the original warning expectation | Red log (`dyd-805-evidence/red.log.gz`, removed by DYD-1206), full responses (`dyd-805-evidence/red-results.json.gz`, removed by DYD-1206), `dyd-805-evidence/replay-red.sh` |
+| Original and reverted diagnostic | 1 | One failed test; PowerShell and Unknown hard denials disagree with the original warning expectation | Red log (`dyd-805-evidence/red.log.gz`, removed by DYD-1206), full responses (`dyd-805-evidence/red-results.json.gz`, removed by DYD-1206), `dyd-805-evidence/replay-red.sh` (removed by DYD-1206) |
 | Final discovery | 0 | 2,515 tests, including 257 PR-ready tests | Discovery (`dyd-805-evidence/discovery.log.gz`, removed by DYD-1206) |
 | Focused regression after restoring the candidate | 0 | 5 passed, zero skipped | Focused log (`dyd-805-evidence/focused.log.gz`, removed by DYD-1206), TRX (`dyd-805-evidence/focused.trx.gz`, removed by DYD-1206) |
 | Entire PR-ready class | 0 | 257 passed, zero skipped | Class log (`dyd-805-evidence/class.log.gz`, removed by DYD-1206), TRX (`dyd-805-evidence/class.trx.gz`, removed by DYD-1206) |
 | Exact Light gate | 0 | 2,505 passed; ten Node guard tests skipped because pwsh was absent from PATH | Light log (`dyd-805-evidence/light.log.gz`, removed by DYD-1206), TRX (`dyd-805-evidence/light.trx.gz`, removed by DYD-1206) |
 | Node guard and workflow follow-up with existing pwsh | 0 | 63 passed, zero skipped; includes all ten missing Light cases | Workflow log (`dyd-805-evidence/workflow.log.gz`, removed by DYD-1206), TRX (`dyd-805-evidence/workflow.trx.gz`, removed by DYD-1206) |
-| First static attempt | 2 | INVALID: the writer edited this changelog during C# collection; all other stacks passed | Log (`dyd-805-evidence/static-invalid.log.gz`, removed by DYD-1206), aggregate (`dyd-805-evidence/static-invalid-result.json.gz`, removed by DYD-1206), `dyd-805-evidence/static-input-change.json` |
+| First static attempt | 2 | INVALID: the writer edited this changelog during C# collection; all other stacks passed | Log (`dyd-805-evidence/static-invalid.log.gz`, removed by DYD-1206), aggregate (`dyd-805-evidence/static-invalid-result.json.gz`, removed by DYD-1206), `dyd-805-evidence/static-input-change.json` (removed by DYD-1206) |
 
-`dyd-805-evidence/test-receipt.json` records counters and implementation hashes.
+`dyd-805-evidence/test-receipt.json` (removed by DYD-1206) recorded counters and implementation hashes.
 The ten skips were confined to unchanged `NodeTestGuardTests`; the follow-up closes their local
 proof gap without changing or weakening their assertions. Two discarded draft fixtures also
 failed while developing the correction: an unknown tool name bypassed hook command handling,
@@ -122,10 +128,10 @@ and a reviewed brace-named file was incorrectly expected to pass. The final fixt
 actual Unknown CLI and preserves the literal allowlist; the final class and Light runs cover both.
 
 The first static attempt is not counted as a pass. The fresh static run exited 0 with all five
-stacks passing and repository inputs frozen throughout collection. Retained
+stacks passing and repository inputs frozen throughout collection. The historical
 static log (`dyd-805-evidence/static.log.gz`, removed by DYD-1206) and
 aggregate receipt (`dyd-805-evidence/static-result.json.gz`, removed by DYD-1206) are from that completed run.
-The final documentation check is retained as `dyd-805-evidence/docs.log.gz`; rerun it with
+The final documentation check was recorded as `dyd-805-evidence/docs.log.gz` (removed by DYD-1206), using
 `gate4 180 dotnet bin/Debug/net10.0/dydo.dll check`.
 
 Native Windows on the reviewed candidate remains required through `guard-windows`; this writer

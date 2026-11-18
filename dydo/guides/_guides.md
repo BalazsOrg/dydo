@@ -13,6 +13,7 @@ This folder answers "How do I DO this?" - step-by-step instructions for common t
 
 ## Contents
 
+- [Changelog records and gate evidence](./changelog-evidence.md) - what belongs in Git and what the evidence guard refuses.
 - **coding-standards.md** - Code conventions and style rules
 - **getting-started.md** - First-time setup walkthrough
 - **customizing-roles.md** - Creating custom roles and permission sets
@@ -38,5 +39,3 @@ For conceptual background, use `understand/`. For reference specs, use `referenc
 - [Understand](../understand/_understand.md)
 - [Reference](../reference/_reference.md)
 - [Project](../project/_project.md)
-
-- [Changelog records and gate evidence](./changelog-evidence.md) - what belongs in Git and what the evidence guard refuses.
