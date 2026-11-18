@@ -1,0 +1,32 @@
+namespace DynaDocs.SkillBuild;
+
+/// <summary>The 4.0.0 machines (K1); the overview orders them.</summary>
+public enum MachineId
+{
+    Overview,
+    ClaimBuild,
+    Project,
+    Landing,
+    TicketStatus,
+    Hops,
+    Proof,
+    Docs,
+    Review,
+    MergeCommand,
+    FeatureMerge,
+    MasterRoute,
+    Dispatch,
+    Envoy,
+    Staff,
+    Liveness,
+    Should,
+    Findings,
+    Council,
+    Tribunal,
+    Law,
+    Backfill,
+    Mutation,
+    SafeDelete,
+    IgnoreEntry,
+    Adopter
+}
