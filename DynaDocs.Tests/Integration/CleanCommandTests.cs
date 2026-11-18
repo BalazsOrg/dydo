@@ -504,6 +504,21 @@ public sealed class CleanCommandTests : IDisposable
         Assert.Equal(2, manifest.RootElement.GetProperty("files").GetArrayLength());
     }
 
+    [Trait("Job", "trap: DYD-362 untracked files survive clean")]
+    [Fact]
+    public async Task UntrackedFile_SurvivesCleanInTheArchive()
+    {
+        var tree = AddWorktree("feature");
+        Directory.CreateDirectory(Path.Combine(tree, "notes"));
+        File.WriteAllBytes(Path.Combine(tree, "notes", "todo.bin"), [1, 0, 2, 0, 3]);
+
+        var (exit, _, _) = await Clean("feature");
+
+        Assert.Equal(0, exit);
+        Assert.False(Directory.Exists(tree));
+        var entry = ArchiveEntries().Single();
+        Assert.Equal([1, 0, 2, 0, 3], File.ReadAllBytes(Path.Combine(entry, "untracked", "notes", "todo.bin")));
+    }
 
     [Fact]
     public async Task Archive_ListsEntriesNewestFirst()

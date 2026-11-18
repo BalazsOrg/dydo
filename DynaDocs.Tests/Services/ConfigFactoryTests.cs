@@ -37,6 +37,21 @@ public sealed class ConfigFactoryTests : IntegrationTestBase
         AssertVerdict(result, warning);
     }
 
+    // Each env option word has one reading, so a long option chain stays inside the guard's match budget.
+    [Trait("Job", "trap: Round 1 N2 regex budget")]
+    [Theory]
+    [InlineData("env {0}x", null)]
+    [InlineData("env {0}gh pr create --fill", NoReviewBlock)]
+    public async Task Guard_LongEnvOptionChain_IsReadWithinTheMatchBudget(string template, string? warning)
+    {
+        await InitProjectAsync("none");
+        var command = string.Format(template, string.Concat(Enumerable.Repeat("-u ", 400)));
+
+        var result = await GuardWithStdinAsync(BashHook(command));
+
+        AssertVerdict(result, warning);
+    }
+
     private static void AssertVerdict(CommandResult result, string? warning)
     {
         if (warning is null)
