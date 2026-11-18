@@ -1,5 +1,7 @@
 namespace DynaDocs.Tests.Integration;
 
+using DynaDocs.Services;
+
 /// <summary>
 /// The shell guard's corpus, at the hook entry: each command a lane hands to <c>dydo guard</c> is
 /// refused or allowed. A refusal is hard, so the identical retry is refused too. "Bash" is Claude's
@@ -104,11 +106,11 @@ public class GuardShellCorpusTests : GuardHookTestBase
     ];
 
     // DYD-641: pwsh ends a statement at a bare carriage return and closes a string at a typographic
-    // quote, so the dangerous command after one runs.
+    // quote, so the dangerous command after one runs. DYD-406 GS-05: a here-string piped to python -.
     private static readonly string[] DangerousWherePwshRunsIt =
     [
         "echo x\rpass show bank", "echo ‘a'; pass show bank; ’b'", "echo x\rpython -", "echo ‘a'; python -; ’b'",
-        "@'\npass show x\n'@ | pwsh -Command -", GuardRetroCommands.Gs04LightLanesDeclarations,
+        "@'\npass show x\n'@ | pwsh -Command -", GuardRetroCommands.Gs04LightLanesDeclarations, "@'\nprint(1)\n'@ | python -",
     ];
 
     public static TheoryData<string, string> Dangerous => Join(
@@ -235,6 +237,7 @@ public class GuardShellCorpusTests : GuardHookTestBase
         "cat > notes.md <<END-OF-FILE\n$(rm -rf build)\nEND-OF-FILE", "cat > notes.md <<'EOF'\nplain\nEOF\n\nrm dydo/index.md",
         "cat > notes.md <<'EOF'\nplain\nEOF\n# then\nrm dydo/index.md", "$(echo tee) file.cs", "`get_cmd` file.txt",
         "# x\r@'\n$(echo x > dydo/index.md)\n'@", "@'\nx'; rm dydo/index.md; echo '\n'@ | Set-Content notes.md",
+        "rm dydo/index.md\\\n#x",
     ];
 
     private static readonly string[] HiddenChangeInPowerShellReadings =
@@ -244,6 +247,7 @@ public class GuardShellCorpusTests : GuardHookTestBase
         "@'\necho x > $OUT\n'@ | pwsh -Command - # runs it", "iex @'\necho x > $OUT\n'@",
         "@'\necho x > $OUT\n'@ | & \"C:\\Program Files\\Git\\bin\\bash.exe\"", "@'\necho x > $OUT\n'@ | & 'C:\\Program Files\\Git\\bin\\bash.exe'",
         "@'\necho x > $OUT\n'@ | wsl bash", "@'\necho x > $OUT\n'@\n| iex", "@'\necho x > $OUT\n'@ |\niex", "& {\n@'\necho x > $OUT\n'@\n} | iex",
+        "@'\n$(echo x > dydo/index.md)\n'@\r| iex", "echo hello # note\rrm dydo/index.md",
     ];
 
     private static readonly string[] HiddenChangeInEveryReading =
@@ -317,9 +321,18 @@ public class GuardShellCorpusTests : GuardHookTestBase
     // Each dialect's reading, at the hook (DYD-641, DYD-665, DYD-723, DYD-881): pwsh ends a statement
     // at a bare carriage return outside quotes and at a backtick before CRLF inside a word; groups
     // nest only to the bound; an unclosed backtick here-word fails the reading closed instead of
-    // throwing past the fail-open boundary.
+    // throwing past the fail-open boundary. pwsh closes a string at a low-9 quote (‚ ‛ „) and a
+    // here-string at a typographic terminator, so the PR merge after one runs; a typographic
+    // here-string's body, a later line included, is data to pwsh and code to bash.
     public static TheoryData<string, string, bool> DialectReadings => new()
     {
+        { "PowerShell", "echo 'a‚; gh pr merge 1", true },
+        { "PowerShell", "echo 'a‛; gh pr merge 1", true },
+        { "PowerShell", "echo \"a„; gh pr merge 1", true },
+        { "PowerShell", "echo @‘\nabc\n’@; gh pr merge 1", true },
+        { "PowerShell", "echo @\"\n$(gh pr merge 1)\n“@; echo z", true },
+        { "PowerShell", "echo @‘\nx’; gh pr merge 1\n’@", false },
+        { "Bash", "echo @‘\nx’; gh pr merge 1\n’@", true },
         { "PowerShell", "echo @'\rabc\r'@\rrm dydo/index.md", true },
         { "PowerShell", "echo a\r\nrm dydo/index.md", true },
         { "Bash", "echo a\r\nrm dydo/index.md", true },
@@ -340,7 +353,7 @@ public class GuardShellCorpusTests : GuardHookTestBase
     };
 
     [Theory]
-    [Trait("Job", "trap: DYD-641/665 pwsh line breaks, DYD-723 nesting bound, DYD-881 unclosed here-word")]
+    [Trait("Job", "trap: DYD-641/665 pwsh line breaks and typographic quotes, DYD-723 nesting bound, DYD-881 unclosed here-word")]
     [MemberData(nameof(DialectReadings))]
     public async Task DialectReading_DecidesTheOutcome(string lane, string command, bool refused)
     {
@@ -350,6 +363,19 @@ public class GuardShellCorpusTests : GuardHookTestBase
 
         if (refused) AssertRefused(lane, result);
         else AssertAllowed(lane, result);
+    }
+
+    // pwsh expands a here-string opened at a typographic double quote, so the reading finds the
+    // substitution in its body. Pinned below the hook: there the analyzer refuses the same command
+    // twice over, for the substitution and for its line breaks, whatever the reading finds.
+    [Fact]
+    [Trait("Job", "edge: DYD-641 a typographic expanding here-string's substitution is read")]
+    public void TypographicExpandingHereString_ItsSubstitutionIsRead()
+    {
+        var commands = ShellReader.Read("echo @“\n$(rm y)\n”@", posix: false).Commands
+            .Select(command => string.Join(' ', command.Words));
+
+        Assert.Contains("rm y", commands);
     }
 
     // pwsh reads '' in a single-quoted string as one quote; the reading recursed once per pair, so
@@ -436,8 +462,11 @@ public class GuardShellCorpusTests : GuardHookTestBase
         "sed -i 's/old/new/g' {0}", "sed --in-place 's/a/b/' {0}", "rm {0}", "rm -f {0}", "unlink {0}", "cp {0} copy.txt",
         "cp a.md {0}", "mv {0} moved.txt", "ln -s target {0}", "rsync -av src/ {0}", "chmod 600 {0}", "chown root:root {0}",
         "chgrp admin {0}", "bash -c \"cat {0}\"", "sh -c \"tee {0}\"", "zsh -c \"echo pwned > {0}\"", "bash -xc \"cat {0}\"",
-        "bash -c \"cat file.txt; rm {0}\"", "dydo whoami && cat {0}", "echo $(cat {0})",
+        "bash -c \"cat file.txt; rm {0}\"", "dydo whoami && cat {0}", "echo $(cat {0})", "echo \\>| rm {0}",
     ];
+
+    // An escaped > redirects nothing, so the | after it still pipes into the command that names the path.
+    private static readonly string[] FileOperationsInPowerShellReadings = ["echo `>| rm {0}"];
 
     private static readonly string[] FileOperationsInEveryReading =
     [
@@ -449,7 +478,8 @@ public class GuardShellCorpusTests : GuardHookTestBase
     ];
 
     public static TheoryData<string, string> FileOperations => Join(
-        InLanes(BashLanes, FileOperationsInBashReadings), InLanes(EveryLane, FileOperationsInEveryReading));
+        InLanes(BashLanes, FileOperationsInBashReadings), InLanes(PowerShellLanes, FileOperationsInPowerShellReadings),
+        InLanes(EveryLane, FileOperationsInEveryReading));
 
     [Theory]
     [Trait("Job", "contract: files-off-limits.md off-limits tier holds through every shell file operation")]

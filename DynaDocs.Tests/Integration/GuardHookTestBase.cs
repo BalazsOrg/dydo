@@ -1,6 +1,7 @@
 namespace DynaDocs.Tests.Integration;
 
 using System.Text.Json;
+using DynaDocs.Services;
 
 /// <summary>
 /// Drives <c>dydo guard</c> at its hook entry. A tool name selects the lane: Claude's Bash or
@@ -18,6 +19,13 @@ public abstract class GuardHookTestBase : IntegrationTestBase
 
     /// <summary>The lanes pwsh may run the command in: the PowerShell tool and the unknown shell.</summary>
     protected static readonly string[] PowerShellLanes = ["PowerShell", ""];
+
+    /// <summary>
+    /// Claude's Bash tool as Claude Code's installed hook calls the guard (<c>--host claude</c>):
+    /// bash's reading on every platform, Git Bash's on Windows, where an unmarked Bash call reads
+    /// as the unknown shell.
+    /// </summary>
+    protected const string ClaudeBashLane = "Claude Bash";
 
     protected static string ShellJson(string toolName, string command) =>
         JsonSerializer.Serialize(new Dictionary<string, object>
@@ -39,8 +47,12 @@ public abstract class GuardHookTestBase : IntegrationTestBase
         return JsonSerializer.Serialize(payload);
     }
 
-    protected Task<CommandResult> ShellAsync(string lane, string command) =>
-        lane == "" ? GuardWithStdinAsync("", "--command", command) : GuardWithStdinAsync(ShellJson(lane, command));
+    protected Task<CommandResult> ShellAsync(string lane, string command) => lane switch
+    {
+        "" => GuardWithStdinAsync("", "--command", command),
+        ClaudeBashLane => GuardWithStdinAsync(ShellJson("Bash", command), "--host", ClaudeGuardWiring.Host),
+        _ => GuardWithStdinAsync(ShellJson(lane, command)),
+    };
 
     protected static bool IsRefused(string lane, CommandResult result) =>
         lane == "" ? result.ExitCode == 2 : result.ExitCode == 0 && result.Stdout.Contains("\"deny\"");

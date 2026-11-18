@@ -41,29 +41,40 @@ public class GuardSecurityTests : IntegrationTestBase
         }
     }
 
-    // A benign command padded to exactly 1 MiB is read and allowed; one character more is refused
-    // on every attempt, whatever it says, so no input is too long to bound (DYD-723).
+    // A command one character past 1 MiB is refused on every attempt, whatever it says, so no input
+    // is too long to bound (DYD-723).
     [Trait("Job", "trap: DYD-723 command input is bounded at 1 MiB")]
     [Theory]
-    [InlineData("Bash", 1_048_576, false)]
-    [InlineData("PowerShell", 1_048_576, false)]
-    [InlineData("", 1_048_576, false)]
-    [InlineData("Bash", 1_048_577, true)]
-    [InlineData("PowerShell", 1_048_577, true)]
-    [InlineData("", 1_048_577, true)]
-    public async Task LengthBoundary_OnlyACommandPastOneMebibyteIsRefused(string toolName, int length, bool refused)
+    [InlineData("Bash")]
+    [InlineData("PowerShell")]
+    [InlineData("")]
+    public async Task LengthBoundary_ACommandPastOneMebibyteIsRefusedOnEveryAttempt(string toolName)
     {
         await SetupClaimedAgent();
-        var command = "echo ready".PadRight(length, ' ');
+        var command = "echo ready".PadRight(1_048_577, ' ');
 
         for (var attempt = 0; attempt < 2; attempt++)
         {
             var result = toolName == "" ? await UnknownShellGuardAsync(command)
                 : await GuardWithStdinAsync(ShellJson(toolName, command));
-            if (refused) AssertRefused(toolName, result);
-            else if (toolName == "") result.AssertSuccess();
-            else result.AssertPreToolUseAllowed();
+            AssertRefused(toolName, result);
         }
+    }
+
+    // Exactly 1 MiB is within the bound and one character more is not. Pinned below the hook: there a
+    // 1 MiB command meets every rule, and under host load one can pass its 250 ms budget and refuse
+    // the call as too complex. Blank input returns before any rule runs.
+    [Trait("Job", "edge: DYD-723 a command of exactly 1 MiB is within the bound")]
+    [Theory]
+    [InlineData("Posix")]
+    [InlineData("PowerShell")]
+    [InlineData("Unknown")]
+    public void LengthBoundary_ACommandOfExactlyOneMebibyteIsWithinTheBound(string dialect)
+    {
+        var analyzer = new BashCommandAnalyzer(Enum.Parse<ShellDialect>(dialect));
+
+        Assert.False(analyzer.Analyze(new string(' ', 1_048_576)).HasDangerousPattern);
+        Assert.True(analyzer.Analyze(new string(' ', 1_048_577)).HasDangerousPattern);
     }
 
     [Trait("Job", "trap: DYD-723 group-word origins keep the poll-loop nudge's verdict")]

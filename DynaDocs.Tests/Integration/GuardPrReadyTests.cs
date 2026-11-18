@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Integration;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using DynaDocs.Commands;
+using DynaDocs.Models;
 using DynaDocs.Services;
 using static DynaDocs.Tests.Integration.PushedRepository;
 
@@ -110,10 +111,15 @@ public class GuardPrReadyTests : IntegrationTestBase
         return JsonSerializer.Serialize(payload);
     }
 
+    // "cli" is the CLI's --command; "claude" is Claude's Bash tool as its installed hook calls the
+    // guard (--host claude), bash's reading on every platform, where an unmarked Bash call on
+    // Windows reads as the unknown shell.
     private async Task<CommandResult> Attempt(string lane, object command, string? toolCwd = null)
     {
         if (lane == "cli")
             return await RunAsync(GuardCommand.Create(), "--command", (string)command);
+        if (lane == "claude")
+            return await GuardWithStdinAsync(Payload(command, toolCwd: toolCwd, toolName: "Bash"), "--host", ClaudeGuardWiring.Host);
         return await GuardWithStdinAsync(Payload(command, codex: lane == "exec" || command is string[], toolCwd: toolCwd, toolName: lane));
     }
 
@@ -533,8 +539,7 @@ public class GuardPrReadyTests : IntegrationTestBase
             "gh pr create --title other; gh pr create -F dydo/agents/body.md",
             "gh pr create -F dydo/agents/body.md; gh pr create -F dydo/agents/other.md",
             "gh pr create --body '## Independent review'; gh pr create -F dydo/agents/body.md",
-            "gh pr create -F \"dydo/agents/reviewed.md$(printf .plain)\"", "gh pr create -F \"dydo/agents/reviewed.md`printf .plain`\"",
-            "SUFFIX=.plain; gh pr create -F \"dydo/agents/reviewed.md$SUFFIX\"",
+            "gh pr create -F \"dydo/agents/reviewed.md$(printf .plain)\"", "SUFFIX=.plain; gh pr create -F \"dydo/agents/reviewed.md$SUFFIX\"",
             "gh pr create -F dydo/agents/missing/../body.md", "gh pr create -F dydo/agents/plain.md/../body.md",
             "gh pr create -F dydo/agents/./body.md", "gh pr create -F dydo/agents//body.md", "gh pr create -F dydo/agents/body.md/",
             "gh pr create -F dydo/agents/body.md/.", "gh pr create -F dydo/agents/body.md\\", "gh pr create -F dydo/agents/body\\\r\n.md",
@@ -569,6 +574,9 @@ public class GuardPrReadyTests : IntegrationTestBase
             "gh pr create -F dydo/agents/body.md > dydo/agents/body.md", "gh pr create -F dydo/agents/body.md *> dydo/agents/body.md",
             "git status; gh pr create -F dydo/agents/body.md", "git status --short; gh pr create -F dydo/agents/body.md 2>&1 | cat",
             "gh pr create -F \"dydo/agents/reviewed.md$(printf .plain)\"", "SUFFIX=.plain; gh pr create -F \"dydo/agents/reviewed.md$SUFFIX\"");
+        // bash substitutes the backtick operand, so it warns; pwsh, and the unknown shell reading both
+        // ways, read the final backtick as escaping the closing quote, an unreadable call refused.
+        Add("claude", false, Outcome.Warned, "gh pr create -F \"dydo/agents/reviewed.md`printf .plain`\"");
         Add("PowerShell", false, Outcome.Refused, "gh pr create -F \"dydo/agents/reviewed.md`printf .plain`\"");
         Add("cli", false, Outcome.Refused, "gh pr create -F \"dydo/agents/reviewed.md`printf .plain`\"");
         Add("cli", false, Outcome.Allowed, "gh pr create -F \"dydo/agents/reviewed.md\"");
@@ -739,20 +747,41 @@ public class GuardPrReadyTests : IntegrationTestBase
     public async Task DydoJsonCopyOfTheReviewBlockNudge_ReadsTheBodyFileAsShipped(string pattern, string command, Outcome outcome)
     {
         await InitPushedProject();
-        var shipped = ConfigFactory.DefaultNudges.Single(n => n.Pattern == ConfigFactory.ReviewBlockPattern);
+        WriteNudgesAndPush((pattern, outcome == Outcome.Refused ? "block" : ShippedReviewBlock.Severity));
+
+        await AssertOutcome(outcome, () => Attempt("Bash", command), command);
+    }
+
+    // Round 1 N1: of two copies in one dydo.json the stricter holds, so a blocking pre-DYD-736 copy
+    // beside the current warn still refuses the call the current copy alone would only warn.
+    [Fact]
+    [Trait("Job", "trap: DYD-736 Round 1 N1, a blocking pre-DYD-736 copy beside the current one still blocks")]
+    public async Task DydoJsonWithABlockingPreDyd736CopyBesideTheCurrentOne_Refuses()
+    {
+        const string command = "FOO=1 gh pr create --fill";
+        await InitPushedProject();
+        WriteNudgesAndPush((ConfigFactory.ReviewBlockPattern, ShippedReviewBlock.Severity),
+            (ConfigFactory.PreDyd736ReviewBlockPattern, "block"));
+
+        await AssertOutcome(Outcome.Refused, () => Attempt("Bash", command), command);
+    }
+
+    private static NudgeConfig ShippedReviewBlock =>
+        ConfigFactory.DefaultNudges.Single(n => n.Pattern == ConfigFactory.ReviewBlockPattern);
+
+    private void WriteNudgesAndPush(params (string Pattern, string Severity)[] nudges)
+    {
         var config = JsonNode.Parse(ReadFile("dydo.json"))!.AsObject();
-        config["nudges"] = new JsonArray(new JsonObject
+        config["nudges"] = new JsonArray([.. nudges.Select(nudge => (JsonNode)new JsonObject
         {
-            ["pattern"] = pattern,
-            ["message"] = shipped.Message,
-            ["severity"] = outcome == Outcome.Refused ? "block" : shipped.Severity,
-        });
+            ["pattern"] = nudge.Pattern,
+            ["message"] = ShippedReviewBlock.Message,
+            ["severity"] = nudge.Severity,
+        })]);
         WriteFile("dydo.json", config.ToJsonString());
         // The tree check reads the local remote-tracking ref, so moving it stands in for a push.
         Commit(TestDir, "nudge");
         Git(TestDir, "update-ref", "refs/remotes/origin/feature", "HEAD");
         WriteFile("dydo/agents/body.md", ReviewedBody);
-
-        await AssertOutcome(outcome, () => Attempt("Bash", command), command);
     }
 }

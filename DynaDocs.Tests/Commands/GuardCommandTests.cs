@@ -90,7 +90,7 @@ public class GuardCommandTests : GuardHookTestBase
     [Trait("Job", "trap: DYD-406 GS-03 a nudge fired on launch words in text a command reads")]
     [InlineData("", GuardRetroCommands.Gs03ProcessListing)]
     [InlineData("", GuardRetroCommands.Gs03RgPattern)]
-    [InlineData("Bash", GuardRetroCommands.Gs03QuotedProcessListing)]
+    [InlineData(ClaudeBashLane, GuardRetroCommands.Gs03QuotedProcessListing)]
     [InlineData("PowerShell", GuardRetroCommands.Gs03PowerShellProcessListing)]
     [InlineData("", GuardRetroCommands.Gs03GitGrepPattern)]
     [InlineData("", GuardRetroCommands.Gs03LogGrep)]
