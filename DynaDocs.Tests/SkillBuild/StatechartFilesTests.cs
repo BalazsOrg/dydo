@@ -154,7 +154,7 @@ public class StatechartFilesTests
     }
 
     [Fact]
-    [Trait("Job", "contract: K6/AR1 a model with no machines builds no chart file, so the production run writes nothing")]
+    [Trait("Job", "contract: K6 a model with no machines builds no chart file")]
     public void ModelWithNoMachines_BuildsNoChartFile() =>
         Assert.DoesNotContain(SkillBuilder.Build(new Model([], [])).Files.Keys, path => path.StartsWith("claims/", StringComparison.Ordinal));
 
