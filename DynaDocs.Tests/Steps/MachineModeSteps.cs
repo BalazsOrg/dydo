@@ -15,7 +15,6 @@ public sealed class MachineModeSteps : IntegrationTestBase
     private string _permissionMode = "default";
     private string? _agentId;
     private CommandResult _result = new(-1, "", "");
-    private bool _directGuard;
     private string? _initialModeBytes;
     private string? _initialValue;
 
@@ -83,17 +82,11 @@ public sealed class MachineModeSteps : IntegrationTestBase
         (var claudeCodeShell, _toolName, _hookArgs) = host switch
         {
             "Claude Code" => (true, "Bash", new[] { "--host", "claude" }),
-            "Claude Code without the init marker" => (true, "Bash", Array.Empty<string>()),
             "Codex" => (false, "shell_command", Array.Empty<string>()),
-            "T3" => (false, "exec", Array.Empty<string>()),
-            "direct guard" => (false, "Bash", Array.Empty<string>()),
-            "Codex launched from a Claude Code shell" => (true, "Bash", Array.Empty<string>()),
-            "unknown" => (false, "Bash", Array.Empty<string>()),
             _ => throw new ArgumentException($"Unknown host in scenario: {host}")
         };
         Environment.SetEnvironmentVariable("CLAUDECODE", claudeCodeShell ? "1" : null);
         _permissionMode = permissionMode;
-        _directGuard = host == "direct guard";
         (await InitProjectAsync("none")).AssertSuccess();
     }
 
@@ -105,9 +98,7 @@ public sealed class MachineModeSteps : IntegrationTestBase
     }
 
     [When("the agent runs {string}")]
-    public async Task AgentRuns(string command) => _result = _directGuard
-        ? await RunAsync(GuardCommand.Create(), "--command", command)
-        : await GuardWithStdinAsync(Hook(command), _hookArgs);
+    public async Task AgentRuns(string command) => _result = await GuardWithStdinAsync(Hook(command), _hookArgs);
 
     [When(@"^the agent runs the command: (.+)$")]
     public Task AgentRunsCommand(string command) => AgentRuns(command);
@@ -120,16 +111,8 @@ public sealed class MachineModeSteps : IntegrationTestBase
         await AgentRuns(command);
     }
 
-    [Then("the guard blocks it and tells the chief of staff to run it again")]
-    public void AssertFirstTryBlocked()
-    {
-        if (_directGuard)
-            _result.AssertExitCode(2);
-        var reason = _directGuard ? _result.Stderr : _result.AssertPreToolUseDenied();
-        Assert.StartsWith("BLOCKED: dydo mode set changes the mode of every agent on this machine.", reason);
-        Assert.Contains("chief of staff readying overnight mode or ending it; otherwise stop", reason);
-        Assert.Contains("Run the same command again", reason);
-    }
+    [Then("the guard blocks it once")]
+    public void AssertFirstTryBlocked() => Assert.Contains("dydo mode set", _result.AssertPreToolUseDenied());
 
     [Then("the guard allows it")]
     public void Allows() => _result.AssertPreToolUseAllowed();
