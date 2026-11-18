@@ -174,11 +174,6 @@
       "ownership": "not-owned"
     },
     {
-      "path": "DynaDocs.Tests/coverage/test-associations.json",
-      "action": "DYD-96/DYD-103",
-      "ownership": "not-owned"
-    },
-    {
       "path": "DynaDocs.Tests/DynaDocs.Tests.csproj",
       "action": "DYD-99/DYD-96; Reqnroll discovers the amended feature without an edit",
       "ownership": "not-owned"

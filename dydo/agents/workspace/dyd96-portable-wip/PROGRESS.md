@@ -23,7 +23,6 @@ The WIP commit containing this packet is the exact dirty source checkpoint. Befo
 
 - `DynaDocs.Tests/Steps/AssuranceAdoptionSteps.cs`
 - `DynaDocs.Tests/coverage/sync_testing_example.py`
-- `DynaDocs.Tests/coverage/test-associations.json`
 - `DynaDocs.Tests/coverage/tests/test_report.py`
 - `DynaDocs.Tests/coverage/tests/test_sync_testing_example.py`
 
@@ -64,7 +63,7 @@ The probe mistakenly used `--filter Category=Unit`, for which the repository has
 1. Resolve or respecify the exact Coverlet compiler-generated-method limitation above, then prove the C# native full-suite join.
 2. Run full repository Python and Node coverage and classify policy findings separately from evidence gaps. Fix the known nested outer Python coverage configuration inheritance in `test_python_coverage.py` before that full run.
 3. Finish stable adapter publication with exclusive locks and the exact summary schema/path; wire all six static/coverage rows and required artifacts in `gap_check.json` while leaving mutation unavailable pending DYD-103.
-4. Create and validate the exact source-to-test association manifest; finish facade feature bindings, derived-copy sync/check, normalized report renderer, docs, and obsolete tier-registry deletion.
+4. Finish facade feature bindings, derived-copy sync/check, normalized report renderer, docs, and obsolete tier-registry deletion.
 5. Adapt and run newly copied `test_orchestration.py` and `test_windows_job.py`; rerun edited source-token and JavaScript suite tests. The Windows Job retained receipt/session tests were removed, but the remaining file has not been run after adoption.
 6. Run both exact unittest interpreters, the full Node suite, isolated .NET tests, facade gates, copy parity, manifest-boundary checks, and a complete G-measure. No final implementation commit, independent review, G=0, or mutation M proof exists.
 

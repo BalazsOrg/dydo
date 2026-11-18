@@ -35,7 +35,7 @@ record for native enforcement. macOS remains unavailable; Linux gains only the r
 
 ## Files Changed
 
-`DynaDocs.Tests/coverage/gap_check.py`, `test-associations.json`,
+`DynaDocs.Tests/coverage/gap_check.py`,
 `tests/test_windows_memory_cap.py`, `tests/test_memory_cap.py`, `tests/test_testing_facade.py`,
 `DynaDocs.Tests/Steps/AssuranceAdoptionSteps.cs` (result-key assertions),
 `dydo/reference/gap-check.example.py`, both `testing-strategy.md` copies,

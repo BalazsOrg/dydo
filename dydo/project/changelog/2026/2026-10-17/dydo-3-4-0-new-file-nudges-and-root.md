@@ -33,7 +33,7 @@ commands, and letting sub-agents run the `dydo` gate commands their work needs.
 `dydo/understand/`, `skills/`, `DynaDocs.csproj`, `npm/package.json`, `.github/workflows/release.yml`,
 `DynaDocs.Tests/Commands/`, `DynaDocs.Tests/Integration/`, `DynaDocs.Tests/Models/`,
 `DynaDocs.Tests/Services/`, `DynaDocs.Tests/Workflow/ReleaseWorkflowTests.cs`,
-`DynaDocs.Tests/EndToEnd/CliEndToEndTests.cs`, `DynaDocs.Tests/coverage/test-associations.json`,
+`DynaDocs.Tests/EndToEnd/CliEndToEndTests.cs`,
 `npm/test/install.test.cjs`, this entry and its changelog hub.
 
 ## Related
