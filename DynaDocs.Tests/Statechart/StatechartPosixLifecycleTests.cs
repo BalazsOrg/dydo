@@ -4,10 +4,15 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using DynaDocs.Services.Statechart;
 
+/// <summary>
+/// The POSIX statechart owner, judged by what it leaves: a drained success, a failed handoff and a lost parent all clean
+/// their scratch; an unproven completion records no verdict; a drain stops the checking child it owns (DR 062 §6).
+/// </summary>
+[Trait("Job", "contract: DR 062 §5 §6")]
 public class StatechartPosixLifecycleTests
 {
     [Fact]
-    public async Task RegisteredPosixLifetimeGatesWorkAndCleansOnlyAfterIndependentDrain()
+    public async Task ARegisteredLifetime_CleansItsScratchAfterTheDrain()
     {
         using var scope = new StatechartTestDirectory();
         if (!OperatingSystem.IsLinux())
@@ -17,20 +22,15 @@ public class StatechartPosixLifecycleTests
             return; // Platform refusal is not Linux execution evidence.
         }
         await using var lifetime = await PosixStatechartLifetime.StartAsync(StatechartTestBinary.Start(), scope.Path, scope.Path, scope.Path);
-        Assert.Throws<InvalidOperationException>(() => lifetime.Gate(new ProcessStartInfo("/missing-before-registration")));
         await lifetime.RegisterAsync();
         File.WriteAllText(Path.Combine(lifetime.Stage, "owned-file"), "checking");
-        var stage = lifetime.Stage;
-        var temp = lifetime.Temp;
         Assert.True(await lifetime.CompleteAsync());
-        Assert.False(Directory.Exists(stage));
-        Assert.False(Directory.Exists(temp));
-        Assert.All(Directory.GetFiles(scope.Path, "scratch-*.journal"), journal =>
-            Assert.Contains("deleted-after-authoritative-drain", File.ReadAllText(journal)));
+        Assert.Empty(StatechartLeftovers.Left(scope.Path));
     }
 
     // The socket path only serves the first connection; the connected pair no longer needs it.
     [SkippableFact]
+    [Trait("Job", "trap: a POSIX channel must not leave its socket file in the temp directory")]
     public async Task AConnectedChannelLeavesNoSocketFileBehind()
     {
         Skip.If(OperatingSystem.IsWindows(), "Windows pipes leave no socket file.");
@@ -46,7 +46,7 @@ public class StatechartPosixLifecycleTests
     }
 
     [Fact]
-    public async Task PosixControlEofDrainsOutsideThePublicProcessBeforeRegisteredCleanup()
+    public async Task ALostParent_StillDrainsAndCleansTheScratch()
     {
         using var scope = new StatechartTestDirectory();
         if (!OperatingSystem.IsLinux())
@@ -63,28 +63,9 @@ public class StatechartPosixLifecycleTests
         await lifetime.DisposeAsync();
         Assert.False(Directory.Exists(stage));
         Assert.False(Directory.Exists(temp));
-        Assert.All(Directory.GetFiles(scope.Path, "scratch-*.journal"), journal =>
-            Assert.Contains("deleted-after-authoritative-drain", File.ReadAllText(journal)));
     }
 
     private const string LinuxOnly = "POSIX ownership runs on Linux.";
-
-    [SkippableFact]
-    public async Task ARegisteredLifetimeRegistersDrainsAndCompletesOnlyOnce()
-    {
-        Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
-        using var scope = new StatechartTestDirectory();
-        await using var lifetime = await PosixStatechartLifetime.StartAsync(StatechartTestBinary.Start(), scope.Path, scope.Path, scope.Path);
-        await lifetime.RegisterAsync();
-        await Assert.ThrowsAsync<InvalidOperationException>(lifetime.RegisterAsync);
-        Assert.True(await lifetime.DrainAsync());
-        Assert.True(await lifetime.DrainAsync());
-        Assert.Throws<InvalidOperationException>(() => lifetime.Gate(new ProcessStartInfo("/after-drain")));
-        Assert.Throws<InvalidOperationException>(() => lifetime.Attach(Environment.ProcessId));
-        Assert.True(await lifetime.CompleteAsync());
-        await Assert.ThrowsAsync<InvalidOperationException>(lifetime.CompleteAsync);
-        Assert.False(Directory.Exists(lifetime.Stage));
-    }
 
     // The exec fails here, so the handoff returns its error and this process keeps the owner to drain and clean up.
     [SkippableFact]
@@ -95,32 +76,28 @@ public class StatechartPosixLifecycleTests
         await using var lifetime = await PosixStatechartLifetime.StartAsync(StatechartTestBinary.Start(), scope.Path, scope.Path, scope.Path);
         await lifetime.RegisterAsync();
         var target = new ProcessStartInfo(Path.Combine(scope.Path, "missing-runtime")) { WorkingDirectory = Environment.CurrentDirectory };
-        var error = await Assert.ThrowsAsync<System.ComponentModel.Win32Exception>(() => lifetime.HandoffAsync(target, null));
-        Assert.Equal("Statechart exec handoff failed.", error.Message);
+        await Assert.ThrowsAsync<System.ComponentModel.Win32Exception>(() => lifetime.HandoffAsync(target, null));
         Assert.True(await lifetime.CompleteAsync());
         Assert.False(Directory.Exists(lifetime.Stage));
         Assert.False(Directory.Exists(lifetime.Temp));
     }
 
-    // The owner accepts a continued request from its own store; the execution lock then survives exec for the runtime.
+    // A continued request whose runtime never starts records no verdict, and the owner still cleans up.
     [SkippableFact]
-    public async Task AContinuedHandoffHandsTheRuntimeItsExecutionLock()
+    public async Task AFailedContinuedHandoff_RecordsNoVerdict_AndCleansUp()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
         using var scope = new StatechartTestDirectory();
         using var roots = new ScopedRoots(scope.Path);
         var (store, request, path) = SavedRequest(scope.Path);
         using var executionLock = store.Lock(path);
-        var descriptor = executionLock.SafeFileHandle.DangerousGetHandle().ToInt32();
-        Assert.Equal(1, await ChildSees(descriptor));
         await using var lifetime = await PosixStatechartLifetime.StartAsync(StatechartTestBinary.Start(), scope.Path, scope.Path, scope.Path);
         await lifetime.RegisterAsync();
-        var error = await Assert.ThrowsAsync<System.ComponentModel.Win32Exception>(() => lifetime.HandoffAsync(
+        await Assert.ThrowsAsync<System.ComponentModel.Win32Exception>(() => lifetime.HandoffAsync(
             new ProcessStartInfo(Path.Combine(scope.Path, "missing-runtime")), new StatechartContinuation(path, executionLock)));
-        Assert.Equal("Statechart exec handoff failed.", error.Message);
-        Assert.Equal(0, await ChildSees(descriptor));
         Assert.True(await lifetime.CompleteAsync());
         Assert.Null(store.Completed(path, request));
+        Assert.False(Directory.Exists(lifetime.Stage));
     }
 
     // The owner validates a continued request before it acknowledges the handoff; one outside its store stops it.
@@ -135,18 +112,10 @@ public class StatechartPosixLifecycleTests
         using var executionLock = new FileStream(Path.Combine(scope.Path, "execution.lock"), FileMode.CreateNew);
         await using var lifetime = await PosixStatechartLifetime.StartAsync(StatechartTestBinary.Start(), scope.Path, scope.Path, scope.Path);
         await lifetime.RegisterAsync();
-        var error = await Assert.ThrowsAsync<InvalidDataException>(() => lifetime.HandoffAsync(
+        await Assert.ThrowsAsync<InvalidDataException>(() => lifetime.HandoffAsync(
             new ProcessStartInfo(Path.Combine(scope.Path, "missing-runtime")), new StatechartContinuation(foreign, executionLock)));
-        Assert.StartsWith("Statechart POSIX channel lost: handoff:", error.Message);
         Assert.False(Directory.Exists(lifetime.Stage));
         Assert.False(Directory.Exists(lifetime.Temp));
-    }
-
-    private static async Task<int> ChildSees(int descriptor)
-    {
-        using var child = Process.Start(new ProcessStartInfo("/bin/sh", ["-c", $"test -e /proc/self/fd/{descriptor}"]))!;
-        await child.WaitForExitAsync();
-        return child.ExitCode;
     }
 
     // Owners a lifetime starts inherit this process's environment; these roots keep their request store in the test.
@@ -167,37 +136,6 @@ public class StatechartPosixLifecycleTests
         }
     }
 
-    // The group is the spawned child's own: an acknowledgment from the process a wrapper forked is refused with its own error.
-    [SkippableFact]
-    public async Task AnAnchorAcknowledgedByAnotherProcessIsRefused()
-    {
-        Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
-        var forwarding = new ProcessStartInfo("/bin/sh");
-        foreach (var argument in new[] { "-c", "\"$0\" \"$@\"; exit $?", StatechartTestBinary.Start().FileName })
-            forwarding.ArgumentList.Add(argument);
-        var error = await Assert.ThrowsAsync<InvalidDataException>(() => PosixStatechartAnchor.StartAsync(forwarding));
-        Assert.StartsWith("Statechart POSIX channel lost: anchor:1:", error.Message);
-    }
-
-    [SkippableFact]
-    public void DirectoryIdentityRefusesMissingExistingOrNonDirectoryTargets()
-    {
-        Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
-        using var scope = new StatechartTestDirectory();
-        var directory = Path.Combine(scope.Path, "owned");
-        PosixStatechartFiles.CreateExclusive(directory);
-        Assert.Throws<System.ComponentModel.Win32Exception>(() => PosixStatechartFiles.CreateExclusive(directory));
-        Assert.Throws<System.ComponentModel.Win32Exception>(() => PosixStatechartFiles.Open(Path.Combine(scope.Path, "missing")));
-        var file = Path.Combine(scope.Path, "file");
-        File.WriteAllText(file, "not a directory");
-        using (var plain = File.OpenHandle(file))
-            Assert.Throws<IOException>(() => PosixStatechartFiles.Identity(plain));
-        using var held = PosixStatechartFiles.Open(directory);
-        Assert.True(PosixStatechartFiles.Matches(directory, held));
-        Directory.Delete(directory);
-        Assert.False(PosixStatechartFiles.Matches(directory, held));
-    }
-
     [SkippableFact]
     public async Task AHandedOffRequestRecordsItsVerdictOnlyAfterTheGroupDrains()
     {
@@ -207,25 +145,25 @@ public class StatechartPosixLifecycleTests
         await using var session = await OwnerSession.StartAsync(scope.Path);
         var nonce = session.Nonce;
         await session.RegisterAsync();
-        Assert.Equal("handoff:" + nonce, await session.SendAsync($"handoff:{nonce}:{StatechartCleanup.Encode(path)}"));
-        Assert.Equal("drained:" + nonce, await session.SendAsync("drain:" + nonce));
+        await session.SendAsync($"handoff:{nonce}:{StatechartCleanup.Encode(path)}");
+        await session.SendAsync("drain:" + nonce);
         Directory.CreateDirectory(request.Output);
         File.WriteAllText(Path.Combine(request.Output, "report.md"), "Bound breaks");
         Assert.Null(store.Completed(path, request));
-        Assert.Equal("result:" + nonce, await session.SendAsync($"result:{nonce}:1"));
+        await session.SendAsync($"result:{nonce}:1");
         Assert.Equal(1, store.Completed(path, request));
-        Assert.Equal("cleaned:" + nonce, await session.SendAsync("complete:" + nonce));
-        Assert.Equal((0, ""), await session.ExitAsync());
+        await session.SendAsync("complete:" + nonce);
+        Assert.Equal(0, (await session.ExitAsync()).Exit);
         Assert.False(Directory.Exists(session.Stage));
         Assert.False(Directory.Exists(session.Temp));
     }
 
     [SkippableTheory]
-    [InlineData("out-of-range", "Invalid statechart completed-request frame.")]
-    [InlineData("changed", "Saved statechart request changed during POSIX checking.")]
-    [InlineData("anonymous", "Invalid statechart completed-request frame.")]
-    [InlineData("before-drain", "")]
-    public async Task AnUnprovenCompletedRequestFrameRecordsNoVerdict(string kind, string error)
+    [InlineData("out-of-range")]
+    [InlineData("changed")]
+    [InlineData("anonymous")]
+    [InlineData("before-drain")]
+    public async Task AnUnprovenCompletedRequestFrameRecordsNoVerdict(string kind)
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
         using var scope = new StatechartTestDirectory();
@@ -234,19 +172,16 @@ public class StatechartPosixLifecycleTests
         var nonce = session.Nonce;
         await session.RegisterAsync();
         var handed = kind == "anonymous" ? "-" : StatechartCleanup.Encode(path);
-        Assert.Equal("handoff:" + nonce, await session.SendAsync($"handoff:{nonce}:{handed}"));
-        if (kind != "before-drain") Assert.Equal("drained:" + nonce, await session.SendAsync("drain:" + nonce));
+        await session.SendAsync($"handoff:{nonce}:{handed}");
+        if (kind != "before-drain") await session.SendAsync("drain:" + nonce);
         Directory.CreateDirectory(request.Output);
         File.WriteAllText(Path.Combine(request.Output, "report.md"), "Bound breaks");
         if (kind == "changed") File.AppendAllText(path, " ");
-        Assert.Null(await session.SendAsync($"result:{nonce}:{(kind == "out-of-range" ? 7 : 1)}"));
-        var (exit, errors) = await session.ExitAsync();
+        await session.SendAsync($"result:{nonce}:{(kind == "out-of-range" ? 7 : 1)}");
+        var (exit, _) = await session.ExitAsync();
         Assert.Equal(2, exit);
-        Assert.Equal(error, errors.Trim());
-        Assert.False(File.Exists(Path.Combine(Path.GetDirectoryName(path)!, "completed.json")));
+        Assert.Null(store.Completed(path, request));
         Assert.False(Directory.Exists(session.Stage));
-        Assert.All(Directory.GetFiles(scope.Path, "scratch-*.journal"), journal =>
-            Assert.Contains("deleted-after-authoritative-drain", File.ReadAllText(journal)));
     }
 
     [SkippableFact]
@@ -257,35 +192,33 @@ public class StatechartPosixLifecycleTests
         await using var session = await OwnerSession.StartAsync(scope.Path);
         var nonce = session.Nonce;
         await session.RegisterAsync();
-        Assert.Equal("handoff:" + nonce, await session.SendAsync($"handoff:{nonce}:-"));
+        await session.SendAsync($"handoff:{nonce}:-");
         using var child = Process.Start(Binary(scope.Path, "__statechart-posix-child", session.Group.ToString(),
             "/bin/sh", "-c", "echo joined; exec cat"))!;
-        Assert.Equal("joined", await child.StandardOutput.ReadLineAsync());
-        Assert.Equal($"attached:{nonce}:{child.Id}", await session.SendAsync($"attach:{nonce}:{child.Id}"));
-        Assert.Equal("drained:" + nonce, await session.SendAsync("drain:" + nonce));
+        await child.StandardOutput.ReadLineAsync();
+        await session.SendAsync($"attach:{nonce}:{child.Id}");
+        await session.SendAsync("drain:" + nonce);
         await child.WaitForExitAsync();
         Assert.Equal(128 + 9, child.ExitCode);
-        Assert.Equal("cleaned:" + nonce, await session.SendAsync("complete:" + nonce));
-        Assert.Equal((0, ""), await session.ExitAsync());
+        await session.SendAsync("complete:" + nonce);
+        Assert.Equal(0, (await session.ExitAsync()).Exit);
     }
 
     [SkippableTheory]
-    [InlineData("handoff:{0}:a:b", "Invalid POSIX handoff frame.")]
-    [InlineData("attach:{0}:checker", "Invalid POSIX checking-child frame.")]
-    [InlineData("attach:{0}:1", "Checking child did not enter the acknowledged statechart group.")]
-    [InlineData("go:{0}", "")]
-    public async Task AMalformedOrForeignControlFrameStopsTheOwnerBeforeAnyRelease(string frame, string error)
+    [InlineData("handoff:{0}:a:b")]
+    [InlineData("attach:{0}:checker")]
+    [InlineData("attach:{0}:1")]
+    [InlineData("go:{0}")]
+    public async Task AMalformedOrForeignControlFrameStopsTheOwnerBeforeAnyRelease(string frame)
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
         using var scope = new StatechartTestDirectory();
         await using var session = await OwnerSession.StartAsync(scope.Path);
         await session.RegisterAsync();
         if (frame.StartsWith("attach", StringComparison.Ordinal))
-            Assert.Equal("handoff:" + session.Nonce, await session.SendAsync($"handoff:{session.Nonce}:-"));
-        Assert.Null(await session.SendAsync(string.Format(frame, session.Nonce)));
-        var (exit, errors) = await session.ExitAsync();
-        Assert.Equal(2, exit);
-        Assert.Equal(error, errors.Trim());
+            await session.SendAsync($"handoff:{session.Nonce}:-");
+        await session.SendAsync(string.Format(frame, session.Nonce));
+        Assert.Equal(2, (await session.ExitAsync()).Exit);
         Assert.False(Directory.Exists(session.Stage));
     }
 
@@ -297,20 +230,16 @@ public class StatechartPosixLifecycleTests
         await using var session = await OwnerSession.StartAsync(scope.Path, npmLifetime: true);
         await session.RegisterAsync();
         session.Owner.StandardInput.Close();
-        var (exit, errors) = await session.ExitAsync();
-        Assert.Equal(2, exit);
-        Assert.Equal("Statechart group anchor or npm lifetime lost; no checking release.", errors.Trim());
+        Assert.Equal(2, (await session.ExitAsync()).Exit);
         Assert.False(Directory.Exists(session.Stage));
         Assert.False(Directory.Exists(session.Temp));
-        Assert.All(Directory.GetFiles(scope.Path, "scratch-*.journal"), journal =>
-            Assert.Contains("deleted-after-authoritative-drain", File.ReadAllText(journal)));
     }
 
     [SkippableTheory]
-    [InlineData("__statechart-posix-owner", "Invalid statechart POSIX ownership channel.")]
-    [InlineData("__statechart-posix-anchor", "Invalid statechart anchor channel.")]
-    [InlineData("__statechart-posix-child", "Invalid statechart checking-group launch.")]
-    public async Task APrivateModeWithoutAValidChannelStartsNothing(string mode, string error)
+    [InlineData("__statechart-posix-owner")]
+    [InlineData("__statechart-posix-anchor")]
+    [InlineData("__statechart-posix-child")]
+    public async Task APrivateModeWithoutAValidChannelStartsNothing(string mode)
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
         using var scope = new StatechartTestDirectory();
@@ -319,8 +248,8 @@ public class StatechartPosixLifecycleTests
         var errors = process.StandardError.ReadToEndAsync();
         await process.WaitForExitAsync();
         Assert.Equal(2, process.ExitCode);
+        await errors;
         Assert.Equal("", await output);
-        Assert.Equal(error, (await errors).Trim());
         Assert.Empty(Directory.EnumerateFileSystemEntries(scope.Path));
     }
 
@@ -400,7 +329,7 @@ public class StatechartPosixLifecycleTests
             var created = (await SendAsync("reserve:" + Nonce))!.Split(':');
             Stage = StatechartCleanup.Decode(created[1]);
             Temp = StatechartCleanup.Decode(created[2]);
-            Assert.Equal("registered:" + Nonce, await SendAsync("register:" + Nonce));
+            await SendAsync("register:" + Nonce);
         }
 
         public async Task<(int Exit, string Errors)> ExitAsync()

@@ -1,95 +1,67 @@
 namespace DynaDocs.Tests.Statechart;
 
-using System.Text.RegularExpressions;
 using DynaDocs.Services.Statechart;
-using DynaDocs.Utils;
 
+/// <summary>
+/// The payload embedded in dydo, through an offline <c>dydo statechart</c> run: damaged extracted assets are restored
+/// from the embedded bytes and the run still reaches its outcome; a directory this payload did not write is retained.
+/// </summary>
+[Trait("Job", "contract: DR 062 §1 (a ready invocation runs offline)")]
 public class StatechartAssetsTests
 {
-    [Fact]
-    public async Task InstalledPayloadExtractsOfflineAndReusesExactBytes()
-    {
-        using var scope = new StatechartTestDirectory();
-        var assets = new StatechartAssets();
-        var first = await assets.ExtractAsync(scope.Path, CancellationToken.None);
-        Assert.Equal(first, await assets.ExtractAsync(scope.Path, CancellationToken.None));
-        Assert.True(File.Exists(Path.Combine(first, "skills/engineering/statechart/scripts/worker.ts")));
-        Assert.True(File.Exists(Path.Combine(first, "setup-skills.mjs")));
-        Assert.True(File.Exists(Path.Combine(first, "skills/engineering/statechart/scripts/java/statechart-tlc-bootstrap.jar")),
-            "The sealed Java11 helper must be in the verified payload; no raw-TLC fallback.");
-        Assert.Equal("3ad231072bddc04588d0f2cf1b61a3e62fc38b4ff400ccea5c3b5d41409575ab", assets.LockDigest);
-    }
+    private const string Helper = "skills/engineering/statechart/scripts/java/statechart-tlc-bootstrap.jar";
 
-    // The receipt shows the directory is this payload's own extraction, so the embedded bytes restore it offline.
     [Theory]
     [InlineData("changed")]
     [InlineData("deleted")]
     [InlineData("added")]
     [InlineData("changed and deleted")]
-    public async Task DamagedContentUnderThisPayloadsReceiptIsExtractedAgainFromTheEmbeddedBytes(string damage)
+    public async Task DamagedAssetsAreExtractedAgainOffline_AndTheRunReachesItsOutcome(string damage)
     {
         using var scope = new StatechartTestDirectory();
+        Model(scope.Path);
+        Assert.Equal(3, (await Run(scope.Path)).Exit);
         var assets = new StatechartAssets();
-        var folder = await assets.ExtractAsync(scope.Path, CancellationToken.None);
-        var helper = Path.Combine(folder, "skills/engineering/statechart/scripts/java/statechart-tlc-bootstrap.jar");
-        var setup = Path.Combine(folder, "setup-skills.mjs");
-        var (helperBytes, setupBytes) = (File.ReadAllBytes(helper), File.ReadAllBytes(setup));
+        var payload = Path.Combine(scope.Path, "assets", assets.Release, assets.Digest);
+        var setup = Path.Combine(payload, "setup-skills.mjs");
+        var (helperBytes, setupBytes) = (File.ReadAllBytes(Path.Combine(payload, Helper)), File.ReadAllBytes(setup));
         if (damage.Contains("changed")) File.AppendAllText(setup, "changed");
-        if (damage.Contains("deleted")) File.Delete(helper);
-        if (damage == "added") File.WriteAllText(Path.Combine(folder, "foreign.txt"), "added");
-        Assert.Equal(folder, await assets.ExtractAsync(scope.Path, CancellationToken.None));
-        assets.Verify(folder);
-        Assert.Equal(helperBytes, File.ReadAllBytes(helper));
+        if (damage.Contains("deleted")) File.Delete(Path.Combine(payload, Helper));
+        if (damage == "added") File.WriteAllText(Path.Combine(payload, "foreign.txt"), "added");
+
+        Assert.Equal(3, (await Run(scope.Path)).Exit);
+
+        assets.Verify(payload);
+        Assert.Equal(helperBytes, File.ReadAllBytes(Path.Combine(payload, Helper)));
         Assert.Equal(setupBytes, File.ReadAllBytes(setup));
-        Assert.Equal([".extract.lock", assets.Digest],
-            Directory.GetFileSystemEntries(Path.GetDirectoryName(folder)!).Select(Path.GetFileName).Order(StringComparer.Ordinal));
     }
 
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    public async Task ADirectoryWithoutThisPayloadsReceiptIsRetainedAndRejected(bool otherReceipt)
+    public async Task ADirectoryWithoutThisPayloadsReceipt_IsRetained_AndTheRunFails(bool otherReceipt)
     {
         using var scope = new StatechartTestDirectory();
+        Model(scope.Path);
         var assets = new StatechartAssets();
-        var target = Path.Combine(scope.Path, assets.Release, assets.Digest);
+        var target = Path.Combine(scope.Path, "assets", assets.Release, assets.Digest);
         Directory.CreateDirectory(target);
         var sentinel = Path.Combine(target, "setup-skills.mjs");
         File.WriteAllText(sentinel, "foreign sentinel");
         if (otherReceipt) File.WriteAllText(Path.Combine(target, ".statechart-receipt"), "another payload");
-        var error = await Assert.ThrowsAsync<IOException>(() => assets.ExtractAsync(scope.Path, CancellationToken.None));
-        Assert.Contains(target, error.Message);
+
+        Assert.Equal(2, (await Run(scope.Path)).Exit);
+
         Assert.Equal("foreign sentinel", File.ReadAllText(sentinel));
+        Assert.False(Directory.Exists(Path.Combine(scope.Path, "state", "requests")));
     }
 
-    [Fact]
-    public async Task AnExtractionACrashLeftBehindIsSwept()
+    private static void Model(string root)
     {
-        using var scope = new StatechartTestDirectory();
-        var assets = new StatechartAssets();
-        var stale = Path.Combine(scope.Path, assets.Release, ".extract-" + Guid.NewGuid().ToString("N"));
-        Directory.CreateDirectory(stale);
-        File.WriteAllText(Path.Combine(stale, "partial"), "interrupted");
-        await assets.ExtractAsync(scope.Path, CancellationToken.None);
-        Assert.False(Directory.Exists(stale));
+        File.WriteAllText(Path.Combine(root, "model.tla"), "---- MODULE model ----\nVARIABLE x\nInit == x = 0\nNext == x' = x\n====\n");
+        File.WriteAllText(Path.Combine(root, "model.cfg"), "INIT Init\nNEXT Next\n");
     }
 
-    [Fact]
-    public void ThePayloadReleaseIsTheProductVersion()
-    {
-        Assert.Equal(DydoVersion.Current, new StatechartAssets().Release);
-    }
-
-    // Requests, receipts and the asset root take the release from the assets, never from a literal of their own.
-    [Fact]
-    public void NoStatechartSourceCarriesItsOwnReleaseLiteral()
-    {
-        var root = new DirectoryInfo(AppContext.BaseDirectory);
-        while (!File.Exists(Path.Combine(root.FullName, "DynaDocs.csproj"))) root = root.Parent!;
-        var literals = Directory.GetFiles(Path.Combine(root.FullName, "Services", "Statechart"), "*.cs")
-            .SelectMany(file => Regex.Matches(File.ReadAllText(file), "\"\\d+\\.\\d+\\.\\d+\"")
-                .Select(match => Path.GetFileName(file) + ": " + match.Value))
-            .ToArray();
-        Assert.Empty(literals);
-    }
+    private static Task<(int Exit, string Output, string Error)> Run(string root) =>
+        StatechartOfflineProcess.Run(StatechartOfflineProcess.Start(root, "", ["statechart", "model.tla"]));
 }

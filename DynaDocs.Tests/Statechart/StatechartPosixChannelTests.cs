@@ -6,6 +6,7 @@ using System.Text;
 using DynaDocs.Services.Statechart;
 
 [SupportedOSPlatform("linux")]
+[Trait("Job", "trap: a long TMPDIR overflows sun_path, and a socket directory others can enter is refused")]
 public class StatechartPosixChannelTests
 {
     private const int SunPath = 108; // Linux sockaddr_un.sun_path, NUL included.
