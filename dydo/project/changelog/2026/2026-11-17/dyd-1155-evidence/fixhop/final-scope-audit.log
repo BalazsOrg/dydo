@@ -1,4 +1,0 @@
-Running as unit: run-p3227752-i158343336.scope; invocation ID: 9445902c02934238bf3cf5b04c7fac79
-All gates a-f passed. Both standards and all historical receipts unchanged; three byte-identical renames.
-Native static artifacts preserved: 220 files as JSON.
-All new receipt paths end in .json or .log: True
