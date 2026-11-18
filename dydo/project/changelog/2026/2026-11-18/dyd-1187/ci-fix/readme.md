@@ -14,7 +14,7 @@ Per Admiral DECIDED ddba537f on DYD-1187, DYD-1191 must land first. This checkpo
 restores bodies, removes all 18 split pages, includes feature tip
 56b9fd8dee8c7af7d4174572454e0f9670a9d27f, and adds the two missing Explains service
 test associations. It deliberately omits new `--base` reference descriptions.
-It is a reviewed checkpoint, not a merge-ready result.
+It is an incomplete checkpoint, not a merge-ready result.
 
 ## Current proof
 
@@ -57,6 +57,15 @@ No all-files DR 069 pass is claimed: `size-report.json` reports the preexisting
 entries. The oversized authored docs are untouched relative to feature tip.
 No authored-file exception is introduced. DYD-1191 owns their separate reviewed
 split and blocks completion of the missing `--base` documentation.
+
+Round-2 independent review on cbfb17d9 verified the restoration and association
+repair but returned FAIL for the deferred `--base` documentation. It also found
+two should-level gate gaps: this evidence file's uppercase filename (DYD-1193),
+and the manifest size (DYD-1192). The evidence file is now `readme.md`; the capped
+`dydo check` rerun exits 0 with zero errors/warnings in 909 files. See
+`dydo-check.log`. DYD-1192 requires a disposition beyond DYD-1191; no manifest
+exception or final size pass is claimed. No code, tests or grandfathered docs
+changed in the filename-repair hop, so their round-2 evidence is reused.
 
 Mutation, statechart and native Windows proof remain unavailable and unmet.
 Coverage is report-only. Hosted Actions on the pushed checkpoint remain a
