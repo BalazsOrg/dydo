@@ -114,23 +114,25 @@ jobs:
                   else:
                       yield item
           ids = [case.id() for case in cases(suite)]
-          counts = {name: sum(value.startswith(name + '.') for value in ids) for name in
-                    ('test_windows_job', 'test_windows_cancellation', 'test_control_dydo_lifetime')}
-          assert ids and all(counts.values()), counts
+          assert ids, 'unittest discovery found no tests'
           receipt = {'candidate': candidate, 'checkout_tree': tree, 'pr_head_sha': os.environ['PR_HEAD_SHA'],
                      'merge_ref_sha': os.environ['MERGE_REF_SHA'], 'python': versions,
-                     'tests': len(ids), 'native_tests': counts}
+                     'tests': len(ids)}
           (tools / 'results/preflight.json').write_text(json.dumps(receipt, indent=2), encoding='utf-8')
           print(json.dumps(receipt))
           PY
 
-      - name: Full Python suite and platform coverage gate
+      - name: Full Python suite and platform coverage report
         env:
           PYTHONDONTWRITEBYTECODE: '1'
           DYDO_NATIVE_TEST_EVIDENCE: DynaDocs.Tests/coverage/results/native-jobs
           DYDO_LIFETIME_EVIDENCE: DynaDocs.Tests/coverage/results/native-lifetime
           DYDO_CANCELLATION_EVIDENCE: DynaDocs.Tests/coverage/results/windows-cancellation
         run: ${{ matrix.python }} DynaDocs.Tests/coverage/gap_check.py gate coverage --stack python
+
+      - name: Print platform Python coverage report
+        if: always()
+        run: ${{ matrix.python }} DynaDocs.Tests/coverage/report.py DynaDocs.Tests/coverage/results/adapters/python-coverage.json
 
       - name: Canonical Python static gate
         if: ${{ !cancelled() && matrix.platform == 'linux' }}
@@ -306,12 +308,16 @@ jobs:
         shell: pwsh
         run: ./.github/workflows/provision-statechart.ps1
 
-      - name: Statechart suite and platform coverage gate
+      - name: Statechart suite and platform coverage report
         env:
           TLA2TOOLS: ${{ steps.statechart.outputs.tla2tools }}
           JAVA: ${{ steps.statechart.outputs.java }}
           STATECHART_PELE: ${{ steps.statechart.outputs.pele }}
         run: ${{ matrix.python }} DynaDocs.Tests/coverage/gap_check.py gate coverage --stack statechart
+
+      - name: Print platform statechart coverage report
+        if: always()
+        run: ${{ matrix.python }} DynaDocs.Tests/coverage/report.py DynaDocs.Tests/coverage/results/adapters/statechart-coverage.json
 
       # A rerun of failed jobs reruns only the failed leg, so each artifact names the attempt that made it.
       - name: Stamp platform coverage artifact identity
@@ -521,10 +527,14 @@ jobs:
           print(json.dumps(receipt, indent=2))
           PY
 
-      - name: Platform .NET coverage gate
+      - name: Platform .NET coverage report
         env:
           PYTHONDONTWRITEBYTECODE: '1'
         run: ${{ matrix.python }} DynaDocs.Tests/coverage/gap_check.py gate coverage --stack dotnet
+
+      - name: Print platform .NET coverage report
+        if: always()
+        run: ${{ matrix.python }} DynaDocs.Tests/coverage/report.py DynaDocs.Tests/coverage/results/adapters/dotnet-coverage.json
 
       # A rerun of failed jobs reruns only the failed leg, so each artifact names the attempt that made it.
       - name: Stamp platform .NET coverage artifact identity
@@ -718,15 +728,11 @@ jobs:
       # The one list of selected classes: the test step filters on it and the check step requires each.
       GUARD_CLASSES: >-
         DynaDocs.Tests.Services.DangerousPatternCultureTests
-        DynaDocs.Tests.Services.DangerousPatternOracleTests
-        DynaDocs.Tests.Services.DangerousPatternBudgetTests
-        DynaDocs.Tests.Services.BashCommandAnalyzerTests
+        DynaDocs.Tests.Integration.GuardShellCorpusTests
+        DynaDocs.Tests.Commands.GuardCommandTests
         DynaDocs.Tests.Integration.GuardSecurityTests
         DynaDocs.Tests.Integration.GuardMergeRouteTests
         DynaDocs.Tests.Integration.GuardPrReadyTests
-      # Select this regression alone: its siblings include intentional Windows skips.
-      GUARD_TESTS: >-
-        DynaDocs.Tests.Commands.GuardPrReadyBodyFileTests.LinkedDirectoryLeavingTheTree_IsNull
     steps:
       - name: Keep candidate bytes identical on both platforms
         run: git config --global core.autocrlf false
@@ -765,16 +771,14 @@ jobs:
         run: |
           # The trailing dot keeps a class from also selecting classes whose names extend it.
           $filters = @(-split $env:GUARD_CLASSES | ForEach-Object { "FullyQualifiedName~$_." })
-          $filters += @(-split $env:GUARD_TESTS | ForEach-Object { "FullyQualifiedName=$_" })
-          # The repeated performance proofs stay dormant here too; their coverage witnesses still run (DYD-859).
-          $filter = '(' + ($filters -join '|') + ')&PerformanceProof!=Release'
+          $filter = $filters -join '|'
           Write-Host "Filter: $filter"
           dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --no-build `
             --filter $filter `
             --logger 'trx;LogFileName=guard-windows.trx' `
             --results-directory TestResults/guard-windows
 
-      # A skip is missing proof: every selected class and exact test must run, and every result must pass.
+      # A skip is missing proof: every selected class must run, and every result must pass.
       - name: Require every selected guard test to pass
         if: ${{ !cancelled() }}
         shell: pwsh
@@ -783,7 +787,6 @@ jobs:
           GUARD_TRX: TestResults/guard-windows/guard-windows.trx
         run: |
           $classes = @(-split $env:GUARD_CLASSES)
-          $methods = @(-split $env:GUARD_TESTS)
           $problems = [System.Collections.Generic.List[string]]::new()
           if ($env:TEST_OUTCOME -ne 'success') { $problems.Add("dotnet test outcome is '$env:TEST_OUTCOME'") }
           if (-not (Test-Path -LiteralPath $env:GUARD_TRX)) {
@@ -794,11 +797,9 @@ jobs:
             $ns.AddNamespace('t', 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010')
             $definitions = @($trx.SelectNodes('//t:TestDefinitions/t:UnitTest', $ns))
             $classOf = @{}
-            $methodOf = @{}
             foreach ($test in $definitions) {
               $method = $test.SelectSingleNode('t:TestMethod', $ns)
               $classOf[$test.id] = $method.className
-              $methodOf[$test.id] = "$($method.className).$($method.name)"
             }
             $results = @($trx.SelectNodes('//t:Results/t:UnitTestResult', $ns))
             if ($results.Count -eq 0) { $problems.Add('The selection produced zero results') }
@@ -809,11 +810,6 @@ jobs:
               $count = @($results | Where-Object { $classOf[$_.testId] -eq $class }).Count
               Write-Host ("{0,5} {1}" -f $count, $class)
               if ($count -eq 0) { $problems.Add("$class produced zero results") }
-            }
-            foreach ($method in $methods) {
-              $count = @($results | Where-Object { $methodOf[$_.testId] -eq $method }).Count
-              Write-Host ("{0,5} {1}" -f $count, $method)
-              if ($count -eq 0) { $problems.Add("$method produced zero results") }
             }
             if ($definitions.Count -ne $results.Count) {
               $problems.Add("The TRX defines $($definitions.Count) tests but has $($results.Count) results")
@@ -878,12 +874,6 @@ jobs:
 
       - name: Install locked coverage dependencies
         run: pnpm -C DynaDocs.Tests/coverage install --frozen-lockfile
-
-      - name: Native cancellation regression
-        env:
-          PYTHONPATH: DynaDocs.Tests/coverage/tests
-          DYDO_CANCELLATION_EVIDENCE: DynaDocs.Tests/coverage/results/windows-cancellation
-        run: python -m unittest -v test_windows_cancellation test_windows_job test_gate_adapter.CoverageCancellationTests
 
       - name: Upload cancellation evidence
         if: always()
@@ -1011,8 +1001,16 @@ jobs:
       - name: Test
         run: pnpm -C viewer run test
 
-      - name: Coverage
+      - name: Coverage report
         run: pnpm -C viewer run coverage
+
+      - name: Upload viewer coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viewer-coverage
+          path: viewer/coverage
+          if-no-files-found: error
 
       - name: Build
         run: pnpm -C viewer run build

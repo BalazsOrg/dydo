@@ -7,6 +7,8 @@ date: 2026-10-28
 
 # 059 - Inquisition Rebuilt: Area Map, Three Phases, Rounds Until Clean
 
+> **Amended 2026-11-18:** [the accepted staffing amendment below](#amendment-2026-11-18---inquisition-staffing) replaces doctrine 3's commission question and the same requirement in ruling 9 and Consequences.
+
 An inquisition maps the landed work into small areas, runs Read, Break and Drive on every area,
 triages each finding by severity, and repeats from zero until a round finds no blocker and no
 should. Ruled by Balazs on 2026-10-28 in the admiral's grilling and the HITL design rounds on
@@ -139,6 +141,19 @@ Illustrative only, from the design's worked example, the map polish landing: fin
 one map, so moving an issue between them is invisible to the refresh diff. Read sees it and tags it
 testable and drivable; Break proves it with a red test; Drive sees it again on the refreshed map.
 It is one finding with two sightings, not two Bugs.
+
+## Amendment 2026-11-18 - inquisition staffing
+
+**Status: accepted.** Approved by Balazs in
+[DYD-1195 Q14 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-9b97658f-87b3-451f-9943-1892198ded4b).
+His answer to Q14, verbatim excerpt: "14. b."
+Option (b) was that the admiral picks from the model roster and `dydo usage` and tells him in its
+next envoy bundle.
+
+For doctrine 3, the admiral staffs the inquisition from the model roster and `dydo usage`, choosing
+the providers, models per phase and swarm width, then tells Balazs in its next envoy bundle.
+This replaces asking him to pick the staffing at commission, including that repeated requirement
+in ruling 9 and Consequences. The concurrency caps and the rest of the inquisition method stand.
 
 ## Consequences
 
