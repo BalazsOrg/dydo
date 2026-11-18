@@ -49,13 +49,16 @@ public static class CheckCommand
             var configService = new ConfigService();
             var config = configService.LoadConfigStrict(projectRoot);
             var configHasErrors = ValidateConfig(config);
+            var evidenceProblems = PrReadyCheck.EvidenceProblems(projectRoot);
+            foreach (var problem in evidenceProblems)
+                ConsoleOutput.WriteError(problem);
 
             var docsOutcome = ValidateDocs(path, projectRoot, baseRef);
             if (docsOutcome.IsToolError)
                 return ExitCodes.ToolError;
 
             return WriteSummary(
-                configHasErrors || docsOutcome.HasErrors,
+                configHasErrors || docsOutcome.HasErrors || evidenceProblems.Count > 0,
                 docsOutcome.HasWarnings);
         }
         catch (Exception ex)

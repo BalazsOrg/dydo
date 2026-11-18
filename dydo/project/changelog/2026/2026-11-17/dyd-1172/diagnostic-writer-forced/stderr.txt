@@ -1,3 +1,0 @@
-Running as unit: run-p487802-i155553458.scope; invocation ID: 45ffc2d1af80401585bf7cb296ec62e5
-Preparing worktree (detached HEAD 01ca32e9)
-[xUnit.net 00:00:01.23]     DynaDocs.Tests.Integration.SafeDeleteInputsTests.ChangedCommonInput_RetainsTargetEvenWhenStatusIsUnchanged(name: "attributes", checkpoint: "before-worktree-delete", present: False) [FAIL]

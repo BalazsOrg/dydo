@@ -38,3 +38,5 @@ For conceptual background, use `understand/`. For reference specs, use `referenc
 - [Understand](../understand/_understand.md)
 - [Reference](../reference/_reference.md)
 - [Project](../project/_project.md)
+
+- [Changelog records and gate evidence](./changelog-evidence.md) - what belongs in Git and what the evidence guard refuses.

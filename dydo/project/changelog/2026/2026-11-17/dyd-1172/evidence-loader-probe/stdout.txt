@@ -1,1 +1,0 @@
-PASS: .txt SourceFileLoader imports the retained runner; diagnostic and low-space recipes reference the current runner path; no C# test run or edit.
