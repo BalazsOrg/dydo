@@ -1,0 +1,10 @@
+Running as unit: run-p3223392-i158339335.scope; invocation ID: 0292c795201346baab707e6bcbceb8f6
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  SkillBuild -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/tools/SkillBuild/bin/Debug/net10.0/SkillBuild.dll
+  DynaDocs -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/bin/Debug/net10.0/dydo.dll
+  DynaDocs.Tests -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll
+Test run for /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    62, Skipped:     0, Total:    62, Duration: 521 ms - DynaDocs.Tests.dll (net10.0)

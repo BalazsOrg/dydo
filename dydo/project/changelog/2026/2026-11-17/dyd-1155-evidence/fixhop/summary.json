@@ -1,0 +1,87 @@
+{
+  "signature": "docs-writer/model: gpt-6.1-sol, high",
+  "branch": "dyd-1155-fixhop",
+  "merge": "a9efde7d295ab16697a89492978b1e5438af687f",
+  "merge_parents": [
+    "c1d13d22c6a6c6e9c3ad85a3f0b0de3059fcc3dc",
+    "b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c"
+  ],
+  "pr_head": "c1d13d22c6a6c6e9c3ad85a3f0b0de3059fcc3dc",
+  "feature_tip": "b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c",
+  "gates": {
+    "a": {
+      "result": "passed",
+      "python_files": 80,
+      "diff_exit": 0,
+      "evidence": [
+        "python-feature.log",
+        "python-candidate.log",
+        "python-inventory-diff.log"
+      ]
+    },
+    "b": {
+      "result": "passed",
+      "build_exit": 0,
+      "discovered": 62,
+      "passed": 62,
+      "failed": 0,
+      "skipped": 0
+    },
+    "c": {
+      "result": "passed",
+      "bytes": 799,
+      "sha256": "139bc33641c2c740d9204057802ca18b6a52bdd18957be8909793bc5f85f6d7e",
+      "exit": 0
+    },
+    "d": {
+      "result": "passed",
+      "exit": 0,
+      "errors": 0,
+      "warnings": 0
+    },
+    "e": {
+      "result": "passed",
+      "exit": 0,
+      "adaptation": "replay-adaptation.json",
+      "recipe": "executed-proof.sh.log",
+      "note": "Used /tmp copy with this worktree substituted in proof and in its /tmp passage helper; original worktree was not accessed."
+    },
+    "f": {
+      "result": "passed",
+      "exit": 0,
+      "python": "3.14.4",
+      "node": "26.13.0",
+      "pnpm": "12.16.1",
+      "note": "Locked pip requirements and all three frozen pnpm installs passed. Installed pnpm 12.16.1 differs from Actions setup version 11; no claim of identical hosted environment.",
+      "native_evidence": [
+        "python-static-result.json",
+        "python-static-adapter.json",
+        "python-static-native-raw.json"
+      ]
+    }
+  },
+  "scope": {
+    "changed_paths_from_merge": [
+      "dydo/project/changelog/2026/2026-11-17/dyd-1155-evidence/discovery-count.py.txt",
+      "dydo/project/changelog/2026/2026-11-17/dyd-1155-evidence/passage.py.txt",
+      "dydo/project/changelog/2026/2026-11-17/dyd-1155-evidence/proof.sh",
+      "dydo/project/changelog/2026/2026-11-17/dyd-1155-evidence/run.py.txt",
+      "dydo/project/changelog/2026/2026-11-17/dyd-1155-scaffold-pickup.md"
+    ],
+    "standards_unchanged": true,
+    "historical_receipts_unchanged": true,
+    "helpers_byte_unchanged": true
+  },
+  "friction": [
+    "Multiline shell launch refused by guard; rephrased as literal separate commands.",
+    "Receipt wrapper git write-tree blocked by read-only index; replaced with read-only ls-files fingerprint.",
+    "First capped preflight could not access user bus; preflight.json/log preserves it; host-scope rerun passed."
+  ],
+  "delivery": {
+    "push": false,
+    "new_pull_request": false,
+    "linear_or_github_comments": false,
+    "subagents": false
+  },
+  "candidate_identity": "Precommit merge HEAD plus each receipt source_sha256 and index fingerprint. Final commit adds only these receipts and the exact tested owned-path edits."
+}
