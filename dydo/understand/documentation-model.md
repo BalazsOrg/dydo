@@ -1,6 +1,7 @@
 ---
 area: understand
 type: concept
+explains: ["Services/DocScanner.cs", "Services/MarkdownParser.cs", "Rules/**", "Commands/Check*.cs", "Commands/FixCommand.cs", "Commands/GraphCommand.cs"]
 ---
 
 # Documentation Model

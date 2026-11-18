@@ -1,4 +1,5 @@
 ---
+explains: ["Commands/GuardCommand*.cs", "Models/NudgeConfig.cs", "Services/BashCommandAnalyzer.cs"]
 area: understand
 type: concept
 ---

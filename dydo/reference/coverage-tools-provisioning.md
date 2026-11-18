@@ -1,4 +1,5 @@
 ---
+explains: ["DynaDocs.Tests/coverage/requirements.lock", "DynaDocs.Tests/coverage/package.json", "DynaDocs.Tests/coverage/pnpm-lock.yaml", "DynaDocs.Tests/coverage/gate_versions.py", "DynaDocs.Tests/Integration/GuardStaticGateProvisioningTests.cs"]
 area: reference
 type: reference
 ---

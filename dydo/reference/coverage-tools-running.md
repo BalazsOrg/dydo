@@ -1,4 +1,5 @@
 ---
+explains: ["DynaDocs.Tests/coverage/gap_check.py", "DynaDocs.Tests/coverage/gap_check.json", "DynaDocs.Tests/coverage/gate_run.py", "DynaDocs.Tests/coverage/run_tests.py", "Commands/GapCheckCommand.cs"]
 area: reference
 type: reference
 ---

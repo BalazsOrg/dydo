@@ -1,6 +1,7 @@
 ---
 area: understand
 type: concept
+explains: ["Commands/**", "Services/**", "Models/**", "Rules/**", "Utils/**", "DynaDocs.csproj", "setup-skills.mjs"]
 ---
 
 # Architecture Overview

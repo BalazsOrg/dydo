@@ -1,4 +1,5 @@
 ---
+explains: ["Commands/MapCommand.cs", "Services/Map/**", "Commands/SurveyCommand.cs", "Services/Survey/**", "Commands/ModeCommand.cs", "Services/ModeState.cs"]
 area: reference
 type: reference
 ---

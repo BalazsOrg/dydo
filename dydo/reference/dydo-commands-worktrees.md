@@ -1,4 +1,5 @@
 ---
+explains: ["Commands/ArchiveCommand.cs", "Commands/CleanCommand.cs", "Services/Archive*.cs", "Services/Clean*.cs", "Services/Worktree*.cs"]
 area: reference
 type: reference
 ---

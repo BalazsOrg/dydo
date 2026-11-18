@@ -1,4 +1,5 @@
 ---
+explains: ["Services/BashCommandAnalyzer.cs", "Services/ShellReader.cs"]
 area: understand
 type: concept
 ---

@@ -1,4 +1,5 @@
 ---
+explains: ["Commands/ValidateCommand.cs", "Commands/GapCheckCommand.cs", "Commands/StatechartCommand.cs", "Services/Statechart/**", "Commands/CompletionsCommand.cs", "Commands/DydoRootCommand.cs", "Commands/HelpCommand.cs"]
 area: reference
 type: reference
 ---

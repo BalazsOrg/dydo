@@ -1,4 +1,5 @@
 ---
+explains: ["Commands/GuardCommand.cs", "Commands/GuardCommand.WorkerLane.cs", "Services/ClaudeGuardWiring.cs", "setup-skills.mjs"]
 area: understand
 type: concept
 ---

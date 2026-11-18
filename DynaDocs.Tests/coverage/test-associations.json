@@ -283,6 +283,14 @@
       ]
     },
     {
+      "module": "Services/ExplainsCheck.cs",
+      "tests": ["DynaDocs.Tests/Integration/ExplainsCommandTests.cs"]
+    },
+    {
+      "module": "Services/ExplainsDeclaration.cs",
+      "tests": ["DynaDocs.Tests/Integration/ExplainsCommandTests.cs"]
+    },
+    {
       "module": "Services/PrCallScanner.cs",
       "tests": [
         "DynaDocs.Tests/Services/PrCallScannerTests.cs"

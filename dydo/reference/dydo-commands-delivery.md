@@ -1,4 +1,5 @@
 ---
+explains: ["Commands/PrReadyCommand.cs", "Services/PrReadyCheck.cs", "Services/ExplainsCheck.cs", "Commands/MergeCommand.cs", "Services/Merge/**"]
 area: reference
 type: reference
 ---
@@ -17,6 +18,10 @@ dydo pr-ready                          # check the current directory's tree
 dydo pr-ready <path>                   # check another tree
 dydo pr-ready --body dydo/agents/workspace/pr-body-<KEY>.md   # also check a PR body
 ```
+
+`--base <ref>` selects the merge target for warnings about changed `explains:` paths
+whose explanatory doc was not updated. It defaults to local `origin/HEAD`; nothing is
+fetched. Warnings name the doc and paths and do not affect readiness.
 
 The tree must have no staged, unstaged or untracked files git does not ignore, and HEAD must have
 an upstream and equal it. The upstream is read from the local remote-tracking ref; nothing is

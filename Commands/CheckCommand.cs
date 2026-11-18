@@ -20,20 +20,25 @@ public static class CheckCommand
         };
 
         var command = new Command("check", "Validate documentation and report violations");
+        var baseOption = new Option<string?>("--base")
+        {
+            Description = "Warn when explained code changed since the merge base with this ref"
+        };
         command.Arguments.Add(pathArgument);
         command.Options.Add(rootOption);
+        command.Options.Add(baseOption);
 
         command.SetAction(parseResult =>
         {
             var path = parseResult.GetValue(pathArgument);
             var root = parseResult.GetValue(rootOption);
-            return Execute(path, root);
+            return Execute(path, root, parseResult.GetValue(baseOption));
         });
 
         return command;
     }
 
-    private static int Execute(string? path, string? root)
+    private static int Execute(string? path, string? root, string? baseRef)
     {
         try
         {
@@ -45,7 +50,7 @@ public static class CheckCommand
             var config = configService.LoadConfigStrict(projectRoot);
             var configHasErrors = ValidateConfig(config);
 
-            var docsOutcome = ValidateDocs(path, projectRoot);
+            var docsOutcome = ValidateDocs(path, projectRoot, baseRef);
             if (docsOutcome.IsToolError)
                 return ExitCodes.ToolError;
 
@@ -74,7 +79,7 @@ public static class CheckCommand
 
     private record DocsOutcome(bool IsToolError, bool HasErrors, bool HasWarnings);
 
-    private static DocsOutcome ValidateDocs(string? path, string projectRoot)
+    private static DocsOutcome ValidateDocs(string? path, string projectRoot, string? baseRef)
     {
         var basePath = PathUtils.FindDocsFolder(projectRoot);
         var reportScope = ResolveReportScope(path);
@@ -102,7 +107,7 @@ public static class CheckCommand
 
         Console.WriteLine($"Checking {reportScope ?? basePath}...");
         Console.WriteLine();
-        var result = CheckDocValidator.Validate(basePath, reportScope);
+        var result = CheckDocValidator.Validate(basePath, reportScope, baseRef);
         ConsoleOutput.WriteViolations(result);
         return new DocsOutcome(false, result.HasErrors, result.WarningCount > 0);
     }

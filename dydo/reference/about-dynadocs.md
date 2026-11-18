@@ -1,6 +1,7 @@
 ---
 area: reference
 type: reference
+explains: ["Commands/**", "Services/**", "Models/**", "Rules/**", "setup-skills.mjs"]
 ---
 
 # DynaDocs (dydo)

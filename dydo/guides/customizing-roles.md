@@ -1,6 +1,7 @@
 ---
 area: guides
 type: guide
+explains: ["setup-skills.mjs"]
 ---
 
 # Customizing Roles

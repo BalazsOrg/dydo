@@ -1,4 +1,5 @@
 ---
+explains: ["Services/OffLimitsService.cs", "Services/BashCommandAnalyzer.cs", "Utils/GlobMatcher.cs", "Commands/GuardCommand.cs"]
 area: understand
 type: concept
 ---

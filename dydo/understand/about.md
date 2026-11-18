@@ -1,6 +1,7 @@
 ---
 area: understand
 type: context
+explains: ["Commands/**", "Services/**", "setup-skills.mjs"]
 ---
 
 # About This Project

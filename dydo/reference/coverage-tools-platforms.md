@@ -1,4 +1,5 @@
 ---
+explains: ["DynaDocs.Tests/coverage/python_platform.py", "DynaDocs.Tests/coverage/dotnet_platform.py", "DynaDocs.Tests/coverage/python-platforms.json", "DynaDocs.Tests/coverage/dotnet-platforms.json"]
 area: reference
 type: reference
 ---

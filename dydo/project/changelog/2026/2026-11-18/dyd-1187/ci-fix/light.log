@@ -1,0 +1,6 @@
+Test run for /home/balazs/.t3/worktrees/DynaDocs/t3-72d10344-6941aa1ba4e04f47/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:01.74]     DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllOptions_AppearInReferenceDoc [FAIL]
+Results File: /tmp/dyd-1187-ruling-proof/light/light.trx
+
+Failed!  - Failed:     1, Passed:   740, Skipped:     0, Total:   741, Duration: 48 s - DynaDocs.Tests.dll (net10.0)

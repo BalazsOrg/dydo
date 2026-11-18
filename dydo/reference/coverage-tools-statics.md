@@ -1,4 +1,5 @@
 ---
+explains: ["DynaDocs.Tests/coverage/gate_inventory.py", "DynaDocs.Tests/coverage/associations.py", "DynaDocs.Tests/coverage/test-associations.json", "DynaDocs.Tests/coverage/python_metrics.py", "DynaDocs.Tests/coverage/js_metrics.cjs", "DynaDocs.Tests/coverage/gate_policy.py", "DynaDocs.Tests/coverage/statechart_platform.py"]
 area: reference
 type: reference
 ---

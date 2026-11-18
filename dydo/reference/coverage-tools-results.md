@@ -1,4 +1,5 @@
 ---
+explains: ["DynaDocs.Tests/coverage/gate_adapter.py", "DynaDocs.Tests/coverage/gate_collect.py", "DynaDocs.Tests/coverage/report.py"]
 area: reference
 type: reference
 ---

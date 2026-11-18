@@ -1,4 +1,5 @@
 ---
+explains: ["DynaDocs.Tests/coverage/csharp_coverage.py", "DynaDocs.Tests/coverage/csharp_join.py", "DynaDocs.Tests/coverage/metrics/**", "DynaDocs.Tests/coverage/gate_versions.py"]
 area: reference
 type: reference
 ---

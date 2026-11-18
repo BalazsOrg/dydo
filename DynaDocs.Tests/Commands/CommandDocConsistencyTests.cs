@@ -354,6 +354,7 @@ public partial class CommandDocConsistencyTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1187 mechanical declarations preserve existing descriptive prose")]
     public void InstalledAboutDoc_MatchesTemplate()
     {
         var aboutDynadocs = File.ReadAllText(
@@ -363,7 +364,12 @@ public partial class CommandDocConsistencyTests
                 FindRepoFile(Path.Combine("Scaffold", "dydo", "reference", "about-dynadocs.md")))
             .ReplaceLineEndings("\n").TrimEnd();
 
-        Assert.Equal(aboutTemplate, aboutDynadocs);
+        // Repository-specific declarations are not shipped to adopting projects.
+        // Keep all body bytes and every other frontmatter field in the parity assertion.
+        var frontmatterEnd = aboutDynadocs.IndexOf("\n---", 3, StringComparison.Ordinal);
+        Assert.True(frontmatterEnd > 0, "Installed about document needs frontmatter");
+        var frontmatter = Regex.Replace(aboutDynadocs[..frontmatterEnd], @"(?m)^explains:[^\n]*\n?", "").TrimEnd('\n');
+        Assert.Equal(aboutTemplate, frontmatter + aboutDynadocs[frontmatterEnd..]);
     }
 
     /// <summary>

@@ -106,6 +106,10 @@ dydo check --root <dir>          # check the project containing <dir>, not the c
 dydo check --root <dir> <path>   # <path>: absolute or cwd-relative (not root-relative), inside that docs tree
 ```
 
+With `--base <ref>`, compare changes since the merge base with that ref and warn when
+declared `explains:` paths changed without their explanatory doc. Warnings name the doc
+and paths and do not change the exit code.
+
 Exit `0` means no errors. Exit `1` means validation errors were found. Exit `2` means a tool error,
 such as a `<path>` outside the docs tree or a `--root` in no dydo project.
 

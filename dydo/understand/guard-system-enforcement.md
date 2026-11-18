@@ -1,4 +1,5 @@
 ---
+explains: ["Commands/GuardCommand*.cs", "Services/PrCallScanner*.cs", "Services/PrReadyCheck.cs", "Services/MergeRoute.cs"]
 area: understand
 type: concept
 ---
