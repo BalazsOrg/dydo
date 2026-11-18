@@ -127,7 +127,6 @@ and 11 serve it. The DECIDED holds his full description.
   - The glossary: remove "Project plan" and the Project entry's "cross-cutting architecture contract"
     clause, and undo F12's rename where it landed (DYD-1077's five swaps). The DECIDED says DYD-1086,
     DYD-1087 and DYD-1099 waited on this ruling and are unblocked by it.
-  - The `dydo-design-shared-language` statement and his description are now committed to `law/dydo/`.
   - Re-adopt upstream `domain-modeling`'s multi-context shape with path changes only. The
     adaptation's "one glossary per project" goes.
   - Tickets: the `explains:` frontmatter with the `dydo check` / `pr-ready` flag; the two rubric

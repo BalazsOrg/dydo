@@ -104,9 +104,10 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
      threads waiting on him, HITL Merges waiting on his click, anything waiting too long. Each item
      is a thread link; he goes to the thread itself. It never carries content between him and an
      admiral, and sends no envoys.
-   - The admiral attaches its T3 thread link to its Project (as C7 does for tickets). The chief of
-     staff's quiet-Project check is an overnight-mode double check only, replaced as a standing
-     check by the admirals' own scheduled surveys. Balazs, 2026-11-18:
+   - It catches an open HITL ticket with no envoy (D5). The admiral attaches its T3 thread link to
+     its Project (as C7 does for tickets). The quiet-Project check, triggered by a Project with
+     open work and no ticket moving for 12 hours, is an overnight-mode double check only; the
+     admirals' own scheduled surveys replace it as a standing check. Balazs, 2026-11-18:
      "To be frank I almost exclusively use chief of staff for overnight mode now. And back when this thing was invented, the admirals did not have their own crow jobs to survey things. So I'd say that that kind of replaces this intent, but For overnight mood, it might be a cheap double check."
      ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-18bb9314-3553-4c1d-bea6-f15adc48881a);
      [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982020734)).
@@ -123,8 +124,8 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
    ticket into its own work when it fits its job; the ticket then follows that officer's chain.
 6. **The officer-above chain (D7, D9).** "c" (D7). The officer above, per level: sub-captain →
    captain → admiral → chief of staff. The same chain carries liveness (C14), re-plans (B6) and
-   escalations. Above the admirals the chief of staff takes only the overnight-mode liveness
-   double check (rule 4); an escalation that needs
+   escalations. Above the admirals the chief of staff takes liveness only and catches an open HITL
+   ticket with no envoy; only the quiet-Project check is overnight-only (rule 4). An escalation that needs
    Balazs goes from the admiral through its own envoy, not through the chief of staff. D7's "an
    officer sends its own envoy for its own step" is withdrawn by D9 (rule 9).
 7. **Sub-captains: allowed now, with no hard cap on depth (DYD-1114, replacing D11).** D11 held
