@@ -350,13 +350,14 @@ class ScopeTests(unittest.TestCase):
         self.assertEqual({'linux'}, set(receipt['denominators']['Lib/Neutral.cs']['lines'].values()))
         self.assertEqual({'windows'}, set(receipt['denominators']['Lib/Native.cs']['branches'].values()))
 
-    def test_unmeasured_native_points_fail_their_own_platform_not_the_other(self):
+    def test_unmeasured_native_points_are_reported_on_their_own_platform_without_failing(self):
+        # Contract: DR068 G1, native coverage stays in the report without a floor.
         modules = joined_modules(linux=1, windows=0)
         self.assertEqual([], evaluate_policy(self.scope('linux', modules)[0]))
-        findings = evaluate_policy(self.scope('windows', modules)[0])
-        self.assertEqual({('Lib/Mixed.cs', 'line-coverage'), ('Lib/Mixed.cs', 'branch-coverage'),
-                          ('Lib/Native.cs', 'line-coverage'), ('Lib/Native.cs', 'branch-coverage')},
-                         {(row['path'], row['gate']) for row in findings if row['member'] is None})
+        windows = self.scope('windows', modules)[0]
+        self.assertTrue(windows[0]['lines'])
+        self.assertFalse(any(windows[0]['lines'].values()))
+        self.assertEqual([], evaluate_policy(windows))
 
     def test_a_line_shared_by_both_platforms_or_left_unowned_fails_closed(self):
         shared = joined_modules()
@@ -434,14 +435,19 @@ class UnionTests(unittest.TestCase):
             def verify(report):
                 return self.verify(**{platform: report})
             with self.subTest(platform=platform):
-                failing = self.report(platform, joined_modules(**{platform: 0}))
+                # Contract: DR068 G3 retains cognitive gating, without coverage floors.
+                modules = joined_modules(**{platform: 0})
+                for module in modules:
+                    for method in module['methods']:
+                        method['cognitive'] = 21
+                failing = self.report(platform, modules)
                 with self.assertRaisesRegex(ValueError, f'passing {platform} .NET coverage gate'):
                     verify(failing)
                 for change in ({'measurementComplete': False}, {'gaps': [{'message': 'x'}]}, {'stack': 'python'},
                                {'candidate': {'commit': self.commit, 'dirty': True}}):
                     with self.subTest(change=change), self.assertRaisesRegex(ValueError, 'complete clean'):
                         verify({**self.report(platform), **change})
-                hidden = {**self.report(platform, joined_modules(**{platform: 0})), 'exitCode': 0, 'findings': []}
+                hidden = {**failing, 'exitCode': 0, 'findings': []}
                 with self.assertRaisesRegex(ValueError, 'findings disagree'):
                     verify(hidden)
         tampered = self.report('windows')

@@ -149,6 +149,7 @@ class StatechartPlatformTests(unittest.TestCase):
                 self.assert_windows_adapter(newline)
 
     def assert_windows_adapter(self, newline):
+        # Contract: DR068 G1, native coverage is measured without a branch floor.
         import gate_adapter
         from test_gate_adapter import StatechartGateTests, fake_node_test
         fixture = StatechartGateTests()
@@ -176,7 +177,7 @@ class StatechartPlatformTests(unittest.TestCase):
         self.assertEqual([path.as_posix()], [row['path'] for row in facts['modules']])
         self.assertEqual('windows', facts['platform_selection']['platform'])
         self.assertIn(missing.as_posix(), facts['platform_selection']['sources'])
-        self.assertEqual({'branch-coverage'}, {row['gate'] for row in answer['findings']})
+        self.assertEqual([], answer['findings'])
 
     def test_source_pins_and_union_receipts_normalize_newlines_but_reject_edits(self):
         receipts = []
@@ -193,6 +194,7 @@ class StatechartPlatformTests(unittest.TestCase):
         self.assertEqual(receipts[0], receipts[1])
 
     def test_unpublished_counters_stay_zero_and_published_corruption_is_rejected(self):
+        # Contract: DR068 G1, uncovered modules remain visible without failing the gate.
         from gate_policy import evaluate_policy
         targets = ['kept.ts', 'unloaded.ts']
         for target in targets:
@@ -211,7 +213,7 @@ class StatechartPlatformTests(unittest.TestCase):
         modules = statechart_platform.measured_modules(self.root, targets, walked, raw)
         self.assertEqual(targets, [row['path'] for row in modules])
         self.assertEqual([{'1': 1}, {'1': 0}], [row['lines'] for row in modules])
-        self.assertEqual({'unloaded.ts'}, {finding['path'] for finding in evaluate_policy(modules)})
+        self.assertEqual([], evaluate_policy(modules))
         for content in ('', '{'):
             with self.subTest(content=content):
                 (reports / 'broken.json').write_text(content)

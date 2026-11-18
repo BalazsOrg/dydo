@@ -111,16 +111,17 @@ class JoinModuleTests(unittest.TestCase):
 
 
 class JoinTests(unittest.TestCase):
-    def test_an_uncovered_module_fails_its_line_and_branch_floors(self):
+    def test_an_uncovered_module_keeps_its_measurement_without_failing(self):
+        # Contract: DR068 G1-G2 remove coverage floors and HCRAP.
         lcov = LCOV + "SF:src/unused.ts\nFN:1,unused\nFNDA:0,unused\nDA:2,0\nDA:3,0\nBRDA:2,0,0,0\nend_of_record\n"
         with tempfile.TemporaryDirectory() as folder:
             path = Path(folder) / "lcov.info"
             path.write_text(lcov, encoding="utf-8")
             modules = join(path, ROOT, BASE, ["viewer/src/unused.ts"],
                            {"viewer/src/unused.ts": walked(method("unused:1:7", 1, 4, 0, 50, cc=5))})
-        findings = {(row["path"], row["gate"]) for row in evaluate_policy(modules)}
-        self.assertEqual({("viewer/src/unused.ts", "line-coverage"), ("viewer/src/unused.ts", "branch-coverage"),
-                          ("viewer/src/unused.ts", "hcrap")}, findings)
+        self.assertTrue(modules[0]['lines'])
+        self.assertFalse(any(modules[0]['lines'].values()))
+        self.assertEqual([], evaluate_policy(modules))
 
 
 class SourceDerivedJoinTests(unittest.TestCase):
