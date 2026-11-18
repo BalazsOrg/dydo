@@ -173,14 +173,6 @@ def _candidate_assemblies(root):
     return sorted(set(paths))
 
 
-def _same_native_map(before, after):
-    keys = ("assembly_name", "module_id")
-    return (all(before[key] == after[key] for key in keys)
-            and before["documents"] == after["documents"] and [
-        (row["token"], row["identity"], row["key"], row["points"]) for row in before["methods"]
-    ] == [(row["token"], row["identity"], row["key"], row["points"]) for row in after["methods"]])
-
-
 def _same_instrumented_map(before, after):
     fields = ("path", "origin", "checksum_algorithm", "checksum", "line", "column",
               "end_line", "end_column")
