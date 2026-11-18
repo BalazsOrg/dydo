@@ -8,6 +8,8 @@ applies: [dydo-aligned-intent, dydo-verification-independent-evidence, dydo-effi
 
 # 067 - What Tests Are For
 
+> **Amended 2026-11-18:** [the accepted purge amendment below](#amendment-2026-11-18---the-test-purge-replaces-t8) replaces T8's grandfathering and gradual pruning. The original T8 text remains as history. The three-smells amendment is also accepted below.
+
 A suite test earns its place by one of three jobs: it guards a trap, pins a traced contract, or
 reaches an edge that driving can't. A ticket's proof test stays in the suite only if it graduates,
 tagged with its job. A red check replaces test-first ordering, and a tag lint replaces DR 048's
@@ -89,10 +91,12 @@ come from the same grilling.
 - The doctrine T1-T8 ships in the skills; an adopting project changes it in its own copy of dydo
   (D2, recorded in DR 068).
 
-## Amendment 2026-11-18 - three test smells to prune (proposed)
+## Amendment 2026-11-18 - three test smells to prune
 
-**Proposed, pending Balazs's approval of its wording (F10).** Until he approves it, this section
-binds nothing and T1-T8 stand as written. Drafted under
+**Status: accepted.** Approved by Balazs in
+[DYD-1195 Q4 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-592e0aeb-87c7-4cf4-bfe9-14fa10ec43f3),
+verbatim: "4. a - merge pr 361 if you can or show me so I can. It fits squarely with what the tests should be."
+Drafted under
 [DYD-1183](https://linear.app/bodnar-balazs/issue/DYD-1183) from his words of 2026-11-18, after he
 saw a public `/prune-tests` tool that finds and removes tests that "change whenever the code does",
 "check deleted features are gone" and "can never fail". His words: "I want to make sure we have
@@ -118,13 +122,37 @@ T8.
    mutant in changed code). Until DYTEST Mutation lands, a reviewer flags an assertion that no
    plausible edit could break.
 
-Once he approves it, the step-4 claims
+The step-4 claims
 ([DYD-1083](https://linear.app/bodnar-balazs/issue/DYD-1083)) carry the three smells into
 code-writer (don't write them), reviewer (flag them) and the testing guide (T8's pruning criteria),
 and DYTEST Mutation's pruning evidence (T8) takes them as its first heuristics. T1-T8's text is kept
 as written; this amendment adds to it.
 
 ---
+
+## Amendment 2026-11-18 - the test purge replaces T8
+
+**Status: accepted.** Approved by Balazs in
+[DYD-1195 Q1 DECIDED, envoy 1](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-3f8e600e-bed9-4d64-9e23-314db063f2f9),
+verbatim: "Yes, it replaces the grandfathering, I'm fed up."
+His follow-up settled how survivors are judged
+([DYD-1195 DECIDED, envoy 1](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-402f4067-a6b3-4ee1-aff8-428c2cced58b)),
+verbatim: "mostly right, but we don't want to keep those tests 1:1, we want to measure them against the new test requirements and either keep them if they match or rewrite them to match. And have the rest deleted."
+
+This replaces T8's grandfathering and gradual pruning with the 4.0.0 test purge
+([DYD-1198](https://linear.app/bodnar-balazs/issue/DYD-1198),
+[DYD-1199](https://linear.app/bodnar-balazs/issue/DYD-1199)). A test of behaviour 4.0.0 keeps is
+measured against the new test requirements, including T1, T4, T5 and the accepted three smells
+above. Keep it if it matches, rewrite it to match otherwise, and delete tests of behaviour 4.0.0
+drops. Survivors get no exemption for already existing. The purge does not wait for DYTEST Mutation.
+
+The source walkthrough ruling is
+[DYD-1074 DECIDED, comment 047c6bf3](https://linear.app/bodnar-balazs/issue/DYD-1074#comment-047c6bf3-f0d7-404e-abc8-460e206c17d8).
+Balazs, verbatim: "I want such a scourged earth policy that I want all our tests to be put on hold and they will be purged… by the end of the 4.0.0 migration I only want those tests to remain which fit the new requirements for tests."
+Also, verbatim: "Delete on site. Be ruthless. I only want the tests to remain which test something that is going to stay. For example, state chart, guard behavior… All the tests about a certain roles… must go… they constrain the outcome not the way to get there".
+The old suite keeps running and gating during the migration; an old test blocking 4.0.0 work is
+deleted rather than repaired, with one line in the commit, and the purge removes the rest before
+landing (DYD-1198's recorded option A).
 
 ## Supersedes and amends
 
@@ -137,4 +165,4 @@ DR 048 stays `accepted` otherwise.
 - [DR 048 - One-Level Static Gates](./048-one-level-static-gates-certainly-wrong-no-escape-hatch.md)
 - [DYD-1120](https://linear.app/bodnar-balazs/issue/DYD-1120) - Untraced pins are findings; review against the spec
 - [DYD-971](https://linear.app/bodnar-balazs/issue/DYD-971) - Grilling G
-- [DYD-1183](https://linear.app/bodnar-balazs/issue/DYD-1183) - The proposed 2026-11-18 amendment: three test smells to prune
+- [DYD-1183](https://linear.app/bodnar-balazs/issue/DYD-1183) - The accepted 2026-11-18 amendment: three test smells to prune
