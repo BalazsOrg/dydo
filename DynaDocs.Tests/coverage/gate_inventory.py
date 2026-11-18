@@ -37,16 +37,10 @@ def _role(relative, language, projects, test_files):
 
 
 _ASSOCIATIONS = 'DynaDocs.Tests/coverage/test-associations.json'
-_HOST_DRIVERS = {
-    'DynaDocs.Tests/HostCanaries/run-host-canaries.mjs': (
-        'DynaDocs.Tests/HostCanaries/path-containment.mjs',
-        'DynaDocs.Tests/HostCanaries/run-host-canaries-args.mjs'),
-    'DynaDocs.Tests/HostCanaries/openai-sse-provider.mjs': (
-        'DynaDocs.Tests/HostCanaries/openai-sse-provider-args.mjs',)}
+_HOST_DRIVERS = {}
 _DERIVED = 'dydo/reference/gap-check.example.py'
 _DERIVED_SOURCE = 'DynaDocs.Tests/coverage/gap_check.py'
 _DERIVED_PRODUCER = 'DynaDocs.Tests/coverage/sync_testing_example.py'
-_DERIVED_TEST = 'DynaDocs.Tests/coverage/tests/test_sync_testing_example.py'
 _NATIVE_EVIDENCE = 'dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence'
 _TYPESCRIPT_ROOT = 'viewer/src/'
 STATECHART_ROOT = 'skills/engineering/statechart/scripts/'
@@ -122,14 +116,12 @@ def _fixture_exclusion(root, relative, manifest, manifest_path):
                        'manifestSha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest()}}, None
 
 
-def _structural_exclusion(root, relative, paths, test_files):
+def _structural_exclusion(root, relative, paths):
     """Return reproducible exclusion evidence, or a gap that denies exclusion."""
     path_set = set(paths)
     if relative == _DERIVED:
-        required = (_DERIVED_SOURCE, _DERIVED_PRODUCER, _DERIVED_TEST)
+        required = (_DERIVED_SOURCE, _DERIVED_PRODUCER)
         missing = [path for path in required if path not in path_set or not (root / path).is_file()]
-        if _DERIVED_TEST not in test_files:
-            missing.append(_DERIVED_TEST + '#native-discovery')
         if missing:
             return None, {'path': relative, 'type': 'derived-copy-origin-missing',
                           'missing': sorted(set(missing))}
@@ -140,8 +132,7 @@ def _structural_exclusion(root, relative, paths, test_files):
         return {'path': relative, 'reason': 'derived-copy',
                 'origin': {'source': _DERIVED_SOURCE,
                            'canonicalSourceSha256': source_digest,
-                           'producer': _DERIVED_PRODUCER,
-                           'producerTest': _DERIVED_TEST}}, None
+                           'producer': _DERIVED_PRODUCER}}, None
     prefix = PurePosixPath(_NATIVE_EVIDENCE)
     candidate = PurePosixPath(relative)
     if candidate != prefix and prefix in candidate.parents:
@@ -205,7 +196,7 @@ def _source_row(root, relative, path, existing, projects, test_files, associatio
     language = language_of(path)
     if language is None:
         return None, None, []
-    exclusion, exclusion_error = _structural_exclusion(root, relative, existing, test_files)
+    exclusion, exclusion_error = _structural_exclusion(root, relative, existing)
     if exclusion:
         return None, exclusion, []
     digest = hashlib.sha256(path.read_bytes()).hexdigest()

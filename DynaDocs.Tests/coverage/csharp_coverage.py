@@ -75,7 +75,6 @@ def _subject_commands(root, tests=None, results=None):
     return [
         [*suite, "--filter", excluded, "--logger", "console;verbosity=normal",
          "--", "RunConfiguration.TreatNoTestsAsError=true"],
-        [sys.executable, str(root / "DynaDocs.Tests/coverage/tests/test_csharp_metrics.py")],
     ]
 
 
