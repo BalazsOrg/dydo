@@ -1,0 +1,32 @@
+{
+  "original": "/home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/dydo/project/changelog/2026/2026-11-17/dyd-1155-evidence/proof.sh",
+  "replayed": "/tmp/dyd-1155-fixhop-proof.sh",
+  "old_root": "/home/balazs/.t3/worktrees/DynaDocs/t3-a829c0a8-36dac2b1bcc02af9",
+  "execution_root": "/home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7",
+  "adaptations": [
+    "Replace old worktree path in /tmp proof copy only",
+    "After copy, replace old root in /tmp/dyd-1155-passage.py only"
+  ],
+  "old_worktree_accessed": false,
+  "repository_helpers_byte_unchanged": true,
+  "python_inventory_count": 80,
+  "inventory_diff_exit": 0,
+  "sync_commands": [
+    "git fetch origin",
+    "git checkout -b dyd-1155-fixhop origin/DYD-1155-scaffold-pickup",
+    "git merge --no-ff origin/feature/dydo-4-0-0"
+  ],
+  "sync_exits": [
+    0,
+    0,
+    0
+  ],
+  "pr_head": "c1d13d22c6a6c6e9c3ad85a3f0b0de3059fcc3dc",
+  "feature_tip": "b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c",
+  "merge": "a9efde7d295ab16697a89492978b1e5438af687f",
+  "helpers_sha256": {
+    "run": "1775d2292480677f4e8088b4b2c7abd6237b221cf05033e3efdaff9bee484e79",
+    "passage": "83e4366b3acc0f1b0272d8eb6e47153a950bf665787422488f94ad054792fd09",
+    "discovery-count": "57abc116608a966abd29736c5385d78ca8cb14a5ac861e4a239024944bd64bb5"
+  }
+}

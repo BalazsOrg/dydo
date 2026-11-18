@@ -1,0 +1,70 @@
+Running as unit: run-p3219779-i158281456.scope; invocation ID: 1d2d552859af4471869e19779e4aa04a
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  SkillBuild -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/tools/SkillBuild/bin/Debug/net10.0/SkillBuild.dll
+  DynaDocs -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/bin/Debug/net10.0/dydo.dll
+  DynaDocs.Tests -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll
+Test run for /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+The following Tests are available:
+    DynaDocs.Tests.Services.ScaffoldTreeTests.EmbeddedScaffoldResources_AreExactlyTheTreeOnDisk
+    DynaDocs.Tests.Services.ScaffoldTreeTests.EveryScaffoldFileOnDisk_ReadsBackThroughItsResourceName
+    DynaDocs.Tests.Services.ScaffoldTreeTests.WriteDydoTree_WithoutEmbeddedScaffold_Throws
+    DynaDocs.Tests.Integration.DocumentationTests.Check_FreshLinearNativeScaffold_PassesWithoutRepositoryWorkHierarchy
+    DynaDocs.Tests.Integration.DocumentationTests.RepositoryFutureFeatureGuide_SendsNewIntakeToLinear
+    DynaDocs.Tests.Integration.DocumentationTests.RepositoryLegacyFutureFeatureRecords_ClaimNoRepoNativeIntake
+    DynaDocs.Tests.Integration.DocumentationTests.Check_ProjectWithoutFutureFeaturesFolder_Passes
+    DynaDocs.Tests.Integration.DocumentationTests.Check_FutureFeaturesFolderHoldingOnlyItsMetaFile_Passes
+    DynaDocs.Tests.Integration.DocumentationTests.FreshInit_EveryCitedDydoDocumentShips
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "see dydo/reference/configuration.md now", expected: "dydo/reference/configuration.md")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "see ./dydo/reference/configuration.md now", expected: "dydo/reference/configuration.md")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "see dydo\\reference\\configuration.md now", expected: "dydo/reference/configuration.md")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "see .\\dydo\\reference\\configuration.md now", expected: "dydo/reference/configuration.md")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "see ./dydo\\reference/configuration.md now", expected: "dydo/reference/configuration.md")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "see dydo\\\\reference\\\\configuration.md (JSON-es"···, expected: "dydo/reference/configuration.md")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "(`./dydo/guides/a.md`) and [x](dydo/guides/b.md)", expected: "dydo/guides/a.md|dydo/guides/b.md")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "hub/dydo/reference/configuration.md", expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "https://example.com/dydo/reference/configuration.m"···, expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "../dydo/reference/configuration.md", expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "../../dydo/reference/configuration.md", expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "..\\dydo\\reference\\configuration.md", expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "other\\dydo\\reference\\configuration.md", expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "mydydo/reference/configuration.md", expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "my-dydo/reference/configuration.md", expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.CitedDydoDocuments_RecognisesEveryForm_AndOnlyWhereDydoStartsThePath(text: "dydo/reference/configuration.txt", expected: "")
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_FlagsAMissingTargetInEveryForm_InMarkdownAndNonMarkdown(file: "guides/mutated.md", content: "see dydo/reference/missing-doc.md")
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_FlagsAMissingTargetInEveryForm_InMarkdownAndNonMarkdown(file: "guides/mutated.md", content: "see ./dydo/reference/missing-doc.md")
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_FlagsAMissingTargetInEveryForm_InMarkdownAndNonMarkdown(file: "guides/mutated.md", content: "see dydo\\reference\\missing-doc.md")
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_FlagsAMissingTargetInEveryForm_InMarkdownAndNonMarkdown(file: "guides/mutated.md", content: "see .\\dydo\\reference/missing-doc.md")
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_FlagsAMissingTargetInEveryForm_InMarkdownAndNonMarkdown(file: "mutated.json", content: "{ \"_comment\": \"see dydo/reference/missing-doc.m"···)
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_FlagsAMissingTargetInEveryForm_InMarkdownAndNonMarkdown(file: "mutated.json", content: "{ \"_comment\": \"see ./dydo/reference/missing-doc"···)
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_FlagsAMissingTargetInEveryForm_InMarkdownAndNonMarkdown(file: "mutated.json", content: "{ \"_comment\": \"see dydo\\\\reference\\\\missing"···)
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_FlagsAMissingTargetInEveryForm_InMarkdownAndNonMarkdown(file: "mutated.json", content: "{ \"_comment\": \"see .\\\\dydo\\\\reference/missi"···)
+    DynaDocs.Tests.Integration.DocumentationTests.MissingCitations_AcceptsEveryFormOfAShippedTarget
+    DynaDocs.Tests.Integration.DocumentationTests.Check_ValidDocs_Passes
+    DynaDocs.Tests.Integration.DocumentationTests.Check_ReportsIssues_WhenPresent
+    DynaDocs.Tests.Integration.DocumentationTests.Check_InvalidFrontmatter_ReportsErrors
+    DynaDocs.Tests.Integration.DocumentationTests.Check_SpecificPath_ChecksOnlyThatPath
+    DynaDocs.Tests.Integration.DocumentationTests.Check_BrokenLinks_ReportsErrors
+    DynaDocs.Tests.Integration.DocumentationTests.Check_NoDocsFolder_Fails
+    DynaDocs.Tests.Integration.DocumentationTests.Fix_RenamesNonKebabCase
+    DynaDocs.Tests.Integration.DocumentationTests.Fix_ReportsManualFixNeeded
+    DynaDocs.Tests.Integration.DocumentationTests.Fix_DoesNotCreateMissingHubOrMetaFiles
+    DynaDocs.Tests.Integration.DocumentationTests.Fix_PreservesCustomNavigationAndSibling
+    DynaDocs.Tests.Integration.DocumentationTests.Fix_DoesNotCreateHubFilesInAgentFolders
+    DynaDocs.Tests.Integration.DocumentationTests.Fix_DoesNotCreateHubFilesInSystemFolders
+    DynaDocs.Tests.Integration.DocumentationTests.Fix_DoesNotReportManualFixesForAgentFiles
+    DynaDocs.Tests.Integration.DocumentationTests.Index_RegeneratesIndex
+    DynaDocs.Tests.Integration.DocumentationTests.Index_ListsHubFolders
+    DynaDocs.Tests.Integration.DocumentationTests.Index_ReportsPopulatedSectionWithoutOptionalNavigationPage
+    DynaDocs.Tests.Integration.DocumentationTests.Index_GeneratedRootPassesCheck
+    DynaDocs.Tests.Integration.DocumentationTests.Index_NoDocsFolder_Fails
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_ShowsOutgoingLinks
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_ShowsIncomingLinks
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_FileNotFound_Fails
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_WithDegree_ShowsMultipleHops
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_WithZeroDegree_ReturnsQuickly
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_WithNegativeDegree_TreatedAsZero
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_WithLargeDegree_HandlesGracefully
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_Stats_ShowsTopDocsByIncomingLinks
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_Stats_RespectsTopOption
+    DynaDocs.Tests.Integration.DocumentationTests.Graph_Stats_NoDocsFolder_Fails

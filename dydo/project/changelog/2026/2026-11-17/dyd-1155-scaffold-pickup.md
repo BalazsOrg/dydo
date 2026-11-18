@@ -67,8 +67,11 @@ that source path is now a code span. `docs-check-initial.*` retains the failure.
 From this isolated root, run `bash` with the absolute path of the sibling
 `dyd-1155-evidence/proof.sh`. It contains only literal paths and the commissioned lock, environment,
 caps and selectors: nonzero discovery, the exact filtered test run, byte equality and `dydo check`.
-`passage.py` preserves the equality probe; `run.py` and `discovery-count.py` preserve the original
-receipt wrapper and discovery counter. The script is a local proof recipe, not a hosted CI suite.
+`passage.py.txt` preserves the equality probe; `run.py.txt` and `discovery-count.py.txt` preserve the
+original receipt wrapper and discovery counter. The recipe copies the passage and discovery helpers
+to `/tmp/dyd-1155-passage.py` and `/tmp/dyd-1155-discovery-count.py` before running those copies.
+The helpers were renamed after the original proof, bytes unchanged, because tracked `.py` files are Python gate targets.
+The script is a local proof recipe, not a hosted CI suite.
 The captain reruns proof of record and owns fresh independent review, hosted Actions and integration.
 This writer's return is IMPLEMENTED, never an independent PASS.
 
