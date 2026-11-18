@@ -7,6 +7,8 @@ date: 2026-10-28
 
 # 060 - Milestone Walkthroughs and the Walking Skeleton
 
+> **Amended 2026-11-18:** [the accepted landing amendment below](#amendment-2026-11-18---walk-the-landing-candidate) replaces §2's after-landing timing and §5's landing on main.
+
 A Project's Linear Milestones are the user's checkpoints. Each one ends on a Walkthrough Ticket that
 walks the whole product as it stands, and only the first, the walking skeleton, holds back the work
 built on it, except overnight. Ruled by Balazs on 2026-10-27 in a co-think and on 2026-10-28 on the
@@ -69,6 +71,18 @@ Option B.
 The inquisition still runs before landing, as rebuilt in
 [DYD-400](https://linear.app/bodnar-balazs/issue/DYD-400): follow-up inquisitions until one finds no
 blocker or should. This record references that rebuild and does not define it.
+
+## Amendment 2026-11-18 - walk the landing candidate
+
+**Status: accepted.** Approved by Balazs in
+[DYD-1195 Q13 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-2546c840-53a6-436a-aade-873052d14c89).
+His answer covering Q13, verbatim: "16. a. 9. a, 13. a. 10. a, 11. a".
+Q13 option (a) was that he walks the landing candidate, accepts, then it merges.
+
+For §2 and §5, the landing walkthrough happens on the feature branch with master merged in:
+the landing candidate is the exact tree master will get. Balazs walks that candidate and accepts
+it, then it merges. This replaces walking main after the landing. Other Milestone checkpoints
+keep their existing timing.
 
 ## Consequences
 

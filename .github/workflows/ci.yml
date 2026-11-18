@@ -122,13 +122,17 @@ jobs:
           print(json.dumps(receipt))
           PY
 
-      - name: Full Python suite and platform coverage gate
+      - name: Full Python suite and platform coverage report
         env:
           PYTHONDONTWRITEBYTECODE: '1'
           DYDO_NATIVE_TEST_EVIDENCE: DynaDocs.Tests/coverage/results/native-jobs
           DYDO_LIFETIME_EVIDENCE: DynaDocs.Tests/coverage/results/native-lifetime
           DYDO_CANCELLATION_EVIDENCE: DynaDocs.Tests/coverage/results/windows-cancellation
         run: ${{ matrix.python }} DynaDocs.Tests/coverage/gap_check.py gate coverage --stack python
+
+      - name: Print platform Python coverage report
+        if: always()
+        run: ${{ matrix.python }} DynaDocs.Tests/coverage/report.py DynaDocs.Tests/coverage/results/adapters/python-coverage.json
 
       - name: Canonical Python static gate
         if: ${{ !cancelled() && matrix.platform == 'linux' }}
@@ -304,12 +308,16 @@ jobs:
         shell: pwsh
         run: ./.github/workflows/provision-statechart.ps1
 
-      - name: Statechart suite and platform coverage gate
+      - name: Statechart suite and platform coverage report
         env:
           TLA2TOOLS: ${{ steps.statechart.outputs.tla2tools }}
           JAVA: ${{ steps.statechart.outputs.java }}
           STATECHART_PELE: ${{ steps.statechart.outputs.pele }}
         run: ${{ matrix.python }} DynaDocs.Tests/coverage/gap_check.py gate coverage --stack statechart
+
+      - name: Print platform statechart coverage report
+        if: always()
+        run: ${{ matrix.python }} DynaDocs.Tests/coverage/report.py DynaDocs.Tests/coverage/results/adapters/statechart-coverage.json
 
       # A rerun of failed jobs reruns only the failed leg, so each artifact names the attempt that made it.
       - name: Stamp platform coverage artifact identity
@@ -519,10 +527,14 @@ jobs:
           print(json.dumps(receipt, indent=2))
           PY
 
-      - name: Platform .NET coverage gate
+      - name: Platform .NET coverage report
         env:
           PYTHONDONTWRITEBYTECODE: '1'
         run: ${{ matrix.python }} DynaDocs.Tests/coverage/gap_check.py gate coverage --stack dotnet
+
+      - name: Print platform .NET coverage report
+        if: always()
+        run: ${{ matrix.python }} DynaDocs.Tests/coverage/report.py DynaDocs.Tests/coverage/results/adapters/dotnet-coverage.json
 
       # A rerun of failed jobs reruns only the failed leg, so each artifact names the attempt that made it.
       - name: Stamp platform .NET coverage artifact identity
@@ -1003,8 +1015,16 @@ jobs:
       - name: Test
         run: pnpm -C viewer run test
 
-      - name: Coverage
+      - name: Coverage report
         run: pnpm -C viewer run coverage
+
+      - name: Upload viewer coverage report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: viewer-coverage
+          path: viewer/coverage
+          if-no-files-found: error
 
       - name: Build
         run: pnpm -C viewer run build

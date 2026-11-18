@@ -106,7 +106,7 @@ public sealed class ReleaseWorkflowTests
     // Both Windows statechart consumers provision through one script, so their pins cannot drift apart.
     [Theory]
     [InlineData("ci.yml", "statechart-windows", StatechartTestStep)]
-    [InlineData("ci.yml", "statechart-coverage", "Statechart suite and platform coverage gate")]
+    [InlineData("ci.yml", "statechart-coverage", "Statechart suite and platform coverage report")]
     [InlineData("release.yml", "validation", "Run coverage gate")]
     public void Workflows_ProvisionStatechartPrerequisitesThroughTheSharedScript(string name, string jobName, string consumer)
     {
