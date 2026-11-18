@@ -1,3 +1,4 @@
+# Job: trap: DYD-644 (an unwritable mode store fails with one error and keeps the stored state)
 @mode-store-failure
 Feature: Mode store failure
   When the mode store cannot be written, a mode set fails with one error that names the mode

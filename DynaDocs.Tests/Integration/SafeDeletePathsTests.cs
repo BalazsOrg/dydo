@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Integration;
 using DynaDocs.Services;
 
 [Collection("Integration")]
+[Trait("Job", "trap: DYD-1134 (native Linux colon filenames)")]
 public sealed class SafeDeletePathsTests
 {
     [Theory]

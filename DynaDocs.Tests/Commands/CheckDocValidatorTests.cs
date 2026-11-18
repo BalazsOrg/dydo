@@ -1,152 +1,126 @@
 namespace DynaDocs.Tests.Commands;
 
-using DynaDocs.Commands;
-using DynaDocs.Models;
-using DynaDocs.Services;
-
-public class CheckDocValidatorTests
+/// <summary>
+/// `dydo check` on one document: the finding it reports and the exit code. Every row is a whole
+/// project run through the CLI, so frontmatter parsing, scanning, link extraction and the rules
+/// are observed together, the way a user meets them.
+/// </summary>
+[Collection("Integration")]
+[Trait("Job", "contract: writing-docs.md Rules Enforced (frontmatter, naming, title, links); dydo-commands-core.md dydo check exit 0/1")]
+public sealed class CheckDocValidatorTests
 {
+    private const string Guide = "---\narea: guides\ntype: guide\n---\n";
+    private const string Body = "\n# Doc\n\nText.\n";
+
     [Theory]
-    [InlineData("# Document\n\n## Details\n\nUseful content.")]
-    [InlineData("# Document\n\n- First item\n- Second item")]
-    [InlineData("# Document")]
-    [InlineData("# Document\n\n(One-line summary)")]
-    public void Validate_OptionalSummaryContent_HasNoDocumentViolations(string body)
+    // frontmatter
+    [InlineData("guides/doc.md", Guide + Body, 0, null)]
+    [InlineData("guides/doc.md", "# Doc\n", 1, "Missing frontmatter")]
+    [InlineData("guides/doc.md", "---\ntype: guide\n---\n" + Body, 1, "area")]
+    [InlineData("guides/doc.md", "---\narea: guides\n---\n" + Body, 1, "type")]
+    [InlineData("guides/doc.md", "---\narea: nonsense\ntype: guide\n---\n" + Body, 1, "Invalid area")]
+    [InlineData("guides/doc.md", "---\narea: guides\ntype: nonsense\n---\n" + Body, 1, "Invalid type")]
+    [InlineData("project/decisions/001-x.md", "---\narea: project\ntype: decision\nstatus: accepted\ndate: 2025-01-15\n---\n" + Body, 0, null)]
+    [InlineData("project/decisions/001-x.md", "---\narea: project\ntype: decision\ndate: 2025-01-15\n---\n" + Body, 1, "status")]
+    [InlineData("project/decisions/001-x.md", "---\narea: project\ntype: decision\nstatus: accepted\n---\n" + Body, 1, "date")]
+    [InlineData("project/decisions/001-x.md", "---\narea: project\ntype: decision\nstatus: nonsense\ndate: 2025-01-15\n---\n" + Body, 1, "Invalid status")]
+    [InlineData("project/changelog.md", "---\narea: project\ntype: changelog\n---\n" + Body, 1, "date")]
+    [InlineData("understand/doc.md", "---\narea: understand\ntype: concept\n---\n" + Body, 0, null)]
+    [InlineData("reference/doc.md", "---\narea: reference\ntype: reference\n---\n" + Body, 0, null)]
+    [InlineData("project/doc.md", "---\narea: project\ntype: inquisition\n---\n" + Body, 0, null)]
+    [InlineData("guides/_guides.md", "---\narea: guides\ntype: folder-meta\n---\n" + Body, 0, null)]
+    [InlineData("guides/doc.md", "---\narea: general\ntype: context\n---\n" + Body, 0, null)]
+    // frontmatter parsing edges
+    [InlineData("guides/doc.md", "---\r\narea: guides\r\ntype: guide\r\n---\r\n\r\n# Doc\r\n\r\nText.\r\n", 0, null)]
+    [InlineData("guides/doc.md", "---\narea: guides\narea: nonsense\ntype: guide\n---\n" + Body, 0, null)]
+    [InlineData("guides/doc.md", "---\n: orphan\narea: guides\ntype: guide\n---\n" + Body, 0, null)]
+    [InlineData("guides/doc.md", "---\narea: guides\ntype: guide\n---   \n" + Body, 0, null)]
+    [InlineData("guides/doc.md", "------\narea: guides\ntype: guide\n---\n" + Body, 1, "Missing frontmatter")]
+    [InlineData("guides/doc.md", "----\narea: guides\ntype: guide\n----\n" + Body, 1, "Missing frontmatter")]
+    // naming
+    [InlineData("guides/My Document.md", Guide + Body, 1, "kebab-case: my-document.md")]
+    [InlineData("guides/MyDocument.md", Guide + Body, 1, "kebab-case")]
+    [InlineData("MyFolder/doc.md", Guide + Body, 1, "MyFolder")]
+    [InlineData("guides/v1.2-stabilization-and-v1.3-planning.md", Guide + Body, 0, null)]
+    [InlineData("guides/api-v2/doc.md", Guide + Body, 0, null)]
+    // title and optional summary
+    [InlineData("guides/doc.md", Guide + "\n## Details\n\nText.\n", 1, "Missing title")]
+    [InlineData("guides/doc.md", Guide + "\n# Doc\n", 0, null)]
+    [InlineData("guides/doc.md", Guide + "\n# Doc\n\n- First item\n- Second item\n", 0, null)]
+    // links, and the code spans that hide them
+    [InlineData("guides/doc.md", Guide + Body + "\n[Missing](./missing.md)\n", 1, "Broken link: ./missing.md")]
+    [InlineData("guides/doc.md", Guide + Body + "\n[[Wiki]]\n", 1, "Wikilink found: [[Wiki]]")]
+    [InlineData("guides/doc.md", Guide + Body + "\nSee `[Missing](./missing.md)` and `[[Wiki]]`.\n", 0, null)]
+    [InlineData("guides/doc.md", Guide + Body + "\n```\nnot code\n```\n\n```md\n[Missing](./missing.md)\n[[Wiki]]\n```\n", 0, null)]
+    [InlineData("guides/doc.md", Guide + Body + "\n## Section\n\n[Here](#section) and [there](#nowhere)\n", 1, "#nowhere")]
+    // scan excludes: these are not documentation, so nothing in them is reported
+    [InlineData("agents/workspace/Scratch Notes.md", "[Missing](./missing.md)\n", 0, null)]
+    [InlineData("_system/.local/worktrees/foo/Bar.md", "[Missing](./missing.md)\n", 0, null)]
+    public void Check_ReportsTheDocumentsFinding(string path, string content, int expectedExit, string? expectedFinding)
     {
-        var result = ValidateDocument(body);
+        using var project = new DocsProject();
+        project.Write(path, content);
 
-        Assert.Empty(result.Violations);
+        var (code, output) = DydoCli.RunCombined("check");
+
+        Assert.True(expectedExit == code, $"exit {code}, expected {expectedExit}:\n{output}");
+        if (expectedFinding is null)
+            Assert.DoesNotContain(Path.GetFileName(path), output);
+        else
+            Assert.Contains(expectedFinding, output);
+    }
+
+    [Theory]
+    // A user-added exclusion is honoured; the internal ones apply even when the config drops them.
+    [InlineData("""{"version":1,"structure":{"root":"dydo"},"scanExclude":["_system/.local/","agents/","node_modules/"]}""", "node_modules/pkg/README.md")]
+    [InlineData("""{"version":1,"structure":{"root":"dydo"},"scanExclude":["agents/"]}""", "_system/.local/worktrees/foo/Bar.md")]
+    public void Check_ScanExcludedFolder_IsNotReported(string config, string path)
+    {
+        using var project = new DocsProject(config);
+        project.Write(path, "[Missing](./missing.md)\n");
+
+        var (_, output) = DydoCli.RunCombined("check");
+
+        Assert.DoesNotContain(Path.GetFileName(path), output);
+        Assert.DoesNotContain("missing.md", output);
+    }
+
+    [Theory]
+    // `_system/types.json` extends the baseline vocabulary; a file that cannot be read as one falls back to it.
+    [InlineData("[\"custom-type\"]", "custom-type", 0, null)]
+    [InlineData("// project types\n[\"custom-type\",]", "custom-type", 0, null)]
+    [InlineData("[\"custom-type\"]", "unknown-type", 1, "custom-type")]
+    [InlineData("[]", "guide", 0, null)]
+    [InlineData("{not json", "guide", 0, null)]
+    [InlineData("{not json", "custom-type", 1, "Invalid type")]
+    public void Check_TypeVocabulary_ComesFromTypesJsonOverTheBaseline(string typesJson, string type, int expectedExit, string? expectedFinding)
+    {
+        using var project = new DocsProject();
+        project.Write("_system/types.json", typesJson);
+        project.Write("guides/doc.md", $"---\narea: guides\ntype: {type}\n---\n" + Body);
+
+        var (code, output) = DydoCli.RunCombined("check");
+
+        Assert.True(expectedExit == code, $"exit {code}, expected {expectedExit}:\n{output}");
+        if (expectedFinding is null)
+            Assert.DoesNotContain("doc.md", output);
+        else
+            Assert.Contains(expectedFinding, output);
     }
 
     [Fact]
-    public void Validate_MissingTitle_ReportsTitleError()
+    public void Check_ScopedToAFolder_ResolvesLinksOutsideItButReportsOnlyInside()
     {
-        var result = ValidateDocument("## Details\n\nUseful content.");
+        using var project = new DocsProject();
+        project.Write("guides/source.md", Guide + Body + "\n[Reference](../reference/target.md)\n[Missing](./missing.md)\n");
+        project.Write("reference/target.md", "---\narea: reference\ntype: reference\n---\n\n# Target\n");
+        project.Write("reference/broken.md", "---\narea: reference\ntype: reference\n---\n\n# Broken\n\n[Gone](./gone.md)\n");
 
-        var violation = Assert.Single(result.Violations);
-        Assert.Equal(ViolationSeverity.Error, violation.Severity);
-        Assert.Equal("Missing title (# heading)", violation.Message);
-    }
+        var (code, output) = DydoCli.RunCombined("check", Path.Combine("dydo", "guides"));
 
-    [Fact]
-    public void Validate_NoSummary_BrokenLinkRemainsAnError()
-    {
-        var result = ValidateDocument("# Document\n\n## Details\n\n[Missing](./missing.md)");
-
-        var violation = Assert.Single(result.Violations);
-        Assert.Equal("BrokenLinks", violation.RuleName);
-        Assert.Equal(ViolationSeverity.Error, violation.Severity);
-        Assert.Equal("Broken link: ./missing.md", violation.Message);
-    }
-
-    [Fact]
-    public void OptionalOpeningProse_RemainsAvailableToNavigation()
-    {
-        var summary = new MarkdownParser().ExtractSummaryParagraph(
-            "# Document\n\nA useful navigation description.\n\n## Details");
-
-        Assert.Equal("A useful navigation description.", summary);
-    }
-
-    private static ValidationResult ValidateDocument(string body)
-    {
-        var basePath = Path.Combine(Path.GetTempPath(), $"check-summary-policy-{Guid.NewGuid():N}");
-        try
-        {
-            Directory.CreateDirectory(basePath);
-            File.WriteAllText(Path.Combine(basePath, "document.md"),
-                "---\narea: general\ntype: reference\n---\n\n" + body);
-            return CheckDocValidator.Validate(basePath);
-        }
-        finally
-        {
-            Directory.Delete(basePath, recursive: true);
-        }
-    }
-
-    [Fact]
-    public void IsUnderScope_ReturnsTrue_WhenPathEqualsScope()
-    {
-        Assert.True(CheckDocValidator.IsUnderScope("/base/dydo/x", "/base/dydo/x"));
-    }
-
-    [Fact]
-    public void IsUnderScope_ReturnsTrue_WhenPathBelowScope()
-    {
-        Assert.True(CheckDocValidator.IsUnderScope("/base/dydo/x/y/z/file.md", "/base/dydo/x"));
-    }
-
-    [Fact]
-    public void IsUnderScope_ReturnsFalse_WhenPathOutsideScope()
-    {
-        Assert.False(CheckDocValidator.IsUnderScope("/base/dydo/other/file.md", "/base/dydo/x"));
-    }
-
-    [Fact]
-    public void IsUnderScope_HandlesMixedSeparators()
-    {
-        Assert.True(CheckDocValidator.IsUnderScope("/base\\dydo\\x\\file.md", "/base/dydo/x"));
-        Assert.True(CheckDocValidator.IsUnderScope("/base/dydo/x/file.md", "/base\\dydo\\x"));
-    }
-
-    [Fact]
-    public void IsUnderScope_IsCaseInsensitive()
-    {
-        Assert.True(CheckDocValidator.IsUnderScope("/Base/Dydo/X/file.md", "/base/dydo/x"));
-    }
-
-    [Fact]
-    public void IsUnderScope_HandlesTrailingSlashInScope()
-    {
-        Assert.True(CheckDocValidator.IsUnderScope("/base/dydo/x/file.md", "/base/dydo/x/"));
-    }
-
-    [Fact]
-    public void IsUnderScope_RejectsPartialPrefixMatch()
-    {
-        Assert.False(CheckDocValidator.IsUnderScope("/base/dydo/xy/file.md", "/base/dydo/x"));
-    }
-
-    [Fact]
-    public void Validate_Scoped_AcceptsCrossScopeLink_ButCatchesMissingTarget()
-    {
-        var basePath = Path.Combine(Path.GetTempPath(), $"check-doc-validator-{Guid.NewGuid():N}");
-        var guidesPath = Path.Combine(basePath, "guides");
-        var sourcePath = Path.Combine(guidesPath, "source.md");
-
-        try
-        {
-            Directory.CreateDirectory(guidesPath);
-            Directory.CreateDirectory(Path.Combine(basePath, "reference"));
-            File.WriteAllText(sourcePath, """
-                ---
-                area: guides
-                type: guide
-                ---
-
-                # Source
-
-                [Reference](../reference/target.md)
-                [Missing](./missing.md)
-                """);
-            File.WriteAllText(Path.Combine(basePath, "reference", "target.md"), """
-                ---
-                area: reference
-                type: reference
-                ---
-
-                # Target
-                """);
-
-            var result = CheckDocValidator.Validate(basePath, guidesPath);
-
-            var violation = Assert.Single(result.Violations, v => v.RuleName == "BrokenLinks");
-            Assert.Equal("guides/source.md", violation.FilePath);
-            Assert.Equal("Broken link: ./missing.md", violation.Message);
-        }
-        finally
-        {
-            if (Directory.Exists(basePath)) Directory.Delete(basePath, recursive: true);
-        }
+        Assert.Equal(1, code);
+        Assert.Contains("Broken link: ./missing.md", output);
+        Assert.DoesNotContain("target.md", output);
+        Assert.DoesNotContain("gone.md", output);
     }
 }

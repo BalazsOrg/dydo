@@ -7,6 +7,7 @@ using DynaDocs.Services;
 /// repository and silently never reach a scaffolded project. These tests bind the two together:
 /// the tree on disk and the tree inside the assembly must be the same set of names.
 /// </summary>
+[Trait("Job", "trap: DYD-218 (a Scaffold/ file silently missing from the embedded resources)")]
 public class ScaffoldTreeTests
 {
     [Fact]

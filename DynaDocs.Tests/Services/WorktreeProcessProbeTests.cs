@@ -2,6 +2,7 @@ namespace DynaDocs.Tests.Services;
 
 using DynaDocs.Services;
 
+[Trait("Job", "edge: DYD-362 (in-use worktree detection needs a held folder or a live process, which driving cannot stage)")]
 public sealed class WorktreeProcessProbeTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-probe-" + Guid.NewGuid().ToString("N")[..8]);

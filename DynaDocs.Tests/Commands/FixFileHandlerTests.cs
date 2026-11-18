@@ -1,216 +1,60 @@
 namespace DynaDocs.Tests.Commands;
 
-using DynaDocs.Commands;
-using DynaDocs.Models;
-using DynaDocs.Services;
-
-public class FixFileHandlerTests : IDisposable
+/// <summary>
+/// `dydo fix` repairs files on disk: a resolvable wikilink becomes a relative link and a
+/// non-kebab file is renamed. It never overwrites an existing file, never touches a document it
+/// only resolved against, and leaves a valid document's bytes alone.
+/// </summary>
+[Collection("Integration")]
+[Trait("Job", "trap: dydo fix rename onto an existing file loses it; contract: dydo-commands-core.md dydo fix (filename normalization, wikilink conversion)")]
+public sealed class FixFileHandlerTests
 {
-    private readonly string _testDir;
-
-    public FixFileHandlerTests()
-    {
-        _testDir = Path.Combine(Path.GetTempPath(), "dydo-fixfile-test-" + Guid.NewGuid().ToString("N")[..8]);
-        Directory.CreateDirectory(_testDir);
-    }
-
-    public void Dispose()
-    {
-        if (Directory.Exists(_testDir))
-            Directory.Delete(_testDir, true);
-    }
-
-    private DocFile CreateDocFile(string relativePath, string content, List<LinkInfo>? links = null)
-    {
-        var filePath = Path.Combine(_testDir, relativePath.Replace('/', Path.DirectorySeparatorChar));
-        Directory.CreateDirectory(Path.GetDirectoryName(filePath)!);
-        File.WriteAllText(filePath, content);
-        return new DocFile
-        {
-            FilePath = filePath,
-            RelativePath = relativePath,
-            FileName = Path.GetFileName(relativePath),
-            Content = content,
-            HasFrontmatter = true,
-            Links = links ?? []
-        };
-    }
-
-    #region FixWikilinks
+    private const string Guide = "---\narea: guides\ntype: guide\n---\n";
 
     [Fact]
-    public void FixWikilinks_ResolvableWikilink_ConvertsToMarkdownLink()
+    public void Fix_ConvertsResolvableWikilinks_AndLeavesTheTargetUntouched()
     {
-        var targetDoc = CreateDocFile("docs/target.md", "# Target");
-        var sourceContent = "See [[target]] for details.";
-        var sourceDoc = CreateDocFile("docs/source.md", sourceContent, [
-            new LinkInfo("[[target]]", "target", "target", null, LinkType.Wikilink, 1)
-        ]);
+        using var project = new DocsProject();
+        var target = project.Write("reference/target.md", "---\narea: reference\ntype: reference\n---\n\n# Target\n");
+        project.Write("guides/source.md", Guide + "\n# Source\n\nSee [[target]] and [[nowhere]].\n");
+        var targetBytes = File.ReadAllBytes(target);
 
-        var (converted, manualFixes) = FixFileHandler.FixWikilinks([sourceDoc, targetDoc], [sourceDoc, targetDoc]);
+        DydoCli.RunCombined("fix");
 
-        Assert.Equal(1, converted);
-        Assert.Empty(manualFixes);
-        var updatedContent = File.ReadAllText(sourceDoc.FilePath);
-        Assert.Contains("[target](./target.md)", updatedContent);
+        var source = project.Read("guides/source.md");
+        Assert.Contains("[target](../reference/target.md)", source);
+        Assert.Contains("[[nowhere]]", source);
+        Assert.Equal(targetBytes, File.ReadAllBytes(target));
     }
 
     [Fact]
-    public void FixWikilinks_UnresolvableWikilink_AddsToManualFixes()
+    public void Fix_RenamesNonKebabFiles_ButNeverOntoAnExistingFile()
     {
-        var sourceContent = "See [[nonexistent]] for details.";
-        var sourceDoc = CreateDocFile("docs/source.md", sourceContent, [
-            new LinkInfo("[[nonexistent]]", "nonexistent", "nonexistent", null, LinkType.Wikilink, 1)
-        ]);
+        using var project = new DocsProject();
+        project.Write("guides/My Task.md", Guide + "\n# First\n");
+        project.Write("guides/my-task.md", Guide + "\n# Existing\n");
+        project.Write("guides/Other Thing.md", Guide + "\n# Other\n");
 
-        var (converted, manualFixes) = FixFileHandler.FixWikilinks([sourceDoc], [sourceDoc]);
+        DydoCli.RunCombined("fix");
 
-        Assert.Equal(0, converted);
-        Assert.Single(manualFixes);
-        Assert.Contains("Ambiguous wikilink", manualFixes[0]);
-    }
-
-    [Fact]
-    public void FixWikilinks_NoWikilinks_ReturnsZero()
-    {
-        var doc = CreateDocFile("docs/plain.md", "No wikilinks here.", [
-            new LinkInfo("[link](other.md)", "link", "other.md", null, LinkType.Markdown, 1)
-        ]);
-
-        var (converted, manualFixes) = FixFileHandler.FixWikilinks([doc], [doc]);
-
-        Assert.Equal(0, converted);
-        Assert.Empty(manualFixes);
-    }
-
-    [Fact]
-    public void FixWikilinks_MultipleWikilinks_MixedResolution()
-    {
-        var targetDoc = CreateDocFile("docs/found.md", "# Found");
-        var sourceContent = "See [[found]] and [[missing]].";
-        var sourceDoc = CreateDocFile("docs/source.md", sourceContent, [
-            new LinkInfo("[[found]]", "found", "found", null, LinkType.Wikilink, 1),
-            new LinkInfo("[[missing]]", "missing", "missing", null, LinkType.Wikilink, 1)
-        ]);
-
-        var (converted, manualFixes) = FixFileHandler.FixWikilinks([sourceDoc, targetDoc], [sourceDoc, targetDoc]);
-
-        Assert.Equal(1, converted);
-        Assert.Single(manualFixes);
-    }
-
-    [Fact]
-    public void FixWikilinks_OnlyMutationTargetIsChangedWhileResolvingAgainstCorpus()
-    {
-        var resolutionDoc = CreateDocFile("reference/target.md", "# Target");
-        var sourceContent = "See [[target]].";
-        var sourceDoc = CreateDocFile("guides/source.md", sourceContent, [
-            new LinkInfo("[[target]]", "target", "target", null, LinkType.Wikilink, 1)
-        ]);
-        var resolutionBytes = File.ReadAllBytes(resolutionDoc.FilePath);
-
-        var (converted, manualFixes) = FixFileHandler.FixWikilinks([sourceDoc], [sourceDoc, resolutionDoc]);
-
-        Assert.Equal(1, converted);
-        Assert.Empty(manualFixes);
-        Assert.Contains("[target](../reference/target.md)", File.ReadAllText(sourceDoc.FilePath));
-        Assert.Equal(resolutionBytes, File.ReadAllBytes(resolutionDoc.FilePath));
-    }
-
-    #endregion
-
-    #region FixNaming
-
-    [Fact]
-    public void FixNaming_NonKebabName_RenamesFile()
-    {
-        var doc = CreateDocFile("docs/My Task.md", "# Task");
-
-        var (renamed, conflicts) = FixFileHandler.FixNaming([doc]);
-
-        Assert.Equal(1, renamed);
-        Assert.Empty(conflicts);
-        Assert.False(File.Exists(doc.FilePath));
-        Assert.True(File.Exists(Path.Combine(_testDir, "docs", "my-task.md")));
-    }
-
-    [Fact]
-    public void FixNaming_TargetExists_RecordsConflictAndContinues()
-    {
-        var colliding = CreateDocFile("docs/My Task.md", "# First");
-        var existing = CreateDocFile("docs/my-task.md", "# Existing");
-        var otherNonKebab = CreateDocFile("docs/Other Thing.md", "# Other");
-
-        var (renamed, conflicts) = FixFileHandler.FixNaming([colliding, existing, otherNonKebab]);
-
-        Assert.Equal(1, renamed);
-        Assert.Single(conflicts);
-        Assert.Contains("docs/My Task.md", conflicts[0]);
-        Assert.Contains("my-task.md already exists", conflicts[0]);
-        Assert.True(File.Exists(colliding.FilePath));
-        Assert.True(File.Exists(Path.Combine(_testDir, "docs", "other-thing.md")));
-    }
-
-    #endregion
-
-    #region FindManualFixes
-
-    [Fact]
-    public void FindManualFixes_MissingFrontmatter_ReportsFixNeeded()
-    {
-        var doc = CreateDocFile("docs/no-fm.md", "No frontmatter");
-        doc.HasFrontmatter = false;
-
-        var fixes = FixFileHandler.FindManualFixes([doc]);
-
-        Assert.Single(fixes);
-        Assert.Contains("Add frontmatter", fixes[0]);
-    }
-
-    [Fact]
-    public void FindManualFixes_MissingSummary_DoesNotRequestRepair()
-    {
-        var doc = CreateDocFile("docs/no-summary.md", "---\narea: test\n---\n");
-        doc.HasFrontmatter = true;
-        doc.SummaryParagraph = "";
-
-        var fixes = FixFileHandler.FindManualFixes([doc]);
-
-        Assert.Empty(fixes);
+        Assert.Equal(Guide + "\n# First\n", project.Read("guides/My Task.md"));
+        Assert.Equal(Guide + "\n# Existing\n", project.Read("guides/my-task.md"));
+        Assert.False(File.Exists(project.DocPath("guides/Other Thing.md")));
+        Assert.Equal(Guide + "\n# Other\n", project.Read("guides/other-thing.md"));
     }
 
     [Theory]
-    [InlineData("## Details\n\nUseful content.")]
-    [InlineData("A useful navigation description.")]
-    public void Fix_OptionalOpeningProse_PreservesDocumentBytes(string body)
+    [InlineData("## Details\n\nUseful content.\n")]
+    [InlineData("A useful navigation description.\n")]
+    public void Fix_ValidDocument_KeepsItsBytes(string body)
     {
-        var created = CreateDocFile("docs/valid.md",
-            "---\narea: general\ntype: reference\n---\n\n# Document\n\n" + body);
-        var doc = new MarkdownParser().Parse(created.FilePath, _testDir);
-        var originalBytes = File.ReadAllBytes(doc.FilePath);
+        using var project = new DocsProject();
+        var path = project.Write("guides/valid.md", Guide + "\n# Document\n\n" + body);
+        var before = File.ReadAllBytes(path);
 
-        var (renamed, conflicts) = FixFileHandler.FixNaming([doc]);
-        var (converted, linkFixes) = FixFileHandler.FixWikilinks([doc], [doc]);
-        var manualFixes = FixFileHandler.FindManualFixes([doc]);
+        var (code, output) = DydoCli.RunCombined("fix");
 
-        Assert.Equal(0, renamed);
-        Assert.Empty(conflicts);
-        Assert.Equal(0, converted);
-        Assert.Empty(linkFixes);
-        Assert.Empty(manualFixes);
-        Assert.Equal(originalBytes, File.ReadAllBytes(doc.FilePath));
+        Assert.True(code == 0, $"exit {code}:\n{output}");
+        Assert.Equal(before, File.ReadAllBytes(path));
     }
-
-    [Fact]
-    public void FindManualFixes_AgentsPath_Skipped()
-    {
-        var doc = CreateDocFile("agents/Grace/workflow.md", "no frontmatter");
-        doc.HasFrontmatter = false;
-
-        var fixes = FixFileHandler.FindManualFixes([doc]);
-
-        Assert.Empty(fixes);
-    }
-
-    #endregion
 }

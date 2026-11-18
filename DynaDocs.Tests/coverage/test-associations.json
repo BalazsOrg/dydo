@@ -132,7 +132,7 @@
     {
       "module": "Commands/CompleteCommand.cs",
       "tests": [
-        "DynaDocs.Tests/Commands/CompleteCommandTests.cs"
+        "DynaDocs.Tests/Commands/CompletionsCommandTests.cs"
       ]
     },
     {
@@ -311,7 +311,7 @@
     {
       "module": "Rules/FrontmatterRule.cs",
       "tests": [
-        "DynaDocs.Tests/Rules/FrontmatterRuleTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -323,7 +323,7 @@
     {
       "module": "Rules/NamingRule.cs",
       "tests": [
-        "DynaDocs.Tests/Rules/NamingRuleTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -393,7 +393,7 @@
     {
       "module": "Services/DocScanner.cs",
       "tests": [
-        "DynaDocs.Tests/Services/DocScannerTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -405,7 +405,7 @@
     {
       "module": "Services/FrontmatterTypesService.cs",
       "tests": [
-        "DynaDocs.Tests/Services/FrontmatterTypesServiceTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -417,7 +417,7 @@
     {
       "module": "Services/MarkdownParser.cs",
       "tests": [
-        "DynaDocs.Tests/Services/MarkdownParserTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -442,14 +442,14 @@
     {
       "module": "Services/ValidationService.cs",
       "tests": [
-        "DynaDocs.Tests/Services/ValidationServiceTests.cs"
+        "DynaDocs.Tests/Commands/ValidateCommandTests.cs"
       ]
     },
     {
       "module": "Services/ClaudeGuardWiring.cs",
       "tests": [
         "DynaDocs.Tests/Integration/ClaudeGuardWiringTests.cs",
-        "DynaDocs.Tests/Services/ValidationServiceTests.cs"
+        "DynaDocs.Tests/Commands/ValidateCommandTests.cs"
       ]
     },
     {
@@ -468,7 +468,7 @@
     {
       "module": "Utils/FrontmatterParser.cs",
       "tests": [
-        "DynaDocs.Tests/Utils/FrontmatterParserTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {

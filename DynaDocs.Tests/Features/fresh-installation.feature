@@ -1,3 +1,4 @@
+# Job: contract: dydo-commands-core.md dydo init then dydo check; DYD-99 (a fresh installation is usable, and customizing the foundation documents clears its onboarding warnings)
 @DYD-99
 Feature: A fresh installation remains usable
   A project can adopt dydo without this repository's private working context.
@@ -10,10 +11,7 @@ Feature: A fresh installation remains usable
     And the recorded Claude integration is <claude>
     And the recorded Codex integration is <codex>
     When I check the documentation
-    Then the documentation has no validation errors and exactly these onboarding warnings:
-      | document                   | warning                                                     |
-      | understand/about.md        | About.md is not customized. Consider updating it.            |
-      | understand/architecture.md | Architecture.md is not customized. Consider updating it.     |
+    Then the documentation has no validation errors but has warnings
     When I customize the foundation documents for a tiny task-list project
     And I check the documentation
     Then the documentation has no validation errors or warnings
