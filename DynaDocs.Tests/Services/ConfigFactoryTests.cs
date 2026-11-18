@@ -1,366 +1,69 @@
 namespace DynaDocs.Tests.Services;
 
 using System.Text.Json;
-using System.Text.RegularExpressions;
-using DynaDocs.Models;
-using DynaDocs.Serialization;
-using DynaDocs.Services;
+using DynaDocs.Tests.Integration;
 
-public class ConfigFactoryTests
+/// <summary>
+/// The default nudges an initialised project gets, as the guard hook applies them to a Bash call:
+/// the review-block nudge warns on a `gh pr create` that carries no review block, however the
+/// command is prefixed (DYD-736), and the poll-loop nudge warns on an open-ended `until` loop.
+/// Bounded polls and words that merely contain "git" pass.
+/// </summary>
+[Collection("Integration")]
+[Trait("Job", "trap: DYD-736 (prefixed gh pr create slipped past the review-block nudge); trap: issue 0177 (open-ended until-loops crashed agents)")]
+public sealed class ConfigFactoryTests : IntegrationTestBase
 {
-    [Fact]
-    public void CreateDefault_SetsVersion1()
-    {
-        var config = ConfigFactory.CreateDefault();
+    private const string NoReviewBlock = "carries no review block";
+    private const string PollLoop = "poll-loop";
 
-        Assert.Equal(1, config.Version);
-    }
-
-    [Fact]
-    public void CreateDefault_UsesDefaultRoot()
-    {
-        var config = ConfigFactory.CreateDefault();
-
-        Assert.Equal("dydo", config.Structure.Root);
-    }
-
-    [Fact]
-    public void CreateDefault_HasNoLocalWorkPathConfiguration()
-    {
-        var properties = typeof(StructureConfig).GetProperties().Select(p => p.Name).ToList();
-
-        Assert.Equal(["Root"], properties);
-    }
-
-    [Fact]
-    public void DefaultNudges_DotnetRunPatternExcludesRetiredWorkCommands()
-    {
-        var nudge = ConfigFactory.DefaultNudges.Single(n => n.Pattern.Contains("dotnet\\s+run"));
-
-        Assert.DoesNotContain("task", nudge.Pattern);
-        Assert.DoesNotContain("issue", nudge.Pattern);
-        Assert.DoesNotContain("review", nudge.Pattern);
-        Assert.DoesNotContain("model", nudge.Pattern);
-        Assert.DoesNotContain("inquisition", nudge.Pattern);
-
-        // The alternation lists exactly the commands Program.cs registers - nothing retired.
-        Assert.Equal(
-            ["check", "fix", "index", "init", "graph", "guard",
-                "completions", "complete", "validate", "map", "survey", "version", "help"],
-            Regex.Match(nudge.Pattern, @"\(\?:([\w|]+)\)\\b").Groups[1].Value.Split('|'));
-    }
-
-    [Fact]
-    public void CreateDefault_HasNoModelPolicy()
-    {
-        var json = JsonSerializer.Serialize(ConfigFactory.CreateDefault(), DydoConfigJsonContext.Default.DydoConfig);
-
-        Assert.DoesNotContain("\"models\"", json);
-        Assert.DoesNotContain("Models", typeof(DydoConfig).GetProperties().Select(property => property.Name));
-    }
-
-    [Fact]
-    public void CreateDefault_IncludesDefaultNudges()
-    {
-        var config = ConfigFactory.CreateDefault();
-
-        Assert.NotEmpty(config.Nudges);
-        Assert.Equal(ConfigFactory.DefaultNudges.Count, config.Nudges.Count);
-        Assert.All(config.Nudges, n => Assert.False(string.IsNullOrEmpty(n.Pattern)));
-    }
-
-    [Fact]
-    public void CreateDefault_NudgesAreDeepCopied()
-    {
-        var config = ConfigFactory.CreateDefault();
-        var originalMessage = ConfigFactory.DefaultNudges[0].Message;
-
-        config.Nudges[0].Message = "mutated";
-
-        Assert.Equal(originalMessage, ConfigFactory.DefaultNudges[0].Message);
-    }
-
-    [Fact]
-    public void CreateDefault_SerializesNoAudienceScopedOrRetiredNudge()
-    {
-        // DR 045 retired the managers workflow (run-sprint) and, with it, the only audience-scoped
-        // shipped nudge.
-        var json = JsonSerializer.Serialize(ConfigFactory.CreateDefault(), DydoConfigJsonContext.Default.DydoConfig);
-
-        Assert.DoesNotContain("\"audience\"", json);
-        Assert.DoesNotContain("run-sprint", json);
-    }
-
-    [Fact]
-    public void NudgeAudience_OmissionDefaultsToAllAndNormalizesOutput()
-    {
-        var omitted = JsonSerializer.Deserialize("{}", DydoConfigJsonContext.Default.NudgeConfig)!;
-        var configured = new NudgeConfig { Audience = "WORKER" };
-        var json = JsonSerializer.Serialize(configured, DydoConfigJsonContext.Default.NudgeConfig);
-
-        Assert.Equal("all", omitted.Audience);
-        Assert.Contains("\"audience\": \"worker\"", json);
-    }
-
-    [Fact]
-    public void EnsureDefaultNudges_AddsToEmptyList()
-    {
-        var config = new DydoConfig();
-
-        var added = ConfigFactory.EnsureDefaultNudges(config);
-
-        Assert.Equal(ConfigFactory.DefaultNudges.Count, added);
-        Assert.Equal(ConfigFactory.DefaultNudges.Count, config.Nudges.Count);
-    }
-
-    [Fact]
-    public void EnsureDefaultNudges_SkipsAlreadyPresent()
-    {
-        var config = ConfigFactory.CreateDefault();
-        var originalCount = config.Nudges.Count;
-
-        var added = ConfigFactory.EnsureDefaultNudges(config);
-
-        Assert.Equal(0, added);
-        Assert.Equal(originalCount, config.Nudges.Count);
-    }
-
-    [Fact]
-    public void EnsureDefaultNudges_PreservesCustomNudges()
-    {
-        var config = new DydoConfig
-        {
-            Nudges = [new NudgeConfig { Pattern = "custom-pattern", Message = "Custom", Severity = "block" }]
-        };
-
-        var added = ConfigFactory.EnsureDefaultNudges(config);
-
-        Assert.Equal(ConfigFactory.DefaultNudges.Count, added);
-        Assert.Equal(ConfigFactory.DefaultNudges.Count + 1, config.Nudges.Count);
-        Assert.Contains(config.Nudges, n => n.Pattern == "custom-pattern");
-    }
-
-    [Fact]
-    public void EnsureDefaultNudges_PreservesCustomNudgeAudience()
-    {
-        var config = new DydoConfig
-        {
-            Nudges = [new NudgeConfig { Pattern = "custom-pattern", Message = "Custom", Audience = "worker" }]
-        };
-
-        ConfigFactory.EnsureDefaultNudges(config);
-
-        Assert.Equal("worker", config.Nudges.Single(n => n.Pattern == "custom-pattern").Audience);
-    }
-
-    [Fact]
-    public void DefaultNudges_ReviewBlockNudge_WarnsOnlyWhenThePrCarriesNoBlock()
-    {
-        var nudge = Assert.Single(ConfigFactory.DefaultNudges, n => n.Pattern.Contains(@"pr\s+create"));
-        var regex = new Regex(nudge.Pattern, RegexOptions.IgnoreCase);
-
-        Assert.Equal("warn", nudge.Severity);
-        Assert.Matches(regex, "gh pr create --title x --body 'ships the fix'");
-        Assert.DoesNotMatch(regex, "gh pr create --body '## Independent review\nverdict: PASS'");
-    }
-
-    // DYD-736: the current pattern reads past leading assignments and env; the pre-DYD-736 one did not.
     [Theory]
-    [InlineData("FOO=1 gh pr create --fill")]
-    [InlineData("env gh pr create --fill")]
-    [InlineData("env -i -u GH_TOKEN -- GH_REPO=acme/lc gh pr create --fill")]
-    [InlineData("GH_TOKEN=$(printf token) gh pr create --fill")]
-    [InlineData("TITLE=release\\ notes gh pr create --fill")]
-    public void ReviewBlockPattern_PrefixedPrCreate_MatchesWhereThePreDyd736PatternDidNot(string command)
+    [InlineData("gh pr create --title x --body 'ships the fix'", NoReviewBlock)]
+    [InlineData("FOO=1 gh pr create --fill", NoReviewBlock)]
+    [InlineData("env gh pr create --fill", NoReviewBlock)]
+    [InlineData("env -i -u GH_TOKEN -- GH_REPO=acme/lc gh pr create --fill", NoReviewBlock)]
+    [InlineData("TITLE=release\\ notes gh pr create --fill", NoReviewBlock)]
+    [InlineData("until [ -s /tmp/claude/foo ]; do sleep 1; done", PollLoop)]
+    [InlineData("until  [ -e foo ]; do :; done", PollLoop)]
+    [InlineData("for i in {1..30}; do test -f x; sleep 1; done", null)]
+    [InlineData("while [ ! -f x ]; do sleep 1; done", null)]
+    [InlineData("gh run watch 12345", null)]
+    [InlineData("digit worktree add foo", null)]
+    public async Task Guard_DefaultNudges_WarnOnTheCommand(string command, string? warning)
     {
-        Assert.Matches(new Regex(ConfigFactory.ReviewBlockPattern, RegexOptions.IgnoreCase), command);
-        Assert.DoesNotMatch(new Regex(ConfigFactory.PreDyd736ReviewBlockPattern, RegexOptions.IgnoreCase), command);
+        await InitProjectAsync("none");
+
+        var result = await GuardWithStdinAsync(BashHook(command));
+
+        AssertVerdict(result, warning);
     }
 
-    // Round 1 N2: each env option word has one reading, so a long chain of options taking a value
-    // is read in linear time, not by trying every split. The engine's match budget catches a regression.
+    // Each env option word has one reading, so a long option chain stays inside the guard's match budget.
+    [Trait("Job", "trap: Round 1 N2 regex budget")]
     [Theory]
-    [InlineData("env {0}x")]
-    [InlineData("env {0}gh pr create --fill")]
-    [InlineData("FOO=$(a {0}")]
-    public void ReviewBlockPattern_LongEnvOptionChain_IsReadWithinTheEngineBudget(string template)
+    [InlineData("env {0}x", null)]
+    [InlineData("env {0}gh pr create --fill", NoReviewBlock)]
+    public async Task Guard_LongEnvOptionChain_IsReadWithinTheMatchBudget(string template, string? warning)
     {
+        await InitProjectAsync("none");
         var command = string.Format(template, string.Concat(Enumerable.Repeat("-u ", 400)));
-        var regex = new Regex(ConfigFactory.ReviewBlockPattern, RegexOptions.IgnoreCase, TimeSpan.FromSeconds(2));
 
-        var exception = Record.Exception(() => regex.IsMatch(command));
+        var result = await GuardWithStdinAsync(BashHook(command));
 
-        Assert.Null(exception);
+        AssertVerdict(result, warning);
     }
 
-
-
-    [Theory]
-    [InlineData("digit worktree add foo")]
-    [InlineData("digit worktree remove bar")]
-    public void DefaultNudges_DoesNotMatchWordsContainingGit(string command)
+    private static void AssertVerdict(CommandResult result, string? warning)
     {
-        var matchingNudge = ConfigFactory.DefaultNudges.FirstOrDefault(n =>
-        {
-            var regex = new System.Text.RegularExpressions.Regex(n.Pattern, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-            return regex.IsMatch(command);
-        });
-
-        Assert.Null(matchingNudge);
+        if (warning is null)
+            result.AssertPreToolUseAllowed();
+        else
+            Assert.Contains(warning, result.AssertPreToolUseDenied());
     }
 
-    [Fact]
-    public void DefaultNudges_HasNoInquisitorNudge()
+    private static string BashHook(string command) => JsonSerializer.Serialize(new Dictionary<string, object>
     {
-        // The inquisitor role is retired (Decision 024); its dispatch nudge is gone.
-        Assert.DoesNotContain(ConfigFactory.DefaultNudges, n => n.Pattern.Contains("inquisitor"));
-    }
-
-    [Theory]
-    [InlineData("until [ -s /tmp/claude/foo ]; do sleep 1; done")]
-    [InlineData("until [ ! -f /tmp/lock ]; do sleep 2; done")]
-    [InlineData("until  [ -e foo ]; do :; done")]
-    public void DefaultNudges_MatchesOpenEndedUntilLoop_AsWarn(string command)
-    {
-        var matchingNudge = FindUntilLoopNudge();
-
-        Assert.Matches(matchingNudge.Pattern, command);
-        Assert.Equal("warn", matchingNudge.Severity);
-        Assert.Contains("0177", matchingNudge.Message);
-    }
-
-    [Theory]
-    [InlineData("for i in {1..30}; do test -f x; sleep 1; done")]
-    [InlineData("gh run watch 12345")]
-    [InlineData("dydo wait")]
-    [InlineData("dydo wait --work foo")]
-    [InlineData("while [ ! -f x ]; do sleep 1; done")]
-    public void DefaultNudges_DoesNotMatchValidPollingPatterns(string command)
-    {
-        var untilNudge = FindUntilLoopNudge();
-
-        Assert.DoesNotMatch(untilNudge.Pattern, command);
-    }
-
-    [Fact]
-    public void DefaultNudges_UntilLoopNudge_IsIdempotent_InEnsureDefaultNudges()
-    {
-        var config = ConfigFactory.CreateDefault();
-        var firstCount = config.Nudges.Count(n => n.Pattern == @"\buntil\s+\[");
-
-        var added = ConfigFactory.EnsureDefaultNudges(config);
-        var secondCount = config.Nudges.Count(n => n.Pattern == @"\buntil\s+\[");
-
-        Assert.Equal(1, firstCount);
-        Assert.Equal(1, secondCount);
-        Assert.Equal(0, added);
-    }
-
-    private static NudgeConfig FindUntilLoopNudge()
-    {
-        var nudge = ConfigFactory.DefaultNudges.FirstOrDefault(n => n.Pattern == @"\buntil\s+\[");
-        Assert.NotNull(nudge);
-        return nudge;
-    }
-
-    [Fact]
-    public void CreateDefault_IncludesTheDocsNoticeAsANewFileNudge()
-    {
-        var config = ConfigFactory.CreateDefault();
-
-        var nudge = Assert.Single(config.Nudges, n => n.IsNewFileMatch);
-        Assert.Equal(ConfigFactory.DocsOutsideDydoNudge.Pattern, nudge.Pattern);
-        Assert.Equal("notice", nudge.Severity);
-        Assert.Equal("Docs usually live under `dydo/`. If this is a pointer README, or it belongs here, carry on.", nudge.Message);
-        Assert.NotSame(ConfigFactory.DocsOutsideDydoNudge, nudge);
-    }
-
-    [Fact]
-    public void CreateDefault_SerializesTheDocsNoticeMatch()
-    {
-        var json = JsonSerializer.Serialize(ConfigFactory.CreateDefault(), DydoConfigJsonContext.Default.DydoConfig);
-
-        Assert.Contains("\"match\": \"new-file\"", json);
-    }
-
-    [Fact]
-    public void EnsureDefaultNudges_CopiesMatch_AndIdentityIsMatchPlusPattern()
-    {
-        var docs = ConfigFactory.DocsOutsideDydoNudge;
-        var config = new DydoConfig
-        {
-            Nudges = [new NudgeConfig { Pattern = docs.Pattern, Message = "command lane", Severity = "warn" }]
-        };
-
-        ConfigFactory.EnsureDefaultNudges(config);
-
-        var added = Assert.Single(config.Nudges, n => n.Pattern == docs.Pattern && n.IsNewFileMatch);
-        Assert.Equal("new-file", added.Match);
-        Assert.Single(config.Nudges, n => n.Pattern == docs.Pattern && n.IsCommandMatch);
-    }
-
-    #region Library-install warn nudge (DYD-499)
-
-    private static DydoConfig DefaultConfigWithoutTheInstallNudge()
-    {
-        var config = ConfigFactory.CreateDefault();
-        config.Nudges.RemoveAll(n => n.Pattern == InstallNudgeExpectation.Pattern);
-        return config;
-    }
-
-    [Fact]
-    public void CreateDefault_IncludesTheInstallNudge_AsAWarnCommandNudge()
-    {
-        var config = ConfigFactory.CreateDefault();
-
-        var nudge = Assert.Single(config.Nudges, n => n.Pattern == InstallNudgeExpectation.Pattern);
-        Assert.Equal(InstallNudgeExpectation.Message, nudge.Message);
-        Assert.Equal("warn", nudge.Severity);
-        Assert.True(nudge.IsCommandMatch);
-    }
-
-    [Fact]
-    public void EnsureDefaultNudges_AddsTheInstallNudge_ToAConfigLackingIt()
-    {
-        var config = DefaultConfigWithoutTheInstallNudge();
-
-        var added = ConfigFactory.EnsureDefaultNudges(config);
-
-        Assert.Equal(1, added);
-        var nudge = Assert.Single(config.Nudges, n => n.Pattern == InstallNudgeExpectation.Pattern);
-        Assert.Equal(InstallNudgeExpectation.Message, nudge.Message);
-        Assert.Equal("warn", nudge.Severity);
-    }
-
-    [Fact]
-    public void EnsureDefaultNudges_AddsNothing_WhenTheInterimCopyIsPresent()
-    {
-        var config = DefaultConfigWithoutTheInstallNudge();
-        config.Nudges.Add(new NudgeConfig
-        {
-            Pattern = InstallNudgeExpectation.Pattern,
-            Message = "Our own wording.",
-            Severity = "warn"
-        });
-
-        var added = ConfigFactory.EnsureDefaultNudges(config);
-
-        Assert.Equal(0, added);
-        var nudge = Assert.Single(config.Nudges, n => n.Pattern == InstallNudgeExpectation.Pattern);
-        Assert.Equal("Our own wording.", nudge.Message);
-    }
-
-    [Fact]
-    public void EnsureDefaultNudges_DoesNotDuplicateTheInstallNudge_WhenRunTwice()
-    {
-        var config = DefaultConfigWithoutTheInstallNudge();
-
-        ConfigFactory.EnsureDefaultNudges(config);
-        var second = ConfigFactory.EnsureDefaultNudges(config);
-
-        Assert.Equal(0, second);
-        Assert.Single(config.Nudges, n => n.Pattern == InstallNudgeExpectation.Pattern);
-    }
-
-    #endregion
+        ["session_id"] = TestSessionId,
+        ["tool_name"] = "Bash",
+        ["tool_input"] = new Dictionary<string, string> { ["command"] = command }
+    });
 }

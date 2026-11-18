@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Commands;
 using DynaDocs.Commands;
 using DynaDocs.Services;
 
+[Trait("Job", "contract: DYD-351 (dydo mode show/set); dydo-commands.md dydo mode")]
 public sealed class ModeCommandTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-mode-cmd-" + Guid.NewGuid().ToString("N"));

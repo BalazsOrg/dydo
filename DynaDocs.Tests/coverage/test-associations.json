@@ -132,7 +132,7 @@
     {
       "module": "Commands/CompleteCommand.cs",
       "tests": [
-        "DynaDocs.Tests/Commands/CompleteCommandTests.cs"
+        "DynaDocs.Tests/Commands/CompletionsCommandTests.cs"
       ]
     },
     {
@@ -169,7 +169,7 @@
     {
       "module": "Commands/GuardCommand.NewFileNudges.cs",
       "tests": [
-        "DynaDocs.Tests/Commands/GuardNewFileNudgeTests.cs"
+        "DynaDocs.Tests/Integration/GuardNewFileNudgeIntegrationTests.cs"
       ]
     },
     {
@@ -216,7 +216,7 @@
     {
       "module": "Services/PrCallScanner.cs",
       "tests": [
-        "DynaDocs.Tests/Services/PrCallScannerTests.cs"
+        "DynaDocs.Tests/Integration/GuardPrReadyTests.cs"
       ]
     },
     {
@@ -228,15 +228,12 @@
     {
       "module": "Services/PrCallScanner.MergeRoutes.cs",
       "tests": [
-        "DynaDocs.Tests/Services/MergeRouteScannerTests.cs",
-        "DynaDocs.Tests/Services/PrCallScannerBackslashTreeTests.cs",
         "DynaDocs.Tests/Integration/GuardMergeRouteTests.cs"
       ]
     },
     {
       "module": "Services/MergeRoute.cs",
       "tests": [
-        "DynaDocs.Tests/Services/MergeRouteScannerTests.cs",
         "DynaDocs.Tests/Integration/GuardMergeRouteTests.cs"
       ]
     },
@@ -251,21 +248,21 @@
     {
       "module": "Services/CommandPosition.cs",
       "tests": [
-        "DynaDocs.Tests/Services/PrCallScannerTests.cs",
-        "DynaDocs.Tests/Services/DydoInvocationScannerTests.cs"
+        "DynaDocs.Tests/Integration/GuardPrReadyTests.cs",
+        "DynaDocs.Tests/Integration/GuardModeSetTests.cs"
       ]
     },
     {
       "module": "Services/DydoInvocationScanner.cs",
       "tests": [
-        "DynaDocs.Tests/Services/DydoInvocationScannerTests.cs"
+        "DynaDocs.Tests/Integration/GuardModeSetTests.cs"
       ]
     },
     {
       "module": "Services/ShellReader.cs",
       "tests": [
-        "DynaDocs.Tests/Services/ShellReaderTests.cs",
-        "DynaDocs.Tests/Services/DydoInvocationScannerTests.cs"
+        "DynaDocs.Tests/Integration/GuardShellCorpusTests.cs",
+        "DynaDocs.Tests/Integration/GuardModeSetTests.cs"
       ]
     },
     {
@@ -314,7 +311,7 @@
     {
       "module": "Rules/FrontmatterRule.cs",
       "tests": [
-        "DynaDocs.Tests/Rules/FrontmatterRuleTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -326,7 +323,7 @@
     {
       "module": "Rules/NamingRule.cs",
       "tests": [
-        "DynaDocs.Tests/Rules/NamingRuleTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -358,9 +355,8 @@
     {
       "module": "Services/BashCommandAnalyzer.cs",
       "tests": [
-        "DynaDocs.Tests/Services/BashCommandAnalyzerInputBoundTests.cs",
-        "DynaDocs.Tests/Services/BashCommandAnalyzerTests.cs",
-        "DynaDocs.Tests/Services/DangerousPatternBudgetTests.cs",
+        "DynaDocs.Tests/Integration/GuardShellCorpusTests.cs",
+        "DynaDocs.Tests/Integration/GuardSecurityTests.cs",
         "DynaDocs.Tests/Services/DangerousPatternCultureTests.cs"
       ]
     },
@@ -397,7 +393,7 @@
     {
       "module": "Services/DocScanner.cs",
       "tests": [
-        "DynaDocs.Tests/Services/DocScannerTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -409,7 +405,7 @@
     {
       "module": "Services/FrontmatterTypesService.cs",
       "tests": [
-        "DynaDocs.Tests/Services/FrontmatterTypesServiceTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
@@ -421,13 +417,13 @@
     {
       "module": "Services/MarkdownParser.cs",
       "tests": [
-        "DynaDocs.Tests/Services/MarkdownParserTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
       "module": "Services/OffLimitsService.cs",
       "tests": [
-        "DynaDocs.Tests/Services/OffLimitsServiceTests.cs"
+        "DynaDocs.Tests/Integration/GuardOffLimitsTests.cs"
       ]
     },
     {
@@ -446,14 +442,14 @@
     {
       "module": "Services/ValidationService.cs",
       "tests": [
-        "DynaDocs.Tests/Services/ValidationServiceTests.cs"
+        "DynaDocs.Tests/Commands/ValidateCommandTests.cs"
       ]
     },
     {
       "module": "Services/ClaudeGuardWiring.cs",
       "tests": [
         "DynaDocs.Tests/Integration/ClaudeGuardWiringTests.cs",
-        "DynaDocs.Tests/Services/ValidationServiceTests.cs"
+        "DynaDocs.Tests/Commands/ValidateCommandTests.cs"
       ]
     },
     {
@@ -472,13 +468,13 @@
     {
       "module": "Utils/FrontmatterParser.cs",
       "tests": [
-        "DynaDocs.Tests/Utils/FrontmatterParserTests.cs"
+        "DynaDocs.Tests/Commands/CheckDocValidatorTests.cs"
       ]
     },
     {
       "module": "Utils/GlobMatcher.cs",
       "tests": [
-        "DynaDocs.Tests/Utils/GlobMatcherTests.cs"
+        "DynaDocs.Tests/Integration/GuardOffLimitsTests.cs"
       ]
     },
     {
@@ -509,7 +505,7 @@
     {
       "module": "Services/Survey/ProjectReference.cs",
       "tests": [
-        "DynaDocs.Tests/Survey/ProjectReferenceTests.cs"
+        "DynaDocs.Tests/Survey/SurveySteps.cs"
       ]
     },
     {

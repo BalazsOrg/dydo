@@ -8,6 +8,7 @@ using DynaDocs.Services.Merge;
 /// <see cref="PullRequestMergeTests"/>, including one named <c>feature/x</c>.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: DR 061 §2 (feature/* pattern and git branch-name rule)")]
 public sealed class FeatureBranchTests : IDisposable
 {
     private readonly MergeScenario _s = new();

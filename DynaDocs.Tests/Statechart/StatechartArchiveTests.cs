@@ -4,6 +4,7 @@ using System.Formats.Tar;
 using System.IO.Compression;
 using DynaDocs.Services.Statechart;
 
+[Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
 public class StatechartArchiveTests
 {
     [Fact]

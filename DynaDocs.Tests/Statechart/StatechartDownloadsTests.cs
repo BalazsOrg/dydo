@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Statechart;
 using System.Security.Cryptography;
 using DynaDocs.Services.Statechart;
 
+[Trait("Job", "contract: DR 062 §2 §4 (locked, bounded, integrity-checked downloads)")]
 public class StatechartDownloadsTests
 {
     [Fact]

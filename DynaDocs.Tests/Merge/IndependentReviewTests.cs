@@ -9,6 +9,7 @@ using static MergeScenario;
 /// count, what each names, and how an abbreviated candidate is bound to the exact SHA.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: DR 061 §4 (PASS bound to the SHA)")]
 public sealed class IndependentReviewTests
 {
     private static ReviewVerdict Only(string body) => Assert.Single(IndependentReview.Parse(body));

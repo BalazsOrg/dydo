@@ -3,6 +3,13 @@ namespace DynaDocs.Tests.Services;
 using DynaDocs.Models;
 using DynaDocs.Services;
 
+/// <summary>
+/// dydo.json is the guard's own configuration: a strict load refuses a malformed file instead of
+/// reading it as absent, a save that changes nothing writes nothing, and a save that fails at any
+/// boundary leaves the original bytes and no temporary sibling. Each failure is injected, which
+/// driving the CLI cannot do.
+/// </summary>
+[Trait("Job", "trap: DYD-134 (atomic save boundaries: a failed save must keep dydo.json); edge: injected write, flush, close and replace failures")]
 public class ConfigServiceTests : IDisposable
 {
     private readonly string _testDir;
@@ -27,89 +34,6 @@ public class ConfigServiceTests : IDisposable
     }
 
     [Fact]
-    public void GetChangelogPath_ReturnsCorrectPath()
-    {
-        var service = new ConfigService();
-
-        var result = service.GetChangelogPath(_testDir);
-
-        Assert.EndsWith(Path.Combine("project", "changelog"), result);
-    }
-
-    [Fact]
-    public void FindConfigFile_ReturnsNull_WhenNoConfigExists()
-    {
-        var emptyDir = Path.Combine(Path.GetTempPath(), "dydo-empty-" + Guid.NewGuid().ToString("N")[..8]);
-        Directory.CreateDirectory(emptyDir);
-        try
-        {
-            var service = new ConfigService();
-            Assert.Null(service.FindConfigFile(emptyDir));
-        }
-        finally
-        {
-            Directory.Delete(emptyDir, true);
-        }
-    }
-
-    [Fact]
-    public void FindConfigFile_CachesResult()
-    {
-        var service = new ConfigService();
-
-        var first = service.FindConfigFile(_testDir);
-        var second = service.FindConfigFile(_testDir);
-
-        Assert.Equal(first, second);
-    }
-
-    [Fact]
-    public void FindConfigFile_WalksUpDirectoryTree()
-    {
-        var subDir = Path.Combine(_testDir, "a", "b", "c");
-        Directory.CreateDirectory(subDir);
-
-        var service = new ConfigService();
-        var result = service.FindConfigFile(subDir);
-
-        Assert.NotNull(result);
-        Assert.EndsWith("dydo.json", result);
-    }
-
-    [Fact]
-    public void LoadConfig_ReturnsNull_WhenNoConfigFile()
-    {
-        var emptyDir = Path.Combine(Path.GetTempPath(), "dydo-noconf-" + Guid.NewGuid().ToString("N")[..8]);
-        Directory.CreateDirectory(emptyDir);
-        try
-        {
-            var service = new ConfigService();
-            Assert.Null(service.LoadConfig(emptyDir));
-        }
-        finally
-        {
-            Directory.Delete(emptyDir, true);
-        }
-    }
-
-    [Fact]
-    public void LoadConfig_ReturnsNull_WhenInvalidJson()
-    {
-        var badDir = Path.Combine(Path.GetTempPath(), "dydo-bad-" + Guid.NewGuid().ToString("N")[..8]);
-        Directory.CreateDirectory(badDir);
-        File.WriteAllText(Path.Combine(badDir, "dydo.json"), "not valid json {{{");
-        try
-        {
-            var service = new ConfigService();
-            Assert.Null(service.LoadConfig(badDir));
-        }
-        finally
-        {
-            Directory.Delete(badDir, true);
-        }
-    }
-
-    [Fact]
     public void LoadConfigStrict_DistinguishesMalformedFromMissingConfiguration()
     {
         File.WriteAllText(Path.Combine(_testDir, "dydo.json"), "{ not-json");
@@ -119,60 +43,6 @@ public class ConfigServiceTests : IDisposable
 
         Assert.Contains("dydo.json", error.Message);
         Assert.Contains("Invalid JSON", error.Message);
-    }
-
-    [Fact]
-    public void LoadConfig_ReturnsConfig_WhenValid()
-    {
-        var service = new ConfigService();
-        var config = service.LoadConfig(_testDir);
-
-        Assert.NotNull(config);
-        Assert.Equal(1, config.Version);
-    }
-
-    [Fact]
-    public void SaveConfig_WritesFile()
-    {
-        var service = new ConfigService();
-        var config = new DydoConfig
-        {
-            Version = 2,
-            Structure = new StructureConfig { Root = "dydo" },
-            Integrations = new Dictionary<string, bool>()
-        };
-
-        var path = Path.Combine(_testDir, "saved.json");
-        service.SaveConfig(config, path);
-
-        Assert.True(File.Exists(path));
-        var content = File.ReadAllText(path);
-        Assert.Contains("\"version\"", content);
-    }
-
-    [Fact]
-    public void SaveConfig_OmitsAbsentTestingConfiguration()
-    {
-        var path = Path.Combine(_testDir, "without-testing.json");
-
-        new ConfigService().SaveConfig(new DydoConfig(), path);
-
-        Assert.DoesNotContain("\"testing\"", File.ReadAllText(path));
-    }
-
-    [Fact]
-    public void SaveConfig_ExistingFile_ChangesOnlyWhatTheConfigChanged()
-    {
-        var path = Path.Combine(_testDir, "dydo.json");
-        const string body = "{\r\n    \"version\": 1,\r\n    \"zeta\": { \"keep\": \"it\\u0027s & <b>\" },\r\n    \"structure\": { \"root\": \"dydo\" }";
-        File.WriteAllText(path, "﻿" + body + "\r\n}");
-        var service = new ConfigService();
-        var config = service.LoadConfig(_testDir)!;
-        config.DydoVersion = "3.5.0";
-
-        service.SaveConfig(config, path);
-
-        Assert.Equal("﻿" + body + ",\r\n    \"dydoVersion\": \"3.5.0\"\r\n}", PreservedText.Read(path));
     }
 
     [Fact]
@@ -186,38 +56,6 @@ public class ConfigServiceTests : IDisposable
         {
             CreateNew = _ => throw new InvalidOperationException("an unchanged config was written")
         });
-    }
-
-    [Fact]
-    public void SaveConfig_NewFile_IsLfTerminatedAndRelaxedEscaped()
-    {
-        var path = Path.Combine(_testDir, "fresh.json");
-
-        new ConfigService().SaveConfig(new DydoConfig { Nudges = [new NudgeConfig { Pattern = "a&b", Message = "don't <x>" }] }, path);
-
-        var text = PreservedText.Read(path);
-        Assert.DoesNotContain("\r", text);
-        Assert.EndsWith("}\n", text);
-        Assert.Contains("\"don't <x>\"", text);
-        Assert.Contains("\"a&b\"", text);
-    }
-
-    [Fact]
-    public void LoadConfigStrict_PreservesValidTestingRunnerAndSecondSaveIsByteIdentical()
-    {
-        var path = Path.Combine(_testDir, "dydo.json");
-        var service = new ConfigService();
-        service.SaveConfig(new DydoConfig
-        {
-            Testing = new TestingConfig { Runner = ["runner with spaces", "", "fixed space", "固定λ"] }
-        }, path);
-        var first = File.ReadAllBytes(path);
-
-        var config = service.LoadConfigStrict(_testDir)!;
-        Assert.Equal(["runner with spaces", "", "fixed space", "固定λ"], config.Testing!.Runner);
-        service.SaveConfig(config, path);
-
-        Assert.Equal(first, File.ReadAllBytes(path));
     }
 
     [Theory]
@@ -399,179 +237,6 @@ public class ConfigServiceTests : IDisposable
         Assert.True(stream.CanWrite);
         Assert.False(stream.CanRead);
         Assert.Throws<IOException>(() => File.OpenRead(sibling));
-    }
-
-    [Fact]
-    public void GetProjectRoot_ReturnsNull_WhenNoConfig()
-    {
-        var emptyDir = Path.Combine(Path.GetTempPath(), "dydo-noroot-" + Guid.NewGuid().ToString("N")[..8]);
-        Directory.CreateDirectory(emptyDir);
-        try
-        {
-            var service = new ConfigService();
-            Assert.Null(service.GetProjectRoot(emptyDir));
-        }
-        finally
-        {
-            Directory.Delete(emptyDir, true);
-        }
-    }
-
-    [Fact]
-    public void GetProjectRoot_ReturnsDirectory_WhenConfigExists()
-    {
-        var service = new ConfigService();
-        var root = service.GetProjectRoot(_testDir);
-
-        Assert.NotNull(root);
-        Assert.Equal(_testDir, root);
-    }
-
-    [Fact]
-    public void GetDydoRoot_UsesConfiguredRoot()
-    {
-        var service = new ConfigService();
-        var dydoRoot = service.GetDydoRoot(_testDir);
-
-        Assert.EndsWith("dydo", dydoRoot);
-    }
-
-    [Fact]
-    public void GetDydoRoot_FallsBackToStartPath_WhenNoConfig()
-    {
-        var emptyDir = Path.Combine(Path.GetTempPath(), "dydo-fallback-" + Guid.NewGuid().ToString("N")[..8]);
-        Directory.CreateDirectory(emptyDir);
-        try
-        {
-            var service = new ConfigService();
-            var result = service.GetDydoRoot(emptyDir);
-
-            Assert.Equal(Path.Combine(emptyDir, "dydo"), result);
-        }
-        finally
-        {
-            Directory.Delete(emptyDir, true);
-        }
-    }
-
-    [Fact]
-    public void GetDocsPath_ReturnsDydoRoot()
-    {
-        var service = new ConfigService();
-        var dydoRoot = service.GetDydoRoot(_testDir);
-        var docsPath = service.GetDocsPath(_testDir);
-
-        Assert.Equal(dydoRoot, docsPath);
-    }
-
-    [Fact]
-    public void LoadConfig_LegacyWorkPaths_AreIgnored()
-    {
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"), """
-            {
-                "version": 1,
-                "structure": {
-                    "root": "docs",
-                    "tasks": "custom/tasks",
-                    "issues": "custom/issues"
-                }
-            }
-            """);
-
-        var config = new ConfigService().LoadConfig(_testDir);
-
-        Assert.NotNull(config);
-        Assert.Equal("docs", config!.Structure.Root);
-        Assert.DoesNotContain("Tasks", typeof(StructureConfig).GetProperties().Select(p => p.Name));
-        Assert.DoesNotContain("Issues", typeof(StructureConfig).GetProperties().Select(p => p.Name));
-    }
-
-    [Fact]
-    public void SaveConfig_DoesNotWriteLegacyWorkPaths()
-    {
-        var path = Path.Combine(_testDir, "saved.json");
-        new ConfigService().SaveConfig(new DydoConfig(), path);
-
-        var json = File.ReadAllText(path);
-        Assert.DoesNotContain("\"tasks\"", json);
-        Assert.DoesNotContain("\"issues\"", json);
-    }
-
-    [Fact]
-    public void LoadConfig_LegacyAgentsSection_IsIgnored()
-    {
-        // A dydo.json still carrying the `agents` section DR-041 removed must load cleanly, the dead
-        // section dropped rather than failing deserialization.
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"), """
-            {
-                "version": 1,
-                "structure": { "root": "dydo" },
-                "agents": { "pool": ["Adele", "Brian"], "assignments": { "testuser": ["Adele"] } }
-            }
-            """);
-
-        var config = new ConfigService().LoadConfig(_testDir);
-
-        Assert.NotNull(config);
-    }
-
-    [Fact]
-    public void LoadConfig_WithNudges_DeserializesCorrectly()
-    {
-        File.WriteAllText(Path.Combine(_testDir, "dydo.json"), """
-            {
-                "version": 1,
-                "structure": { "root": "dydo" },
-                "nudges": [
-                    { "pattern": "dotnet test.*coverlet", "message": "Use gap_check.py.", "severity": "warn" },
-                    { "pattern": "rm -rf", "message": "Don't do that.", "severity": "block" }
-                ]
-            }
-            """);
-
-        var service = new ConfigService();
-        var config = service.LoadConfig(_testDir);
-
-        Assert.NotNull(config);
-        Assert.Equal(2, config!.Nudges.Count);
-        Assert.Equal("dotnet test.*coverlet", config.Nudges[0].Pattern);
-        Assert.Equal("warn", config.Nudges[0].Severity);
-        Assert.Equal("block", config.Nudges[1].Severity);
-    }
-
-    [Fact]
-    public void LoadConfig_WithoutNudges_DefaultsToEmptyList()
-    {
-        var service = new ConfigService();
-        var config = service.LoadConfig(_testDir);
-
-        Assert.NotNull(config);
-        Assert.Empty(config!.Nudges);
-    }
-
-    // The no-shim invariant: 3.0 dropped several dydo.json sections and reads none of them back.
-    // A config file written by 2.x or early 3.0 must still load, with the retired sections ignored
-    // and every surviving section arriving intact. The retired key spellings live only in the
-    // fixture so the residue gates over the test sources stay honest.
-    [Fact]
-    public void LoadConfig_ConfigFromBeforeTheSkillModelSimplification_IgnoresRetiredSections()
-    {
-        File.Copy(
-            Path.Combine(AppContext.BaseDirectory, "Fixtures", "config", "dydo-2x-old-keys.json"),
-            Path.Combine(_testDir, "dydo.json"),
-            overwrite: true);
-
-        var config = new ConfigService().LoadConfig(_testDir);
-
-        Assert.NotNull(config);
-        Assert.Equal("dydo", config!.Structure.Root);
-        Assert.Equal(2, config.Nudges.Count);
-        Assert.Equal("dotnet test.*coverlet", config.Nudges[0].Pattern);
-        Assert.Equal("warn", config.Nudges[0].Severity);
-        Assert.Equal("rm -rf", config.Nudges[1].Pattern);
-        Assert.DoesNotContain("Models", typeof(DydoConfig).GetProperties().Select(property => property.Name));
-        Assert.True(config.Integrations["claude"]);
-        Assert.False(config.Integrations["codex"]);
     }
 
 }

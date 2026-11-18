@@ -2,6 +2,7 @@ namespace DynaDocs.Tests.Statechart;
 
 using DynaDocs.Services.Statechart;
 
+[Trait("Job", "edge: two processes contend for one install or extraction lock")]
 public class StatechartLockTests
 {
     [Fact]

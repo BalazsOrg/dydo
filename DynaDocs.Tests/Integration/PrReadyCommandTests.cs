@@ -8,6 +8,7 @@ using static DynaDocs.Tests.Integration.PushedRepository;
 /// <c>dydo pr-ready</c> on a real temp repository pushed to a bare origin (DYD-374).
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: DYD-374; DYD-391")]
 public sealed class PrReadyCommandTests : IDisposable
 {
     private const string GoodBody = """

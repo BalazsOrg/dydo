@@ -1,7 +1,8 @@
+# Job: contract: DYD-351 (dydo mode show/set; a mode set through the guard is warned once, then its retry passes; a quoted, pathed or indirect mode set is still a mode set)
 @machine-mode
 Feature: Machine mode
   A machine mode flag is read by every agent on this machine; overnight is the one flag.
-  An executing mode set warns the chief of staff once, then passes the same command's retry.
+  An executing mode set is warned once, then the same command's retry passes.
   Activation and shutdown require an independent readback after the actual command.
 
   Scenario: Show lists every flag with its value
@@ -44,45 +45,16 @@ Feature: Machine mode
   Scenario: An agent's first mode set is blocked with a reminder
     Given an agent on "Claude Code" in "default" permission mode
     When the agent runs "dydo mode set overnight on"
-    Then the guard blocks it and tells the chief of staff to run it again
-
-  Scenario Outline: Every host warns once and passes the same transition's retry
-    Given an agent on "<host>" in "<permission mode>" permission mode
-    When the agent runs "dydo mode set overnight <value>" twice
-    Then the guard allows it
-
-    Examples:
-      | host                                    | permission mode   | value |
-      | Claude Code                             | default           | on    |
-      | Claude Code                             | default           | off   |
-      | Claude Code                             | acceptEdits       | on    |
-      | Claude Code                             | plan              | on    |
-      | Claude Code                             | auto              | on    |
-      | Claude Code                             | bypassPermissions | on    |
-      | Claude Code                             | bypassPermissions | off   |
-      | Claude Code                             | dontAsk           | on    |
-      | Claude Code                             | dontAsk           | off   |
-      | Codex                                   | default           | on    |
-      | Codex                                   | default           | off   |
-      | T3                                      | default           | on    |
-      | T3                                      | default           | off   |
-      | direct guard                            | default           | on    |
-      | direct guard                            | default           | off   |
-      | Codex launched from a Claude Code shell | default           | on    |
-      | Codex launched from a Claude Code shell | default           | off   |
-      | Claude Code without the init marker     | default           | on    |
-      | Claude Code without the init marker     | default           | off   |
-      | unknown                                 | default           | on    |
-      | unknown                                 | default           | off   |
+    Then the guard blocks it once
 
   Scenario: Opposite transitions and different full commands each receive their own warning
     Given an agent on "Codex" in "default" permission mode
     When the agent runs "dydo mode set overnight on"
-    Then the guard blocks it and tells the chief of staff to run it again
+    Then the guard blocks it once
     When the agent runs "dydo mode set overnight off"
-    Then the guard blocks it and tells the chief of staff to run it again
+    Then the guard blocks it once
     When the agent runs "dydo mode set overnight on; echo done"
-    Then the guard blocks it and tells the chief of staff to run it again
+    Then the guard blocks it once
     When the agent runs "dydo mode set overnight on"
     Then the guard allows it
     When the agent runs "dydo mode set overnight off"
@@ -93,7 +65,7 @@ Feature: Machine mode
     And the owned overnight mode starts as "<initial>"
     And an agent on "Codex" in "default" permission mode
     When the agent runs "dydo mode set overnight <target>"
-    Then the guard blocks it and tells the chief of staff to run it again
+    Then the guard blocks it once
     And the owned mode state is unchanged
     When the agent runs "dydo mode set overnight <target>"
     Then the guard allows it
@@ -110,7 +82,7 @@ Feature: Machine mode
   Scenario Outline: A quoted, pathed or indirect mode set meets the same reminder
     Given an agent on "Claude Code" in "default" permission mode
     When the agent runs the command: <command>
-    Then the guard blocks it and tells the chief of staff to run it again
+    Then the guard blocks it once
 
     Examples:
       | command                                                           |

@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Integration;
 using DynaDocs.Services;
 
 [Collection("Integration")]
+[Trait("Job", "contract: spec N10; DYD-1029 (unproven PR heads are refused)")]
 public sealed class SafeDeletePolicyTests
 {
 

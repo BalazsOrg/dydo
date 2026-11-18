@@ -1,89 +1,27 @@
 namespace DynaDocs.Tests.Commands;
 
 using DynaDocs.Commands;
-using Xunit;
 
-/// <summary>
-/// Tests for the help command to ensure it documents all available commands.
-/// These tests verify that the help output stays in sync with the actual commands.
-/// </summary>
-[Collection("ConsoleOutput")]
-public class HelpCommandTests
+/// <summary>`dydo help` names every command the CLI registers, so a new command cannot ship undocumented.</summary>
+[Collection("Integration")]
+[Trait("Job", "contract: dydo-commands-utilities.md dydo help; dydo-commands.md (every command documented)")]
+public sealed class HelpCommandTests
 {
-    private static string CaptureHelpOutput()
-    {
-        return ConsoleCapture.Stdout(HelpCommand.PrintHelp);
-    }
-
     [Fact]
-    public void Help_ListsAllTopLevelCommands()
+    public void Help_ListsEveryRegisteredCommand()
     {
-        var output = CaptureHelpOutput();
+        var registered = DydoRootCommand.Create().Subcommands
+            .Select(command => command.Name)
+            .Where(name => !name.StartsWith('_'))
+            .ToList();
 
-        Assert.Contains("check", output);
-        Assert.Contains("fix", output);
-        Assert.Contains("init", output);
-        Assert.Contains("  adopt <version>", output);
-        Assert.Contains("index", output);
-        Assert.Contains("graph", output);
-        Assert.Contains("guard", output);
-        var lines = output.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries);
-        Assert.DoesNotContain(lines, line => line.StartsWith("  task "));
-        Assert.DoesNotContain(lines, line => line.StartsWith("  review "));
-        Assert.Contains("completions", output);
-        Assert.DoesNotContain(lines, line => line.StartsWith("  sync "));
-        Assert.DoesNotContain(lines, line => line.StartsWith("  template "));
-        Assert.Contains("validate", output);
-        Assert.Contains("gap-check", output);
-        Assert.Contains("  map [--no-browser]", output);
-        Assert.Contains("  survey <project>", output);
-        Assert.DoesNotContain(lines, line => line.StartsWith("  issue "));
-        Assert.Contains("version", output);
-        Assert.Contains("help", output);
-    }
+        var (code, stdout, _) = DydoCli.Run("help");
 
-    [Fact]
-    public void Help_DoesNotListRetiredWorkCommands()
-    {
-        var output = CaptureHelpOutput();
-
-        Assert.DoesNotContain("task create", output);
-        Assert.DoesNotContain("review complete", output);
-        Assert.DoesNotContain("issue create", output);
-    }
-
-    [Fact]
-    public void Help_ContainsReferenceToDocumentation()
-    {
-        var output = CaptureHelpOutput();
-
-        Assert.Contains("dydo-commands.md", output);
-    }
-
-    [Fact]
-    public void Help_DocumentsExitCodes()
-    {
-        var output = CaptureHelpOutput();
-
-        Assert.Contains("Exit codes:", output);
-        Assert.Contains("0 - Success", output);
-        Assert.Contains("1 - Validation errors", output);
-        Assert.Contains("2 - Tool error", output);
-    }
-
-    [Fact]
-    public void Help_HasCategorizedSections()
-    {
-        var output = CaptureHelpOutput();
-
-        Assert.Contains("Setup Commands:", output);
-        Assert.Contains("Documentation Commands:", output);
-        Assert.Contains("Workspace Commands:", output);
-        Assert.DoesNotContain("Role Commands:", output);
-        Assert.Contains("Validation Commands:", output);
-        Assert.DoesNotContain("Template Commands:", output);
-        Assert.DoesNotContain("Task Commands:", output);
-        Assert.DoesNotContain("Issue Commands:", output);
-        Assert.Contains("Utility:", output);
+        Assert.Equal(0, code);
+        var listed = stdout.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries)
+            .Select(line => line.TrimStart().Split(' ')[0])
+            .ToHashSet();
+        Assert.NotEmpty(registered);
+        Assert.All(registered, name => Assert.Contains(name, listed));
     }
 }

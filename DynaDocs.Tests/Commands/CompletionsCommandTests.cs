@@ -1,66 +1,65 @@
 namespace DynaDocs.Tests.Commands;
 
-using DynaDocs.Commands;
-
-[Collection("ConsoleOutput")]
-public class CompletionsCommandTests
+/// <summary>
+/// `dydo completions <shell>` prints a script that registers completion for dydo; `dydo _complete`
+/// is what that script calls. An unknown shell is a tool error. Completion itself never fails the
+/// shell: an unknown command line yields no candidates and exit 0.
+/// </summary>
+[Collection("Integration")]
+[Trait("Job", "contract: dydo-commands-utilities.md dydo completions (bash, zsh, powershell); DR 015 (completions keep code)")]
+public sealed class CompletionsCommandTests
 {
-    [Fact]
-    public void Bash_ContainsCompleteDirective()
+    [Theory]
+    [InlineData("bash", "complete -F _dydo_completions dydo")]
+    [InlineData("zsh", "compdef _dydo_completions dydo")]
+    [InlineData("powershell", "Register-ArgumentCompleter")]
+    public void Completions_KnownShell_PrintsItsRegistrationScript(string shell, string registration)
     {
-        var output = CaptureOutput("bash");
+        var (code, stdout, _) = DydoCli.Run("completions", shell);
 
-        Assert.Contains("complete -F _dydo_completions dydo", output);
-        Assert.Contains("_dydo_completions()", output);
-        Assert.Contains("COMPREPLY", output);
+        Assert.Equal(0, code);
+        Assert.Contains(registration, stdout);
+        Assert.Contains("_complete", stdout);
     }
 
     [Fact]
-    public void Zsh_ContainsCompdefDirective()
+    public void Completions_UnknownShell_IsAToolError()
     {
-        var output = CaptureOutput("zsh");
+        var (code, stdout, _) = DydoCli.Run("completions", "fish");
 
-        Assert.Contains("compdef _dydo_completions dydo", output);
-        Assert.Contains("compadd", output);
+        Assert.Equal(2, code);
+        Assert.Equal("", stdout);
     }
 
-    [Fact]
-    public void PowerShell_ContainsRegisterArgumentCompleter()
+    // Completion does not offer every registered command yet (`mode` and `statechart` are missing;
+    // reported on DYD-1199), so the first word is checked against the documented core commands.
+    [Theory]
+    [InlineData("1", "dydo", "init", "check", "fix", "graph", "validate", "clean", "completions")]
+    [InlineData("2", "init", "claude", "codex", "all", "none")]
+    [InlineData("2", "completions", "bash", "zsh", "powershell")]
+    [InlineData("2", "graph", "stats")]
+    public void Complete_OffersTheWordsValues(string position, string word, params string[] expected)
     {
-        var output = CaptureOutput("powershell");
+        var candidates = position == "1" ? Candidates(position, word) : Candidates(position, "dydo", word);
 
-        Assert.Contains("Register-ArgumentCompleter", output);
-        Assert.Contains("-CommandName dydo", output);
-        Assert.Contains("CompletionResult", output);
-    }
-
-    [Fact]
-    public void UnknownShell_ReturnsError()
-    {
-        var command = CompletionsCommand.Create();
-        var result = command.Parse("fish").Invoke();
-
-        Assert.Equal(2, result);
+        Assert.All(expected, value => Assert.Contains(value, candidates));
     }
 
     [Theory]
-    [InlineData("bash")]
-    [InlineData("zsh")]
-    [InlineData("powershell")]
-    public void KnownShell_ReturnsSuccess(string shell)
+    [InlineData("2", "dydo", "nonexistent")]
+    [InlineData("999", "dydo", "nonexistent", "garbage")]
+    public void Complete_UnknownInput_OffersNothingAndExitsZero(params string[] words)
     {
-        var command = CompletionsCommand.Create();
-        var result = command.Parse(shell).Invoke();
+        var (code, stdout, _) = DydoCli.Run(["_complete", .. words]);
 
-        Assert.Equal(0, result);
+        Assert.Equal(0, code);
+        Assert.Equal("", stdout);
     }
 
-    private static string CaptureOutput(string shell)
+    private static List<string> Candidates(params string[] words)
     {
-        return ConsoleCapture.Stdout(() =>
-        {
-            var command = CompletionsCommand.Create();
-            command.Parse(shell).Invoke();
-        });
+        var (code, stdout, _) = DydoCli.Run(["_complete", .. words]);
+        Assert.Equal(0, code);
+        return stdout.Split(['\r', '\n'], StringSplitOptions.RemoveEmptyEntries).ToList();
     }
 }

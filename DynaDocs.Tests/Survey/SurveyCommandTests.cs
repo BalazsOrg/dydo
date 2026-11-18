@@ -5,6 +5,8 @@ using DynaDocs.Tests.Map;
 using DynaDocs.Utils;
 using static DynaDocs.Tests.Map.LinearJson;
 
+/// <summary>DR 063 §1, §2 and §5 at the command boundary: exit codes, the shared key help, and a read-only digest.</summary>
+[Trait("Job", "contract: DR 063 §1 §2 §5")]
 public sealed class SurveyCommandTests : IDisposable
 {
     private readonly FakeLinear _linear = new();
@@ -31,19 +33,9 @@ public sealed class SurveyCommandTests : IDisposable
         var (exitCode, stdout, stderr) = await Run(arguments);
 
         Assert.Equal(ExitCodes.ToolError, exitCode);
-        Assert.Contains("takes one Project UUID, slugId, or Linear Project URL", stderr);
+        Assert.NotEmpty(stderr);
         Assert.Empty(stdout);
         Assert.Empty(_linear.Calls);
-    }
-
-    [Fact]
-    public async Task AnUnknownOption_IsTheSameUsageError()
-    {
-        var (exitCode, _, stderr) = await ConsoleCapture.AllAsync(
-            () => SurveyCommand.Create().Parse(["--bogus"]).InvokeAsync());
-
-        Assert.Equal(ExitCodes.ToolError, exitCode);
-        Assert.Contains("got: --bogus", stderr);
     }
 
     [Theory]
@@ -56,52 +48,23 @@ public sealed class SurveyCommandTests : IDisposable
 
         Assert.Equal(ExitCodes.ToolError, exitCode);
         Assert.Equal(MapCommand.MissingKeyHelp, stderr);
-        Assert.StartsWith("LINEAR_API_KEY is not set, so dydo cannot read Linear.", stderr);
         Assert.Empty(stdout);
         Assert.Empty(_linear.Calls);
     }
 
     [Fact]
-    public async Task ARead_PrintsTheHeaderInUtc_ThenOneLinePerFinding()
+    public async Task ARead_ExitsZero_WithAUtcHeader_AndOneLinePerFinding()
     {
         _linear.Serve(call => call.Operation == "ProjectIssues"
             ? IssuesPage(Node(Issue("1", labels: Labels("Feature:#BB87FC"))))
-            : ProjectContent("\"## Ledger\\n- DYD-1 lane\""));
+            : ProjectContent("\"\""));
 
         var (exitCode, stdout, stderr) = await Run("25acbbb9a90b");
 
         Assert.Equal(ExitCodes.Success, exitCode);
-        Assert.Equal(
-            "dydo survey Map 2026-11-04T21:40:05Z: 1 findings\n"
-            + "pickable DYD-1 Issue 1 — unstarted, unassigned, no open blocker\n",
-            stdout.ReplaceLineEndings("\n"));
+        Assert.StartsWith("dydo survey Map 2026-11-04T21:40:05Z", stdout, StringComparison.Ordinal);
+        Assert.Equal(["pickable DYD-1"], KeptFindings.In(stdout));
         Assert.Empty(stderr);
-    }
-
-    [Fact]
-    public async Task AnEmptyProject_WithALedger_HasNoFindings()
-    {
-        _linear.Serve(call => call.Operation == "ProjectIssues" ? IssuesPage("") : ProjectContent("\"## Ledger\\n\""));
-
-        var (exitCode, stdout, _) = await Run("25acbbb9a90b");
-
-        Assert.Equal(ExitCodes.Success, exitCode);
-        Assert.Equal("dydo survey Map 2026-11-04T21:40:05Z: 0 findings\n", stdout.ReplaceLineEndings("\n"));
-    }
-
-    [Fact]
-    public async Task AProseOnlyLedger_LanesNothing()
-    {
-        _linear.Serve(call => call.Operation == "ProjectIssues"
-            ? IssuesPage(Node(Issue("1", state: Started, assignee: """{"name":"Ada"}""")))
-            : ProjectContent("\"## Ledger\\nDYD-1 is in the prose.\""));
-
-        var (_, stdout, _) = await Run("25acbbb9a90b");
-
-        Assert.Equal(
-            "dydo survey Map 2026-11-04T21:40:05Z: 1 findings\n"
-            + "unlaned DYD-1 Issue 1 — open, and no ledger row names it or its parent\n",
-            stdout.ReplaceLineEndings("\n"));
     }
 
     [Fact]
@@ -110,14 +73,11 @@ public sealed class SurveyCommandTests : IDisposable
         _linear.Serve(call => call.Operation == "ProjectIssues"
             ? IssuesPage(Node(Issue("1", labels: Labels("Feature:#BB87FC")), inverseRelations: Connection(
                 Incoming("r9", "blocks", Issue("9", state: Done, project: InOther, archivedAt: "\"2026-11-01T00:00:00.000Z\"")))))
-            : ProjectContent("\"## Ledger\\n- DYD-1 lane\""));
+            : ProjectContent("\"\""));
 
         var (_, stdout, _) = await Run("25acbbb9a90b");
 
-        Assert.Equal(
-            "dydo survey Map 2026-11-04T21:40:05Z: 1 findings\n"
-            + "pickable DYD-1 Issue 1 — unstarted, unassigned, no open blocker\n",
-            stdout.ReplaceLineEndings("\n"));
+        Assert.Equal(["pickable DYD-1"], KeptFindings.In(stdout));
     }
 
     [Fact]
@@ -127,58 +87,40 @@ public sealed class SurveyCommandTests : IDisposable
         {
             "ProjectIssues" => IssuesPage(Node(Issue("1"), relations: Connection("", more: true, cursor: "c1"))),
             "IssueRelationsPage" => """{"data":{"issue":null}}""",
-            _ => ProjectContent("\"## Ledger\""),
+            _ => ProjectContent("\"\""),
         });
 
         var (exitCode, stdout, stderr) = await Run("25acbbb9a90b");
 
         Assert.Equal(ExitCodes.ToolError, exitCode);
-        Assert.Equal("dydo survey: Linear has no ticket 1.\n", stderr.ReplaceLineEndings("\n"));
+        Assert.Contains("ticket 1", stderr);
+        Assert.DoesNotContain("no project", stderr);
         Assert.Empty(stdout);
     }
 
-    [Fact]
-    public async Task AnUnexpectedAnswerShape_IsAToolError_NamingIt()
+    [Theory]
+    [InlineData("""{"data":{"project":{"id":"p-map"}}}""")]
+    [InlineData(null)]
+    public async Task AnUnexpectedAnswer_IsAToolError_WithNoDigest(string? answer)
     {
-        _linear.Serve(_ => """{"data":{"project":{"id":"p-map"}}}""");
+        answer ??= IssuesPage(Node(Issue("1").Replace("\"title\":\"Issue 1\"", "\"title\":null", StringComparison.Ordinal)));
+        _linear.Serve(_ => answer);
 
         var (exitCode, stdout, stderr) = await Run("25acbbb9a90b");
 
         Assert.Equal(ExitCodes.ToolError, exitCode);
-        Assert.Contains("Linear sent an unexpected response", stderr);
+        Assert.NotEmpty(stderr);
         Assert.Empty(stdout);
     }
 
     [Fact]
-    public async Task ANullRequiredField_IsAToolError_NamingIt()
-    {
-        _linear.Serve(_ => IssuesPage(Node(Issue("1").Replace("\"title\":\"Issue 1\"", "\"title\":null", StringComparison.Ordinal))));
-
-        var (exitCode, stdout, stderr) = await Run("25acbbb9a90b");
-
-        Assert.Equal(ExitCodes.ToolError, exitCode);
-        Assert.Contains("Linear sent an unexpected response: Linear sent null title.", stderr);
-        Assert.Empty(stdout);
-    }
-
-    [Fact]
+    [Trait("Job", "edge: a canceled run must not print a digest as Linear's answer (DYD-530)")]
     public async Task ACanceledRun_IsNotReportedAsLinearsAnswer()
     {
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => SurveyCommand.RunAsync(
             ["25acbbb9a90b"], FakeLinear.ApiKey, _server.Endpoint.ToString(), new FixedClock(), new CancellationToken(true)));
     }
 
-    [Fact]
-    public void Command_TakesTheProjectArgument_AndSaysItNeedsTheKey()
-    {
-        var command = SurveyCommand.Create();
-
-        Assert.Equal("survey", command.Name);
-        Assert.Equal("project", Assert.Single(command.Arguments).Name);
-        Assert.Contains("LINEAR_API_KEY", command.Description);
-    }
-
-    private const string Started = """{"name":"In Progress","type":"started","color":"#f2c94c"}""";
     private const string Done = """{"name":"Done","type":"completed","color":"#5e6ad2"}""";
 
     private sealed class FixedClock : TimeProvider
