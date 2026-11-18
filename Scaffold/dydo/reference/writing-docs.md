@@ -34,24 +34,6 @@ type: guide
 | `status` | type: decision | `proposed`, `accepted`, `deprecated`, `superseded` |
 | `date` | type: decision or changelog | `YYYY-MM-DD` format |
 
-### Explained code
-
-A descriptive doc can declare repository-root globs as a string, inline list, or block list:
-
-```yaml
-explains: ["Services/Auth/**", "Models/User.cs"]
-```
-
-Use `/` or `\` separators, optional `./`, `*` within a segment, `**` across directories,
-and `?` for one character. Quote patterns when needed by YAML. Every glob must match a file;
-empty lists, mappings, absolute paths, `..` and unsupported glob syntax are check errors.
-`dydo pr-ready --base <merge-target>` warns when explained paths change without their doc.
-Update the named doc or state it still holds. These warnings do not block readiness.
-`dydo check --base <merge-target>` includes the same advisory comparison; ordinary `check`
-validates declarations without consulting a diff. The comparison includes committed, staged
-and unstaged changes since the merge base. `pr-ready` defaults to the local `origin/HEAD`;
-use `--base` for a feature target. No refs are fetched.
-
 ### Role Context Reads
 
 Role skills name repository-root paths in code spans under `## Must-Reads`; skill resources use

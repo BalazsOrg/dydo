@@ -1,0 +1,79 @@
+{
+  "base": "56b9fd8dee8c7af7d4174572454e0f9670a9d27f",
+  "docs": [
+    {
+      "path": "dydo/guides/customizing-roles.md",
+      "onlyExplainsAdded": true,
+      "bytes": 6169,
+      "baseBodySha256": "c4cc783dd77908101af4ed07f6d9d33c3e0293e993bd6cf0a5ecd1dc0dc58993"
+    },
+    {
+      "path": "dydo/reference/about-dynadocs.md",
+      "onlyExplainsAdded": true,
+      "bytes": 9588,
+      "baseBodySha256": "cabe8574e7998150092a98fcf6fccc6e3da25ccd2a3af51e61f051d0079781f6"
+    },
+    {
+      "path": "dydo/reference/configuration.md",
+      "onlyExplainsAdded": true,
+      "bytes": 12475,
+      "baseBodySha256": "aa17d9520e44bc2d832a30d49adae09e06fd7146ede27b8b528029aac92ce61c"
+    },
+    {
+      "path": "dydo/reference/writing-docs.md",
+      "onlyExplainsAdded": true,
+      "bytes": 4208,
+      "baseBodySha256": "5aa214ae49ce226b70cfceffeb8774b9e769ad9ebe9448830df0dd20aac03e35"
+    },
+    {
+      "path": "dydo/understand/about.md",
+      "onlyExplainsAdded": true,
+      "bytes": 1962,
+      "baseBodySha256": "1abfe5410f529b0be189b90fc020950faa9d7f6e7e62f4db7abbdc992981b025"
+    },
+    {
+      "path": "dydo/understand/architecture.md",
+      "onlyExplainsAdded": true,
+      "bytes": 6142,
+      "baseBodySha256": "ceeeb0d7a4bb9284d2ffd8c56b5de50ddc1acb34d422fcd0e489d5f80f0bbd1e"
+    },
+    {
+      "path": "dydo/understand/documentation-model.md",
+      "onlyExplainsAdded": true,
+      "bytes": 2989,
+      "baseBodySha256": "e8ce7e4980ba5d6cf40215b283664653b6c5ffc00b033af87272348881363300"
+    },
+    {
+      "path": "dydo/understand/scaffold-and-customization.md",
+      "onlyExplainsAdded": true,
+      "bytes": 4930,
+      "baseBodySha256": "90344c065c304d6a59b289b2c832f903a1074480ffafe715088d526243de3870"
+    },
+    {
+      "path": "dydo/reference/coverage-tools.md",
+      "identicalToFeatureTip": true,
+      "bytes": 64897
+    },
+    {
+      "path": "dydo/reference/dydo-commands.md",
+      "identicalToFeatureTip": true,
+      "bytes": 51521
+    },
+    {
+      "path": "dydo/understand/guard-system.md",
+      "identicalToFeatureTip": true,
+      "bytes": 50344
+    },
+    {
+      "path": "Scaffold/dydo/reference/dydo-commands.md",
+      "identicalToFeatureTip": true,
+      "bytes": 50628
+    },
+    {
+      "path": "Scaffold/dydo/reference/writing-docs.md",
+      "identicalToFeatureTip": true,
+      "bytes": 4112
+    }
+  ],
+  "addedSplitPages": []
+}

@@ -1,0 +1,7 @@
+test_owned_policy_docs_replace_tiers_with_the_dr048_gate_set (test_testing_facade.TestingFacadeTests.test_owned_policy_docs_replace_tiers_with_the_dr048_gate_set) ... ok
+test_owned_policy_docs_replace_tiers_with_the_dr048_gate_set (test_testing_facade.PortableTestingFacadeTests.test_owned_policy_docs_replace_tiers_with_the_dr048_gate_set) ... ok
+
+----------------------------------------------------------------------
+Ran 2 tests in 0.003s
+
+OK
