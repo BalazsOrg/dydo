@@ -1,0 +1,22 @@
+{
+  "coverage-and-assurance-tools": "dydo/reference/coverage-tools.md",
+  "provisioning": "dydo/reference/coverage-tools-provisioning.md",
+  "distribution-runtime-requirements": "dydo/reference/coverage-tools-provisioning.md",
+  "operations": "dydo/reference/coverage-tools-running.md",
+  "memory-cap": "dydo/reference/coverage-tools-running.md",
+  "declared-rows": "dydo/reference/coverage-tools-running.md",
+  "row-states-exits-and-evidence": "dydo/reference/coverage-tools-results.md",
+  "the-adapter-summary": "dydo/reference/coverage-tools-results.md",
+  "tools": "dydo/reference/coverage-tools-results.md",
+  "commands": "dydo/reference/coverage-tools-results.md",
+  "collectors": "dydo/reference/coverage-tools-results.md",
+  "static-collectors": "dydo/reference/coverage-tools-statics.md",
+  "statechart-platform-measurement": "dydo/reference/coverage-tools-statics.md",
+  "coverage-collectors": "dydo/reference/coverage-tools-coverage.md",
+  "the-c-campaign": "dydo/reference/coverage-tools-measurement.md",
+  "opencover-and-methoddef-token-schema": "dydo/reference/coverage-tools-measurement.md",
+  "roslyn-policy-cc": "dydo/reference/coverage-tools-measurement.md",
+  "portable-pdb-document-origins": "dydo/reference/coverage-tools-measurement.md",
+  "toolchain-provenance": "dydo/reference/coverage-tools-measurement.md",
+  "related": "dydo/reference/coverage-tools.md"
+}

@@ -1,0 +1,7 @@
+COMMAND: ['systemd-run', '--user', '--scope', '--slice=app-t3code-agents-cbc6c2286251.slice', '-p', 'MemoryMax=4G', '-p', 'MemorySwapMax=0', '-p', 'OOMPolicy=continue', 'timeout', '120', '/usr/bin/python3', '--version']
+CANDIDATE: pinned base + docs-writer working tree; verify with audit.py
+DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false
+Running as unit: run-p3645171-i158773301.scope; invocation ID: 09e61868a26d41b29bc437021876b0b1
+Python 3.14.4
+
+EXIT: 0

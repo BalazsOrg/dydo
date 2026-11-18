@@ -20,6 +20,13 @@ This folder answers "What IS this?" - the foundational context that agents need 
 - **task-lifecycle.md** - Task states from creation through completion
 - **documentation-model.md** - JITI philosophy and doc structure
 - **scaffold-and-customization.md** - Skill folders, the `Scaffold/` source, and role customization
+- [Guard System: Hook and Integration](./guard-system-hook.md)
+- [Guard System: Path Tiers](./guard-system-paths.md)
+- [Guard System: Bash Command Analysis](./guard-system-bash.md)
+- [Guard System: Denylist Audit](./guard-system-denylist.md)
+- [Guard System: Nudges](./guard-system-nudges.md)
+- [Guard System: Additional Enforcement](./guard-system-enforcement.md)
+
 
 ## When to Add Docs Here
 

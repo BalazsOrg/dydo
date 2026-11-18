@@ -11,64 +11,6 @@ using DynaDocs.Commands;
 /// </summary>
 public partial class CommandDocConsistencyTests
 {
-    private static readonly HashSet<string> ExcludedFromDocs = ["_complete"];
-    // Commands intentionally hidden from agent-facing quick reference
-    private static readonly HashSet<string> ExcludedPaths =
-    [
-        "guard lift", "guard restore", "completions", "help",
-        "worktree cleanup", "worktree merge", "worktree init-settings", "worktree prune", "worktree status"
-    ];
-    private static readonly HashSet<string> BuiltInOptionNames = ["--help", "-h", "-?", "--version"];
-
-    private static List<(string Path, Command Cmd)> GetAllCommands() =>
-        WalkCommands(DydoRootCommand.Create()).ToList();
-
-    private static List<(string Path, Command Cmd)> GetDocumentedCommands() =>
-        GetAllCommands().Where(c => !ExcludedFromDocs.Contains(c.Cmd.Name) && !ExcludedPaths.Contains(c.Path)).ToList();
-
-    private static IEnumerable<(string Path, Command Cmd)> WalkCommands(Command root, string prefix = "")
-    {
-        foreach (var sub in root.Subcommands)
-        {
-            var path = string.IsNullOrEmpty(prefix) ? sub.Name : $"{prefix} {sub.Name}";
-            yield return (path, sub);
-            foreach (var child in WalkCommands(sub, path))
-                yield return child;
-        }
-    }
-
-    /// <summary>
-    /// Extract sections keyed by command path from a reference doc.
-    /// Sections start with "### dydo &lt;path&gt;" and end at the next "### " or "---" or "## ".
-    /// </summary>
-    private static Dictionary<string, string> ExtractDocSections(string content)
-    {
-        var sections = new Dictionary<string, string>();
-        var headerPattern = new Regex(@"^### dydo (.+?)$", RegexOptions.Multiline);
-        var matches = headerPattern.Matches(content);
-
-        for (int i = 0; i < matches.Count; i++)
-        {
-            var name = matches[i].Groups[1].Value.Trim();
-            var start = matches[i].Index + matches[i].Length;
-            var end = i + 1 < matches.Count ? matches[i + 1].Index : content.Length;
-
-            var nextBoundary = Regex.Match(content[start..end], @"^(---|## )", RegexOptions.Multiline);
-            if (nextBoundary.Success)
-                end = start + nextBoundary.Index;
-
-            sections[name] = content[start..end];
-        }
-
-        return sections;
-    }
-
-    private static HashSet<string> ExtractFlags(string text)
-    {
-        var pattern = new Regex(@"`(--[\w-]+)(?:\s[^`]*)?`");
-        return pattern.Matches(text).Select(m => m.Groups[1].Value).ToHashSet();
-    }
-
     [Fact]
     public void AllCommands_AppearInHelpText()
     {
@@ -86,12 +28,10 @@ public partial class CommandDocConsistencyTests
     }
 
     [Fact]
-    [Trait("Job", "trap: split command references must not hide option/example inconsistencies")]
     public void AllOptions_AppearInReferenceDoc()
     {
         var commands = GetDocumentedCommands();
-        var refDoc = ReadCommandReference("dydo");
-        var sections = ExtractDocSections(refDoc);
+        var sections = ReadCommandSections(Path.Combine("dydo", "reference", "dydo-commands.md"));
 
         var missing = new List<string>();
         foreach (var (path, cmd) in commands)
@@ -118,14 +58,10 @@ public partial class CommandDocConsistencyTests
     }
 
     [Fact]
-    [Trait("Job", "trap: split command references must not hide option/example inconsistencies")]
     public void ReferenceDocAndTemplate_HaveSameOptions()
     {
-        var refDoc = ReadCommandReference("dydo");
-        var template = ReadCommandReference("Scaffold/dydo");
-
-        var refSections = ExtractDocSections(refDoc);
-        var tmplSections = ExtractDocSections(template);
+        var refSections = ReadCommandSections(Path.Combine("dydo", "reference", "dydo-commands.md"));
+        var tmplSections = ReadCommandSections(Path.Combine("Scaffold", "dydo", "reference", "dydo-commands.md"));
 
         var allSectionNames = refSections.Keys.Union(tmplSections.Keys).ToHashSet();
         var mismatches = new List<string>();
@@ -163,15 +99,14 @@ public partial class CommandDocConsistencyTests
     }
 
     [Fact]
-    [Trait("Job", "trap: split command references must not hide option/example inconsistencies")]
     public void Examples_IncludeAllRequiredFlags()
     {
         var commands = GetDocumentedCommands();
-        var refDoc = ReadCommandReference("dydo");
-        var sections = ExtractDocSections(refDoc);
+        var sections = ReadCommandSections(Path.Combine("dydo", "reference", "dydo-commands.md"));
 
         var commandPaths = commands.Select(c => c.Path).ToHashSet();
         var missing = new List<string>();
+        var exampleCount = 0;
 
         foreach (var (path, cmd) in commands)
         {
@@ -192,6 +127,7 @@ public partial class CommandDocConsistencyTests
                 }
             }
 
+            exampleCount += exampleLines.Count;
             foreach (var opt in requiredOptions)
             {
                 var foundInAnyExample = exampleLines.Any(line =>
@@ -202,6 +138,7 @@ public partial class CommandDocConsistencyTests
             }
         }
 
+        Assert.True(exampleCount > 0, "No command examples with required options were discovered");
         Assert.True(missing.Count == 0,
             $"Required flags missing from examples in dydo-commands.md:\n  {string.Join("\n  ", missing)}");
     }
@@ -288,9 +225,10 @@ public partial class CommandDocConsistencyTests
             RegexOptions.IgnoreCase);
         var hits = new List<string>();
 
-        foreach (var file in files)
+        foreach (var file in files.SelectMany(file => Path.GetFileName(file) == "dydo-commands.md"
+                     ? CommandReferenceFamily.Paths(FindRepoFile(file)) : [FindRepoFile(file)]))
         {
-            var content = File.ReadAllText(FindRepoFile(file));
+            var content = File.ReadAllText(file);
             foreach (Match match in forbidden.Matches(content))
                 hits.Add($"{file}: {match.Value}");
         }
@@ -420,13 +358,18 @@ public partial class CommandDocConsistencyTests
     public void InstalledAboutDoc_MatchesTemplate()
     {
         var aboutDynadocs = File.ReadAllText(
-                FindRepoFile(Path.Combine("dydo", "reference", "about-dynadocs.md")));
+                FindRepoFile(Path.Combine("dydo", "reference", "about-dynadocs.md")))
+            .ReplaceLineEndings("\n").TrimEnd();
         var aboutTemplate = File.ReadAllText(
-                FindRepoFile(Path.Combine("Scaffold", "dydo", "reference", "about-dynadocs.md")));
+                FindRepoFile(Path.Combine("Scaffold", "dydo", "reference", "about-dynadocs.md")))
+            .ReplaceLineEndings("\n").TrimEnd();
 
-        Assert.Equal(
-            Regex.Replace(aboutTemplate, @"(?m)^explains:.*\r?\n", "").ReplaceLineEndings("\n").TrimEnd(),
-            Regex.Replace(aboutDynadocs, @"(?m)^explains:.*\r?\n", "").ReplaceLineEndings("\n").TrimEnd());
+        // Repository-specific declarations are not shipped to adopting projects.
+        // Keep all body bytes and every other frontmatter field in the parity assertion.
+        var frontmatterEnd = aboutDynadocs.IndexOf("\n---", 3, StringComparison.Ordinal);
+        Assert.True(frontmatterEnd > 0, "Installed about document needs frontmatter");
+        var frontmatter = Regex.Replace(aboutDynadocs[..frontmatterEnd], @"(?m)^explains:[^\n]*\n?", "").TrimEnd('\n');
+        Assert.Equal(aboutTemplate, frontmatter + aboutDynadocs[frontmatterEnd..]);
     }
 
     /// <summary>

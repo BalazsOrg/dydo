@@ -1,0 +1,54 @@
+COMMAND: ['systemd-run', '--user', '--scope', '--slice=app-t3code-agents-cbc6c2286251.slice', '-p', 'MemoryMax=4G', '-p', 'MemorySwapMax=0', '-p', 'OOMPolicy=continue', 'timeout', '120', 'dydo', 'help']
+CANDIDATE: pinned base + docs-writer working tree; verify with audit.py
+DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false
+Running as unit: run-p3645205-i158699370.scope; invocation ID: 37d1fc4aeaa74755bbf0c5967039c367
+DynaDocs (dydo) - Durable project knowledge and native skills for AI coding assistants.
+
+Setup Commands:
+  init <integration>     Initialize DynaDocs (claude, codex, all, none)
+  init <int> --join      Join existing project as new team member
+  adopt <version>        Record the dydo release the project adopted (dydoVersion)
+
+Documentation Commands:
+  check [path]           Validate docs, report violations
+  check --root <dir>     Check another project (graph, validate also take --root)
+  fix [path]             Auto-fix issues where possible
+  index [path]           Regenerate index.md from structure
+  graph <file>           Show graph connections for a file
+  graph stats [--top N]  Show top docs by incoming links
+
+Linear Commands:
+  map [--no-browser]     Serve a read-only map of a Linear Project on localhost
+  survey <project>       Print a read-only digest of a Linear Project's lanes
+
+Workspace Commands:
+  guard                  Check if action is allowed (for hooks)
+  mode show              List this machine's mode flags (overnight)
+  mode set <flag> <val>  Set a mode flag, e.g. mode set overnight on
+  clean [<worktree>...]  Remove linked worktrees; archives uncommitted work, keeps unmerged branches
+  clean --all            Every linked worktree (--dry-run first; --archive lists the archive)
+  pr-ready [path]        Check a PR can be opened: clean tree, HEAD pushed (--body checks the body)
+  merge <pr> --match-head-commit <sha> --match-base-commit <sha>
+                         Merge a reviewed PR into its feature/* branch (--dry-run checks only)
+
+Validation Commands:
+  validate               Validate local configuration and nudges
+  gap-check [args]       Run the configured coverage gap check
+  statechart             Check a TLA+ model or save its prerequisite installation plan
+  statechart resume      Install locked prerequisites and continue a saved request
+  statechart doctor      Inspect installed statechart assets and local prerequisites offline
+  statechart install-skill Install matching statechart skill into an explicit project
+
+Utility:
+  completions <shell>    Generate shell completions (bash, zsh, powershell)
+  version                Display version information
+  help                   Display this help
+
+Exit codes:
+  0 - Success / Action allowed
+  1 - Validation errors found
+  2 - Tool error / Action blocked
+
+For detailed command reference, see: ./dydo/reference/dydo-commands.md
+
+EXIT: 0

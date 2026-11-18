@@ -1,0 +1,82 @@
+[
+  {
+    "name": "green",
+    "argv": [
+      "dotnet",
+      "test",
+      "DynaDocs.Tests/DynaDocs.Tests.csproj",
+      "--no-restore",
+      "--filter",
+      "FullyQualifiedName~AllOptions_AppearInReferenceDoc",
+      "--verbosity",
+      "quiet",
+      "--logger",
+      "trx;LogFileName=green.trx",
+      "--results-directory",
+      "/tmp/dyd-1187-split-green"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "discovery",
+    "argv": [
+      "dotnet",
+      "test",
+      "DynaDocs.Tests/DynaDocs.Tests.csproj",
+      "--no-restore",
+      "--filter",
+      "FullyQualifiedName~ExplainsCommandTests|FullyQualifiedName~CheckCommandTests|FullyQualifiedName~CheckDocValidatorTests|FullyQualifiedName~PrReadyCommandTests|FullyQualifiedName~GuardPrReadyTests|FullyQualifiedName~GuardPrReadyBodyFileTests|FullyQualifiedName~DocScannerTests|FullyQualifiedName~Frontmatter|FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~InitCheckIntegrationTests|FullyQualifiedName~InitCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~CommandSmokeTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~CheckAssertionTests|FullyQualifiedName~OptionalSummaries|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~CommandReferenceFamily",
+      "--verbosity",
+      "quiet",
+      "--list-tests"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "light",
+    "argv": [
+      "dotnet",
+      "test",
+      "DynaDocs.Tests/DynaDocs.Tests.csproj",
+      "--no-restore",
+      "--filter",
+      "FullyQualifiedName~ExplainsCommandTests|FullyQualifiedName~CheckCommandTests|FullyQualifiedName~CheckDocValidatorTests|FullyQualifiedName~PrReadyCommandTests|FullyQualifiedName~GuardPrReadyTests|FullyQualifiedName~GuardPrReadyBodyFileTests|FullyQualifiedName~DocScannerTests|FullyQualifiedName~Frontmatter|FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~InitCheckIntegrationTests|FullyQualifiedName~InitCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~CommandSmokeTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~CheckAssertionTests|FullyQualifiedName~OptionalSummaries|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~CommandReferenceFamily",
+      "--verbosity",
+      "quiet",
+      "--logger",
+      "trx;LogFileName=light.trx",
+      "--results-directory",
+      "/tmp/dyd-1187-split-light"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "dydo-check",
+    "argv": [
+      "dotnet",
+      "bin/Debug/net10.0/dydo.dll",
+      "check"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "dydo-check-base",
+    "argv": [
+      "dotnet",
+      "bin/Debug/net10.0/dydo.dll",
+      "check",
+      "--base",
+      "be0ae28e71b71ff0a9f37593d22a363cc0e6b9ad"
+    ],
+    "exit": 0
+  },
+  {
+    "name": "whitespace",
+    "argv": [
+      "git",
+      "diff",
+      "--check"
+    ],
+    "exit": 0
+  }
+]

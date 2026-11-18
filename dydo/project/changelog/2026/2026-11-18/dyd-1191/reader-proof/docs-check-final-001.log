@@ -1,0 +1,55 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=4G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "120",
+    "dydo",
+    "check"
+  ],
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4",
+  "head": "c3f914dff9a36426b722f05058eb3cbc7b967312",
+  "sources": {
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs": "a3d68dac698c3e692b0b2ab954d72990a40f6545ffeb60d33db140bc25433ff4",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Family.cs": "871d306b4724f7d8ecfbfa508783fb1e9804e9afb395fc523a07fe5f95139fd0",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs": "64165e6e4cc2d03c19f3bfd559a939d270d52089a8fbe8d1b50a91b6ad003ec8",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.Hosts.cs": "99b3c0d494e1dc9a7525b0719e8dfd4dab43e0d5ce57a98da86537aa72657f69",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.cs": "d7591a74ac92eeb2df89b16b932d342d6ccde166eb58fa622c5430ac345137ec",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.Metadata.cs": "123ecc3e31531687cafb035cd7d4640bf81e61c534af6acd90980cbe8572b753",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.cs": "c0516f1660d64f208cc0cc95d9bb3bb78e51e34f4fa40b212865d12230d28925",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_04.py": "7806a0d9bd5c463f466186f88b056bc4502e0c241afff4230a64910f55a4a3c6",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_2.py": "128f02d10ccd8660b99fea8569bf4dbce38480610627d394ce70dce09ada8083",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_08.py": "2cb37e2927a56d5e7a81681e178a40467f3a50c38f880bb2a90f2b445d7643f4",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade.py": "8d69f62f0c8875a5c4c63f47831c07be15d98b709cd97fd05d18a66562b35905",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_07.py": "d24b53d426bde2b6b34c7aec0b7e9d1a736a36a1a7b8215b600c180675dbb453",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_05.py": "0affcf7dff45851d12d598a57db2288695d6453ebe7e2bf49811dba3d36d8646",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_06.py": "da220dae5ecf161fd1c238805a8b035762aa281d97aaad89b250802ed208b829",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_02.py": "d6c402de4179d3d64326d94bb539afbf0a3c92c70d6729180f664362c02244f9",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_01.py": "521d7cf763d5ecef8ae85fd2e083eeb3bda5036f33f2db4efd3032732f0f1496",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_support.py": "9b3f1064d930f9453346c5ba82f939a92101388a09515d500e4544f68fc0cffc",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_03.py": "5677a31fb6c171eb2d11ca7f635cd22ea2bc195b102be2ded9e97268a56b92e3",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_1.py": "55a698c2f832daffa95e12e88eb4b42fd870667c458f338e6d5b27485b803424"
+  },
+  "exit": 0,
+  "dotnet_env": {
+    "MSBUILDDISABLENODEREUSE": "1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
+    "UseSharedCompilation": "false"
+  }
+}
+Running as unit: run-p3995364-i159050586.scope; invocation ID: 69885afbe2c84474832942b0490580d0
+Checking /home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4/dydo...
+
+Found 0 errors, 0 warnings in 928 files.
+
+All checks passed.
+
+EXIT: 0

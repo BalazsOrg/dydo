@@ -1,0 +1,6 @@
+Test run for /home/balazs/.t3/worktrees/DynaDocs/t3-72d10344-6941aa1ba4e04f47/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+WARNING: Overwriting results file: /tmp/dyd-1187-split-light/light.trx
+Results File: /tmp/dyd-1187-split-light/light.trx
+
+Passed!  - Failed:     0, Passed:   741, Skipped:     0, Total:   741, Duration: 1 m 1 s - DynaDocs.Tests.dll (net10.0)

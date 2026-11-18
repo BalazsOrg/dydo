@@ -1,0 +1,10 @@
+{
+  "limitBytes": 20000,
+  "oversized": [
+    {
+      "path": "DynaDocs.Tests/coverage/test-associations.json",
+      "bytes": 62905
+    }
+  ],
+  "disposition": "DYD-1192 is a nonblocking should per Admiral ruling; no size pass claimed for manifest"
+}

@@ -66,5 +66,5 @@ policy.
 ## Related
 
 - [Guard System](../../understand/guard-system.md) - What the hook does once wired
-- [CLI Commands](../../reference/dydo-commands.md#dydo-init) - The files init writes
+- [CLI Commands](./../../reference/dydo-commands-core.md#dydo-init) - The files init writes
 - [DR 055 - Native Agent Memory Off and Guarded](./055-native-agent-memory-off-and-guarded.md)
