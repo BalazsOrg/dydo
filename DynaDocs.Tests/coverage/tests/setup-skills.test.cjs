@@ -7,36 +7,20 @@ const { spawnSync } = require('node:child_process');
 
 const repoRoot = path.resolve(__dirname, '..', '..', '..');
 const script = path.join(repoRoot, 'setup-skills.mjs');
+const hostRoots = ['.claude', '.agents'];
 
-test('selected statechart projects only that skill and preserves unrelated dangling links and empty categories', () => {
-  inRoot((root) => {
-    writeSkill(root, 'statechart', { category: 'engineering' });
-    fs.mkdirSync(path.join(root, 'skills', 'empty'));
-    const unrelated = path.join(root, '.agents', 'skills', 'removed');
-    fs.mkdirSync(path.dirname(unrelated), { recursive: true });
-    fs.symlinkSync(path.join(root, 'skills', 'gone'), unrelated, 'junction');
-    const result = runSetup('--root', root, '--skill', 'statechart');
-    assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, /1 skills, 2 projections created, 0 links to deleted skills removed/);
-    assert.ok(fs.lstatSync(unrelated).isSymbolicLink());
-    for (const host of ['.agents', '.claude'])
-      assert.equal(fs.realpathSync(path.join(root, host, 'skills', 'statechart')),
-        fs.realpathSync(path.join(root, 'skills', 'engineering', 'statechart')));
-  });
-});
-
-function writeSkill(root, name, { category = 'cat', withBody = true } = {}) {
+function writeSkill(root, category, name) {
   const skillDir = path.join(root, 'skills', category, name);
   fs.mkdirSync(skillDir, { recursive: true });
-  if (withBody) fs.writeFileSync(path.join(skillDir, 'SKILL.md'), `---\nname: ${name}\ndescription: fixture\n---\nbody\n`);
+  fs.writeFileSync(path.join(skillDir, 'SKILL.md'), `---\nname: ${name}\ndescription: fixture\n---\nbody\n`);
 }
 
-function runSetup(...args) {
-  return spawnSync(process.execPath, [script, ...args], { cwd: os.tmpdir(), encoding: 'utf8', timeout: 10000 });
+function runSetup(root) {
+  return spawnSync(process.execPath, [script, '--root', root], { cwd: os.tmpdir(), encoding: 'utf8', timeout: 10000 });
 }
 
 function inRoot(callback) {
-  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dyd216-setup-skills-'));
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'dydo-setup-skills-'));
   try {
     callback(root);
   } finally {
@@ -44,441 +28,83 @@ function inRoot(callback) {
   }
 }
 
-test('link creation for both host roots from a canonical skills tree, walking categories to any depth by the SKILL.md rule', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { category: 'engineering' });
-    writeSkill(root, 'beta', { category: 'productivity' });
-    writeSkill(root, 'gamma', { category: 'roles/crew' });
-    // A skill's own subfolders are never walked: resources/ inside a skill is not a category.
-    fs.mkdirSync(path.join(root, 'skills', 'engineering', 'alpha', 'resources'), { recursive: true });
+// Every entry under both host roots: its kind, its raw link text, its inode, and a file's bytes.
+function snapshot(root) {
+  const entries = {};
+  for (const host of hostRoots) {
+    const hostSkills = path.join(root, host, 'skills');
+    if (!fs.existsSync(hostSkills)) continue;
+    for (const name of fs.readdirSync(hostSkills).sort()) {
+      const target = path.join(hostSkills, name);
+      const stats = fs.lstatSync(target);
+      entries[`${host}/${name}`] = stats.isSymbolicLink()
+        ? { link: fs.readlinkSync(target), ino: stats.ino }
+        : { directory: fs.readdirSync(target).map((file) => [file, fs.readFileSync(path.join(target, file), 'utf8')]) };
+    }
+  }
+  return entries;
+}
 
-    const result = runSetup('--root', root);
+// Job: contract: README "Adopting the skills" step 3, every skill linked flat into both host roots (DYD-219)
+test('both host roots link every skill flat, whatever category depth holds it', () => {
+  inRoot((root) => {
+    const skills = { alpha: 'engineering', beta: 'productivity', gamma: 'roles/crew' };
+    for (const [name, category] of Object.entries(skills)) writeSkill(root, category, name);
+
+    const result = runSetup(root);
 
     assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, /3 skills, 6 projections created/);
-    const categories = { alpha: 'engineering', beta: 'productivity', gamma: 'roles/crew' };
-    for (const hostRoot of ['.claude', '.agents']) {
-      assert.deepEqual(fs.readdirSync(path.join(root, hostRoot, 'skills')).sort(), ['alpha', 'beta', 'gamma'],
-        `${hostRoot}/skills must hold one flat entry per skill and no category entry`);
-      for (const name of ['alpha', 'beta', 'gamma']) {
-        const target = path.join(root, hostRoot, 'skills', name);
-        const stats = fs.lstatSync(target);
-        assert.ok(stats.isSymbolicLink(), `${target} was not created as a link`);
-        assert.equal(
-          fs.realpathSync(target),
-          fs.realpathSync(path.join(root, 'skills', categories[name], name)),
-          `${target} did not resolve to its canonical skill, projected FLAT with no category level`,
-        );
-      }
+    for (const host of hostRoots) {
+      const hostSkills = path.join(root, host, 'skills');
+      assert.deepEqual(fs.readdirSync(hostSkills).sort(), Object.keys(skills));
+      for (const [name, category] of Object.entries(skills))
+        assert.equal(fs.realpathSync(path.join(hostSkills, name)), fs.realpathSync(path.join(root, 'skills', category, name)));
     }
   });
 });
 
-test('a rerun is idempotent: it creates nothing more and still exits zero', () => {
+// Job: contract: README "Adopting the skills", the script is safe to rerun
+test('a rerun exits zero and leaves every link exactly as it was', () => {
   inRoot((root) => {
-    writeSkill(root, 'alpha');
-    const first = runSetup('--root', root);
-    assert.equal(first.status, 0, first.stderr);
+    writeSkill(root, 'engineering', 'alpha');
+    writeSkill(root, 'roles/crew', 'beta');
+    assert.equal(runSetup(root).status, 0);
+    const before = snapshot(root);
 
-    const second = runSetup('--root', root);
+    const rerun = runSetup(root);
 
-    assert.equal(second.status, 0, second.stderr);
-    assert.match(second.stdout, /1 skills, 0 projections created/);
+    assert.equal(rerun.status, 0, rerun.stderr);
+    assert.deepEqual(snapshot(root), before);
   });
 });
 
-test('refuses a non-zero exit when a target already exists as a human-owned real directory, leaving it untouched and creating nothing', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-    const humanDir = path.join(root, '.claude', 'skills', 'alpha');
-    fs.mkdirSync(humanDir, { recursive: true });
-    const humanFile = path.join(humanDir, 'human-owned.txt');
-    fs.writeFileSync(humanFile, 'do not touch');
+// Job: trap: README "Adopting the skills", it checks its whole plan before creating anything and
+// never replaces host configuration or unrelated skills (DYD-91, DYD-225)
+for (const [kind, occupy] of [
+  ['a human-owned directory', (root, target) => {
+    fs.mkdirSync(target, { recursive: true });
+    fs.writeFileSync(path.join(target, 'human-owned.txt'), 'do not touch');
+  }],
+  ['a link elsewhere in the project', (root, target) => {
+    fs.mkdirSync(path.join(root, 'elsewhere'));
+    fs.symlinkSync(path.join(root, 'elsewhere'), target, 'junction');
+  }],
+  ['a foreign link outside the project', (root, target) => {
+    fs.symlinkSync(os.tmpdir(), target, 'junction');
+  }],
+]) {
+  test(`a collision with ${kind} is refused and both host roots stay unchanged`, () => {
+    inRoot((root) => {
+      writeSkill(root, 'engineering', 'alpha');
+      writeSkill(root, 'engineering', 'beta');
+      fs.mkdirSync(path.join(root, '.agents', 'skills'), { recursive: true });
+      occupy(root, path.join(root, '.agents', 'skills', 'beta'));
+      const before = snapshot(root);
 
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Refusing to replace human-owned or conflicting path/);
-    assert.ok(fs.lstatSync(humanDir).isDirectory() && !fs.lstatSync(humanDir).isSymbolicLink(), 'human-owned directory was replaced');
-    assert.equal(fs.readFileSync(humanFile, 'utf8'), 'do not touch');
-    assert.ok(!fs.existsSync(path.join(root, '.agents', 'skills', 'alpha')), 'setup created a projection despite the refusal');
-  });
-});
-
-test('refuses a link that already points somewhere other than its canonical skill', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-    const elsewhere = path.join(root, 'elsewhere');
-    fs.mkdirSync(elsewhere, { recursive: true });
-    const hostSkills = path.join(root, '.claude', 'skills');
-    fs.mkdirSync(hostSkills, { recursive: true });
-    fs.symlinkSync(elsewhere, path.join(hostSkills, 'alpha'), 'junction');
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Refusing to replace human-owned or conflicting path/);
-  });
-});
-
-test('migrates a dangling link left by the old flat layout to the current canonical category path', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { category: 'engineering' });
-    const hostSkillsClaude = path.join(root, '.claude', 'skills');
-    const hostSkillsAgents = path.join(root, '.agents', 'skills');
-    fs.mkdirSync(hostSkillsClaude, { recursive: true });
-    fs.mkdirSync(hostSkillsAgents, { recursive: true });
-    // Flat-layout links straight at skills/alpha; alpha lives under skills/engineering/alpha
-    // (DYD-219), so both dangle.
-    fs.symlinkSync(path.join(root, 'skills', 'alpha'), path.join(hostSkillsClaude, 'alpha'), 'junction');
-    fs.symlinkSync(path.join(root, 'skills', 'alpha'), path.join(hostSkillsAgents, 'alpha'), 'junction');
-
-    const result = runSetup('--root', root);
-
-    assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, /1 skills, 2 projections created, 0 links to deleted skills removed/);
-    for (const hostRoot of ['.claude', '.agents']) {
-      const target = path.join(root, hostRoot, 'skills', 'alpha');
-      assert.ok(fs.lstatSync(target).isSymbolicLink(), `${target} was not migrated to a link`);
-      assert.equal(
-        fs.realpathSync(target),
-        fs.realpathSync(path.join(root, 'skills', 'engineering', 'alpha')),
-        `${target} did not resolve to the current canonical category path`,
-      );
-    }
-  });
-});
-
-test('refuses a foreign link whose target lies entirely outside the canonical skills tree', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-    const foreign = fs.mkdtempSync(path.join(os.tmpdir(), 'dyd225-setup-skills-foreign-'));
-    try {
-      const hostSkills = path.join(root, '.claude', 'skills');
-      fs.mkdirSync(hostSkills, { recursive: true });
-      fs.symlinkSync(foreign, path.join(hostSkills, 'alpha'), 'junction');
-
-      const result = runSetup('--root', root);
+      const result = runSetup(root);
 
       assert.notEqual(result.status, 0);
-      assert.match(result.stderr, /Refusing to replace human-owned or conflicting path/);
-      assert.ok(!fs.existsSync(path.join(root, '.agents', 'skills', 'alpha')), 'setup created a projection despite the refusal');
-    } finally {
-      fs.rmSync(foreign, { recursive: true, force: true });
-    }
-  });
-});
-
-test('a rerun after migrating a dangling flat-layout link creates nothing further and stays idempotent', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { category: 'engineering' });
-    const hostSkills = path.join(root, '.claude', 'skills');
-    fs.mkdirSync(hostSkills, { recursive: true });
-    fs.symlinkSync(path.join(root, 'skills', 'alpha'), path.join(hostSkills, 'alpha'), 'junction');
-
-    const first = runSetup('--root', root);
-    assert.equal(first.status, 0, first.stderr);
-    assert.match(first.stdout, /projections created/);
-
-    const second = runSetup('--root', root);
-
-    assert.equal(second.status, 0, second.stderr);
-    assert.match(second.stdout, /1 skills, 0 projections created/);
-    const target = path.join(root, '.claude', 'skills', 'alpha');
-    assert.ok(fs.lstatSync(target).isSymbolicLink(), `${target} was not left as a link after the second run`);
-    assert.equal(
-      fs.realpathSync(target),
-      fs.realpathSync(path.join(root, 'skills', 'engineering', 'alpha')),
-      `${target} did not still resolve to the correct canonical category path after the second run`,
-    );
-  });
-});
-
-test('re-points a link left by the previous category layout to the skill\'s nested category, then stays idempotent', () => {
-  inRoot((root) => {
-    // alpha's old category is gone entirely; beta's old category still exists, holding gamma.
-    writeSkill(root, 'alpha', { category: 'roles/crew' });
-    writeSkill(root, 'beta', { category: 'roles/officers' });
-    writeSkill(root, 'gamma', { category: 'engineering' });
-    const former = { alpha: path.join(root, 'skills', 'orchestration', 'alpha'), beta: path.join(root, 'skills', 'engineering', 'beta') };
-    for (const hostRoot of ['.claude', '.agents']) {
-      fs.mkdirSync(path.join(root, hostRoot, 'skills'), { recursive: true });
-      for (const [name, target] of Object.entries(former)) fs.symlinkSync(target, path.join(root, hostRoot, 'skills', name), 'junction');
-    }
-
-    const first = runSetup('--root', root);
-
-    assert.equal(first.status, 0, first.stderr);
-    assert.match(first.stdout, /3 skills, 6 projections created/);
-    const categories = { alpha: 'roles/crew', beta: 'roles/officers', gamma: 'engineering' };
-    for (const hostRoot of ['.claude', '.agents']) {
-      for (const [name, category] of Object.entries(categories)) {
-        const target = path.join(root, hostRoot, 'skills', name);
-        assert.ok(fs.lstatSync(target).isSymbolicLink(), `${target} was not left as a link`);
-        assert.equal(fs.realpathSync(target), fs.realpathSync(path.join(root, 'skills', category, name)),
-          `${target} did not resolve to its nested canonical category`);
-      }
-    }
-
-    const second = runSetup('--root', root);
-
-    assert.equal(second.status, 0, second.stderr);
-    assert.match(second.stdout, /3 skills, 0 projections created/);
-  });
-});
-
-test('removes our links whose target skill no longer exists, unlinking only, and a rerun removes nothing', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { category: 'engineering' });
-    const leftover = path.join(root, 'skills', 'engineering', 'alpha', 'resources');
-    fs.mkdirSync(leftover, { recursive: true });
-    fs.writeFileSync(path.join(leftover, 'keep.md'), 'keep');
-    for (const hostRoot of ['.claude', '.agents']) {
-      const hostSkills = path.join(root, hostRoot, 'skills');
-      fs.mkdirSync(hostSkills, { recursive: true });
-      // One link dangles at a deleted skill; the other still reaches a folder, but no skill lives there.
-      fs.symlinkSync(path.join(root, 'skills', 'roles', 'crew', 'specifier'), path.join(hostSkills, 'specifier'), 'junction');
-      fs.symlinkSync(leftover, path.join(hostSkills, 'hardener'), 'junction');
-    }
-
-    const first = runSetup('--root', root);
-
-    assert.equal(first.status, 0, first.stderr);
-    for (const hostRoot of ['.claude', '.agents']) {
-      assert.deepEqual(fs.readdirSync(path.join(root, hostRoot, 'skills')), ['alpha'], `${hostRoot}/skills kept a link to a deleted skill`);
-    }
-    assert.equal(fs.readFileSync(path.join(leftover, 'keep.md'), 'utf8'), 'keep', 'removing a link deleted the folder behind it');
-    assert.match(first.stdout, /1 skills, 2 projections created, 4 links to deleted skills removed/);
-
-    const second = runSetup('--root', root);
-
-    assert.equal(second.status, 0, second.stderr);
-    assert.match(second.stdout, /1 skills, 0 projections created, 0 links to deleted skills removed/);
-  });
-});
-
-test('leaves a foreign link, a real directory, and a link to a current skill under another name untouched', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-    const foreign = fs.mkdtempSync(path.join(os.tmpdir(), 'dyd226-setup-skills-foreign-'));
-    try {
-      const hostSkills = path.join(root, '.claude', 'skills');
-      fs.mkdirSync(path.join(hostSkills, 'human-skill'), { recursive: true });
-      fs.writeFileSync(path.join(hostSkills, 'human-skill', 'SKILL.md'), 'human');
-      fs.symlinkSync(foreign, path.join(hostSkills, 'foreign'), 'junction');
-      fs.symlinkSync(path.join(root, 'skills', 'cat', 'alpha'), path.join(hostSkills, 'alias'), 'junction');
-
-      const result = runSetup('--root', root);
-
-      assert.equal(result.status, 0, result.stderr);
-      assert.match(result.stdout, /0 links to deleted skills removed/);
-      assert.deepEqual(fs.readdirSync(hostSkills).sort(), ['alias', 'alpha', 'foreign', 'human-skill']);
-      assert.equal(fs.realpathSync(path.join(hostSkills, 'foreign')), fs.realpathSync(foreign));
-      assert.equal(fs.realpathSync(path.join(hostSkills, 'alias')), fs.realpathSync(path.join(root, 'skills', 'cat', 'alpha')));
-      assert.equal(fs.readFileSync(path.join(hostSkills, 'human-skill', 'SKILL.md'), 'utf8'), 'human');
-    } finally {
-      fs.rmSync(foreign, { recursive: true, force: true });
-    }
-  });
-});
-
-test('a collision in one host root refuses before any link to a deleted skill is removed from the other', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-    const dead = path.join(root, '.claude', 'skills', 'specifier');
-    fs.mkdirSync(path.dirname(dead), { recursive: true });
-    fs.symlinkSync(path.join(root, 'skills', 'cat', 'specifier'), dead, 'junction');
-    fs.mkdirSync(path.join(root, '.agents', 'skills', 'alpha'), { recursive: true });
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Refusing to replace human-owned or conflicting path/);
-    assert.ok(fs.lstatSync(dead).isSymbolicLink(), 'setup removed a link before the whole plan validated');
-    assert.ok(!fs.existsSync(path.join(root, '.claude', 'skills', 'alpha')), 'setup created a projection despite the refusal');
-  });
-});
-
-test('refuses a folder that holds neither SKILL.md nor a subfolder, as an empty category', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { withBody: false });
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /No canonical skills found in .*cat[\\/]alpha/);
-    assert.ok(!fs.existsSync(path.join(root, '.claude')), 'setup created host output despite the missing SKILL.md');
-    assert.ok(!fs.existsSync(path.join(root, '.agents')), 'setup created host output despite the missing SKILL.md');
-  });
-});
-
-test('refuses an empty nested category, even when its sibling category is populated', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { category: 'roles/crew' });
-    fs.mkdirSync(path.join(root, 'skills', 'roles', 'officers'), { recursive: true });
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /No canonical skills found in .*roles[\\/]officers/);
-    assert.ok(!fs.existsSync(path.join(root, '.claude')), 'setup created host output despite the empty category');
-  });
-});
-
-test('refuses the same skill name in a nested category and a flat one, naming both category paths', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { category: 'engineering' });
-    writeSkill(root, 'alpha', { category: 'roles/crew' });
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Duplicate skill name across categories: alpha \(engineering and roles\/crew\)/);
-    assert.ok(!fs.existsSync(path.join(root, '.claude')), 'setup created host output despite the duplicate name');
-  });
-});
-
-test('refuses a root that has no canonical skills directory', () => {
-  inRoot((root) => {
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Missing canonical skill directory/);
-  });
-});
-
-test('refuses a canonical skills directory that holds no skills', () => {
-  inRoot((root) => {
-    fs.mkdirSync(path.join(root, 'skills'), { recursive: true });
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /No canonical skills found in/);
-  });
-});
-
-test('refuses a category directory that holds no skills, even when another category is populated', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { category: 'engineering' });
-    fs.mkdirSync(path.join(root, 'skills', 'empty-category'), { recursive: true });
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /No canonical skills found in .*empty-category/);
-    assert.ok(!fs.existsSync(path.join(root, '.claude')), 'setup created host output despite the empty category');
-  });
-});
-
-test('refuses two categories that both claim the same skill name', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha', { category: 'engineering' });
-    writeSkill(root, 'alpha', { category: 'productivity' });
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Duplicate skill name across categories: alpha/);
-    assert.ok(!fs.existsSync(path.join(root, '.claude')), 'setup created host output despite the duplicate name');
-  });
-});
-
-test('refuses a host skill root that is not a directory', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-    fs.mkdirSync(path.join(root, '.claude'), { recursive: true });
-    fs.writeFileSync(path.join(root, '.claude', 'skills'), 'not a directory');
-
-    const result = runSetup('--root', root);
-
-    assert.notEqual(result.status, 0);
-    assert.match(result.stderr, /Host skill root is not a directory/);
-  });
-});
-
-test('an explicit --root confines every projection to that root', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-    // A sibling tmpdir stands in for "somewhere else": proving nothing leaked there is the same
-    // property as proving nothing leaked into the real checkout, but it holds regardless of
-    // whether this checkout happens to have .claude/skills or .agents/skills installed already.
-    const elsewhere = fs.mkdtempSync(path.join(os.tmpdir(), 'dyd219-setup-skills-elsewhere-'));
-    try {
-      const result = runSetup('--root', root);
-
-      assert.equal(result.status, 0, result.stderr);
-      assert.ok(fs.existsSync(path.join(root, '.claude', 'skills', 'alpha')), 'the explicit root received no projection');
-      assert.ok(!fs.existsSync(path.join(os.tmpdir(), 'skills')), 'setup projected relative to the working directory');
-      assert.deepEqual(fs.readdirSync(elsewhere), [], 'setup leaked something into a directory other than the explicit root');
-    } finally {
-      fs.rmSync(elsewhere, { recursive: true, force: true });
-    }
-  });
-});
-
-test('accepts a relative --root, resolving it against the working directory', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-
-    const result = spawnSync(process.execPath, [script, '--root', path.basename(root)], {
-      cwd: path.dirname(root), encoding: 'utf8', timeout: 10000,
+      assert.deepEqual(snapshot(root), before);
     });
-
-    assert.equal(result.status, 0, result.stderr);
-    assert.ok(fs.existsSync(path.join(root, '.agents', 'skills', 'alpha')), 'the relative root received no projection');
   });
-});
-
-test('rejects an unknown flag, an incomplete --root, and any extra argument', () => {
-  inRoot((root) => {
-    writeSkill(root, 'alpha');
-
-    for (const args of [['--nonsense', root], ['--root'], ['--root', ''], [root], ['--root', root, '--root', root]]) {
-      const result = runSetup(...args);
-
-      assert.notEqual(result.status, 0, `setup accepted ${JSON.stringify(args)}`);
-      assert.match(result.stderr, /usage: setup-skills\.mjs \[--root <existing-directory>\]/);
-    }
-    assert.ok(!fs.existsSync(path.join(root, '.claude')), 'a rejected argument still produced projections');
-  });
-});
-
-test('rejects a root that does not exist or is not a directory', () => {
-  inRoot((root) => {
-    const missing = runSetup('--root', path.join(root, 'absent'));
-    assert.notEqual(missing.status, 0);
-    assert.match(missing.stderr, /Root is not a directory/);
-
-    const file = path.join(root, 'plain.txt');
-    fs.writeFileSync(file, 'not a root');
-    const notDirectory = runSetup('--root', file);
-    assert.notEqual(notDirectory.status, 0);
-    assert.match(notDirectory.stderr, /Root is not a directory/);
-  });
-});
-
-test('with no arguments the root is the script\'s own directory, never the working directory', () => {
-  inRoot((root) => {
-    // Running the canonical file with no arguments would project into this checkout, so the default
-    // is exercised on a copy. The working directory below carries its own canonical skills tree: a
-    // root taken from cwd would succeed there and project 'decoy' instead of 'alpha'.
-    fs.copyFileSync(script, path.join(root, 'setup-skills.mjs'));
-    writeSkill(root, 'alpha');
-    const elsewhere = path.join(root, 'workdir');
-    writeSkill(elsewhere, 'decoy');
-
-    const result = spawnSync(process.execPath, [path.join(root, 'setup-skills.mjs')], {
-      cwd: elsewhere, encoding: 'utf8', timeout: 10000,
-    });
-
-    assert.equal(result.status, 0, result.stderr);
-    assert.match(result.stdout, /1 skills, 2 projections created/);
-    for (const hostRoot of ['.claude', '.agents']) {
-      const target = path.join(root, hostRoot, 'skills', 'alpha');
-      assert.ok(fs.existsSync(target) && fs.lstatSync(target).isSymbolicLink(), `${target} was not created beside the script`);
-      assert.equal(fs.realpathSync(target), fs.realpathSync(path.join(root, 'skills', 'cat', 'alpha')));
-      assert.ok(!fs.existsSync(path.join(elsewhere, hostRoot)), `setup rooted ${hostRoot} at the working directory`);
-    }
-  });
-});
+}

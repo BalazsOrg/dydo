@@ -75,7 +75,6 @@ def _subject_commands(root, tests=None, results=None):
     return [
         [*suite, "--filter", excluded, "--logger", "console;verbosity=normal",
          "--", "RunConfiguration.TreatNoTestsAsError=true"],
-        [sys.executable, str(root / "DynaDocs.Tests/coverage/tests/test_csharp_metrics.py")],
     ]
 
 
@@ -172,14 +171,6 @@ def _candidate_assemblies(root):
     if {path.stem for path in paths} != ASSEMBLY_NAMES:
         raise ValueError("Missing exact C# campaign assemblies")
     return sorted(set(paths))
-
-
-def _same_native_map(before, after):
-    keys = ("assembly_name", "module_id")
-    return (all(before[key] == after[key] for key in keys)
-            and before["documents"] == after["documents"] and [
-        (row["token"], row["identity"], row["key"], row["points"]) for row in before["methods"]
-    ] == [(row["token"], row["identity"], row["key"], row["points"]) for row in after["methods"]])
 
 
 def _same_instrumented_map(before, after):

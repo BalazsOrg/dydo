@@ -34,14 +34,14 @@ def _associated_tests(row, targets, tests, related):
 
 
 def validate_associations(inventory, manifest):
+    # DR 067 T5 retired DR 048 §3's "every non-trivial module has a test file" rule in favour of
+    # a job-tag lint, so a target with no associated test is not a finding. The manifest still
+    # feeds test selection and coverage mapping, so a malformed or dangling row stays an error.
     modules = _manifest_modules(manifest)
     sources = {row["path"]: row for row in inventory}
     targets = {path for path, row in sources.items() if row.get("role") == "target"}
-    required_targets = {path for path in targets if sources[path].get("executable")}
     tests = {path for path, row in sources.items() if row.get("role") == "test" and row.get("nativeTest", True)}
     related = set()
     for row in modules:
         _associated_tests(row, targets, tests, related)
-    return [{"gate": "test-association", "path": path,
-             "reason": "non-trivial target has no associated test file"}
-            for path in sorted(required_targets - related)]
+    return []
