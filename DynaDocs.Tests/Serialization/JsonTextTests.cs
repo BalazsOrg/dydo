@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json.Nodes;
 using DynaDocs.Serialization;
 
+[Trait("Job", "trap: DYD-392 (JSON writes keep the file's bytes, encoding and BOM)")]
 public class JsonTextTests
 {
     private static JsonNode Parse(string json) => JsonText.Parse(json)!;

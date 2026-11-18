@@ -4,6 +4,7 @@ using DynaDocs.Services;
 using System.Diagnostics;
 
 [Collection("Integration")]
+[Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
 public sealed class SafeDeleteBoundaryTests
 {
     [Theory]

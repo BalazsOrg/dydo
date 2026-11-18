@@ -1,207 +1,51 @@
 namespace DynaDocs.Tests.Services;
 
-using DynaDocs.Models;
-using DynaDocs.Services;
-using Xunit;
-
-public class DocGraphTests
+/// <summary>
+/// The document link graph as `dydo graph` shows it: outgoing links to a degree, incoming links,
+/// and repository statistics. External links are not edges; a cycle neither repeats nor lists the
+/// start document.
+/// </summary>
+[Collection("Integration")]
+[Trait("Job", "contract: dydo-commands-core.md dydo graph (--incoming, --degree) and dydo graph stats")]
+public sealed class DocGraphTests : IDisposable
 {
-    private readonly DocGraph _graph = new(new LinkResolver());
+    private const string Guide = "---\narea: guides\ntype: guide\n---\n";
+    private readonly DocsProject _project = new();
 
-    [Fact]
-    public void Build_CreatesGraphFromDocs()
+    public DocGraphTests()
     {
-        var docs = CreateDocsWithLinks();
+        // a -> b -> deep/c, b -> a (a cycle), d -> b, a -> an external page
+        _project.Write("guides/a.md", Guide + "\n# A\n\n[B](./b.md) [Ext](https://example.com/page)\n");
+        _project.Write("guides/b.md", Guide + "\n# B\n\n[C](./deep/c.md) [A](./a.md)\n");
+        _project.Write("guides/deep/c.md", Guide + "\n# C\n\nNo links.\n");
+        _project.Write("guides/d.md", Guide + "\n# D\n\n[B](./b.md)\n");
+    }
 
-        _graph.Build(docs, "/base");
+    [Theory]
+    [InlineData("guides/a.md", "guides/b.md", "guides/deep/c.md")]
+    [InlineData("guides/a.md --degree 2", "guides/deep/c.md", "guides/a.md")]
+    [InlineData("guides/a.md --degree 2", "guides/b.md", "example.com")]
+    [InlineData("guides/b.md --incoming", "guides/a.md", "guides/deep/c.md:")]
+    [InlineData("guides/b.md --incoming", "guides/d.md", "index.md:")]
+    [InlineData("guides/deep/c.md", "no outgoing links", "guides/")]
+    [InlineData("stats", "4 internal links", "example.com")]
+    public void Graph_ShowsTheLinkedDocuments(string args, string shown, string notShown)
+    {
+        var (code, output) = DydoCli.RunCombined(["graph", .. args.Split(' ')]);
 
-        Assert.True(_graph.HasDoc("index.md"));
-        Assert.True(_graph.HasDoc("guide.md"));
-        Assert.True(_graph.HasDoc("reference.md"));
+        Assert.True(code == 0, $"exit {code}:\n{output}");
+        Assert.Contains(shown, output);
+        Assert.DoesNotContain(notShown, output);
     }
 
     [Fact]
-    public void GetIncoming_ReturnsDocsLinkingToTarget()
+    public void Graph_UnknownDocument_IsAToolError()
     {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
+        var (code, output) = DydoCli.RunCombined("graph", "guides/missing.md");
 
-        var incoming = _graph.GetIncoming("reference.md");
-
-        Assert.Single(incoming);
-        Assert.Equal("guide.md", incoming[0].Doc);
-        Assert.Equal(5, incoming[0].LineNumber);
+        Assert.Equal(2, code);
+        Assert.Contains("guides/missing.md", output);
     }
 
-    [Fact]
-    public void GetIncoming_ReturnsMultipleIncoming()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        var incoming = _graph.GetIncoming("guide.md");
-
-        Assert.Equal(2, incoming.Count);
-        var sources = incoming.Select(x => x.Doc).OrderBy(x => x).ToList();
-        Assert.Contains("index.md", sources);
-        Assert.Contains("reference.md", sources);
-    }
-
-    [Fact]
-    public void GetIncoming_ReturnsEmptyForNoIncoming()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        var incoming = _graph.GetIncoming("orphan.md");
-
-        Assert.Empty(incoming);
-    }
-
-    [Fact]
-    public void GetWithinDegree_ReturnsDegreeOneLinks()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        var result = _graph.GetWithinDegree("index.md", 1);
-
-        Assert.Single(result);
-        Assert.Equal("guide.md", result[0].Doc);
-        Assert.Equal(1, result[0].Degree);
-    }
-
-    [Fact]
-    public void GetWithinDegree_ReturnsDegreeTwoLinks()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        var result = _graph.GetWithinDegree("index.md", 2);
-
-        Assert.Equal(2, result.Count);
-        var degree1 = result.Where(x => x.Degree == 1).Select(x => x.Doc).ToList();
-        var degree2 = result.Where(x => x.Degree == 2).Select(x => x.Doc).ToList();
-
-        Assert.Contains("guide.md", degree1);
-        Assert.Contains("reference.md", degree2);
-    }
-
-    [Fact]
-    public void GetWithinDegree_DoesNotIncludeStartDoc()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        var result = _graph.GetWithinDegree("index.md", 2);
-
-        Assert.DoesNotContain(result, x => x.Doc == "index.md");
-    }
-
-    [Fact]
-    public void GetWithinDegree_HandlesCircularLinks()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        var result = _graph.GetWithinDegree("guide.md", 3);
-
-        // guide -> reference -> guide (circular), but we should not revisit
-        var guideCount = result.Count(x => x.Doc == "guide.md");
-        Assert.Equal(0, guideCount); // Start doc not included, and not revisited
-    }
-
-    [Fact]
-    public void GetWithinDegree_ReturnsEmptyForNoLinks()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        var result = _graph.GetWithinDegree("orphan.md", 2);
-
-        Assert.Empty(result);
-    }
-
-    [Fact]
-    public void HasDoc_ReturnsTrueForExistingDoc()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        Assert.True(_graph.HasDoc("index.md"));
-        Assert.True(_graph.HasDoc("INDEX.MD")); // Case insensitive
-    }
-
-    [Fact]
-    public void HasDoc_ReturnsFalseForNonExistingDoc()
-    {
-        var docs = CreateDocsWithLinks();
-        _graph.Build(docs, "/base");
-
-        Assert.False(_graph.HasDoc("nonexistent.md"));
-    }
-
-    [Fact]
-    public void Build_IgnoresExternalLinks()
-    {
-        var doc = CreateDoc("test.md", [
-            new LinkInfo("[ext](https://example.com)", "ext", "https://example.com", null, LinkType.External, 1)
-        ]);
-
-        _graph.Build([doc], "/base");
-
-        var result = _graph.GetWithinDegree("test.md", 1);
-        Assert.Empty(result);
-    }
-
-    [Fact]
-    public void Build_HandlesNestedPaths()
-    {
-        var indexDoc = CreateDoc("index.md", [
-            new LinkInfo("[guide](./guides/setup.md)", "guide", "./guides/setup.md", null, LinkType.Markdown, 3)
-        ]);
-        var guideDoc = CreateDoc("guides/setup.md", [], "guides/setup.md");
-
-        _graph.Build([indexDoc, guideDoc], "/base");
-
-        var result = _graph.GetWithinDegree("index.md", 1);
-        Assert.Single(result);
-        Assert.Contains("guides/setup.md", result[0].Doc);
-    }
-
-    private static List<DocFile> CreateDocsWithLinks()
-    {
-        // index.md -> guide.md
-        // guide.md -> reference.md
-        // reference.md -> guide.md (circular)
-        // orphan.md (no links)
-
-        var indexDoc = CreateDoc("index.md", [
-            new LinkInfo("[Guide](./guide.md)", "Guide", "./guide.md", null, LinkType.Markdown, 3)
-        ]);
-
-        var guideDoc = CreateDoc("guide.md", [
-            new LinkInfo("[Ref](./reference.md)", "Ref", "./reference.md", null, LinkType.Markdown, 5)
-        ]);
-
-        var refDoc = CreateDoc("reference.md", [
-            new LinkInfo("[Guide](./guide.md)", "Guide", "./guide.md", null, LinkType.Markdown, 2)
-        ]);
-
-        var orphanDoc = CreateDoc("orphan.md", []);
-
-        return [indexDoc, guideDoc, refDoc, orphanDoc];
-    }
-
-    private static DocFile CreateDoc(string relativePath, List<LinkInfo> links, string? actualRelativePath = null)
-    {
-        return new DocFile
-        {
-            FilePath = $"/base/{actualRelativePath ?? relativePath}",
-            RelativePath = actualRelativePath ?? relativePath,
-            FileName = Path.GetFileName(relativePath),
-            Content = "# Test",
-            Links = links
-        };
-    }
+    public void Dispose() => _project.Dispose();
 }

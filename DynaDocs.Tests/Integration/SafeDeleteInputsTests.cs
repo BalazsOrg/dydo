@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Integration;
 using DynaDocs.Services;
 
 [Collection("Integration")]
+[Trait("Job", "trap: DYD-1133, DYD-1172 (repository exclude and attribute inputs survive; refusal output complete)")]
 public sealed class SafeDeleteInputsTests
 {
     [Theory]

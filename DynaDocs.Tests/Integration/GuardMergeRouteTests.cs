@@ -12,6 +12,7 @@ using static DynaDocs.Tests.Integration.PushedRepository;
 /// text and ordinary pushes pass. The project is a git tree on <c>feature</c>, pushed with -u.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: DYD-425 and DR 061 decision 7, merge routes are the user's or dydo merge's")]
 public class GuardMergeRouteTests : IntegrationTestBase
 {
     private const string Sha40 = "0123456789abcdef0123456789abcdef01234567";
@@ -419,6 +420,85 @@ public class GuardMergeRouteTests : IntegrationTestBase
         ];
 
         AssertNoMisses(await Misses(denied: true, routes, ["codex-argv"], reasonParts: ["dydo merge"]));
+    }
+
+    // The merge-route reading's own corners, folded from its former unit tests: each spelling of a
+    // merge, a push and a default-branch change is refused wherever a shell runs it, and each
+    // look-alike passes. "Bash" and "PowerShell" are Claude's tools; an argv array is a Codex call.
+    public static TheoryData<string, object, bool> RouteReadings => new()
+    {
+        { "Bash", "gh pr -R o/r merge 5", true },
+        { "PowerShell", @"C:\Tools\GH.EXE pr merge 5", true },
+        { "Bash", "gh api repos/o/r/pulls/5/merge", true },
+        { "Bash", "gh api 'https://api.github.com/repos/o/r/pulls/5/merge?x=1'", true },
+        { "Bash", "gh api 'repos/{owner}/{repo}/pulls/5/merge'", true },
+        { "Bash", "gh api graphql --raw-field=query='mutation{mergeBranch(input:{}){clientMutationId}}'", true },
+        { "Bash", "gh api --method patch https://ghe.example.com/api/v3/repos/o/r -F default_branch=x", true },
+        { "Bash", "git push origin +HEAD:refs/heads/Master", true },
+        { "Bash", "git push origin -- main", true },
+        { "Bash", "git push --mirror", true },
+        { "Bash", "git push origin a HEAD:main b:c", true },
+        { "Bash", "git push --tags origin main", true },
+        { "Bash", "sudo -u me gh pr merge 5", true },
+        { "Bash", "env GH_REPO=o/r gh pr merge 5", true },
+        { "Bash", "echo \"$(gh pr merge 5)\"", true },
+        { "Bash", "echo `gh pr merge 5`", true },
+        { "Bash", "git status && gh pr merge 5", true },
+        { "Bash", "git status\ngh pr merge 5", true },
+        { "Bash", "sh -lc \"git status; gh pr merge 5\"", true },
+        { "Bash", "cmd /c gh pr merge 5", true },
+        { "PowerShell", "& gh.exe api graphql -f query='x'; git push origin `\n  HEAD:main", true },
+        { "PowerShell", "echo 'x'\rgh pr merge 5", true },
+        { "PowerShell", "echo x # note\rgh pr merge 5", true },
+        { "PowerShell", "echo ‘a'; gh pr merge 5; ’b'", true },
+        { "PowerShell", "echo \"a”; gh pr merge 5; “b\"", true },
+        { "PowerShell", "echo a^;gh pr merge 5", true },
+        { "PowerShell", "x`\r\ngh pr merge 5", true },
+        { "PowerShell", "echo 'x'\rgit push origin main", true },
+        { "PowerShell", "echo ‘a'; git push origin main; ’b'", true },
+        { "PowerShell", "echo a^;git push origin main", true },
+        { "PowerShell", "x`\r\ngit push origin main", true },
+        { "Bash", new[] { "timeout", "10", "gh", "pr", "merge", "5" }, true },
+        { "Bash", new[] { "gh.exe", "repo", "edit", "--default-branch", "x" }, true },
+        { "Bash", new[] { "pwsh", "-Command", "git push origin HEAD:main" }, true },
+        { "Bash", "gh pr merge -h", false },
+        { "Bash", "gh pr", false },
+        { "Bash", "gh merge pr 5", false },
+        { "Bash", "gh repo view o/r", false },
+        { "Bash", "gh repo edit --help --default-branch x", false },
+        { "Bash", "gh api repos/o/r/pulls/5/merged", false },
+        { "Bash", "gh api -X PATCH repos/o/r -f description=x", false },
+        { "Bash", "gh api repos/o/r -f default_branch=x", false },
+        { "Bash", "gh api -X PATCH repos/o/r/branches -f default_branch=x", false },
+        { "Bash", "gh api", false },
+        { "Bash", "# gh pr merge 5", false },
+        { "Bash", "git", false },
+        { "Bash", "git push --tags", false },
+        { "Bash", "git push -o ci.skip origin feature/x", false },
+        { "Bash", "git -c push.default=current push origin x:y", false },
+        { "Bash", new[] { "gh", "pr", "comment", "5", "-b", "gh pr merge 5" }, false },
+        { "Bash", new[] { "echo", "git push origin x", "git push origin HEAD:main" }, false },
+    };
+
+    [Theory]
+    [MemberData(nameof(RouteReadings))]
+    public async Task RouteReading_IsRefusedOrAllowedAtTheHook(string tool, object command, bool refused)
+    {
+        await InitPushedProject();
+        var toolInput = new Dictionary<string, object?> { ["command"] = command };
+        var payload = new Dictionary<string, object?>
+        {
+            ["session_id"] = TestSessionId,
+            ["tool_name"] = tool,
+            ["tool_input"] = toolInput,
+            ["cwd"] = TestDir,
+        };
+        if (command is string[]) payload["turn_id"] = "turn-1";
+
+        var result = await GuardWithStdinAsync(JsonSerializer.Serialize(payload));
+
+        if (refused) result.AssertPreToolUseDenied();
+        else result.AssertPreToolUseAllowed();
     }
 
     [Fact]

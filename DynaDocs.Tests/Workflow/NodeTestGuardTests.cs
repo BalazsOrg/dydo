@@ -7,6 +7,7 @@ using System.Diagnostics;
 // read the TAP summary. These tests run the committed guard under pwsh against reports shaped like
 // node's own. pwsh is found on PATH. Without it they skip locally and fail on a GitHub Actions runner,
 // where every dotnet test leg already runs its own pwsh steps.
+[Trait("Job", "trap: DYD-622 (node exits 0 on skipped tests)")]
 public sealed class NodeTestGuardTests : IDisposable
 {
     private const int MinimumTests = 6;
@@ -77,7 +78,7 @@ public sealed class NodeTestGuardTests : IDisposable
 
     private static (int ExitCode, string Output) RunGuard(string tap)
     {
-        var guard = ReleaseWorkflowTests.RepositoryFile(".github", "workflows", "assert-node-tests-ran.ps1");
+        var guard = RepositoryFiles.Locate(".github", "workflows", "assert-node-tests-ran.ps1");
         // pwsh's own error view wraps a thrown message at the console width, so print the message whole.
         var command = $"try {{ & {Quoted(guard)} -Tap {Quoted(tap)} -MinimumTests {MinimumTests} }} " +
             "catch { [Console]::Error.WriteLine($_.Exception.Message); exit 1 }";

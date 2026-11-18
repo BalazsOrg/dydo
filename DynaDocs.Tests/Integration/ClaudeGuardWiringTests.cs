@@ -8,6 +8,7 @@ using DynaDocs.Commands;
 /// .claude/settings.json no longer runs the guard (DYD-501); init's own wiring never trips it.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "trap: DYD-501 a Claude project ran without its guard hook, DR 056")]
 public sealed class ClaudeGuardWiringTests : IntegrationTestBase
 {
     private const string SettingsPath = ".claude/settings.json";

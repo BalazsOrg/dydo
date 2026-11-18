@@ -6,6 +6,7 @@ using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Xml.Linq;
 
+[Trait("Job", "trap: DYD-687 (a tool package without the embedded map viewer)")]
 public sealed class ViewerPackTests : IDisposable
 {
     private readonly string _directory = Directory.CreateTempSubdirectory("dydo-viewer-pack-").FullName;
@@ -13,7 +14,7 @@ public sealed class ViewerPackTests : IDisposable
     public ViewerPackTests()
     {
         // Keep the real packaging configuration and viewer items, with a tiny dependency-free app.
-        var source = ReleaseWorkflowTests.RepositoryFile("DynaDocs.csproj");
+        var source = RepositoryFiles.Locate("DynaDocs.csproj");
         var project = XDocument.Load(source);
         project.Root!.Elements("ItemGroup")
             .Where(group => !group.Elements("EmbeddedResource").Any(item =>

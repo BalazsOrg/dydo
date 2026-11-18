@@ -3,6 +3,7 @@ namespace DynaDocs.Tests.Services;
 using DynaDocs.Utils;
 
 [Collection("Integration")]
+[Trait("Job", "trap: de501340 (a worktree resolves its own dydo root, the main checkout for shared state)")]
 public class PathUtilsWorktreeIsolationTests : IDisposable
 {
     private readonly string _testDir;

@@ -1,5 +1,5 @@
 ---
-explains: ["DynaDocs.Tests/coverage/requirements.lock", "DynaDocs.Tests/coverage/package.json", "DynaDocs.Tests/coverage/pnpm-lock.yaml", "DynaDocs.Tests/coverage/gate_versions.py", "DynaDocs.Tests/Integration/GuardStaticGateProvisioningTests.cs"]
+explains: ["DynaDocs.Tests/coverage/requirements.lock", "DynaDocs.Tests/coverage/package.json", "DynaDocs.Tests/coverage/pnpm-lock.yaml", "DynaDocs.Tests/coverage/gate_versions.py"]
 area: reference
 type: reference
 ---
@@ -63,8 +63,6 @@ CPython 3.14.4 from the same `requirements.lock`:
 ```bash
 mkdir -p .static-gates && ln -s /absolute/path/to/prepared/.static-gates/python .static-gates/python
 ```
-
-`DynaDocs.Tests/Integration/GuardStaticGateProvisioningTests.cs` holds the guard to this route.
 
 The SDK pin is 10.0.303. `DynaDocs.csproj` separately requires runtime 10.0.14 or
 later and resolves its AOT compiler at 10.0.14, the first patch fixing CVE-2026-111497.

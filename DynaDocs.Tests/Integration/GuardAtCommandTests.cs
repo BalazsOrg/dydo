@@ -11,6 +11,7 @@ using DynaDocs.Commands;
 /// (`dydo guard --host claude`, Codex's `dydo guard`) carry the command in stdin JSON.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "trap: DYD-675 a command starting with @ was read as a response file")]
 public class GuardAtCommandTests : IntegrationTestBase
 {
     private const string HarmlessHereString = "@'\nWrite-Output hi\n'@";

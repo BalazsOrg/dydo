@@ -1,3 +1,4 @@
+# Job: contract: spec N10; DYD-1029 (safe delete archives unique work before removal)
 @SafeDelete
 Feature: Safe delete archives unique work before removal
   Scenario: Recover files governed by repository-local exclude and attributes

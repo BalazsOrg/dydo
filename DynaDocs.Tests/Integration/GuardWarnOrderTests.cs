@@ -10,6 +10,7 @@ using DynaDocs.Commands;
 /// warn's once-only marker. When nothing hard-blocks, the warn blocks once and passes the rerun.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: DYD-386 warn nudges run after every hard block")]
 public sealed class GuardWarnOrderTests : IntegrationTestBase
 {
     // Matches every command, so each hard block below meets a warn on the same call.

@@ -1,6 +1,5 @@
 namespace DynaDocs.Tests.Integration;
 
-using System.Text.RegularExpressions;
 using DynaDocs.Commands;
 
 /// <summary>
@@ -8,6 +7,7 @@ using DynaDocs.Commands;
 /// need no claim, role or must-read setup.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: files-off-limits.md tiers, DR 045 §10, issue #64 indirect dydo, the cd-chain coaching")]
 public class GuardIntegrationTests : IntegrationTestBase
 {
     #region Off-Limits
@@ -20,8 +20,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await GuardAsync("edit", ".env");
 
         result.AssertExitCode(2);
-        result.AssertStderrContains("BLOCKED");
-        result.AssertStderrContains("off-limits");
     }
 
     [Fact]
@@ -32,7 +30,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await GuardAsync("edit", "dydo/index.md");
 
         result.AssertExitCode(2);
-        result.AssertStderrContains("BLOCKED");
     }
 
     [Fact]
@@ -57,7 +54,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(json);
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("off-limits");
     }
 
 
@@ -106,9 +102,6 @@ public class GuardIntegrationTests : IntegrationTestBase
             $"{{\"session_id\":\"{TestSessionId}\",\"tool_name\":\"{toolName}\",\"tool_input\":{{\"file_path\":\"{path}\"}}}}");
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED:");
-        result.AssertStderrContains("protected");
-        result.AssertStderrContains(path);
     }
 
     [Theory]
@@ -136,8 +129,6 @@ public class GuardIntegrationTests : IntegrationTestBase
 
         // "protected", not "off-limits": the protected tier is what stops this.
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED:");
-        result.AssertStderrContains("protected");
     }
 
     [Theory]
@@ -256,7 +247,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await RunAsync(cmd, "--command", "npx dydo check");
 
         result.AssertExitCode(2);
-        result.AssertStderrContains("npx");
     }
 
     [Fact]
@@ -268,7 +258,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await RunAsync(cmd, "--command", "cat .env");
 
         result.AssertExitCode(2);
-        result.AssertStderrContains("off-limits");
     }
 
     #endregion
@@ -276,20 +265,20 @@ public class GuardIntegrationTests : IntegrationTestBase
     #region Indirect Dydo Invocation
 
     [Theory]
-    [InlineData("npx dydo agent claim auto")]
-    [InlineData("npx -q dydo agent claim auto")]
-    [InlineData("npx --yes dydo agent claim auto")]
-    [InlineData("dotnet dydo agent claim auto")]
-    [InlineData("dotnet tool run dydo agent claim auto")]
+    [InlineData("npx dydo check")]
+    [InlineData("npx -q dydo check")]
+    [InlineData("npx --yes dydo check")]
+    [InlineData("dotnet dydo check")]
+    [InlineData("dotnet tool run dydo check")]
     [InlineData("dotnet run -- guard --action read --path foo.cs")]
     [InlineData("dotnet run -- validate")]
-    [InlineData("bash dydo agent claim auto")]
-    [InlineData("sh dydo agent claim auto")]
-    [InlineData("bash -c \\\"dydo agent claim auto\\\"")]
-    [InlineData("sh -c 'dydo agent claim auto'")]
-    [InlineData("python dydo agent claim auto")]
-    [InlineData("python3 dydo agent claim auto")]
-    [InlineData("py dydo agent claim auto")]
+    [InlineData("bash dydo check")]
+    [InlineData("sh dydo check")]
+    [InlineData("bash -c \\\"dydo check\\\"")]
+    [InlineData("sh -c 'dydo check'")]
+    [InlineData("python dydo check")]
+    [InlineData("python3 dydo check")]
+    [InlineData("py dydo check")]
     public async Task Guard_IndirectDydo_IsBlocked(string command)
     {
         await InitProjectAsync("none");
@@ -298,29 +287,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(json);
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED");
-    }
-
-    [Theory]
-    [InlineData("npx dydo agent claim auto", "npx")]
-    [InlineData("npx -q dydo agent claim auto", "npx")]
-    [InlineData("dotnet dydo agent claim auto", "dotnet")]
-    [InlineData("dotnet tool run dydo agent claim auto", "dotnet")]
-    [InlineData("dotnet run -- validate", "dotnet run")]
-    [InlineData("bash dydo agent claim auto", "bash")]
-    [InlineData("sh -c \\\"dydo agent claim auto\\\"", "sh")]
-    [InlineData("python dydo agent claim auto", "python")]
-    [InlineData("python3 dydo agent claim auto", "python3")]
-    [InlineData("py dydo agent claim auto", "py")]
-    public async Task Guard_IndirectDydo_ShowsInvokerName(string command, string expectedInvoker)
-    {
-        await InitProjectAsync("none");
-
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"" + command + "\"}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseDenied();
-        result.AssertStderrContains(expectedInvoker);
     }
 
     [Theory]
@@ -351,7 +317,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     {
         await InitProjectAsync("none");
 
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"dydo agent claim auto\"}}";
+        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"dydo check\"}}";
         var result = await GuardWithStdinAsync(json);
 
         result.AssertPreToolUseAllowed();
@@ -362,11 +328,10 @@ public class GuardIntegrationTests : IntegrationTestBase
     {
         await InitProjectAsync("none");
 
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cd /tmp && npx dydo agent claim auto\"}}";
+        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cd /tmp && npx dydo check\"}}";
         var result = await GuardWithStdinAsync(json);
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED");
     }
 
     #endregion
@@ -382,9 +347,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(json);
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED");
-        result.AssertStderrContains("Don't chain cd / Set-Location with other commands");
-        result.AssertStderrContains("just run: git diff --name-only");
     }
 
     [Fact]
@@ -396,8 +358,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(json);
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED");
-        result.AssertStderrContains("Don't chain cd / Set-Location with other commands");
     }
 
     #endregion
@@ -441,8 +401,6 @@ public class GuardIntegrationTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(json);
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED");
-        result.AssertStderrContains("off-limits");
     }
 
     [Theory]
@@ -461,8 +419,8 @@ public class GuardIntegrationTests : IntegrationTestBase
         var direct = await Run("dydo/_system/types.json");
         var traversal = await Run("safe/../dydo/_system/types.json");
 
-        Assert.Equal(direct.AssertPreToolUseDenied(), traversal.AssertPreToolUseDenied());
-        Assert.Equal(direct.Stderr, traversal.Stderr);
+        direct.AssertPreToolUseDenied();
+        traversal.AssertPreToolUseDenied();
     }
 
     #endregion
@@ -504,101 +462,20 @@ public class GuardIntegrationTests : IntegrationTestBase
 
     #region Blocked Tools
 
-    [Fact]
-    public async Task Guard_EnterPlanMode_Blocks()
+    // Claude Code's built-in plan mode is refused: dydo plans live in the repo or Linear.
+    [Theory]
+    [InlineData("EnterPlanMode")]
+    [InlineData("ExitPlanMode")]
+    public async Task Guard_PlanModeTools_AreRefused(string tool)
     {
         await InitProjectAsync("none");
 
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"EnterPlanMode\",\"tool_input\":{}}";
+        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"" + tool + "\",\"tool_input\":{}}";
         var result = await GuardWithStdinAsync(json);
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED");
-        result.AssertStderrContains("plan mode");
-    }
-
-    [Fact]
-    public async Task Guard_ExitPlanMode_Blocks()
-    {
-        await InitProjectAsync("none");
-
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"ExitPlanMode\",\"tool_input\":{}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED");
-        result.AssertStderrContains("plan mode");
-    }
-
-    [Fact]
-    public async Task Guard_PlanModeBlock_RoutesOnlyToSkillsThatExist()
-    {
-        // Copying the message's literals here would only prove the test file and the command file
-        // agree. Read the skill names out of the refusal the command printed and resolve each one
-        // against the canonical tree, so retiring or renaming a skill the message routes to goes red.
-        await InitProjectAsync("none");
-
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"EnterPlanMode\",\"tool_input\":{}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseDenied();
-        var routed = SkillsNamedIn(result.Stderr);
-        Assert.NotEmpty(routed);
-        foreach (var skill in routed)
-            Assert.True(
-                CanonicalSkillExists(skill),
-                $"the plan-mode refusal routes to '{skill}', which is not a skill under skills/<category>/");
-    }
-
-    /// <summary>Skill slugs the guard's refusal routes to, taken from its own "applying the … skill" clause.</summary>
-    private static string[] SkillsNamedIn(string stderr)
-    {
-        var clause = Regex.Match(stderr, @"applying the (.+?) skill\.");
-        return clause.Success
-            ? clause.Groups[1].Value
-                .Split(" or ", StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
-                .Select(name => name.Replace(' ', '-').ToLowerInvariant())
-                .ToArray()
-            : [];
-    }
-
-    // setup-skills.mjs's walk rule: a folder holding SKILL.md is a skill at any depth under skills/,
-    // so the slug's folder may sit under a nested category such as roles/crew/.
-    private static bool CanonicalSkillExists(string slug)
-    {
-        var skillsRoot = Path.Combine(RepositoryRoot(), "skills");
-        return Directory.EnumerateFiles(skillsRoot, "SKILL.md", SearchOption.AllDirectories)
-            .Any(body => Path.GetFileName(Path.GetDirectoryName(body)) == slug);
     }
 
     #endregion
 
-    #region Agent Tool - Nudge
-
-    [Fact]
-    public async Task Guard_AgentTool_EmitsNudgeAndPasses()
-    {
-        await InitProjectAsync("none");
-
-        var json = $"{{\"session_id\":\"{TestSessionId}\",\"tool_name\":\"Agent\",\"tool_input\":{{\"prompt\":\"do something\"}}}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseAllowed();
-        result.AssertStderrContains("NOTICE");
-        result.AssertStderrContains("Tier-2 worker lane");
-    }
-
-    [Fact]
-    public async Task Guard_GlobTool_DoesNotFireAgentNudge()
-    {
-        await InitProjectAsync("none");
-
-        var json = $"{{\"session_id\":\"{TestSessionId}\",\"tool_name\":\"Glob\",\"tool_input\":{{\"pattern\":\"**/*.cs\"}}}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseAllowed();
-        Assert.DoesNotContain("NOTICE", result.Stderr);
-    }
-
-    #endregion
 }

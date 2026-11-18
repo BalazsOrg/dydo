@@ -2,6 +2,7 @@ namespace DynaDocs.Tests.Integration;
 
 /// <summary>DYD-431 Break A-02 follow-up proofs: guard reader paths that fail open on valid syntax.</summary>
 [Collection("Integration")]
+[Trait("Job", "trap: DYD-431 finding A-02b, the guard failed open on valid syntax")]
 public class GuardA02bProofTests : IntegrationTestBase
 {
     private static string BashPayload(string command) =>

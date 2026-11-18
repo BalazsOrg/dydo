@@ -9,6 +9,8 @@ weighed: ['dydo-efficiency over dydo-verify-own-work, because "one of the big mi
 
 # 068 - The Gate Set: Mutation Over Coverage, Changed Files Only
 
+> **Amended 2026-11-18:** [the accepted amendment below](#amendment-2026-11-18---the-runner-and-selected-tests) settles both questions left open under Supersedes and amends. Those passages record the earlier uncertainty.
+
 Coverage stops being a gate and becomes a report. HCRAP is dropped. Mutation is the gate on test
 quality. Every static gate checks changed files only, at every stage, the landing included. The
 other statics stay as [DR 048](./048-one-level-static-gates-certainly-wrong-no-escape-hatch.md) set
@@ -114,6 +116,23 @@ goes to him as a DR question (DYD-971, comment b4b2aa41). Until he answers, §2'
 Grilling G does not restate §3's Tests row's "all pass", and none of rules G1-G6 addresses it. What
 becomes of it goes to him beside the `gap_check.py` question
 ([DYD-1174](https://linear.app/bodnar-balazs/issue/DYD-1174)).
+
+## Amendment 2026-11-18 - the runner and selected tests
+
+**Status: accepted.** Approved by Balazs in
+[DYD-1195 DECIDED, envoy 1](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-aaeeddcc-5abd-4668-ae36-f3b7deab6e31),
+verbatim: "I'd say yes, but it should be renamed to code_check.py and it should be wired the same way into dydo like dytest which gets piped by "dydo test". Code_check.py should pipe into "dydo code-check". And the config inside the dydo settings.json or equivalent determines what actually gets run when that is invoked so it's basically a plug-in."
+
+DR 048 §2's project-owned runner stands, renamed from `gap_check.py` to `code_check.py`.
+`dydo code-check` invokes it as `dydo test` invokes DYTEST. The project's dydo settings
+(`settings.json` or equivalent) determine what runs; the runner is a plug-in.
+
+**Status: accepted.** The Tests row's remaining question was approved in
+[DYD-1195 Q10 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-2546c840-53a6-436a-aade-873052d14c89).
+His answer covering Q10, verbatim: "16. a. 9. a, 13. a. 10. a, 11. a".
+Q10 option (a) keeps **all selected tests pass** as a gate, under DR 048 §1's certainly-wrong bar.
+This settles [DYD-1174](https://linear.app/bodnar-balazs/issue/DYD-1174); dropping coverage gates
+does not drop the selected tests' pass requirement.
 
 ## Related
 

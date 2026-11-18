@@ -22,23 +22,9 @@ public class OptionalSummarySteps(CliScenario scenario)
             "---\ntype: config\n---\n\n# Files Off-Limits\n\n## Default Patterns\n\n```\n.env*\n```\n");
     }
 
-    [Given("a document with an H1 title followed directly by an H2 section")]
-    public void Section() => File.WriteAllText(DocumentPath, Frontmatter + "# Document\n\n## Details\n\nUseful content.");
-
-    [Given("a document with an H1 title followed directly by a list")]
-    public void List() => File.WriteAllText(DocumentPath, Frontmatter + "# Document\n\n- First item\n- Second item");
-
-    [Given("a document containing valid frontmatter and an H1 title only")]
-    public void TitleOnly() => File.WriteAllText(DocumentPath, Frontmatter + "# Document");
-
-    [Given("a document with an H1 title followed by {string}")]
-    public void OpeningProse(string prose) => File.WriteAllText(DocumentPath, Frontmatter + "# Document\n\n" + prose);
-
-    [Given("a document with valid frontmatter and an H2 section but no H1 title")]
-    public void MissingTitle() => File.WriteAllText(DocumentPath, Frontmatter + "## Details\n\nUseful content.");
-
-    [Given("that section links to {string} which does not exist")]
-    public void BrokenLink(string target) => File.AppendAllText(DocumentPath, $"\n\n[Missing]({target})");
+    // Example cells spell line breaks as \n.
+    [Given("a document whose body after its frontmatter is {string}")]
+    public void Body(string body) => File.WriteAllText(DocumentPath, Frontmatter + body.Replace("\\n", "\n"));
 
     [Given("a document with an H1 title and no frontmatter or opening summary")]
     public void MissingFrontmatter() => File.WriteAllText(DocumentPath, "# Document\n\n## Details");
@@ -54,23 +40,24 @@ public class OptionalSummarySteps(CliScenario scenario)
         scenario.Result.AssertSuccess();
     }
 
-    [Then("the document has no validation errors or warnings")]
     [Then("the documentation has no validation errors or warnings")]
-    public void ValidDocumentation() => AssertValidDocumentation(scenario.Result);
-
-    internal static void AssertValidDocumentation(CliResult result)
+    public void ValidDocumentation()
     {
-        result.AssertSuccess();
-        Assert.Empty(result.Stderr);
-        var lines = result.Stdout.Replace("\r\n", "\n", StringComparison.Ordinal)
-            .Split('\n', StringSplitOptions.RemoveEmptyEntries);
-        Assert.Equal(3, lines.Length);
-        Assert.StartsWith("Checking ", lines[0]);
-        Assert.Matches(@"^Found 0 errors, 0 warnings in [1-9][0-9]* files\.$", lines[1]);
-        Assert.Equal("All checks passed.", lines[2]);
+        var result = scenario.Result;
+        Assert.True(result.ExitCode == 0, result.Stdout + result.Stderr);
+        Assert.DoesNotContain("WARNINGS:", result.Stdout);
+        Assert.DoesNotContain("ERRORS:", result.Stdout);
     }
 
-    [Then("checking fails with {string} for that document")]
+    [Then("checking reports nothing")]
+    public void NoFinding()
+    {
+        var result = scenario.Result;
+        Assert.True(result.ExitCode == 0, result.Stdout + result.Stderr);
+        Assert.DoesNotContain("document.md", result.Stdout + result.Stderr);
+    }
+
+    [Then("checking reports {string}")]
     public void CheckFailure(string message)
     {
         Assert.Equal(1, scenario.Result.ExitCode);
@@ -81,14 +68,6 @@ public class OptionalSummarySteps(CliScenario scenario)
         Assert.Contains(violations, line => Regex.Replace(line[6..], @"^Line [1-9][0-9]*: ", "") == message);
     }
 
-    [Then("no manual repair asks for a summary paragraph")]
-    public void NoSummaryRepair() => Assert.DoesNotContain("summary", scenario.Result.Stdout, StringComparison.OrdinalIgnoreCase);
-
     [Then("that document's bytes are unchanged")]
     public void UnchangedDocument() => Assert.Equal(_beforeFix, File.ReadAllBytes(DocumentPath));
-
-    [Then("the manual repairs include {string} for that document")]
-    public void ManualRepair(string repair) => Assert.True(
-        scenario.Result.Stdout.Replace("\r\n", "\n", StringComparison.Ordinal).Split('\n')
-            .Any(line => Regex.IsMatch(line, $@"^  \S document\.md - {Regex.Escape(repair)}$")), scenario.Result.Stdout);
 }

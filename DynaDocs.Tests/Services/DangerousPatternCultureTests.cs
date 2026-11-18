@@ -52,6 +52,7 @@ public class DangerousPatternCultureTests(EndToEndFixture fixture) : IDisposable
         GC.SuppressFinalize(this);
     }
 
+    [Trait("Job", "trap: DYD-610 culture-folded IgnoreCase rules miss Turkish and Azeri casing")]
     [Theory]
     [MemberData(nameof(Cases))]
     public async Task Guard_StartedInATurkishCasingCulture_RefusesTheCommand(string culture, string command)
