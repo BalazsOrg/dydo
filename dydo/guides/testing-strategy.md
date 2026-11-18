@@ -238,7 +238,8 @@ in-place work has direct evidence, while worktree and per-run requirements name 
 The facade does not invent isolation.
 
 DR 048 has one policy for every maintained module: warnings as errors and strict types, no dead code,
-all tests passing and a test file for every non-trivial module,
+all tests passing and suite tests carrying job tags under
+[DR 067 T5](../project/decisions/067-what-tests-are-for.md#decision),
 line coverage of at least 80%, branch coverage of at least 60%, HCRAP at most 20 per method,
 cognitive complexity at most 20, at most seven parameters outside constructors, no supported nested
 ternary, no clone meeting both 15 lines and 100 tokens, and no namespace or module dependency cycles.
@@ -353,9 +354,11 @@ like any other module. Test bodies, fixtures and assertion helpers supply the ev
 not coverage targets and are never required to cover themselves. A maintained gate producer or
 runner is a target even under a test directory - `GateMetrics` and the `DynaDocs.Tests/coverage`
 runners are measured, while the `DynaDocs.Tests` assembly is instrumented for identity only.
-DR 067 T5 replaces the requirement for every module to name a test file with the job-tag lint:
-every suite test carries its trap, contract or edge job. Test selection belongs to DYTEST
-(DYD-1192). The two external-host drivers named in DR 048's Amendment 2026-09-17 were deleted
+[DR 067 T5](../project/decisions/067-what-tests-are-for.md#decision) defines the test-to-code rule:
+every suite test carries a job tag naming a trap, traced contract or edge. Its job-tag lint replaces
+module-to-test-file associations. The executable lint is not implemented here yet; reviewers check
+the tags until it lands. Test selection belongs to DYTEST (DYD-1192).
+The two external-host drivers named in DR 048's Amendment 2026-09-17 were deleted
 in the 4.0.0 purge, so their conditional coverage exemption is retired.
 
 Three gaps are recorded rather than dropped or weakened. The first is mutation: on `dotnet`, `python`
