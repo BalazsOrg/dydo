@@ -9,6 +9,10 @@ participants: [balazs, Claude admiral]
 
 # 051 - Captains by Default, the Admiral on Invocation
 
+> **§3-4 superseded by [071 - Hierarchy, Envoys and Captain Autonomy](./071-hierarchy-envoys-and-captain-autonomy.md)**, *the admiral is optional* and *the human holds the map when no admiral is invoked*: a moving Project has an admiral that holds its outcome and keeps re-charting its route, hard calls are not the admiral's, and the two continuous Projects (Agent friction, CI findings) have no admiral. What rests on §3-4 falls with them: the Consequences line "A Project moves without an admiral: the human charts it", the human as map holder and the invoked-only admiral in the amendments to DR 047 §1-§3, and "the admiral holds a Project only when the human invokes it" in the amendment to DR 050 decision 1. The rest remains in force.
+
+> **§6 withdrawn by [072 - Descriptive Docs Explain, Never Authorize](./072-descriptive-docs-explain-never-authorize.md)**: no repository plan file is written for a cross-cutting architecture contract. Its `project-plan` review, the glossary's "Project plan" entry and F12's rename ("architecture plan") are withdrawn with it. The rest remains in force.
+
 The issue-captain is the default officer, and the admiral exists only when the human invokes it.
 With no admiral, the human holds the Project map in their own session with `wayfinder`, and the map
 holder charts and grills. The project-planner is removed. The Linear Project and its Issues are the

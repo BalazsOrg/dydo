@@ -1,2 +1,0 @@
-Running as unit: run-p1215584-i156317514.scope; invocation ID: 3674d14a64774c7fb74f19e20618d41a
-Preparing worktree (detached HEAD 2078622f)

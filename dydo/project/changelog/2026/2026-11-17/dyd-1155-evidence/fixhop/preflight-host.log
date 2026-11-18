@@ -1,8 +1,0 @@
-Running as unit: run-p3208088-i158323621.scope; invocation ID: 58525b2658f3496f9ee892a7ef68e94e
-10.0.303
-Python 3.14.4
-v26.13.0
-12.16.1
-All three helper hashes match before/after; Python inventory equals feature tip: 80 tracked Python files; diff exit 0
-Toolchain executables: {'dotnet': '/home/balazs/.dotnet/dotnet', 'python3.14': '/usr/bin/python3.14', 'pnpm': '/home/balazs/.local/share/fnm/aliases/default/bin/pnpm', 'node': '/home/balazs/.local/share/fnm/aliases/default/bin/node'}
-All replay copies prepared in /tmp; original worktree untouched.

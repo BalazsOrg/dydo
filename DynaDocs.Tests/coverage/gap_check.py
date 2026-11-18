@@ -80,6 +80,8 @@ def defer_interrupt(deferred=True):
 CAPS = ("test", "static", "coverage", "mutation")
 EXITS = {"passed": 0, "failed": 1, "unavailable": 2, "invalid": 2, "interrupted": 130}
 EXECUTION_SECONDS_MAXIMUM = 1800
+# DYD-1157: hosted Windows Python coverage passed at 1783 s and repeatedly exhausted 1800 s.
+WINDOWS_PYTHON_COVERAGE_SECONDS = 2700
 CLEANUP_SECONDS = 30
 REAP_SECONDS = 1
 ROW_DEADLINE_ENV = "DYDO_ROW_DEADLINE"
@@ -956,7 +958,10 @@ def memory_cap():
 
 def capped_row(stack, capability, root, since, forwarded, cap):
     """Run one row, judged against the cap; also whether it was interrupted, which stops the run."""
-    deadline = time.monotonic() + EXECUTION_SECONDS_MAXIMUM + CLEANUP_SECONDS
+    seconds = EXECUTION_SECONDS_MAXIMUM
+    if sys.platform == "win32" and stack["name"] == "python" and capability == "coverage":
+        seconds = WINDOWS_PYTHON_COVERAGE_SECONDS
+    deadline = time.monotonic() + seconds + CLEANUP_SECONDS
     before = cap.kills()
     current = run_row(stack, capability, root, since, forwarded, deadline)
     return cap.judged(current, before), current["state"] == "interrupted"
