@@ -1,7 +1,6 @@
 namespace DynaDocs.Tests.SkillBuild.Fixture;
 
 using DynaDocs.SkillBuild;
-using DynaDocs.Tests.SkillBuild.Fixture.Kinds;
 
 /// <summary>
 /// The migration fixture (AR1): claims/inventory/claims.json at its base, translated once, each carrier

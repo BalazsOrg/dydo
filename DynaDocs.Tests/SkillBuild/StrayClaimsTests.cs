@@ -2,7 +2,6 @@ namespace DynaDocs.Tests.SkillBuild;
 
 using DynaDocs.SkillBuild;
 using DynaDocs.Tests.SkillBuild.Slots;
-using DynaDocs.Tests.SkillBuild.Slots.Kinds;
 
 /// <summary>
 /// K24: claim text pasted by hand outside the built files is reported with its path, line and claim.

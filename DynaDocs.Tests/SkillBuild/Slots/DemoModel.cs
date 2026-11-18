@@ -1,7 +1,6 @@
 namespace DynaDocs.Tests.SkillBuild.Slots;
 
 using DynaDocs.SkillBuild;
-using DynaDocs.Tests.SkillBuild.Slots.Kinds;
 
 /// <summary>The slot fixture's skill, declared in full unless a test swaps one of its slot lists.</summary>
 internal static class DemoModel

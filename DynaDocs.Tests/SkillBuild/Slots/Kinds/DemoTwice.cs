@@ -1,4 +1,4 @@
-namespace DynaDocs.Tests.SkillBuild.Slots.Kinds;
+namespace DynaDocs.Tests.SkillBuild.Slots;
 
 using DynaDocs.SkillBuild;
 

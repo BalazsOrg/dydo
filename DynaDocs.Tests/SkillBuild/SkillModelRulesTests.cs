@@ -2,7 +2,6 @@ namespace DynaDocs.Tests.SkillBuild;
 
 using DynaDocs.SkillBuild;
 using DynaDocs.Tests.SkillBuild.Slots;
-using DynaDocs.Tests.SkillBuild.Slots.Kinds;
 
 /// <summary>
 /// The rules the build enforces on a model, each red through <see cref="SkillBuilder.Build"/>: K4's one

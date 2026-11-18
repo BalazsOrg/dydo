@@ -2,7 +2,8 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// The model <c>dotnet run --project tools/SkillBuild</c> builds. It declares nothing until DYD-1082
-/// writes the 4.0.0 claims (K22): each kind class goes in <c>Claims/&lt;Kind&gt;.cs</c>.
+/// writes the 4.0.0 claims (K22): each kind class goes in <c>Claims/&lt;Kind&gt;.cs</c>, in this
+/// namespace, because a kind namespace would form a cycle with this list.
 /// </summary>
 public static class ProductionModel
 {

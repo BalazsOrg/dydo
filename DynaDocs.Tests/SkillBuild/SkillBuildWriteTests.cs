@@ -2,7 +2,6 @@ namespace DynaDocs.Tests.SkillBuild;
 
 using DynaDocs.SkillBuild;
 using DynaDocs.Tests.SkillBuild.Slots;
-using DynaDocs.Tests.SkillBuild.Slots.Kinds;
 
 /// <summary>
 /// <c>dotnet run --project tools/SkillBuild</c> through <see cref="Program.Run"/>: it writes straight

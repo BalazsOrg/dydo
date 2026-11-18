@@ -1,4 +1,4 @@
-namespace DynaDocs.Tests.SkillBuild.Fixture.Kinds;
+namespace DynaDocs.Tests.SkillBuild.Fixture;
 
 using DynaDocs.SkillBuild;
 using A = DynaDocs.Tests.SkillBuild.Fixture.FixtureActor;
