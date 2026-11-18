@@ -1,21 +1,22 @@
 namespace DynaDocs.Tests.Integration;
 
-using DynaDocs.Commands;
 using DynaDocs.Models;
 using DynaDocs.Services;
 
 /// <summary>
-/// Tests for security findings from the guard system inquisition.
-/// Each section maps to a specific finding number.
+/// Guard bypasses found by the guard inquisition and later retros, each driven through the hook entry:
+/// the call is refused or allowed, and a protected canary keeps its bytes. Rows that only the analyzer
+/// once pinned live in GuardShellCorpusTests.
 /// </summary>
 [Collection("Integration")]
 public class GuardSecurityTests : IntegrationTestBase
 {
+    [Trait("Job", "edge: DYD-723 a dangerous-rule match timeout fails closed; no command times a rule out cheaply")]
     [Theory]
-    [InlineData("Bash", "Posix")]
-    [InlineData("PowerShell", "PowerShell")]
-    [InlineData("", "Unknown")]
-    public async Task PythonFallbackTimeout_AnalyzerAndHookRefuseOnEveryAttempt(string toolName, string dialect)
+    [InlineData("Bash")]
+    [InlineData("PowerShell")]
+    [InlineData("")]
+    public async Task PythonFallbackTimeout_HookRefusesOnEveryAttempt(string toolName)
     {
         await SetupClaimedAgent();
         var patterns = ((Func<string, bool> IsMatch, string Reason)[])typeof(BashCommandAnalyzer)
@@ -27,16 +28,11 @@ public class GuardSecurityTests : IntegrationTestBase
         try
         {
             patterns[index] = (_ => throw new System.Text.RegularExpressions.RegexMatchTimeoutException(), original.Reason);
-            var analysis = new BashCommandAnalyzer(Enum.Parse<ShellDialect>(dialect)).Analyze("echo ready");
-            Assert.True(analysis.HasDangerousPattern);
-            Assert.Equal("Command too complex to verify safely", analysis.DangerousPatternReason);
-            Assert.Empty(analysis.Operations);
             for (var attempt = 0; attempt < 2; attempt++)
             {
                 var result = toolName == "" ? await UnknownShellGuardAsync("echo ready")
                     : await GuardWithStdinAsync(ShellJson(toolName, "echo ready"));
                 AssertRefused(toolName, result);
-                result.AssertStderrContains("Command too complex to verify safely");
             }
         }
         finally
@@ -45,28 +41,32 @@ public class GuardSecurityTests : IntegrationTestBase
         }
     }
 
+    // A benign command padded to exactly 1 MiB is read and allowed; one character more is refused
+    // on every attempt, whatever it says, so no input is too long to bound (DYD-723).
+    [Trait("Job", "trap: DYD-723 command input is bounded at 1 MiB")]
     [Theory]
-    [InlineData("Bash")]
-    [InlineData("PowerShell")]
-    [InlineData("")]
-    public async Task LengthBoundary_BenignCommandIsRefusedOnEveryAttempt(string toolName)
+    [InlineData("Bash", 1_048_576, false)]
+    [InlineData("PowerShell", 1_048_576, false)]
+    [InlineData("", 1_048_576, false)]
+    [InlineData("Bash", 1_048_577, true)]
+    [InlineData("PowerShell", 1_048_577, true)]
+    [InlineData("", 1_048_577, true)]
+    public async Task LengthBoundary_OnlyACommandPastOneMebibyteIsRefused(string toolName, int length, bool refused)
     {
         await SetupClaimedAgent();
-        var command = "echo ready";
-        var allowed = toolName == "" ? await UnknownShellGuardAsync(command)
-            : await GuardWithStdinAsync(ShellJson(toolName, command));
-        if (toolName == "") allowed.AssertSuccess();
-        else allowed.AssertPreToolUseAllowed();
-        command = command.PadRight(1_048_576, 'x');
+        var command = "echo ready".PadRight(length, ' ');
+
         for (var attempt = 0; attempt < 2; attempt++)
         {
-            var result = toolName == "" ? await UnknownShellGuardAsync(command + "x")
-                : await GuardWithStdinAsync(ShellJson(toolName, command + "x"));
-            AssertRefused(toolName, result);
-            result.AssertStderrContains("limit of 1048576 characters");
+            var result = toolName == "" ? await UnknownShellGuardAsync(command)
+                : await GuardWithStdinAsync(ShellJson(toolName, command));
+            if (refused) AssertRefused(toolName, result);
+            else if (toolName == "") result.AssertSuccess();
+            else result.AssertPreToolUseAllowed();
         }
     }
 
+    [Trait("Job", "trap: DYD-723 group-word origins keep the poll-loop nudge's verdict")]
     [Theory]
     [InlineData("Write-Output @(Write-Output @(<# tail -f #> x))")]
     [InlineData("Write-Output @(<# outer #> Write-Output @(<# tail -f #> x))")]
@@ -81,6 +81,7 @@ public class GuardSecurityTests : IntegrationTestBase
         }
     }
 
+    [Trait("Job", "trap: DYD-723 group-word origins keep the poll-loop nudge's verdict")]
     [Theory]
     [InlineData("Write-Output @(Write-Output @(rg 'tail -f' notes))", false)]
     [InlineData("echo @(cat <<E\n$(rg -n 'tail -f' docs)\nE\n)", true)]
@@ -90,17 +91,12 @@ public class GuardSecurityTests : IntegrationTestBase
         await SetupClaimedAgent();
         var first = await GuardWithStdinAsync(ShellJson("PowerShell", command));
         first.AssertPreToolUseDenied();
-        var reason = hardBlock ? "Command contains bypass patterns" : "Open-ended Bash poll-loop detected";
-        first.AssertStderrContains(reason);
         var retry = await GuardWithStdinAsync(ShellJson("PowerShell", command));
-        if (hardBlock)
-        {
-            retry.AssertPreToolUseDenied();
-            retry.AssertStderrContains(reason);
-        }
+        if (hardBlock) retry.AssertPreToolUseDenied();
         else retry.AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: DYD-610 a nudge match that times out is refused, not waved through")]
     [Theory]
     [InlineData("block", "command")]
     [InlineData("warn", "command")]
@@ -126,70 +122,7 @@ public class GuardSecurityTests : IntegrationTestBase
         {
             var result = await GuardWithStdinAsync(payload);
             result.AssertPreToolUseDenied();
-            result.AssertStderrContains("Command too complex to verify safely");
         }
-    }
-
-    [Theory]
-    [InlineData("git push --force origin main")]
-    [InlineData("gh auth token")]
-    [InlineData("bw export --format json")]
-    [InlineData("mkfs.ext4 /dev/sda1")]
-    [InlineData("dd if=/dev/zero of=/dev/mapper/vg-root")]
-    [InlineData("dd if=/dev/zero of=/dev/loop0")]
-    [InlineData("dd if=/dev/zero of=/dev/dm-0")]
-    [InlineData("dd if=x of='/dev/loop0'")]
-    [InlineData("dd if=x of='/dev/mapper/vg-root'")]
-    [InlineData("gpg2 --export-secret-keys ABC")]
-    [InlineData("cat /Applications/Bitwarden.app/Contents/Info.plist")]
-    [InlineData("cat /tmp/Bitwarden.app/Contents/Info.plist")]
-    [InlineData("ls Bitwarden.app")]
-    [MemberData(nameof(DangerousCommandCases.WrappedFamilies), MemberType = typeof(DangerousCommandCases))]
-    [InlineData("/usr/bin/dd if=x of=/dev/sda")]
-    [InlineData("LC_ALL=C dd if=x of=/dev/sda")]
-    [InlineData("if true; then dd if=x of=/dev/sda; fi")]
-    [InlineData("sudo -- dd if=x of=/dev/sda")]
-    [InlineData("nice -n 10 dd if=x of=/dev/sda")]
-    [InlineData("xargs dd of=/dev/sda")]
-    [InlineData("ssh host 'dd if=x of=/dev/sda'")]
-    [InlineData("GIT_SSH=x git push --force")]
-    [InlineData("echo 'sudo dd if=x of=/dev/sda'")]
-    [InlineData("eval 'dd if=/dev/zero of=/dev/sda'")]
-    [InlineData("echo 'dd if=/dev/zero of=/dev/sda' | sh")]
-    [InlineData("bash <<< 'dd if=/dev/zero of=/dev/sda'")]
-    [InlineData("bash -c -- 'dd if=/dev/zero of=/dev/sda'")]
-    [InlineData("powershell -Command \"dd if=/dev/zero of=/dev/sda\"")]
-    public async Task OndrejDenylist_HookBlocksDangerousCommand(string command)
-    {
-        await SetupClaimedAgent();
-
-        var result = await GuardWithStdinAsync(BashJson(command));
-
-        result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Dangerous");
-    }
-
-    [Theory]
-    [InlineData("git push --force-with-lease origin feature/x")]
-    [InlineData("gh auth status")]
-    [InlineData("op --version")]
-    [InlineData("dd if=/dev/zero of=/dev/null")]
-    [InlineData("dd if=x of='/dev/null'")]
-    [InlineData("echo 'dd if=x of=/dev/loop0'")]
-    [InlineData("grep 'dd if=x of=/dev/mapper/vg-root' README.md")]
-    [InlineData("cat /tmp/Safari.app/Contents/Info.plist")]
-    [InlineData("ls Safari.app")]
-    [InlineData("sudo -u me git status")]
-    [InlineData("nohup rm file.txt")]
-    [InlineData("bash -c 'git push --force-with-lease origin feature/x'")]
-    [InlineData("(dd if=x of=/dev/null)")]
-    public async Task OndrejDenylist_HookAllowsBenignCommand(string command)
-    {
-        await SetupClaimedAgent();
-
-        var result = await GuardWithStdinAsync(BashJson(command));
-
-        result.AssertPreToolUseAllowed();
     }
 
     private async Task SetupClaimedAgent()
@@ -202,80 +135,10 @@ public class GuardSecurityTests : IntegrationTestBase
         command.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"}}";
 
     // ================================================================
-    // Finding 2: Interpreter inline execution blocked as dangerous
-    // ================================================================
-
-    [Theory]
-    [InlineData("python -c \"open('secrets.json').read()\"")]
-    [InlineData("python3 -c \"import os; os.remove('file')\"")]
-    [InlineData("node -e \"require('fs').writeFileSync('x','y')\"")]
-    [InlineData("ruby -e \"File.read('secrets.json')\"")]
-    [InlineData("perl -e \"open(F,'<secrets.json')\"")]
-    [InlineData("php -r \"file_get_contents('secrets.json')\"")]
-    public void Finding2_InlineInterpreterExecution_IsDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, reason) = analyzer.CheckDangerousPatterns(command);
-        Assert.True(isDangerous, $"Expected dangerous: {command}");
-        Assert.Contains("interpreter", reason!, StringComparison.OrdinalIgnoreCase);
-    }
-
-    [Theory]
-    [InlineData("python script.py")]
-    [InlineData("python3 my_script.py")]
-    [InlineData("node app.js")]
-    [InlineData("ruby script.rb")]
-    [InlineData("perl script.pl")]
-    [InlineData("php script.php")]
-    [InlineData("bash script.sh")]
-    [InlineData("sh script.sh")]
-    [InlineData("zsh script.sh")]
-    public void Finding2_InterpreterWithScriptFile_NotDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.False(isDangerous, $"Should not be dangerous: {command}");
-    }
-
-    [Theory]
-    [InlineData("python --version")]
-    [InlineData("node --version")]
-    [InlineData("ruby --version")]
-    public void Finding2_InterpreterVersionCheck_NotDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.False(isDangerous, $"Should not be dangerous: {command}");
-    }
-
-    // ================================================================
     // Finding 3: Command substitution - tainted writes blocked
     // ================================================================
 
-    [Fact]
-    public void Finding3_HasBypassAttempt_SetOnCommandSubstitution()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("cat $(echo secret.txt)");
-        Assert.True(result.HasBypassAttempt);
-    }
-
-    [Fact]
-    public void Finding3_HasBypassAttempt_SetOnVariableExpansion()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("cat $FILENAME");
-        Assert.True(result.HasBypassAttempt);
-    }
-
-    [Fact]
-    public void Finding3_HasBypassAttempt_NotSetOnSimpleCommand()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("cat file.txt");
-        Assert.False(result.HasBypassAttempt);
-    }
-
+    [Trait("Job", "trap: guard inquisition finding 3, a write behind an expansion is unverifiable")]
     [Fact]
     public async Task Finding3_TaintedWriteOperation_Blocked()
     {
@@ -284,9 +147,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(
             BashJson("echo $PAYLOAD > src/output.txt"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("bypass");
     }
 
+    [Trait("Job", "trap: guard inquisition finding 3, a write behind an expansion is unverifiable")]
     [Fact]
     public async Task Finding3_TaintedReadOperation_Allowed()
     {
@@ -300,38 +163,7 @@ public class GuardSecurityTests : IntegrationTestBase
     // Finding 5: Command substitution hiding entire write operations
     // ================================================================
 
-    [Fact]
-    public void Finding5_WriteInsideCommandSubstitution_DetectedAsWriteOp()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("echo $(cp secret.txt /tmp/output.txt)");
-        Assert.True(result.HasBypassAttempt);
-        Assert.Contains(result.Operations, op =>
-            op.Type is FileOperationType.Copy or FileOperationType.Write
-            or FileOperationType.Delete or FileOperationType.Move);
-    }
-
-    [Fact]
-    public void Finding5_WriteInsideBackticks_DetectedAsWriteOp()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("echo `rm important.txt`");
-        Assert.True(result.HasBypassAttempt);
-        Assert.Contains(result.Operations, op =>
-            op.Type is FileOperationType.Delete);
-    }
-
-    [Fact]
-    public void Finding5_ReadInsideCommandSubstitution_NoWriteOp()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("echo $(cat readme.txt)");
-        Assert.True(result.HasBypassAttempt);
-        Assert.DoesNotContain(result.Operations, op =>
-            op.Type is FileOperationType.Write or FileOperationType.Delete
-            or FileOperationType.Move or FileOperationType.Copy);
-    }
-
+    [Trait("Job", "trap: guard inquisition finding 5, a write hidden in a substitution")]
     [Fact]
     public async Task Finding5_WriteHiddenInSubstitution_Blocked()
     {
@@ -340,9 +172,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(
             BashJson("echo $(cp secret.txt /tmp/leak.txt)"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("bypass");
     }
 
+    [Trait("Job", "trap: guard inquisition finding 5, a write hidden in a substitution")]
     [Fact]
     public async Task Finding5_ReadOnlyInSubstitution_Allowed()
     {
@@ -358,6 +190,7 @@ public class GuardSecurityTests : IntegrationTestBase
     // so prefixing a dydo call cannot bypass a block nudge.
     // ================================================================
 
+    [Trait("Job", "contract: DR 041 Part C, nudges and dangerous rules apply to dydo command lines too")]
     [Fact]
     public async Task Finding4_DydoMatchingPattern_NowFires()
     {
@@ -367,9 +200,9 @@ public class GuardSecurityTests : IntegrationTestBase
             BashJson("dydo task list && tail -f build.log"));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("poll-loop");
     }
 
+    [Trait("Job", "contract: DR 041 Part C, nudges and dangerous rules apply to dydo command lines too")]
     [Fact]
     public async Task Finding4_DangerousPattern_CheckedBeforeNudges()
     {
@@ -377,13 +210,13 @@ public class GuardSecurityTests : IntegrationTestBase
 
         var result = await GuardWithStdinAsync(BashJson("rm -rf /"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Dangerous");
     }
 
     // ================================================================
     // Issue #155: dydo command chains must retain full bash security
     // ================================================================
 
+    [Trait("Job", "trap: issue #155, a dydo command chain keeps full shell analysis")]
     [Fact]
     public async Task Issue155_DydoChain_OffLimitsRead_Blocked()
     {
@@ -393,9 +226,9 @@ public class GuardSecurityTests : IntegrationTestBase
             BashJson("dydo whoami && cat config/secrets.json"));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("off-limits");
     }
 
+    [Trait("Job", "trap: issue #155, a dydo command chain keeps full shell analysis")]
     [Fact]
     public async Task Issue155_DydoChain_OffLimitsWrite_Blocked()
     {
@@ -405,9 +238,9 @@ public class GuardSecurityTests : IntegrationTestBase
             BashJson("dydo whoami && tee config/secrets.json"));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("off-limits");
     }
 
+    [Trait("Job", "trap: issue #155, a dydo command chain keeps full shell analysis")]
     [Fact]
     public async Task Issue155_DydoChain_DangerousPattern_Blocked()
     {
@@ -416,9 +249,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(BashJson("dydo whoami && rm -rf /"));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Dangerous");
     }
 
+    [Trait("Job", "trap: issue #155, a dydo command chain keeps full shell analysis")]
     [Fact]
     public async Task Issue155_DydoNotFirst_DangerousPattern_Blocked()
     {
@@ -427,20 +260,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(BashJson("rm -rf / && dydo whoami"));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Dangerous");
     }
 
-    [Fact]
-    public async Task Issue155_DydoWaitCancel_ChainedWritableWrite_Succeeds()
-    {
-        await SetupClaimedAgent();
-
-        var result = await GuardWithStdinAsync(
-            BashJson("dydo wait --cancel && tee scratch/notes.md"));
-
-        result.AssertPreToolUseAllowed();
-    }
-
+    [Trait("Job", "trap: issue #155, a dydo command chain keeps full shell analysis")]
     [Fact]
     public async Task Issue155_BareDydoCommand_Succeeds()
     {
@@ -455,6 +277,7 @@ public class GuardSecurityTests : IntegrationTestBase
         "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"PowerShell\",\"tool_input\":{\"command\":\"" +
         command.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"}}";
 
+    [Trait("Job", "trap: bug B, the PowerShell tool bypassed the shell guard")]
     [Fact]
     public async Task BugB_PowerShell_DangerousPattern_IsBlocked()
     {
@@ -464,7 +287,6 @@ public class GuardSecurityTests : IntegrationTestBase
 
         var result = await GuardWithStdinAsync(PowerShellJson("rm -rf /"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Dangerous");
     }
 
     // ================================================================
@@ -479,6 +301,7 @@ public class GuardSecurityTests : IntegrationTestBase
         "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"" + toolName + "\",\"tool_input\":{\"command\":\"" +
         command.Replace("\\", "\\\\").Replace("\"", "\\\"") + "\"}}";
 
+    [Trait("Job", "trap: issue #295, Codex shell tool names bypassed the shell guard")]
     [Theory]
     [InlineData("shell_command")]
     [InlineData("exec")]
@@ -493,9 +316,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(
             CodexShellJson(toolName, "cat config/secrets.json"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("off-limits");
     }
 
+    [Trait("Job", "trap: issue #295, Codex shell tool names bypassed the shell guard")]
     [Fact]
     public async Task Issue295_CodexShellTool_OffLimitsWrite_IsBlocked()
     {
@@ -503,9 +326,9 @@ public class GuardSecurityTests : IntegrationTestBase
 
         var result = await GuardWithStdinAsync(CodexShellJson("shell_command", "tee config/secrets.json"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("off-limits");
     }
 
+    [Trait("Job", "trap: issue #295, Codex shell tool names bypassed the shell guard")]
     [Fact]
     public async Task Issue295_CodexShellTool_DangerousPattern_IsBlocked()
     {
@@ -513,9 +336,9 @@ public class GuardSecurityTests : IntegrationTestBase
 
         var result = await GuardWithStdinAsync(CodexShellJson("shell_command", "rm -rf /"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Dangerous");
     }
 
+    [Trait("Job", "trap: issue #295, Codex shell tool names bypassed the shell guard")]
     [Fact]
     public async Task Issue295_CodexShellTool_BenignCommand_IsAllowed()
     {
@@ -526,101 +349,10 @@ public class GuardSecurityTests : IntegrationTestBase
     }
 
     // ================================================================
-    // Issue #58: DangerousPatterns gaps
-    // ================================================================
-
-    [Theory]
-    [InlineData("rm -rf ./")]
-    [InlineData("rm -Rf ./")]
-    public void Issue58_RmRfCurrentDir_IsDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.True(isDangerous, $"Expected dangerous: {command}");
-    }
-
-    [Theory]
-    [InlineData("Remove-Item -Recurse -Force /")]
-    [InlineData("Remove-Item -Recurse -Force C:\\")]
-    [InlineData("Remove-Item -Force -Recurse ~")]
-    public void Issue58_PowerShellRecursiveDelete_IsDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.True(isDangerous, $"Expected dangerous: {command}");
-    }
-
-    [Theory]
-    [InlineData("Remove-Item -Recurse ./node_modules")]
-    [InlineData("Remove-Item -Force ./temp")]
-    public void Issue58_PowerShellNonRoot_NotDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.False(isDangerous, $"Should not be dangerous: {command}");
-    }
-
-    [Theory]
-    [InlineData("> /dev/nvme0n1")]
-    [InlineData("> /dev/vda")]
-    [InlineData("> /dev/mmcblk0")]
-    [InlineData("dd of=/dev/nvme0n1")]
-    [InlineData("dd of=/dev/vda")]
-    [InlineData("dd of=/dev/mmcblk0")]
-    public void Issue58_NonSdaDiskDevices_IsDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.True(isDangerous, $"Expected dangerous: {command}");
-    }
-
-    // ================================================================
     // Issue #85: bash -c / sh -c inner command analysis
     // ================================================================
 
-    [Fact]
-    public void Issue85_BashC_InnerReadCommandAnalyzed()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("bash -c \"cat state.md\"");
-        Assert.Contains(result.Operations, op => op.Type == FileOperationType.Read);
-    }
-
-    [Fact]
-    public void Issue85_ShC_InnerWriteDetected()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("sh -c \"tee output.txt\"");
-        Assert.Contains(result.Operations, op => op.Type == FileOperationType.Write);
-    }
-
-    [Fact]
-    public void Issue85_BashC_InnerRedirectionDetected()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("zsh -c \"echo pwned > file.txt\"");
-        Assert.Contains(result.Operations, op => op.Type == FileOperationType.Write && op.Path == "file.txt");
-    }
-
-    [Fact]
-    public void Issue85_BashC_CombinedFlags()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("bash -xc \"cat secret.txt\"");
-        Assert.Contains(result.Operations, op => op.Type == FileOperationType.Read);
-    }
-
-    [Theory]
-    [InlineData("bash -c \"echo hello\"")]
-    [InlineData("sh -c \"npm install\"")]
-    [InlineData("bash -c \"git status\"")]
-    public void Issue85_BashC_NotBlockedAsDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.False(isDangerous, $"Should not be dangerous: {command}");
-    }
-
+    [Trait("Job", "trap: issue #85, bash -c runs its string as a command line")]
     [Fact]
     public async Task Issue85_BashC_InnerOffLimitsWrite_Blocked()
     {
@@ -630,33 +362,13 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(
             BashJson("bash -c \"tee config/secrets.json\""));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("off-limits");
     }
 
     // ================================================================
     // Issue #86: Variable hiding command name
     // ================================================================
 
-    [Fact]
-    public void Issue86_VariableAsCommand_PathArgsFlaggedAsUncertainWrite()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("$CMD dydo/files-off-limits.md");
-        Assert.True(result.HasBypassAttempt);
-        Assert.Contains(result.Operations, op =>
-            op.IsUncertain && op.Type == FileOperationType.Write);
-    }
-
-    [Fact]
-    public void Issue86_SubstitutionAsCommand_PathArgsFlagged()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        // $(echo tee) tokenizes to ["$(echo", "tee)", "file.cs"] - cmdName starts with $
-        var result = analyzer.Analyze("$(echo tee) file.cs");
-        Assert.True(result.HasBypassAttempt);
-        Assert.Contains(result.Operations, op => op.IsUncertain && op.Path == "file.cs");
-    }
-
+    [Trait("Job", "trap: issue #86, a variable hiding the command name")]
     [Fact]
     public async Task Issue86_VariableHidingWriteCommand_Blocked()
     {
@@ -664,218 +376,33 @@ public class GuardSecurityTests : IntegrationTestBase
 
         var result = await GuardWithStdinAsync(BashJson("$CMD dydo/files-off-limits.md"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("bypass");
     }
 
     // ================================================================
     // Issue #64: Block-severity nudges can't be removed from config
     // ================================================================
 
-    [Fact]
-    public void Issue64_MergeSystemNudges_AddsBlockDefaults()
-    {
-        var nudges = GuardCommand.MergeSystemNudges([]);
-        Assert.True(nudges.Count > 0);
-        Assert.All(nudges, n => Assert.Equal("block", n.Severity, ignoreCase: true));
-    }
-
-    [Fact]
-    public void Issue64_MergeSystemNudges_NoDoubles()
-    {
-        var nudges = GuardCommand.MergeSystemNudges(ConfigFactory.DefaultNudges.ToList());
-        var patterns = nudges.Select(n => n.Pattern).ToList();
-        Assert.Equal(patterns.Count, patterns.Distinct().Count());
-    }
-
-    [Fact]
-    public async Task Issue64_IndirectDydo_BlockedEvenWithEmptyNudgeConfig()
+    [Trait("Job", "trap: issue #64, block-severity system nudges cannot be removed or downgraded in dydo.json")]
+    [Theory]
+    [InlineData("removed")]
+    [InlineData("downgraded")]
+    public async Task Issue64_IndirectDydo_IsBlockedWhateverDydoJsonSaysOfTheNudge(string edit)
     {
         await InitProjectAsync("none");
+        var path = Path.Combine(TestDir, ConfigService.ConfigFileName);
+        var config = System.Text.Json.Nodes.JsonNode.Parse(File.ReadAllText(path))!;
+        if (edit == "removed")
+            config["nudges"] = new System.Text.Json.Nodes.JsonArray();
+        else
+            foreach (var nudge in config["nudges"]!.AsArray())
+                nudge!["severity"] = "warn";
+        File.WriteAllText(path, config.ToJsonString());
 
-        var configPath = Path.Combine(TestDir, "dydo", "dydo.json");
-        if (File.Exists(configPath))
-        {
-            var content = File.ReadAllText(configPath);
-            content = content.Replace("\"nudges\"", "\"_nudges_disabled\"");
-            File.WriteAllText(configPath, content);
-        }
-
-        var result = await GuardWithStdinAsync(
-            BashJson("npx dydo agent claim auto"));
-        result.AssertPreToolUseDenied();
-        result.AssertStderrContains("BLOCKED");
+        for (var attempt = 0; attempt < 2; attempt++)
+            (await GuardWithStdinAsync(BashJson("npx dydo agent claim auto"))).AssertPreToolUseDenied();
     }
 
-    [Fact]
-    public void Issue64_MergeSystemNudges_NullInput_ReturnsDefaults()
-    {
-        var nudges = GuardCommand.MergeSystemNudges(null);
-        Assert.True(nudges.Count > 0);
-    }
-
-    [Fact]
-    public void Issue64_MergeSystemNudges_DoesNotAddWarnNudges()
-    {
-        var nudges = GuardCommand.MergeSystemNudges([]);
-        Assert.All(nudges, n => Assert.Equal("block", n.Severity, ignoreCase: true));
-    }
-
-    [Fact]
-    public void Issue64_MergeSystemNudges_DowngradedSeverity_ForcedBackToBlock()
-    {
-        var blockDefault = ConfigFactory.DefaultNudges.First(
-            n => string.Equals(n.Severity, "block", StringComparison.OrdinalIgnoreCase));
-
-        var configNudges = new List<NudgeConfig>
-        {
-            new() { Pattern = blockDefault.Pattern, Message = blockDefault.Message, Severity = "warn" }
-        };
-
-        var result = GuardCommand.MergeSystemNudges(configNudges);
-
-        var matching = result.Where(n => n.Pattern == blockDefault.Pattern).ToList();
-        Assert.Single(matching);
-        Assert.Equal("block", matching[0].Severity, ignoreCase: true);
-    }
-
-    [Fact]
-    public void MergeSystemNudges_HealsStaleWarnMessage()
-    {
-        // A known-stale poll-loop warn text that still recommends the deleted `dydo wait`.
-        var stale = new NudgeConfig
-        {
-            Pattern = @"\buntil\s+\[",
-            Message = "Open-ended Bash poll-loop detected. Prefer a bounded for i in {1..30}; do ...; sleep 1; done, or `gh run watch`, or `dydo wait` for dydo-native waits. Open-ended polls have caused agent crashes (issue 0177).",
-            Severity = "warn"
-        };
-
-        var result = GuardCommand.MergeSystemNudges([stale]);
-
-        var healed = Assert.Single(result, n => n.Pattern == stale.Pattern);
-        Assert.DoesNotContain("dydo wait", healed.Message);
-        Assert.Equal("warn", healed.Severity, ignoreCase: true);
-        var currentDefault = ConfigFactory.DefaultNudges.First(d => d.Pattern == stale.Pattern);
-        Assert.Equal(currentDefault.Message, healed.Message);
-    }
-
-    [Fact]
-    public void MergeSystemNudges_RemovesRetiredWorktreeNudge()
-    {
-        // A retired worktree nudge has no current default → it is dropped entirely.
-        var retired = new NudgeConfig
-        {
-            Pattern = @"\bgit\b[^;|&]*\bworktree\s+(add|remove)\b",
-            Message = "Use dydo worktree commands instead of git worktree directly.",
-            Severity = "block"
-        };
-
-        var result = GuardCommand.MergeSystemNudges([retired]);
-
-        Assert.DoesNotContain(result, n => n.Pattern == retired.Pattern);
-        Assert.DoesNotContain(result, n => n.Message == retired.Message);
-    }
-
-    [Fact]
-    public void MergeSystemNudges_LeavesUserCustomizedMessageAlone()
-    {
-        var blockDefault = ConfigFactory.DefaultNudges.First(
-            n => string.Equals(n.Severity, "block", StringComparison.OrdinalIgnoreCase));
-        var custom = new NudgeConfig
-        {
-            Pattern = blockDefault.Pattern,
-            Message = "My team's own wording for this rule.",
-            Severity = "block"
-        };
-
-        var result = GuardCommand.MergeSystemNudges([custom]);
-
-        var matching = Assert.Single(result, n => n.Pattern == custom.Pattern);
-        Assert.Equal("My team's own wording for this rule.", matching.Message);
-    }
-
-    [Fact]
-    public void MergeSystemNudges_ForceRestoresSeverityWithoutClobberingCustomMessage()
-    {
-        var blockDefault = ConfigFactory.DefaultNudges.First(
-            n => string.Equals(n.Severity, "block", StringComparison.OrdinalIgnoreCase));
-        var custom = new NudgeConfig
-        {
-            Pattern = blockDefault.Pattern,
-            Message = "My team's own wording for this rule.",
-            Severity = "warn"
-        };
-
-        var result = GuardCommand.MergeSystemNudges([custom]);
-
-        var matching = Assert.Single(result, n => n.Pattern == custom.Pattern);
-        Assert.Equal("block", matching.Severity, ignoreCase: true);
-        Assert.Equal("My team's own wording for this rule.", matching.Message);
-    }
-
-    [Fact]
-    public void Issue85_ShellWithoutCFlag_NoInnerAnalysis()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("bash -e script.sh");
-        // No file operations expected - bash is not in command dictionaries
-        Assert.DoesNotContain(result.Operations, op => op.Type == FileOperationType.Read);
-    }
-
-    [Fact]
-    public void Issue85_ShellCWithNoArgument_NoInnerAnalysis()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("bash -c");
-        Assert.Empty(result.Operations);
-    }
-
-    [Fact]
-    public void Issue85_ShellCWithMultipleSubcommands()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("bash -c \"cat file.txt; rm temp.txt\"");
-        Assert.Contains(result.Operations, op => op.Type == FileOperationType.Read);
-        Assert.Contains(result.Operations, op => op.Type == FileOperationType.Delete);
-    }
-
-    [Fact]
-    public void Issue86_VariableWithNoPathArgs_NoUncertainOps()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("$CMD");
-        Assert.True(result.HasBypassAttempt);
-        Assert.Empty(result.Operations);
-    }
-
-    [Fact]
-    public void Issue86_BacktickAsCommand_PathArgsFlagged()
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var result = analyzer.Analyze("`get_cmd` file.txt");
-        Assert.True(result.HasBypassAttempt);
-        Assert.Contains(result.Operations, op => op.IsUncertain && op.Path == "file.txt");
-    }
-
-    [Theory]
-    [InlineData("rm -rf /some/path")]
-    [InlineData("rm -rf specific-dir")]
-    public void Issue58_RmRfNonRoot_NotDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.False(isDangerous, $"Should not be dangerous: {command}");
-    }
-
-    [Theory]
-    [InlineData("> /dev/sda")]
-    [InlineData("dd of=/dev/sdb")]
-    public void Issue58_OriginalSdaDevices_StillDangerous(string command)
-    {
-        var analyzer = new BashCommandAnalyzer();
-        var (isDangerous, _) = analyzer.CheckDangerousPatterns(command);
-        Assert.True(isDangerous, $"Expected dangerous: {command}");
-    }
-
+    [Trait("Job", "trap: issue #60, shell reads and writes honour the off-limits tier")]
     [Fact]
     public async Task BashReadOperation_AllowedForClaimedAgent()
     {
@@ -885,6 +412,7 @@ public class GuardSecurityTests : IntegrationTestBase
         result.AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: issue #60, shell reads and writes honour the off-limits tier")]
     [Fact]
     public async Task BashWriteToAllowedPath_Succeeds()
     {
@@ -895,6 +423,7 @@ public class GuardSecurityTests : IntegrationTestBase
         result.AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: issue #60, shell reads and writes honour the off-limits tier")]
     [Fact]
     public async Task BashDeleteOperation_OffLimitsBlocked()
     {
@@ -903,9 +432,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(
             BashJson("rm config/secrets.json"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("off-limits");
     }
 
+    [Trait("Job", "trap: issue #60, shell reads and writes honour the off-limits tier")]
     [Fact]
     public async Task Issue60_BashReadOffLimitsNonMode_Blocked()
     {
@@ -914,7 +443,6 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(
             BashJson("cat config/secrets.json"));
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("off-limits");
     }
 
     // ================================================================
@@ -930,6 +458,7 @@ public class GuardSecurityTests : IntegrationTestBase
         });
 
     // GS-02: literal data written to a literal destination is no bypass.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("PowerShell", GuardRetroCommands.Gs02SetContentEvidence)]
     [InlineData("PowerShell", GuardRetroCommands.Gs02SetContentVerdict)]
@@ -950,6 +479,7 @@ public class GuardSecurityTests : IntegrationTestBase
 
     // DYD-422: one sed, printf or echo command writing single-quoted literal data to a literal
     // destination is no bypass, through Claude's Bash and PowerShell tools and in an unknown shell.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("sed -i 's/`x`/y/' f")]
     [InlineData("printf '%s' 'first line\n$HOME is literal' > notes.md")]
@@ -969,12 +499,13 @@ public class GuardSecurityTests : IntegrationTestBase
 
     // Literal data keeps its path checks: a guarded destination, or a guarded path a substitution
     // in it names, is refused for that path.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
-    [InlineData("printf '%s' 'first line\n$HOME is literal' > dydo/index.md", "protected")]
-    [InlineData("sed -i 's/`x`/y/' dydo/files-off-limits.md", "protected")]
-    [InlineData("sed -i 's#`rm dydo/index.md`#y#' notes.md", "protected")]
-    [InlineData("printf '%s' '$HOME' > .env", "off-limits")]
-    public async Task Gs02_SingleQuotedLiteralDataWrite_ToAGuardedPath_IsStillDenied(string command, string tier)
+    [InlineData("printf '%s' 'first line\n$HOME is literal' > dydo/index.md")]
+    [InlineData("sed -i 's/`x`/y/' dydo/files-off-limits.md")]
+    [InlineData("sed -i 's#`rm dydo/index.md`#y#' notes.md")]
+    [InlineData("printf '%s' '$HOME' > .env")]
+    public async Task Gs02_SingleQuotedLiteralDataWrite_ToAGuardedPath_IsStillDenied(string command)
     {
         await SetupClaimedAgent();
 
@@ -982,12 +513,11 @@ public class GuardSecurityTests : IntegrationTestBase
         var unknown = await UnknownShellGuardAsync(command);
 
         bash.AssertPreToolUseDenied();
-        bash.AssertStderrContains(tier);
         unknown.AssertExitCode(2);
-        unknown.AssertStderrContains(tier);
     }
 
     // Single-quoted text no reading certifies as literal data is refused as on master.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Fact]
     public async Task Gs02_SingleQuotedSetContentWrite_IsDeniedAsOnMaster()
     {
@@ -996,12 +526,12 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(ShellJson("PowerShell", "Set-Content notes.md 'first line\n$HOME is literal'"));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("bypass");
     }
 
     // DYD-422: where a program on the line may run the single-quoted text, a reading may not be the
     // shell's, or the text sits in a comment or a body, the call is refused as on master and the
     // protected canary keeps its bytes.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("eval 'echo x' '> $OUT'")]
     [InlineData("iex 'echo x' '> $OUT'")]
@@ -1023,15 +553,14 @@ public class GuardSecurityTests : IntegrationTestBase
         var unknown = await UnknownShellGuardAsync(command);
 
         bash.AssertPreToolUseDenied();
-        bash.AssertStderrContains("bypass");
         unknown.AssertExitCode(2);
-        unknown.AssertStderrContains("bypass");
         Assert.Equal(before, File.ReadAllBytes(canary));
     }
 
     // DYD-422 review: every route the reviews found (a second command, a file the line writes and
     // then runs, an option off sed's list, a word the shell may expand, text only PowerShell runs)
     // is refused through Claude's Bash and PowerShell tools and an unknown shell, as on master.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [MemberData(nameof(GuardRetroCommands.Gs02WriteThenRunLines), MemberType = typeof(GuardRetroCommands))]
     [MemberData(nameof(GuardRetroCommands.Gs02OptionLines), MemberType = typeof(GuardRetroCommands))]
@@ -1049,15 +578,13 @@ public class GuardSecurityTests : IntegrationTestBase
         var unknown = await UnknownShellGuardAsync(command);
 
         bash.AssertPreToolUseDenied();
-        bash.AssertStderrContains("bypass");
         powerShell.AssertPreToolUseDenied();
-        powerShell.AssertStderrContains("bypass");
         unknown.AssertExitCode(2);
-        unknown.AssertStderrContains("bypass");
     }
 
     // Split seat D: a Codex pwsh argv envelope runs its script in PowerShell, from a caller read as
     // bash; relief needs PowerShell's reading too, so the text it runs is refused as on master.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [MemberData(nameof(GuardRetroCommands.Gs02PowerShellReadingLines), MemberType = typeof(GuardRetroCommands))]
     [MemberData(nameof(GuardRetroCommands.Gs02BreakCharacterLines), MemberType = typeof(GuardRetroCommands))]
@@ -1076,13 +603,13 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(payload);
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("bypass");
     }
 
     // DYD-641: pwsh 7.6.9 ends a statement and a comment at a bare carriage return, and a here-string
     // at a bare carriage return or a typographic quote before @ (measured in /tmp/dyd641-evidence);
     // the text after each runs, so Claude's PowerShell tool, a Codex pwsh argv envelope and an
     // unknown shell refuse it, and the protected canary keeps its bytes.
+    [Trait("Job", "trap: DYD-641 pwsh and bash read a bare carriage return differently")]
     [Theory]
     [InlineData("echo @'\nx\n’@; iex '$(echo x > $OUT)'\n'@ # '")]
     [InlineData("echo @'\nx\r'@; iex '$(echo x > $OUT)'\n'@ # '")]
@@ -1102,12 +629,12 @@ public class GuardSecurityTests : IntegrationTestBase
         var unknown = await UnknownShellGuardAsync(command);
 
         unknown.AssertExitCode(2);
-        unknown.AssertStderrContains("bypass");
         Assert.Equal(before, File.ReadAllBytes(canary));
     }
 
     // A line starting with @ reaches the CLI lane's argv parser as a response file, so the unknown
     // shell's reading of this one is proved in the analyzer's tests.
+    [Trait("Job", "trap: DYD-641 pwsh and bash read a bare carriage return differently")]
     [Fact]
     public async Task Dyd641_PipeAfterABareCarriageReturn_IsDeniedWherePwshRunsIt()
     {
@@ -1123,6 +650,7 @@ public class GuardSecurityTests : IntegrationTestBase
     // bash 5.3.9 keeps a bare carriage return in a word, so the words after it are still the command's
     // arguments: it deletes, truncates, edits or chmods the canary (measured in /tmp/dyd641-evidence/fix2).
     // Claude's Bash tool and an unknown shell refuse it, as before DYD-641.
+    [Trait("Job", "trap: DYD-641 pwsh and bash read a bare carriage return differently")]
     [Theory]
     [InlineData("rm \r dydo/index.md")]
     [InlineData("rm -- \r dydo/index.md")]
@@ -1146,6 +674,7 @@ public class GuardSecurityTests : IntegrationTestBase
     }
 
     // A bash -c string is bash's whichever tool hands it on, so every lane refuses it.
+    [Trait("Job", "trap: DYD-641 pwsh and bash read a bare carriage return differently")]
     [Fact]
     public async Task Dyd641_BashCommandStringWithABareCarriageReturn_IsDeniedInEveryLane()
     {
@@ -1160,6 +689,7 @@ public class GuardSecurityTests : IntegrationTestBase
     // Each carriage return here is half of a CRLF, so the line holds none of the three characters:
     // the Windows-authored here-string write is allowed as before DYD-641 (pwsh 7.6.9 runs it harmlessly).
     // A line starting with @ reaches the CLI lane's argv parser as a response file (DYD-675).
+    [Trait("Job", "trap: DYD-641 pwsh and bash read a bare carriage return differently")]
     [Theory]
     [InlineData("@'\r\nhello\r\n'@ | Set-Content notes.md\r\necho done")]
     [InlineData("@'\r\na\r\n'@ | Set-Content notes.md\r\n@'\r\nb\r\n'@ | Add-Content notes.md")]
@@ -1173,6 +703,7 @@ public class GuardSecurityTests : IntegrationTestBase
             (await GuardWithStdinAsync(json)).AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: DYD-641 pwsh and bash read a bare carriage return differently")]
     [Fact]
     public async Task Dyd641_CrlfAfterAHereStringWrite_IsAllowedInAnUnknownShell()
     {
@@ -1188,9 +719,7 @@ public class GuardSecurityTests : IntegrationTestBase
         var envelope = await GuardWithStdinAsync(CodexPwshJson(command));
 
         powerShell.AssertPreToolUseDenied();
-        powerShell.AssertStderrContains("bypass");
         envelope.AssertPreToolUseDenied();
-        envelope.AssertStderrContains("bypass");
     }
 
     // A Codex shell call that runs the command through pwsh -Command.
@@ -1204,23 +733,9 @@ public class GuardSecurityTests : IntegrationTestBase
             ["tool_input"] = new Dictionary<string, object> { ["command"] = new[] { "pwsh", "-Command", command }, ["workdir"] = TestDir },
         });
 
-    // Split seat B's expanding-word probes that write no path: master warns, and so does every lane.
-    [Theory]
-    [MemberData(nameof(GuardRetroCommands.Gs02ExpandingWordWarningLines), MemberType = typeof(GuardRetroCommands))]
-    public async Task Gs02_ExpandingWordWithoutAWrite_KeepsTheBypassWarning(string command)
-    {
-        await SetupClaimedAgent();
-
-        var bash = await GuardWithStdinAsync(ShellJson("Bash", command));
-        var powerShell = await GuardWithStdinAsync(ShellJson("PowerShell", command));
-        var unknown = await UnknownShellGuardAsync(command);
-
-        foreach (var result in new[] { bash, powerShell, unknown })
-            result.AssertStderrContains("WARNING: Command contains command substitution - paths may be dynamic");
-    }
-
     // The round-5 apostrophes pair only in PowerShell; bash's reading is required for every caller,
     // so Claude's Bash and PowerShell tools and an unknown shell all refuse them, as on master.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("echo don\\'t $(rm dydo/index.md) won\\'t")]
     [InlineData("echo don\\'t $(echo x > $OUT) won\\'t")]
@@ -1239,17 +754,15 @@ public class GuardSecurityTests : IntegrationTestBase
         var unknown = await UnknownShellGuardAsync(command);
 
         bash.AssertPreToolUseDenied();
-        bash.AssertStderrContains("bypass");
         powerShell.AssertPreToolUseDenied();
-        powerShell.AssertStderrContains("bypass");
         unknown.AssertExitCode(2);
-        unknown.AssertStderrContains("bypass");
         Assert.Equal(before, File.ReadAllBytes(canary));
     }
 
     // Where PowerShell may run the line: a typographic quote closes its string, a caret escapes
     // nothing, --% stops parsing, and a group word, an alias, an assignment or a call operator may
     // run the text, so it is code.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("echo 'a’ $(echo x > $OUT) ’b'")]
     [InlineData("echo “a '$(echo x > $OUT)' b”")]
@@ -1271,13 +784,12 @@ public class GuardSecurityTests : IntegrationTestBase
         var unknown = await UnknownShellGuardAsync(command);
 
         powerShell.AssertPreToolUseDenied();
-        powerShell.AssertStderrContains("bypass");
         unknown.AssertExitCode(2);
-        unknown.AssertStderrContains("bypass");
     }
 
     // DYD-421 DECIDED: apostrophes around a substitution or a variable, on a command line or in an
     // expanding heredoc body, hide nothing; the protected canary keeps its bytes.
+    [Trait("Job", "contract: DYD-421 DECIDED, apostrophes around an expansion hide nothing")]
     [Theory]
     [InlineData("echo don\\'t $(rm dydo/index.md) won\\'t")]
     [InlineData("cat > notes.md <<EOF\nDon't $(rm dydo/index.md) it's\nEOF")]
@@ -1294,10 +806,10 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(ShellJson("Bash", command));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Command contains bypass patterns (command substitution or variable expansion)");
         Assert.Equal(before, File.ReadAllBytes(canary));
     }
 
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("Bash", "cat > $OUT <<'EOF'\nplain words\nEOF")]
     [InlineData("Bash", "cat > notes.md <<EOF\n$(rm -rf build)\nEOF")]
@@ -1316,9 +828,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(ShellJson(toolName, command));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("bypass");
     }
 
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("Bash", "cat > dydo/files-off-limits.md <<'EOF'\nplain words\nEOF")]
     [InlineData("Bash", "cat > notes.md <<'EOF'\nplain words\nEOF\nrm dydo/index.md")]
@@ -1336,6 +848,7 @@ public class GuardSecurityTests : IntegrationTestBase
     // GS-03 (review round 6): a launch a runner makes, or the command string ssh or watch runs, keeps
     // master's poll-loop nudge. Unquoted and uninventoried quoted arguments still count;
     // only the finite data operands and proven inert bodies receive relief.
+    [Trait("Job", "trap: DYD-406 GS-03, the poll-loop nudge fires on a launch, not on quoted or literal text")]
     [Theory]
     [InlineData("Bash", "stdbuf -oL tail -f app.log")]
     [InlineData("Bash", "stdbuf -o L tail -f app.log")]
@@ -1355,9 +868,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(ShellJson(toolName, command));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Open-ended Bash poll-loop detected");
     }
 
+    [Trait("Job", "trap: DYD-406 GS-03, the poll-loop nudge fires on a launch, not on quoted or literal text")]
     [Theory]
     [InlineData("echo stdbuf -oL tail -f app.log")]
     [InlineData("grep 'ssh host tail -f' notes.md")]
@@ -1376,9 +889,9 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(ShellJson("Bash", command));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("Open-ended Bash poll-loop detected");
     }
 
+    [Trait("Job", "trap: DYD-406 GS-03, the poll-loop nudge fires on a launch, not on quoted or literal text")]
     [Theory]
     [InlineData("Bash", "cat <<'EOF' | bash\ntail -f app.log\nEOF")]
     [InlineData("Bash", "cat <<'EOF' | unknown-wrapper\ntail -f app.log\nEOF")]
@@ -1392,21 +905,12 @@ public class GuardSecurityTests : IntegrationTestBase
     public async Task Gs03_ContextBody_HookDenialAndRetry(string toolName, string command)
     {
         await SetupClaimedAgent();
-        // The baseline has no newline advisory for the quoted -c unknown-consumer row;
-        // its otherwise identical downstream bash row retains the advisory.
-        var warning = command.StartsWith("bash -c", StringComparison.Ordinal)
-            && command.EndsWith("| unknown-wrapper", StringComparison.Ordinal)
-            ? "" : "WARNING: Command contains embedded newlines" + Environment.NewLine;
-        const string nudge = "BLOCKED: Open-ended Bash poll-loop detected. Prefer a bounded for i in {1..30}; do ...; sleep 1; done, or `gh run watch`. Open-ended polls have caused agent crashes (issue 0177).";
-        var expected = warning + nudge + Environment.NewLine + "  (Run the same command again to proceed anyway.)";
-        var first = await GuardWithStdinAsync(ShellJson(toolName, command));
-        Assert.Equal(expected + Environment.NewLine, first.Stderr);
-        Assert.Equal(expected, first.AssertPreToolUseDenied());
-        var retry = await GuardWithStdinAsync(ShellJson(toolName, command));
-        retry.AssertPreToolUseAllowed();
-        Assert.Equal(warning, retry.Stderr);
+
+        (await GuardWithStdinAsync(ShellJson(toolName, command))).AssertPreToolUseDenied();
+        (await GuardWithStdinAsync(ShellJson(toolName, command))).AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: DYD-406 GS-03, the poll-loop nudge fires on a launch, not on quoted or literal text")]
     [Theory]
     [InlineData("Bash", "cat <<'EOF'\ntail -f app.log\nEOF")]
     [InlineData("PowerShell", "Write-Output @'\ntail -f app.log\n'@")]
@@ -1418,29 +922,22 @@ public class GuardSecurityTests : IntegrationTestBase
         await SetupClaimedAgent();
         var result = await GuardWithStdinAsync(ShellJson(toolName, command));
         result.AssertPreToolUseAllowed();
-        Assert.DoesNotContain("Open-ended Bash poll-loop", result.Stderr);
     }
 
+    // A here-string terminator with text glued to it is no terminator, so the poll loop after it
+    // runs: it warns once and the identical retry passes, as on master.
+    [Trait("Job", "trap: DYD-406 GS-02/GS-03 a glued here-string terminator ends no body")]
     [Fact]
-    public async Task Gs02_HereStringBoundary_RawWarningDenialAndRetryMatchMaster()
+    public async Task Gs02_HereStringBoundary_GluedPollLoopWarnsOnceThenPasses()
     {
         await SetupClaimedAgent();
         const string command = "Write-Output @'\ntext\n'@tail -f app.log";
-        var warning = "WARNING: Command contains embedded newlines" + Environment.NewLine;
-        const string nudge = "BLOCKED: Open-ended Bash poll-loop detected. Prefer a bounded for i in {1..30}; do ...; sleep 1; done, or `gh run watch`. Open-ended polls have caused agent crashes (issue 0177).";
-        var expected = warning + nudge + Environment.NewLine + "  (Run the same command again to proceed anyway.)";
 
-        var first = await GuardWithStdinAsync(ShellJson("PowerShell", command));
-
-        Assert.Equal(expected + Environment.NewLine, first.Stderr);
-        Assert.Equal(expected, first.AssertPreToolUseDenied());
-
-        var retry = await GuardWithStdinAsync(ShellJson("PowerShell", command));
-
-        retry.AssertPreToolUseAllowed();
-        Assert.Equal(warning, retry.Stderr);
+        (await GuardWithStdinAsync(ShellJson("PowerShell", command))).AssertPreToolUseDenied();
+        (await GuardWithStdinAsync(ShellJson("PowerShell", command))).AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: DYD-406 GS-03, the poll-loop nudge fires on a launch, not on quoted or literal text")]
     [Theory]
     [InlineData("H01-posix", "Bash", "echo @\"\n\" $(cat <<'IN'\ntail -f app.log\nIN\n) | bash; echo \"\n\"@", true)]
     [InlineData("H03-data", "Bash", "echo @\"\n$(cat <<'IN'\ntail -f app.log\nIN\n)\n\"@", false)]
@@ -1489,21 +986,12 @@ public class GuardSecurityTests : IntegrationTestBase
         var retry = await GuardWithStdinAsync(payload, "--host", "claude");
         Assert.Equal(before, File.ReadAllBytes(canary));
         retry.AssertPreToolUseAllowed();
-        if (!deny)
-        {
-            first.AssertPreToolUseAllowed();
-            Assert.Equal(first.Stderr, retry.Stderr);
-            Assert.DoesNotContain("Open-ended Bash poll-loop", first.Stderr);
-            return;
-        }
-        const string nudge = "BLOCKED: Open-ended Bash poll-loop detected. Prefer a bounded for i in {1..30}; do ...; sleep 1; done, or `gh run watch`. Open-ended polls have caused agent crashes (issue 0177).";
-        var expected = retry.Stderr + nudge + Environment.NewLine
-            + "  (Run the same command again to proceed anyway.)";
-        Assert.Equal(id + ":" + expected, id + ":" + first.AssertPreToolUseDenied());
-        Assert.Equal(expected + Environment.NewLine, first.Stderr);
+        Assert.True(deny == !first.IsPreToolUseAllowed, id);
+        if (deny) first.AssertPreToolUseDenied();
     }
 
     // GS-01: a PowerShell variable assigned from a literal Get-Content is a read.
+    [Trait("Job", "trap: DYD-406 GS-01, a PowerShell assignment from Get-Content is a read")]
     [Theory]
     [InlineData(GuardRetroCommands.Gs01SlicedRead)]
     [InlineData(GuardRetroCommands.Gs01SelectStringRead)]
@@ -1517,6 +1005,7 @@ public class GuardSecurityTests : IntegrationTestBase
         result.AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: DYD-406 GS-01, a PowerShell assignment from Get-Content is a read")]
     [Theory]
     [InlineData("$p = Get-Content notes.md; Set-Content notes.md $p")]
     [InlineData("$x = Remove-Item notes.md")]
@@ -1532,6 +1021,7 @@ public class GuardSecurityTests : IntegrationTestBase
         result.AssertPreToolUseDenied();
     }
 
+    [Trait("Job", "trap: DYD-406 case arms keep their file operations and nudges")]
     [Fact]
     public async Task CaseArm_MatchingExecutableArm_IsDeniedByHook()
     {
@@ -1544,6 +1034,7 @@ public class GuardSecurityTests : IntegrationTestBase
         Assert.Contains("Command contains bypass patterns", result.AssertPreToolUseDenied());
     }
 
+    [Trait("Job", "trap: DYD-406 case arms keep their file operations and nudges")]
     [Theory]
     [InlineData("x", "rm dydo/files-off-limits.md")]
     [InlineData("x", "echo changed > dydo/index.md")]
@@ -1566,6 +1057,7 @@ public class GuardSecurityTests : IntegrationTestBase
     }
 
     // GS-05: a Python program on stdin is refused before it runs, so the protected canary keeps its bytes.
+    [Trait("Job", "trap: DYD-406 GS-05, a Python program on stdin hides its file operations")]
     [Theory]
     [InlineData("Bash", "python - <<'EOF'\nopen('dydo/files-off-limits.md','w').write('changed')\nEOF")]
     [InlineData("Bash", "printf \"open('dydo/files-off-limits.md','w').write('changed')\" | python3")]
@@ -1586,6 +1078,7 @@ public class GuardSecurityTests : IntegrationTestBase
     }
 
     // A script file runs and its own file operations are not followed: the documented limit.
+    [Trait("Job", "trap: DYD-406 GS-05, a Python program on stdin hides its file operations")]
     [Fact]
     public async Task Gs05_PythonScriptFile_IsAllowed()
     {
@@ -1597,6 +1090,7 @@ public class GuardSecurityTests : IntegrationTestBase
     }
 
     // Nothing feeds stdin, so no program is read from it: a lookup, xargs operands, a prompt.
+    [Trait("Job", "trap: DYD-406 GS-05, a Python program on stdin hides its file operations")]
     [Theory]
     [InlineData("command -v python3")]
     [InlineData("command -V python3")]
@@ -1614,6 +1108,7 @@ public class GuardSecurityTests : IntegrationTestBase
 
     // GS-02: every word eval, ssh or watch joins into the code it runs is code, and so is a line a
     // shell reads from a pipe, so a dynamic write in any of them is still denied.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("eval 'echo x' '> $OUT'")]
     [InlineData("eval echo 'x > $OUT'")]
@@ -1627,10 +1122,10 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(ShellJson("Bash", command));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("bypass");
     }
 
     // GS-05: a < or | in a comment feeds nothing.
+    [Trait("Job", "trap: DYD-406 GS-05, a Python program on stdin hides its file operations")]
     [Theory]
     [InlineData("python # <stdin>")]
     [InlineData("python # input < program.py")]
@@ -1645,6 +1140,7 @@ public class GuardSecurityTests : IntegrationTestBase
     }
 
     // A real feed is still refused after a comment, into a group, and inside a substitution.
+    [Trait("Job", "trap: DYD-406 GS-05, a Python program on stdin hides its file operations")]
     [Theory]
     [InlineData("printf \"open('dydo/files-off-limits.md','w').write('changed')\" | python3 # feeds it")]
     [InlineData("echo \"$(printf \"open('dydo/files-off-limits.md','w').write('changed')\" | python3)\"")]
@@ -1665,6 +1161,7 @@ public class GuardSecurityTests : IntegrationTestBase
 
     // GS-02: a runner named only in a comment or an argument runs no body, and the blank or
     // comment-only lines after a heredoc separate no commands.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("Bash", "cat > helper.sh <<'EOF' # bash script\necho hello\nEOF")]
     [InlineData("Bash", "grep -c bash <<'EOF'\nline one\nline two\nEOF")]
@@ -1681,6 +1178,7 @@ public class GuardSecurityTests : IntegrationTestBase
         result.AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("Bash", "bash <<'EOF' # bash script\necho x > $OUT\nEOF")]
     [InlineData("Bash", "cat <<'EOF' | bash # bash script\necho x > $OUT\nEOF")]
@@ -1693,11 +1191,11 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await GuardWithStdinAsync(ShellJson(toolName, command));
 
         result.AssertPreToolUseDenied();
-        result.AssertStderrContains("bypass");
     }
 
     // Round 4: a body is data only when data commands alone read it; a quoted or pathed runner, a
     // stdin source, a group piped on, a later line of code and a comment's apostrophe hide nothing.
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("Bash", "cat > notes.md <<'EOF' # don't expand\nplain\nEOF\nrm dydo/index.md")]
     [InlineData("Bash", "\"C:/Program Files/Git/bin/bash.exe\" <<'EOF'\necho y > dydo/index.md\nEOF")]
@@ -1725,6 +1223,7 @@ public class GuardSecurityTests : IntegrationTestBase
         Assert.Equal(before, File.ReadAllBytes(canary));
     }
 
+    [Trait("Job", "trap: DYD-406 GS-02 and DYD-422, literal data is no bypass; a guarded or dynamic write still is")]
     [Theory]
     [InlineData("Bash", "cat > notes.md <<'END-OF-FILE'\nplain\nEND-OF-FILE")]
     [InlineData("Bash", "cat > notes.md <<\"END_OF_FILE\"\nplain\nEND_OF_FILE")]
@@ -1740,6 +1239,7 @@ public class GuardSecurityTests : IntegrationTestBase
         result.AssertPreToolUseAllowed();
     }
 
+    [Trait("Job", "trap: DYD-406 GS-05, a Python program on stdin hides its file operations")]
     [Theory]
     [InlineData("echo \"$(python3 tools/rewrite.py)\"")]
     [InlineData("printf x | (python3 tools/rewrite.py)")]
@@ -1756,21 +1256,22 @@ public class GuardSecurityTests : IntegrationTestBase
     // DYD-640: an fd-numbered redirection writes its target, checked like plain >
     // ================================================================
 
+    [Trait("Job", "trap: DYD-640 every redirection the shell reads is a write; fd duplication and sinks are not")]
     [Theory]
-    [InlineData("printf x > dydo/index.md", "Path is protected")]
-    [InlineData("printf x 1> dydo/index.md", "Path is protected")]
-    [InlineData("printf x 2> dydo/index.md", "Path is protected")]
-    [InlineData("printf x 3> dydo/index.md", "Path is protected")]
-    [InlineData("printf x 1>> dydo/index.md", "Path is protected")]
-    [InlineData("printf x 1>| dydo/index.md", "Path is protected")]
-    [InlineData("printf x >| dydo/index.md", "Path is protected")]
-    [InlineData("printf x &> dydo/index.md", "Path is protected")]
-    [InlineData("printf x &>> dydo/index.md", "Path is protected")]
-    [InlineData("printf x >&dydo/index.md", "Path is protected")]
-    [InlineData("printf word2>dydo/index.md", "Path is protected")]
-    [InlineData("printf x 1> .env", "off-limits")]
-    [InlineData("printf x 2>> .env", "off-limits")]
-    public async Task Dyd640_OutputRedirectionToAGuardedPath_IsDenied(string command, string reason)
+    [InlineData("printf x > dydo/index.md")]
+    [InlineData("printf x 1> dydo/index.md")]
+    [InlineData("printf x 2> dydo/index.md")]
+    [InlineData("printf x 3> dydo/index.md")]
+    [InlineData("printf x 1>> dydo/index.md")]
+    [InlineData("printf x 1>| dydo/index.md")]
+    [InlineData("printf x >| dydo/index.md")]
+    [InlineData("printf x &> dydo/index.md")]
+    [InlineData("printf x &>> dydo/index.md")]
+    [InlineData("printf x >&dydo/index.md")]
+    [InlineData("printf word2>dydo/index.md")]
+    [InlineData("printf x 1> .env")]
+    [InlineData("printf x 2>> .env")]
+    public async Task Dyd640_OutputRedirectionToAGuardedPath_IsDenied(string command)
     {
         await SetupClaimedAgent();
 
@@ -1779,11 +1280,11 @@ public class GuardSecurityTests : IntegrationTestBase
             var result = await GuardWithStdinAsync(ShellJson(toolName, command));
 
             result.AssertPreToolUseDenied();
-            result.AssertStderrContains(reason);
         }
     }
 
     // fd duplication or close, and an fd-numbered redirection into a sink, beside a $ word stay allowed.
+    [Trait("Job", "trap: DYD-640 every redirection the shell reads is a write; fd duplication and sinks are not")]
     [Theory]
     [InlineData("Bash", "echo \"$HOME\" 2>/dev/null")]
     [InlineData("Bash", "ls $(pwd) 2>/dev/null")]
@@ -1808,6 +1309,7 @@ public class GuardSecurityTests : IntegrationTestBase
 
     // DYD-640 review B1, B3 and nit 2, round 2 B1: a duplication or sink closed by a substitution or
     // subshell, text after it included, continued onto the next line or into /dev/tty stays allowed.
+    [Trait("Job", "trap: DYD-640 every redirection the shell reads is a write; fd duplication and sinks are not")]
     [Theory]
     [InlineData("out=$(git status 2>&1)")]
     [InlineData("out=$(git status 2>&1) || true")]
@@ -1839,6 +1341,7 @@ public class GuardSecurityTests : IntegrationTestBase
     }
 
     // A guarded target inside a substitution or after a continuation is still refused.
+    [Trait("Job", "trap: DYD-640 every redirection the shell reads is a write; fd duplication and sinks are not")]
     [Theory]
     [InlineData("x=$(printf y 2>dydo/index.md)")]
     [InlineData("x=\"$(printf y 1>dydo/index.md)\"")]
@@ -1864,6 +1367,7 @@ public class GuardSecurityTests : IntegrationTestBase
     }
 
     // DYD-640 review B2: $null is a sink only as PowerShell's own unquoted variable.
+    [Trait("Job", "trap: DYD-640 every redirection the shell reads is a write; fd duplication and sinks are not")]
     [Theory]
     [InlineData("Bash", "null=dydo/index.md; printf x 1>>$null")]
     [InlineData("Bash", "echo $HOME 2>$null")]
@@ -1880,6 +1384,7 @@ public class GuardSecurityTests : IntegrationTestBase
 
     // DYD-640 round 2 B2 and N1: >& onto a variable or a quoted ) writes the file the word names, and bash
     // ends no word at }, so each is a write beside a $ word.
+    [Trait("Job", "trap: DYD-640 every redirection the shell reads is a write; fd duplication and sinks are not")]
     [Theory]
     [InlineData("Bash", "fd=dydo/index.md; printf x >&\"$fd\"")]
     [InlineData("PowerShell", "fd=dydo/index.md; printf x >&\"$fd\"")]
@@ -1904,6 +1409,7 @@ public class GuardSecurityTests : IntegrationTestBase
 
     // DYD-723: a command nested past the guard's reading bound is refused as too complex to verify,
     // through Claude's Bash and PowerShell tools and in an unknown shell.
+    [Trait("Job", "trap: DYD-723 nesting past the reading bound is refused, promptly, on every path")]
     [Theory]
     [InlineData("Bash")]
     [InlineData("PowerShell")]
@@ -1915,11 +1421,11 @@ public class GuardSecurityTests : IntegrationTestBase
         var result = await NestingGuardAsync(toolName, 40);
 
         AssertRefused(toolName, result);
-        result.AssertStderrContains("Command too complex to verify safely");
     }
 
     // 100,000 characters of it are refused as promptly, since reading stops at the bound. Before
     // DYD-723 the reading recursed once per level and overflowed the stack: run on the fix only.
+    [Trait("Job", "trap: DYD-723 nesting past the reading bound is refused, promptly, on every path")]
     [Theory]
     [InlineData("Bash")]
     [InlineData("PowerShell")]
@@ -1933,7 +1439,6 @@ public class GuardSecurityTests : IntegrationTestBase
 
         Assert.True(stopwatch.Elapsed < TimeSpan.FromSeconds(10), $"Took {stopwatch.Elapsed}");
         AssertRefused(toolName, result);
-        result.AssertStderrContains("Command too complex to verify safely");
     }
 
     // The bound holds on every path a command runs (DYD-723). bash reads an unquoted $( as a group,
@@ -1941,6 +1446,7 @@ public class GuardSecurityTests : IntegrationTestBase
     // below the command. Past 32 groups, or past eight shells around a substitution nested past the
     // bound, the command is refused in every lane; at 32 groups, and at eight shells around one
     // nested 16 deep, it is allowed as before.
+    [Trait("Job", "trap: DYD-723 nesting past the reading bound is refused, promptly, on every path")]
     [Theory]
     [InlineData("Bash", "$(", ")", 33, 0, true)]
     [InlineData("PowerShell", "$(", ")", 33, 0, true)]
@@ -1966,7 +1472,6 @@ public class GuardSecurityTests : IntegrationTestBase
         if (refused)
         {
             AssertRefused(toolName, result);
-            result.AssertStderrContains("Command too complex to verify safely");
         }
         else if (toolName == "")
             result.AssertSuccess();

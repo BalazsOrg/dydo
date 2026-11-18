@@ -719,8 +719,7 @@ jobs:
       GUARD_CLASSES: >-
         DynaDocs.Tests.Services.DangerousPatternCultureTests
         DynaDocs.Tests.Services.DangerousPatternOracleTests
-        DynaDocs.Tests.Services.DangerousPatternBudgetTests
-        DynaDocs.Tests.Services.BashCommandAnalyzerTests
+        DynaDocs.Tests.Integration.GuardShellCorpusTests
         DynaDocs.Tests.Integration.GuardSecurityTests
         DynaDocs.Tests.Integration.GuardMergeRouteTests
         DynaDocs.Tests.Integration.GuardPrReadyTests
@@ -766,8 +765,7 @@ jobs:
           # The trailing dot keeps a class from also selecting classes whose names extend it.
           $filters = @(-split $env:GUARD_CLASSES | ForEach-Object { "FullyQualifiedName~$_." })
           $filters += @(-split $env:GUARD_TESTS | ForEach-Object { "FullyQualifiedName=$_" })
-          # The repeated performance proofs stay dormant here too; their coverage witnesses still run (DYD-859).
-          $filter = '(' + ($filters -join '|') + ')&PerformanceProof!=Release'
+          $filter = $filters -join '|'
           Write-Host "Filter: $filter"
           dotnet test DynaDocs.Tests/DynaDocs.Tests.csproj --no-build `
             --filter $filter `
