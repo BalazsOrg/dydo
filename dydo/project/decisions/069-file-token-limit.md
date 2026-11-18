@@ -86,9 +86,9 @@ its own ticket, a council check and his blessing. The corresponding amendment li
 **Status: accepted.** Approved by Balazs in
 [DYD-1195 Q11 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-2546c840-53a6-436a-aade-873052d14c89).
 His answer covering Q11, verbatim: "16. a. 9. a, 13. a. 10. a, 11. a".
-Q11 option (a) makes the admiral's waiver for `test-associations.json` (~15.7k tokens, PR 359)
-lapse. [DYD-1192](https://linear.app/bodnar-balazs/issue/DYD-1192) must split the file or take it
-through path (b). The admiral's waiver supplies no exemption.
+Q11 option (a) makes the admiral's file-size waiver (~15.7k tokens, PR 359) lapse.
+[DYD-1192](https://linear.app/bodnar-balazs/issue/DYD-1192)'s later ruling deletes the legacy
+file and its consumers. The admiral's waiver supplies no exemption.
 
 ## Related
 

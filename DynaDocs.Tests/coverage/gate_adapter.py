@@ -362,7 +362,6 @@ def _inventory_artifact(root, run, candidate):
     collector.discovery = _ordinary_discovery(root, collector.paths)
     project_result = collector.projects()
     inventory_result = collector.source_inventory()
-    association_result = collector.associations()
     payload = collector.inventory or {"schema": 1, "files": [], "sources": [],
                                       "excluded": [], "projects": [], "errors": []}
     inventory_fingerprint = payload.get("candidate", {}).get("sourceFingerprint")
@@ -373,7 +372,7 @@ def _inventory_artifact(root, run, candidate):
         "inventorySourceFingerprint": inventory_fingerprint}]
     payload["candidate"] = {**candidate, "sourceFingerprint": inventory_fingerprint}
     payload["errors"] = [*payload.get("errors", []), *project_result["errors"],
-                         *inventory_result["errors"], *association_result["errors"],
+                         *inventory_result["errors"],
                          *fingerprint_errors]
     inventory = run / "inventory.json"
     inventory.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
@@ -396,8 +395,7 @@ def _aggregate(orchestration):
 
 def _stack_methods(collector, stack):
     from gate_versions import collect_versions
-    methods = {"projects": collector.projects, "source-inventory": collector.source_inventory,
-               "associations": collector.associations}
+    methods = {"projects": collector.projects, "source-inventory": collector.source_inventory}
     if stack == "dotnet":
         methods.update({"csharp-source": collector.csharp_source,
                         "csharp-analyzers": collector.csharp_analyzers,
@@ -468,7 +466,6 @@ def _target_paths(inventory, language, stack=None):
     payload = json.loads(Path(inventory).read_text(encoding="utf-8"))
     return [row["path"] for row in payload["sources"]
             if row["language"] == language and row["role"] != "test"
-            and not row.get("coverageExemption")
             and stack in (None, typescript_stack(row["path"]))]
 
 

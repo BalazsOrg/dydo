@@ -51,7 +51,7 @@ Guards stop accidents, not rogue agents.
 `Services/BashCommandAnalyzer.cs`, `DynaDocs.Tests/Services/DangerousPatternBudgetTests.cs`,
 `DynaDocs.Tests/Services/DangerousPatternOracleTests.cs`,
 `DynaDocs.Tests/Services/DangerousPatternCultureTests.cs`, `DynaDocs.Tests/Services/StartupHook.cs`,
-`DynaDocs.Tests/coverage/test-associations.json`, and this entry.
+and this entry.
 
 ## Related
 

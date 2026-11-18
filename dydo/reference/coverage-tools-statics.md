@@ -1,5 +1,5 @@
 ---
-explains: ["DynaDocs.Tests/coverage/gate_inventory.py", "DynaDocs.Tests/coverage/associations.py", "DynaDocs.Tests/coverage/test-associations.json", "DynaDocs.Tests/coverage/python_metrics.py", "DynaDocs.Tests/coverage/js_metrics.cjs", "DynaDocs.Tests/coverage/gate_policy.py", "DynaDocs.Tests/coverage/statechart_platform.py"]
+explains: ["DynaDocs.Tests/coverage/gate_inventory.py", "DynaDocs.Tests/coverage/python_metrics.py", "DynaDocs.Tests/coverage/js_metrics.cjs", "DynaDocs.Tests/coverage/gate_policy.py", "DynaDocs.Tests/coverage/statechart_platform.py"]
 area: reference
 type: reference
 ---
@@ -10,10 +10,9 @@ type: reference
 
 ## Static collectors
 
-`projects`, `source-inventory` and `associations` run in every static row. `projects` restores each
+`projects` and `source-inventory` run in every static row. `projects` restores each
 `.csproj` and evaluates `Compile`, `PackageReference`, `IsTestProject` and `TargetPath` through
-`dotnet msbuild -getItem/-getProperty`; `source-inventory` classifies every maintained file;
-`associations` validates `DynaDocs.Tests/coverage/test-associations.json`.
+`dotnet msbuild -getItem/-getProperty`; `source-inventory` classifies every maintained file.
 
 | Stack | Collector | Mechanism |
 |---|---|---|

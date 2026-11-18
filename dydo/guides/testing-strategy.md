@@ -238,7 +238,8 @@ in-place work has direct evidence, while worktree and per-run requirements name 
 The facade does not invent isolation.
 
 DR 048 has one policy for every maintained module: warnings as errors and strict types, no dead code,
-all tests passing and a test file for every non-trivial module,
+all tests passing and suite tests carrying job tags under
+[DR 067 T5](../project/decisions/067-what-tests-are-for.md#decision),
 line coverage of at least 80%, branch coverage of at least 60%, HCRAP at most 20 per method,
 cognitive complexity at most 20, at most seven parameters outside constructors, no supported nested
 ternary, no clone meeting both 15 lines and 100 tokens, and no namespace or module dependency cycles.
@@ -346,21 +347,19 @@ convention: for C# from each project's evaluated `IsTestProject`, for Python, Ja
 TypeScript from native test discovery. A viewer test is a `viewer/src/**/*.test.ts(x)` file that
 imports `vitest` and calls `test` or `it`. Any other viewer module that imports `vitest`, such as
 the `testSetup.ts` vitest loads before every file, can only run under the runner, so it is test
-harness: role `test` with `nativeTest: false`, which no association can name as another module's
-test file. A statechart test is a `test/*.test.ts` file that imports `node:test` and calls `test`;
+harness: role `test` with `nativeTest: false`. A statechart test is a `test/*.test.ts` file that imports `node:test` and calls `test`;
 any other statechart module that imports `node:test` is harness in the same way. A folder makes no
 module harness: `test/tlc.ts` and the stand-in `test/java.ts` import no runner, so they are targets
 like any other module. Test bodies, fixtures and assertion helpers supply the evidence; they are
 not coverage targets and are never required to cover themselves. A maintained gate producer or
 runner is a target even under a test directory - `GateMetrics` and the `DynaDocs.Tests/coverage`
 runners are measured, while the `DynaDocs.Tests` assembly is instrumented for identity only.
-`DynaDocs.Tests/coverage/test-associations.json` carries the file-level intent DR 048's test rule
-needs: every executable target module must name at least one associated test file, and one that
-names none is the finding `test-association`. The two external-host drivers named in DR 048's
-Amendment 2026-09-17, `DynaDocs.Tests/HostCanaries/run-host-canaries.mjs` and
-`openai-sse-provider.mjs`, are the only targets dropped from the coverage denominator: they stay in
-every static gate and in the association manifest, and their inventory row carries
-`coverageExemption` only while their extracted modules and the drivers themselves stay associated.
+[DR 067 T5](../project/decisions/067-what-tests-are-for.md#decision) defines the test-to-code rule:
+every suite test carries a job tag naming a trap, traced contract or edge. Its job-tag lint replaces
+module-to-test-file associations. The executable lint is not implemented here yet; reviewers check
+the tags until it lands. Test selection belongs to DYTEST (DYD-1192).
+The two external-host drivers named in DR 048's Amendment 2026-09-17 were deleted
+in the 4.0.0 purge, so their conditional coverage exemption is retired.
 
 Three gaps are recorded rather than dropped or weakened. The first is mutation: on `dotnet`, `python`
 and `node` it is DYD-103; on `viewer` no TypeScript mutation mechanism is adopted, and no ticket
@@ -377,17 +376,17 @@ each in `excluded` with the reason `typescript-outside-viewer-src`. They stay un
 whose tsconfig includes them, and under the lint, whose `eslint .` enforces cognitive complexity,
 nested ternaries and parameters. knip's viewer graph judges them too, since its plugins load the
 whole package and an unused verdict needs that graph. What they lack is the gap_check walker, the
-clone and cycle gates and the association gate. TypeScript under `viewer/dist`, `viewer/coverage`
+clone and cycle gates. TypeScript under `viewer/dist`, `viewer/coverage`
 or `viewer/node_modules` would fall outside `viewer/src/` the same way, and Git ignores all three.
 
 The third gap is the statechart runtime's TypeScript that is still byte-identical to its pinned
 upstream file, which DYD-590 decides. The same rule records it: the inventory lists each such file in
 `excluded` with the reason `typescript-outside-viewer-src`, and its `origin` carries the upstream
-commit, path and blob hash it matches. No association names one. The package's tests still run it,
+commit, path and blob hash it matches. The package's tests still run it,
 and the statechart knip graph holds it, listed as `ignored`, so the exports it uses count. It stays
 under the strict typecheck, but its own unused bindings are listed rather than judged. What it
-lacks is the walker, the clone and cycle gates, coverage, and the unused-binding and association
-gates. The moment its bytes change, it leaves this gap and becomes a measured target.
+lacks is the walker, the clone and cycle gates, coverage, and the unused-binding gate.
+The moment its bytes change, it leaves this gap and becomes a measured target.
 
 A viewer module absent from the LCOV report passes only if the walker proves it declarative, with
 every top-level statement a type, an interface or a type-only import or export, as

@@ -179,7 +179,7 @@ No 3.5.1 commit renames a term mechanically, so this release has no merge normal
 `Models/HookInputExtensionsTests.cs`, `Services/PathUtilsTests.cs`,
 `Services/CommandPositionTests.cs`, `Services/DydoInvocationScannerTests.cs`,
 `Services/PrCallScannerTests.cs`, `Services/ConfigServiceTests.cs`,
-`coverage/test-associations.json`, `EndToEnd/CliEndToEndTests.cs`,
+`EndToEnd/CliEndToEndTests.cs`,
 `Workflow/ReleaseWorkflowTests.cs`), this entry and its changelog hub.
 
 ## Related

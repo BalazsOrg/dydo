@@ -36,8 +36,6 @@ def _role(relative, language, projects, test_files):
     return ('test' if relative in test_files else 'target'), [], None
 
 
-_ASSOCIATIONS = 'DynaDocs.Tests/coverage/test-associations.json'
-_HOST_DRIVERS = {}
 _DERIVED = 'dydo/reference/gap-check.example.py'
 _DERIVED_SOURCE = 'DynaDocs.Tests/coverage/gap_check.py'
 _DERIVED_PRODUCER = 'DynaDocs.Tests/coverage/sync_testing_example.py'
@@ -144,25 +142,6 @@ def _structural_exclusion(root, relative, paths):
     return None, None
 
 
-def _coverage_exemption(root, relative, paths, association_map):
-    """Exempt a named driver of an external host from the coverage thresholds alone, and only
-    while its extracted logic is tested and the driver itself keeps an associated test file."""
-    extractions = _HOST_DRIVERS.get(relative)
-    if extractions is None:
-        return None, None
-    path_set = set(paths)
-    untested = [module for module in extractions if module not in path_set
-                or not (root / module).is_file() or not association_map.get(module)]
-    if untested:
-        return None, {'path': relative, 'type': 'host-driver-logic-untested', 'untested': untested}
-    if not association_map.get(relative):
-        return None, {'path': relative, 'type': 'host-driver-unassociated',
-                      'manifest': _ASSOCIATIONS}
-    return {'reason': 'external-host-driver-as-embedded-source',
-            'origin': {'extractions': {module: association_map[module] for module in extractions},
-                       'tests': association_map[relative]}}, None
-
-
 def _typescript_scope(relative, path, upstream):
     """The viewer's application source and the statechart runtime's dydo-written or adapted files are
     the TypeScript the gates measure. The viewer's Playwright specs, fixtures and tool configs, and the
@@ -192,7 +171,7 @@ def _discovered_test_files(paths, discovery):
     return test_files
 
 
-def _source_row(root, relative, path, existing, projects, test_files, association_map):
+def _source_row(root, relative, path, existing, projects, test_files):
     language = language_of(path)
     if language is None:
         return None, None, []
@@ -205,19 +184,15 @@ def _source_row(root, relative, path, existing, projects, test_files, associatio
     executable = bool(text.strip()) and not (language == 'cs' and not any(
         marker in text for marker in ('=>', '{ get', ' return ', ' if', ' for', ' while', ' throw ', 'Console.', 'await ')))
     source = {'path': relative, 'sha256': digest, 'language': language, 'role': role,
-              'projects': [owner['path'] for owner in owners], 'executable': executable,
-              'testFiles': association_map.get(relative, [])}
+              'projects': [owner['path'] for owner in owners], 'executable': executable}
     if language == 'typescript' and role == 'target' and _TEST_RUNNER_IMPORT.search(text):
         # Only the runner can load a module importing it, so it is test harness, as a C# test
         # project's helpers are; it cannot be named as another module's test file.
         source.update(role='test', nativeTest=False)
-    exemption, exemption_error = _coverage_exemption(root, relative, existing, association_map)
-    if exemption:
-        source['coverageExemption'] = exemption
-    return source, None, [error for error in (exclusion_error, role_error, exemption_error) if error]
+    return source, None, [error for error in (exclusion_error, role_error) if error]
 
 
-def _source_rows(root, existing, projects, test_files, association_map):
+def _source_rows(root, existing, projects, test_files):
     upstream, upstream_error = _statechart_upstream(root, existing)
     sources, excluded, errors = [], [], [upstream_error] if upstream_error else []
     for relative, path in checked_paths(root, existing):
@@ -226,7 +201,7 @@ def _source_rows(root, existing, projects, test_files, association_map):
             excluded.append(scope)
             continue
         source, exclusion, row_errors = _source_row(
-            root, relative, path, existing, projects, test_files, association_map)
+            root, relative, path, existing, projects, test_files)
         if source:
             sources.append(source)
         if exclusion:
@@ -235,11 +210,10 @@ def _source_rows(root, existing, projects, test_files, association_map):
     return sources, excluded, errors
 
 
-def assemble_inventory(root, paths, projects, discovery, deleted=frozenset(), associations=None):
+def assemble_inventory(root, paths, projects, discovery, deleted=frozenset()):
     test_files = _discovered_test_files(paths, discovery)
-    association_map = {row['module']: sorted(row['tests']) for row in (associations or {}).get('modules', [])}
     existing = [path for path in paths if path not in deleted]
-    sources, excluded, errors = _source_rows(root, existing, projects, test_files, association_map)
+    sources, excluded, errors = _source_rows(root, existing, projects, test_files)
     files = build_file_rows(root, paths, deleted)
     return {'schema': 1, 'candidate': {'sourceFingerprint': source_fingerprint(files)},
             'files': files, 'sources': sorted(sources, key=lambda row: row['path']),

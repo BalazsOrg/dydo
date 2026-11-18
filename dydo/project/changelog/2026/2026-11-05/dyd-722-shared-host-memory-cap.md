@@ -57,7 +57,7 @@ Guards stop accidents, not rogue agents.
 `DynaDocs.Tests/coverage/gap_check.py`, `DynaDocs.Tests/coverage/run_tests.py`,
 `dydo/reference/gap-check.example.py` (written by `sync_testing_example.py`),
 `DynaDocs.Tests/coverage/tests/test_memory_cap.py`, `DynaDocs.Tests/coverage/tests/test_testing_facade.py`,
-`DynaDocs.Tests/coverage/test-associations.json`, `dydo/guides/testing-strategy.md`,
+`dydo/guides/testing-strategy.md`,
 `Scaffold/dydo/guides/testing-strategy.md`, `dydo/reference/coverage-tools.md`, six crew and officer
 `SKILL.md` files, and this entry.
 
