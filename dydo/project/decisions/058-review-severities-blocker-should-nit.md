@@ -7,7 +7,7 @@ date: 2026-10-28
 
 # 058 - Review Severities: Blocker, Should, Nit
 
-> **§1 amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)** for where a blocker and a should go only: a blocker becomes a Blocker ticket inside the round's Fix ticket, and `Implementing` is deleted (C1, C3); a should is its own ticket under the ticket where it was found, collected later in a Shoulds batch (C9). The severities and the verdict rule stand. The rest remains in force.
+> **§1 amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)** for where a blocker and a should go, and who registers a should, only: a blocker becomes a Blocker ticket inside the round's Fix ticket, and `Implementing` is deleted (C1, C3); a should is its own ticket under the ticket where it was found, registered by the round's holder (not the captain or the map holder), collected later in a Shoulds batch (C9). The severities and the verdict rule stand. The rest remains in force.
 
 > **Partially superseded by [059 - Inquisition Rebuilt: Area Map, Three Phases, Rounds Until Clean](./059-inquisition-rebuilt-area-map-three-phases-rounds-until-clean.md)** for §1's *a nit gets no Linear ticket*, in inquisitions only: an inquisition's nits go on its round's nit ticket. The rest remains in force.
 

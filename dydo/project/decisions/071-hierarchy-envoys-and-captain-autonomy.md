@@ -108,7 +108,8 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
      default, not asked: the admiral attaches its T3 thread link to its Project (as C7 does for
      tickets), and a Project with open work and no ticket moving for 12 hours raises the check.
      *Balazs to confirm.*
-   - Its uses: the overnight watch (it carries overnight-mode with the admirals), big cross-Project
+   - Its uses: the overnight watch (overnight-mode, [DR 064](./064-claims-build-the-skills.md)
+     decision 8), big cross-Project
      thinking, and investigating an unknown on his machine. By day it is mostly idle, not a standing
      inbox he must check.
 5. **Continuous Projects are queues with no admiral (D6).** "b and c". A continuous Project (Agent
@@ -120,7 +121,9 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
    text is his to set. Recorded in the grilling as a default, not asked: the officer that
    commissioned the captain oversees the ticket (the admiral that pulled it, or the chief of staff
    when he gives it out through it); it is the ticket's officer above, sends its envoys and paces
-   its merge. *Balazs to confirm.*
+   its merge. *Balazs to confirm*, including a conflict the grilling leaves open: through the chief
+   of staff this default has it send envoys, which rule 4 says it doesn't (D5), and rule 9 gives
+   every envoy in a Project to the admiral, which a continuous Project lacks.
 6. **The officer-above chain (D7, D9).** "c" (D7). The officer above, per level: sub-captain →
    captain → admiral → chief of staff. The same chain carries liveness (C14), re-plans (B6) and
    escalations. Above the admirals the chief of staff takes liveness only; an escalation that needs
@@ -267,8 +270,8 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
 19. **PR watching and the quiet tick (D14).** "I think these are all good ideas". Before his click,
     the captain watches its own CI in-turn and opens the HITL Merge only when green. Nobody watches
     for the click: the survey sees "PR merged, HITL Merge open" and wakes the captain, which closes
-    T4. A tick that finds nothing ends in one line and wakes no one. Since rule 14, these apply to
-    whatever still waits on him: one-way PRs.
+    T4. A tick that finds nothing ends in one line and wakes no one. Since rule 14, the captain's
+    in-turn CI watch and the survey's merge detection apply to whatever still waits on him.
 
 ## Consequences
 
@@ -286,6 +289,9 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
   control flow, and the captain's Crew line.
 - The officer spine gains the "send an envoy" routine with its seven-slot template, the homework
   step and the queue behind one active envoy.
+- **Follow-ups,** untouched here: the glossary's Map holder ("the user, or an admiral the user
+  invoked" contradicts rule 2), and entries for Envoy, Sub-captain and continuous Project; and
+  `AGENTS.md`'s "an admiral only when invoked".
 - The two continuous Projects need creating in the Dydo team, and the standing rule for admirals
   pulling their tickets is his to set.
 - Still open from D: a sub-captain's brief and return line (DYD-1114 settled its depth and budget
@@ -297,7 +303,9 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
 - Supersedes [DR 051](./051-captains-by-default-admiral-on-invocation.md) §3-4, "the admiral is
   optional" and the human as default map holder: a moving Project has an admiral that holds its
   outcome (D2, L1 R5), hard calls are not the admiral's (D15), and continuous Projects have none
-  (D6).
+  (D6). What 051 rests on §3-4 falls with them: its Consequences line "A Project moves without an
+  admiral", and its amendments to DR 047 §1-§3 and DR 050 decision 1 where they make the human the
+  map holder or the admiral invoked-only.
 - Amends [DR 065](./065-review-placement-and-the-merge-review-cut.md): its D-D11 notes on decisions
   2 and 15 give way to rule 7; decision 19 keeps only the landing, and which other merges need him
   is rules 13 to 19 here (DYD-1177).

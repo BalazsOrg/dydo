@@ -9,7 +9,7 @@ participants: [balazs, Claude ticket-captain]
 
 # 063 - `dydo survey`: a Read-Only Lane Digest
 
-> **§3-4 amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)**: the lane ledger (§3) retires with its findings `no-ledger`, `unlaned` and `stale-row`, a captain's settlement for Balazs to confirm; `started-unassigned` goes; the survey gains a `board` view and the findings `liveness`, a thread link on two non-nested open tickets, a landed Project that still has a spec document, and open shoulds under Done parents. The rest remains in force.
+> **§3-4 amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)**: the lane ledger (§3) retires with its findings `no-ledger`, `unlaned` and `stale-row`, a captain's settlement for Balazs to confirm; `started-unassigned` goes; the survey gains a `board` view and the findings `liveness`, a thread link on two non-nested open tickets, a landed Project that still has a spec document, and open shoulds under Done parents past a threshold. The rest remains in force.
 
 `dydo survey <project>` reads one Linear Project on demand with the user's `LINEAR_API_KEY` and
 prints a short, deterministic digest of its lanes. It never writes, caches, polls, subscribes to or

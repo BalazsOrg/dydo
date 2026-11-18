@@ -62,17 +62,14 @@ Grilling B left open where the spec lives and what "deleted" means for it.
    - A step leaves a change, a judgement or an answer, kept as a check: "we may even keep it". A
      Project, a ticket, a sub-ticket and a hop are the same thing at different sizes. Depth has no
      rule of its own.
-   - An agent reads its role off its step. No smaller steps: take it yourself, helpers off the
-     record; too big returns "too big, re-cut", and the officer above cuts it. Smaller steps: run
-     them, hand each out or take it yourself, check each return. Either way, never judge your own
-     step. An officer may take one of its own smaller steps ("I'd say yes"), as the captain takes
-     its Merge hop. Who gets the Fix after a blocker is the officer's call ("I accept C").
-   - B3, B3a and B8a stand ([DR 065](./065-review-placement-and-the-merge-review-cut.md) decisions
-     12, 13, 15). The glossary's definition is the L1 sitting's: "A ticket is a step on the Project
-     map toward the destination, sized to what one agent can handle within its context."
-   - **D11 retired.** D11 held sub-captains back until the T3 nesting experiment reported.
-     DYD-1114 DECIDED replaced that: sub-captains are allowed now, with no hard cap. C2 stands
-     without D11's note; depth is [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s.
+   - An agent reads its role off its step; who cuts, and the "too big, re-cut" return, are
+     [DR 065](./065-review-placement-and-the-merge-review-cut.md) decision 15 (B8a; B3 and B3a, its
+     decisions 12 and 13, stand). No agent judges its own step. An officer may take one of
+     its own smaller steps ("I'd say yes"), as the captain takes its Merge hop. Who gets the Fix
+     after a blocker is the officer's call ("I accept C"). The glossary's definition is the L1
+     sitting's: "A ticket is a step on the Project map toward the destination, sized to what one
+     agent can handle within its context."
+   - **D11 retired** (DYD-1114 DECIDED); depth is [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s.
 2. **Each step of a review loop is a hop sub-ticket (C1, C2a).** "before the implementation
    finishes the review ticket can already be there (in a todo or a not started way). So it's legible
    and quite simple."
@@ -124,10 +121,13 @@ The loop itself is DR 065 decision 7 (B6). C3 says how each outcome shows.
    - A merge into the feature branch is an **AFK Merge** sub-ticket the captain runs. A merge into
      main is an AFK Merge when two-way and a **HITL Merge** only when one-way (D16). Open and
      unblocked, a HITL Merge means his click is due; the captain closes it after verifying the merge
-     on main. Which merges need him is DR 065 decision 19.
-   - A real red gate after a merge ("lgtm", C6): the captain reverts, and the Merge goes **Canceled**
-     with "reverted: <gate> red on <merge SHA>". The red gate is a Blocker inside a Fix; a fix-scoped
-     Review follows, then a new Merge. A flake: the Merge goes Done and a Bug is filed.
+     on main. Which merges need him is [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)
+     rules 13 to 19; the landing is DR 065 decision 19.
+   - A real red gate after a two-way merge ("lgtm", C6): the captain reverts, and the Merge goes
+     **Canceled** with "reverted: <gate> red on <merge SHA>". The red gate is a Blocker inside a Fix;
+     a fix-scoped Review follows, then a new Merge. A flake: the Merge goes Done and a Bug is filed.
+     Revert applies to two-way changes only; a one-way PR carries a recovery plan instead (D16,
+     DR 071 rule 15).
 
 ### Identity and the spec
 
@@ -252,5 +252,6 @@ The loop itself is DR 065 decision 7 (B6). C3 says how each outcome shows.
 ## Related
 
 - [DR 064 - Claims Build the Skills](./064-claims-build-the-skills.md) - Every rule here is written once, through claims
-- [DR 065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md) - The Merge hop, the review loop and which merges need him
+- [DR 065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md) - The Merge hop, the review loop and the landing
+- [DR 071 - Hierarchy, Envoys and Captain Autonomy](./071-hierarchy-envoys-and-captain-autonomy.md) - Which merges need him, the recovery plan, depth
 - [dydo Glossary](../../reference/dydo-glossary.md) - Ticket

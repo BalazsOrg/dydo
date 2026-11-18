@@ -51,11 +51,8 @@ the admiral's Project closeout. The DECIDED records it as a finding, not a desig
    place." DR 051 §6's "a repository plan file is written only for a cross-cutting architecture
    contract" is withdrawn, with its `project-plan` review, the glossary's "Project plan" entry and
    grilling F's F12 rename ("architecture plan").
-2. **Specs are unchanged (§1).** He restated them as they stand: one main spec per Project, with
-   linked specs for sub-features that need them, the source of truth and "measuring stick" for the
-   implementation tickets, moving to Linear in 4.0.0 and deleted at landing. The rule is
-   [DR 070](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)'s (grilling C's C8, DR 053's successor);
-   this record does not restate it.
+2. **Specs are unchanged (§1).** The rule is
+   [DR 070](./070-statuses-as-sub-tickets-shoulds-and-the-map.md) decision 10 (C8, DR 053's successor).
 3. **Docs are just docs, of two kinds (§2).** "We call them 'documentation'. 'docs' for short." They
    live in their usual homes, with no special name or folder.
    - **Descriptive** docs say what the code does or how it works. They are mostly in `reference/`,
@@ -137,17 +134,16 @@ and 11 serve it. The DECIDED holds his full description.
 
 ## Supersedes and amends
 
-Withdraws [DR 051](./051-captains-by-default-admiral-on-invocation.md) §6: its repository plan file
-for a cross-cutting architecture contract, and that file's `reviewer(project-plan)` review (rule 1).
-What 051 hangs on §6 goes with it: its Consequences line "the `project-plan` rubric stays for the map
+Withdraws [DR 051](./051-captains-by-default-admiral-on-invocation.md) §6 whole, with its repository
+plan file for a cross-cutting architecture contract and that file's `reviewer(project-plan)` review
+(rule 1). What 051 hangs on §6 goes with it: its Consequences line "the `project-plan` rubric stays for the map
 holder's plan file", and its amendments to DR 045 §5 and DR 047 §8 that keep a plan file "only under
-decision 6". The DECIDED does not address §6's first sentence, "The Linear Project and its Issues
-are the plan".
+decision 6".
 
 Other records name the kind or the rubric this record scraps: DR 053's authority order ("reviewed
 architecture plan") and its Consequences ("Architecture plans keep their purpose and review"),
-DR 045's rubric list and DR 058 decision 1's rubric list. DR 070 records DR 053's successor. This
-record leaves their text as it is.
+DR 045's rubric list and §7's "Project-plan approval" gate, and DR 058 decision 1's rubric list.
+DR 070 records DR 053's successor. This record leaves their text as it is.
 
 ## Affects
 

@@ -12,6 +12,8 @@ weighed:
 
 > **Decision 7's "Shoulds go to the should collection" amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)**: a should is its own ticket under the ticket where it was found, collected later in a Shoulds batch; there is no standing collection ticket (C9). The rest remains in force.
 
+> **Narrowed by [071 - Hierarchy, Envoys and Captain Autonomy](./071-hierarchy-envoys-and-captain-autonomy.md)** ([DYD-1177](https://linear.app/bodnar-balazs/issue/DYD-1177)): which merges need Balazs, the one-way list, release tags, pacing, every weed becomes a rule, PR watching and the quiet tick moved to 071 rules 13 to 19; sub-captain depth (decisions 2 and 15) to its rule 7; who makes a hard call (decision 7) to its rule 3. Decision 19 keeps only the landing. The opening paragraph, decisions 2, 7, 15 and 19, the Consequences and the DR 061 amendment were edited in place; that narrowed text is proposed with 071 and awaits his acceptance, so the 2026-11-17 approval below does not cover it. The rest remains in force.
+
 The feature is the review unit, reviewed once when it can be observed, and every review also checks
 the change against the governing spec's problem statement. A conflict-free merge into the feature
 branch is proved by deterministic gates and hosted CI, with no merge review; only the landing keeps
@@ -245,7 +247,8 @@ one run per project per machine
   merges need him, and how an agent merges into the default branch
   ([DYD-944](https://linear.app/bodnar-balazs/issue/DYD-944)), is
   [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)'s.
-- Still open in grilling B: where the spec lives and what "deleted" means for it.
+- Still open in grilling B: where the spec lives and what "deleted" means for it; answered by
+  [DR 070](./070-statuses-as-sub-tickets-shoulds-and-the-map.md) decision 10 (C8).
 
 ## Supersedes and amends
 
