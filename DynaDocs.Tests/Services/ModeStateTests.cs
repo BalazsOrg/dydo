@@ -1,55 +1,61 @@
 namespace DynaDocs.Tests.Services;
 
+using DynaDocs.Commands;
 using DynaDocs.Services;
 
+/// <summary>
+/// The machine's mode store as `dydo mode` shows it: a missing or unusable store reads every flag
+/// at its default, and a set persists for the next reader, even over an unusable store.
+/// </summary>
+[Trait("Job", "contract: DYD-351 (dydo mode show/set; overnight defaults to off)")]
 public sealed class ModeStateTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-mode-" + Guid.NewGuid().ToString("N"));
-    private string FilePath => Path.Combine(_root, "mode.json");
-
-    public void Dispose()
-    {
-        if (Directory.Exists(_root))
-            Directory.Delete(_root, recursive: true);
-    }
-
-    [Fact]
-    public void MissingFile_ReadsEveryFlagAtItsDefault() =>
-        Assert.Equal([KeyValuePair.Create("overnight", "off")], new ModeState(_root).Read());
 
     [Theory]
+    [InlineData(null)]
     [InlineData("{ not json")]
     [InlineData("""{"overnight":"maybe"}""")]
     [InlineData("null")]
-    public void UnusableFile_ReadsTheDefault(string content)
+    public async Task Show_MissingOrUnusableStore_ReadsTheDefault(string? store)
     {
+        WriteStore(store);
+
+        var (code, stdout) = await Mode("show");
+
+        Assert.Equal(0, code);
+        Assert.Equal("overnight: off", stdout.Trim());
+    }
+
+    [Theory]
+    [InlineData(null)]
+    [InlineData("{ not json")]
+    public async Task Set_PersistsForTheNextReader(string? store)
+    {
+        WriteStore(store);
+
+        await Mode("set", "overnight", "on");
+        var (code, stdout) = await Mode("show");
+
+        Assert.Equal(0, code);
+        Assert.Equal("overnight: on", stdout.Trim());
+    }
+
+    private void WriteStore(string? content)
+    {
+        if (content == null)
+            return;
         Directory.CreateDirectory(_root);
-        File.WriteAllText(FilePath, content);
-
-        Assert.Equal("off", new ModeState(_root).Read().Single().Value);
+        File.WriteAllText(Path.Combine(_root, "mode.json"), content);
     }
 
-    [Fact]
-    public void Set_PersistsForTheNextReader()
+    // Each run gets a fresh store object, so a value can only come back through the file.
+    private async Task<(int Code, string Stdout)> Mode(params string[] args)
     {
-        new ModeState(_root).Set("overnight", "on");
-
-        Assert.Equal("on", new ModeState(_root).Read().Single().Value);
-        Assert.Contains("\"overnight\": \"on\"", File.ReadAllText(FilePath));
+        var (code, stdout, _) = await ConsoleCapture.AllAsync(
+            () => CliParsing.Parse(ModeCommand.Create(new ModeState(_root)), args).InvokeAsync());
+        return (code, stdout);
     }
 
-    [Fact]
-    public void Set_OverUnreadableFile_RewritesIt()
-    {
-        Directory.CreateDirectory(_root);
-        File.WriteAllText(FilePath, "{ not json");
-
-        new ModeState(_root).Set("overnight", "on");
-
-        Assert.Equal("on", new ModeState(_root).Read().Single().Value);
-    }
-
-    [Fact]
-    public void EveryFlagDefaultsToItsFirstValue() =>
-        Assert.Equal(["off", "on"], ModeState.Flags["overnight"]);
+    public void Dispose() => TestDirectory.Delete(_root);
 }
