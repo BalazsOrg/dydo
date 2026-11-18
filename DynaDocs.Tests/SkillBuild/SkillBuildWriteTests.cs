@@ -67,6 +67,7 @@ public class SkillBuildWriteTests
     }
 
     [Fact]
+    [Trait("Job", "trap: a model the rules reject exits 1 with the reason and writes nothing, so it never reaches the tree")]
     public void Run_WithAModelTheRulesReject_ExitsOneWithTheReason()
     {
         using var root = new TempRoot();
@@ -107,6 +108,7 @@ public class SkillBuildWriteTests
     }
 
     [Theory]
+    [Trait("Job", "trap: a mistyped argument prints usage and writes nothing, never a silent build or map")]
     [InlineData("build")]
     [InlineData("map", "extra")]
     public void Run_WithUnknownArguments_PrintsUsage(params string[] args)

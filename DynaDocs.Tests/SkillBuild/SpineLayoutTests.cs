@@ -1,5 +1,6 @@
 namespace DynaDocs.Tests.SkillBuild;
 
+using System.Text.Json;
 using DynaDocs.SkillBuild;
 using DynaDocs.Tests.SkillBuild.Slots;
 
@@ -91,6 +92,7 @@ public class SpineLayoutTests
             Built[Folder + "resources/stale-lease.md"]);
 
     [Fact]
+    [Trait("Job", "trap: a fenced block bulleted line by line breaks, so a multi-line line is emitted verbatim")]
     public void Resource_OpensWithItsUntitledSectionAndKeepsABlockVerbatim() =>
         Assert.Equal(
             """
@@ -126,6 +128,7 @@ public class SpineLayoutTests
             Built[Folder + "agents/openai.yaml"]);
 
     [Fact]
+    [Trait("Job", "contract: K6 a workflow skill builds to skills/productivity/<name>/, with no openai.yaml the model does not set (B9, B10)")]
     public void SkillWithNoCodexMetadata_EmitsNoOpenAiYaml()
     {
         var plain = SkillSpec.Workflow(DemoSkill.Demo, "Demo", "A demo skill.");
@@ -134,6 +137,7 @@ public class SpineLayoutTests
     }
 
     [Fact]
+    [Trait("Job", "contract: K26/K27 openai.yaml carries the model's blocks, and only an explicit-only skill turns invocation off (B10)")]
     public void OpenAiYaml_WithoutExplicitOnly_CarriesOnlyTheModelsBlocks()
     {
         var skill = SkillSpec.Officer(DemoSkill.Demo, "Demo", "d") with { OpenAi = new(Interface: "display_name: Demo") };
@@ -142,6 +146,29 @@ public class SpineLayoutTests
 
         Assert.Equal(BuiltHeader.Yaml + "\ninterface:\n  display_name: Demo\n", built["skills/roles/officers/demo/agents/openai.yaml"]);
         Assert.DoesNotContain("disable-model-invocation", built["skills/roles/officers/demo/SKILL.md"]);
+    }
+
+    // B11/K6: a SKILL.md opens with YAML frontmatter. A plain scalar holding ": " does not parse, and
+    // " #" starts a comment, so such a description is double-quoted; YAML shares JSON's escapes.
+    [Theory]
+    [Trait("Job", "trap: B11/K6 a description with YAML syntax in it builds frontmatter that reads back as that description")]
+    [InlineData("A demo skill.", false)]
+    [InlineData("Use when: review is needed.", true)]
+    [InlineData("Keep the tail # of this line.", true)]
+    [InlineData("Say \"hi\", then \\ and 'quote'.", true)]
+    [InlineData("- a list item", true)]
+    [InlineData("Yes", true)]
+    [InlineData("Ends on a line break\n", true)]
+    public void Description_BuildsAFrontmatterValueThatReadsBackAsItself(string description, bool quoted)
+    {
+        var skill = SkillSpec.Workflow(DemoSkill.Demo, "Demo", description);
+
+        var line = SkillBuilder.Build(new([], [skill])).Files["skills/productivity/demo/SKILL.md"].Split('\n')[2];
+
+        Assert.StartsWith("description: ", line);
+        var value = line["description: ".Length..];
+        Assert.Equal(quoted, value.StartsWith('"'));
+        Assert.Equal(description, quoted ? JsonSerializer.Deserialize<string>(value) : value);
     }
 
     [Fact]

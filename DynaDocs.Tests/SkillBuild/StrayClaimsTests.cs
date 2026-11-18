@@ -44,6 +44,18 @@ public class StrayClaimsTests
     }
 
     [Fact]
+    [Trait("Job", "trap: K24 two claims that build the same text are both named when it is pasted (F21)")]
+    public void PastedTextTwoClaimsBuild_NamesBothClaims()
+    {
+        var tree = SkillBuilder.Build(DemoModel.With(typeof(DemoRepeated)));
+        using var root = Root(("AGENTS.md", DemoRepeated.Text + "\n"));
+
+        Assert.Equal([$"AGENTS.md:1 claim:{nameof(DemoRepeated)}.{nameof(DemoRepeated.One)} claim:{nameof(DemoRepeated)}.{nameof(DemoRepeated.Two)}"],
+            StrayClaims.Find(root.Path, [.. root.Files().Keys], tree));
+    }
+
+    [Fact]
+    [Trait("Job", "contract: K24 built files, by path or by header, are not linted (F21)")]
     public void BuiltFiles_AreNotLinted()
     {
         using var root = Root(("skills/productivity/x/SKILL.md", BuiltHeader.Markdown + "\n" + Escalate + "\n"));
