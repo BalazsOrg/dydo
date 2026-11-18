@@ -6,7 +6,6 @@
 skills/**/*.md text eol=lf
 skills/**/agents/openai.yaml text eol=lf
 setup-skills.mjs text eol=lf
-DynaDocs.Tests/HostCanaries/*.mjs text eol=lf
 .codex/agents/*.toml text=auto eol=lf
 
 # The skill builder's inputs and output: the golden test compares claims/built/ byte for byte with

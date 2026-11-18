@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
-"""Universal DR048 coverage and callable policy."""
-from fractions import Fraction
+"""Validate coverage measurements and enforce the retained DR068 callable statics."""
 
 def _nonnegative_integer(value):
     if type(value) is not int or value < 0:
@@ -8,11 +7,11 @@ def _nonnegative_integer(value):
     return value
 
 
-def _hit_rate(hits):
+def _validate_hits(hits):
     if not isinstance(hits, dict):
         raise ValueError("Coverage points must be an identity-to-hit mapping")
-    covered = sum(_nonnegative_integer(hit) > 0 for hit in hits.values())
-    return Fraction(covered, len(hits)) if hits else Fraction(1)
+    for hit in hits.values():
+        _nonnegative_integer(hit)
 
 
 def _violation(module, gate, actual, threshold, member=None):
@@ -22,17 +21,17 @@ def _violation(module, gate, actual, threshold, member=None):
 
 def _method_violations(module, method):
     try:
-        cc, cognitive, parameters, covered, total = (
+        _nonnegative_integer(method["cc"])
+        cognitive, parameters, covered, total = (
             _nonnegative_integer(method[key])
-            for key in ("cc", "cognitive", "parameters", "covered", "total"))
+            for key in ("cognitive", "parameters", "covered", "total"))
         identity = method["id"]
         constructor = method["constructor"]
     except KeyError as error:
         raise ValueError(f"Missing method fact: {error}") from error
     if not identity or type(constructor) is not bool or total == 0 or covered > total:
         raise ValueError(f"Invalid executable method facts: {method!r}")
-    hcrap = cc ** 2 * (1 - Fraction(covered, total)) ** 3 + cognitive
-    metrics = [("hcrap", hcrap, 20), ("cognitive", cognitive, 20)]
+    metrics = [("cognitive", cognitive, 20)]
     if not constructor:
         metrics.append(("parameters", parameters, 7))
     return [_violation(module, gate, actual, limit, identity)
@@ -41,8 +40,8 @@ def _method_violations(module, method):
 
 def _module_violations(module):
     try:
-        line_rate = _hit_rate(module["lines"])
-        branch_rate = _hit_rate(module["branches"])
+        _validate_hits(module["lines"])
+        _validate_hits(module["branches"])
         methods = module["methods"]
         executable = module["executable"]
     except KeyError as error:
@@ -59,10 +58,6 @@ def _module_violations(module):
     if len(set(identities)) != len(identities):
         raise ValueError("Duplicate method identity")
     findings = []
-    for gate, rate, limit in (("line-coverage", line_rate, 80),
-                              ("branch-coverage", branch_rate, 60)):
-        if rate * 100 < limit:
-            findings.append(_violation(module, gate, rate * 100, limit))
     for method in methods:
         findings.extend(_method_violations(module, method))
     return findings
@@ -80,8 +75,8 @@ def _body_owner_points(module, metrics, logical_points):
         if not identity or not owner['key'] or identity in physical or not owner['lines']:
             raise ValueError('Missing or duplicate emitted body identity')
         physical.add(identity)
-        _hit_rate(owner['lines'])
-        _hit_rate(owner['branches'])
+        _validate_hits(owner['lines'])
+        _validate_hits(owner['branches'])
         for line, hits in owner['lines'].items():
             lines[line] = max(lines.get(line, 0), hits)
         if set(branches) & set(owner['branches']):

@@ -8,6 +8,8 @@ applies: [dydo-finite-context, dydo-efficiency, dydo-attention-human-decisions]
 
 # 069 - File Token Limit
 
+> **Amended 2026-11-18:** [the accepted amendment below](#amendment-2026-11-18---path-b-and-the-manifest-waiver) resolves the §1 conflict noted under Supersedes and amends and records the manifest waiver's lapse.
+
 Every file, tests included, is limited to 5k tokens, counted as bytes ÷ 4. An edit-time nudge warns
 while the file grows, and a static gate checks changed files. Files nobody writes by hand are
 ignored through a reviewed entry; authored code is ignored only through its own ticket, a council
@@ -72,6 +74,21 @@ gated" note lists file length, and its Consequences, which reject "method and fi
 048 §1 admits a gate only where "no per-file suppression exists" and puts everything with a
 legitimate exception in review. Grilling G does not discuss §1. This record names the conflict for
 his approval; it does not resolve it.
+
+## Amendment 2026-11-18 - path (b) and the manifest waiver
+
+**Status: accepted.** Balazs resolved the conflict with DR 048 §1 in
+[DYD-1195 DECIDED, envoy 1](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-fd543916-0ef1-4ce0-9f61-4ff8a5454b29),
+verbatim: "option 1". Path (b) stays as the file-token gate's only per-file exception:
+its own ticket, a council check and his blessing. The corresponding amendment lives in
+[DR 048](./048-one-level-static-gates-certainly-wrong-no-escape-hatch.md#amendment-2026-11-18---one-per-file-exception).
+
+**Status: accepted.** Approved by Balazs in
+[DYD-1195 Q11 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-2546c840-53a6-436a-aade-873052d14c89).
+His answer covering Q11, verbatim: "16. a. 9. a, 13. a. 10. a, 11. a".
+Q11 option (a) makes the admiral's waiver for `test-associations.json` (~15.7k tokens, PR 359)
+lapse. [DYD-1192](https://linear.app/bodnar-balazs/issue/DYD-1192) must split the file or take it
+through path (b). The admiral's waiver supplies no exemption.
 
 ## Related
 
