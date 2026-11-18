@@ -29,15 +29,17 @@ def _run(arguments, environment=None):
 
 
 class ReportTests(unittest.TestCase):
-    def test_current_gate_summary_uses_hcrap_vocabulary(self):
-        text = render({"stack": "python", "gate": "coverage", "exitCode": 1,
+    def test_coverage_shortfall_prints_the_measurement_without_failing(self):
+        # Contract: DR068 G1-G2, coverage stays visible without floors or HCRAP.
+        text = render({"stack": "python", "gate": "coverage", "exitCode": 0,
                        "measurementComplete": True,
-                       "findings": [{"gate": "hcrap", "path": "a.py", "member": "f"}],
+                       "collectors": {"python-coverage": {"facts": {"modules": [
+                           {"path": "a.py", "lines": {"1": 0}, "branches": {}}]}}},
+                       "findings": [],
                        "gaps": []})
-        self.assertIn("python coverage: exit 1", text)
-        self.assertIn("hcrap: a.py [f]", text)
-        self.assertNotIn("CRAP", text)
-        self.assertNotIn("T1", text)
+        self.assertIn("python coverage: exit 0", text)
+        self.assertIn("a.py: lines 0/1 (0.0%), branches 0/0 (100.0%) (report only)", text)
+        self.assertNotIn("hcrap", text.lower())
 
     def test_command_renders_named_summaries_and_returns_the_worst_exit(self):
         with tempfile.TemporaryDirectory() as folder:

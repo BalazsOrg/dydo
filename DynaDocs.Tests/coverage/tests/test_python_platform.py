@@ -126,7 +126,8 @@ class PythonPlatformTests(unittest.TestCase):
             if defect == 'source':
                 facts['platform_selection']['sources']['mixed.py'] = '0' * 64
             if defect == 'policy':
-                row['lines'] = {line: 0 for line in row['lines']}
+                # Contract: DR068 G3 retains the cognitive limit.
+                row['methods'][0]['cognitive'] = 21
             if defect == 'dirty':
                 report['candidate']['dirty'] = True
             if defect == 'counter':
@@ -169,13 +170,14 @@ class PythonPlatformTests(unittest.TestCase):
         self.assertEqual({'1': 1, '2': 1}, rows[0]['methods'][-1]['body_lines'])
         self.assertEqual('linux', receipt['platform'])
 
-    def test_windows_measures_native_branches_and_callables_at_unchanged_policy(self):
+    def test_windows_measures_native_branches_and_callables_without_coverage_floors(self):
+        # Contract: DR068 G1, measurement survives removal of coverage gating.
         from gate_policy import evaluate_policy
         rows, _ = self.scope('windows')
         self.assertEqual({'4': 1, '5': 1, '6': 1, '7': 1}, rows[0]['lines'])
         self.assertEqual({'5:6': 1, '5:7': 0}, rows[0]['branches'])
         self.assertEqual(['native:4:0', '<module>:1:0'], [m['id'] for m in rows[0]['methods']])
-        self.assertEqual(['branch-coverage'], [f['gate'] for f in evaluate_policy(rows)])
+        self.assertEqual([], evaluate_policy(rows))
 
     def test_selection_refuses_unsupported_platform_stale_source_and_unknown_callable(self):
         for platform, change in [('darwin', None), ('linux', 'hash'), ('windows', 'callable'),

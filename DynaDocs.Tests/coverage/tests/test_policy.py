@@ -1,4 +1,4 @@
-"""Universal thresholds are independent of language."""
+"""Contract: DR068 G1-G3 remove coverage floors and HCRAP, retaining the other statics."""
 import sys
 import unittest
 from pathlib import Path
@@ -17,12 +17,12 @@ def module(line=80, branch=60, cognitive=0, cc=1, parameters=0, constructor=Fals
 
 
 class PolicyTests(unittest.TestCase):
-    def test_structural_csharp_points_keep_coverage_floors_with_explicit_body_accounting(self):
+    def test_structural_csharp_points_keep_explicit_body_accounting_without_coverage_floors(self):
         item = {'path': 'Model.cs', 'executable': True, 'lines': {'1': 0}, 'branches': {}, 'methods': [],
                 'body_owners': [{'physical': 'System.Int32 Model::get_Value()', 'key': 'Model::get_Value`0()',
                                  'structural': 'semantic synthesized member without authored body',
                                  'logical': None, 'lines': {'1': 0}, 'branches': {}}]}
-        self.assertEqual({'line-coverage'}, self.kinds(item))
+        self.assertEqual(set(), self.kinds(item))
         item['body_owners'] = []
         with self.assertRaises(ValueError):
             evaluate_policy([item])
@@ -44,29 +44,28 @@ class PolicyTests(unittest.TestCase):
     def kinds(self, item):
         return {finding["gate"] for finding in evaluate_policy([item])}
 
-    def test_exact_floors_pass_and_lower_values_fail(self):
-        self.assertEqual(set(), self.kinds(module()))
-        self.assertIn("line-coverage", self.kinds(module(line=79)))
-        self.assertIn("branch-coverage", self.kinds(module(branch=59)))
+    def test_coverage_shortfalls_never_fail(self):
+        for line, branch in ((80, 60), (79, 59), (0, 0)):
+            with self.subTest(line=line, branch=branch):
+                self.assertEqual(set(), self.kinds(module(line=line, branch=branch)))
 
     def test_fully_covered_branchy_switch_has_no_cyclomatic_ceiling(self):
         self.assertEqual(set(), self.kinds(module(100, 100, cognitive=7, cc=25)))
 
-    def test_hcrap_keeps_coverage_penalty_and_cognitive_floor(self):
+    def test_cognitive_limit_stays_without_hcrap(self):
         self.assertEqual(set(), self.kinds(module(100, 100, cognitive=20)))
-        self.assertEqual({"hcrap", "cognitive"}, self.kinds(module(100, 100, cognitive=21)))
-        self.assertIn("hcrap", self.kinds(module(80, 100, cognitive=1, cc=50)))
-        self.assertNotIn("hcrap", self.kinds(module(50, 100, cc=10)))
+        self.assertEqual({"cognitive"}, self.kinds(module(100, 100, cognitive=21)))
+        self.assertEqual(set(), self.kinds(module(0, 0, cognitive=1, cc=50)))
 
     def test_parameter_limit_exempts_only_constructors(self):
         self.assertEqual(set(), self.kinds(module(parameters=7)))
         self.assertEqual({"parameters"}, self.kinds(module(parameters=8)))
         self.assertEqual(set(), self.kinds(module(parameters=8, constructor=True)))
 
-    def test_uncovered_method_cannot_be_hidden_by_module_average(self):
+    def test_uncovered_method_is_report_only(self):
         item = module(100, 100)
         item["methods"][0].update(covered=0, cc=5)
-        self.assertIn("hcrap", self.kinds(item))
+        self.assertEqual(set(), self.kinds(item))
 
     def test_branchless_module_has_no_artificial_branch_violation(self):
         item = module(100)
