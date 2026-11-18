@@ -1,4 +1,7 @@
-"""Driver boundary contracts; real CLI/hook evidence is a separate queued lifecycle run."""
+"""verify-dydo's driver at its command line: what a run's ownership, cleanup and candidate checks leave on disk.
+
+Each test drives control_dydo.main with the driver's own verbs. None needs a built candidate: every
+outcome here is decided before the driver would start the candidate CLI."""
 import contextlib
 import io
 import json
@@ -7,7 +10,6 @@ from pathlib import Path
 import subprocess
 import sys
 import tempfile
-import shutil
 import unittest
 from unittest.mock import patch
 
@@ -16,412 +18,117 @@ sys.path.insert(0, str(ROOT / "skills/engineering/verify-dydo/scripts"))
 import control_dydo as control
 
 
-class ControlDydoContractTests(unittest.TestCase):
+def link(source, target):
+    """A directory link, as a junction on Windows so no symlink privilege is needed."""
+    if os.name == "nt":
+        subprocess.run(["cmd", "/c", "mklink", "/J", str(source), str(target)], check=True, capture_output=True)
+    else:
+        source.symlink_to(target, target_is_directory=True)
+
+
+class ControlDydoTests(unittest.TestCase):
     def setUp(self):
         temporary = tempfile.TemporaryDirectory(prefix="dydo-control-test-")
         self.addCleanup(temporary.cleanup)
         self.parent = Path(temporary.name)
-        self.addCleanup(patch.stopall)
-        patch.object(control, "RUNS", self.parent / "runs").start()
-        self.child = patch.object(control, "run_owned", side_effect=self.process).start()
-        self.head = "pinned\n"
-        self.untracked = ""
-        self.warned_commands = set()
-        self.worker_allowed = list(self.WORKER_ALLOWED)
-        self.run = control.allocate()
-
-    def process(self, argv, **options):
-        if argv[0] == "git":
-            return self.git(argv, options["cwd"])
-        if argv[1] == "build":
-            folder = Path(argv[argv.index("--output") + 1])
-            folder.mkdir()
-            (folder / "dydo.dll").write_bytes(b"candidate")
-            return subprocess.CompletedProcess(argv, 0, "built", "")
-        return self.cli_process(argv, options)
-
-    def git(self, argv, cwd):
-        output = ""
-        if argv[1] == "rev-parse":
-            output = self.head
-        elif argv[1] == "ls-files":
-            output = self.untracked
-        elif argv[1] == "init":
-            (cwd / ".git").mkdir()
-            output = "initialized"
-        return subprocess.CompletedProcess(argv, 0, output, "")
-
-    def cli_process(self, argv, options):
-        project = Path(options["cwd"])
-        verb = argv[2]
-        code, output = 0, "ok"
-        if verb == "init":
-            self.scaffold(project)
-        elif verb == "check" and (project / "dydo/verification-broken.md").exists():
-            code, output = 1, "broken link: missing-target.md"
-        elif verb == "guard":
-            output = self.hook(options["input"])
-        return subprocess.CompletedProcess(argv, code, output, "")
-
-    def scaffold(self, project):
-        for name in ("dydo.json", "dydo/index.md", "AGENTS.md", "dydo/files-off-limits.md"):
-            path = project / name
-            path.parent.mkdir(exist_ok=True)
-            path.write_text("generated")
-        (project / ".claude").mkdir()
-        control.write_json(project / ".claude/settings.json", {"hooks": {"PreToolUse": [
-            {"hooks": [{"command": "dydo guard --host claude"}]}]}})
-
-    def hook(self, data):
-        payload = json.loads(data)
-        command = payload["tool_input"]["command"]
-        verdict, reason = "deny", "blocked"
-        if "agent_id" in payload or command.startswith("dydo init"):
-            return self.dydo_hook(command, "agent_id" in payload)
-        if "mode set" in command:
-            reason = "Run this only if you are the chief of staff readying overnight mode or ending it; otherwise stop."
-            if command in self.warned_commands:
-                self.warned_commands.remove(command)
-                return ""
-            self.warned_commands.add(command)
-        return json.dumps({"hookSpecificOutput": {
-            "permissionDecision": verdict, "permissionDecisionReason": reason}})
-
-    WORKER_ALLOWED = ["check", "fix", "gap-check", "graph", "validate", "mode", "clean", "pr-ready", "merge",
-                      "survey", "statechart", "archive", "help", "version"]
-    TOP_LEVEL_ONLY = ["init", "adopt", "index", "guard", "map", "completions", "_complete"]
-
-    def dydo_hook(self, command, sub_agent):
-        """The worker lane's answer: a sub-agent passes its allowed words; the refusal prints both lists."""
-        word = command.split()[1]
-        if not sub_agent or word in self.worker_allowed or word.startswith("-"):
-            return ""
-        reason = ("BLOCKED: Sub-agents may run only these dydo commands: " + ", ".join(self.worker_allowed)
-                  + " (plus -h/--help/--version).\n  Not allowed here: dydo " + word
-                  + "\n  These belong to the top-level session that spawned you: "
-                  + ", ".join(self.TOP_LEVEL_ONLY) + ".")
-        return json.dumps({"hookSpecificOutput": {"permissionDecision": "deny", "permissionDecisionReason": reason}})
-
-    def invoke(self, verb, journey=None):
-        arguments = [verb, "--run", str(self.run)]
-        if journey:
-            arguments += ["--journey", journey]
-        with contextlib.redirect_stdout(io.StringIO()):
-            return control.main(arguments)
-
-    def ready(self):
-        control.launch(self.run)
-        return self.run / "scratch/project"
-
-    def test_archive_route_drives_the_candidate_and_retains_roundtrip_evidence(self):
-        self.ready()
-        self.archive_bytes = {}
-        self.child.side_effect = self.archive_process
-        self.assertEqual(0, self.invoke("drive", "archive"))
-        evidence = json.loads((self.run / "evidence/archive-roundtrip.json").read_text())
-        self.assertEqual("staged only\n", evidence["staged"])
-        self.assertTrue(evidence["source_gc"] and evidence["archive_retained"])
-        commands = [call.args[0] for call in self.child.call_args_list]
-        self.assertTrue(any(command[:2] == ["git", "gc"] and "--prune=now" in command for command in commands))
-        self.assertTrue(any(command[2:4] == ["archive", "restore"] for command in commands))
-
-    def archive_process(self, argv, **options):
-        project = self.run / "scratch/archive-project"
-        tree = self.run / "scratch/archive-tree"
-        entry = project / ".git/dydo/safe-delete-archive/fixture-id"
-        if argv[0] == "git":
-            if "worktree" in argv and "add" in argv:
-                tree.mkdir()
-                (tree / "file.txt").write_bytes(b"base\n")
-            if "show" in argv:
-                return subprocess.CompletedProcess(argv, 0, "staged only\n", "")
-            return self.git(argv, options["cwd"])
-        if len(argv) <= 2 or argv[2] != "archive":
-            return self.process(argv, **options)
-        if argv[3] == "worktree":
-            self.archive_bytes.update({str(path.relative_to(tree)): path.read_bytes()
-                                       for path in tree.rglob("*") if path.is_file()})
-            entry.mkdir(parents=True)
-            control.write_json(entry / "manifest.json", {"complete": True})
-            (entry / "commits.bundle").write_bytes(b"nonempty bundle fixture")
-            shutil.rmtree(tree)
-        if argv[3] == "restore":
-            (tree / "ignored/empty").mkdir(parents=True)
-            for name, content in self.archive_bytes.items():
-                path = tree / name
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.write_bytes(content)
-        return subprocess.CompletedProcess(argv, 0, "archive command fixture", "")
-
-    def test_launch_builds_once_and_doctor_pins_artifacts(self):
-        self.ready()
-        self.assertEqual(0, self.invoke("doctor"))
-        builds = [row for row in self.child.call_args_list if row.args[0][1] == "build"]
-        self.assertEqual(1, len(builds))
-        self.assertIn(str(ROOT / "DynaDocs.csproj"), builds[0].args[0])
-        state = json.loads((self.run / "state.json").read_text())
-        self.assertEqual("pinned", state["candidate"]["head"])
-        self.assertIn("dydo.dll", state["build"])
-
-    def test_argv_is_fixed_shell_free_bounded_and_inherits_fifo(self):
-        self.ready()
-        self.invoke("drive", "activation")
-        for call in self.child.call_args_list:
-            options = call.kwargs
-            self.assertNotIn("shell", options)
-            self.assertGreater(options["timeout"], 0)
-            self.assertLessEqual(options["timeout"], 600)
-            self.assertEqual(os.environ.get("LC_SUITE_SLOT_TICKET"), options["env"].get("LC_SUITE_SLOT_TICKET"))
-            if call.args[0][1] not in ("rev-parse", "diff", "ls-files"):
-                self.assertEqual(str(self.run / "scratch/codex-home"), options["env"]["CODEX_HOME"])
-            self.assertNotIn("mode", call.args[0])
-
-    def test_foreign_instance_is_refused(self):
-        for path in (self.parent, self.run / "..", self.run.with_name("not-a-run")):
-            with self.subTest(path=path), self.assertRaises(ValueError):
-                control.owned(path)
-        control.write_json(self.run / "owner.json", {"checkout": "foreign"})
-        with self.assertRaisesRegex(ValueError, "Foreign run owner"):
-            self.invoke("cleanup")
-        self.assertTrue((self.run / "scratch").exists())
-
-    def test_cleanup_retains_evidence_and_is_repeatable(self):
-        self.ready()
-        self.invoke("drive", "init-docs")
-        self.invoke("cleanup")
-        self.invoke("cleanup")
-        self.assertFalse((self.run / "scratch").exists())
-        self.assertEqual("pinned", json.loads((self.run / "evidence/candidate.json").read_text())["head"])
-        self.assertEqual(5, len(json.loads((self.run / "evidence/init-side-effects.json").read_text())))
-
-    def test_cleanup_refuses_symlink_or_junction_escape(self):
-        foreign = self.parent / "foreign"
-        foreign.mkdir()
-        (foreign / "keep").write_text("foreign")
-        link = self.run / "scratch/escape"
-        if os.name == "nt":
-            subprocess.run(["cmd", "/c", "mklink", "/J", str(link), str(foreign)],
-                           check=True, capture_output=True, creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0))
-            self.addCleanup(os.rmdir, link)
-        else:
-            link.symlink_to(foreign, target_is_directory=True)
-            self.addCleanup(link.unlink)
-        with self.assertRaises(ValueError):
-            self.invoke("cleanup")
-        self.assertEqual("foreign", (foreign / "keep").read_text())
-        self.assertTrue((self.run / "scratch").exists())
-        (foreign / "keep").unlink()
-        foreign.rmdir()
-        with self.assertRaises(ValueError):
-            self.invoke("cleanup")
-
-    def test_doctor_refuses_changed_source_and_retains_failure(self):
-        self.ready()
-        self.head = "different\n"
-        with self.assertRaisesRegex(ValueError, "Candidate changed"):
-            self.invoke("doctor")
-        self.assertFalse((self.run / "scratch").exists())
-        self.assertTrue(list((self.run / "evidence").glob("failure-*.json")))
-
-    def test_doctor_refuses_changed_build(self):
-        self.ready()
-        (self.run / "scratch/bin/dydo.dll").write_bytes(b"other")
-        with self.assertRaisesRegex(ValueError, "Built candidate changed"):
-            self.invoke("doctor")
-
-    def test_doctor_refuses_changed_fixture_configuration(self):
-        project = self.ready()
-        (project / "dydo.json").write_text("other configuration")
-        with self.assertRaisesRegex(ValueError, "Owned fixture changed"):
-            self.invoke("doctor")
-
-    def test_doctor_detects_new_untracked_candidate_input(self):
-        self.ready()
-        self.untracked = "DynaDocs.Tests/coverage/tests/test_control_dydo.py\0"
-        with self.assertRaisesRegex(ValueError, "Candidate changed"):
-            self.invoke("doctor")
-
-    def test_launch_error_retains_attempted_argv(self):
-        self.child.side_effect = OSError("cannot launch")
-        with self.assertRaisesRegex(OSError, "cannot launch"):
-            control.cli(self.run, "launch-error", ["--version"])
-        receipt = next((self.run / "evidence").glob("launch-error-*.json"))
-        log = json.loads(receipt.read_text())
-        self.assertIsNone(log["exit"])
-        self.assertEqual("--version", log["argv"][-1])
-        self.assertEqual("cannot launch", log["error"])
-
-    def test_candidate_timeout_retains_git_attempt_and_cleans_failed_launch(self):
-        self.child.side_effect = subprocess.TimeoutExpired(["git", "rev-parse", "HEAD"], 30)
-        with patch.object(control, "allocate", return_value=self.run):
-            with contextlib.redirect_stdout(io.StringIO()), self.assertRaises(subprocess.TimeoutExpired):
-                control.main(["launch"])
-        self.assertEqual(["git", "rev-parse", "HEAD"], self.child.call_args.args[0])
-        self.assertEqual(30, self.child.call_args.kwargs["timeout"])
-        receipt = json.loads(next((self.run / "evidence").glob("source-*.json")).read_text())
-        self.assertEqual("TimeoutExpired", receipt["error_type"])
-        self.assertFalse((self.run / "scratch").exists())
-        self.assertFalse((self.run / "busy").exists())
-
-    def test_doctor_requires_launch_and_installed_hook(self):
-        with self.assertRaisesRegex(ValueError, "not ready"):
-            control.doctor(self.run)
-        project = self.ready()
-        control.write_json(project / ".claude/settings.json", {"hooks": {"PreToolUse": []}})
-        with self.assertRaisesRegex(ValueError, "hook missing"):
-            self.invoke("doctor")
-
-    def test_corrupt_ready_state_fails_with_retained_evidence_and_cleanup(self):
-        control.write_json(self.run / "state.json", {"phase": "ready"})
-        with self.assertRaises(KeyError):
-            self.invoke("doctor")
-        self.assertFalse((self.run / "scratch").exists())
-        receipt = next((self.run / "evidence").glob("failure-*.json"))
-        self.assertEqual("KeyError", json.loads(receipt.read_text())["type"])
-
-    def test_child_failure_keeps_raw_exit_stdout_stderr(self):
-        self.ready()
-        self.child.side_effect = None
-        self.child.return_value = subprocess.CompletedProcess([], 9, "out", "failure")
-        with self.assertRaisesRegex(ValueError, r"Command failed \(9\)"):
-            control.success(control.cli(self.run, "failed", ["check"]))
-        control.cleanup(self.run)
-        log = json.loads(next((self.run / "evidence").glob("failed-*.json")).read_text())
-        self.assertEqual((9, "out", "failure"), (log["exit"], log["stdout"], log["stderr"]))
-
-    def test_run_cannot_be_double_driven(self):
-        with control.exclusive(self.run):
-            with self.assertRaises(FileExistsError):
-                self.invoke("cleanup")
-        self.assertFalse((self.run / "busy").exists())
-        self.assertTrue((self.run / "scratch").exists())
-
-    def test_no_generic_command_or_mode_set_verb(self):
-        for arguments in (["mode", "set", "overnight", "on"], ["drive", "--run", str(self.run),
-                          "--journey", "merge"], ["launch", "--command", "anything"]):
-            with self.subTest(arguments=arguments), contextlib.redirect_stderr(io.StringIO()):
-                with self.assertRaises(SystemExit):
-                    control.main(arguments)
-        for arguments in (["doctor"], ["launch", "--run", str(self.run)], ["drive", "--run", str(self.run)]):
-            with self.assertRaises(ValueError):
-                control.main(arguments)
-
-    def test_init_docs_observes_broken_link_and_restoration(self):
-        project = self.ready()
-        self.assertEqual(0, self.invoke("drive", "init-docs"))
-        self.assertFalse((project / "dydo/verification-broken.md").exists())
-        receipts = [json.loads(path.read_text()) for path in (self.run / "evidence").glob("check-*.json")]
-        self.assertEqual([0, 0, 1], sorted(row["exit"] for row in receipts))
-
-    def test_unconfirmed_child_cleanup_retains_the_broken_fixture(self):
-        project = self.ready()
-        broken = project / "dydo/verification-broken.md"
-
-        def unconfirmed(argv, **options):
-            if argv[-1] == "check" and broken.exists():
-                options["output"].mkdir()
-                control.write_json(options["output"] / "result.json", {"cleanup_confirmed": False})
-                raise RuntimeError("Unconfirmed child cleanup")
-            return self.process(argv, **options)
-
-        self.child.side_effect = unconfirmed
-        with self.assertRaisesRegex(ValueError, "cleanup unconfirmed"):
-            self.invoke("drive", "init-docs")
-        self.assertTrue(broken.exists())
-        self.assertFalse((self.run / "busy").exists())
-
-    def test_guard_payload_is_never_executed(self):
-        project = self.ready()
-        self.invoke("drive", "guard")
-        self.assertEqual("retain this file\n", (project / "keep.txt").read_text())
-        for call in self.child.call_args_list:
-            self.assertNotIn("rm", call.args[0])
+        runs = patch.object(control, "RUNS", self.parent / "runs")
+        runs.start()
+        self.addCleanup(runs.stop)
+        self.run_path = self.fresh_run()
 
     @staticmethod
-    def sent_and_decided(receipt):
-        """The hook event a guard receipt actually sent, and the decision its stdout recorded."""
-        stdout = receipt["stdout"].strip()
-        decision = json.loads(stdout)["hookSpecificOutput"]["permissionDecision"] if stdout else "allow"
-        return json.loads(receipt["stdin"]), decision
+    def fresh_run():
+        run = control.allocate()
+        (run / "scratch/project").mkdir()
+        (run / "scratch/project/file.txt").write_text("scratch")
+        (run / "evidence/candidate.json").write_text("{}")
+        return run
 
-    def test_worker_lane_sends_sub_agent_calls_allows_skill_commands_and_refuses_top_level_only_ones(self):
-        self.maxDiff = None  # the failure must name the command that was sent or missed
-        self.ready()
-        self.assertEqual(0, self.invoke("drive", "worker-lane"))
-        receipts = [json.loads(path.read_text()) for path in (self.run / "evidence").glob("guard-*.json")]
-        sent =[self.sent_and_decided(row) for row in receipts]
-        for event, _ in sent:
-            self.assertEqual("Bash", event.get("tool_name"), event)
-            self.assertEqual("PreToolUse", event.get("hook_event_name"), event)
-        sub_agent = [(event, decision) for event, decision in sent if "agent_id" in event]
-        for event, _ in sub_agent:
-            self.assertTrue(event["agent_id"], f"empty agent_id sent with {event['tool_input']['command']!r}")
-            self.assertTrue(event.get("agent_type"), f"no agent_type sent with {event['tool_input']['command']!r}")
-        expected = ([("dydo init claude", "deny")] + [(command, "allow") for command in control.SKILL_COMMANDS]
-                    + [(f"dydo {word}", "deny") for word in self.TOP_LEVEL_ONLY])
-        # What was sent, not what the verdict dictionary says: a wrong or truncated command fails here.
-        self.assertEqual(sorted(expected), sorted((event["tool_input"]["command"], decision)
-                                                  for event, decision in sub_agent))
-        top_level = [(event["tool_input"]["command"], decision) for event, decision in sent if "agent_id" not in event]
-        self.assertEqual([("dydo init claude", "allow")], top_level)
-        verdicts = json.loads((self.run / "evidence/worker-lane-verdicts.json").read_text())
-        for command in control.SKILL_COMMANDS:
-            self.assertEqual("allow", verdicts["verdicts"][command])
-        for word in self.TOP_LEVEL_ONLY:
-            self.assertEqual("deny", verdicts["verdicts"][f"dydo {word}"])
-        self.assertEqual("allow", verdicts["verdicts"]["dydo init claude (top-level session)"])
-        self.assertEqual(self.WORKER_ALLOWED, verdicts["allowed"])
-        self.assertFalse(verdicts["payload_executed"])
-        for call in self.child.call_args_list:
-            self.assertNotIn("survey", call.args[0])
-            self.assertNotIn("statechart", call.args[0])
+    def main(self, verb, run=None):
+        with contextlib.redirect_stdout(io.StringIO()):
+            return control.main([verb, "--run", str(run or self.run_path)])
 
-    def test_worker_lane_probes_feature_map_invocation_variants(self):
-        # Independent of SKILL_COMMANDS: worker-lane.md promises these invocation forms.
-        required_commands = (
-            "dydo check", "dydo fix dydo/guides", "dydo mode show", "dydo pr-ready --body pr-body.md",
-            "dydo merge 123 --match-head-commit 0123abc --match-base-commit 4567def",
-            "dydo survey P-DYD-46",
-            "dydo statechart SPEC.tla --skill skills/engineering/statechart --out chart",
-            "dydo statechart install-skill --root /work/project",
-            "dydo statechart resume --request request.json", "dydo --help")
-        self.ready()
-        self.assertEqual(0, self.invoke("drive", "worker-lane"))
-        probed = set()
-        for path in (self.run / "evidence").glob("guard-*.json"):
-            event, decision = self.sent_and_decided(json.loads(path.read_text()))
-            if event.get("agent_id") and decision == "allow":
-                probed.add(event["tool_input"]["command"])
-        for command in required_commands:
-            with self.subTest(command=command):
-                self.assertIn(command, probed)
+    def test_cleanup_deletes_only_scratch_keeps_evidence_and_repeats(self):
+        """Job: contract: verify-dydo SKILL.md Cleanup, deletes only RUN/scratch and is repeatable"""
+        self.assertEqual(0, self.main("cleanup"))
+        self.assertEqual(0, self.main("cleanup"))
 
-    def test_worker_lane_fails_when_the_guard_refuses_a_command_a_skill_names(self):
-        self.ready()
-        self.worker_allowed.remove("survey")
-        with self.assertRaisesRegex(ValueError, "does not list 'survey' as worker-allowed"):
-            self.invoke("drive", "worker-lane")
+        self.assertFalse((self.run_path / "scratch").exists())
+        self.assertTrue((self.run_path / "evidence/candidate.json").exists())
+        self.assertTrue(json.loads((self.run_path / "evidence/cleanup.json").read_text())["scratch_absent"])
 
-    def test_activation_records_both_directions_and_host_independent_retry_without_executing_setter(self):
-        self.ready()
-        self.invoke("drive", "activation")
-        receipts = [json.loads(path.read_text()) for path in (self.run / "evidence").glob("guard-*.json")]
-        for value in ("on", "off"):
-            rows = [row for row in receipts if f"overnight {value}" in row["stdin"]]
-            decisions = [json.loads(row["stdout"])["hookSpecificOutput"]["permissionDecision"]
-                         if row["stdout"].strip() else "allow" for row in rows]
-            self.assertEqual(["allow", "allow", "deny", "deny"], sorted(decisions))
-            self.assertEqual(2, sum("--host" in row["argv"] for row in rows))
-        limits = json.loads((self.run / "evidence/activation-limits.json").read_text())
-        self.assertFalse(limits["mode_set_executed"])
-        self.assertFalse(limits["role_authenticated"])
-        self.assertFalse(limits["human_approval_proven"])
-        self.assertEqual("requires injected seam tests", limits["state_readback"])
+    def test_cleanup_refuses_a_run_it_does_not_own_and_deletes_nothing(self):
+        """Job: trap: verify-dydo SKILL.md Cleanup, validates the exact run and its tree before deleting"""
+        foreign = self.parent / "foreign"
+        foreign.mkdir()
+        (foreign / "keep.txt").write_text("foreign")
 
-    def test_main_launch_returns_reconnectable_run(self):
-        output = io.StringIO()
-        with contextlib.redirect_stdout(output):
-            self.assertEqual(0, control.main(["launch"]))
-        created = json.loads(output.getvalue())
-        self.run = Path(created["run"])
-        self.assertEqual(0, self.invoke("doctor"))
+        def linked_scratch():
+            run = self.fresh_run()
+            link(run / "scratch/project/escape", foreign)
+            self.addCleanup(os.rmdir if os.name == "nt" else os.unlink, run / "scratch/project/escape")
+            return run
+
+        def foreign_owner():
+            run = self.fresh_run()
+            control.write_json(run / "owner.json", {"schema": 1, "run": str(run), "checkout": "elsewhere"})
+            return run
+
+        def outside_runs():
+            run = self.parent / "0123456789abcdef0123456789abcdef"
+            (run / "scratch/project").mkdir(parents=True)
+            (run / "evidence").mkdir()
+            (run / "scratch/project/file.txt").write_text("scratch")
+            control.write_json(run / "owner.json", {"schema": 1, "run": str(run), "checkout": str(control.ROOT)})
+            return run
+
+        for name, arrange in [("scratch links outside the run", linked_scratch),
+                              ("owner names another checkout", foreign_owner),
+                              ("run lies outside the driver's runs", outside_runs)]:
+            with self.subTest(name):
+                run = arrange()
+
+                with self.assertRaises(ValueError):
+                    self.main("cleanup", run)
+
+                self.assertEqual("scratch", (run / "scratch/project/file.txt").read_text())
+                self.assertEqual("foreign", (foreign / "keep.txt").read_text())
+
+    def test_a_busy_run_belongs_to_its_live_driver(self):
+        """Job: contract: verify-dydo SKILL.md Cleanup, a busy run belongs to the live driver"""
+        (self.run_path / "busy").write_text("live driver")
+
+        with self.assertRaises(FileExistsError):
+            self.main("cleanup")
+
+        self.assertEqual("live driver", (self.run_path / "busy").read_text())
+        self.assertTrue((self.run_path / "scratch/project/file.txt").exists())
+
+    def test_doctor_on_a_changed_candidate_refuses_before_the_candidate_runs(self):
+        """Job: contract: verify-dydo SKILL.md doctor, editing or committing the candidate invalidates the run"""
+        project = self.run_path / "scratch/project"
+        (project / ".git").mkdir()
+        (project / ".claude").mkdir()
+        control.write_json(project / ".claude/settings.json",
+                           {"hooks": {"PreToolUse": [{"hooks": [{"command": "dydo guard --host claude"}]}]}})
+        for name in control.FIXTURE_FILES:
+            (project / name).parent.mkdir(parents=True, exist_ok=True)
+            if not (project / name).exists():
+                (project / name).write_text("fixture")
+        (self.run_path / "scratch/bin").mkdir()
+        stale = {"head": "0" * 40, "diff_sha256": "", "untracked": {}}
+        control.write_json(self.run_path / "state.json", {"phase": "ready", "candidate": stale, "build": {},
+                                                          "fixture": control.fixture_hashes(self.run_path)})
+
+        with self.assertRaises(ValueError):
+            self.main("doctor")
+
+        receipts = [json.loads(path.read_text()) for path in (self.run_path / "evidence").glob("*.json")]
+        self.assertFalse([row for row in receipts if row.get("argv", [""])[0] == "dotnet"],
+                         "the driver ran the candidate for a stale run")
+        self.assertTrue(list((self.run_path / "evidence").glob("failure-*.json")))
+        self.assertFalse((self.run_path / "scratch").exists())
+
+
+if __name__ == "__main__":
+    unittest.main()
