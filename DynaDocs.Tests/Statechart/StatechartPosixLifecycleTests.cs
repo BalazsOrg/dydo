@@ -82,19 +82,24 @@ public class StatechartPosixLifecycleTests
         Assert.False(Directory.Exists(lifetime.Temp));
     }
 
-    // A continued request whose runtime never starts records no verdict, and the owner still cleans up.
+    // The exec fails here, so a process started after the handoff stands in for the runtime: the execution lock it
+    // would hold is open in it. A continued request whose runtime never starts records no verdict, and the owner cleans up.
     [SkippableFact]
-    public async Task AFailedContinuedHandoff_RecordsNoVerdict_AndCleansUp()
+    [Trait("Job", "trap: DYD-548 the execution lock survives exec into the continued runtime")]
+    public async Task AContinuedHandoff_HandsTheRuntimeItsExecutionLock_AndAFailedOneRecordsNoVerdict()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
         using var scope = new StatechartTestDirectory();
         using var roots = new ScopedRoots(scope.Path);
         var (store, request, path) = SavedRequest(scope.Path);
         using var executionLock = store.Lock(path);
+        var descriptor = executionLock.SafeFileHandle.DangerousGetHandle().ToInt32();
+        Assert.False(await ChildHolds(descriptor));
         await using var lifetime = await PosixStatechartLifetime.StartAsync(StatechartTestBinary.Start(), scope.Path, scope.Path, scope.Path);
         await lifetime.RegisterAsync();
         await Assert.ThrowsAsync<System.ComponentModel.Win32Exception>(() => lifetime.HandoffAsync(
             new ProcessStartInfo(Path.Combine(scope.Path, "missing-runtime")), new StatechartContinuation(path, executionLock)));
+        Assert.True(await ChildHolds(descriptor));
         Assert.True(await lifetime.CompleteAsync());
         Assert.Null(store.Completed(path, request));
         Assert.False(Directory.Exists(lifetime.Stage));
@@ -116,6 +121,13 @@ public class StatechartPosixLifecycleTests
             new ProcessStartInfo(Path.Combine(scope.Path, "missing-runtime")), new StatechartContinuation(foreign, executionLock)));
         Assert.False(Directory.Exists(lifetime.Stage));
         Assert.False(Directory.Exists(lifetime.Temp));
+    }
+
+    private static async Task<bool> ChildHolds(int descriptor)
+    {
+        using var child = Process.Start(new ProcessStartInfo("/bin/sh", ["-c", $"test -e /proc/self/fd/{descriptor}"]))!;
+        await child.WaitForExitAsync();
+        return child.ExitCode == 0;
     }
 
     // Owners a lifetime starts inherit this process's environment; these roots keep their request store in the test.

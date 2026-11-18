@@ -56,6 +56,22 @@ public class StatechartAssetsTests
         Assert.False(Directory.Exists(Path.Combine(scope.Path, "state", "requests")));
     }
 
+    // Every extraction runs under the extract lock, so a staging directory the next run finds there was left by a crash.
+    [Fact]
+    [Trait("Job", "trap: DYD-415 an extraction a crash left behind is swept by the next run")]
+    public async Task AnExtractionACrashLeftBehind_IsSweptByTheNextRun()
+    {
+        using var scope = new StatechartTestDirectory();
+        Model(scope.Path);
+        var stale = Path.Combine(scope.Path, "assets", new StatechartAssets().Release, ".extract-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(stale);
+        File.WriteAllText(Path.Combine(stale, "partial"), "interrupted");
+
+        Assert.Equal(3, (await Run(scope.Path)).Exit);
+
+        Assert.False(Directory.Exists(stale));
+    }
+
     private static void Model(string root)
     {
         File.WriteAllText(Path.Combine(root, "model.tla"), "---- MODULE model ----\nVARIABLE x\nInit == x = 0\nNext == x' = x\n====\n");

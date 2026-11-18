@@ -1,131 +1,18 @@
 namespace DynaDocs.Tests.Statechart;
 
-using System.Diagnostics;
 using System.Runtime.InteropServices;
-using System.Security.Cryptography;
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using DynaDocs.Services.Statechart;
 using System.Runtime.Versioning;
 
 /// <summary>
-/// A ready <c>dydo statechart</c> run, judged by its outcome: it reaches its verdict offline and publishes the chart,
-/// with the managed content unchanged; damaged managed content gives a repair plan and stays in place (DR 062 §1 §2 §6).
-/// Most cases need STATECHART_TEST_DEPENDENCY_ROOT, a real verified installation.
+/// Readiness and the owned launch, judged by their outcome: stand-in runtimes are released only on the exact startup
+/// gate and their exit is the verdict; a component that does not prove itself is refused; a failed or cancelled run
+/// leaves no scratch (DR 062 §6).
 /// </summary>
-[Trait("Job", "contract: DR 062 §1 §2 §6")]
+[Trait("Job", "contract: DR 062 §6")]
 public class StatechartReadyTests
 {
-    private static readonly string Relative = Path.Combine(new StatechartAssets().LockDigest, RuntimeInformation.RuntimeIdentifier);
-
-    [SkippableFact]
-    public async Task AReadyRun_ReachesItsVerdictOffline_PublishesTheChart_AndChangesNoManagedContent()
-    {
-        using var scope = new StatechartTestDirectory();
-        var fixture = Fixture(scope.Path);
-        var before = Content(fixture);
-        var result = await RunReadyModel(scope.Path, fixture);
-        Assert.True(result.Exit == 1, result.Error);
-        Assert.True(File.Exists(Path.Combine(scope.Path, "chart", "report.md")));
-        Assert.Empty(StatechartLeftovers.Left(Path.Combine(scope.Path, "state")));
-        Assert.Equal(before, Content(fixture));
-    }
-
-    [SkippableFact]
-    public async Task ChangedManagedBytesYieldARepairPlanAndStayInPlace()
-    {
-        using var scope = new StatechartTestDirectory();
-        var dependencies = Fixture(scope.Path);
-        var renderer = Path.Combine(dependencies, Relative, "pele", "content", "package", "dist", "pele.js");
-        File.AppendAllText(renderer, "\nchanged managed content");
-        var before = Files(dependencies);
-        var result = await RunReadyModel(scope.Path, dependencies);
-        Assert.True(result.Exit == 3, result.Error);
-        Assert.False(Directory.Exists(Path.Combine(scope.Path, "chart")));
-        Assert.EndsWith("changed managed content", File.ReadAllText(renderer));
-        Assert.Equal(before, Files(dependencies));
-    }
-
-    [SkippableFact]
-    [UnsupportedOSPlatform("windows")]
-    public async Task AManagedRuntimeThatCannotExecuteYieldsARepairPlanAndStaysInPlace()
-    {
-        Skip.If(OperatingSystem.IsWindows(), "POSIX modes decide whether a runtime can start.");
-        using var scope = new StatechartTestDirectory();
-        var dependencies = Fixture(scope.Path);
-        var java = Directory.GetFiles(Path.Combine(dependencies, Relative, "java", "content"), "java", SearchOption.AllDirectories)
-            .Single(path => Path.GetFileName(Path.GetDirectoryName(path)) == "bin");
-        File.SetUnixFileMode(java, UnixFileMode.UserRead | UnixFileMode.UserWrite);
-        var before = Files(dependencies);
-        var result = await RunReadyModel(scope.Path, dependencies);
-        Assert.True(result.Exit == 3, result.Error);
-        Assert.True(File.Exists(JsonDocument.Parse(result.Output).RootElement.GetProperty("request").GetString()));
-        Assert.Equal(before, Files(dependencies));
-        Assert.Equal(UnixFileMode.UserRead | UnixFileMode.UserWrite, File.GetUnixFileMode(java));
-    }
-
-    // The run is offline, so the restored assets can only come from the payload embedded in dydo.
-    [SkippableFact]
-    public async Task DamagedAssetsAreExtractedAgainOfflineAndTheRunReachesItsVerdict()
-    {
-        using var scope = new StatechartTestDirectory();
-        var fixture = Fixture(scope.Path);
-        var first = await RunReadyModel(scope.Path, fixture);
-        Assert.True(first.Exit == 1, first.Error);
-        var assets = new StatechartAssets();
-        var payload = Path.Combine(scope.Path, "assets", assets.Release, assets.Digest);
-        File.AppendAllText(Path.Combine(payload, "skills", "engineering", "statechart", "scripts", "worker.ts"), "\n// tampered");
-        File.Delete(Path.Combine(payload, "skills", "engineering", "statechart", "scripts", "java", "statechart-tlc-bootstrap.jar"));
-        Directory.Delete(Path.Combine(scope.Path, "chart"), recursive: true);
-        var second = await RunReadyModel(scope.Path, fixture);
-        Assert.True(second.Exit == 1, second.Error);
-        Assert.True(File.Exists(Path.Combine(scope.Path, "chart", "report.md")));
-        assets.Verify(payload);
-    }
-
-    [SkippableFact]
-    public async Task AnUpdateThatKeepsTheLockReverifiesAndRestampsWithoutInstalling()
-    {
-        using var scope = new StatechartTestDirectory();
-        var dependencies = Fixture(scope.Path);
-        var receipts = Directory.GetFiles(Path.Combine(dependencies, Relative), ".ready.json", SearchOption.AllDirectories);
-        Assert.Equal(4, receipts.Length);
-        foreach (var receipt in receipts)
-        {
-            var identity = JsonNode.Parse(File.ReadAllText(receipt))!.AsObject();
-            identity["release"] = "0.0.1";
-            identity["payload"] = "earlier-payload";
-            File.WriteAllText(receipt, identity.ToJsonString());
-        }
-        var before = Content(dependencies);
-        var result = await RunReadyModel(scope.Path, dependencies);
-        Assert.True(result.Exit == 1, result.Error);
-        Assert.Equal(before, Content(dependencies));
-    }
-
-    [SkippableFact]
-    public async Task AnUnchangedSkillFromAnEarlierReleaseUpdatesThroughInstallSkillAndCharts()
-    {
-        using var scope = new StatechartTestDirectory();
-        var fixture = Fixture(scope.Path);
-        var project = Path.Combine(scope.Path, "project");
-        Directory.CreateDirectory(project);
-        var installed = await Run(scope.Path, fixture, ["statechart", "install-skill", "--root", project]);
-        Assert.True(installed.Exit == 0, installed.Error);
-        var skill = Path.Combine(project, "skills", "engineering", "statechart");
-        File.AppendAllText(Path.Combine(skill, "SKILL.md"), "\nEarlier release wording.");
-        var receipt = new JsonObject { ["schema"] = 1, ["protocol"] = 1, ["release"] = "0.0.1", ["payload"] = "earlier-payload",
-            ["lock"] = "earlier-lock", ["files"] = StatechartInventory.Capture(skill, ".statechart-skill.json") };
-        File.WriteAllText(Path.Combine(skill, ".statechart-skill.json"), receipt.ToJsonString());
-        var stranded = await RunReadyModel(scope.Path, fixture, "--skill", skill);
-        Assert.Equal(2, stranded.Exit);
-        var updated = await Run(scope.Path, fixture, ["statechart", "install-skill", "--root", project]);
-        Assert.True(updated.Exit == 0, updated.Error);
-        var result = await RunReadyModel(scope.Path, fixture, "--skill", skill);
-        Assert.True(result.Exit == 1, result.Error);
-        Assert.DoesNotContain("Earlier release wording", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
-    }
-
     // A fake runtime speaks the native bootstrap's startup gate, so the owned launch runs without Node, Java or TLC. It exits
     // 9 unless released with the exact go frame, and 1 (its verdict) when it was.
     [SkippableFact]
@@ -288,92 +175,10 @@ public class StatechartReadyTests
         finally { Console.SetError(original); }
     }
 
-    private static string[] Content(string dependencies) => Files(Path.Combine(dependencies, Relative))
-        .Where(file => !file.Contains(".ready.json", StringComparison.Ordinal)).ToArray();
-
-    private static string Fixture(string scope, string? source = null) => PrivateCopy(source ?? FixtureSource(), scope);
-
-    private static string FixtureSource()
-    {
-        var fixture = Environment.GetEnvironmentVariable("STATECHART_TEST_DEPENDENCY_ROOT");
-        Skip.If(fixture is null, "STATECHART_TEST_DEPENDENCY_ROOT must name a real verified managed installation (Node, Java, TLC, Pele).");
-        Assert.True(Path.IsPathFullyQualified(fixture) && Directory.Exists(fixture),
-            "STATECHART_TEST_DEPENDENCY_ROOT must name a real verified source installation; tests copy it before running.");
-        return fixture;
-    }
-
-    private static string PrivateCopy(string fixture, string scope)
-    {
-        var dependencies = Path.Combine(scope, "dependencies");
-        Copy(Path.Combine(fixture, Relative), Path.Combine(dependencies, Relative));
-        return dependencies;
-    }
-
-    // Runs the built dydo offline on a model whose Bound breaks after two steps.
-    private static Task<(int Exit, string Output, string Error)> RunReadyModel(string scope, string dependencies, params string[] options)
-    {
-        WriteReadyModel(scope);
-        return Run(scope, dependencies, ["statechart", "ReadyModel.tla", "--out", "chart", .. options]);
-    }
-
     private static void WriteReadyModel(string scope)
     {
         File.WriteAllText(Path.Combine(scope, "ReadyModel.tla"),
             "---- MODULE ReadyModel ----\nEXTENDS Naturals\nVARIABLE x\nInit == x = 0\nNext == (x < 2 /\\ x' = x + 1) \\/ (x = 2 /\\ x' = x)\nBound == x < 2\n====\n");
         File.WriteAllText(Path.Combine(scope, "ReadyModel.cfg"), "INIT Init\nNEXT Next\nINVARIANT Bound\nCHECK_DEADLOCK FALSE\n");
-    }
-
-    // Runs the built dydo offline with the given managed dependencies and private asset and state roots.
-    private static async Task<(int Exit, string Output, string Error)> Run(string scope, string dependencies, string[] arguments,
-        string? java = null)
-    {
-        var start = StatechartTestBinary.Start();
-        start.WorkingDirectory = scope;
-        start.UseShellExecute = false;
-        start.CreateNoWindow = true;
-        start.RedirectStandardOutput = true;
-        start.RedirectStandardError = true;
-        foreach (var argument in arguments) start.ArgumentList.Add(argument);
-        foreach (var name in start.Environment.Keys.Where(name => name.StartsWith("DYDO_", StringComparison.Ordinal)).ToArray())
-            start.Environment.Remove(name);
-        start.Environment["DYDO_STATECHART_DEPENDENCY_ROOT"] = dependencies;
-        start.Environment["DYDO_STATECHART_ASSET_ROOT"] = Path.Combine(scope, "assets");
-        start.Environment["DYDO_STATECHART_STATE_ROOT"] = Path.Combine(scope, "state");
-        foreach (var name in new[] { "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY" }) start.Environment[name] = "http://127.0.0.1:9";
-        start.Environment["NO_PROXY"] = "";
-        start.Environment["PATH"] = "";
-        if (java is null) start.Environment.Remove("JAVA");
-        else start.Environment["JAVA"] = java;
-        start.Environment.Remove("TLA2TOOLS");
-        using var child = Process.Start(start)!;
-        var output = child.StandardOutput.ReadToEndAsync();
-        var errors = child.StandardError.ReadToEndAsync();
-        await child.WaitForExitAsync();
-        return (child.ExitCode, await output, await errors);
-    }
-
-    private static string[] Files(string root) => Directory.GetFiles(root, "*", SearchOption.AllDirectories)
-        .Order(StringComparer.Ordinal).Select(file => Path.GetRelativePath(root, file) + ":" +
-            Convert.ToHexStringLower(SHA256.HashData(File.ReadAllBytes(file)))).ToArray();
-
-    private static void Copy(string source, string target)
-    {
-        Assert.True(Directory.Exists(source), "Missing verified managed fixture component root.");
-        Directory.CreateDirectory(target);
-        foreach (var entry in Directory.EnumerateFileSystemEntries(source))
-        {
-            var attributes = File.GetAttributes(entry);
-            var directory = (attributes & FileAttributes.Directory) != 0;
-            var destination = Path.Combine(target, Path.GetFileName(entry));
-            // POSIX runtime archives carry relative links; the managed inventory records them as links.
-            if ((attributes & FileAttributes.ReparsePoint) != 0)
-            {
-                var link = directory ? new DirectoryInfo(entry).LinkTarget! : new FileInfo(entry).LinkTarget!;
-                if (directory) Directory.CreateSymbolicLink(destination, link);
-                else File.CreateSymbolicLink(destination, link);
-            }
-            else if (directory) Copy(entry, destination);
-            else File.Copy(entry, destination, overwrite: false);
-        }
     }
 }

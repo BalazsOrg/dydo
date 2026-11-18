@@ -164,6 +164,56 @@ public class StatechartManagedTests
         Assert.Empty(Directory.GetDirectories(parent));
     }
 
+    // Crashes left these behind; the install lock shows no other run for this RID still uses them.
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    [Trait("Job", "trap: DYD-415 crash-left install stages and receipt temp files are swept under the install lock")]
+    public async Task CrashLeftStagesAndReceiptTempFiles_AreSweptUnderTheLock_WhetherTheInstallSucceedsOrFails(bool fails)
+    {
+        using var scope = new StatechartTestDirectory();
+        var managed = new StatechartManaged(Home(scope.Path), new StatechartAssets(), "win-x64", Unreachable());
+        var parent = Path.GetDirectoryName(managed.Root)!;
+        var stage = Path.Combine(parent, ".install-win-x64-" + Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(Path.Combine(stage, "node"));
+        var receipt = Path.Combine(parent, ".receipt-win-x64-" + Guid.NewGuid().ToString("N"));
+        File.WriteAllText(receipt, "{}");
+        var other = Path.Combine(parent, ".receipt-linux-x64-" + Guid.NewGuid().ToString("N"));
+        File.WriteAllText(other, "{}");
+        var install = managed.InstallAsync(fails ? new(null, null, null, null) : new("node", "java", "tlc", "pele"),
+            Path.Combine(scope.Path, "unavailable-payload"), CancellationToken.None);
+        if (fails) await Assert.ThrowsAnyAsync<Exception>(() => install);
+        else await install;
+        Assert.False(Directory.Exists(stage));
+        Assert.False(File.Exists(receipt));
+        Assert.True(File.Exists(other));
+        Assert.Empty(Directory.GetDirectories(parent, ".install-*"));
+    }
+
+    // Another run re-stamped while this one waited on the lock. The components are fakes, so a re-stamp that trusted its
+    // pre-wait scan would verify them and fail the run.
+    [Fact]
+    [Trait("Job", "trap: DYD-415 a run that waited on the install lock rescans before it re-stamps")]
+    public async Task ARestampThatWaitedOnTheLock_FindsTheHoldersRestamp_AndDoesNothing()
+    {
+        using var scope = new StatechartTestDirectory();
+        var assets = new StatechartAssets();
+        var (managed, jar) = Installed(scope.Path, release: "0.0.1", payload: "earlier-payload");
+        var held = new FileStream(Path.Combine(Path.GetDirectoryName(managed.Root)!, "win-x64.install.lock"),
+            FileMode.CreateNew, FileAccess.ReadWrite, FileShare.None);
+        var restamp = managed.RestampAsync(new(null, null, jar, null), Path.Combine(scope.Path, "unavailable-payload"), CancellationToken.None);
+        var receipt = Path.Combine(Path.GetDirectoryName(jar)!, ".ready.json");
+        var identity = JsonNode.Parse(File.ReadAllText(receipt))!.AsObject();
+        identity["release"] = assets.Release;
+        identity["payload"] = assets.Digest;
+        File.WriteAllText(receipt, identity.ToJsonString());
+        var written = File.ReadAllText(receipt);
+        held.Dispose();
+        Assert.False(await restamp);
+        Assert.Equal(written, File.ReadAllText(receipt));
+        Assert.Equal(jar, managed.Read().Tlc);
+    }
+
     private static StatechartHome Home(string root) =>
         new(Path.Combine(root, "assets"), Path.Combine(root, "dependencies"), Path.Combine(root, "state"));
 

@@ -88,7 +88,9 @@ public class LinearReaderTests
     {
         _linear.Serve(_ => IssuesPage(
             Node(Issue("1", assignee: """{"name":"Balazs"}""", labels: Labels("Feature:#BB87FC"))) + "," +
-            Node(Issue("2", state: Duplicate, parent: """{"id":"1","identifier":"DYD-1"}"""))));
+            Node(Issue("2", state: Duplicate, parent: """{"id":"1","identifier":"DYD-1"}""")) + "," +
+            Node(Issue("3", labels: "null")) + "," +
+            Node(Issue("4", labels: """{"nodes":[]}"""))));
 
         var graph = await Graph();
 
@@ -99,7 +101,8 @@ public class LinearReaderTests
             new MapIssueTeam("t-dyd", "DYD"), new MapIssueProject("p-map", "Map"), issues["1"].Labels), issues["1"]);
         Assert.Equal([new MapLabel("Feature", "#BB87FC")], issues["1"].Labels);
         Assert.Equal(("duplicate", "1"), (issues["2"].State.Type, issues["2"].ParentId));
-        Assert.Empty(issues["2"].Labels);
+        // Absent, null and empty label connections all read as no labels.
+        Assert.All(new[] { "2", "3", "4" }, id => Assert.Empty(issues[id].Labels));
     }
 
     [Fact]
