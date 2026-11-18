@@ -3,7 +3,7 @@ area: project
 type: decision
 status: proposed
 date: 2026-11-18
-applies: [dydo-aligned-intent, dydo-verify-own-work, dydo-efficiency, dydo-easy-path]
+applies: [dydo-aligned-intent, dydo-verify-own-work, dydo-efficiency, dydo-easy-path, dydo-design-shared-language]
 ---
 
 # 072 - Descriptive Docs Explain, Never Authorize
@@ -20,7 +20,8 @@ held live with the dydo 4.0.0 admiral's envoy and recorded as sections §1 to §
 [DYD-1100 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1100#comment-bdb6b643-f33d-4bd0-b801-c33566d63bca).
 He made it DR-grade "because of naming the enemy (which is prescriptive vs descriptive
 documentation and drift)". Recorded under [DYD-1185](https://linear.app/bodnar-balazs/issue/DYD-1185).
-Proposed; it awaits Balazs's acceptance (F10).
+Proposed; it awaits Balazs's acceptance (F10). His 2026-11-18 ruling adopts both reviewer lines
+in rule 8 below.
 
 ---
 
@@ -82,9 +83,12 @@ the admiral's Project closeout. The DECIDED records it as a finding, not a desig
      `explains: Services/Auth/**`.
    - `dydo check` / `pr-ready` flags a change that touches those paths; the writer updates the doc
      or states that it still holds.
-8. **Review (§3, rule 5).** "this could work."
-   - The docs rubric gains a first rule: an unlinked "why" is a finding.
-   - The code rubric gains one line: when a change touches a doc's declared paths, the reviewer
+8. **Review (§3, rule 5; both lines adopted 2026-11-18).** Balazs: "adopted."
+   ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-3356e240-ad97-40f2-a0c1-17cb4e8f69eb);
+   [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982693932)).
+   - The docs rubric gains a first rule: a "why" in a descriptive doc that links no DR or principle
+     is a finding.
+   - The code rubric gains one line: when a change touches a doc's declared `explains:` paths, the reviewer
      checks that doc against the new code.
 9. **Existing descriptive docs are grandfathered (§3, rule 6).** He chose option (a), innocent until
    guilty. One mechanical ticket gives each existing descriptive doc its declared paths. A doc found
@@ -101,11 +105,11 @@ the admiral's Project closeout. The DECIDED records it as a finding, not a desig
     adopters like `law/dydo/`. The concern it answers: "I fear that a flat glossary is not
     necessarily a good enough thing."
 
-## The pending principle
+## The shared-language principle
 
-The grilling also gave a new principle (§4), a law amendment that is his. It is **pending**: it is
-not yet committed under `law/dydo/`, so this record does not cite it in `applies:`. Its slug is
-`dydo-design-shared-language`, it cites `dydo-aligned-intent`, and its statement as he approved it
+The grilling also gave a new principle (§4), a law amendment that is his. It is now committed in
+[Design Principles](../../law/dydo/design.md#dydo-design-shared-language) and cited in `applies:`.
+Its slug is `dydo-design-shared-language`, it cites `dydo-aligned-intent`, and its statement as he approved it
 ("This is good.") is: "Name things precisely and use each name for one meaning, so the user and
 agents mean the same things by the same terms." His reason: "it's only possible to have good
 alignment if we speak the same language 'we mean the same things under certain terms'." Rules 10
@@ -123,7 +127,7 @@ and 11 serve it. The DECIDED holds his full description.
   - The glossary: remove "Project plan" and the Project entry's "cross-cutting architecture contract"
     clause, and undo F12's rename where it landed (DYD-1077's five swaps). The DECIDED says DYD-1086,
     DYD-1087 and DYD-1099 waited on this ruling and are unblocked by it.
-  - Commit `dydo-design-shared-language`, its statement and his description, to `law/dydo/`.
+  - The `dydo-design-shared-language` statement and his description are now committed to `law/dydo/`.
   - Re-adopt upstream `domain-modeling`'s multi-context shape with path changes only. The
     adaptation's "one glossary per project" goes.
   - Tickets: the `explains:` frontmatter with the `dydo check` / `pr-ready` flag; the two rubric

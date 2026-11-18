@@ -23,7 +23,7 @@ part by [grilling D](https://linear.app/bodnar-balazs/document/370-grilling-d-hi
 (2026-11-17), with his L1 sitting of 2026-11-17
 ([DYD-1078 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1078#comment-9ac278c0-00f3-4688-9971-2693bfc14e38)).
 Recorded under [DYD-1086](https://linear.app/bodnar-balazs/issue/DYD-1086); proposed, awaiting
-Balazs's acceptance (F10). Decision 15 is the captain's settlement, for him to confirm. The
+Balazs's acceptance (F10). His 2026-11-18 rulings settle decisions 14 and 15 below. The
 grillings say 3.7.0; that release is 4.0.0. Every rule is written once, through claims
 ([DR 064](./064-claims-build-the-skills.md), A-D13).
 
@@ -191,14 +191,21 @@ The loop itself is DR 065 decision 7 (B6). C3 says how each outcome shows.
     has a spec document, open shoulds under Done parents past a threshold, and `liveness`.
 14. **Quiet work gets a liveness check, not a stale verdict (C14).** "we shouldn't declare it stale
     just because it hasn't been moved for two hours." A hop In Progress with no change for 2 hours,
-    or a ticket In Progress with no open hop for 12 hours, raises `liveness`. The officer above
+    or a ticket In Progress with no open hop for 2 hours, raises `liveness`. The officer above
     checks the thread link and the PR, then comments `liveness <UTC time>: <outcome>`: alive (snoozed
     one window), record behind (the record is brought up to date), or stopped (the hop returns to
     Todo and is resumed or re-dispatched with a new link). Quiet time runs from the later of the last
-    change and the latest `liveness` comment, so dydo keeps no state. He confirmed 2 hours; the
-    12-hour window is the packet's, *Balazs to confirm*. The chain above is sub-captain → captain →
-    admiral → chief of staff (D7).
-15. **The lane ledger retires (C13's flag). *Captain's settlement; Balazs to confirm.*** C13 flagged
+    change and the latest `liveness` comment, so dydo keeps no state. Balazs, 2026-11-18:
+    "2 hours for both."
+    ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-77285ec6-fb47-4717-9088-9a6ac1049067);
+    [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982693932)).
+    The 12-hour window goes. The chain above is sub-captain → captain → admiral → chief of staff
+    (D7); the chief of staff's quiet-Project check is an overnight-mode double check only
+    ([DR 071](./071-hierarchy-envoys-and-captain-autonomy.md) rule 4).
+15. **The lane ledger retires (C13's flag, settled 2026-11-18).** Balazs:
+    "I don't even know what the lane ledger is, sure. Retire it."
+    ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-53a8d802-6590-4a65-9318-8ce9617830c4);
+    [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982020734)). C13 flagged
     that with the top-level tickets as the roadmap, the ledger and its findings may be redundant.
     Every ledger column has a home on the ticket: the lane is the top-level ticket (decision 12);
     Owner is its thread link (decision 9); State and Next action are its status and current hop
@@ -207,7 +214,7 @@ The loop itself is DR 065 decision 7 (B6). C3 says how each outcome shows.
     One agent holds one open top-level ticket at a time (decision 4), so a lane of several tickets
     is a chain of blocking relations. Keeping the ledger
     would give each claim two homes, and `no-ledger`, `unlaned` and `stale-row` would only keep the
-    copy in sync. They retire with it, and so does `started-unassigned` (C7). This settlement drops
+    copy in sync. They retire with it, and so does `started-unassigned` (C7). This ruling drops
     C7's accepted bullet "The admiral's lane ledger keeps its lane → captain link" (decision 9).
 
 ## Consequences

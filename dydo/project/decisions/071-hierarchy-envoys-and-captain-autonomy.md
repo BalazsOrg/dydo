@@ -28,7 +28,8 @@ of 2026-11-17 replacing D11's interim rule on sub-captains, and R5 of his L1 sit
 on which Projects have an admiral. Recorded under
 [DYD-1087](https://linear.app/bodnar-balazs/issue/DYD-1087); the same change resolves
 [DYD-1177](https://linear.app/bodnar-balazs/issue/DYD-1177). Proposed, awaiting Balazs's acceptance
-(F10). The grillings say 3.7.0; that release is 4.0.0. Every rule is written once, through claims
+(F10). His 2026-11-18 rulings settle D3, D5, D6 and D16 below. The grillings say 3.7.0;
+that release is 4.0.0. Every rule is written once, through claims
 ([DR 064](./064-claims-build-the-skills.md), A-D13).
 
 ---
@@ -49,7 +50,7 @@ that T3 had shown depth 2 below a top-level thread and nothing deeper? And which
 click, when "me clicking merge is a bottleneck" (D14)?
 
 Grilling D's answers are speech-to-text and are quoted as the grilling records them, with only
-spelling normalised.
+spelling normalised. The 2026-11-18 quotes below preserve his words verbatim, including speech-to-text wording.
 
 ## Decision
 
@@ -103,30 +104,27 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
      threads waiting on him, HITL Merges waiting on his click, anything waiting too long. Each item
      is a thread link; he goes to the thread itself. It never carries content between him and an
      admiral, and sends no envoys.
-   - It is the officer above the admirals for liveness only (C14): it checks an admiral that has
-     gone quiet and catches an open HITL ticket with no envoy. Recorded in the grilling as a
-     default, not asked: the admiral attaches its T3 thread link to its Project (as C7 does for
-     tickets), and a Project with open work and no ticket moving for 12 hours raises the check.
-     *Balazs to confirm.*
+   - The admiral attaches its T3 thread link to its Project (as C7 does for tickets). The chief of
+     staff's quiet-Project check is an overnight-mode double check only, replaced as a standing
+     check by the admirals' own scheduled surveys. Balazs, 2026-11-18:
+     "To be frank I almost exclusively use chief of staff for overnight mode now. And back when this thing was invented, the admirals did not have their own crow jobs to survey things. So I'd say that that kind of replaces this intent, but For overnight mood, it might be a cheap double check."
+     ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-18bb9314-3553-4c1d-bea6-f15adc48881a);
+     [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982020734)).
    - Its uses: the overnight watch (overnight-mode, [DR 064](./064-claims-build-the-skills.md)
      decision 8), big cross-Project
      thinking, and investigating an unknown on his machine. By day it is mostly idle, not a standing
      inbox he must check.
-5. **Continuous Projects are queues with no admiral (D6).** "b and c". A continuous Project (Agent
-   friction, CI findings) has no destination and no admiral. The chief of staff lists its open
-   tickets with their age; Balazs gives a ticket out, or tells the chief of staff to. An admiral
-   with a free lane may take a continuous ticket and commission a captain for it, within a standing
-   rule Balazs sets once (for example, Bugs up to Severity should, no HITL Mode); outside the rule it
-   asks. Each such ticket still gets a captain, and review and merge as usual. The standing rule's
-   text is his to set. Recorded in the grilling as a default, not asked: the officer that
-   commissioned the captain oversees the ticket (the admiral that pulled it, or the chief of staff
-   when he gives it out through it); it is the ticket's officer above, sends its envoys and paces
-   its merge. *Balazs to confirm*, including a conflict the grilling leaves open: through the chief
-   of staff this default has it send envoys, which rule 4 says it doesn't (D5), and rule 9 gives
-   every envoy in a Project to the admiral, which a continuous Project lacks.
+5. **Continuous Projects are ticket groupings with no overseer or envoys (D6, replaced 2026-11-18).**
+   Balazs: "No one. The continuous projects are not really projects. They are only technically projects in linear. They are a place where certain tickets or work is grouped and the officers working on things and having open lanes, they may pull inside relevant tickets if it fits their job."
+   ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-ab4c5a40-8c08-48fd-9474-112c0b177c0f);
+   [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982020734)).
+   A continuous Project (Agent friction, CI findings) groups tickets in Linear; it has no
+   destination, overseeing officer or envoys. An officer with an open lane may pull a relevant
+   ticket into its own work when it fits its job; the ticket then follows that officer's chain.
 6. **The officer-above chain (D7, D9).** "c" (D7). The officer above, per level: sub-captain →
    captain → admiral → chief of staff. The same chain carries liveness (C14), re-plans (B6) and
-   escalations. Above the admirals the chief of staff takes liveness only; an escalation that needs
+   escalations. Above the admirals the chief of staff takes only the overnight-mode liveness
+   double check (rule 4); an escalation that needs
    Balazs goes from the admiral through its own envoy, not through the chief of staff. D7's "an
    officer sends its own envoy for its own step" is withdrawn by D9 (rule 9).
 7. **Sub-captains: allowed now, with no hard cap on depth (DYD-1114, replacing D11).** D11 held
@@ -170,9 +168,17 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
    skill for the job plus a HITL brief, works it through with him in its own thread, records the
    result on the ticket and returns it to the dispatcher, which keeps working meanwhile. He can
    still talk to the officer directly, or ask it to open such a session. No new role or skill: the
-   officer spine gains the "send an envoy" routine. Recorded in the grilling as a default, not
-   asked: the host question tool stays for a one-line question when he is already in the officer's
-   thread. *Balazs to confirm.*
+   officer spine gains the "send an envoy" routine.
+   - The host question tool is allowed for a one-line question only when he is already in that
+     officer's thread. Balazs, 2026-11-18:
+     "If I'm already there then yes, obviously it's overkill. But I hope you do understand which scenario the envoys are for. And I don't have to spell it out. But don't you dare assume."
+     ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-95e84566-ad96-43db-b1cf-ff0624202f45);
+     [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982693932)).
+   - A grilling or walkthrough always starts with a fresh envoy, even when he is already in the
+     officer's thread; the admiral keeps managing the Project. His amendment the same day:
+     "It is correct with one amendment. Even if I'm in the thread the grilling, walkthrough should start with a fresh agent context and the admiral should continue to manage the project."
+     ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-45286cf4-4246-4713-9394-b1e19c47294e);
+     [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6983350679)).
 9. **Only the admiral sends envoys; the officer above does the homework first (D9).** "the captains
    and sub captains shouldn't bother me unless really necessary and I'm not sure about them having
    the ability to just bug me without oversight." "So bugging me with something which can be
@@ -263,9 +269,11 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
     so they don't collide." Part of option (a) as he accepted it: main-bound PRs re-check against
     current master just before landing; the admiral lands its Project's main-bound PRs one at a time;
     a PR forced to re-sync a third time is held, and the admiral sequences the colliding work.
-    Recorded in the grilling as a default, not asked: across Projects, `dydo merge` re-checking the
+    Across Projects, `dydo merge` re-checking the
     combined tree with master at landing time is the serialiser; if master moved, it re-checks first.
-    *Balazs to confirm.*
+    This default stands. Balazs, 2026-11-18: "What kind of a question is this? You have answered it."
+    ([DYD-1195 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-7d866149-4d01-4d3f-a3f1-80f0fcbdc8f0);
+    [envoy 1 on PR 358](https://github.com/BalazsOrg/dydo/pull/358#issuecomment-6982020734)).
 18. **Every weed becomes a rule (D16).** A mistake found after landing, at a walkthrough or by a
     revert, is fixed with a lint, test or rule too, so it can't land again.
 19. **PR watching and the quiet tick (D14).** "I think these are all good ideas". Before his click,
@@ -293,8 +301,8 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
 - **Follow-ups,** untouched here: the glossary's Map holder ("the user, or an admiral the user
   invoked" contradicts rule 2), and entries for Envoy, Sub-captain and continuous Project; and
   `AGENTS.md`'s "an admiral only when invoked".
-- The two continuous Projects need creating in the Dydo team, and the standing rule for admirals
-  pulling their tickets is his to set.
+- The two continuous Projects need creating as ticket groupings in the Dydo team. Rule 5 governs
+  officers pulling relevant tickets into their work; the groupings get no overseer or envoys.
 - Still open from D: a sub-captain's brief and return line (DYD-1114 settled its depth and budget
   split only); which skill or built resource an envoy loads per job, to be named in the envoy
   template; and, to verify at build, that an officer can see he closed a T3 thread.
