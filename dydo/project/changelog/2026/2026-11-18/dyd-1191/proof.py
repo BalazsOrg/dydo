@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+"""Run and retain the bounded DYD-1191 docs-writer proof (including expected reader red)."""
+import argparse
+import importlib.util
+import os
+from pathlib import Path
+import subprocess
+import sys
+import shutil
+import tempfile
+
+EVIDENCE = Path(__file__).resolve().parent
+ROOT = EVIDENCE.parents[5]
+SLICE = 'app-t3code-agents-cbc6c2286251.slice'
+FILTER = ('FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|'
+          'FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature')
+sys.dont_write_bytecode = True
+spec = importlib.util.spec_from_file_location('audit', EVIDENCE / 'audit.py')
+audit = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(audit)
+
+
+def run(label, command, full=False, cwd=ROOT):
+    cap = ['systemd-run', '--user', '--scope', '--slice=' + SLICE,
+           '-p', 'MemoryMax=8G' if full else 'MemoryMax=4G',
+           '-p', 'MemorySwapMax=0', '-p', 'OOMPolicy=continue',
+           'timeout', '3600' if full else '120']
+    environment = dict(os.environ, MSBUILDDISABLENODEREUSE='1',
+                       DOTNET_CLI_USE_MSBUILD_SERVER='0', UseSharedCompilation='false')
+    result = subprocess.run(cap + command, cwd=cwd, env=environment,
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True)
+    output = ('COMMAND: ' + repr(cap + command) + '\n'
+              'CANDIDATE: pinned base + docs-writer working tree; verify with audit.py\n'
+              'DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false\n'
+              + result.stdout + f'\nEXIT: {result.returncode}\n')
+    audit.split_raw(label, output)
+    print(label, 'exit', result.returncode)
+    print(result.stdout[-3000:])
+    return result.returncode
+
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('operation', choices=['docs', 'scaffold', 'scaffold-baseline', 'python', 'discovery', 'dotnet', 'audit', 'help', 'statics', 'environment'])
+    args = parser.parse_args()
+    if args.operation == 'docs':
+        exits = []
+        for label, command in [('fix', ['dydo', 'fix']), ('check', ['dydo', 'check'])]:
+            exits.append(run(label, command))
+        sys.exit(max(exits))
+    elif args.operation in ('scaffold', 'scaffold-baseline'):
+        with tempfile.TemporaryDirectory(prefix='dyd1191-scaffold-') as temporary:
+            scratch = Path(temporary)
+            if args.operation == 'scaffold-baseline':
+                for source in audit.git('ls-tree', '-r', '--name-only', audit.BASE, '--', 'Scaffold/dydo').decode().splitlines():
+                    target = scratch / Path(source).relative_to('Scaffold')
+                    target.parent.mkdir(parents=True, exist_ok=True)
+                    target.write_bytes(audit.git('show', f'{audit.BASE}:{source}'))
+            else:
+                shutil.copytree(ROOT / 'Scaffold/dydo', scratch / 'dydo')
+            shutil.copyfile(ROOT / 'dydo.json', scratch / 'dydo.json')
+            exits = []
+            for verb in (['check'] if args.operation == 'scaffold-baseline' else ['fix', 'check']):
+                exits.append(run(('scaffold-baseline-' if args.operation == 'scaffold-baseline' else 'scaffold-adopter-') + verb,
+                                 ['dydo', verb], cwd=scratch))
+            if args.operation == 'scaffold':
+                for original in (ROOT / 'Scaffold/dydo').rglob('*'):
+                    if original.is_file():
+                        assert original.read_bytes() == (scratch / 'dydo' / original.relative_to(ROOT / 'Scaffold/dydo')).read_bytes()
+            print('PASS temporary adopter proof complete; source doc byte identity checked for candidate; temporary tree removed on exit')
+        sys.exit(max(exits))
+    elif args.operation == 'python':
+        sys.exit(run('python-reader-red', [sys.executable, '-m', 'unittest', 'discover',
+            '-s', 'DynaDocs.Tests/coverage/tests', '-p', 'test_testing_facade.py',
+            '-k', 'test_owned_policy_docs_replace_tiers_with_the_dr048_gate_set', '-v']))
+    elif args.operation in ('discovery', 'dotnet'):
+        cmd = [sys.executable, 'DynaDocs.Tests/coverage/run_tests.py', '-c', 'Release', '--filter', FILTER]
+        if args.operation == 'discovery':
+            cmd += ['--list-tests']
+        sys.exit(run(args.operation, cmd, full=True))
+    elif args.operation == 'help':
+        sys.exit(run('runtime-help', ['dydo', 'help']))
+    elif args.operation == 'statics':
+        sys.exit(run('statics', ['git', 'diff', '--check']))
+    elif args.operation == 'environment':
+        for label, command in [('python-version', [sys.executable, '--version']),
+                               ('dotnet-sdk', ['dotnet', '--version']),
+                               ('dotnet-runtimes', ['dotnet', '--list-runtimes']),
+                               ('dydo-version', ['dydo', 'version'])]:
+            run(label, command)
+    else:
+        sys.exit(run('audit', [sys.executable, str(EVIDENCE / 'audit.py')]))
