@@ -15,6 +15,8 @@ participants: [balazs, Claude (Fable)]
 
 > **§3.2 superseded by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)**, the *merge review after every merge*: a conflict-free merge into the feature branch is proved by gates and hosted CI, and only the landing keeps a merge review. The rest remains in force.
 
+> **§7's gate on *the feature → main merge* superseded by [071 - Hierarchy, Envoys and Captain Autonomy](./071-hierarchy-envoys-and-captain-autonomy.md)**: a two-way landing merges AFK after the human's walkthrough acceptance; a one-way landing still needs the human's click. The rest remains in force.
+
 Fixes the operating model the harmonized dydo 3 skill system compiles to: one flow map every agent can
 place itself on, a taxonomy of hats, workers, methods and commands, three review tiers with a
 regex-checkable review block, question Issues as the fog-clearing unit, planning at two resolutions, an
