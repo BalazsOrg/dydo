@@ -61,7 +61,7 @@ public sealed record SkillSpec
 
     private List<string> SkillFrontmatter()
     {
-        List<string> lines = [$"name: {Name}", $"description: {_description}"];
+        List<string> lines = [$"name: {Name}", $"description: {YamlScalar.Of(_description!)}"];
         if (ExplicitOnly) lines.Add("disable-model-invocation: true");
         return lines;
     }
