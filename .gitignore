@@ -44,3 +44,14 @@ dydo/_system/.local/
 
 # Claude Code personal settings (machine-local, wired by 'dydo init claude --join')
 .claude/settings.local.json
+
+# Changelog stores human-written Markdown only; gate receipts stay outside Git.
+/dydo/project/changelog/**
+!/dydo/project/changelog/**/
+!/dydo/project/changelog/**/*.md
+/dydo/project/changelog/**/artifacts/
+/dydo/project/changelog/**/coverage/
+/dydo/project/changelog/**/evidence/
+/dydo/project/changelog/**/logs/
+/dydo/project/changelog/**/receipts/
+/dydo/project/changelog/**/testresults/

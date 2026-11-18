@@ -1,7 +1,0 @@
-COMMAND: ['systemd-run', '--user', '--scope', '--slice=app-t3code-agents-cbc6c2286251.slice', '-p', 'MemoryMax=4G', '-p', 'MemorySwapMax=0', '-p', 'OOMPolicy=continue', 'timeout', '120', 'dydo', 'fix', 'Scaffold/dydo']
-CANDIDATE: pinned base + docs-writer working tree; verify with audit.py
-DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false
-Running as unit: run-p3586215-i158720114.scope; invocation ID: 2ae418bec3eb40baa32f42082079e506
-Path is outside the docs tree: Scaffold/dydo
-
-EXIT: 2

@@ -7,6 +7,8 @@ date: 2026-10-13
 
 # 053 - Temporary Feature Specs
 
+> **Location superseded by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)**, in the Decision and in the 2026-11-05 amendment: the spec is a Linear document on the Project ("Spec: <Project>"), and a big feature may have its own; each ticket's contract quotes and links the spec sections it derives from; at acceptance its lasting knowledge moves to DRs, the glossary, docs and the verification map, and the document is deleted. "A scaffolded Project always gets a spec" stands. The rest remains in force.
+
 ## Context
 
 Linear keeps the work graph. Features spanning several Issues also need one current anchor for

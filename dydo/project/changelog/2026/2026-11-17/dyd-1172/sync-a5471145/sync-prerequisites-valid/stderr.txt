@@ -1,2 +1,0 @@
-Running as unit: run-p1211226-i156301782.scope; invocation ID: b3da2118c69d48c49f3ce17820e13094
-Invalid request or artifact destination: invalid operation syntax

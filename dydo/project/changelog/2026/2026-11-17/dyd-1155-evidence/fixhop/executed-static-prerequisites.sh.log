@@ -1,8 +1,0 @@
-#!/usr/bin/env bash
-set -e
-cd /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7
-python3.14 -m venv .static-gates/python
-.static-gates/python/bin/python -m pip install -r DynaDocs.Tests/coverage/requirements.lock
-pnpm -C DynaDocs.Tests/coverage install --frozen-lockfile
-pnpm -C viewer install --frozen-lockfile
-pnpm -C skills/engineering/statechart/scripts install --frozen-lockfile

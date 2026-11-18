@@ -1,6 +1,0 @@
-Running as unit: run-p1214524-i156325321.scope; invocation ID: 69ab9d416b454d2594bf225581487c96
-Traceback (most recent call last):
-  File "/tmp/dyd1172-sync-selection.py", line 13, in <module>
-    assert len(safe) == 335, len(safe)
-           ^^^^^^^^^^^^^^^^
-AssertionError: 253
