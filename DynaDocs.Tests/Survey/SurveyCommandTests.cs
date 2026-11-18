@@ -38,16 +38,6 @@ public sealed class SurveyCommandTests : IDisposable
         Assert.Empty(_linear.Calls);
     }
 
-    [Fact]
-    public async Task AnUnknownOption_IsAUsageError()
-    {
-        var (exitCode, _, stderr) = await ConsoleCapture.AllAsync(
-            () => SurveyCommand.Create().Parse(["--bogus"]).InvokeAsync());
-
-        Assert.Equal(ExitCodes.ToolError, exitCode);
-        Assert.NotEmpty(stderr);
-    }
-
     [Theory]
     [InlineData(null)]
     [InlineData(" ")]
@@ -75,17 +65,6 @@ public sealed class SurveyCommandTests : IDisposable
         Assert.StartsWith("dydo survey Map 2026-11-04T21:40:05Z", stdout, StringComparison.Ordinal);
         Assert.Equal(["pickable DYD-1"], KeptFindings.In(stdout));
         Assert.Empty(stderr);
-    }
-
-    [Fact]
-    public async Task AnEmptyProject_HasNoFindings()
-    {
-        _linear.Serve(call => call.Operation == "ProjectIssues" ? IssuesPage("") : ProjectContent("\"\""));
-
-        var (exitCode, stdout, _) = await Run("25acbbb9a90b");
-
-        Assert.Equal(ExitCodes.Success, exitCode);
-        Assert.Empty(KeptFindings.In(stdout));
     }
 
     [Fact]

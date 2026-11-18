@@ -178,9 +178,10 @@ public class StatechartPosixLifecycleTests
         File.WriteAllText(Path.Combine(request.Output, "report.md"), "Bound breaks");
         if (kind == "changed") File.AppendAllText(path, " ");
         await session.SendAsync($"result:{nonce}:{(kind == "out-of-range" ? 7 : 1)}");
+        // Read before waiting: an owner that wrongly accepted the frame keeps waiting for the next one.
+        Assert.Null(store.Completed(path, request));
         var (exit, _) = await session.ExitAsync();
         Assert.Equal(2, exit);
-        Assert.Null(store.Completed(path, request));
         Assert.False(Directory.Exists(session.Stage));
     }
 
@@ -198,6 +199,8 @@ public class StatechartPosixLifecycleTests
         await child.StandardOutput.ReadLineAsync();
         await session.SendAsync($"attach:{nonce}:{child.Id}");
         await session.SendAsync("drain:" + nonce);
+        // A child the drain did not stop ends at EOF with 0 instead of being killed.
+        child.StandardInput.Close();
         await child.WaitForExitAsync();
         Assert.Equal(128 + 9, child.ExitCode);
         await session.SendAsync("complete:" + nonce);

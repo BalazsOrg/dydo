@@ -178,7 +178,7 @@ public class StatechartReadyTests
                 request, dependencies, "/payload", home, null, StatechartTestBinary.Start(), CancellationToken.None));
         }
         finally { Environment.CurrentDirectory = directory; }
-        Assert.Empty(StatechartLeftovers.Left(home.State));
+        Assert.Empty(StatechartLeftovers.Left(request.Caller));
         Assert.False(Directory.Exists(request.Output));
     }
 
@@ -196,7 +196,7 @@ public class StatechartReadyTests
             new StatechartDependencies("/managed/node", null, null, null), "/payload", home, null, StatechartTestBinary.Start(),
             new CancellationToken(canceled: true)));
         Assert.Equal(directory, Environment.CurrentDirectory);
-        Assert.Empty(StatechartLeftovers.Left(home.State));
+        Assert.Empty(StatechartLeftovers.Left(request.Caller));
         Assert.False(Directory.Exists(request.Output));
     }
 

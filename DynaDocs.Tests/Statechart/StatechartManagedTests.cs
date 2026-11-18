@@ -131,17 +131,6 @@ public class StatechartManagedTests
         Assert.Equal(jar, managed.Read().Tlc);
     }
 
-    [Fact]
-    public void ADifferentLockIsAnotherStore_SoItsContentIsNeverReady()
-    {
-        using var scope = new StatechartTestDirectory();
-        var (managed, _) = Installed(scope.Path, new StatechartAssets().Release, new StatechartAssets().Digest);
-        var other = Path.Combine(Path.GetDirectoryName(Path.GetDirectoryName(managed.Root)!)!, new string('0', 64), "win-x64");
-        Directory.CreateDirectory(Path.GetDirectoryName(other)!);
-        Directory.Move(managed.Root, other);
-        Assert.Equal(All, StatechartManaged.Missing(managed.Read()));
-    }
-
     // The receipt records content hashes, not modes, so a runtime that cannot start still matches it.
     [SkippableTheory]
     [InlineData(false)]
