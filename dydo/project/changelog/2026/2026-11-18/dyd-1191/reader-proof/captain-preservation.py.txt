@@ -1,0 +1,28 @@
+from pathlib import Path
+import subprocess
+import hashlib
+import json
+root=Path(__file__).resolve().parents[7]
+script=root/'dydo/project/changelog/2026/2026-11-18/dyd-1191/reader-proof/preservation.py.txt'
+namespace={'__file__':str(script),'__name__':'__main__'}
+source=script.read_text().split("changed = set(git('diff'",1)[0]
+exec(compile(source,str(script),'exec'),namespace)
+git=namespace['git']
+base='a6eda0dba0284013ab79c3bca9057a7d5a4c5806'
+paths=set(git('diff','--name-only',base).splitlines())|set(git('ls-files','--others','--exclude-standard').splitlines())
+assert not any(p.startswith(('skills/','claims/')) for p in paths)
+sizes={p:(root/p).stat().st_size for p in paths if (root/p).is_file()}
+assert all(n<20000 for n in sizes.values()),{p:n for p,n in sizes.items() if n>=20000}
+print('PASS ticket diff vs synchronized feature tip',base,'files',len(sizes),'largest',max(sizes.values()))
+here=script.parent
+text=''.join(p.read_text() for p in sorted(here.glob('captain-python-discovery-*.log')))
+ids=[line for line in text.splitlines() if line.startswith('test_testing_facade.')]
+assert len(ids)==len(set(ids))==232
+print('PASS captain Python native discovery 232 unique IDs')
+text=''.join(p.read_text() for p in sorted(here.glob('captain-dotnet-discovery-*.log')))
+assert 'The following Tests are available:' in text
+native=text.split('The following Tests are available:\n',1)[1].split('\n--- Running tests',1)[0]
+ids=[line.strip() for line in native.splitlines() if line.startswith('    ')]
+assert len(ids)==len(set(ids))==116,len(ids)
+print('PASS captain .NET native discovery 116 unique IDs')
+print('SOURCE HASHES',json.dumps({p:hashlib.sha256((root/p).read_bytes()).hexdigest() for p in sorted(sizes) if p.startswith('DynaDocs.Tests/')},sort_keys=True))

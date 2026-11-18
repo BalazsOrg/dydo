@@ -106,5 +106,5 @@ than being asserted in this pre-gate recipe. Mutation is **UNAVAILABLE**, per DY
 
 ## Related
 
-- [Command reference](../../reference/dydo-commands.md#dydo-pr-ready)
+- [Command reference](./../../reference/dydo-commands-delivery.md#dydo-pr-ready)
 - [Testing strategy](../../guides/testing-strategy.md)

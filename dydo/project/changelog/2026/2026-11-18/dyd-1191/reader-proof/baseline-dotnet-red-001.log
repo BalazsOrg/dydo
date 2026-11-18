@@ -1,0 +1,142 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=4G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "120",
+    "python3",
+    "-B",
+    "dydo/project/changelog/2026/2026-11-18/dyd-1191/reader-proof/baseline.py"
+  ],
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4",
+  "head": "c3f914dff9a36426b722f05058eb3cbc7b967312",
+  "sources": {
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs": "a3d68dac698c3e692b0b2ab954d72990a40f6545ffeb60d33db140bc25433ff4",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Family.cs": "871d306b4724f7d8ecfbfa508783fb1e9804e9afb395fc523a07fe5f95139fd0",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs": "64165e6e4cc2d03c19f3bfd559a939d270d52089a8fbe8d1b50a91b6ad003ec8",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.Hosts.cs": "99b3c0d494e1dc9a7525b0719e8dfd4dab43e0d5ce57a98da86537aa72657f69",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.cs": "d7591a74ac92eeb2df89b16b932d342d6ccde166eb58fa622c5430ac345137ec",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.Metadata.cs": "123ecc3e31531687cafb035cd7d4640bf81e61c534af6acd90980cbe8572b753",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.cs": "c0516f1660d64f208cc0cc95d9bb3bb78e51e34f4fa40b212865d12230d28925",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_04.py": "7806a0d9bd5c463f466186f88b056bc4502e0c241afff4230a64910f55a4a3c6",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_2.py": "128f02d10ccd8660b99fea8569bf4dbce38480610627d394ce70dce09ada8083",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_08.py": "2cb37e2927a56d5e7a81681e178a40467f3a50c38f880bb2a90f2b445d7643f4",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade.py": "8d69f62f0c8875a5c4c63f47831c07be15d98b709cd97fd05d18a66562b35905",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_07.py": "d24b53d426bde2b6b34c7aec0b7e9d1a736a36a1a7b8215b600c180675dbb453",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_05.py": "0affcf7dff45851d12d598a57db2288695d6453ebe7e2bf49811dba3d36d8646",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_06.py": "da220dae5ecf161fd1c238805a8b035762aa281d97aaad89b250802ed208b829",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_02.py": "d6c402de4179d3d64326d94bb539afbf0a3c92c70d6729180f664362c02244f9",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_01.py": "521d7cf763d5ecef8ae85fd2e083eeb3bda5036f33f2db4efd3032732f0f1496",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_support.py": "9b3f1064d930f9453346c5ba82f939a92101388a09515d500e4544f68fc0cffc",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_03.py": "5677a31fb6c171eb2d11ca7f635cd22ea2bc195b102be2ded9e97268a56b92e3",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_1.py": "55a698c2f832daffa95e12e88eb4b42fd870667c458f338e6d5b27485b803424"
+  },
+  "exit": 1,
+  "dotnet_env": {
+    "MSBUILDDISABLENODEREUSE": "1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
+    "UseSharedCompilation": "false"
+  }
+}
+Running as unit: run-p3970295-i158989245.scope; invocation ID: 60fa52b3a0104f78924a20b98377477a
+Preparing worktree (detached HEAD c3f914df)
+HEAD is now at c3f914df DYD-1191 implement: split reference pages and preserve navigation
+  Determining projects to restore...
+  Restored /tmp/dydo-test-4471dec3/DynaDocs.csproj (in 133 ms).
+  Restored /tmp/dydo-test-4471dec3/tools/SkillBuild/SkillBuild.csproj (in 130 ms).
+  Restored /tmp/dydo-test-4471dec3/DynaDocs.Tests/DynaDocs.Tests.csproj (in 136 ms).
+  SkillBuild -> /tmp/dydo-test-4471dec3/tools/SkillBuild/bin/Release/net10.0/SkillBuild.dll
+  DynaDocs -> /tmp/dydo-test-4471dec3/bin/Release/net10.0/dydo.dll
+  DynaDocs.Tests -> /tmp/dydo-test-4471dec3/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll
+Test run for /tmp/dydo-test-4471dec3/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+[xUnit.net 00:00:01.06]     Remove stale two-source guidance [FAIL]
+  Failed Remove stale two-source guidance [11 ms]
+  Error Message:
+   Assert.Contains() Failure: Sub-string not found
+String:    "---\narea: reference\ntype: hub\n---\n\n# CLI "···
+Not found: "skills/<category>/"
+  Stack Trace:
+     at DynaDocs.Tests.Steps.CanonicalSkillSteps.CurrentGuidanceUsesCanonicalSource() in /tmp/dydo-test-4471dec3/DynaDocs.Tests/Steps/CanonicalSkillSteps.cs:line 217
+   at InvokeStub_Action`1.Invoke(Object, Span`1)
+   at System.Reflection.MethodBaseInvoker.InvokeWithOneArg(Object obj, BindingFlags invokeAttr, Binder binder, Object[] parameters, CultureInfo culture)
+--- End of stack trace from previous location ---
+   at Reqnroll.Bindings.BindingInvoker.InvokeBindingAsync(IBinding binding, IContextManager contextManager, Object[] arguments, ITestTracer testTracer, DurationHolder durationHolder)
+   at Reqnroll.Infrastructure.TestExecutionEngine.ExecuteStepMatchAsync(BindingMatch match, Object[] arguments, DurationHolder durationHolder)
+   at Reqnroll.Infrastructure.TestExecutionEngine.ExecuteStepMatchAsync(BindingMatch match, Object[] arguments, DurationHolder durationHolder)
+   at Reqnroll.Infrastructure.TestExecutionEngine.<>c__DisplayClass57_0.<<ExecuteStepAsync>b__7>d.MoveNext()
+--- End of stack trace from previous location ---
+   at Reqnroll.Infrastructure.TestExecutionEngine.<>c__DisplayClass57_0.<<ExecuteStepAsync>g__HandleStepExecutionExceptions|0>d.MoveNext()
+   at Reqnroll.Infrastructure.TestExecutionEngine.OnAfterLastStepAsync()
+   at Reqnroll.TestRunner.CollectScenarioErrorsAsync()
+   at DynaDocs.Tests.Features.OneCanonicalSkillTreeReachesEverySupportedHostFeature.ScenarioCleanupAsync()
+   at DynaDocs.Tests.Features.OneCanonicalSkillTreeReachesEverySupportedHostFeature.RemoveStaleTwo_SourceGuidance() in /tmp/dydo-test-4471dec3/DynaDocs.Tests/Features/canonical-skills.feature:line 44
+--- End of stack trace from previous location ---
+  Standard Output Messages:
+ Given a project containing the canonical "teach" skill and the skill setup script
+ -> done: CanonicalSkillSteps.ProjectWithCanonicalSkill("teach") (0.0s)
+ Then current documentation and template mirrors describe skills/<category>/<name> as the only editable source
+ -> error: Assert.Contains() Failure: Sub-string not found
+ String:    "---\narea: reference\ntype: hub\n---\n\n# CLI "···
+ Not found: "skills/<category>/" (0.0s)
+ And canonical agent guidance does not instruct agents to maintain or compare per-host skill copies
+ -> skipped because of previous errors
+
+
+[xUnit.net 00:00:01.17]     DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllOptions_AppearInReferenceDoc [FAIL]
+  Failed DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllOptions_AppearInReferenceDoc [< 1 ms]
+  Error Message:
+   Options missing from dydo-commands.md:
+  --root (command: check)
+  --join (command: init)
+  --incoming (command: graph)
+  --degree (command: graph)
+  --root (command: graph)
+  --top (command: graph stats)
+  --root (command: graph stats)
+  --action (command: guard)
+  --path (command: guard)
+  --command (command: guard)
+  --host (command: guard)
+  --root (command: validate)
+  --no-browser (command: map)
+  --all (command: clean)
+  --dry-run (command: clean)
+  --archive (command: clean)
+  --remote (command: archive branch)
+  --dry-run (command: archive branch)
+  --remote (command: archive worktree)
+  --dry-run (command: archive worktree)
+  --branch (command: archive restore)
+  --path (command: archive restore)
+  --remote (command: archive restore)
+  --body (command: pr-ready)
+  --match-head-commit (command: merge)
+  --match-base-commit (command: merge)
+  --dry-run (command: merge)
+  --config (command: statechart)
+  --view (command: statechart)
+  --out (command: statechart)
+  --skill (command: statechart)
+  --request (command: statechart resume)
+  --root (command: statechart install-skill)
+  Stack Trace:
+     at DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllOptions_AppearInReferenceDoc() in /tmp/dydo-test-4471dec3/DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs:line 150
+   at System.Reflection.MethodBaseInvoker.InterpretedInvoke_Method(Object obj, IntPtr* args)
+   at System.Reflection.MethodBaseInvoker.InvokeWithNoArgs(Object obj, BindingFlags invokeAttr)
+
+Failed!  - Failed:     2, Passed:    27, Skipped:     0, Total:    29, Duration: 343 ms - DynaDocs.Tests.dll (net10.0)
+  Creating test worktree...
+  Worktree: /tmp/dydo-test-4471dec3
+  Running: dotnet test DynaDocs.sln -c Release --filter FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature -- RunConfiguration.TreatNoTestsAsError=true
+  Cleaning up worktree...
+
+EXIT: 1

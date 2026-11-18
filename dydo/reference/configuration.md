@@ -78,7 +78,7 @@ is not promised before transfer. Space checks cannot reserve space against unrel
 
 `clean` is optional. `dydo clean` reads `clean.archiveSizeCapMb` from the nearest `dydo.json` and refuses to
 run, exit `2`, when it is not a positive whole number; without the field the cap is 1024 MB. Entries older
-than 90 days are pruned whatever the cap. See [CLI Commands](./dydo-commands.md#dydo-clean).
+than 90 days are pruned whatever the cap. See [CLI Commands](./dydo-commands-worktrees.md#dydo-clean).
 
 ## Work-management boundary
 
@@ -100,7 +100,7 @@ the merge rule matching `[["dydo", "dydo.exe"], "merge"]` because a Windows sess
 either. Each command refuses in code what it must not do, so the narrow rule is safe, and both hosts
 must reach the same allow or block outcome. The Claude bash/Codex PowerShell parity gate is planned,
 pending in DYD-426; writing allow rules or shipping guard blocks does not establish parity. The
-merge-route hard blocks shipped in DYD-425; see [Guard System](../understand/guard-system.md#also-enforced)
+merge-route hard blocks shipped in DYD-425; see [Guard System](./../understand/guard-system-enforcement.md#also-enforced)
 for the blocked routes and accepted residuals
 ([DR 061](../project/decisions/061-agents-merge-only-into-feature-branches.md)).
 
@@ -172,7 +172,7 @@ and blocks reject the action. Nudges enforce project process; they do not create
 The pattern is matched case-insensitively, and `$1`, `$2` and so on in the message take the
 matching capture groups.
 
-A `warn` on a command is passed by retrying the same command: its pass-through marker names the pattern and the command with whitespace runs collapsed, so a different command matching the same nudge is warned on its own. See [Layer 3: Nudges](../understand/guard-system.md#layer-3-nudges).
+A `warn` on a command is passed by retrying the same command: its pass-through marker names the pattern and the command with whitespace runs collapsed, so a different command matching the same nudge is warned on its own. See [Layer 3: Nudges](./../understand/guard-system-nudges.md#layer-3-nudges).
 
 An optional `match` picks what the pattern is matched against:
 

@@ -1,0 +1,69 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=4G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "120",
+    ".static-gates/python/bin/python",
+    "-m",
+    "ruff",
+    "check",
+    "--isolated",
+    "--select",
+    "F401",
+    "--fix",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_01.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_02.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_03.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_04.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_05.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_06.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_07.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_08.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_support.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_1.py",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_2.py"
+  ],
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4",
+  "head": "c3f914dff9a36426b722f05058eb3cbc7b967312",
+  "sources": {
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs": "a3d68dac698c3e692b0b2ab954d72990a40f6545ffeb60d33db140bc25433ff4",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Family.cs": "871d306b4724f7d8ecfbfa508783fb1e9804e9afb395fc523a07fe5f95139fd0",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs": "64165e6e4cc2d03c19f3bfd559a939d270d52089a8fbe8d1b50a91b6ad003ec8",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.Hosts.cs": "99b3c0d494e1dc9a7525b0719e8dfd4dab43e0d5ce57a98da86537aa72657f69",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.cs": "d7591a74ac92eeb2df89b16b932d342d6ccde166eb58fa622c5430ac345137ec",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.Metadata.cs": "123ecc3e31531687cafb035cd7d4640bf81e61c534af6acd90980cbe8572b753",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.cs": "c0516f1660d64f208cc0cc95d9bb3bb78e51e34f4fa40b212865d12230d28925",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_04.py": "aa4ced7222fa8c07b4006a28779ddbcdae87abd91c89a288edaac3162b1e097f",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_2.py": "54279c44531075974303fc62d1829bdff4b045f4ad550483e20cb9e1b0843b9d",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_08.py": "05629c8e0a500628ae71f7278024730379c3bbb8046b09b60c856aa056bf5ba7",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade.py": "024df954049db8da62ceb978f3df883163a49c4a5ccbda1e004a6b66cc5bc9e9",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_07.py": "88485d08dbdaae326bec6cc0df13cbb57ab42049164096a9fd024eaa2d28647c",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_05.py": "26ae3e6dc6c51382bbebcf9844705f6f1b0bfd54d3609515bcad62adebe7e1ac",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_06.py": "34dd8f977d035757ca75424162c1cf0feedf04564dced4a19ff427f54a79c7be",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_02.py": "a1038c957680dd87ded5cbdd39384a375a2d259a35804bb5a9427aa11a7f0fec",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_01.py": "a509f0583923df220b09e7541eb69781d0ce211e60ef455ee9942fc18d022a15",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_support.py": "67532b7a7c379df573837494727c1d7b3b3ea2fe19ed96024d022a9b54bc8ed9",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_03.py": "bdea900f2cf7d6253c2e40c37964bcd218739e27e4941ae76e4a8bde78fc8bda",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_1.py": "7a587945778d713a507efc4f06c58ee42f69e8d5056c73c92d666c567d140155"
+  },
+  "exit": 0,
+  "dotnet_env": {
+    "MSBUILDDISABLENODEREUSE": "1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
+    "UseSharedCompilation": "false"
+  }
+}
+Running as unit: run-p3913855-i159040342.scope; invocation ID: 16d61d1c71474bfb971a7274f227cd5e
+Found 222 errors (222 fixed, 0 remaining).
+
+EXIT: 0

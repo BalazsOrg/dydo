@@ -1,0 +1,54 @@
+COMMAND: ['systemd-run', '--user', '--scope', '--slice=app-t3code-agents-cbc6c2286251.slice', '-p', 'MemoryMax=8G', '-p', 'MemorySwapMax=0', '-p', 'OOMPolicy=continue', 'timeout', '3600', '/usr/bin/python3', 'DynaDocs.Tests/coverage/run_tests.py', '-c', 'Release', '--filter', 'FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature', '--list-tests']
+CANDIDATE: pinned base + docs-writer working tree; verify with audit.py
+DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false
+Running as unit: run-p3594913-i158669687.scope; invocation ID: e08991e3f497414eb48d18faa214bf1a
+Preparing worktree (detached HEAD 56b9fd8d)
+HEAD is now at 56b9fd8d Merge pull request #357 from BalazsOrg/DYD-1186-doc-rulings
+  Determining projects to restore...
+  Restored /tmp/dydo-test-9d6d7468/tools/SkillBuild/SkillBuild.csproj (in 176 ms).
+  Restored /tmp/dydo-test-9d6d7468/DynaDocs.csproj (in 185 ms).
+  Restored /tmp/dydo-test-9d6d7468/DynaDocs.Tests/DynaDocs.Tests.csproj (in 188 ms).
+  SkillBuild -> /tmp/dydo-test-9d6d7468/tools/SkillBuild/bin/Release/net10.0/SkillBuild.dll
+  DynaDocs -> /tmp/dydo-test-9d6d7468/bin/Release/net10.0/dydo.dll
+  DynaDocs.Tests -> /tmp/dydo-test-9d6d7468/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll
+Test run for /tmp/dydo-test-9d6d7468/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+The following Tests are available:
+    Project whole skill directories into Claude and Codex
+    Re-point a host link left by the previous category layout
+    Keep both hosts' metadata and resources beside one body
+    Resolve skill links from canonical and projected locations
+    Remove stale two-source guidance
+    Refuse a human-owned host directory before changing another host
+    Preflight every deterministic collision before creating a projection
+    Refuse a host link that targets another skill tree
+    DynaDocs.Tests.Services.ScaffoldTreeTests.EmbeddedScaffoldResources_AreExactlyTheTreeOnDisk
+    DynaDocs.Tests.Services.ScaffoldTreeTests.EveryScaffoldFileOnDisk_ReadsBackThroughItsResourceName
+    DynaDocs.Tests.Services.ScaffoldTreeTests.WriteDydoTree_WithoutEmbeddedScaffold_Throws
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllCommands_AppearInHelpText
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllOptions_AppearInReferenceDoc
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.ReferenceDocAndTemplate_HaveSameOptions
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.Examples_IncludeAllRequiredFlags
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.AllCommandFactories_InSmokeTests
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.AboutReference_DefinesLinearBoundaryAndLinksCommandReference
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.RegisteredCommands_ExcludeRetiredRepositoryWorkCommands
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.ActiveProductDocs_ExcludeRetiredCommandsAndRepositoryWorkPaths
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.ScaffoldExamples_UseRequiredFlags
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.LicenseSection_ConsistentAcrossAllReadmes
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.LicenseMetadata_UsesMitConsistently
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.ExtractFlags_HandlesFlagValuePatterns
+    DynaDocs.Tests.Commands.CommandDocConsistencyTests.InstalledAboutDoc_MatchesTemplate
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_ListsAllTopLevelCommands
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_DoesNotListRetiredWorkCommands
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_ContainsReferenceToDocumentation
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_DocumentsExitCodes
+    DynaDocs.Tests.Commands.HelpCommandTests.Help_HasCategorizedSections
+
+--- Running tests (worktree-isolated) ---
+  Creating test worktree...
+  Worktree: /tmp/dydo-test-9d6d7468
+  Running: dotnet test DynaDocs.sln -c Release --filter FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature --list-tests -- RunConfiguration.TreatNoTestsAsError=true
+  Cleaning up worktree...
+
+  Tests passed
+
+EXIT: 0

@@ -44,7 +44,7 @@ The .NET native tests run the `dydo` build beside the test assembly;
 ## Linux proof recipe
 
 Restore the assurance toolchain first, from its locks, as
-[Coverage Tools](../../reference/coverage-tools.md#provisioning) lists it. Use the managed copy
+[Coverage Tools](./../../reference/coverage-tools-provisioning.md#provisioning) lists it. Use the managed copy
 that `dydo statechart` installs on first use: run any chart once, then run the exact
 `installAndContinue` command its `approval-required` event names. Point each test command at that
 copy as a source; change no PATH, JAVA_HOME or profile. Readiness tests never run or re-stamp

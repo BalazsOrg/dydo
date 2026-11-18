@@ -1,0 +1,11 @@
+COMMAND: ['systemd-run', '--user', '--scope', '--slice=app-t3code-agents-cbc6c2286251.slice', '-p', 'MemoryMax=4G', '-p', 'MemorySwapMax=0', '-p', 'OOMPolicy=continue', 'timeout', '120', 'dydo', 'check']
+CANDIDATE: pinned base + docs-writer working tree; verify with audit.py
+DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false
+Running as unit: run-p3646415-i158742389.scope; invocation ID: 68b28dda23394eb9b406497cd5e16c22
+Checking /home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4/dydo...
+
+Found 0 errors, 0 warnings in 927 files.
+
+All checks passed.
+
+EXIT: 0

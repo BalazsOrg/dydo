@@ -1,0 +1,9 @@
+{
+  "sha256": "6f4697442e0550ae86eccdbc9ace73be27859e6036786235cdda06eb6f48cdc6",
+  "bytes": 606496,
+  "gzip_parts": [
+    "static-report-000.gzpart",
+    "static-report-001.gzpart",
+    "static-report-002.gzpart"
+  ]
+}
