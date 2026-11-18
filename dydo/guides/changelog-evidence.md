@@ -20,6 +20,11 @@ future gate. See [DR 067](../project/decisions/067-what-tests-are-for.md).
 The check reads Git's index, so deleting or replacing a working file does not hide its tracked
 receipt. A staged removal stops tracking it; pr-ready separately requires a clean, pushed tree.
 
+`pr-ready` uses project configuration only when that project belongs to the current Git
+repository. A nested repository without its own project is checked at its own conventional
+`dydo/project/changelog/` path, without inheriting the outer project's configuration.
+A project's own docs root linked into another repository is still refused.
+
 The mechanical rule permits regular, non-executable UTF-8 `.md` files without NUL bytes.
 It rejects every other file type and every file beneath `artifacts`, `coverage`, `evidence`,
 `logs`, `receipts`, or `testresults` (case-insensitive). Those directory names are reserved for

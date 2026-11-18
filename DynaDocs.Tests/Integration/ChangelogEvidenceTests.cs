@@ -75,6 +75,49 @@ public sealed class ChangelogEvidenceTests : IDisposable
     }
 
     [Fact]
+    public async Task OwnDocsLinkedIntoAnotherRepository_AreStillRefused()
+    {
+        var nested = Path.Combine(_tree, "nested");
+        Create(nested, Path.Combine(_root, "nested-origin.git"));
+        File.WriteAllText(Path.Combine(nested, "dydo.json"), "{}");
+        File.AppendAllText(Path.Combine(nested, ".gitignore"), "\n/dydo/\n");
+        Commit(nested, "own project config");
+        Git(nested, "push");
+        DirectoryLinks.Create(Path.Combine(nested, "dydo"), Path.Combine(_tree, "dydo"));
+
+        var (ready, _, error) = await ConsoleCapture.AllAsync(() =>
+            PrReadyCommand.Create().Parse([nested]).InvokeAsync());
+
+        Assert.Equal(1, ready);
+        Assert.Contains("docs root is missing or outside this repository", error);
+    }
+
+    [Theory]
+    [InlineData(false)]
+    [InlineData(true)]
+    public async Task NestedRepository_UsesItsOwnChangelogInsteadOfTheOuterProject(bool receipt)
+    {
+        var nested = Path.Combine(_tree, "nested");
+        Create(nested, Path.Combine(_root, "nested-origin.git"));
+        const string relative = "dydo/project/changelog/gate.log";
+        if (receipt)
+        {
+            var path = Path.Combine(nested, relative);
+            Directory.CreateDirectory(Path.GetDirectoryName(path)!);
+            File.WriteAllText(path, "gate output");
+            Commit(nested, "real evidence in nested repository");
+            Git(nested, "push");
+        }
+
+        var (ready, _, error) = await ConsoleCapture.AllAsync(() =>
+            PrReadyCommand.Create().Parse([nested]).InvokeAsync());
+
+        Assert.Equal(receipt ? 1 : 0, ready);
+        if (receipt) Assert.Contains(relative, error);
+        else Assert.Empty(error);
+    }
+
+    [Fact]
     public async Task HumanMarkdownAndIgnoredLocalOutput_AreAllowed()
     {
         File.WriteAllText(Path.Combine(_tree, "dydo", "project", "changelog", "record.md"),

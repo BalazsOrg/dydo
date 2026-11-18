@@ -108,8 +108,12 @@ internal static class PrReadyCheck
 
     private static string? ChangelogPrefix(string directory, string gitRoot)
     {
-        var docs = PathUtils.FindDydoRoot(directory);
-        if (docs == null) return "dydo/project/changelog/";
+        var project = PathUtils.FindProjectRoot(directory);
+        if (project == null) return "dydo/project/changelog/";
+        // A containing dydo project can belong to an enclosing repository instead.
+        var owner = GitRunner.Run(project, "rev-parse", "--show-toplevel");
+        if (!owner.Ok || owner.Text.Trim() != gitRoot) return "dydo/project/changelog/";
+        var docs = ConfigFileLocator.GetDydoRoot(project);
         // Git resolves symlinked ancestors before reporting a repository-relative prefix.
         var location = GitRunner.Run(docs, "rev-parse", "--show-toplevel", "--show-prefix");
         var lines = location.Text.Replace("\r\n", "\n").Split('\n');
