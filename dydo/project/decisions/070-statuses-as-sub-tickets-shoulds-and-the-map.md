@@ -207,7 +207,8 @@ The loop itself is DR 065 decision 7 (B6). C3 says how each outcome shows.
     One agent holds one open top-level ticket at a time (decision 4), so a lane of several tickets
     is a chain of blocking relations. Keeping the ledger
     would give each claim two homes, and `no-ledger`, `unlaned` and `stale-row` would only keep the
-    copy in sync. They retire with it, and so does `started-unassigned` (C7).
+    copy in sync. They retire with it, and so does `started-unassigned` (C7). This settlement drops
+    C7's accepted bullet "The admiral's lane ledger keeps its lane → captain link" (decision 9).
 
 ## Consequences
 
