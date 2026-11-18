@@ -50,7 +50,7 @@ public static class Should
     public static readonly Claim ParentDone = new("A should's parent may close Done while it stays open.", [Actor.TicketCaptain],
     [
         new(Skill.TicketCaptain, "A parent may close Done while its shoulds stay open.", new(ShouldState.Open, 1209, MoveKind.Nominal)),
-        new(Skill.LinearWorkspaceStandard, "Its parent may close Done while it stays open.", new(Section.LinearShoulds, 2))
+        new(Skill.LinearWorkspaceStandard, "A should's parent may close Done while the should stays open.", new(Section.LinearShoulds, 2))
     ])
     { Spec = ["S17"] };
 }

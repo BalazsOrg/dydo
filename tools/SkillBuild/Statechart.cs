@@ -13,10 +13,11 @@ internal sealed class Statechart
     public Statechart(Model model, ClaimIndex claims)
     {
         foreach (var machine in model.Machines) Declare(machine, model.CitesSpec);
+        var standards = model.Skills.Where(skill => skill.IsStandard).Select(skill => skill.Id).ToHashSet();
         foreach (var (id, claim) in claims.Claims)
         {
             Cites($"claim:{id}", claim.Spec, model.CitesSpec);
-            if (claim.Transition is { } transition) Move(id, claim, transition, claims.LinesOf(claim));
+            if (claim.Transition is { } transition) Move(id, claim, transition, claims.LinesOf(claim), standards);
         }
         if (model.Machines.Count > 0)
             foreach (var skill in model.Skills) StatesAreMachineStates(skill);
@@ -70,14 +71,15 @@ internal sealed class Statechart
             throw new InvalidDataException($"{what} cites \"{id}\", which is not a spec rule id");
     }
 
-    private void Move(string id, Claim claim, Transition transition, IEnumerable<(Line Line, string Owner)> lines)
+    // A standard has sections, no states, so its line on a transition claim states the rule in a section (DYD-1082 ruling 1).
+    private void Move(string id, Claim claim, Transition transition, IEnumerable<(Line Line, string Owner)> lines, HashSet<Enum> standards)
     {
         var machine = _machineOf.GetValueOrDefault(transition.From)
             ?? throw new InvalidDataException($"claim:{id} moves from {Names.Of(transition.From)}, which is no machine's state");
         if (_machineOf.GetValueOrDefault(transition.To) != machine)
             throw new InvalidDataException(
                 $"claim:{id} moves to {Names.Of(transition.To)}, which is not a state of {Names.Of(machine.Id)}; a transition stays inside its machine");
-        foreach (var (line, _) in lines)
+        foreach (var (line, _) in lines.Where(stated => !standards.Contains(stated.Line.Skill)))
             if (!IsMove(line.Place, transition))
                 throw new InvalidDataException(
                     $"claim:{id} moves {Names.Of(transition.From)} to {Names.Of(transition.To)}; its line in {Names.Kebab(line.Skill)} " +

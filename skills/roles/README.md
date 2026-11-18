@@ -1,24 +1,25 @@
 # Roles
 
-9 skills that carry an identity, sorted by whether they hold something or return a result.
+6 skills that carry an identity, sorted by whether they hold something or return a result. The
+builder writes every file under `officers/` and `crew/` from the claim model in `tools/SkillBuild`;
+edit there, never here.
 
 ## Officers
 
-Officers hold something and never switch: the ticket-captain, the default officer, holds a ticket;
-an admiral, only when the user invokes one, holds a Project; the chief-of-staff holds the board. A
-session or agent has at most one officer role; a captain never becomes an admiral, or the reverse.
+Officers hold something and never switch: an admiral holds one open Project, a ticket-captain holds
+a ticket (a sub-captain is a ticket-captain one level down), and the chief-of-staff keeps his short
+list across Projects and the overnight watch.
 
-- **admiral** (user-invoked): Your right hand on one Project - chart it, then run it through captains, reviewed merges and your gates.
-- **chief-of-staff** (user-invoked): Your attention, triaged - the Questions waiting on your answer, the gates waiting on your approval or your click, and what on the board has gone stale.
-- **ticket-captain** (model-invoked): One contracted ticket needs a captain - specify, direct the crew, review, merge and release from its recorded state.
+- **admiral** (user-invoked): Hold one open Project to its landing, through its spec, map, captains, envoys and merges.
+- **chief-of-staff** (user-invoked): Your short list across Projects, and the overnight watch.
+- **ticket-captain** (model-invoked): A ticket to hold to its end - cut its hops, run its review rounds, merge it. Also a sub-captain's unit.
 
 ## Crew
 
-Crew are spawned for one bounded job, hold nothing, and return their result to whoever sent them.
+Crew are dispatched for one job, hold at most their own hop, and return their result to whoever sent
+them. code-writer absorbs the former docs-writer, reviewer the former inquisitor (and carries the
+council resource), scout the former research.
 
-- **code-writer** (model-invoked): A contracted ticket to build, a review FAIL to close, a merge to perform, or a hypothesis to prove or refute with one test.
-- **docs-writer** (model-invoked): Documentation the repository can witness. Write or correct one reviewed change, an inquisition's own record included, for its Ticket Captain.
-- **inquisitor** (model-invoked): Refute-first sweep of landed work, one phase - Read, Break or Drive - on one area. Use when an inquisition's captain sends you a phase and an area.
-- **research** (model-invoked): Primary sources, cited. Use when a fact a choice waits on could hide in Decision Records, plans, code, history, or outside sources, or when docs, specs, or API behaviour must be established before work depends on them.
-- **reviewer** (model-invoked): A ticket's code or docs, a spec, a Project plan, or a merged tree - one candidate, one named rubric, one binding verdict.
-- **scout** (model-invoked): One question, one source family, passages back, for a researcher who verifies and pools them.
+- **code-writer** (model-invoked): A writer hop - implement or fix a ticket's code or docs, or resolve a merge conflict, from a code-writer brief.
+- **reviewer** (model-invoked): A seat to judge - a review round, a conflict's hunks, an equivalent-mutant claim, an inquisition phase, or a council, clerk or judge seat.
+- **scout** (model-invoked): One question to answer from its sources, off the record - a spec's scout pass, or an officer's homework.

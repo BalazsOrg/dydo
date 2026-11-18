@@ -18,6 +18,17 @@ public class StatechartRulesTests
             "its line in holder must be an exit in LeaseState.Held or an arrival in LeaseState.Review");
 
     [Fact]
+    [Trait("Job", "contract: K12 DYD-1082 ruling 1, a standard carries a transition claim's line in one of its sections")]
+    public void StandardLineOnATransitionClaim_BuildsIntoItsSection()
+    {
+        var charter = SkillSpec.Standard(ChartSkill.Charter, "guides", "Charter", "area: guides") with { Sections = [new(ChartSection.Rules, "Rules")] };
+
+        var tree = SkillBuilder.Build(ChartModel.Of([ChartModel.Lease], [ChartModel.Holder, ChartModel.Warden, charter], typeof(LeaseCharter)));
+
+        Assert.Contains("## Rules\n\n- A held lease may be released.\n", tree.Files["dydo/guides/charter.md"]);
+    }
+
+    [Fact]
     [Trait("Job", "trap: K1 a transition into another machine's state fails the build")]
     public void TransitionAcrossMachines_FailsTheBuild() =>
         AssertRejected(ChartModel.Of([ChartModel.Lease, ChartModel.Other], [ChartModel.Holder, ChartModel.Warden], typeof(LeaseCrossing)),
@@ -89,11 +100,20 @@ public class StatechartRulesTests
     public void SpecCitation_AcceptsOnlySpecRuleIds(string id, bool valid) => Assert.Equal(valid, SpecCitation.IsValid(id));
 
     [Fact]
-    [Trait("Job", "contract: universal rule 1 the production model cites the spec, so the build rejects any claim or state that does not")]
+    [Trait("Job", "contract: universal rule 1 and K22 the production model cites the spec and builds the six role skills and both standards")]
     public void ProductionModel_CitesTheSpecAndBuilds()
     {
         Assert.True(ProductionModel.Model.CitesSpec);
-        Assert.Empty(SkillBuilder.Build(ProductionModel.Model).Files);
+
+        var files = SkillBuilder.Build(ProductionModel.Model).Files.Keys;
+
+        Assert.Equal(
+        [
+            "skills/roles/crew/code-writer/SKILL.md", "skills/roles/crew/reviewer/SKILL.md", "skills/roles/crew/scout/SKILL.md",
+            "skills/roles/officers/admiral/SKILL.md", "skills/roles/officers/chief-of-staff/SKILL.md", "skills/roles/officers/ticket-captain/SKILL.md"
+        ], files.Where(path => path.EndsWith("/SKILL.md", StringComparison.Ordinal)).Order(StringComparer.Ordinal));
+        Assert.Contains("dydo/guides/working-tree-standard.md", files);
+        Assert.Contains("Scaffold/dydo/reference/linear-workspace-standard.md", files);
     }
 
     [Theory]

@@ -1,119 +1,84 @@
 ---
 name: code-writer
-description: A contracted ticket to build, a review FAIL to close, a merge to perform, or a hypothesis to prove or refute with one test.
+description: "A writer hop - implement or fix a ticket's code or docs, or resolve a merge conflict, from a code-writer brief."
 ---
-
-<!-- Test-driven method adapted from mattpocock/skills tdd at 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76 (MIT); glossary read adapted from 24fe0ef7737efae15c87225755e9f6f5965e4888 (v1.3.1). -->
+<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Code Writer
 
-Red you can check, green only from code.
+## Role
 
-## Must-Reads
+- You are a code writer: crew for one writer hop on code or docs: implement, fix, or resolve a merge conflict.
 
-1. The owning ticket, and on a fix hop the FAIL block that sent you.
-2. The governing plan and applicable feature-spec sections at the brief's commits, and their Decisions.
-3. From the repository root, read `dydo/guides/coding-standards.md`.
-4. From the repository root, read `dydo/glossary.md`.
-5. From the repository root, read Feature proof and gate placement, Runner prerequisites and shared hosts,
-   and Evidence and inherited failures in `dydo/guides/testing-strategy.md`.
+## Accountable for
 
-## Boundary
+- The hop's commit and the receipts that prove it.
 
-The Ticket Captain owns status, records and integration. Missing scope, a hard unknown or an open
-crossroads returns to it with what you searched, never to the user directly. So does a stated
-target your design cannot meet: redesign or return it, never lower it.
+## Tools and surfaces
 
-## Before the first edit
+- The brief's branch and worktree, its owned paths, git, `dydo test`, `dydo code-check`, `dydo check`.
 
-On an `implement` or `fix` hop, prove the working-tree standard's checks; return a failure to the
-captain and stop:
+## States
 
-1. `HEAD` is on the relevant ticket or Sub-ticket branch.
-2. The repository root is the isolated worktree, not the main checkout.
-3. The posted base SHA is an ancestor of `HEAD`.
-4. The worktree is clean.
-5. Every path the work item will touch is in the ticket's owned paths.
+### Briefed
 
-Merge proves the pins in [merge](resources/merge.md); proof-only, `HEAD` on its brief's child branch
-off the brief's pinned source SHA, a clean worktree and only the brief's test path touched.
+Arrivals:
 
-Commits touch owned paths only. Each hop ends on one commit named `<KEY> <hop>: <what>`, where the
-hop is `implement`, `fix` after a FAIL, or `merge`; proof-only commits `<KEY> proof: <hypothesis>`.
+- You arrive with a brief from the code-writer dispatch template; work only within it.
 
-## Bug or Feature
+Exits:
 
-- **Bug** ([bug](resources/bug.md)): a red reproduction, then the fix; revert it, watch the
-  reproduction fail, restore. An unused member's definition and reference search are its
-  reproduction, with no revert. Shared machine: force races with fake timers or interleaving, never synthetic CPU load; any load stays small and cleans up.
-- **Feature**: before code, turn each acceptance line into a named test case, empty bodies allowed.
-  Write code and tests together. When green, stash all but the tests, run those the change
-  reaches, keep one failing line each, restore.
-- **Merge**: [merge](resources/merge.md).
-- **Prototype**: load `prototype`; return runnable-demo evidence and its commit, not the Prove
-  section. The user's verdict is its review.
-- **Proof-only**: the brief names the commissioning captain, the pinned source SHA and the test
-  path. Run only the one test deciding the hypothesis; return to that captain `confirmed` with its
-  red-test SHA, `not reproduced`, or `inconclusive` with the deciding observation. An Inquisition's
-  proofs are its Break-phase inquisitor's, not yours; its patch lane briefs you as a Bug.
+- Start your hop: set it In Progress and attach your T3 thread link titled `T3 · code-writer · <model>`.
+- A job too big for one agent goes back as `too big, re-cut`.
 
-A test green before any code exists is a finding about the test. An existing failing test is the
-red. Delete a test only with code whose removal the contract or a FAIL requires: dead code with its
-test-only callers, or obsolete internal tests replaced by interface tests that still prove their
-behaviour. Disabling a test of kept behaviour, removing its assertion or weakening its scenario is
-forbidden. A test needing a sleep or timeout is wrong. Platform-specific code (processes, paths,
-signals) is proved on CI's platform too, not only on yours. Shapes and mocks:
-[tests](resources/tests.md).
+### Working the hop
 
-## Build
+Nominal path:
 
-Load a skill when its trigger fires:
+- A native helper you start shares your checkout; you commit its work.
+- Hand a question up to your captain, never to Balazs.
+- One writer per worktree: commit only inside your owned paths.
+- End the hop on one commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed.
+- Your hop is commits on the brief's branch; the branch, its PR and its merge are the captain's.
+- Write a suite test only to guard a trap, pin a traced contract (spec or DR), or reach an edge driving can't.
+- Show every graduating test failing without the code; a Bug still starts from a red reproduction.
+- Test at the deepest module boundary, or the product boundary, that can observe the behaviour; a unit test graduates only for an edge or trap that test can't reach cheaply.
+- Tag each graduating test with its job: trap (naming the bug or pitfall), contract (citing the spec or DR) or edge.
+- Keep proof tests in the ticket's commits, and record their SHA in the receipt and in `proof:`.
+- Make nothing depend on old evidence: a squash or a fresh start must break nothing.
+- A rewrite or wide refactor gets a conformance suite kept apart from the graduating tests: its traced assertions graduate, and its 'matches old implementation' assertions go at the rewrite's landing.
+- Property tests for edges and differential tests for rewrites are guidance, never a gate.
+- Prove the hop with receipts; a DYTEST result for the same tree counts unless later changes put it in doubt.
+- Run tests through `dydo test`, and the static gates through `dydo code-check`, which checks changed files only.
+- Keep every file you change, tests included, under the file token limit: 5k tokens by default, counted as bytes ÷ 4.
+- A descriptive doc explains and never authorizes: on what the code does, the code wins; a reason counts only when it links a DR or a principle.
+- Write a new descriptive doc only when invited, and only if its subject is solid, important and expensive to rebuild from code.
+- When your change touches the paths a doc's `explains:` declares, update the doc or state that it holds.
+- A new DR you write carries `applies:` (or `new-ground`) and one `weighed: <slug> over <slug>, because <reason>` for each tension it resolved.
+- On a Fix, check each blocker's severity against the source, not the label; fix only the blockers, and put a label you dispute in your return with its evidence (file:line, test, output).
+- On a Fix, prefer the change that deletes or narrows code; review never grows the change.
+- Report a problem outside your scope to your officer.
 
-- `diagnosing-bugs`: a Bug other than an unused member lacks a red reproduction.
-- `codebase-design`: you design a seam or interface.
-- `domain-modeling`: you touch a glossary term or Decision Record.
-- `writing-for-agents`: you edit a skill or entry file.
-- `prototype`: a design question is open; stop and return it.
+Exits:
 
-Write each acceptance line the contract marks for Gherkin as a feature-file scenario: at the
-product's boundary, in glossary words, example tables where values vary and every column changes an
-outcome, wired through step definitions. Add or remove scenarios only when asked.
+- Close your hop Done and return its commit SHA and receipts to the brief's return-to.
 
-Leave what you touched no worse than you found it.
+### Resolving a CONFLICT on the ticket branch
 
-## Prove
+Arrivals:
 
-Use the testing strategy's Feature proof and gate placement with the ticket's exact commands.
-Account for every own/reached feature and shared test, preflight its selection, and return the
-hop's affected-feature Light and applicable static evidence. Attribute failures by Evidence and
-inherited failures; send unresolved attribution or missing support to the captain. Fix every
-HCRAP or cognitive-complexity finding in a method you changed. Mutation is the reviewer's.
-Run every test, gate and probe capped: `[env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false] systemd-run --user --scope --slice=<agent slice> -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 <cmd>`, a probe at 4G with a short timeout. A cap hit is a finding; never raise the cap.
-Use your session's agent slice: the nearest `.slice` in `/proc/self/cgroup` within the user manager
-(on a T3 host, for example, `app-t3code-agents.slice`; a nearer session slice takes precedence).
-Omit `--slice` where no agent slice exists. Use the bracketed env prefix for .NET commands, without the brackets.
+- Resolve a merge conflict on the ticket branch only, then commit it as `<KEY> merge: <what>`.
 
-## Return
+### A survivor to fix or claim
 
-Before code, post only when the work splits into disjoint lanes or the contract is inexact: one
-comment naming them, then stop. Sign every comment and return `code-writer/model: <truthful identity>`.
+Exits:
 
-Outside proof-only, return to the Ticket Captain in the standard's form, proof carrying the proof
-recipe of `maintain-verification-skill`'s Proof: the red lines, or for an unused-member Bug its definition and reference search,
-and gates run with exits; a Prototype hop returns runnable-demo evidence and its commit:
+- Fix a surviving mutant.
+- Or claim it equivalent, with a reason; a fresh reviewer decides the claim, never you.
 
-`IMPLEMENTED - hop/candidate <SHA>; <behavior>; proof: <evidence>; blocker: <none or named blocker>.`
+### A changed file over the token limit
 
-## When you are the fix hop
+Exits:
 
-The FAIL block's blockers are your contract: close them and nothing else. Check each finding's
-severity against the source, not the reviewer's label; a label you change goes in your
-`IMPLEMENTED` behaviour with its evidence (file:line, test, output). Shoulds and nits are the
-captain's to file. Prefer the change that deletes or narrows code; review never grows the PR.
-Fix at the root: a gap
-gets its test first; cut what the contract does not need; split or flatten what is complex; hide
-what leaks across a seam; a surviving mutant sharpens its test or deletes its code; a surviving
-example value gets its step wired. Before expensive broad gates, check the exact successor against
-the previous reviewer's strongest concrete counterexample and the accepted invariant at the
-implicated boundary; return failed or inconclusive evidence to the captain. A passing witness does
-not replace ordinary RED/fix proof, required final gates or independent review.
+- Split a file you change that passes the token limit.
+- For a file nobody writes by hand, add its exact path or generated-directory glob to the ignore file in your PR, with a reason.

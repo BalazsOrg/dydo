@@ -86,7 +86,7 @@ public static class Dispatch
         [Actor.TicketCaptain],
     [
         new(Skill.TicketCaptain, "Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.", new(Routine.Dispatching, 810)),
-        new(Skill.WorkingTreeStandard, "Parallel lanes and sub-tickets with children get their own worktree; serial hops share their ticket's.", new(Section.TreeDelegation, 2))
+        new(Skill.WorkingTreeStandard, "Each parallel lane, and each sub-ticket with children, works in its own worktree; serial hops reuse their ticket's.", new(Section.TreeDelegation, 2))
     ])
     { Spec = ["H3"] };
 
@@ -123,7 +123,7 @@ public static class Dispatch
         new(Skill.CodeWriter, "Hand a question up to your captain, never to Balazs.", new(DispatchState.Working, 814, MoveKind.Nominal)),
         new(Skill.Reviewer, "Hand a question up to your captain, never to Balazs.", new(ReviewState.Round, 814, MoveKind.Nominal)),
         new(Skill.Scout, "Hand a question about your question up to your dispatcher, never to Balazs.", new(DispatchState.Working, 814, MoveKind.Nominal)),
-        new(Skill.WorkingTreeStandard, "Crew hand their questions up to their captain and never ask the user directly.", new(Section.TreeDelegation, 6))
+        new(Skill.WorkingTreeStandard, "Crew take their questions to their captain, never to the user.", new(Section.TreeDelegation, 6))
     ])
     { Spec = ["N12 DR 057 §6"] };
 }
