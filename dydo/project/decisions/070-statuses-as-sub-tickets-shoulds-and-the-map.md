@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-18
 applies: [dydo-scarce-attention, dydo-aligned-intent, dydo-finite-context, dydo-efficiency, dydo-effort-right-sized-bureaucracy, dydo-design-reuse-before-build, dydo-verification-independent-evidence]
 weighed:
@@ -22,8 +22,11 @@ part by [grilling D](https://linear.app/bodnar-balazs/document/370-grilling-d-hi
 [DYD-1114 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1114#comment-88c79701-572c-4cba-b8e9-800088264a07)
 (2026-11-17), with his L1 sitting of 2026-11-17
 ([DYD-1078 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1078#comment-9ac278c0-00f3-4688-9971-2693bfc14e38)).
-Recorded under [DYD-1086](https://linear.app/bodnar-balazs/issue/DYD-1086); proposed, awaiting
-Balazs's acceptance (F10). His 2026-11-18 rulings settle decisions 14 and 15 below. The
+Recorded under [DYD-1086](https://linear.app/bodnar-balazs/issue/DYD-1086).
+Accepted by Balazs on 2026-11-18 (F10), for all three DRs at
+`1ee7066e12a91fbfb3865e863d4ad628ccb733c0`: "1. a (I thought they were already accepted)"
+([DYD-1195 Q1 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-23474e54-10ed-49d7-8692-8651b054ced4)).
+His 2026-11-18 rulings settle decisions 14 and 15 below. The
 grillings say 3.7.0; that release is 4.0.0. Every rule is written once, through claims
 ([DR 064](./064-claims-build-the-skills.md), A-D13).
 

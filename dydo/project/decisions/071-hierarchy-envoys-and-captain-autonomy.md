@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-18
 applies: [dydo-scarce-attention, dydo-attention-human-decisions, dydo-aligned-intent, dydo-verify-own-work, dydo-verification-independent-evidence, dydo-effort-right-agent, dydo-effort-right-sized-bureaucracy, dydo-everything-evolves, dydo-design-reuse-before-build, dydo-efficiency]
 weighed:
@@ -27,8 +27,11 @@ of 2026-11-17 replacing D11's interim rule on sub-captains, and R5 of his L1 sit
 ([DYD-1078 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1078#comment-9ac278c0-00f3-4688-9971-2693bfc14e38))
 on which Projects have an admiral. Recorded under
 [DYD-1087](https://linear.app/bodnar-balazs/issue/DYD-1087); the same change resolves
-[DYD-1177](https://linear.app/bodnar-balazs/issue/DYD-1177). Proposed, awaiting Balazs's acceptance
-(F10). His 2026-11-18 rulings settle D3, D5, D6 and D16 below. The grillings say 3.7.0;
+[DYD-1177](https://linear.app/bodnar-balazs/issue/DYD-1177).
+Accepted by Balazs on 2026-11-18 (F10), for all three DRs at
+`1ee7066e12a91fbfb3865e863d4ad628ccb733c0`: "1. a (I thought they were already accepted)"
+([DYD-1195 Q1 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-23474e54-10ed-49d7-8692-8651b054ced4)).
+His 2026-11-18 rulings settle D3, D5, D6 and D16 below. The grillings say 3.7.0;
 that release is 4.0.0. Every rule is written once, through claims
 ([DR 064](./064-claims-build-the-skills.md), A-D13).
 

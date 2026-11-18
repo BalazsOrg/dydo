@@ -1,7 +1,7 @@
 ---
 area: project
 type: decision
-status: proposed
+status: accepted
 date: 2026-11-18
 applies: [dydo-aligned-intent, dydo-verify-own-work, dydo-efficiency, dydo-easy-path, dydo-design-shared-language]
 ---
@@ -20,7 +20,10 @@ held live with the dydo 4.0.0 admiral's envoy and recorded as sections §1 to §
 [DYD-1100 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1100#comment-bdb6b643-f33d-4bd0-b801-c33566d63bca).
 He made it DR-grade "because of naming the enemy (which is prescriptive vs descriptive
 documentation and drift)". Recorded under [DYD-1185](https://linear.app/bodnar-balazs/issue/DYD-1185).
-Proposed; it awaits Balazs's acceptance (F10). His 2026-11-18 ruling adopts both reviewer lines
+Accepted by Balazs on 2026-11-18 (F10), for all three DRs at
+`1ee7066e12a91fbfb3865e863d4ad628ccb733c0`: "1. a (I thought they were already accepted)"
+([DYD-1195 Q1 DECIDED, envoy 2](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-23474e54-10ed-49d7-8692-8651b054ced4)).
+His 2026-11-18 ruling adopts both reviewer lines
 in rule 8 below.
 
 ---
