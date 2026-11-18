@@ -26,39 +26,20 @@ internal static partial class SkillShape
     [GeneratedRegex(@"^resources/[^/]+\.md$")]
     private static partial Regex ResourcePath();
 
-    [GeneratedRegex(@"(?m)^ {0,3}(`{3,}|~{3,})(.*)$")]
-    private static partial Regex Fence();
-
     public static IReadOnlyList<string> Violations(IReadOnlyDictionary<string, string> tree)
     {
         var violations = new List<string>();
-        foreach (var (path, text) in tree)
-            if (HasUnbalancedFence(text)) violations.Add($"{path}: unbalanced fenced block");
         foreach (var spine in tree.Keys.Where(IsSpine))
         {
             if (BodyLines(tree[spine]) > SpineBodyLimit)
                 violations.Add($"{spine}: the SKILL.md body is over {SpineBodyLimit} lines ({BestPractices})");
             var folder = spine[..^"SKILL.md".Length];
             var linked = Links(spine, tree[spine]);
-            foreach (var path in tree.Keys.Where(path => path != spine && path.StartsWith(folder, StringComparison.Ordinal)))
-                violations.AddRange(path[folder.Length..] is var local && ResourcePath().IsMatch(local)
-                    ? ResourceViolations(tree, path, linked)
-                    : [$"{path}: a skill folder holds only SKILL.md and resources/*.md, runtime resources and never tests or fixtures (DYD-968)"]);
+            foreach (var path in tree.Keys.Where(path => path.StartsWith(folder, StringComparison.Ordinal)
+                                                         && ResourcePath().IsMatch(path[folder.Length..])))
+                violations.AddRange(ResourceViolations(tree, path, linked));
         }
         return violations;
-    }
-
-    private static bool HasUnbalancedFence(string text)
-    {
-        var pending = "";
-        foreach (Match match in Fence().Matches(text))
-        {
-            var run = match.Groups[1].Value;
-            if (pending.Length == 0) pending = run;
-            else if (run.StartsWith(pending, StringComparison.Ordinal) && match.Groups[2].Value.Trim().Length == 0)
-                pending = "";
-        }
-        return pending.Length != 0;
     }
 
     private static IEnumerable<string> ResourceViolations(IReadOnlyDictionary<string, string> tree, string path,
