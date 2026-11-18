@@ -89,6 +89,41 @@ come from the same grilling.
 - The doctrine T1-T8 ships in the skills; an adopting project changes it in its own copy of dydo
   (D2, recorded in DR 068).
 
+## Amendment 2026-11-18 - three test smells to prune (proposed)
+
+**Proposed, pending Balazs's approval of its wording (F10).** Until he approves it, this section
+binds nothing and T1-T8 stand as written. Drafted under
+[DYD-1183](https://linear.app/bodnar-balazs/issue/DYD-1183) from his words of 2026-11-18, after he
+saw a public `/prune-tests` tool that finds and removes tests that "change whenever the code does",
+"check deleted features are gone" and "can never fail". His words: "I want to make sure we have
+these ideas incorporated (I don't think we explicitly have stated 'change when the code changes' ->
+that kind of follows from testing at the boundary level (deep modules) and remove tests that assert
+that something is gone and can never fail these are all good ones and something I have observed
+myself."
+
+The amendment names three smells. Each is a finding at review, and each is a pruning target under
+T8.
+
+1. **Changes whenever the code does.** The test is coupled to the implementation, not to observable
+   behaviour. The smell follows from T4 (boundary first): a test that drives the deepest boundary
+   that can observe the behaviour survives refactors. Signal: the test is edited in most commits
+   that edit its subject without changing behaviour.
+2. **Checks that a deleted feature is gone.** The test does none of T1's three jobs: it guards no
+   trap, pins no traced contract and reaches no edge. Delete it with the feature, unless the absence
+   is itself a traced contract, such as a removed security route that must stay removed. Then the
+   test is tagged `contract` and names its source (T5).
+3. **Can never fail.** The test is vacuous: it asserts nothing that the code under test controls.
+   T3's red check stops it at graduation. Among existing tests, mutation finds it
+   ([DR 068](./068-gate-set-mutation-over-coverage-changed-files-only.md) rule 4: no surviving
+   mutant in changed code). Until DYTEST Mutation lands, a reviewer flags an assertion that no
+   plausible edit could break.
+
+Once he approves it, the step-4 claims
+([DYD-1083](https://linear.app/bodnar-balazs/issue/DYD-1083)) carry the three smells into
+code-writer (don't write them), reviewer (flag them) and the testing guide (T8's pruning criteria),
+and DYTEST Mutation's pruning evidence (T8) takes them as its first heuristics. T1-T8's text is kept
+as written; this amendment adds to it.
+
 ---
 
 ## Supersedes and amends
@@ -102,3 +137,4 @@ DR 048 stays `accepted` otherwise.
 - [DR 048 - One-Level Static Gates](./048-one-level-static-gates-certainly-wrong-no-escape-hatch.md)
 - [DYD-1120](https://linear.app/bodnar-balazs/issue/DYD-1120) - Untraced pins are findings; review against the spec
 - [DYD-971](https://linear.app/bodnar-balazs/issue/DYD-971) - Grilling G
+- [DYD-1183](https://linear.app/bodnar-balazs/issue/DYD-1183) - The proposed 2026-11-18 amendment: three test smells to prune
