@@ -20,26 +20,52 @@ internal static partial class SkillShape
     // D8 keeps a resource reached from another resource within that preview, so any read is a whole read.
     public const int ResourceLimit = 100;
 
+    // DYD-968 keeps a skill folder to its runtime files; K26 keeps the agents/openai.yaml Codex reads.
+    public const string FolderRule =
+        "a skill folder holds only SKILL.md, resources/*.md and agents/openai.yaml, runtime files and never tests or fixtures (DYD-968, K26)";
+
     [GeneratedRegex(@"\]\((?<target>[^)\s#]+)(?:#[^)\s]*)?\)")]
     private static partial Regex Link();
 
     [GeneratedRegex(@"^resources/[^/]+\.md$")]
     private static partial Regex ResourcePath();
 
+    [GeneratedRegex(@"(?m)^ {0,3}(`{3,}|~{3,})(.*)$")]
+    private static partial Regex Fence();
+
     public static IReadOnlyList<string> Violations(IReadOnlyDictionary<string, string> tree)
     {
         var violations = new List<string>();
+        foreach (var (path, text) in tree)
+            if (HasUnbalancedFence(text)) violations.Add($"{path}: unbalanced fenced block");
         foreach (var spine in tree.Keys.Where(IsSpine))
         {
             if (BodyLines(tree[spine]) > SpineBodyLimit)
                 violations.Add($"{spine}: the SKILL.md body is over {SpineBodyLimit} lines ({BestPractices})");
             var folder = spine[..^"SKILL.md".Length];
             var linked = Links(spine, tree[spine]);
-            foreach (var path in tree.Keys.Where(path => path.StartsWith(folder, StringComparison.Ordinal)
-                                                         && ResourcePath().IsMatch(path[folder.Length..])))
-                violations.AddRange(ResourceViolations(tree, path, linked));
+            foreach (var path in tree.Keys.Where(path => path != spine && path.StartsWith(folder, StringComparison.Ordinal)))
+                violations.AddRange(path[folder.Length..] switch
+                {
+                    var local when ResourcePath().IsMatch(local) => ResourceViolations(tree, path, linked),
+                    "agents/openai.yaml" => [],
+                    _ => [$"{path}: {FolderRule}"]
+                });
         }
         return violations;
+    }
+
+    private static bool HasUnbalancedFence(string text)
+    {
+        var pending = "";
+        foreach (Match match in Fence().Matches(text))
+        {
+            var run = match.Groups[1].Value;
+            if (pending.Length == 0) pending = run;
+            else if (run.StartsWith(pending, StringComparison.Ordinal) && match.Groups[2].Value.Trim().Length == 0)
+                pending = "";
+        }
+        return pending.Length != 0;
     }
 
     private static IEnumerable<string> ResourceViolations(IReadOnlyDictionary<string, string> tree, string path,

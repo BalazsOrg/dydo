@@ -1,11 +1,11 @@
 namespace DynaDocs.Tests.SkillBuild;
 
 /// <summary>
-/// Grilling A D7 and D8: the skill-shape limits, each red on a synthetic tree and green on the committed
-/// built tree. Source: Anthropic's skill authoring best practices (<see cref="SkillShape.BestPractices"/>)
-/// for the line limits, links and contents list.
+/// K10 (Grilling A D7 and D8): the skill-shape limits, each red on a synthetic tree and green on the
+/// real build and the migration fixture's build. Sources: Anthropic's skill authoring best practices
+/// (<see cref="SkillShape.BestPractices"/>) for the line limits, links and contents list; DYD-968 and
+/// K26 for what a skill folder holds.
 /// </summary>
-[Trait("Job", "contract: DR 064 §9 K10")]
 public class SkillShapeTests
 {
     private const string Spine = "skills/x/demo/SKILL.md";
@@ -13,8 +13,10 @@ public class SkillShapeTests
     private const string Frontmatter = "---\nname: demo\ndescription: d\n---\n";
     private const string LinksA = "- [A](resources/a.md)\n";
 
+    // The real build is empty until DYD-1082 (AR1); its committed built files are checked as they stand.
     [Fact]
-    public void CommittedBuiltTree_MeetsEveryShapeLimit()
+    [Trait("Job", "contract: K10 shape tests over the real build (B15)")]
+    public void RealBuiltFiles_MeetEveryShapeLimit()
     {
         var violations = SkillShape.Violations(CommittedTree.BuiltText());
 
@@ -22,11 +24,21 @@ public class SkillShapeTests
     }
 
     [Fact]
-    public void CommittedBuiltTree_ExercisesTheSpineAndResourceRules()
+    [Trait("Job", "contract: K10 shape tests over the fixture build (B15, C17)")]
+    public void MigrationFixtureBuild_MeetsEveryShapeLimit()
     {
-        var tree = CommittedTree.BuiltText();
+        var violations = SkillShape.Violations(Migration.Tree.Files);
 
-        // The inventory's 15 carriers: 13 skills and the 2 system docs, which are not skill folders.
+        Assert.True(violations.Count == 0, string.Join('\n', violations));
+    }
+
+    [Fact]
+    [Trait("Job", "trap: the fixture shape test is vacuous unless the build holds 13 spines and a resource over 100 lines (B15)")]
+    public void MigrationFixtureBuild_ExercisesTheSpineAndResourceRules()
+    {
+        var tree = Migration.Tree.Files;
+
+        // The inventory's 15 carriers: 13 skills and the 2 standards, which are not skill folders.
         Assert.Equal(13, tree.Keys.Count(path => path.EndsWith("/SKILL.md", StringComparison.Ordinal)));
         Assert.Contains(tree, file => file.Key.Contains("/resources/", StringComparison.Ordinal)
                                       && file.Value.Count(character => character == '\n') > SkillShape.ResourceLimit);
@@ -34,6 +46,7 @@ public class SkillShapeTests
 
     // "Keep the SKILL.md body under 500 lines for optimal performance."
     [Theory]
+    [Trait("Job", "contract: K10/D7 a SKILL.md body over 500 lines fails")]
     [InlineData(SkillShape.SpineBodyLimit, false)]
     [InlineData(SkillShape.SpineBodyLimit + 1, true)]
     public void SpineBody_OverFiveHundredLines_Fails(int bodyLines, bool fails)
@@ -45,6 +58,7 @@ public class SkillShapeTests
 
     // "For reference files longer than 100 lines, include a table of contents at the top."
     [Theory]
+    [Trait("Job", "contract: K10/D7 a resource over 100 lines needs a contents list at its top")]
     [InlineData(SkillShape.ResourceLimit - 2, "", false)]
     [InlineData(SkillShape.ResourceLimit - 1, "", true)]
     [InlineData(SkillShape.ResourceLimit - 1, "## Contents\n\n", false)]
@@ -58,6 +72,7 @@ public class SkillShapeTests
     }
 
     [Theory]
+    [Trait("Job", "trap: K10 a Contents heading with no entries is not a contents list")]
     [InlineData("")]
     [InlineData("No entries.\n")]
     [InlineData("## Later\n- A later list item\n")]
@@ -74,6 +89,7 @@ public class SkillShapeTests
     // "Claude might partially read files when they're referenced from other referenced files ... `head -100`";
     // D8 keeps a resource reached through another resource short enough for that preview to read whole.
     [Theory]
+    [Trait("Job", "contract: K10/D8 a resource reached from another resource stays within 100 lines")]
     [InlineData(SkillShape.ResourceLimit, false)]
     [InlineData(SkillShape.ResourceLimit + 1, true)]
     public void Resource_ReachedFromAnotherResource_OverOneHundredLines_Fails(int targetLines, bool fails)
@@ -90,9 +106,41 @@ public class SkillShapeTests
 
     // "Keep references one level deep from SKILL.md. All reference files should link directly from SKILL.md."
     [Fact]
+    [Trait("Job", "contract: K10/D7 every resource is linked from its spine, one level deep")]
     public void Resource_NoSpineLinksTo_Fails() =>
         Assert.Equal(new[] { $"{Resource}: no spine links to this resource ({SkillShape.BestPractices})" },
             SkillShape.Violations(Tree((Spine, Frontmatter + "- [Elsewhere](../other/resources/a.md)\n"), (Resource, "# A\n"))));
+
+    // DYD-968: a skill folder ships its runtime files only, never dydo's own tests or fixtures.
+    [Theory]
+    [Trait("Job", "contract: K10/DYD-968 a skill folder holds only its runtime files")]
+    [InlineData("skills/x/demo/scripts/test/check.test.mjs")]
+    [InlineData("skills/x/demo/resources/fixture.json")]
+    [InlineData("skills/x/demo/resources/deep/a.md")]
+    [InlineData("skills/x/demo/README.md")]
+    [InlineData("skills/x/demo/agents/other.yaml")]
+    public void SkillFolder_HoldingAnythingButItsRuntimeFiles_Fails(string path) =>
+        Assert.Equal(new[] { $"{path}: {SkillShape.FolderRule}" },
+            SkillShape.Violations(Tree((Spine, Frontmatter), (path, "x\n"))));
+
+    // K26: Codex reads agents/openai.yaml from the skill folder, so the builder emits it there.
+    [Fact]
+    [Trait("Job", "edge: K26 agents/openai.yaml is a runtime file of a built skill folder")]
+    public void SkillFolder_HoldingItsCodexMetadata_Passes() =>
+        Assert.Empty(SkillShape.Violations(Tree((Spine, Frontmatter), ("skills/x/demo/agents/openai.yaml", "policy:\n"))));
+
+    [Fact]
+    [Trait("Job", "edge: K10 the skill limits apply to skill folders only, never to a standard")]
+    public void FilesOutsideSkillFolders_AreNotSkillShaped() =>
+        Assert.Empty(SkillShape.Violations(Tree(("dydo/guides/g.md", Lines(900)), ("claims.map.json", "{}\n"))));
+
+    [Theory]
+    [Trait("Job", "trap: an unbalanced fence swallows the rest of a built file")]
+    [InlineData("skills/x/demo/SKILL.md")]
+    [InlineData("skills/x/demo/resources/a.md")]
+    [InlineData("dydo/guides/g.md")]
+    public void AnyBuiltFile_WithAnUnbalancedFence_Fails(string path) =>
+        Assert.Contains($"{path}: unbalanced fenced block", SkillShape.Violations(Tree((path, "```text\nopen\n"))));
 
     private static string Lines(int count) => string.Concat(Enumerable.Repeat("- line\n", count));
 

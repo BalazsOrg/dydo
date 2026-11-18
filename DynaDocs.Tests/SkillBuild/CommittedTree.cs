@@ -1,25 +1,25 @@
 namespace DynaDocs.Tests.SkillBuild;
 
+using System.Diagnostics;
 using System.Text;
+using DynaDocs.SkillBuild;
 
-/// <summary>The checkout's skill-build inputs and its committed <c>claims/built/</c> tree.</summary>
+/// <summary>The checkout the suite runs in: its root, its tracked files and its committed built files.</summary>
 internal static class CommittedTree
 {
     public static string Root { get; } = FindRoot();
 
-    public static IReadOnlyDictionary<string, byte[]> Rebuild() => DynaDocs.SkillBuild.SkillBuilder.Build(
-        File.ReadAllBytes(Path.Combine(Root, "claims", "inventory", "claims.json")),
-        File.ReadAllBytes(Path.Combine(Root, "claims", "carriers.json")));
+    public static IReadOnlyDictionary<string, string> BuiltText() => BuiltHeader.Committed(Root)
+        .ToDictionary(file => file.Key, file => Encoding.UTF8.GetString(file.Value), StringComparer.Ordinal);
 
-    public static IReadOnlyDictionary<string, byte[]> Built()
+    public static IReadOnlyList<string> Tracked()
     {
-        var built = Path.Combine(Root, "claims", "built");
-        return Directory.EnumerateFiles(built, "*", SearchOption.AllDirectories).ToDictionary(
-            file => Path.GetRelativePath(built, file).Replace('\\', '/'), File.ReadAllBytes, StringComparer.Ordinal);
+        using var git = Process.Start(new ProcessStartInfo("git", ["-C", Root, "ls-files", "-z"]) { RedirectStandardOutput = true })!;
+        var paths = git.StandardOutput.ReadToEnd().Split('\0', StringSplitOptions.RemoveEmptyEntries);
+        git.WaitForExit();
+        Assert.Equal(0, git.ExitCode);
+        return paths;
     }
-
-    public static IReadOnlyDictionary<string, string> BuiltText() =>
-        Built().ToDictionary(file => file.Key, file => Encoding.UTF8.GetString(file.Value), StringComparer.Ordinal);
 
     private static string FindRoot()
     {

@@ -1,23 +1,52 @@
+using System.Text;
+
 namespace DynaDocs.SkillBuild;
 
-/// <summary>Makes a directory hold exactly the built tree: the build is the only writer of claims/built/.</summary>
-public static class BuiltTree
+/// <summary>What a model builds: each file's text by its path under the repository root, and the line map.</summary>
+public sealed class BuiltTree
 {
-    public static void Write(string directory, IReadOnlyDictionary<string, byte[]> tree)
+    private static readonly UTF8Encoding Utf8 = new(encoderShouldEmitUTF8Identifier: false);
+
+    internal BuiltTree(IReadOnlyDictionary<string, string> files, IReadOnlyList<MapLine> map)
     {
-        if (Directory.Exists(directory))
+        Files = files;
+        Map = map;
+    }
+
+    public IReadOnlyDictionary<string, string> Files { get; }
+
+    public IReadOnlyList<MapLine> Map { get; }
+
+    public IReadOnlyDictionary<string, byte[]> Bytes() =>
+        Files.ToDictionary(file => file.Key, file => Utf8.GetBytes(file.Value), StringComparer.Ordinal);
+
+    /// <summary>
+    /// Writes every built file under <paramref name="root"/> and deletes each committed file that carries
+    /// the header but is no longer built (K5, K6). A file without the header is never touched: when one
+    /// sits at a built path, nothing is written and the write throws.
+    /// </summary>
+    public void Write(string root)
+    {
+        var committed = BuiltHeader.Committed(root);
+        var handWritten = Files.Keys.FirstOrDefault(path => File.Exists(Path.Combine(root, path)) && !committed.ContainsKey(path));
+        if (handWritten is not null)
+            throw new InvalidDataException($"{handWritten} has no built header; the build never overwrites a hand-written file");
+        foreach (var stale in committed.Keys.Where(path => !Files.ContainsKey(path)))
+            Delete(root, stale);
+        foreach (var (path, text) in Files)
         {
-            foreach (var file in Directory.EnumerateFiles(directory, "*", SearchOption.AllDirectories).ToArray())
-                if (!tree.ContainsKey(Path.GetRelativePath(directory, file).Replace('\\', '/'))) File.Delete(file);
-            foreach (var folder in Directory.EnumerateDirectories(directory, "*", SearchOption.AllDirectories)
-                         .OrderByDescending(folder => folder.Length).ToArray())
-                if (!Directory.EnumerateFileSystemEntries(folder).Any()) Directory.Delete(folder);
-        }
-        foreach (var (path, bytes) in tree)
-        {
-            var target = Path.Combine(directory, path);
+            var target = Path.Combine(root, path);
             Directory.CreateDirectory(Path.GetDirectoryName(target)!);
-            File.WriteAllBytes(target, bytes);
+            File.WriteAllText(target, text, Utf8);
         }
+    }
+
+    private static void Delete(string root, string path)
+    {
+        var top = Path.TrimEndingDirectorySeparator(Path.GetFullPath(root));
+        var file = Path.GetFullPath(Path.Combine(top, path));
+        File.Delete(file);
+        for (var folder = Path.GetDirectoryName(file)!; folder != top && !Directory.EnumerateFileSystemEntries(folder).Any(); folder = Path.GetDirectoryName(folder)!)
+            Directory.Delete(folder);
     }
 }
