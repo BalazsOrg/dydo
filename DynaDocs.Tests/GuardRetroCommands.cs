@@ -333,14 +333,6 @@ public static class GuardRetroCommands
         "echo '$(echo PWNED >&2)' @a > notes.md",
     };
 
-    // DYD-422 review (split seat B): the same expanding words on lines that write no path, which
-    // master only warns about; the bypass warning stays.
-    public static Xunit.TheoryData<string> Gs02ExpandingWordWarningLines => new()
-    {
-        "printf x > -v; printf ?v 'a[$(echo PWNED >&2)]' x",
-        "printf ?v 'a[$(echo PWNED >&2)]' x",
-    };
-
     // DYD-422 review (narrow seat, 7442e97d): pwsh 7.6.9 ends a statement at a bare carriage return
     // the readers took for a space, so iex ran the quoted text; every other control character,
     // NEL and the Unicode line and paragraph separators outside single quotes are refused with it.

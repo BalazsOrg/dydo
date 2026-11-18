@@ -9,6 +9,7 @@ using DynaDocs.Services;
 /// including Codex's real apply_patch shape: the whole patch in tool_input.command, no file_path.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: new-file nudges, the new-file match lane of dydo.json nudges")]
 public class GuardNewFileNudgeIntegrationTests : IntegrationTestBase
 {
     private const string ToolsPattern = "^tools/(?!one-off/)";
@@ -280,5 +281,42 @@ public class GuardNewFileNudgeIntegrationTests : IntegrationTestBase
 
         result.AssertPreToolUseAllowed();
         Assert.DoesNotContain("NOTICE: Docs usually", result.Stderr);
+    }
+    // DYD-386: a block listed after a warn on the same new path refuses every try, and the warn
+    // neither arms nor spends its pass meanwhile: once the block is gone the warn still meets the
+    // first try, and only then does the retry pass.
+    [Fact]
+    [Trait("Job", "contract: DYD-386 warn nudges run after every hard block")]
+    public async Task BlockAfterWarnInConfigOrder_RefusesEveryTry_AndLeavesTheWarnUnspent()
+    {
+        await InitWithNudges(ToolsNudge("warn"),
+            new NudgeConfig { Pattern = "x[.]py", Message = "file block", Severity = "block", Match = "new-file" });
+        var write = Payload("Write", new { file_path = Path.Combine(TestDir, "tools", "x.py"), content = "x" });
+
+        for (var attempt = 1; attempt <= 3; attempt++)
+            (await GuardWithStdinAsync(write)).AssertPreToolUseDenied();
+
+        var configService = new ConfigService();
+        var config = configService.LoadConfig(TestDir)!;
+        config.Nudges.RemoveAll(nudge => nudge.Pattern == "x[.]py");
+        configService.SaveConfig(config, configService.FindConfigFile(TestDir)!);
+
+        (await GuardWithStdinAsync(write)).AssertPreToolUseDenied();
+        (await GuardWithStdinAsync(write)).AssertPreToolUseAllowed();
+    }
+
+    // A command warn and a new-file warn on the same pattern keep separate passes: the command's
+    // pass never lets the first new-file write through, and the command still has its own.
+    [Fact]
+    [Trait("Job", "trap: a command warn's pass let a new-file warn of the same pattern through")]
+    public async Task CommandAndNewFileWarnsOfOnePattern_KeepSeparatePasses()
+    {
+        await InitWithNudges(new NudgeConfig { Pattern = ToolsPattern, Message = "command lane", Severity = "warn" }, ToolsNudge("warn"));
+        var command = Payload("Bash", new { command = "tools/run.sh" });
+        var write = Payload("Write", new { file_path = Path.Combine(TestDir, "tools", "x.py"), content = "x" });
+
+        (await GuardWithStdinAsync(command)).AssertPreToolUseDenied();
+        (await GuardWithStdinAsync(write)).AssertPreToolUseDenied();
+        (await GuardWithStdinAsync(command)).AssertPreToolUseAllowed();
     }
 }

@@ -169,7 +169,7 @@
     {
       "module": "Commands/GuardCommand.NewFileNudges.cs",
       "tests": [
-        "DynaDocs.Tests/Commands/GuardNewFileNudgeTests.cs"
+        "DynaDocs.Tests/Integration/GuardNewFileNudgeIntegrationTests.cs"
       ]
     },
     {
@@ -216,7 +216,7 @@
     {
       "module": "Services/PrCallScanner.cs",
       "tests": [
-        "DynaDocs.Tests/Services/PrCallScannerTests.cs"
+        "DynaDocs.Tests/Integration/GuardPrReadyTests.cs"
       ]
     },
     {
@@ -228,15 +228,12 @@
     {
       "module": "Services/PrCallScanner.MergeRoutes.cs",
       "tests": [
-        "DynaDocs.Tests/Services/MergeRouteScannerTests.cs",
-        "DynaDocs.Tests/Services/PrCallScannerBackslashTreeTests.cs",
         "DynaDocs.Tests/Integration/GuardMergeRouteTests.cs"
       ]
     },
     {
       "module": "Services/MergeRoute.cs",
       "tests": [
-        "DynaDocs.Tests/Services/MergeRouteScannerTests.cs",
         "DynaDocs.Tests/Integration/GuardMergeRouteTests.cs"
       ]
     },
@@ -251,21 +248,21 @@
     {
       "module": "Services/CommandPosition.cs",
       "tests": [
-        "DynaDocs.Tests/Services/PrCallScannerTests.cs",
-        "DynaDocs.Tests/Services/DydoInvocationScannerTests.cs"
+        "DynaDocs.Tests/Integration/GuardPrReadyTests.cs",
+        "DynaDocs.Tests/Integration/GuardModeSetTests.cs"
       ]
     },
     {
       "module": "Services/DydoInvocationScanner.cs",
       "tests": [
-        "DynaDocs.Tests/Services/DydoInvocationScannerTests.cs"
+        "DynaDocs.Tests/Integration/GuardModeSetTests.cs"
       ]
     },
     {
       "module": "Services/ShellReader.cs",
       "tests": [
-        "DynaDocs.Tests/Services/ShellReaderTests.cs",
-        "DynaDocs.Tests/Services/DydoInvocationScannerTests.cs"
+        "DynaDocs.Tests/Integration/GuardShellCorpusTests.cs",
+        "DynaDocs.Tests/Integration/GuardModeSetTests.cs"
       ]
     },
     {
@@ -358,9 +355,8 @@
     {
       "module": "Services/BashCommandAnalyzer.cs",
       "tests": [
-        "DynaDocs.Tests/Services/BashCommandAnalyzerInputBoundTests.cs",
-        "DynaDocs.Tests/Services/BashCommandAnalyzerTests.cs",
-        "DynaDocs.Tests/Services/DangerousPatternBudgetTests.cs",
+        "DynaDocs.Tests/Integration/GuardShellCorpusTests.cs",
+        "DynaDocs.Tests/Integration/GuardSecurityTests.cs",
         "DynaDocs.Tests/Services/DangerousPatternCultureTests.cs"
       ]
     },
@@ -427,7 +423,7 @@
     {
       "module": "Services/OffLimitsService.cs",
       "tests": [
-        "DynaDocs.Tests/Services/OffLimitsServiceTests.cs"
+        "DynaDocs.Tests/Integration/GuardOffLimitsTests.cs"
       ]
     },
     {
@@ -478,7 +474,7 @@
     {
       "module": "Utils/GlobMatcher.cs",
       "tests": [
-        "DynaDocs.Tests/Utils/GlobMatcherTests.cs"
+        "DynaDocs.Tests/Integration/GuardOffLimitsTests.cs"
       ]
     },
     {
