@@ -1,8 +1,7 @@
 # Release checklist. Do these before pushing a `v*` tag:
 #   1. Bump every version pin: DynaDocs.csproj Version and InformationalVersion,
 #      npm/package.json version, the `refs/tags/vX.Y.Z` gates on the release, nuget
-#      and npm jobs below, the version assertions in
-#      DynaDocs.Tests/EndToEnd/CliEndToEndTests.cs, the tag-guard constant in
+#      and npm jobs below, the tag-guard constant in
 #      DynaDocs.Tests/Workflow/ReleaseWorkflowTests.cs, the `release` field in
 #      Resources/Statechart/payload.json, and the csproj PackageReleaseNotes link.
 #   2. Run `update-dydo` on a scratch copy of a real downstream project (LC) with the
