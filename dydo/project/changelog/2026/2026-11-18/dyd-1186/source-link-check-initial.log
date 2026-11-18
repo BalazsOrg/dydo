@@ -1,0 +1,139 @@
+Running as unit: run-p2769532-i157897184.scope; invocation ID: 64aeffae44b943328b9a08dfd8c8fa3b
+OK: ticket branch
+OK: isolated worktree root
+OK: posted base is an ancestor
+OK: no excluded-path edits
+OK: every edited path is owned documentation or its evidence
+OK: no source/runtime code or tests edited
+OK: exact eleven plan files deleted
+OK: plans index retained alone
+OK: principle statement and description match governing comment verbatim
+OK: principle citation and origin
+OK: cited axiom anchor exists
+OK: no abolished plan kind in live doc: README.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/files-off-limits.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/glossary.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/guides/_guides.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/guides/coding-standards.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/guides/testing-strategy.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/guides/working-tree-standard.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/index.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/_reference.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/about-dynadocs.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/dydo-commands.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/dydo-glossary.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/feature-spec-convention.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/working-specs/_working-specs.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/reference/writing-docs.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/understand/_understand.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/understand/about.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/understand/architecture.md
+OK: no abolished plan kind in live doc: Scaffold/dydo/welcome.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd141-capacity-evidence.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd141-capacity-spec.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd164-portable-wip/captain-packet-2026-09-11.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd164-portable-wip/specification.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd86-host-agent-settings-spec.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/PROGRESS.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/adoption-specification.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/implementation-producer-brief.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/README.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/cfg-probe/results.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/child-diagnosis-commands.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/child-diagnosis-research.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/physical-probe-commands.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence/physical-probe-research.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/pdb-document-classification-evidence.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/showgenerated-marker-evidence.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/spec-review.md
+OK: no abolished plan kind in live doc: dydo/agents/workspace/dyd96-portable-wip/specifier-return.md
+OK: no abolished plan kind in live doc: dydo/files-off-limits.md
+OK: no abolished plan kind in live doc: dydo/glossary.md
+OK: no abolished plan kind in live doc: dydo/guides/_guides.md
+OK: no abolished plan kind in live doc: dydo/guides/adding-a-command.md
+OK: no abolished plan kind in live doc: dydo/guides/coding-standards.md
+OK: no abolished plan kind in live doc: dydo/guides/customizing-roles.md
+OK: no abolished plan kind in live doc: dydo/guides/getting-started.md
+OK: no abolished plan kind in live doc: dydo/guides/orchestration-pitfalls.md
+OK: no abolished plan kind in live doc: dydo/guides/testing-strategy.md
+OK: no abolished plan kind in live doc: dydo/guides/troubleshooting.md
+OK: no abolished plan kind in live doc: dydo/guides/working-tree-standard.md
+OK: no abolished plan kind in live doc: dydo/guides/writing-good-briefs.md
+OK: no abolished plan kind in live doc: dydo/index.md
+OK: no abolished plan kind in live doc: dydo/law/_law.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/_dydo.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/attention.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/axioms.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/cases/readme.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/context.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/design.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/effort.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/retired.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/review.md
+OK: no abolished plan kind in live doc: dydo/law/dydo/verification.md
+OK: no abolished plan kind in live doc: dydo/law/tech/_tech.md
+OK: no abolished plan kind in live doc: dydo/law/tech/axioms.md
+OK: no abolished plan kind in live doc: dydo/law/tech/cases/readme.md
+OK: no abolished plan kind in live doc: dydo/law/tech/retired.md
+OK: no abolished plan kind in live doc: dydo/reference/_reference.md
+OK: no abolished plan kind in live doc: dydo/reference/about-dynadocs.md
+OK: no abolished plan kind in live doc: dydo/reference/configuration.md
+OK: no abolished plan kind in live doc: dydo/reference/coverage-tools.md
+OK: no abolished plan kind in live doc: dydo/reference/dydo-commands.md
+OK: no abolished plan kind in live doc: dydo/reference/dydo-glossary.md
+OK: no abolished plan kind in live doc: dydo/reference/feature-spec-convention.md
+OK: no abolished plan kind in live doc: dydo/reference/linear-workspace-standard.md
+OK: no abolished plan kind in live doc: dydo/reference/working-specs/_working-specs.md
+OK: no abolished plan kind in live doc: dydo/reference/working-specs/dydo-3-6-0/safe-feature-merging.md
+OK: no abolished plan kind in live doc: dydo/reference/writing-docs.md
+OK: no abolished plan kind in live doc: dydo/understand/_understand.md
+OK: no abolished plan kind in live doc: dydo/understand/about.md
+OK: no abolished plan kind in live doc: dydo/understand/architecture.md
+OK: no abolished plan kind in live doc: dydo/understand/axioms.md
+OK: no abolished plan kind in live doc: dydo/understand/control-flow.md
+OK: no abolished plan kind in live doc: dydo/understand/documentation-model.md
+OK: no abolished plan kind in live doc: dydo/understand/guard-system.md
+OK: no abolished plan kind in live doc: dydo/understand/scaffold-and-customization.md
+OK: no abolished plan kind in live doc: dydo/understand/task-lifecycle.md
+OK: no abolished plan kind in live doc: dydo/understand/work-model.md
+OK: no abolished plan kind in live doc: dydo/welcome.md
+OK: no contradictory one-level or sibling-only rule: dydo/guides/working-tree-standard.md
+OK: no hard cap: dydo/guides/working-tree-standard.md
+OK: officer above: dydo/guides/working-tree-standard.md
+OK: too big, re-cut: dydo/guides/working-tree-standard.md
+OK: no contradictory one-level or sibling-only rule: Scaffold/dydo/guides/working-tree-standard.md
+OK: no hard cap: Scaffold/dydo/guides/working-tree-standard.md
+OK: officer above: Scaffold/dydo/guides/working-tree-standard.md
+OK: too big, re-cut: Scaffold/dydo/guides/working-tree-standard.md
+OK: no contradictory one-level or sibling-only rule: dydo/understand/control-flow.md
+OK: no hard cap: dydo/understand/control-flow.md
+OK: officer above: dydo/understand/control-flow.md
+OK: too big, re-cut: dydo/understand/control-flow.md
+OK: no contradictory one-level or sibling-only rule: dydo/reference/linear-workspace-standard.md
+OK: no hard cap: dydo/reference/linear-workspace-standard.md
+OK: officer above: dydo/reference/linear-workspace-standard.md
+OK: too big, re-cut: dydo/reference/linear-workspace-standard.md
+OK: no contradictory one-level or sibling-only rule: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: no hard cap: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: officer above: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: too big, re-cut: Scaffold/dydo/reference/linear-workspace-standard.md
+OK: self-similar: dydo/guides/working-tree-standard.md
+OK: admiral → captain → sub-captain → second-order sub-captain → crew: dydo/guides/working-tree-standard.md
+OK: without a separate pilot: dydo/guides/working-tree-standard.md
+OK: self-similar: Scaffold/dydo/guides/working-tree-standard.md
+OK: admiral → captain → sub-captain → second-order sub-captain → crew: Scaffold/dydo/guides/working-tree-standard.md
+OK: without a separate pilot: Scaffold/dydo/guides/working-tree-standard.md
+OK: self-similar: dydo/understand/control-flow.md
+OK: admiral → captain → sub-captain → second-order sub-captain → crew: dydo/understand/control-flow.md
+OK: without a separate pilot: dydo/understand/control-flow.md
+Traceback (most recent call last):
+  File "/tmp/dyd1186-proof.py", line 80, in <module>
+    check((ROOT / path).read_bytes() == (ROOT / ('Scaffold/' + path)).read_bytes(),
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          'canonical twin is byte-identical: ' + path)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/dyd1186-proof.py", line 16, in check
+    assert condition, message
+           ^^^^^^^^^
+AssertionError: canonical twin is byte-identical: dydo/guides/working-tree-standard.md

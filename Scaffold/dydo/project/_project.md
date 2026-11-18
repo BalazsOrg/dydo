@@ -12,7 +12,6 @@ repository records.
 ## Contents
 
 - **decisions/** - accepted technical and product choices
-- **plans/** - reviewed plans for coordinated, cross-cutting, or architecture-sensitive Linear Projects
 - **future-features/** - legacy FutureFeature records awaiting migration; a new FutureFeature is a Linear ticket
 - **migrations/** - durable migration evidence and assimilation briefs
 - **inquisitions/** - inquisition records: each round's area map, findings and the Bugs it filed
@@ -25,7 +24,7 @@ grow. Use Linear Initiatives, Projects, tickets, optional Milestones, and Cycles
 ## When to Add Docs Here
 
 Add a repository document when the information must remain reviewable and useful after current Linear
-state changes: a Decision, reviewed Project plan, audit, assimilation brief, migration receipt,
+state changes: a Decision, audit, assimilation brief, migration receipt,
 changelog entry, or durable pitfall. Link the Linear Project or ticket to that artifact and
 use an exact commit permalink when the content is historical evidence.
 

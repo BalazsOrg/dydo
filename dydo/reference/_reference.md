@@ -21,6 +21,19 @@ This folder answers "What are the exact specs?" - detailed reference material fo
 - **dydo-glossary.md** - The dydo system's locked terms
 - **about-dynadocs.md** - About the DynaDocs system
 - **configuration.md** - dydo.json schema and all config options
+- [Coverage Tools: Platform Measurement](./coverage-tools-platforms.md)
+- [Coverage Tools: Provisioning](./coverage-tools-provisioning.md)
+- [Coverage Tools: Operations and Declared Rows](./coverage-tools-running.md)
+- [Coverage Tools: Results and Adapter Summary](./coverage-tools-results.md)
+- [Coverage Tools: Static and Statechart Collectors](./coverage-tools-statics.md)
+- [Coverage Tools: Coverage Collectors](./coverage-tools-coverage.md)
+- [Coverage Tools: C# Measurement and Provenance](./coverage-tools-measurement.md)
+- [CLI Commands: Setup, Documentation and Guard](./dydo-commands-core.md)
+- [CLI Commands: Linear and Mode](./dydo-commands-linear.md)
+- [CLI Commands: Archive and Clean](./dydo-commands-worktrees.md)
+- [CLI Commands: PR Readiness and Merge](./dydo-commands-delivery.md)
+- [CLI Commands: Validation, Testing and Utilities](./dydo-commands-utilities.md)
+
 
 ## When to Add Docs Here
 

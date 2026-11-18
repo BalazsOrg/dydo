@@ -1,0 +1,33 @@
+Running as unit: run-p3225091-i158324736.scope; invocation ID: 6071ce8dce994f47a4abddbf96d7fda6
+Running as unit: run-p3225241-i158343274.scope; invocation ID: 0bbb3ec1145144f48534c0fafdec250d
+Discovered cases: 62
+DocumentationTests: 59
+ScaffoldTreeTests: 3
+Running as unit: run-p3225248-i158343275.scope; invocation ID: 9cdeb4962cc744d29628d31d26c28aff
+  Determining projects to restore...
+  All projects are up-to-date for restore.
+  SkillBuild -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/tools/SkillBuild/bin/Debug/net10.0/SkillBuild.dll
+  DynaDocs -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/bin/Debug/net10.0/dydo.dll
+  DynaDocs.Tests -> /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll
+Test run for /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:    62, Skipped:     0, Total:    62, Duration: 493 ms - DynaDocs.Tests.dll (net10.0)
+Running as unit: run-p3225383-i158308452.scope; invocation ID: 8d4be7a39ed8405ab284c7bb3cab4726
+Scaffold/dydo/reference/linear-workspace-standard.md bytes=799 sha256=139bc33641c2c740d9204057802ca18b6a52bdd18957be8909793bc5f85f6d7e
+dydo/reference/linear-workspace-standard.md bytes=799 sha256=139bc33641c2c740d9204057802ca18b6a52bdd18957be8909793bc5f85f6d7e
+Pickup passages are byte-identical.
+`Ready to Merge` holds for a lane into its parent, a primary into the feature branch, and an atomic
+ticket or the landing into main; a Merge Sub-ticket never enters it, since it runs the chain and closes. `In Review` on the
+board always means a reviewer is running. A ticket with an open native blocker is blocked in any
+status; do not add a `Blocked` status that can drift from Linear's dependency graph. Assignment is
+the claim: assigned means taken; an unassigned, unblocked `Todo` with an eligible captain-held Type
+is pickable. The survey's generic `pickable` and `uncontracted` offers allow only `Feature`, `Bug`,
+`Merge`, `Enablement` or `Prototype` Types, excluding all `Inquisition` tickets and tickets labelled
+`nit`. An Inquisition is commissioned or resumed explicitly by the map holder.
+Running as unit: run-p3225389-i158317054.scope; invocation ID: 15fb88ecc3ee411bbafe037407b0db06
+Checking /home/balazs/.t3/worktrees/DynaDocs/t3-75b8347d-e921d7fad379d7b7/dydo...
+
+Found 0 errors, 0 warnings in 917 files.
+
+All checks passed.

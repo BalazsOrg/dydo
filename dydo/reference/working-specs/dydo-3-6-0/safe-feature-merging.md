@@ -18,7 +18,7 @@ Agents merge reviewed work into `feature/*` through `dydo merge`; the default br
 user's merge. The command binds the operation to the reviewed head, checks its PASS and CI, and
 produces a merge commit under [DR 061's command contract](../../../project/decisions/061-agents-merge-only-into-feature-branches.md#decision).
 
-The merge-route hard blocks shipped in DYD-425; [Guard System](../../../understand/guard-system.md#also-enforced)
+The merge-route hard blocks shipped in DYD-425; [Guard System](./../../../understand/guard-system-enforcement.md#also-enforced)
 owns their exact scope and accepted residuals. The delivered command, init allow rules and guard
 blocks do not establish genuine host parity. The same command must receive the same allow or block
 outcome on Claude and Codex; that gate remains pending in DYD-426 until it supplies the required

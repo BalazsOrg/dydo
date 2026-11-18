@@ -1,0 +1,87 @@
+{
+  "changedCSharpFiles": [
+    "Commands/CheckCommand.cs",
+    "Commands/CheckDocValidator.cs",
+    "Commands/PrReadyCommand.cs",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs",
+    "DynaDocs.Tests/Integration/ExplainsCommandTests.cs",
+    "Services/ExplainsCheck.cs",
+    "Services/ExplainsDeclaration.cs"
+  ],
+  "namespaceCycles": [],
+  "metricFindings": [],
+  "syntaxMetrics": {
+    "files": [
+      {
+        "path": "Commands/CheckCommand.cs",
+        "sha256": "d827ca4dd741b16dba56568262e36b53351f5b2d61cee6a5bc0d4185870645bd",
+        "bytes": 4599,
+        "maxCognitive": 8,
+        "methods": 8
+      },
+      {
+        "path": "Commands/CheckDocValidator.cs",
+        "sha256": "2514cca23daac7cd6767d3b13cd2692ea38fedbdcf95188438bc161ab0b683f1",
+        "bytes": 2840,
+        "maxCognitive": 9,
+        "methods": 6
+      },
+      {
+        "path": "Commands/PrReadyCommand.cs",
+        "sha256": "a0644ba46af482382c70ffe9ce829e7d0f4757439f0596b23cd354c4a36fd456",
+        "bytes": 3696,
+        "maxCognitive": 5,
+        "methods": 5
+      },
+      {
+        "path": "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs",
+        "sha256": "9f94890698d4025d5cb986f222a805b7314141d3d9b96c44db216e3c236dbd44",
+        "bytes": 1791,
+        "maxCognitive": 3,
+        "methods": 6
+      },
+      {
+        "path": "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs",
+        "sha256": "b9ede49e7a88e8069a698ea5b6d1c87eac72cd73ea9dfc22b34d494348f6c5e6",
+        "bytes": 19455,
+        "maxCognitive": 18,
+        "methods": 45
+      },
+      {
+        "path": "DynaDocs.Tests/Integration/ExplainsCommandTests.cs",
+        "sha256": "8b093965b622e29d2139e21ae71beaa86cc9c94e765c06b0e5fdd3251ecd27b4",
+        "bytes": 7701,
+        "maxCognitive": 0,
+        "methods": 17
+      },
+      {
+        "path": "Services/ExplainsCheck.cs",
+        "sha256": "b4f4bc5b83e946dc9c97bd3d37ef5b5aae2c8e49f7ed8bbe4759fe9fccdd62b2",
+        "bytes": 3847,
+        "maxCognitive": 7,
+        "methods": 13
+      },
+      {
+        "path": "Services/ExplainsDeclaration.cs",
+        "sha256": "895624f71813a3c06735bc9eac07f9249faf068de094bdbe84993db98a8072ef",
+        "bytes": 5292,
+        "maxCognitive": 16,
+        "methods": 12
+      }
+    ],
+    "findings": []
+  },
+  "clones": {
+    "clones": 0,
+    "duplicatedLines": 0,
+    "duplicatedTokens": 0,
+    "lines": 1220,
+    "newClones": 0,
+    "newDuplicatedLines": 0,
+    "percentage": 0.0,
+    "percentageTokens": 0.0,
+    "sources": 8,
+    "tokens": 11568
+  }
+}

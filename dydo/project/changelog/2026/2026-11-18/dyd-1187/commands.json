@@ -1,0 +1,319 @@
+{
+  "statics": [
+    {
+      "name": "metrics",
+      "argv": [
+        "python3",
+        "/tmp/dyd-1187-metrics.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "test-project",
+      "argv": [
+        "dotnet",
+        "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.dll",
+        "--project",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--root",
+        "/home/balazs/.t3/worktrees/DynaDocs/t3-72d10344-6941aa1ba4e04f47"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "production-analyzers",
+      "argv": [
+        "dotnet",
+        "build",
+        "DynaDocs.csproj",
+        "--no-incremental",
+        "--no-restore",
+        "--verbosity",
+        "quiet",
+        "-warnaserror",
+        "-p:RunAnalyzers=true",
+        "-p:RunAnalyzersDuringBuild=true",
+        "-p:ErrorLog=/tmp/dyd-1187-statics/production.sarif"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "test-analyzers",
+      "argv": [
+        "dotnet",
+        "build",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-incremental",
+        "--no-restore",
+        "--verbosity",
+        "quiet",
+        "-warnaserror",
+        "-p:RunAnalyzers=true",
+        "-p:RunAnalyzersDuringBuild=true",
+        "-p:BuildProjectReferences=false",
+        "-p:ErrorLog=/tmp/dyd-1187-statics/tests.sarif"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "clones",
+      "argv": [
+        "node",
+        "DynaDocs.Tests/coverage/node_modules/jscpd/run-jscpd.js",
+        "--no-gitignore",
+        "--format",
+        "csharp",
+        "--min-lines",
+        "15",
+        "--min-tokens",
+        "100",
+        "--max-lines",
+        "2147483647",
+        "--max-size",
+        "20001",
+        "--mode",
+        "strict",
+        "--reporters",
+        "json",
+        "--output",
+        "/tmp/dyd-1187-statics/clones",
+        "--silent",
+        "--no-tips",
+        "Commands/CheckCommand.cs",
+        "Commands/CheckDocValidator.cs",
+        "Commands/PrReadyCommand.cs",
+        "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs",
+        "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs",
+        "DynaDocs.Tests/Integration/ExplainsCommandTests.cs",
+        "Services/ExplainsCheck.cs",
+        "Services/ExplainsDeclaration.cs"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "diff-check",
+      "argv": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit": 2
+    }
+  ],
+  "lightAndCoverage": [
+    {
+      "name": "build",
+      "argv": [
+        "dotnet",
+        "build",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-restore",
+        "--verbosity",
+        "quiet"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "restore",
+      "argv": [
+        "dotnet",
+        "tool",
+        "restore",
+        "--tool-manifest",
+        ".config/dotnet-tools.json"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "instrument",
+      "argv": [
+        "dotnet",
+        "tool",
+        "run",
+        "altcover",
+        "--",
+        "--inputDirectory=/home/balazs/.t3/worktrees/DynaDocs/t3-72d10344-6941aa1ba4e04f47/DynaDocs.Tests/bin/Debug/net10.0",
+        "--inplace",
+        "--report=/tmp/dyd-1187-coverage/template.xml",
+        "--reportFormat=OpenCover",
+        "--eager",
+        "--localSource",
+        "--visibleBranches",
+        "--assemblyFilter=^(?!dydo$).*"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "light",
+      "argv": [
+        "dotnet",
+        "tool",
+        "run",
+        "altcover",
+        "--",
+        "runner",
+        "--recorderDirectory=/home/balazs/.t3/worktrees/DynaDocs/t3-72d10344-6941aa1ba4e04f47/DynaDocs.Tests/bin/Debug/net10.0",
+        "--workingDirectory=/home/balazs/.t3/worktrees/DynaDocs/t3-72d10344-6941aa1ba4e04f47",
+        "--executable=/home/balazs/.dotnet/dotnet",
+        "--outputFile=/tmp/dyd-1187-coverage/coverage.xml",
+        "--summary=N",
+        "--",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-build",
+        "--no-restore",
+        "--filter",
+        "FullyQualifiedName~ExplainsCommandTests|FullyQualifiedName~CheckCommandTests|FullyQualifiedName~CheckDocValidatorTests|FullyQualifiedName~PrReadyCommandTests|FullyQualifiedName~GuardPrReadyTests|FullyQualifiedName~GuardPrReadyBodyFileTests|FullyQualifiedName~DocScannerTests|FullyQualifiedName~Frontmatter|FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~InitCheckIntegrationTests|FullyQualifiedName~InitCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~CommandSmokeTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~CheckAssertionTests|FullyQualifiedName~OptionalSummaries",
+        "--logger",
+        "trx;LogFileName=light.trx",
+        "--results-directory",
+        "/tmp/dyd-1187-coverage",
+        "--verbosity",
+        "quiet"
+      ],
+      "exit": 0
+    }
+  ],
+  "finalProbes": [
+    {
+      "name": "discovery",
+      "argv": [
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--no-build",
+        "--no-restore",
+        "--list-tests",
+        "--filter",
+        "FullyQualifiedName~ExplainsCommandTests|FullyQualifiedName~CheckCommandTests|FullyQualifiedName~CheckDocValidatorTests|FullyQualifiedName~PrReadyCommandTests|FullyQualifiedName~GuardPrReadyTests|FullyQualifiedName~GuardPrReadyBodyFileTests|FullyQualifiedName~DocScannerTests|FullyQualifiedName~Frontmatter|FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~InitCheckIntegrationTests|FullyQualifiedName~InitCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~CommandSmokeTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~CheckAssertionTests|FullyQualifiedName~OptionalSummaries",
+        "--verbosity",
+        "quiet"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "doc-audit",
+      "argv": [
+        "python3",
+        "/tmp/dyd-1187-doc-audit.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "docs",
+      "argv": [
+        "python3",
+        "/tmp/dyd-1187-check-docs.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "preservation",
+      "argv": [
+        "python3",
+        "/tmp/dyd-1187-preservation.py"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "diff",
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exit": 0
+    },
+    {
+      "name": "metrics",
+      "argv": [
+        "python3",
+        "/tmp/dyd-1187-metrics.py"
+      ],
+      "exit": 0
+    }
+  ],
+  "outerCap": [
+    "flock",
+    "/tmp/dydo-full-gate.lock",
+    "env",
+    "MSBUILDDISABLENODEREUSE=1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER=0",
+    "UseSharedCompilation=false",
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=8G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "3600"
+  ],
+  "finalProbeCap": "same outer prefix, MemoryMax=4G and timeout 240",
+  "witnesses": [
+    {
+      "name": "exact-base-red",
+      "productionBase": "b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c",
+      "argv": [
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--filter",
+        "FullyQualifiedName~ExplainsCommandTests",
+        "--logger",
+        "trx;LogFileName=red.trx",
+        "--results-directory",
+        "/tmp/dyd-1187-red",
+        "--verbosity",
+        "quiet"
+      ],
+      "exit": 1,
+      "failed": 19,
+      "passed": 0
+    },
+    {
+      "name": "separator-red",
+      "argv": [
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--filter",
+        "FullyQualifiedName~Check_EveryGlobMustMatchAFile",
+        "--logger",
+        "trx;LogFileName=glob-red.trx",
+        "--results-directory",
+        "/tmp/dyd-1187-glob-red",
+        "--verbosity",
+        "quiet"
+      ],
+      "exit": 1,
+      "failed": 1,
+      "passed": 1,
+      "cap": "4G/240s"
+    },
+    {
+      "name": "surgical-green",
+      "argv": [
+        "dotnet",
+        "test",
+        "DynaDocs.Tests/DynaDocs.Tests.csproj",
+        "--filter",
+        "FullyQualifiedName~ExplainsCommandTests",
+        "--logger",
+        "trx;LogFileName=green.trx",
+        "--results-directory",
+        "/tmp/dyd-1187-green",
+        "--verbosity",
+        "quiet"
+      ],
+      "exit": 0,
+      "failed": 0,
+      "passed": 20
+    }
+  ]
+}

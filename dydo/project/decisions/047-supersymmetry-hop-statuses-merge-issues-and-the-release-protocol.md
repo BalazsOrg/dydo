@@ -429,6 +429,6 @@ stands. §2's text is kept as written; this amendment governs where they differ.
 - [Linear Workspace Standard](../../reference/linear-workspace-standard.md)
 - [dydo Glossary](../../reference/dydo-glossary.md)
 - [Working-Tree Contract](../../guides/working-tree-standard.md)
-- [Harmonize the skill system](../plans/dydo-3-skill-harmonization.md)
+- [Harmonize the skill system](https://github.com/BalazsOrg/dydo/blob/b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c/dydo/project/plans/dydo-3-skill-harmonization.md)
 - [DR 045 - Flow Map, Hats and Workers, Review Tiers, and the Working-Tree Contract](./045-flow-map-hats-review-tiers-and-working-tree-contract.md)
 - [DR 046 - Executable Specifications, the Specifier, and Commit-Addressed Hops](./046-executable-specifications-specifier-and-commit-addressed-hops.md)

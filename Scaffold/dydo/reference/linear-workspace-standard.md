@@ -18,8 +18,8 @@ status circle from its position in its category.
 | Status | Meaning |
 |---|---|
 | `Backlog` | A possible Project retained for later; no one has started charting it. |
-| `Planning` | The map holder is charting the first low-resolution map with `wayfinder`; a repository plan, when one is written, runs its review loop. |
-| `Planned` | The user approved the charted route, and any repository plan passed independent review; the map holder commissions the first Ticket Captain to open the feature. |
+| `Planning` | The map holder is charting the first low-resolution map with `wayfinder`. |
+| `Planned` | The user approved the charted route; the map holder commissions the first Ticket Captain to open the feature. |
 | `In Progress` | The map holder is working the map through Ticket Captains toward the destination. |
 | `Completed` | The destination landed and the landing's walkthrough found nothing more; commission [spec retirement](./feature-spec-convention.md#retirement). |
 | `Canceled` | The destination was consciously abandoned; record why and commission [spec retirement](./feature-spec-convention.md#retirement). |
@@ -49,7 +49,10 @@ every chain spawn, and nothing else flips it.
 ticket or the landing into main; a Merge Sub-ticket never enters it, since it runs the chain and closes. `In Review` on the
 board always means a reviewer is running. A ticket with an open native blocker is blocked in any
 status; do not add a `Blocked` status that can drift from Linear's dependency graph. Assignment is
-the claim: assigned means taken; unassigned, `Todo` and unblocked means pickable.
+the claim: assigned means taken; an unassigned, unblocked `Todo` with an eligible captain-held Type
+is pickable. The survey's generic `pickable` and `uncontracted` offers allow only `Feature`, `Bug`,
+`Merge`, `Enablement` or `Prototype` Types, excluding all `Inquisition` tickets and tickets labelled
+`nit`. An Inquisition is commissioned or resumed explicitly by the map holder.
 
 A `FutureFeature` is promoted by the user alone: at ticket grain it gains a Type and moves to `Backlog`
 or `Todo` on the same record; at Project or Initiative grain that record is created and linked and
@@ -150,12 +153,14 @@ walking skeleton's holds back the work built on it: filed with the map, it is a 
 the next Milestone's delivery tickets until his verdict or skip closes it. In overnight mode it
 blocks nothing, and later Milestones' Walkthrough Tickets never block.
 
-A captain creates Sub-tickets one level deep: lanes for separate work that can run at the same time,
-each carrying its parent's Type and Mode,
-a Merge Sub-ticket for each merge operation except an atomic ticket's own merge into main, which the
-user clicks once its PR carries a reviewer PASS and CI is green, and a map-holder-held Sub-ticket for fog that blocks only
-its parent or a lane and stays inside the approved Project destination and ticket outcome. A lane that
-needs splitting is replaced by sibling lanes. When the answer can change other tickets, a shared
+A captain creates delivery Sub-tickets for coherent work too big for one agent or suitable for
+parallel work, each carrying its parent's Type and Mode. Each merge operation gets a Merge
+Sub-ticket except an atomic ticket's own merge into main, which the user clicks once its PR carries
+a reviewer PASS and CI is green. A map-holder-held Sub-ticket clears fog that blocks only its parent
+or a lane and stays inside the approved Project destination and ticket outcome.
+Sub-captains follow the [working-tree standard's nesting and cutting rules](../guides/working-tree-standard.md#delegation):
+no hard cap, cutting decided by the officer above, no self-promotion, and "too big, re-cut" sent up.
+When the answer can change other tickets, a shared
 contract, or the Project's destination, scope, acceptance criteria or governing architecture, the
 captain prepares the packet and the Project's map holder creates and wires the Project-level ticket. Native blocker
 relations connect every waiting record to what it waits on.
@@ -171,7 +176,7 @@ stay on the parent; the exception creates no overlapping parallel ownership.
 ## Question Tickets
 
 A Question is the last step of discovery, not its substitute. Before creating one, search the
-governing Decision Records, Project plan, specifications, documentation, standards, code, tests and
+governing Decision Records, specifications, documentation, standards, code, tests and
 other authoritative sources; if they settle it, record the answer where the work lives and continue.
 
 Create the Question only when the user's judgment is still needed, in `Todo`, wired as a blocker of everything

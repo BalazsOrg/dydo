@@ -87,7 +87,7 @@ server-side. Balazs ruled it unnecessary.
    `master`, `main` or the branch the local `origin/HEAD` names; and default-branch changes
    (`gh repo edit --default-branch`, a `gh api` PATCH of the repository with `default_branch`). Each
    refusal names `dydo merge`. The exact reading and its residuals are in
-   [Guard System](../../understand/guard-system.md#also-enforced).
+   [Guard System](./../../understand/guard-system-enforcement.md#also-enforced).
 8. **Claude/Codex parity is a requirement; its gate, delivered in
    [DYD-426](https://linear.app/bodnar-balazs/issue/DYD-426), passed in the dydo repository.** Both
    hosts must get the same privileges and the same allow or block outcome for the same command.
@@ -154,7 +154,7 @@ records the tip it merged onto.
 
 ## Related
 
-- [CLI Commands](../../reference/dydo-commands.md#dydo-merge) - The command's exact contract
+- [CLI Commands](./../../reference/dydo-commands-delivery.md#dydo-merge) - The command's exact contract
 - [Configuration](../../reference/configuration.md#hook-configuration) - The allow rules init writes
 - [Working-Tree Contract](../../guides/working-tree-standard.md) - Who integrates a Project ticket
 - [DR 056 - Claude Guard in Committed Settings](./056-claude-guard-in-committed-settings.md)

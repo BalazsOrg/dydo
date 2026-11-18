@@ -1,0 +1,17 @@
+COMMAND: ['systemd-run', '--user', '--scope', '--slice=app-t3code-agents-cbc6c2286251.slice', '-p', 'MemoryMax=4G', '-p', 'MemorySwapMax=0', '-p', 'OOMPolicy=continue', 'timeout', '120', 'dydo', 'check']
+CANDIDATE: pinned base + docs-writer working tree; verify with audit.py
+DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false
+Running as unit: run-p3625629-i158711425.scope; invocation ID: 111b3b7770684524938ad84dc9abed0a
+Checking /tmp/dyd1191-scaffold-w5tu41ah/dydo...
+
+WARNINGS:
+  understand/about.md
+    - About.md is not customized. Consider updating it.
+  understand/architecture.md
+    - Architecture.md is not customized. Consider updating it.
+
+Found 0 errors, 2 warnings in 24 files.
+
+Found warnings (no errors).
+
+EXIT: 0

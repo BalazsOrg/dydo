@@ -1,0 +1,7 @@
+COMMAND: ['systemd-run', '--user', '--scope', '--slice=app-t3code-agents-cbc6c2286251.slice', '-p', 'MemoryMax=4G', '-p', 'MemorySwapMax=0', '-p', 'OOMPolicy=continue', 'timeout', '120', 'dydo', 'version']
+CANDIDATE: pinned base + docs-writer working tree; verify with audit.py
+DOTNET: MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false
+Running as unit: run-p3645194-i158734372.scope; invocation ID: 1a996468ffce488382869b8a7f6b9b75
+dydo version 3.6.0
+
+EXIT: 0

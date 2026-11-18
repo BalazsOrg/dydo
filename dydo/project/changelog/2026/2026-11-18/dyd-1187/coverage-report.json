@@ -1,0 +1,71 @@
+{
+  "policy": "report only; no floors or HCRAP",
+  "files": [
+    {
+      "path": "Commands/CheckCommand.cs",
+      "linesHit": 79,
+      "lines": 87,
+      "branchesHit": 26,
+      "branches": 29,
+      "unreachedLines": [
+        61,
+        62,
+        63,
+        64,
+        88,
+        89,
+        90,
+        133
+      ]
+    },
+    {
+      "path": "Commands/CheckDocValidator.cs",
+      "linesHit": 42,
+      "lines": 43,
+      "branchesHit": 13,
+      "branches": 14,
+      "unreachedLines": [
+        60
+      ]
+    },
+    {
+      "path": "Commands/PrReadyCommand.cs",
+      "linesHit": 36,
+      "lines": 37,
+      "branchesHit": 17,
+      "branches": 18,
+      "unreachedLines": [
+        65
+      ]
+    },
+    {
+      "path": "Services/ExplainsCheck.cs",
+      "linesHit": 51,
+      "lines": 54,
+      "branchesHit": 25,
+      "branches": 29,
+      "unreachedLines": [
+        42,
+        72,
+        74
+      ]
+    },
+    {
+      "path": "Services/ExplainsDeclaration.cs",
+      "linesHit": 100,
+      "lines": 104,
+      "branchesHit": 61,
+      "branches": 71,
+      "unreachedLines": [
+        31,
+        126,
+        127,
+        128
+      ]
+    }
+  ],
+  "fullNativeReport": {
+    "path": "/tmp/dyd-1187-coverage/coverage.xml",
+    "sha256": "e0a89a79a948d0c1b3dc9a6222b373ede94a3349dbfb956f00554c0f5a1ddee7"
+  }
+}

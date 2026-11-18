@@ -94,9 +94,7 @@ flowchart TD
   CT -->|ripe| TP([user: to-project, Project in Backlog]):::human
   TP --> AD[map holder: me, or an admiral I invoke, reads the Project and acts]:::officer
   AD -->|Project Planning| PP[map holder charts with wayfinder: the map, first tickets]:::session
-  PP -->|plan commit, only for a cross-cutting architecture plan| RP{{reviewer: project-plan, two rounds at most}}:::reviewer
-  PP -->|no plan file| H1
-  RP -->|PASS| H1([user approves, in the admiral's session when one holds the map, Project Planned]):::human
+  PP -->|route charted| H1([user approves, in the admiral's session when one holds the map, Project Planned]):::human
   H1 --> OP[map holder commissions first captain to open feature; wires merge order]:::officer
   OP <-->|"one captain per pickable AFK ticket: commission · done &lt;key&gt;: PR ready · merge, when its turn comes · done &lt;key&gt;: merged"| IC[ticket-captain]:::officer
   OP -->|all landed: Inquisition Ticket in Backlog, scope and cost| H2([user moves it to Todo and tells the map holder, or cancels]):::human

@@ -27,18 +27,26 @@ public static partial class PrReadyCommand
         var command = new Command("pr-ready",
             "Check a PR can be opened: clean tree, HEAD equal to its upstream, and with --body a ticket key and PASS review");
         command.Arguments.Add(pathArgument);
+        var baseOption = new Option<string?>("--base")
+        {
+            Description = "Merge target for explained-code warnings (default: local origin/HEAD; nothing is fetched)"
+        };
         command.Options.Add(bodyOption);
+        command.Options.Add(baseOption);
         command.SetAction(parseResult => Run(
             Path.GetFullPath(parseResult.GetValue(pathArgument) ?? Environment.CurrentDirectory),
-            parseResult.GetValue(bodyOption)));
+            parseResult.GetValue(bodyOption), parseResult.GetValue(baseOption)));
         return command;
     }
 
-    private static int Run(string directory, string? bodyFile)
+    private static int Run(string directory, string? bodyFile, string? baseRef)
     {
         var problems = PrReadyCheck.TreeProblems(directory) ?? [$"{directory} is not inside a git work tree"];
         if (bodyFile != null)
             problems = [.. problems, .. BodyFileProblems(bodyFile)];
+
+        foreach (var warning in ExplainsCheck.Warnings(directory, baseRef))
+            Console.Error.WriteLine($"warning: {warning}");
 
         foreach (var problem in problems)
             Console.Error.WriteLine($"not ready: {problem}");

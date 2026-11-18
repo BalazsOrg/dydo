@@ -6,8 +6,7 @@ type: reference
 # Feature Spec Convention
 
 Use a temporary feature spec when several tickets share behavior or decisions that need one current
-anchor. Keep an atomic outcome in its ticket; use an existing reviewed architecture plan when it
-already supplies that anchor. The spec governs the change under delivery; the maintained
+anchor. Keep an atomic outcome in its ticket. The spec governs the change under delivery; the maintained
 `verify-<app>` feature map gives the user a route and proof. Executable scenarios own expected values
 when available; link them instead of copying their values. A Project the admiral scaffolds always gets
 a spec, by the admiral's scaffold recipe (`skills/roles/officers/admiral/resources/scaffold-project.md`).
@@ -55,8 +54,8 @@ place. When it shifts, hold affected work until open ticket contracts are reconc
 approval rules for scope, acceptance and architecture still apply. Git
 supplies history; the body states today's intent.
 
-Authority runs from the user's live instruction through Decision Records, reviewed architecture
-plans, feature specs, then ticket contracts. Hold conflicting work and escalate through the Captain
+Authority runs from the user's live instruction through Decision Records, feature specs, then
+ticket contracts. Hold conflicting work and escalate through the Captain
 to the map holder; reconcile the sources rather than silently overriding one.
 
 Use current-file links for navigation. Before authoring or reviewing, the Captain pins the applicable

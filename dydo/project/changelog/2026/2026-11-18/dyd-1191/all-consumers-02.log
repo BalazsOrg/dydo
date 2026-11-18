@@ -1,0 +1,57 @@
+dydo/project/changelog/2026/2026-11-16/dyd-1029/dyd1153-source-bytes.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/eligibility-contract.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/eligibility-owned-paths.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/eligibility-packaging-receipt.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/eligibility-run-summary.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/eligibility-source-bytes.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/eligibility-verification-receipt.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/final-source-bytes.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/fix-contract.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/fix-linear-snapshot.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/fix-owned-paths.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/fix-raw-evidence-index.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/fix-source-bytes.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-16/dyd-1029/owned-paths.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-17/dyd-1142/contract.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-17/dyd-1142/proof.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-17/dyd-1142/summarize.py.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-17/dyd-1142/summary.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-17/dyd-1142/windows-path-fix/finalize-receipt.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-17/dyd-1172/parent-contract.json	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-17/dyd-1172/proof.txt	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-18/dyd-1186/source-link-check-initial.log	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/changelog/2026/2026-11-18/dyd-1186/source-link-check.log	UNCHANGED historical evidence/receipts, not live readers; hub URLs and anchors retained
+dydo/project/decisions/001-auto-close-dispatch.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/decisions/002-template-update-system.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/decisions/003-agent-messaging.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/decisions/010-baton-passing-and-review-enforcement.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/decisions/024-dydo-2-native-pivot.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/decisions/036-task-approval-reform.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/decisions/048-one-level-static-gates-certainly-wrong-no-escape-hatch.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/decisions/049-skills-are-the-source-retire-the-compiler.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/decisions/056-claude-guard-in-committed-settings.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/project/decisions/061-agents-merge-only-into-feature-branches.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/project/decisions/063-dydo-survey-read-only-lane-digest.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/future-features/coverage.py-update.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/future-features/doc-coverage.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/inquisitions/2026-11-07-dydo-3-6-0-release.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/inquisitions/_coverage.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/inquisitions/auto-accept-edits-behavior.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/inquisitions/cli-commands.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/inquisitions/guard-system.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/inquisitions/pre-tag-audit.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/migrations/3.0-pm-records.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/migrations/3.0-skill-model-simplification-assimilation.md	UNCHANGED historical prose/pointer; hub and every old heading anchor retained
+dydo/project/pitfalls/dyd-415-statechart-verification.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/project/reviews/dyd-624-618-pass-grammar-proof.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/reference/_reference.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/reference/about-dynadocs.md	UNCHANGED general hub pointer or navigation; original file and all anchors retained
+dydo/reference/configuration.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/reference/dydo-commands.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/reference/working-specs/dydo-3-6-0/safe-feature-merging.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/reference/writing-docs.md	UNCHANGED general hub pointer or navigation; original file and all anchors retained
+dydo/understand/_understand.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/understand/architecture.md	UNCHANGED general hub pointer or navigation; original file and all anchors retained
+dydo/understand/guard-system.md	CHANGED navigation/link targets only, or original family hub; byte audit covers exact rewrite
+dydo/understand/scaffold-and-customization.md	UNCHANGED general hub pointer or navigation; original file and all anchors retained
+npm/README.md	UNCHANGED public URL to original command hub; file survives

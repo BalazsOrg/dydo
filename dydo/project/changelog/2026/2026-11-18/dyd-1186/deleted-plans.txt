@@ -1,0 +1,11 @@
+dydo/project/plans/dydo-3-completion.md
+dydo/project/plans/dydo-3-consolidation.md
+dydo/project/plans/dydo-3-linear-migration.md
+dydo/project/plans/dydo-3-linear-native-work-model.md
+dydo/project/plans/dydo-3-linear-pm-dogfood.md
+dydo/project/plans/dydo-3-notion-runtime-removal.md
+dydo/project/plans/dydo-3-skill-craftsmanship-restoration.md
+dydo/project/plans/dydo-3-skill-harmonization.md
+dydo/project/plans/dydo-3-skill-model-simplification.md
+dydo/project/plans/dydo-3-v2-corpus-migration.md
+dydo/project/plans/visual-linear-project-map.md

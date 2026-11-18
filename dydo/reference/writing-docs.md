@@ -1,6 +1,7 @@
 ---
 area: reference
 type: reference
+explains: ["Rules/**", "Services/DocScanner.cs", "Services/Explains*.cs", "Commands/Check*.cs"]
 ---
 
 # Writing Documentation

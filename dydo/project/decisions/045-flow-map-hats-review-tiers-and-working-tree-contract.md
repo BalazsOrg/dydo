@@ -284,5 +284,5 @@ Amended by [DR 051](./051-captains-by-default-admiral-on-invocation.md) (2026-09
 - [Writing Good Briefs](../../guides/writing-good-briefs.md)
 - [Customizing Roles](../../guides/customizing-roles.md)
 - [dydo Glossary](../../reference/dydo-glossary.md)
-- [Restore skill craftsmanship](../plans/dydo-3-skill-craftsmanship-restoration.md)
+- [Restore skill craftsmanship](https://github.com/BalazsOrg/dydo/blob/b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c/dydo/project/plans/dydo-3-skill-craftsmanship-restoration.md)
 - [DR 044 - Linear-Canonical PM and the dydo Knowledge Boundary](./044-linear-canonical-pm-and-dydo-knowledge-boundary.md)

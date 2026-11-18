@@ -1,0 +1,107 @@
+from pathlib import Path
+import ast
+import gzip
+import hashlib
+import json
+import re
+import shutil
+import subprocess
+import sys
+import unittest
+import xml.etree.ElementTree as ET
+
+root = Path.cwd()
+base = 'be0ae28e71b71ff0a9f37593d22a363cc0e6b9ad'
+out = root / 'dydo/project/changelog/2026/2026-11-18/dyd-1187/split-sync'
+out.mkdir(exist_ok=True)
+rows = []
+for home, family in [('dydo/reference', 'dydo-commands'), ('dydo/reference', 'coverage-tools'),
+                     ('dydo/understand', 'guard-system'), ('Scaffold/dydo/reference', 'dydo-commands')]:
+    for page in sorted((root / home).glob(family + '*.md')):
+        name = page.relative_to(root).as_posix()
+        original = subprocess.check_output(['git', 'show', base + ':' + name])
+        current = page.read_bytes()
+        stripped = re.sub(rb'^explains:[^\r\n]*\r?\n', b'', current, flags=re.M)
+        if page.name in ['dydo-commands-core.md', 'dydo-commands-delivery.md']:
+            diff = subprocess.check_output(['git', 'diff', base, '--', name]).decode()
+            added = [line[1:] for line in diff.splitlines() if line.startswith('+') and not line.startswith('+++') and not line.startswith('+explains:')]
+            assert len(added) == 4, (name, added)
+            assert all(line.startswith(('diff ', 'index ', '--- ', '+++ ', '@@ ', '+', ' ')) for line in diff.splitlines()), name
+            unchanged = False
+        else:
+            assert stripped == original, name
+            unchanged = True
+        assert len(current) < 20000, (name, len(current))
+        rows.append({'path': name, 'bytes': len(current), 'bodyIdenticalToLiveBase': unchanged,
+                     'authorizedBaseOptionDescription': not unchanged,
+                     'sha256': hashlib.sha256(current).hexdigest()})
+inventory_path = root / 'dydo/project/changelog/2026/2026-11-18/dyd-1187/declarations.json'
+for item in json.loads(inventory_path.read_text()):
+    name = item['doc']
+    if any(row['path'] == name for row in rows):
+        continue
+    original = subprocess.check_output(['git', 'show', base + ':' + name])
+    current = Path(name).read_bytes()
+    assert re.sub(rb'^explains:[^\r\n]*\r?\n', b'', current, flags=re.M) == original, name
+    rows.append({'path': name, 'bytes': len(current), 'bodyIdenticalToLiveBase': True})
+for name in ['DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs']:
+    assert Path(name).read_bytes() == subprocess.check_output(['git', 'show', base + ':' + name])
+(out / 'body-audit.json').write_text(json.dumps({'base': base, 'pages': rows, 'declarations': 26,
+    'conflictResolution': 'Split reader helper equals live feature base; test class retains existing repository-only explains metadata parity allowance, narrowed to frontmatter'}, indent=2) + '\n')
+print('Body audit:', len(rows), 'pages; only four authorized option paragraphs differ.', flush=True)
+commands = []
+def run(name, argv, expected=0):
+    with (out / (name + '.log')).open('w') as log:
+        proc = subprocess.run(argv, stdout=log, stderr=subprocess.STDOUT)
+    commands.append({'name': name, 'argv': argv, 'exit': proc.returncode})
+    (out / 'commands.json').write_text(json.dumps(commands, indent=2) + '\n')
+    print(name, proc.returncode, flush=True)
+    assert proc.returncode == expected, (name, proc.returncode)
+
+run('green', ['dotnet', 'test', 'DynaDocs.Tests/DynaDocs.Tests.csproj', '--no-restore', '--filter',
+    'FullyQualifiedName~AllOptions_AppearInReferenceDoc', '--verbosity', 'quiet', '--logger',
+    'trx;LogFileName=green.trx', '--results-directory', '/tmp/dyd-1187-split-green'])
+recipe = Path('dydo/project/changelog/2026/2026-11-18/dyd-1187/proof.py.txt')
+selection = next(ast.literal_eval(node.value) for node in ast.parse(recipe.read_text()).body
+    if isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'LIGHT' for t in node.targets))
+selection += '|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~CommandReferenceFamily'
+common = ['dotnet', 'test', 'DynaDocs.Tests/DynaDocs.Tests.csproj', '--no-restore', '--filter', selection, '--verbosity', 'quiet']
+run('discovery', common + ['--list-tests'])
+assert len((out / 'discovery.log').read_text().splitlines()) > 700
+discovery = (out / 'discovery.log').read_bytes()
+(out / 'discovery.log.gz').write_bytes(gzip.compress(discovery, mtime=0))
+(out / 'discovery.log').write_text('Nonempty native test discovery: ' + str(len(discovery.splitlines())) +
+    ' lines; raw output retained as discovery.log.gz. SHA256: ' + hashlib.sha256(discovery).hexdigest() + '\n')
+run('light', common + ['--logger', 'trx;LogFileName=light.trx', '--results-directory', '/tmp/dyd-1187-split-light'])
+sys.path[:0] = [str(root / 'DynaDocs.Tests/coverage'), str(root / 'DynaDocs.Tests/coverage/tests')]
+import test_testing_facade
+suite = unittest.TestSuite(cls('test_owned_policy_docs_replace_tiers_with_the_dr048_gate_set')
+    for cls in [test_testing_facade.TestingFacadeTests, test_testing_facade.PortableTestingFacadeTests])
+with (out / 'python-doc-tests.log').open('w') as log:
+    result = unittest.TextTestRunner(stream=log, verbosity=2).run(suite)
+assert result.wasSuccessful()
+print('Python policy-doc cases:', result.testsRun, 'passed', flush=True)
+run('dydo-check', ['dotnet', 'bin/Debug/net10.0/dydo.dll', 'check'])
+run('dydo-check-base', ['dotnet', 'bin/Debug/net10.0/dydo.dll', 'check', '--base', base])
+run('whitespace', ['git', 'diff', '--check'])
+ns = {'t': 'http://microsoft.com/schemas/VisualStudio/TeamTest/2010'}
+summaries = []
+for label, directory in [('red', '/tmp/dyd-1187-split-red'), ('green', '/tmp/dyd-1187-split-green'), ('light', '/tmp/dyd-1187-split-light')]:
+    path = next(Path(directory).glob('*.trx'))
+    trx = ET.parse(path).getroot()
+    summaries.append({'label': label, 'counters': trx.find('.//t:Counters', ns).attrib,
+        'failures': [{'test': r.attrib['testName'], 'message': r.findtext('.//t:Message', namespaces=ns)}
+            for r in trx.findall('.//t:UnitTestResult', ns) if r.attrib['outcome'] != 'Passed']})
+    compressed = gzip.compress(path.read_bytes(), mtime=0)
+    for n, start in enumerate(range(0, len(compressed), 19000)):
+        (out / (label + '.trx.gzpart-' + str(n))).write_bytes(compressed[start:start+19000])
+(out / 'test-results.json').write_text(json.dumps(summaries, indent=2) + '\n')
+changed = subprocess.check_output(['git', 'diff', '--name-only', '--diff-filter=ACM', base]).decode().splitlines()
+(out / 'source-hashes.json').write_text(json.dumps({p: hashlib.sha256(Path(p).read_bytes()).hexdigest()
+    for p in changed if not p.startswith('dydo/project/changelog/')}, indent=2) + '\n')
+oversized = [{'path': p, 'bytes': Path(p).stat().st_size} for p in changed if Path(p).stat().st_size > 20000]
+assert oversized == [{'path': 'DynaDocs.Tests/coverage/test-associations.json', 'bytes': 62905}], oversized
+(out / 'size-report.json').write_text(json.dumps({'limitBytes': 20000, 'oversized': oversized,
+    'disposition': 'DYD-1192 is a nonblocking should per Admiral ruling; no size pass claimed for manifest'}, indent=2) + '\n')
+shutil.copy2('/tmp/dyd-1187-split-proof.py', out / 'proof.py.txt')
+print('Complete: boundary red/green, Light, Python, doc checks and body/size audit.', flush=True)

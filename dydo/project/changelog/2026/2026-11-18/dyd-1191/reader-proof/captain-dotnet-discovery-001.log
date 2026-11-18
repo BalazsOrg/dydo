@@ -1,0 +1,160 @@
+{
+  "command": [
+    "systemd-run",
+    "--user",
+    "--scope",
+    "--slice=app-t3code-agents-cbc6c2286251.slice",
+    "-p",
+    "MemoryMax=8G",
+    "-p",
+    "MemorySwapMax=0",
+    "-p",
+    "OOMPolicy=continue",
+    "timeout",
+    "3600",
+    "python3",
+    "DynaDocs.Tests/coverage/run_tests.py",
+    "-c",
+    "Release",
+    "--filter",
+    "FullyQualifiedName~CommandDocConsistencyTests|FullyQualifiedName~HelpCommandTests|FullyQualifiedName~ScaffoldTreeTests|FullyQualifiedName~CanonicalSkillAssertionTests|FullyQualifiedName~OneCanonicalSkillTreeReachesEverySupportedHostFeature|FullyQualifiedName~RunsTestsAndAssuranceHonestlyFeature",
+    "--list-tests"
+  ],
+  "cwd": "/home/balazs/.t3/worktrees/DynaDocs/t3-be8f42a8-69c8583eb5e211b4",
+  "head": "3aebd86b0b2b98b78c50140408ee34765e601e37",
+  "sources": {
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.cs": "a3d68dac698c3e692b0b2ab954d72990a40f6545ffeb60d33db140bc25433ff4",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Family.cs": "871d306b4724f7d8ecfbfa508783fb1e9804e9afb395fc523a07fe5f95139fd0",
+    "DynaDocs.Tests/Commands/CommandDocConsistencyTests.Files.cs": "64165e6e4cc2d03c19f3bfd559a939d270d52089a8fbe8d1b50a91b6ad003ec8",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.Hosts.cs": "99b3c0d494e1dc9a7525b0719e8dfd4dab43e0d5ce57a98da86537aa72657f69",
+    "DynaDocs.Tests/Steps/CanonicalSkillSteps.cs": "d7591a74ac92eeb2df89b16b932d342d6ccde166eb58fa622c5430ac345137ec",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.Metadata.cs": "123ecc3e31531687cafb035cd7d4640bf81e61c534af6acd90980cbe8572b753",
+    "DynaDocs.Tests/Steps/CanonicalSkillAssertionTests.cs": "c0516f1660d64f208cc0cc95d9bb3bb78e51e34f4fa40b212865d12230d28925",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_04.py": "7806a0d9bd5c463f466186f88b056bc4502e0c241afff4230a64910f55a4a3c6",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_2.py": "ec0513606bec476fb7789a874e296c5be5de83c83a17f6fe9460578442a2fbe0",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_08.py": "2cb37e2927a56d5e7a81681e178a40467f3a50c38f880bb2a90f2b445d7643f4",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade.py": "8d69f62f0c8875a5c4c63f47831c07be15d98b709cd97fd05d18a66562b35905",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_07.py": "d24b53d426bde2b6b34c7aec0b7e9d1a736a36a1a7b8215b600c180675dbb453",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_05.py": "0affcf7dff45851d12d598a57db2288695d6453ebe7e2bf49811dba3d36d8646",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_06.py": "da220dae5ecf161fd1c238805a8b035762aa281d97aaad89b250802ed208b829",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_02.py": "d6c402de4179d3d64326d94bb539afbf0a3c92c70d6729180f664362c02244f9",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_01.py": "521d7cf763d5ecef8ae85fd2e083eeb3bda5036f33f2db4efd3032732f0f1496",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_support.py": "de8fe44be5e679437ccc6cc048ef71567201c8b5f6857e55efdb0f533b87b446",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_cases_03.py": "5677a31fb6c171eb2d11ca7f635cd22ea2bc195b102be2ded9e97268a56b92e3",
+    "DynaDocs.Tests/coverage/tests/test_testing_facade_helpers_1.py": "00bedb2eddb3a9b366e7b3d94e3523295e5741b7dc7e0521c596b63a2822d2a5"
+  },
+  "exit": 0,
+  "dotnet_env": {
+    "MSBUILDDISABLENODEREUSE": "1",
+    "DOTNET_CLI_USE_MSBUILD_SERVER": "0",
+    "UseSharedCompilation": "false"
+  }
+}
+Running as unit: run-p4119770-i159248795.scope; invocation ID: 8538f6dddcf142d490ab377a9d9626f9
+Preparing worktree (detached HEAD 3aebd86b)
+HEAD is now at 3aebd86b Merge remote-tracking branch 'origin/feature/dydo-4-0-0' into DYD-1191-split-reference-pages
+  Determining projects to restore...
+  Restored /tmp/dydo-test-84b2483a/tools/SkillBuild/SkillBuild.csproj (in 129 ms).
+  Restored /tmp/dydo-test-84b2483a/DynaDocs.Tests/DynaDocs.Tests.csproj (in 135 ms).
+  Restored /tmp/dydo-test-84b2483a/DynaDocs.csproj (in 131 ms).
+  SkillBuild -> /tmp/dydo-test-84b2483a/tools/SkillBuild/bin/Release/net10.0/SkillBuild.dll
+  DynaDocs -> /tmp/dydo-test-84b2483a/bin/Release/net10.0/dydo.dll
+  DynaDocs.Tests -> /tmp/dydo-test-84b2483a/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll
+Test run for /tmp/dydo-test-84b2483a/DynaDocs.Tests/bin/Release/net10.0/DynaDocs.Tests.dll (.NETCoreApp,Version=v10.0)
+The following Tests are available:
+    Project whole skill directories into Claude and Codex
+    Re-point a host link left by the previous category layout
+    Keep both hosts' metadata and resources beside one body
+    Resolve skill links from canonical and projected locations
+    Remove stale two-source guidance
+    Refuse a human-owned host directory before changing another host
+    Preflight every deterministic collision before creating a projection
+    Refuse a host link that targets another skill tree
+    Help describes the complete stable interface
+    Bare invocation is useful but is not a test or gate
+    Run one stack's selected tests without hidden gates
+    Run all configured tests for selected stacks
+    Run every configured test by default
+    Hard-gate operations stay separate(invocation: "gate static --stack dotnet", capability: "static", __pickleIndex: "5", exampleTags: [])
+    Hard-gate operations stay separate(invocation: "gate coverage --stack dotnet", capability: "coverage", __pickleIndex: "6", exampleTags: [])
+    Hard-gate operations stay separate(invocation: "gate mutation --since BASE --stack dotnet", capability: "mutation", __pickleIndex: "7", exampleTags: [])
+    Mutation requires a comparison base
+    A project adapter places the mutation base in its native argv
+    An ambiguous mutation base contract fails closed(problem: "no argv element equal to {base}", __pickleIndex: "10", exampleTags: [])
+    An ambiguous mutation base contract fails closed(problem: "two argv elements equal to {base}", __pickleIndex: "11", exampleTags: [])
+    An ambiguous mutation base contract fails closed(problem: "an argv element containing --baseline={base}", __pickleIndex: "12", exampleTags: [])
+    Capabilities report configuration without running it
+    Full-G compatibility never degrades to tests only
+    One instrumented execution carries both the coverage measurement and the test verdict
+    A derived test verdict fails closed(case: "suite passes and policy passes", state: "passed", childExit: "0", resultExit: "0", coverageState: "passed", coverageExit: "0", aggregate: "0", __pickleIndex: "16", exampleTags: [])
+    A derived test verdict fails closed(case: "suite passes and policy fails", state: "passed", childExit: "0", resultExit: "0", coverageState: "failed", coverageExit: "1", aggregate: "1", __pickleIndex: "17", exampleTags: [])
+    A derived test verdict fails closed(case: "suite fails", state: "failed", childExit: "5", resultExit: "1", coverageState: "failed", coverageExit: "1", aggregate: "1", __pickleIndex: "18", exampleTags: [])
+    A derived test verdict fails closed(case: "the campaign could not measure", state: "invalid", childExit: "null", resultExit: "2", coverageState: "invalid", coverageExit: "2", aggregate: "2", __pickleIndex: "19", exampleTags: [])
+    A derived test verdict fails closed(case: "the campaign is invalid but its report records the"···, state: "invalid", childExit: "null", resultExit: "2", coverageState: "invalid", coverageExit: "2", aggregate: "2", __pickleIndex: "20", exampleTags: [])
+    A derived test verdict fails closed(case: "the report records no suite exit", state: "invalid", childExit: "null", resultExit: "2", coverageState: "passed", coverageExit: "0", aggregate: "2", __pickleIndex: "21", exampleTags: [])
+    A derived test verdict fails closed(case: "the coverage row did not attribute the child exit "···, state: "invalid", childExit: "null", resultExit: "2", coverageState: "failed", coverageExit: "1", aggregate: "2", __pickleIndex: "22", exampleTags: [])
+    An interruption before the coverage row leaves no unresolved test verdict
+    Derivation belongs to the invocation, not to the coverage row(invocation: "all", testRuns: "runs", coverageRuns: "does not run", __pickleIndex: "24", exampleTags: [])
+    Derivation belongs to the invocation, not to the coverage row(invocation: "test --stack dotnet", testRuns: "runs", coverageRuns: "does not run", __pickleIndex: "25", exampleTags: [])
+    Derivation belongs to the invocation, not to the coverage row(invocation: "gate coverage --stack dotnet", testRuns: "does not run", coverageRuns: "runs", __pickleIndex: "26", exampleTags: [])
+    Derivation belongs to the invocation, not to the coverage row(invocation: "--force-run", testRuns: "does not run", coverageRuns: "runs", __pickleIndex: "27", exampleTags: [])
+    A stack without a declared suite verdict keeps its own test execution
+    Independent work is exhausted before aggregation
+    Globally invalid input prevents all execution(problem: "invalid JSON", __pickleIndex: "30", exampleTags: [])
+    Globally invalid input prevents all execution(problem: "a schema value other than 1", __pickleIndex: "31", exampleTags: [])
+    Globally invalid input prevents all execution(problem: "a missing top-level field", __pickleIndex: "32", exampleTags: [])
+    Globally invalid input prevents all execution(problem: "a non-array stacks field", __pickleIndex: "33", exampleTags: [])
+    Globally invalid input prevents all execution(problem: "duplicate stack names", __pickleIndex: "34", exampleTags: [])
+    Globally invalid input prevents all execution(problem: "an unknown selected stack", __pickleIndex: "35", exampleTags: [])
+    Globally invalid input prevents all execution(problem: "invalid operation syntax", __pickleIndex: "36", exampleTags: [])
+    Globally invalid input prevents all execution(problem: "mutation without --since BASE", __pickleIndex: "37", exampleTags: [])
+    Results preserve the meaning of the exit code(outcome: "all configured work passed", exit: "0", __pickleIndex: "38", exampleTags: [])
+    Results preserve the meaning of the exit code(outcome: "a test or policy measurement failed and no work wa"···, exit: "1", __pickleIndex: "39", exampleTags: [])
+    Results preserve the meaning of the exit code(outcome: "invalid, missing, malformed, unsupported or unavai"···, exit: "2", __pickleIndex: "40", exampleTags: [])
+    Results preserve the meaning of the exit code(outcome: "an interrupted adapter completed its cleanup", exit: "130", __pickleIndex: "41", exampleTags: [])
+    A started operation leaves one machine-readable result
+    Equivalent root spellings preserve a contained artifact destination
+    A relative artifact destination whose resolved identity is foreign fails closed
+    An angle-placeholder artifact destination fails closed
+    Schema 1 has one small concrete manifest and result shape
+    A row-local defect skips only that row(problem: "an undeclared capability", __pickleIndex: "47", exampleTags: [])
+    A row-local defect skips only that row(problem: "an unavailable selected capability", __pickleIndex: "48", exampleTags: [])
+    A row-local defect skips only that row(problem: "an empty command vector", __pickleIndex: "49", exampleTags: [])
+    A row-local defect skips only that row(problem: "a command vector containing an angle placeholder", __pickleIndex: "50", exampleTags: [])
+    A row-local defect skips only that row(problem: "a missing executable", __pickleIndex: "51", exampleTags: [])
+    A row-local defect skips only that row(problem: "malformed configured evidence", __pickleIndex: "52", exampleTags: [])
+    A row-local defect skips only that row(problem: "a cwd or artifact path escaping the repository", __pickleIndex: "53", exampleTags: [])
+    A row-local defect skips only that row(problem: "an invalid suite verdict declaration", __pickleIndex: "54", exampleTags: [])
+    The portable three-stack example is visibly unfinished
+    Partial adoption runs valid peers without hiding remaining work
+    Partial adoption permits a fully adapted targeted test
+    DynaDocs uses its real adapters and admits missing assurance
+    Interrupting the real isolated dotnet adapter leaves no worktree behind
+    The project and portable runners cannot drift apart
+    Node conformance preserves observable process behavior
+    DynaDocs.Tests.Services.ScaffoldTreeTests.EmbeddedScaffoldResources_AreExactlyTheTreeOnDisk
+    DynaDocs.Tests.Services.ScaffoldTreeTests.EveryScaffoldFileOnDisk_ReadsBackThroughItsResourceName
+    DynaDocs.Tests.Services.ScaffoldTreeTests.WriteDydoTree_WithoutEmbeddedScaffold_Throws
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkillTree_SortsEverySkillExactlyOnceByKind
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkills_WalkCategoriesToAnyDepthButNeverIntoASkill
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkills_RefuseAnEmptyNestedCategory
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkills_RefuseOneNameReachedThroughTwoCategories
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CanonicalSkillTree_HasNoAuthoredHostCopies
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.ProjectKnowledgePaths_AreRepositoryRootLiteralsNotSkillRelativeLinks
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CodeWriter_InlinesTheWorkingTreeChecksAndTheImplementedFormVerbatim
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.ThirdPartyNotices_AdaptedInPathsExistOnDisk
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CategoryReadme_ListsEveryLocalSkillOnceWithItsInvocationMode(category: "roles")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CategoryReadme_ListsEveryLocalSkillOnceWithItsInvocationMode(category: "engineering")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.CategoryReadme_ListsEveryLocalSkillOnceWithItsInvocationMode(category: "productivity")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.EveryCanonicalSkill_PairsItsClaudeInvocationFrontmatterWithCodexOpenAiYaml
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.SkillsReadme_CategoryCountsMatchTheRealDirectoriesAndSumTo41
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "see `skills/reviewer/SKILL.md` for the shape", stale: "skills/reviewer")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "edit `skills/teach/resources/mission-format.md` di"···, stale: "skills/teach")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "authored at `skills/admiral`", stale: "skills/admiral")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "canonical folder is `skills/orchestration/reviewer"···, stale: "skills/orchestration/reviewer")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "see `skills/engineering/code-writer/` for the meth"···, stale: "skills/engineering/code-writer")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_ReportAFlatOrFormerCategoryReference(content: "see `skills/roles/scout/`", stale: "skills/roles/scout")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "canonical folder is `skills/roles/crew/reviewer/SK"···)
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "edit `skills/productivity/teach/resources/mission-"···)
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectionReference(content: "authored at `skills/roles/officers/admiral`")
+    DynaDocs.Tests.Steps.CanonicalSkillAssertionTests.StaleSkillPaths_IgnoreACanonicalCategoryOrHostProjectio
