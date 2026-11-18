@@ -22,7 +22,7 @@ agent coordination.
   compile step.
 - **Guard enforcement** - `dydo guard` applies universal off-limits rules and project nudges.
 - **Documentation tooling** - `dydo check`, `dydo fix`, indexes, and graph commands keep knowledge usable.
-- **Reviewed delivery knowledge** - Decisions, Project plans, audits, and assimilation evidence remain in Git.
+- **Reviewed delivery knowledge** - Decisions, audits, and assimilation evidence remain in Git.
 
 dydo does not manage Linear objects or mirror their state. A fresh project scaffolds durable knowledge,
 with optional [working specs](../reference/working-specs/_working-specs.md); FutureFeatures live in Linear.

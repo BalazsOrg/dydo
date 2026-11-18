@@ -19,7 +19,7 @@ work-management tools now do better.
 
 ## The Project That Remembers
 
-Decisions, architecture, guides, reviewed Project plans, audits, assimilation briefs, and changelog live
+Decisions, architecture, guides, audits, assimilation briefs, and changelog live
 as Markdown in Git. They are human-readable, reviewable, linkable at an exact commit, and written for AI
 consumption as much as for people.
 
@@ -103,8 +103,8 @@ management, including FutureFeatures.
 ## How Work Runs
 
 1. **Shape intent** - record durable decisions and create the appropriately sized Linear ticket or Project.
-2. **Review the contract** - an atomic ticket may be its own contract; coordinated or architecture-sensitive
-   work links to one reviewed repository Project plan.
+2. **Review the contract** - an atomic ticket may be its own contract; shared multi-ticket behavior
+   has one current feature-spec anchor linked from its tickets.
 3. **Execute tickets** - native agents work in isolated branches/worktrees and attach governing commits,
    tests, reviews, and delivery evidence to the ticket.
 4. **Inquisition, when confirmed** - this optional, user-confirmed audit maps the landed work into

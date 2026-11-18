@@ -128,9 +128,19 @@ Validate uncertain native interface shapes early.
   own hop. Ordinary crew do not create its branch, open its PR, merge it or review their own
    work. A captain-directed Merge code-writer performs the specified merge and conflict resolutions;
    a fresh reviewer judges that integrated candidate.
-- Fan-out is safe only across disjoint paths. Each independently trackable parallel lane is a direct
-  Sub-ticket of the captain's ticket. Lanes have one level; the Bug stages below, Merge, an Inquisition's group Sub-tickets and map-holder-held Sub-tickets are the other permitted children. If a lane needs splitting, replace
-  it with sibling lanes under the parent ticket.
+- Fan-out is safe only across disjoint paths. Each independently trackable lane is a direct
+  Sub-ticket of its commissioning captain's ticket. There is no hard cap on nesting: a
+  sub-captain is a self-similar ticket-captain on a Sub-ticket with children. The expected
+  practical ceiling is admiral → captain → sub-captain → second-order sub-captain → crew;
+  a third-order sub-captain is not expected in practice. The officer above decides the cut;
+  no agent promotes itself, and "too big, re-cut" goes up to that officer. A captain needing
+  its unit re-cut asks its commissioning officer rather than appointing a deeper captain on its
+  own authority. Cut only coherent
+  units too big for one agent to handle well or suitable for parallel work, never merely
+  to pass work down. Nesting is allowed now without a separate pilot; harmful deep nesting
+  or a failing deeper sub-captain is handled as a finding when it occurs.
+  The Bug stages below, Merge, an Inquisition's group Sub-tickets and map-holder-held
+  Sub-tickets retain their own rules. See [DYD-1114, DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1114#comment-88c79701-572c-4cba-b8e9-800088264a07).
 - An agent invocation is recorded as comments and evidence on the relevant ticket or Sub-ticket, never
   as another child. Successive agents may work through the same record.
 - A Bug may retain its Type template's ordered reproduce-or-identify and fix Sub-tickets. Fix is

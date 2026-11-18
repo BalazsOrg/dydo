@@ -19,7 +19,7 @@ reviewable context and evidence.
 - **changelog/** - History of completed work
 - **pitfalls/** - Known gotchas and issues
 - **migrations/** - Version and operating-model transition evidence
-- **plans/** - Reviewed implementation plans
+- [plans/](./plans/_plans.md) - Retired folder; finished Project plans are preserved in Git history
 - [reviews/](./reviews/_reviews.md) - Implementation and review evidence
 
 ## When to Add Docs Here
@@ -28,7 +28,7 @@ Add to `project/` when documenting:
 - Technical decisions and their rationale
 - Completed work (changelog entries)
 - Known pitfalls and workarounds
-- Reviewed plans and migration evidence
+- Migration evidence
 
 For technical specs, use `reference/`. For how-to guides, use `guides/`.
 

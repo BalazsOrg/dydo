@@ -20,7 +20,7 @@ the repo, unreviewed and per user.
 [DR 038](./038-auto-memory-policy.md) kept that store as a buffer, steered by one routing line in
 the entry file and drained by sweeps. The line is gone: the skill craftsmanship restoration left the
 shared entry prompt with no memory policy
-([plan](../plans/dydo-3-skill-craftsmanship-restoration.md)). The guard still lets every memory
+([plan](https://github.com/BalazsOrg/dydo/blob/b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c/dydo/project/plans/dydo-3-skill-craftsmanship-restoration.md)). The guard still lets every memory
 write through: `GuardCommand.IsNativeMemoryPath` exempts `~/.claude/projects/*/memory/` and no
 other folder.
 

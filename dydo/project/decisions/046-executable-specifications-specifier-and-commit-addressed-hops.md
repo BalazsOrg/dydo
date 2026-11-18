@@ -144,5 +144,5 @@ posted Spec and Plan are retired.
 - [Coding Standards](../../guides/coding-standards.md)
 - [Testing Strategy](../../guides/testing-strategy.md)
 - [Writing Good Briefs](../../guides/writing-good-briefs.md)
-- [Harmonize the skill system](../plans/dydo-3-skill-harmonization.md)
+- [Harmonize the skill system](https://github.com/BalazsOrg/dydo/blob/b995a1927c9ad29a78f35fc9ee1d5f82ee3b358c/dydo/project/plans/dydo-3-skill-harmonization.md)
 - [DR 045 - Flow Map, Hats and Workers, Review Tiers, and the Working-Tree Contract](./045-flow-map-hats-review-tiers-and-working-tree-contract.md)
