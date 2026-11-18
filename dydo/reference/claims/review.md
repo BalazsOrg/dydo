@@ -12,7 +12,7 @@ type: reference
 
 Spec: R2, R3, R6
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Wired → Round, "the parts are wired; Review r1 opens".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Wired → Round, "the parts are wired; Review r1 opens".
 
 **ticket-captain** (Wired, exit):
 
@@ -28,7 +28,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): W
 
 Spec: R6
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Wired → Ended, "the parent only groups its parts".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Wired → Ended, "the parent only groups its parts".
 
 **ticket-captain** (Wired, exit):
 
@@ -40,7 +40,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): W
 
 Spec: R11, R17, S8
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Round → Verdict, "the verdict and the PR line are posted".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Round → Verdict, "the verdict and the PR line are posted".
 
 **reviewer** (Round, exit):
 
@@ -60,7 +60,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): R
 
 Spec: R9, S9
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Verdict → Fixing, "a blocker is broken or against the spec".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Fixing, "a blocker is broken or against the spec".
 
 **ticket-captain** (Verdict, exit):
 
@@ -72,7 +72,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): V
 
 Spec: R9
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Verdict → Fixing, "a blocker is a security hole".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Fixing, "a blocker is a security hole".
 
 **ticket-captain** (Verdict, exit):
 
@@ -84,7 +84,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): V
 
 Spec: R9
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Verdict → Replan, "a blocker is fundamental, or a new requirement".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Replan, "a blocker is fundamental, or a new requirement".
 
 **ticket-captain** (Verdict, exit):
 
@@ -96,7 +96,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): V
 
 Spec: R9
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Verdict → Escalated, "a blocker needs Balazs".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Escalated, "a blocker needs Balazs".
 
 **ticket-captain** (Verdict, exit):
 
@@ -108,7 +108,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): V
 
 Spec: R8
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Verdict → Ended, "no new blocker this round".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Ended, "no new blocker this round".
 
 **ticket-captain** (Verdict, exit):
 
@@ -120,7 +120,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): V
 
 Spec: R8
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Verdict → Round, "no new blocker, but the officer orders one more round".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Round, "no new blocker, but the officer orders one more round".
 
 **ticket-captain** (Verdict, exit):
 
@@ -132,7 +132,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): V
 
 Spec: S9, R8
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Fixing → Round, "Fix rN is Done: its blockers Done, proof run on the head".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Fixing → Round, "Fix rN is Done: its blockers Done, proof run on the head".
 
 **ticket-captain** (Fixing, exit):
 
@@ -144,7 +144,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): F
 
 Spec: R10
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Verdict → Checkpoint, "round 3 ends with a blocker".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Checkpoint, "round 3 ends with a blocker".
 
 **ticket-captain** (Verdict, exit):
 
@@ -156,7 +156,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): V
 
 Spec: R10, S10
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Checkpoint → Fixing, "checkpoint: one more round".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Checkpoint → Fixing, "checkpoint: one more round".
 
 **ticket-captain** (Checkpoint, exit):
 
@@ -172,7 +172,7 @@ Transition in [The review loop](../../../claims/statechart/review/Review.tla): C
 
 Spec: R10, S10
 
-Transition in [The review loop](../../../claims/statechart/review/Review.tla): Checkpoint → Escalated, "a fundamental break, a new requirement, or a need for Balazs".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Checkpoint → Escalated, "a fundamental break, a new requirement, or a need for Balazs".
 
 **linear-workspace-standard** (LinearEvidence, on claim:Review.CheckpointGoOn):
 

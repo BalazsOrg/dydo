@@ -12,7 +12,7 @@ type: reference
 
 Spec: N10, N12 DR 045 §8
 
-Transition in [Safe delete](../../../claims/statechart/safe-delete/SafeDelete.tla): Live → Archived, "after its merge, its captain safe-deletes it".
+Transition in Safe delete (`claims/statechart/safe-delete/SafeDelete.tla`): Live → Archived, "after its merge, its captain safe-deletes it".
 
 **ticket-captain** (Live, exit):
 
@@ -28,7 +28,7 @@ Transition in [Safe delete](../../../claims/statechart/safe-delete/SafeDelete.tl
 
 Spec: N10
 
-Transition in [Safe delete](../../../claims/statechart/safe-delete/SafeDelete.tla): Live → Archived, "a T3 worktree is archived without breaking T3". A system transition: no skill carries it.
+Transition in Safe delete (`claims/statechart/safe-delete/SafeDelete.tla`): Live → Archived, "a T3 worktree is archived without breaking T3". A system transition: no skill carries it.
 
 ## Purge
 
@@ -36,4 +36,4 @@ Transition in [Safe delete](../../../claims/statechart/safe-delete/SafeDelete.tl
 
 Spec: N10
 
-Transition in [Safe delete](../../../claims/statechart/safe-delete/SafeDelete.tla): Archived → Purged, "30 days pass". A system transition: no skill carries it.
+Transition in Safe delete (`claims/statechart/safe-delete/SafeDelete.tla`): Archived → Purged, "30 days pass". A system transition: no skill carries it.

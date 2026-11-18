@@ -12,7 +12,7 @@ type: reference
 
 Spec: R17, R23, R24
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Refused, "refused: no PASS on the head, nor on an ancestor followed only by clean syncs". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Refused, "refused: no PASS on the head, nor on an ancestor followed only by clean syncs". A system transition: no skill carries it.
 
 ## ReviewOpen
 
@@ -20,7 +20,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: R17
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Refused, "refused: the Review is not Done". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Refused, "refused: the Review is not Done". A system transition: no skill carries it.
 
 ## NoReceipt
 
@@ -28,7 +28,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: R23, Y4
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Refused, "refused: DYTEST holds no green receipt for the combined tree". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Refused, "refused: DYTEST holds no green receipt for the combined tree". A system transition: no skill carries it.
 
 ## HandShaped
 
@@ -36,7 +36,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: R19
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Refused, "refused: a hand-shaped tree, not git merge-tree --write-tree p1 p2". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Refused, "refused: a hand-shaped tree, not git merge-tree --write-tree p1 p2". A system transition: no skill carries it.
 
 ## TipMoved
 
@@ -44,7 +44,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: N12 DR 061 §2
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Refused, "refused: the target's tip moved from the pin". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Refused, "refused: the target's tip moved from the pin". A system transition: no skill carries it.
 
 ## DraftOrFork
 
@@ -52,7 +52,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: N12 DR 061 §2
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Refused, "refused: a draft or fork PR, or a closed PR not yet in its base". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Refused, "refused: a draft or fork PR, or a closed PR not yet in its base". A system transition: no skill carries it.
 
 ## OneWay
 
@@ -60,7 +60,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: R27
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Refused, "refused: a PR into master that the dydo.json path list flags one-way". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Refused, "refused: a PR into master that the dydo.json path list flags one-way". A system transition: no skill carries it.
 
 ## NotTwoWay
 
@@ -68,7 +68,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: R26
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Refused, "refused: a PR into master whose body does not declare it two-way, or whose CI is not green". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Refused, "refused: a PR into master whose body does not declare it two-way, or whose CI is not green". A system transition: no skill carries it.
 
 ## Conflict
 
@@ -76,7 +76,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: R21, R23
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Conflict, "the merge with the tip is not clean". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Conflict, "the merge with the tip is not clean". A system transition: no skill carries it.
 
 ## AlreadyIn
 
@@ -84,7 +84,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: N12 DR 061 §2
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → AlreadyIn, "a closed PR already in its base". A system transition: no skill carries it.
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → AlreadyIn, "a closed PR already in its base". A system transition: no skill carries it.
 
 ## Merge
 
@@ -92,7 +92,7 @@ Transition in [dydo merge and its refusals](../../../claims/statechart/merge-com
 
 Spec: R23, R24, R29, R32, N12 DR 061 §3
 
-Transition in [dydo merge and its refusals](../../../claims/statechart/merge-command/MergeCommand.tla): Invoked → Merged, "every check holds: a merge commit; a re-land reverts the revert".
+Transition in dydo merge and its refusals (`claims/statechart/merge-command/MergeCommand.tla`): Invoked → Merged, "every check holds: a merge commit; a re-land reverts the revert".
 
 **working-tree-standard** (TreeMerging):
 

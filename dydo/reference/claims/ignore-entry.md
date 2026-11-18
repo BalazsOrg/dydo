@@ -12,7 +12,7 @@ type: reference
 
 Spec: T15, T16
 
-Transition in [A file over the token limit](../../../claims/statechart/ignore-entry/IgnoreEntry.tla): OverLimit → Split, "the writer splits the file".
+Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): OverLimit → Split, "the writer splits the file".
 
 **code-writer** (OverLimit, exit):
 
@@ -24,7 +24,7 @@ Transition in [A file over the token limit](../../../claims/statechart/ignore-en
 
 Spec: T17, T14
 
-Transition in [A file over the token limit](../../../claims/statechart/ignore-entry/IgnoreEntry.tla): OverLimit → PathA, "nobody writes it by hand".
+Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): OverLimit → PathA, "nobody writes it by hand".
 
 **code-writer** (OverLimit, exit):
 
@@ -36,7 +36,7 @@ Transition in [A file over the token limit](../../../claims/statechart/ignore-en
 
 Spec: T17
 
-Transition in [A file over the token limit](../../../claims/statechart/ignore-entry/IgnoreEntry.tla): PathA → Ignored, "the reviewer checks the entry".
+Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): PathA → Ignored, "the reviewer checks the entry".
 
 **reviewer** (PathA, exit):
 
@@ -48,7 +48,7 @@ Transition in [A file over the token limit](../../../claims/statechart/ignore-en
 
 Spec: T18, T19
 
-Transition in [A file over the token limit](../../../claims/statechart/ignore-entry/IgnoreEntry.tla): OverLimit → OwnTicket, "authored code that must stay whole".
+Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): OverLimit → OwnTicket, "authored code that must stay whole".
 
 **ticket-captain** (OverLimit, exit):
 
@@ -60,7 +60,7 @@ Transition in [A file over the token limit](../../../claims/statechart/ignore-en
 
 Spec: T18
 
-Transition in [A file over the token limit](../../../claims/statechart/ignore-entry/IgnoreEntry.tla): OwnTicket → CouncilB, "the ticket goes to a council". A system transition: no skill carries it.
+Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): OwnTicket → CouncilB, "the ticket goes to a council". A system transition: no skill carries it.
 
 ## Bless
 
@@ -68,7 +68,7 @@ Transition in [A file over the token limit](../../../claims/statechart/ignore-en
 
 Spec: T18
 
-Transition in [A file over the token limit](../../../claims/statechart/ignore-entry/IgnoreEntry.tla): CouncilB → Ignored, "he blesses it". A system transition: no skill carries it.
+Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): CouncilB → Ignored, "he blesses it". A system transition: no skill carries it.
 
 ## GoStale
 
@@ -76,4 +76,4 @@ Transition in [A file over the token limit](../../../claims/statechart/ignore-en
 
 Spec: T17
 
-Transition in [A file over the token limit](../../../claims/statechart/ignore-entry/IgnoreEntry.tla): Ignored → Stale, "the entry goes stale". A system transition: no skill carries it.
+Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): Ignored → Stale, "the entry goes stale". A system transition: no skill carries it.

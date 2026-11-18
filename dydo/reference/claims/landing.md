@@ -12,7 +12,7 @@ type: reference
 
 Spec: N5, R13, R14
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Integrated → Inquisition, "the admiral staffs a round".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated → Inquisition, "the admiral staffs a round".
 
 **admiral** (Integrated, exit):
 
@@ -24,7 +24,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Int
 
 Spec: N5, S8, S9, S17
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Inquisition → RoundFixes, "the round finds a blocker or a should".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition → RoundFixes, "the round finds a blocker or a should".
 
 **admiral** (Inquisition, exit):
 
@@ -36,7 +36,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Inq
 
 Spec: N5
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): RoundFixes → Inquisition, "the fixes are merged; the next round starts from zero". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes → Inquisition, "the fixes are merged; the next round starts from zero". A system transition: no skill carries it.
 
 ## NextMergeRound
 
@@ -44,7 +44,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Rou
 
 Spec: R8, R9
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): RoundFixes → MergeReview, "the fixes are merged; a full-lens merge-review round". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes → MergeReview, "the fixes are merged; a full-lens merge-review round". A system transition: no skill carries it.
 
 ## CleanRound
 
@@ -52,7 +52,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Rou
 
 Spec: N5
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Inquisition → Prerequisites, "a round finds no blocker and no should".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition → Prerequisites, "a round finds no blocker and no should".
 
 **admiral** (Inquisition, exit):
 
@@ -64,7 +64,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Inq
 
 Spec: N7, S18, T12, N15, T8, N14, Y2, Y6, L6, L12, N8, N9
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Prerequisites → Prerequisites, "a prerequisite met: shoulds closed, mutation clean, purge done, evidence rewritten on his click, DYTEST wired in, principle descriptions written, backfill page passed, law shipped, Upgrade note and re-measure, statuses Enablement". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Prerequisites → Prerequisites, "a prerequisite met: shoulds closed, mutation clean, purge done, evidence rewritten on his click, DYTEST wired in, principle descriptions written, backfill page passed, law shipped, Upgrade note and re-measure, statuses Enablement". A system transition: no skill carries it.
 
 ## Ready
 
@@ -72,7 +72,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Pre
 
 Spec: N7, S18, T12, N15
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Prerequisites → MergeReview, "every landing prerequisite met".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Prerequisites → MergeReview, "every landing prerequisite met".
 
 **admiral** (Prerequisites, exit):
 
@@ -84,7 +84,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Pre
 
 Spec: N6, L16, R20, H22
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): MergeReview → Walkthrough, "the Merge-confidence council passes the landing candidate".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Walkthrough, "the Merge-confidence council passes the landing candidate".
 
 **admiral** (MergeReview, exit):
 
@@ -96,7 +96,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Mer
 
 Spec: R9, R11
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): MergeReview → RoundFixes, "the landing merge review finds a blocker".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → RoundFixes, "the landing merge review finds a blocker".
 
 **admiral** (MergeReview, exit):
 
@@ -108,7 +108,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Mer
 
 Spec: N6
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Walkthrough → Merging, "Balazs accepts the landing candidate".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Walkthrough → Merging, "Balazs accepts the landing candidate".
 
 **admiral** (Walkthrough, exit):
 
@@ -120,7 +120,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Wal
 
 Spec: N6, R26
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Merging → Landed, "the landing PR is in master". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Merging → Landed, "the landing PR is in master". A system transition: no skill carries it.
 
 ## Hardened
 
@@ -128,7 +128,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Mer
 
 Spec: N2
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Landed → Landed, "the Guard hardening Project lands". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Landed → Landed, "the Guard hardening Project lands". A system transition: no skill carries it.
 
 ## Tag
 
@@ -136,7 +136,7 @@ Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Lan
 
 Spec: R28, N2, N15
 
-Transition in [The landing](../../../claims/statechart/landing/Landing.tla): Landed → Tagged, "Balazs pushes the release tag". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Landed → Tagged, "Balazs pushes the release tag". A system transition: no skill carries it.
 
 ## SpecGone
 

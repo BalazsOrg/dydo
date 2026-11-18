@@ -12,7 +12,7 @@ type: reference
 
 Spec: S3
 
-Transition in [A ticket's status](../../../claims/statechart/ticket-status/TicketStatus.tla): New → Todo, "opened in Todo, ahead of its turn if a hop". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): New → Todo, "opened in Todo, ahead of its turn if a hop". A system transition: no skill carries it.
 
 ## Contract
 
@@ -20,7 +20,7 @@ Transition in [A ticket's status](../../../claims/statechart/ticket-status/Ticke
 
 Spec: N12 DR 063 §4
 
-Transition in [A ticket's status](../../../claims/statechart/ticket-status/TicketStatus.tla): Backlog → Todo, "the admiral contracts an uncontracted ticket". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): Backlog → Todo, "the admiral contracts an uncontracted ticket". A system transition: no skill carries it.
 
 ## Start
 
@@ -28,7 +28,7 @@ Transition in [A ticket's status](../../../claims/statechart/ticket-status/Ticke
 
 Spec: S6, S13, S3
 
-Transition in [A ticket's status](../../../claims/statechart/ticket-status/TicketStatus.tla): Todo → InProgress, "whoever starts the step sets it In Progress". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): Todo → InProgress, "whoever starts the step sets it In Progress". A system transition: no skill carries it.
 
 ## Close
 
@@ -36,7 +36,7 @@ Transition in [A ticket's status](../../../claims/statechart/ticket-status/Ticke
 
 Spec: S6
 
-Transition in [A ticket's status](../../../claims/statechart/ticket-status/TicketStatus.tla): InProgress → Done, "whoever started it closes it". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): InProgress → Done, "whoever started it closes it". A system transition: no skill carries it.
 
 ## Stopped
 
@@ -44,7 +44,7 @@ Transition in [A ticket's status](../../../claims/statechart/ticket-status/Ticke
 
 Spec: S24
 
-Transition in [A ticket's status](../../../claims/statechart/ticket-status/TicketStatus.tla): InProgress → Todo, "liveness finds it stopped". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): InProgress → Todo, "liveness finds it stopped". A system transition: no skill carries it.
 
 ## CancelDead
 
@@ -52,7 +52,7 @@ Transition in [A ticket's status](../../../claims/statechart/ticket-status/Ticke
 
 Spec: S10
 
-Transition in [A ticket's status](../../../claims/statechart/ticket-status/TicketStatus.tla): Todo → Canceled, "a re-plan cancels a dead hop". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): Todo → Canceled, "a re-plan cancels a dead hop". A system transition: no skill carries it.
 
 ## CancelRunning
 
@@ -60,7 +60,7 @@ Transition in [A ticket's status](../../../claims/statechart/ticket-status/Ticke
 
 Spec: S10, S12
 
-Transition in [A ticket's status](../../../claims/statechart/ticket-status/TicketStatus.tla): InProgress → Canceled, "a re-plan, or a reverted Merge". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): InProgress → Canceled, "a re-plan, or a reverted Merge". A system transition: no skill carries it.
 
 ## MarkDuplicate
 
@@ -68,4 +68,4 @@ Transition in [A ticket's status](../../../claims/statechart/ticket-status/Ticke
 
 Spec: S17
 
-Transition in [A ticket's status](../../../claims/statechart/ticket-status/TicketStatus.tla): Todo → Duplicate, "a duplicate should". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): Todo → Duplicate, "a duplicate should". A system transition: no skill carries it.

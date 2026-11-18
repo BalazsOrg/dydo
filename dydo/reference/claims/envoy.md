@@ -12,7 +12,7 @@ type: reference
 
 Spec: H16
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Need → Homework, "the officer above takes the need".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → Homework, "the officer above takes the need".
 
 **ticket-captain** (Homework, arrival):
 
@@ -28,7 +28,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): N
 
 Spec: H16, L18
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Homework → Decided, "the homework answers it, or the call is obvious and reversible".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → Decided, "the homework answers it, or the call is obvious and reversible".
 
 **ticket-captain** (Homework, exit):
 
@@ -44,7 +44,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): H
 
 Spec: H16, H12
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Homework → PassedUp, "a captain passes what remains up the chain".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → PassedUp, "a captain passes what remains up the chain".
 
 **ticket-captain** (Homework, exit):
 
@@ -56,7 +56,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): H
 
 Spec: H12
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): PassedUp → Homework, "the officer above takes it". A system transition: no skill carries it.
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): PassedUp → Homework, "the officer above takes it". A system transition: no skill carries it.
 
 ## InThread
 
@@ -64,7 +64,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): P
 
 Spec: H22, H6
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Homework → AskedInThread, "he is already in this officer's thread".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → AskedInThread, "he is already in this officer's thread".
 
 **ticket-captain** (Homework, exit):
 
@@ -80,7 +80,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): H
 
 Spec: H5, L18
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Homework → ToTribunal, "a hard call: competing answers, each good through some lens".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → ToTribunal, "a hard call: competing answers, each good through some lens".
 
 **admiral** (Homework, exit):
 
@@ -92,7 +92,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): H
 
 Spec: H15, H17, S10
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Homework → Queued, "only he can settle it".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → Queued, "only he can settle it".
 
 **admiral** (Homework, exit):
 
@@ -108,7 +108,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): H
 
 Spec: H18, H19, H23
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Queued → Active, "the last envoy reported and he closed its thread".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Queued → Active, "the last envoy reported and he closed its thread".
 
 **admiral** (Queued, exit):
 
@@ -120,7 +120,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Q
 
 Spec: H15, H19
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Active → Reported, "the envoy records the result and reports back".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Active → Reported, "the envoy records the result and reports back".
 
 **admiral** (Reported, arrival):
 
@@ -132,7 +132,7 @@ Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): A
 
 Spec: H19, H18
 
-Transition in [A need for Balazs](../../../claims/statechart/envoy/Envoy.tla): Reported → Closed, "he closes the envoy's thread". A system transition: no skill carries it.
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Reported → Closed, "he closes the envoy's thread". A system transition: no skill carries it.
 
 ## Enablement
 
@@ -176,7 +176,7 @@ Spec: H19, H23
 
 **admiral** (Active, nominal):
 
-> Brief each envoy from [the envoy brief](resources/envoy-brief.md), with its job's skill from the table there.
+> Brief each envoy from the envoy brief (`resources/envoy-brief.md`), with its job's skill from the table there.
 
 ## SlotTicket
 

@@ -12,7 +12,7 @@ type: reference
 
 Spec: K1, K6
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): ClaimArea → ProjectArea, "the model builds the skills the Project runs on". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ClaimArea → ProjectArea, "the model builds the skills the Project runs on". A system transition: no skill carries it.
 
 ## Cut
 
@@ -20,7 +20,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Cl
 
 Spec: H5, H3
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): ProjectArea → DispatchArea, "the admiral cuts a ticket and dispatches its captain". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → DispatchArea, "the admiral cuts a ticket and dispatches its captain". A system transition: no skill carries it.
 
 ## Start
 
@@ -28,7 +28,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Pr
 
 Spec: S6, S13
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): DispatchArea → StatusArea, "the holder sets its step In Progress". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): DispatchArea → StatusArea, "the holder sets its step In Progress". A system transition: no skill carries it.
 
 ## Hops
 
@@ -36,7 +36,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Di
 
 Spec: S3, S4
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): StatusArea → HopArea, "a step with its own review loop gets its hops". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): StatusArea → HopArea, "a step with its own review loop gets its hops". A system transition: no skill carries it.
 
 ## Prove
 
@@ -44,7 +44,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): St
 
 Spec: R5, T3
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): HopArea → ProofArea, "the Implement hop proves with receipts". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): HopArea → ProofArea, "the Implement hop proves with receipts". A system transition: no skill carries it.
 
 ## Explain
 
@@ -52,7 +52,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Ho
 
 Spec: D5
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): ProofArea → DocsArea, "a change to declared paths flags its doc". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProofArea → DocsArea, "a change to declared paths flags its doc". A system transition: no skill carries it.
 
 ## Review
 
@@ -60,7 +60,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Pr
 
 Spec: R2
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): DocsArea → ReviewArea, "the parts are wired; the review opens". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): DocsArea → ReviewArea, "the parts are wired; the review opens". A system transition: no skill carries it.
 
 ## Shoulds
 
@@ -68,7 +68,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Do
 
 Spec: S17
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): ReviewArea → ShouldArea, "a round finds a should". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ReviewArea → ShouldArea, "a round finds a should". A system transition: no skill carries it.
 
 ## Merge
 
@@ -76,7 +76,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Re
 
 Spec: R17, R23
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): ShouldArea → MergeArea, "PASS on the head: the Merge hop runs dydo merge". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ShouldArea → MergeArea, "PASS on the head: the Merge hop runs dydo merge". A system transition: no skill carries it.
 
 ## Findings
 
@@ -84,7 +84,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Sh
 
 Spec: Y9
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): MergeArea → FindingsArea, "a real red after the merge becomes a CI finding". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MergeArea → FindingsArea, "a real red after the merge becomes a CI finding". A system transition: no skill carries it.
 
 ## Feed
 
@@ -92,7 +92,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Me
 
 Spec: H5, S22
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): FindingsArea → ProjectArea, "findings feed the admiral's next cut". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): FindingsArea → ProjectArea, "findings feed the admiral's next cut". A system transition: no skill carries it.
 
 ## Quiet
 
@@ -100,7 +100,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Fi
 
 Spec: S23, S24
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): FindingsArea → LivenessArea, "the survey finds a quiet hop". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): FindingsArea → LivenessArea, "the survey finds a quiet hop". A system transition: no skill carries it.
 
 ## Need
 
@@ -108,7 +108,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Fi
 
 Spec: H16
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): LivenessArea → EnvoyArea, "a need only Balazs can settle goes up the chain". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): LivenessArea → EnvoyArea, "a need only Balazs can settle goes up the chain". A system transition: no skill carries it.
 
 ## Hard
 
@@ -116,7 +116,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Li
 
 Spec: H5, L18
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): EnvoyArea → LawArea, "a hard call goes to the tribunal". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): EnvoyArea → LawArea, "a hard call goes to the tribunal". A system transition: no skill carries it.
 
 ## Night
 
@@ -124,7 +124,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): En
 
 Spec: L19, L21
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): LawArea → StaffArea, "overnight rulings wait for the morning brief". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): LawArea → StaffArea, "overnight rulings wait for the morning brief". A system transition: no skill carries it.
 
 ## Land
 
@@ -132,7 +132,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): La
 
 Spec: N5, T12
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): StaffArea → MutationArea, "every delivery ticket merged: the landing runs". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): StaffArea → MutationArea, "every delivery ticket merged: the landing runs". A system transition: no skill carries it.
 
 ## Accept
 
@@ -140,7 +140,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): St
 
 Spec: N6
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): MutationArea → MasterArea, "his acceptance: the landing PR goes to master". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MutationArea → MasterArea, "his acceptance: the landing PR goes to master". A system transition: no skill carries it.
 
 ## Archive
 
@@ -148,7 +148,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Mu
 
 Spec: N10
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): MasterArea → SafeDeleteArea, "merged: branches and worktrees archived". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MasterArea → SafeDeleteArea, "merged: branches and worktrees archived". A system transition: no skill carries it.
 
 ## Tag
 
@@ -156,7 +156,7 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Ma
 
 Spec: R28, N2
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): SafeDeleteArea → Tagged, "Balazs pushes the release tag". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): SafeDeleteArea → Tagged, "Balazs pushes the release tag". A system transition: no skill carries it.
 
 ## Ship
 
@@ -164,4 +164,4 @@ Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Sa
 
 Spec: K18, N8
 
-Transition in [dydo 4.0.0](../../../claims/statechart/overview/Overview.tla): Tagged → AdopterArea, "adopters take one ordinary update". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): Tagged → AdopterArea, "adopters take one ordinary update". A system transition: no skill carries it.

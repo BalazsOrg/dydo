@@ -12,7 +12,7 @@ type: reference
 
 Spec: L12
 
-Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla): Untagged → Drafted, "cheap-tier crew drafts the tags". A system transition: no skill carries it.
+Transition in The DR backfill (`claims/statechart/backfill/Backfill.tla`): Untagged → Drafted, "cheap-tier crew drafts the tags". A system transition: no skill carries it.
 
 ## Check
 
@@ -20,7 +20,7 @@ Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla
 
 Spec: L12
 
-Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla): Drafted → Checked, "a reviewer checks every citation". A system transition: no skill carries it.
+Transition in The DR backfill (`claims/statechart/backfill/Backfill.tla`): Drafted → Checked, "a reviewer checks every citation". A system transition: no skill carries it.
 
 ## Page
 
@@ -28,7 +28,7 @@ Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla
 
 Spec: L12
 
-Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla): Checked → OnPage, "batched onto one review page". A system transition: no skill carries it.
+Transition in The DR backfill (`claims/statechart/backfill/Backfill.tla`): Checked → OnPage, "batched onto one review page". A system transition: no skill carries it.
 
 ## Approve
 
@@ -36,7 +36,7 @@ Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla
 
 Spec: L12
 
-Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla): OnPage → Merged, "he marks the row approved". A system transition: no skill carries it.
+Transition in The DR backfill (`claims/statechart/backfill/Backfill.tla`): OnPage → Merged, "he marks the row approved". A system transition: no skill carries it.
 
 ## Retag
 
@@ -44,7 +44,7 @@ Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla
 
 Spec: L12
 
-Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla): OnPage → Drafted, "he marks the row retag". A system transition: no skill carries it.
+Transition in The DR backfill (`claims/statechart/backfill/Backfill.tla`): OnPage → Drafted, "he marks the row retag". A system transition: no skill carries it.
 
 ## Reject
 
@@ -52,4 +52,4 @@ Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla
 
 Spec: L12
 
-Transition in [The DR backfill](../../../claims/statechart/backfill/Backfill.tla): OnPage → Rejected, "he rejects the row". A system transition: no skill carries it.
+Transition in The DR backfill (`claims/statechart/backfill/Backfill.tla`): OnPage → Rejected, "he rejects the row". A system transition: no skill carries it.

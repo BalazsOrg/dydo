@@ -12,7 +12,7 @@ type: reference
 
 Spec: H7
 
-Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): Day → Investigating, "he asks for cross-Project thinking, or about an unknown on his machine".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Day → Investigating, "he asks for cross-Project thinking, or about an unknown on his machine".
 
 **chief-of-staff** (Investigating, arrival):
 
@@ -24,7 +24,7 @@ Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): 
 
 Spec: H7
 
-Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): Investigating → Day, "findings given to him".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Investigating → Day, "findings given to him".
 
 **chief-of-staff** (Investigating, exit):
 
@@ -36,7 +36,7 @@ Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): 
 
 Spec: K11, L21
 
-Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): Day → Muster, "overnight mode starts".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Day → Muster, "overnight mode starts".
 
 **chief-of-staff** (Muster, arrival):
 
@@ -48,7 +48,7 @@ Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): 
 
 Spec: L21, H7
 
-Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): Muster → NightWatch, "DR-grade calls surfaced; the watch starts".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Muster → NightWatch, "DR-grade calls surfaced; the watch starts".
 
 **chief-of-staff** (Muster, exit):
 
@@ -60,7 +60,7 @@ Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): 
 
 Spec: H7, L19, K11
 
-Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): NightWatch → MorningBrief, "the night ends".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): NightWatch → MorningBrief, "the night ends".
 
 **chief-of-staff** (NightWatch, exit):
 
@@ -72,7 +72,7 @@ Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): 
 
 Spec: L19, L21
 
-Transition in [The chief of staff](../../../claims/statechart/staff/Staff.tla): MorningBrief → Day, "the brief is given".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): MorningBrief → Day, "the brief is given".
 
 **chief-of-staff** (MorningBrief, exit):
 

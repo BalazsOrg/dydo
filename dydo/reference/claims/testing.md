@@ -12,7 +12,7 @@ type: reference
 
 Spec: T5
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Start → Written, "a proof test is written for a hop". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Start → Written, "a proof test is written for a hop". A system transition: no skill carries it.
 
 ## Legacy
 
@@ -20,7 +20,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T8, T20
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Start → Old, "an old test meets the purge". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Start → Old, "an old test meets the purge". A system transition: no skill carries it.
 
 ## Rewrite
 
@@ -28,7 +28,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T6
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Start → Conformance, "a rewrite gets a conformance assertion". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Start → Conformance, "a rewrite gets a conformance assertion". A system transition: no skill carries it.
 
 ## ShowRed
 
@@ -36,7 +36,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T3
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Written → Red, "shown failing without the code". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Written → Red, "shown failing without the code". A system transition: no skill carries it.
 
 ## RunGates
 
@@ -44,7 +44,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T13, T21, Y6
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Red → Gated, "the code goes in; the gates run on changed files". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Red → Gated, "the code goes in; the gates run on changed files". A system transition: no skill carries it.
 
 ## Green
 
@@ -52,7 +52,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T23, Y4, T9
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Gated → Receipt, "all selected tests pass and the statics hold". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Gated → Receipt, "all selected tests pass and the statics hold". A system transition: no skill carries it.
 
 ## GoRed
 
@@ -60,7 +60,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T23, T19
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Gated → GateRed, "a selected test or a static gate fails". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Gated → GateRed, "a selected test or a static gate fails". A system transition: no skill carries it.
 
 ## Refix
 
@@ -68,7 +68,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T23
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): GateRed → Gated, "fixed; the gates run again". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): GateRed → Gated, "fixed; the gates run again". A system transition: no skill carries it.
 
 ## Graduate
 
@@ -76,7 +76,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T5, T4
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Receipt → Graduated, "it graduates with its job tag". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Receipt → Graduated, "it graduates with its job tag". A system transition: no skill carries it.
 
 ## Drop
 
@@ -84,7 +84,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T5
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Receipt → Dropped, "the merge drops a test that does not graduate". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Receipt → Dropped, "the merge drops a test that does not graduate". A system transition: no skill carries it.
 
 ## Untraced
 
@@ -92,7 +92,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T1, R3, T5
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Graduated → Finding, "an untraced pin, or a missing job tag". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Graduated → Finding, "an untraced pin, or a missing job tag". A system transition: no skill carries it.
 
 ## Keep
 
@@ -100,7 +100,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T8, T22
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Old → Graduated, "it meets the new test requirements: kept". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Old → Graduated, "it meets the new test requirements: kept". A system transition: no skill carries it.
 
 ## Rewritten
 
@@ -108,7 +108,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T8
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Old → Written, "rewritten to meet them". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Old → Written, "rewritten to meet them". A system transition: no skill carries it.
 
 ## Delete
 
@@ -116,7 +116,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T8, T22
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Old → Dropped, "deleted, with one line in the commit when it blocks 4.0.0 work". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Old → Dropped, "deleted, with one line in the commit when it blocks 4.0.0 work". A system transition: no skill carries it.
 
 ## Traced
 
@@ -124,7 +124,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T6
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Conformance → Graduated, "a traced assertion graduates". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Conformance → Graduated, "a traced assertion graduates". A system transition: no skill carries it.
 
 ## MatchesOld
 
@@ -132,7 +132,7 @@ Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla
 
 Spec: T6
 
-Transition in [Proof tests and gates](../../../claims/statechart/proof/Proof.tla): Conformance → Dropped, "a matches-old-implementation assertion goes at the rewrite's landing". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Conformance → Dropped, "a matches-old-implementation assertion goes at the rewrite's landing". A system transition: no skill carries it.
 
 ## Jobs
 

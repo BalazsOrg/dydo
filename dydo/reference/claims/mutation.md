@@ -12,7 +12,7 @@ type: reference
 
 Spec: T12, T13
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Background → Queued, "the landing check judges the Project's diff". A system transition: no skill carries it.
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Background → Queued, "the landing check judges the Project's diff". A system transition: no skill carries it.
 
 ## Schedule
 
@@ -20,7 +20,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Queued → Running, "scheduled like a test run, at normal priority". A system transition: no skill carries it.
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Queued → Running, "scheduled like a test run, at normal priority". A system transition: no skill carries it.
 
 ## Cloud
 
@@ -28,7 +28,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Queued → Running, "a large queue spills to the cloud". A system transition: no skill carries it.
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Queued → Running, "a large queue spills to the cloud". A system transition: no skill carries it.
 
 ## Survive
 
@@ -36,7 +36,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Running → Survivors, "a mutant survives". A system transition: no skill carries it.
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Running → Survivors, "a mutant survives". A system transition: no skill carries it.
 
 ## AllKilled
 
@@ -44,7 +44,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12, N15
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Running → Clean, "no survivor without a fix or an approved equivalent". A system transition: no skill carries it.
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Running → Clean, "no survivor without a fix or an approved equivalent". A system transition: no skill carries it.
 
 ## CutFix
 
@@ -52,7 +52,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: N6, H5, T12
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Survivors → Ticketed, "the admiral cuts the survivor's fix ticket".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Survivors → Ticketed, "the admiral cuts the survivor's fix ticket".
 
 **admiral** (Survivors, exit):
 
@@ -64,7 +64,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Ticketed → Running, "fixed; the mutant runs again".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Ticketed → Running, "fixed; the mutant runs again".
 
 **code-writer** (Ticketed, exit):
 
@@ -76,7 +76,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Ticketed → Claimed, "claimed equivalent, with a reason".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Ticketed → Claimed, "claimed equivalent, with a reason".
 
 **code-writer** (Ticketed, exit):
 
@@ -88,7 +88,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Claimed → Clean, "a fresh independent reviewer approves it".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Claimed → Clean, "a fresh independent reviewer approves it".
 
 **reviewer** (Claimed, exit):
 
@@ -100,7 +100,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12, L16
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Claimed → Dispute, "rejected and disputed".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Claimed → Dispute, "rejected and disputed".
 
 **reviewer** (Claimed, exit):
 
@@ -112,7 +112,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12, L14
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Dispute → Clean, "the council rules it equivalent". A system transition: no skill carries it.
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Dispute → Clean, "the council rules it equivalent". A system transition: no skill carries it.
 
 ## RuledNot
 
@@ -120,7 +120,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12, L14
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Dispute → Ticketed, "the council rules it a real survivor". A system transition: no skill carries it.
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Dispute → Ticketed, "the council rules it a real survivor". A system transition: no skill carries it.
 
 ## Lapse
 
@@ -128,7 +128,7 @@ Transition in [The landing's mutation check](../../../claims/statechart/mutation
 
 Spec: T12
 
-Transition in [The landing's mutation check](../../../claims/statechart/mutation/Mutation.tla): Clean → Queued, "the mutant or its code changes: the approval lapses". A system transition: no skill carries it.
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Clean → Queued, "the mutant or its code changes: the approval lapses". A system transition: no skill carries it.
 
 ## Totals
 

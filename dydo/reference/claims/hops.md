@@ -12,7 +12,7 @@ type: reference
 
 Spec: S4
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): Cut → OneTicket, "the step has no review loop of its own".
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): Cut → OneTicket, "the step has no review loop of its own".
 
 **ticket-captain** (Cut, exit):
 
@@ -32,7 +32,7 @@ Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hop
 
 Spec: S3, S4
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): Cut → Chain, "the step has its own review loop".
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): Cut → Chain, "the step has its own review loop".
 
 **ticket-captain** (Cut, exit):
 
@@ -48,7 +48,7 @@ Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hop
 
 Spec: S4, R6
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): OneTicket → EvidenceCheck, "the officer adds an evidence-check seat".
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): OneTicket → EvidenceCheck, "the officer adds an evidence-check seat".
 
 **ticket-captain** (OneTicket, exit):
 
@@ -68,7 +68,7 @@ Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hop
 
 Spec: S4, S6
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): EvidenceCheck → StepDone, "the evidence check's Review hop is Done". A system transition: no skill carries it.
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): EvidenceCheck → StepDone, "the evidence check's Review hop is Done". A system transition: no skill carries it.
 
 ## CheckFail
 
@@ -76,7 +76,7 @@ Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hop
 
 Spec: S9, R11
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): EvidenceCheck → CheckFix, "the evidence check finds a blocker". A system transition: no skill carries it.
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): EvidenceCheck → CheckFix, "the evidence check finds a blocker". A system transition: no skill carries it.
 
 ## CheckAgain
 
@@ -84,7 +84,7 @@ Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hop
 
 Spec: R8, S9
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): CheckFix → EvidenceCheck, "Fix rN Done; the next check runs". A system transition: no skill carries it.
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): CheckFix → EvidenceCheck, "Fix rN Done; the next check runs". A system transition: no skill carries it.
 
 ## LeafDone
 
@@ -92,7 +92,7 @@ Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hop
 
 Spec: S6
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): OneTicket → StepDone, "its holder closes it Done". A system transition: no skill carries it.
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): OneTicket → StepDone, "its holder closes it Done". A system transition: no skill carries it.
 
 ## AfkType
 
@@ -100,7 +100,7 @@ Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hop
 
 Spec: S12
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): Chain → AfkMerge, "the step merges into the feature branch, or two-way into main".
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): Chain → AfkMerge, "the step merges into the feature branch, or two-way into main".
 
 **ticket-captain** (Chain, exit):
 
@@ -116,7 +116,7 @@ Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hop
 
 Spec: S12, R27
 
-Transition in [A step's hops, by Type label](../../../claims/statechart/hops/Hops.tla): Chain → HitlMerge, "a one-way main merge".
+Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): Chain → HitlMerge, "a one-way main merge".
 
 **linear-workspace-standard** (LinearTickets, on claim:Hops.AfkType):
 

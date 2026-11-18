@@ -12,7 +12,7 @@ type: reference
 
 Spec: R26, R27
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Offered → Paced, "declared two-way in the PR body".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Offered → Paced, "declared two-way in the PR body".
 
 **ticket-captain** (Offered, exit):
 
@@ -28,7 +28,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R27
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Offered → CiWatch, "one-way: a flagged path, or declared by its captain".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Offered → CiWatch, "one-way: a flagged path, or declared by its captain".
 
 **ticket-captain** (Offered, exit):
 
@@ -40,7 +40,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R29
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Paced → Resync, "the admiral gives it its turn".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Paced → Resync, "the admiral gives it its turn".
 
 **admiral** (Paced, exit):
 
@@ -60,7 +60,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R26, R29
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Resync → AfkMerge, "re-check green: PASS, gates green with current master, CI green".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Resync → AfkMerge, "re-check green: PASS, gates green with current master, CI green".
 
 **ticket-captain** (Resync, exit):
 
@@ -72,7 +72,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R29
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Resync → Paced, "master moved: re-sync again". A system transition: no skill carries it.
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Resync → Paced, "master moved: re-sync again". A system transition: no skill carries it.
 
 ## Hold
 
@@ -80,7 +80,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R29
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Resync → Held, "forced to re-sync a third time".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Resync → Held, "forced to re-sync a third time".
 
 **working-tree-standard** (TreeMerging, on claim:MasterRoute.Turn):
 
@@ -100,7 +100,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R29
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Held → Paced, "the colliding work is sequenced".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Held → Paced, "the colliding work is sequenced".
 
 **admiral** (Held, exit):
 
@@ -112,7 +112,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R26
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): AfkMerge → Merged, "dydo merge merges into master". A system transition: no skill carries it.
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): AfkMerge → Merged, "dydo merge merges into master". A system transition: no skill carries it.
 
 ## CiGreen
 
@@ -120,7 +120,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R31, S12
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): CiWatch → HitlMerge, "its CI is green".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): CiWatch → HitlMerge, "its CI is green".
 
 **ticket-captain** (CiWatch, exit):
 
@@ -132,7 +132,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R27, R31
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): HitlMerge → Merged, "Balazs clicks the merge". A system transition: no skill carries it.
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): HitlMerge → Merged, "Balazs clicks the merge". A system transition: no skill carries it.
 
 ## Woken
 
@@ -140,7 +140,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R20, R31
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Merged → Closed, "receipt and CI green on the merge".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Merged → Closed, "receipt and CI green on the merge".
 
 **ticket-captain** (Merged, exit):
 
@@ -152,7 +152,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R22, Y9
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Merged → Reverted, "a real red after the merge".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Merged → Reverted, "a real red after the merge".
 
 **ticket-captain** (Merged, exit):
 
@@ -164,7 +164,7 @@ Transition in [A PR into master](../../../claims/statechart/master-route/MasterR
 
 Spec: R22
 
-Transition in [A PR into master](../../../claims/statechart/master-route/MasterRoute.tla): Reverted → Offered, "fixed, fix-scoped round passed, offered again".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Reverted → Offered, "fixed, fix-scoped round passed, offered again".
 
 **ticket-captain** (Reverted, exit):
 

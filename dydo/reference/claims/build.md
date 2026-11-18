@@ -12,7 +12,7 @@ type: reference
 
 Spec: K4, K10, K9
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Edited → Rejected, "the build refuses: a claim not on exactly one line per carrier, a misplaced move, a shape limit". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Edited → Rejected, "the build refuses: a claim not on exactly one line per carrier, a misplaced move, a shape limit". A system transition: no skill carries it.
 
 ## Write
 
@@ -20,7 +20,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K6, K8, K5, K12, K13, K23
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Edited → Built, "dotnet run --project tools/SkillBuild writes every built file with its header". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Edited → Built, "dotnet run --project tools/SkillBuild writes every built file with its header". A system transition: no skill carries it.
 
 ## Golden
 
@@ -28,7 +28,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K7, K24
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Built → Rejected, "the golden test finds a byte difference, or the stray-claim lint finds pasted claim text". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Built → Rejected, "the golden test finds a byte difference, or the stray-claim lint finds pasted claim text". A system transition: no skill carries it.
 
 ## Pass
 
@@ -36,7 +36,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K7, K10, K24
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Built → Checked, "golden, shape and stray-claim checks pass, in the suite and in CI". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Built → Checked, "golden, shape and stray-claim checks pass, in the suite and in CI". A system transition: no skill carries it.
 
 ## Mend
 
@@ -44,7 +44,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K6
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Rejected → Edited, "the model is fixed". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Rejected → Edited, "the model is fixed". A system transition: no skill carries it.
 
 ## HandEdit
 
@@ -52,7 +52,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K6
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Built → Nudged, "an Edit or Write to a built path". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Built → Nudged, "an Edit or Write to a built path". A system transition: no skill carries it.
 
 ## EditThere
 
@@ -60,7 +60,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K6
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Nudged → Edited, "the edit goes into the model instead". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Nudged → Edited, "the edit goes into the model instead". A system transition: no skill carries it.
 
 ## Tlc
 
@@ -68,7 +68,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K3, K20, N14
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Checked → TlcChecked, "TLC checks the generated moves against the hand-written properties; the result is recorded with the candidate". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Checked → TlcChecked, "TLC checks the generated moves against the hand-written properties; the result is recorded with the candidate". A system transition: no skill carries it.
 
 ## Read
 
@@ -76,7 +76,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K16
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): TlcChecked → InReview, "the model PR is read through its built-skill diff". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): TlcChecked → InReview, "the model PR is read through its built-skill diff". A system transition: no skill carries it.
 
 ## Approve
 
@@ -84,7 +84,7 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K16, K20, K22
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): InReview → Approved, "he approves: in the 4.0.0 push once, at the final candidate; after it, each model PR". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): InReview → Approved, "he approves: in the 4.0.0 push once, at the final candidate; after it, each model PR". A system transition: no skill carries it.
 
 ## Ship
 
@@ -92,4 +92,4 @@ Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuil
 
 Spec: K18
 
-Transition in [The claim build](../../../claims/statechart/claim-build/ClaimBuild.tla): Approved → Released, "downstream gets the built files in one ordinary update". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Approved → Released, "downstream gets the built files in one ordinary update". A system transition: no skill carries it.

@@ -12,7 +12,7 @@ type: reference
 
 Spec: D4, D1
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Start → Proposed, "a new descriptive doc is proposed". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Start → Proposed, "a new descriptive doc is proposed". A system transition: no skill carries it.
 
 ## Existing
 
@@ -20,7 +20,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Star
 
 Spec: D7
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Start → Grandfathered, "an existing descriptive doc is grandfathered". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Start → Grandfathered, "an existing descriptive doc is grandfathered". A system transition: no skill carries it.
 
 ## Uninvited
 
@@ -28,7 +28,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Star
 
 Spec: D4, D8
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Proposed → NotWritten, "no invitation, or an architecture plan: not written". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Proposed → NotWritten, "no invitation, or an architecture plan: not written". A system transition: no skill carries it.
 
 ## Invite
 
@@ -36,7 +36,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Prop
 
 Spec: D4
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Proposed → Invited, "he invites it". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Proposed → Invited, "he invites it". A system transition: no skill carries it.
 
 ## Admit
 
@@ -44,7 +44,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Prop
 
 Spec: D3
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Invited → Admitted, "solid, important and expensive to rebuild from code". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Invited → Admitted, "solid, important and expensive to rebuild from code". A system transition: no skill carries it.
 
 ## Refuse
 
@@ -52,7 +52,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Invi
 
 Spec: D3
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Invited → NotWritten, "it fails one of the three tests". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Invited → NotWritten, "it fails one of the three tests". A system transition: no skill carries it.
 
 ## Declare
 
@@ -60,7 +60,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Invi
 
 Spec: D5, D2
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Admitted → Declared, "written, declaring the code it explains in explains:". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Admitted → Declared, "written, declaring the code it explains in explains:". A system transition: no skill carries it.
 
 ## Flag
 
@@ -68,7 +68,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Admi
 
 Spec: D5
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Declared → Flagged, "a change to its paths: dydo check and pr-ready flag it". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Declared → Flagged, "a change to its paths: dydo check and pr-ready flag it". A system transition: no skill carries it.
 
 ## Hold
 
@@ -76,7 +76,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Decl
 
 Spec: D5
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Flagged → Declared, "the writer updates the doc or states it holds". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Flagged → Declared, "the writer updates the doc or states it holds". A system transition: no skill carries it.
 
 ## ReviewFinds
 
@@ -84,7 +84,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Flag
 
 Spec: D6, D2
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Declared → Finding, "review finds an unlinked why, or a declared path changed without the doc checked". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Declared → Finding, "review finds an unlinked why, or a declared path changed without the doc checked". A system transition: no skill carries it.
 
 ## FixFinding
 
@@ -92,7 +92,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Decl
 
 Spec: D6
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Finding → Declared, "the finding is fixed". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Finding → Declared, "the finding is fixed". A system transition: no skill carries it.
 
 ## GivePaths
 
@@ -100,7 +100,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Find
 
 Spec: D7
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Grandfathered → Declared, "one mechanical ticket gives it its declared paths". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Grandfathered → Declared, "one mechanical ticket gives it its declared paths". A system transition: no skill carries it.
 
 ## FixDrifted
 
@@ -108,7 +108,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Gran
 
 Spec: D7
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Grandfathered → Declared, "found drifted or with an unlinked reason: fixed". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Grandfathered → Declared, "found drifted or with an unlinked reason: fixed". A system transition: no skill carries it.
 
 ## CutDrifted
 
@@ -116,7 +116,7 @@ Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Gran
 
 Spec: D7
 
-Transition in [Descriptive docs](../../../claims/statechart/docs/Docs.tla): Grandfathered → CutDoc, "found drifted or with an unlinked reason: cut". A system transition: no skill carries it.
+Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Grandfathered → CutDoc, "found drifted or with an unlinked reason: cut". A system transition: no skill carries it.
 
 ## Explain
 

@@ -12,7 +12,7 @@ type: reference
 
 Spec: H4
 
-Transition in [A Project and its admiral](../../../claims/statechart/project/Project.tla): Unheld → Charting, "the Project opens; it has a live admiral".
+Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Unheld → Charting, "the Project opens; it has a live admiral".
 
 **admiral** (Charting, arrival):
 
@@ -24,7 +24,7 @@ Transition in [A Project and its admiral](../../../claims/statechart/project/Pro
 
 Spec: S14, S15
 
-Transition in [A Project and its admiral](../../../claims/statechart/project/Project.tla): Charting → Watching, "the spec exists and the first tickets are contracted".
+Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Charting → Watching, "the spec exists and the first tickets are contracted".
 
 **admiral** (Charting, exit):
 
@@ -36,7 +36,7 @@ Transition in [A Project and its admiral](../../../claims/statechart/project/Pro
 
 Spec: R9
 
-Transition in [A Project and its admiral](../../../claims/statechart/project/Project.tla): Watching → Replanning, "a blocker is fundamental, or a new requirement".
+Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Watching → Replanning, "a blocker is fundamental, or a new requirement".
 
 **admiral** (Replanning, arrival):
 
@@ -48,7 +48,7 @@ Transition in [A Project and its admiral](../../../claims/statechart/project/Pro
 
 Spec: S10
 
-Transition in [A Project and its admiral](../../../claims/statechart/project/Project.tla): Replanning → Watching, "dead hops Canceled with a reason".
+Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Replanning → Watching, "dead hops Canceled with a reason".
 
 **admiral** (Replanning, exit):
 
@@ -64,7 +64,7 @@ Transition in [A Project and its admiral](../../../claims/statechart/project/Pro
 
 Spec: N5
 
-Transition in [A Project and its admiral](../../../claims/statechart/project/Project.tla): Watching → Landing, "every delivery ticket is merged into the feature branch".
+Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Watching → Landing, "every delivery ticket is merged into the feature branch".
 
 **admiral** (Watching, exit):
 

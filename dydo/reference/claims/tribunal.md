@@ -12,7 +12,7 @@ type: reference
 
 Spec: L18
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): HardCall → DrSettled, "a DR clearly settles it".
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): HardCall → DrSettled, "a DR clearly settles it".
 
 **admiral** (HardCall, exit):
 
@@ -24,7 +24,7 @@ Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): 
 
 Spec: L18
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): HardCall → CaseFile, "hard: a fresh clerk takes the Question".
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): HardCall → CaseFile, "hard: a fresh clerk takes the Question".
 
 **admiral** (HardCall, exit):
 
@@ -36,7 +36,7 @@ Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): 
 
 Spec: L18, R13, R15
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): CaseFile → Sealed, "two judges from different families take sealed positions". A system transition: no skill carries it.
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): CaseFile → Sealed, "two judges from different families take sealed positions". A system transition: no skill carries it.
 
 ## Exchange
 
@@ -44,7 +44,7 @@ Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): 
 
 Spec: L18
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): Sealed → Exchange, "both positions in; one exchange". A system transition: no skill carries it.
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Sealed → Exchange, "both positions in; one exchange". A system transition: no skill carries it.
 
 ## DecideNight
 
@@ -52,7 +52,7 @@ Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): 
 
 Spec: L18, L19, L20
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): Exchange → DecidedOvernight, "overnight, the judges agree on a two-way hard call".
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → DecidedOvernight, "overnight, the judges agree on a two-way hard call".
 
 **admiral** (DecidedOvernight, arrival):
 
@@ -64,7 +64,7 @@ Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): 
 
 Spec: L18, L20, L21
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): Exchange → Prepared, "by day, or they disagree, or it is one-way or DR-grade".
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → Prepared, "by day, or they disagree, or it is one-way or DR-grade".
 
 **admiral** (Prepared, arrival):
 
@@ -76,7 +76,7 @@ Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): 
 
 Spec: L21
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): Exchange → ProposedDr, "overnight, both agree on a two-way, seriously blocking DR-grade call".
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → ProposedDr, "overnight, both agree on a two-way, seriously blocking DR-grade call".
 
 **admiral** (ProposedDr, arrival):
 
@@ -88,7 +88,7 @@ Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): 
 
 Spec: L20
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): Prepared → Scored, "he answers; scored against the prediction". A system transition: no skill carries it.
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Prepared → Scored, "he answers; scored against the prediction". A system transition: no skill carries it.
 
 ## Wrong
 
@@ -96,7 +96,7 @@ Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): 
 
 Spec: L19
 
-Transition in [The tribunal](../../../claims/statechart/tribunal/Tribunal.tla): DecidedOvernight → Investigated, "the ruling is found wrong". A system transition: no skill carries it.
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): DecidedOvernight → Investigated, "the ruling is found wrong". A system transition: no skill carries it.
 
 ## OneFamily
 

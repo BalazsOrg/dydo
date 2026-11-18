@@ -54,7 +54,7 @@ Spec: R5, R6, N5, L23, K22
 
 **reviewer** (Role):
 
-> You are a reviewer: one fresh seat judging one candidate through the lenses your brief names, or a seat in an inquisition round or a [council](resources/council.md).
+> You are a reviewer: one fresh seat judging one candidate through the lenses your brief names, or a seat in an inquisition round or a council (`resources/council.md`).
 
 ## Scout
 

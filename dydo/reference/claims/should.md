@@ -12,7 +12,7 @@ type: reference
 
 Spec: S17
 
-Transition in [A should](../../../claims/statechart/should/Should.tla): Found → Open, "no duplicate open: registered under the ticket where found".
+Transition in A should (`claims/statechart/should/Should.tla`): Found → Open, "no duplicate open: registered under the ticket where found".
 
 **reviewer** (Found, exit):
 
@@ -32,7 +32,7 @@ Transition in [A should](../../../claims/statechart/should/Should.tla): Found �
 
 Spec: S17
 
-Transition in [A should](../../../claims/statechart/should/Should.tla): Found → Known, "a duplicate is already open". A system transition: no skill carries it.
+Transition in A should (`claims/statechart/should/Should.tla`): Found → Known, "a duplicate is already open". A system transition: no skill carries it.
 
 ## Fixed
 
@@ -40,7 +40,7 @@ Transition in [A should](../../../claims/statechart/should/Should.tla): Found �
 
 Spec: S17
 
-Transition in [A should](../../../claims/statechart/should/Should.tla): Open → Done, "fixed in place, when a lane is free, before a round, or at the landing".
+Transition in A should (`claims/statechart/should/Should.tla`): Open → Done, "fixed in place, when a lane is free, before a round, or at the landing".
 
 **ticket-captain** (Open, exit):
 
@@ -52,7 +52,7 @@ Transition in [A should](../../../claims/statechart/should/Should.tla): Open →
 
 Spec: S17
 
-Transition in [A should](../../../claims/statechart/should/Should.tla): Open → Duplicate, "the batch captain finds it a duplicate".
+Transition in A should (`claims/statechart/should/Should.tla`): Open → Duplicate, "the batch captain finds it a duplicate".
 
 **ticket-captain** (Open, exit):
 
@@ -68,7 +68,7 @@ Transition in [A should](../../../claims/statechart/should/Should.tla): Open →
 
 Spec: S18
 
-Transition in [A should](../../../claims/statechart/should/Should.tla): Open → Canceled, "at the landing: canceled with a reason".
+Transition in A should (`claims/statechart/should/Should.tla`): Open → Canceled, "at the landing: canceled with a reason".
 
 **admiral** (Open, exit):
 
@@ -80,7 +80,7 @@ Transition in [A should](../../../claims/statechart/should/Should.tla): Open →
 
 Spec: S18
 
-Transition in [A should](../../../claims/statechart/should/Should.tla): Open → Moved, "at the landing: moved out by his call".
+Transition in A should (`claims/statechart/should/Should.tla`): Open → Moved, "at the landing: moved out by his call".
 
 **admiral** (Open, exit):
 

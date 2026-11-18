@@ -12,7 +12,7 @@ type: reference
 
 Spec: L22
 
-Transition in [A council](../../../claims/statechart/council/Council.tla): Convened → Waiting, "Merge confidence with one family out". A system transition: no skill carries it.
+Transition in A council (`claims/statechart/council/Council.tla`): Convened → Waiting, "Merge confidence with one family out". A system transition: no skill carries it.
 
 ## Proceed
 
@@ -20,7 +20,7 @@ Transition in [A council](../../../claims/statechart/council/Council.tla): Conve
 
 Spec: L22
 
-Transition in [A council](../../../claims/statechart/council/Council.tla): Waiting → Answered, "something blocks: it runs on one family". A system transition: no skill carries it.
+Transition in A council (`claims/statechart/council/Council.tla`): Waiting → Answered, "something blocks: it runs on one family". A system transition: no skill carries it.
 
 ## Answer
 
@@ -28,7 +28,7 @@ Transition in [A council](../../../claims/statechart/council/Council.tla): Waiti
 
 Spec: L14, L15, L16
 
-Transition in [A council](../../../claims/statechart/council/Council.tla): Convened → Answered, "every member answers alone, sealed". A system transition: no skill carries it.
+Transition in A council (`claims/statechart/council/Council.tla`): Convened → Answered, "every member answers alone, sealed". A system transition: no skill carries it.
 
 ## Synthesise
 
@@ -36,7 +36,7 @@ Transition in [A council](../../../claims/statechart/council/Council.tla): Conve
 
 Spec: L14
 
-Transition in [A council](../../../claims/statechart/council/Council.tla): Answered → Synthesised, "a non-member synthesises". A system transition: no skill carries it.
+Transition in A council (`claims/statechart/council/Council.tla`): Answered → Synthesised, "a non-member synthesises". A system transition: no skill carries it.
 
 ## Uses
 

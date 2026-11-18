@@ -47,7 +47,7 @@ public class WhyDocTests
 
         Spec: K9
 
-        Transition in [Lease](../../../claims/statechart/lease/Lease.tla): Free → Held, "the holder takes the lease".
+        Transition in Lease (`claims/statechart/lease/Lease.tla`): Free → Held, "the holder takes the lease".
 
         **holder** (Held, arrival):
 
@@ -69,7 +69,7 @@ public class WhyDocTests
 
         Spec: R1, K28
 
-        Transition in [Lease](../../../claims/statechart/lease/Lease.tla): Held → Review, "the holder returns it".
+        Transition in Lease (`claims/statechart/lease/Lease.tla`): Held → Review, "the holder returns it".
 
         **holder** (Held, exit):
 
@@ -85,7 +85,7 @@ public class WhyDocTests
 
         Spec: R3
 
-        Transition in [Lease](../../../claims/statechart/lease/Lease.tla): Review → Held, "the review fails".
+        Transition in Lease (`claims/statechart/lease/Lease.tla`): Review → Held, "the review fails".
 
         **warden** (Review, exit):
 
@@ -101,7 +101,7 @@ public class WhyDocTests
 
         Spec: R2, CA19
 
-        Transition in [Lease](../../../claims/statechart/lease/Lease.tla): Review → Done, "the merge lands". A system transition: no skill carries it.
+        Transition in Lease (`claims/statechart/lease/Lease.tla`): Review → Done, "the merge lands". A system transition: no skill carries it.
         """), SkillBuilder.Build(ChartModel.With()).Files["dydo/reference/claims/lease-moves.md"]);
 
     [Fact]
@@ -113,6 +113,16 @@ public class WhyDocTests
         Assert.Contains("## ResumeAfterSaving\n\n`claim:DemoMoves.ResumeAfterSaving`: Resume once the work is saved.\n\n" +
                         "**demo** (StaleLease, on claim:DemoMoves.SaveTheWork):\n\n> Save the work, then resume.\n", doc);
         Assert.Contains("**demo** (Commands):\n\n> ```bash\n> dydo check\n> ```\n", doc);
+    }
+
+    [Fact]
+    [Trait("Job", "trap: K13 a skill line's resource link would break under dydo/reference/claims/, so the why doc names its target instead (dydo check)")]
+    public void WhyDoc_NamesALinesLinkTargetWithoutLinkingIt()
+    {
+        var doc = SkillBuilder.Build(ChartModel.With(typeof(LeaseLinked))).Files["dydo/reference/claims/lease-linked.md"];
+
+        Assert.Contains("> Follow the lease guide (`resources/lease-guide.md`) while you hold it.\n", doc);
+        Assert.DoesNotContain("](", doc);
     }
 
     [Fact]

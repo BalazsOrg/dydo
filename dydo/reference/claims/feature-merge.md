@@ -12,7 +12,7 @@ type: reference
 
 Spec: R21, S3, S6
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): MergeTodo → PreGate, "the Merge hop's blocker clears".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): MergeTodo → PreGate, "the Merge hop's blocker clears".
 
 **ticket-captain** (MergeTodo, exit):
 
@@ -24,7 +24,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: Y4, R23
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): PreGate → Running, "a green receipt for the combined tree". A system transition: no skill carries it.
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): PreGate → Running, "a green receipt for the combined tree". A system transition: no skill carries it.
 
 ## PreRed
 
@@ -32,7 +32,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R21
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): PreGate → PreFix, "a real red gate before the merge".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): PreGate → PreFix, "a real red gate before the merge".
 
 **ticket-captain** (PreGate, exit):
 
@@ -44,7 +44,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R8, R23
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): PreFix → Rereview, "the fix moves the head: a fresh round". A system transition: no skill carries it.
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): PreFix → Rereview, "the fix moves the head: a fresh round". A system transition: no skill carries it.
 
 ## RereviewPass
 
@@ -52,7 +52,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R17, R23
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Rereview → PreGate, "PASS on the new head". A system transition: no skill carries it.
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Rereview → PreGate, "PASS on the new head". A system transition: no skill carries it.
 
 ## NoPass
 
@@ -60,7 +60,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R17, R23, R24
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Running → Rereview, "refused: no PASS on the head or a clean-sync ancestor". A system transition: no skill carries it.
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Running → Rereview, "refused: no PASS on the head or a clean-sync ancestor". A system transition: no skill carries it.
 
 ## NoReceipt
 
@@ -68,7 +68,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R21, R23, Y4
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Running → PreGate, "refused: no green receipt for the combined tree". A system transition: no skill carries it.
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Running → PreGate, "refused: no green receipt for the combined tree". A system transition: no skill carries it.
 
 ## HandShaped
 
@@ -76,7 +76,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R19
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Running → Resolving, "refused: a hand-shaped tree". A system transition: no skill carries it.
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Running → Resolving, "refused: a hand-shaped tree". A system transition: no skill carries it.
 
 ## Conflict
 
@@ -84,7 +84,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R21, R19
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Running → Resolving, "dydo merge reports CONFLICT".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Running → Resolving, "dydo merge reports CONFLICT".
 
 **ticket-captain** (Running, exit):
 
@@ -104,7 +104,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R19
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Resolving → HunkReview, "the resolution is committed".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Resolving → HunkReview, "the resolution is committed".
 
 **ticket-captain** (Resolving, exit):
 
@@ -120,7 +120,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R19, R17
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): HunkReview → PreGate, "PASS on the hunks; the gate and the merge run again".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): HunkReview → PreGate, "PASS on the hunks; the gate and the merge run again".
 
 **reviewer** (HunkReview, exit):
 
@@ -132,7 +132,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R23, R32
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Running → Gating, "dydo merge writes the merge commit". A system transition: no skill carries it.
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Running → Gating, "dydo merge writes the merge commit". A system transition: no skill carries it.
 
 ## Green
 
@@ -140,7 +140,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R18, R20
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Gating → MergeDone, "DYTEST green on the merge tree, CI green on the merge SHA".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Gating → MergeDone, "DYTEST green on the merge tree, CI green on the merge SHA".
 
 **ticket-captain** (Gating, exit):
 
@@ -156,7 +156,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R22
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Gating → Rerun, "a gate goes red after the merge".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Gating → Rerun, "a gate goes red after the merge".
 
 **ticket-captain** (Gating, exit):
 
@@ -172,7 +172,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R22, Y9
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Rerun → MergeDone, "green on the rerun: a flake".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Rerun → MergeDone, "green on the rerun: a flake".
 
 **ticket-captain** (Rerun, exit):
 
@@ -188,7 +188,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R22, Y9, S12
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Rerun → Reverted, "red again: a real red".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Rerun → Reverted, "red again: a real red".
 
 **ticket-captain** (Rerun, exit):
 
@@ -208,7 +208,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R22, R21
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): Reverted → FixRound, "a Fix follows on the ticket branch".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Reverted → FixRound, "a Fix follows on the ticket branch".
 
 **working-tree-standard** (TreeMerging, on claim:FeatureMerge.RealRed):
 
@@ -224,7 +224,7 @@ Transition in [The Merge hop into the feature branch](../../../claims/statechart
 
 Spec: R22
 
-Transition in [The Merge hop into the feature branch](../../../claims/statechart/feature-merge/FeatureMerge.tla): FixRound → PreGate, "the fix-scoped round passes; re-land".
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): FixRound → PreGate, "the fix-scoped round passes; re-land".
 
 **working-tree-standard** (TreeMerging, on claim:FeatureMerge.RealRed):
 

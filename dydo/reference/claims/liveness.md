@@ -12,7 +12,7 @@ type: reference
 
 Spec: S24, S23
 
-Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Live → Quiet, "2 hours with no change and no liveness comment".
+Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Live → Quiet, "2 hours with no change and no liveness comment".
 
 **linear-workspace-standard** (LinearStatuses):
 
@@ -24,7 +24,7 @@ Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Live
 
 Spec: S24, H12
 
-Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Quiet → Live, "alive: the finding snoozes one window".
+Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Live, "alive: the finding snoozes one window".
 
 **ticket-captain** (Quiet, exit):
 
@@ -44,7 +44,7 @@ Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Quie
 
 Spec: S24, H12
 
-Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Quiet → Live, "the record is behind: brought up to date".
+Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Live, "the record is behind: brought up to date".
 
 **ticket-captain** (Quiet, exit):
 
@@ -64,7 +64,7 @@ Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Quie
 
 Spec: S24, H12
 
-Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Quiet → Restarted, "stopped: the hop back to Todo".
+Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Restarted, "stopped: the hop back to Todo".
 
 **ticket-captain** (Quiet, exit):
 
@@ -84,4 +84,4 @@ Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Quie
 
 Spec: S24, S13
 
-Transition in [Liveness](../../../claims/statechart/liveness/Liveness.tla): Restarted → Live, "the resumed or fresh agent attaches its thread link". A system transition: no skill carries it.
+Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Restarted → Live, "the resumed or fresh agent attaches its thread link". A system transition: no skill carries it.

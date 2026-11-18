@@ -12,7 +12,7 @@ type: reference
 
 Spec: H3, K14, R15, L17, S1
 
-Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dispatch.tla): Staffing → Briefed, "one seat, cross-family where possible, sent from its kind's template".
+Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Staffing → Briefed, "one seat, cross-family where possible, sent from its kind's template".
 
 **ticket-captain** (Staffing, exit):
 
@@ -40,7 +40,7 @@ Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dis
 
 Spec: L16, L17
 
-Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dispatch.tla): Staffing → CouncilCalled, "stakes or value: a council".
+Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Staffing → CouncilCalled, "stakes or value: a council".
 
 **ticket-captain** (Staffing, exit):
 
@@ -56,7 +56,7 @@ Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dis
 
 Spec: R16
 
-Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dispatch.tla): Staffing → SelfAuthored, "cheaper to do than to brief, too small to need its own review".
+Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Staffing → SelfAuthored, "cheaper to do than to brief, too small to need its own review".
 
 **ticket-captain** (Staffing, exit):
 
@@ -68,7 +68,7 @@ Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dis
 
 Spec: S6, S13
 
-Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dispatch.tla): Briefed → Working, "the holder starts its hop".
+Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Briefed → Working, "the holder starts its hop".
 
 **code-writer** (Briefed, exit):
 
@@ -92,7 +92,7 @@ Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dis
 
 Spec: H2
 
-Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dispatch.tla): Briefed → ReCut, "too big for one agent".
+Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Briefed → ReCut, "too big for one agent".
 
 **code-writer** (Briefed, exit):
 
@@ -120,7 +120,7 @@ Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dis
 
 Spec: H2, H14
 
-Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dispatch.tla): ReCut → Staffing, "the cutter cuts coherent children".
+Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): ReCut → Staffing, "the cutter cuts coherent children".
 
 **ticket-captain** (ReCut, exit):
 
@@ -136,7 +136,7 @@ Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dis
 
 Spec: K14, R5, S6, N12 DR 047 §7
 
-Transition in [Crew dispatch and return](../../../claims/statechart/dispatch/Dispatch.tla): Working → Returned, "the crew returns to its dispatcher".
+Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Working → Returned, "the crew returns to its dispatcher".
 
 **code-writer** (Working, exit):
 
