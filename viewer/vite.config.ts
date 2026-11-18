@@ -15,7 +15,6 @@ export default defineConfig({
       exclude: ['src/**/*.test.{ts,tsx}', 'src/testSetup.ts', 'src/api/types.ts'],
       reporter: ['text', 'lcov'],
       reportsDirectory: 'coverage',
-      thresholds: { perFile: true, lines: 80, branches: 60 },
     },
   },
 });

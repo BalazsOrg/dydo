@@ -6,8 +6,7 @@ from gate_inventory import TYPESCRIPT_OUTSIDE_ROOT
 from gate_run import result
 
 
-PACKAGE_ROOTS = {'.': '../..', 'DynaDocs.Tests/coverage': '.', 'DynaDocs.Tests/HostCanaries': '../HostCanaries',
-                 'npm': '../../npm'}
+PACKAGE_ROOTS = {'.': '../..', 'DynaDocs.Tests/coverage': '.', 'npm': '../../npm'}
 EXTENSIONS = {'.js', '.mjs', '.cjs'}
 ISSUES = ('files', 'exports', 'nsExports', 'duplicates', 'unresolved')
 # The statechart CLI loads a corpus view by path (--view FILE), as the corpus harness does for each
@@ -16,8 +15,7 @@ CORPUS_VIEWS = {f'skills/engineering/statechart/scripts/test/corpus/{name}/view.
     'CounterView', 'Login', 'LoginGuarded', 'LoginParallel', 'MediaPlayer', 'MediaPlayerFixed',
     'MediaPlayerProps', 'TwoPhase', 'TwoPhaseFixed')}
 HOST_ENTRIES = {'js_metrics.cjs', 'js_runtime.cjs', 'js_loader.mjs', 'test_discovery.cjs',
-                'knip_reporter.mjs', 'install.js', 'bin/dydo', 'bin/dydo.cjs',
-                'run-host-canaries.mjs', 'openai-sse-provider.mjs', 'setup-skills.mjs', *CORPUS_VIEWS}
+                'knip_reporter.mjs', 'install.js', 'bin/dydo', 'bin/dydo.cjs', 'setup-skills.mjs', *CORPUS_VIEWS}
 # The statechart launchers run statechart.ts, dydo runs native-entry.ts, statechart.ts and windows.ts
 # spawn worker.ts and windows-cleanup.ts by path, and the replay tests name test/java.ts as JAVA.
 STATECHART_ENTRIES = {'statechart.ts', 'native-entry.ts', 'worker.ts', 'windows-cleanup.ts', 'test/java.ts'}

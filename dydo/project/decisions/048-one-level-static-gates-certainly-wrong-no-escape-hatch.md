@@ -9,9 +9,11 @@ participants: [balazs, Claude (Fable)]
 
 # 048 - One-Level Static Gates: Certainly Wrong, No Escape Hatch
 
+> **Amended 2026-11-18:** [the accepted amendment below](#amendment-2026-11-18---one-per-file-exception) makes DR 069 path (b) the only per-file exception to §1. The earlier text records the original rule.
+
 > **Partially superseded by [067 - What Tests Are For](./067-what-tests-are-for.md)** for §3's Tests row clause *every non-trivial module has a test file*: a job-tag lint replaces it. The rest remains in force.
 
-> **Partially superseded by [068 - The Gate Set: Mutation Over Coverage, Changed Files Only](./068-gate-set-mutation-over-coverage-changed-files-only.md)** for §3's gate set (the Coverage floor, HCRAP and Tests rows and the HCRAP note) and §4's per-project mutation thresholds; it amends §2, whose set the gates now check on changed files only, and the three amendments' coverage thresholds are no longer gates. §3's other rows stand, and §2's `gap_check.py` line is an open question for Balazs, as is the Tests row's "all pass". The rest remains in force.
+> **Partially superseded by [068 - The Gate Set: Mutation Over Coverage, Changed Files Only](./068-gate-set-mutation-over-coverage-changed-files-only.md)** for §3's gate set (the Coverage floor, HCRAP and Tests rows and the HCRAP note) and §4's per-project mutation thresholds; it amends §2, whose set the gates now check on changed files only, and the three amendments' coverage thresholds are no longer gates. §3's other rows stand. [DR 068's accepted 2026-11-18 amendment](./068-gate-set-mutation-over-coverage-changed-files-only.md#amendment-2026-11-18---the-runner-and-selected-tests) renames §2's runner to `code_check.py`, behind `dydo code-check`, and retains "all selected tests pass" as a gate. The rest remains in force.
 
 > **Amended by [069 - File Token Limit](./069-file-token-limit.md)** for §3's "Not gated" note and the Consequences' rejection of file length as a gate: file size, in tokens, is now gated. Method length is untouched.
 
@@ -260,6 +262,19 @@ the merge result, and receipts keep the PR head SHA. The 2026-11-05 text placed 
 head. [DYD-717](https://linear.app/bodnar-balazs/issue/DYD-717) implements the change: every
 `ci.yml` job checks out `github.sha`, and the preflight receipts record `pr_head_sha` and
 `merge_ref_sha`.*
+
+## Amendment 2026-11-18 - one per-file exception
+
+**Status: accepted.** Approved by Balazs in
+[DYD-1195 DECIDED, envoy 1](https://linear.app/bodnar-balazs/issue/DYD-1195#comment-fd543916-0ef1-4ce0-9f61-4ff8a5454b29).
+Asked whether to amend §1 with DR 069 path (b) as the one exception requiring his blessing,
+he answered, verbatim: "option 1".
+
+§1's ban on per-file suppression stands except for
+[DR 069](./069-file-token-limit.md) path (b), for the file-token gate only. An oversized authored
+file goes through its own ticket, a council check and Balazs's blessing. This is the only per-file
+exception; a PR cannot grant it to itself. The old coverage exemptions no longer exempt a gate,
+because DR 068 removed the coverage thresholds as gates.
 
 ## Consequences
 

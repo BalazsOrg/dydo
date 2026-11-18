@@ -9,9 +9,23 @@ ROOT = Path(__file__).resolve().parents[2]
 DEFAULT = ROOT / "DynaDocs.Tests/coverage/results/adapters"
 
 
+def _coverage_lines(collectors):
+    for collector in collectors.values():
+        for module in collector.get('facts', {}).get('modules', []):
+            rates = []
+            for kind in ('lines', 'branches'):
+                hits = module[kind]
+                covered = sum(value > 0 for value in hits.values())
+                percent = 100 * covered / len(hits) if hits else 100
+                rates.append(f'{kind} {covered}/{len(hits)} ({percent:.1f}%)')
+            yield f"  {module['path']}: {', '.join(rates)} (report only)"
+
+
 def render(summary):
     complete = "complete" if summary["measurementComplete"] else "incomplete"
     lines = [f"{summary['stack']} {summary['gate']}: exit {summary['exitCode']} ({complete})"]
+    if summary['gate'] == 'coverage':
+        lines.extend(_coverage_lines(summary.get('collectors', {})))
     for finding in summary["findings"]:
         member = f" [{finding['member']}]" if finding.get("member") else ""
         lines.append(f"  {finding['gate']}: {finding.get('path', '<project>')}{member}")
