@@ -1,0 +1,32 @@
+---
+title: "Proof tests and gates"
+---
+stateDiagram-v2
+  s0: A test enters the suite #183; T1
+  s1: A rewrite's conformance assertion #183; T6
+  s2: An old test measured against the new requirements #183; T8, T20, T22
+  s3: A proof test in the ticket's commits #183; T5, T4
+  s4: Dropped #183; T5, T6, T8
+  s5: Graduated with its job tag #183; T5, T1, T7
+  s6: Shown failing without the code #183; T3
+  s7: A finding: an untraced pin, or a missing tag #183; T1, R3, T5
+  s8: dydo test gate and dydo code-check on changed files #183; T2, T13, T21, Y6, T11, T10, T14, Y7
+  s9: A gate red: a failing test, or a static gate #183; T23, T19
+  s10: A green receipt keyed by tree#59; coverage only reported #183; Y4, T9, T23
+  [*] --> s0
+  s0 --> s1: a rewrite gets a conformance assertion #183; T6
+  s0 --> s2: an old test meets the purge #183; T8, T20
+  s0 --> s3: a proof test is written for a hop #183; T5
+  s1 --> s4: a matches-old-implementation assertion goes at the rewrite's landing #183; T6
+  s1 --> s5: a traced assertion graduates #183; T6
+  s2 --> s3: rewritten to meet them #183; T8
+  s2 --> s4: deleted, with one line in the commit when it blocks 4.0.0 work #183; T8, T22
+  s2 --> s5: it meets the new test requirements: kept #183; T8, T22
+  s3 --> s6: shown failing without the code #183; T3
+  s5 --> s7: an untraced pin, or a missing job tag #183; T1, R3, T5
+  s6 --> s8: the code goes in#59; the gates run on changed files #183; T13, T21, Y6
+  s8 --> s9: a selected test or a static gate fails #183; T23, T19
+  s8 --> s10: all selected tests pass and the statics hold #183; T23, Y4, T9
+  s9 --> s8: fixed#59; the gates run again #183; T23
+  s10 --> s4: the merge drops a test that does not graduate #183; T5
+  s10 --> s5: it graduates with its job tag #183; T5, T4

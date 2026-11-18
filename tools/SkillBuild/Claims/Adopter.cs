@@ -14,7 +14,7 @@ public static class Adopter
     public static readonly Claim Major = Move(AdopterState.Updating, AdopterState.Major, Actor.UpdateDydo,
         "4.0.0: statuses deleted, DYTEST a prerequisite, the rebuilt skills swapped in", "N1", "N9", "Y5");
     public static readonly Claim Swapped = Move(AdopterState.Major, AdopterState.Current, Actor.UpdateDydo,
-        "dydo's law read-only at law/dydo/, the two-law template, descriptive-doc rules on by default", "N8", "L2", "D1");
+        "dydo's law and glossary read-only, the two-law template, descriptive-doc rules on by default", "N8", "L2", "D9", "D1");
     public static readonly Claim Done = Move(AdopterState.Updating, AdopterState.Current, Actor.UpdateDydo,
         "updated; later builds stay line-stable, one claim per bullet", "K18");
     public static readonly Claim Harvest = Move(AdopterState.Current, AdopterState.Harvested, Actor.Admiral,

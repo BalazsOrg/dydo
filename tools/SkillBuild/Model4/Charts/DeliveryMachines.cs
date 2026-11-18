@@ -10,8 +10,8 @@ public static class DeliveryMachines
     public static readonly Machine Overview = new(MachineId.Overview, "dydo 4.0.0",
     [
         new(OverviewState.ClaimArea, "The claim build", "K1", "K4", "K6", "K7", "K10", "K16", "K24"),
-        new(OverviewState.ProjectArea, "Project and its admiral", "H4", "H5", "H10", "S14", "S15", "R25"),
-        new(OverviewState.DispatchArea, "Crew dispatch and return", "H1", "H2", "H3", "K14", "R5", "R13", "R14", "R16"),
+        new(OverviewState.ProjectArea, "Project and its admiral", "H4", "H5", "H10", "S14", "S15", "R25", "N13"),
+        new(OverviewState.DispatchArea, "Crew dispatch and return", "H1", "H2", "H3", "H20", "K14", "R5", "R13", "R14", "R16"),
         new(OverviewState.StatusArea, "Ticket statuses", "S5", "S6", "S10", "S13"),
         new(OverviewState.HopArea, "Hops by Type label", "S3", "S4", "S9", "S12"),
         new(OverviewState.ProofArea, "Proof tests and gates", "T1", "T3", "T5", "T6", "T13", "T21", "T23", "Y4"),
@@ -105,7 +105,7 @@ public static class DeliveryMachines
 
     public static readonly Machine Review = new(MachineId.Review, "The review loop",
     [
-        new(ReviewState.Wired, "Parts wired, before the Merge hop", "R2", "R6"),
+        new(ReviewState.Wired, "Parts wired, before the Merge hop", "R1", "R2", "R6"),
         new(ReviewState.Round, "Review round", "R3", "R5", "R6", "R8", "R12", "R15", "R33"),
         new(ReviewState.Verdict, "Verdict posted", "R11", "R17", "S8"),
         new(ReviewState.Fixing, "Fix rN", "S9", "R8"),

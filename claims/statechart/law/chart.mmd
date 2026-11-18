@@ -1,0 +1,20 @@
+---
+title: "How the law grows"
+---
+stateDiagram-v2
+  s0: Evidence for the law #183; L11
+  s1: Amendment candidate #183; L7, L11
+  s2: Case study prepared #183; L9
+  s3: Case study approved #183; L9
+  s4: A test, lint or gate #183; L7, L13
+  s5: Principle proposed to him #183; L7, L13
+  s6: Principle enacted #183; L3, L6, L13
+  s7: Principle retired #183; L11
+  [*] --> s0
+  s0 --> s1: his answer departs from his precedent or his law, or other evidence arrives #183; L7, L11
+  s0 --> s2: a call looks precedential #183; L9, L8
+  s1 --> s4: no reasonable person would choose otherwise #183; L7, L13
+  s1 --> s5: a reasonable person could choose otherwise and still be right #183; L7, L13
+  s2 --> s3: he approves it #183; L9, L4
+  s5 --> s6: he enacts it under a new slug #183; L13, L1, L2, L3, L5, L6, L10
+  s6 --> s7: he retires or supersedes it #183; L11, L13

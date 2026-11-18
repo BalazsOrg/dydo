@@ -1,0 +1,11 @@
+---
+title: "Safe delete"
+---
+stateDiagram-v2
+  s0: Branch or worktree in use, a T3 worktree included #183; N10
+  s1: Archived for 30 days #183; N10
+  s2: Purged #183; N10
+  [*] --> s0
+  s0 --> s1: after its merge, its captain safe-deletes it #183; N10, N12 DR 045 #167;8 or a T3 worktree is archived without breaking T3 #183; N10
+  s1 --> s0: GAP: N10 names no restore from the archive#59; the built command has one
+  s1 --> s2: 30 days pass #183; N10

@@ -48,11 +48,11 @@ Transition in [The adopter update](../../../claims/statechart/adopter/Adopter.tl
 
 ## Swapped
 
-`claim:Adopter.Swapped`: An adopter's update: dydo's law read-only at law/dydo/, the two-law template, descriptive-doc rules on by default.
+`claim:Adopter.Swapped`: An adopter's update: dydo's law and glossary read-only, the two-law template, descriptive-doc rules on by default.
 
-Spec: N8, L2, D1
+Spec: N8, L2, D9, D1
 
-Transition in [The adopter update](../../../claims/statechart/adopter/Adopter.tla): Major → Current, "dydo's law read-only at law/dydo/, the two-law template, descriptive-doc rules on by default". A system transition: no skill carries it.
+Transition in [The adopter update](../../../claims/statechart/adopter/Adopter.tla): Major → Current, "dydo's law and glossary read-only, the two-law template, descriptive-doc rules on by default". A system transition: no skill carries it.
 
 ## Done
 

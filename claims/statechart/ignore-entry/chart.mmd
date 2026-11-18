@@ -1,0 +1,19 @@
+---
+title: "A file over the token limit"
+---
+stateDiagram-v2
+  s0: A changed file over the token limit #183; T15, T16
+  s1: Ignore path (b): its own ticket #183; T18
+  s2: Ignore path (a): a file nobody writes by hand #183; T17
+  s3: Split under the limit #183; T15
+  s4: Path (b) before a council #183; T18
+  s5: In the ignore file #183; T17, T18
+  s6: Stale entry: the gate fails #183; T17
+  [*] --> s0
+  s0 --> s1: authored code that must stay whole #183; T18, T19
+  s0 --> s2: nobody writes it by hand #183; T17, T14
+  s0 --> s3: the writer splits the file #183; T15, T16
+  s1 --> s4: the ticket goes to a council #183; T18
+  s2 --> s5: the reviewer checks the entry #183; T17
+  s4 --> s5: he blesses it #183; T18
+  s5 --> s6: the entry goes stale #183; T17

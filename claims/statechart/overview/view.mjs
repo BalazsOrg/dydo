@@ -1,8 +1,8 @@
 // built from the model; edit there: tools/SkillBuild
 const states = {
   "ClaimArea": "The claim build · K1, K4, K6, K7, K10, K16, K24",
-  "ProjectArea": "Project and its admiral · H4, H5, H10, S14, S15, R25",
-  "DispatchArea": "Crew dispatch and return · H1, H2, H3, K14, R5, R13, R14, R16",
+  "ProjectArea": "Project and its admiral · H4, H5, H10, S14, S15, R25, N13",
+  "DispatchArea": "Crew dispatch and return · H1, H2, H3, H20, K14, R5, R13, R14, R16",
   "StatusArea": "Ticket statuses · S5, S6, S10, S13",
   "HopArea": "Hops by Type label · S3, S4, S9, S12",
   "ProofArea": "Proof tests and gates · T1, T3, T5, T6, T13, T21, T23, Y4",

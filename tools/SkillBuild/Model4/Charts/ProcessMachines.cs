@@ -24,7 +24,7 @@ public static class ProcessMachines
         new(ProofState.Start, "A test enters the suite", "T1"),
         new(ProofState.Written, "A proof test in the ticket's commits", "T5", "T4"),
         new(ProofState.Red, "Shown failing without the code", "T3"),
-        new(ProofState.Gated, "dydo test gate and dydo code-check on changed files", "T13", "T21", "Y6", "T11", "T10", "T14", "Y7"),
+        new(ProofState.Gated, "dydo test gate and dydo code-check on changed files", "T2", "T13", "T21", "Y6", "T11", "T10", "T14", "Y7"),
         new(ProofState.GateRed, "A gate red: a failing test, or a static gate", "T23", "T19"),
         new(ProofState.Receipt, "A green receipt keyed by tree; coverage only reported", "Y4", "T9", "T23"),
         new(ProofState.Graduated, "Graduated with its job tag", "T5", "T1", "T7"),
@@ -50,7 +50,7 @@ public static class ProcessMachines
 
     public static readonly Machine Findings = new(MachineId.Findings, "Survey, board and CI findings",
     [
-        new(FindingsState.Watch, "Findings arrive", "S22", "S26", "Y9"),
+        new(FindingsState.Watch, "Findings arrive", "S22", "S26", "Y9", "Y8"),
         new(FindingsState.Board, "dydo survey board read", "S22", "S25", "S26", "H7"),
         new(FindingsState.Map, "dydo map opened, his strategic lens", "S19", "S20", "S21", "S26", "H6"),
         new(FindingsState.SharedLink, "One thread link on two non-nested open tickets", "S23", "S13"),

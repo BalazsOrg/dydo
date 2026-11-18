@@ -1,0 +1,12 @@
+---
+title: "Liveness"
+---
+stateDiagram-v2
+  s0: Hop In Progress, recently changed #183; S24
+  s1: A liveness finding #183; S24, S23
+  s2: Hop back in Todo, restarting #183; S24
+  [*] --> s0
+  s0 --> s1: 2 hours with no change and no liveness comment #183; S24, S23
+  s1 --> s0: alive: the finding snoozes one window #183; S24, H12 or the record is behind: brought up to date #183; S24, H12
+  s1 --> s2: stopped: the hop back to Todo #183; S24, H12
+  s2 --> s0: the resumed or fresh agent attaches its thread link #183; S24, S13

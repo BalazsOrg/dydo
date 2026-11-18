@@ -1,0 +1,39 @@
+---
+title: "Survey, board and CI findings"
+---
+stateDiagram-v2
+  s0: Findings arrive #183; S22, S26, Y9, Y8
+  s1: dydo survey board read #183; S22, S25, S26, H7
+  s2: A real CI red: a CI-findings ticket #183; Y9, H8
+  s3: Something dydo needs from DYTEST #183; Y3, Y1
+  s4: A flake or runner noise #183; Y9, R22
+  s5: dydo map opened, his strategic lens #183; S19, S20, S21, S26, H6
+  s6: A mistake found after landing #183; R30
+  s7: Its owner acts #183; H5
+  s8: A DYTEST result with a count #183; Y9
+  s9: Filed in a DYTEST Project #183; Y3
+  s10: A landed Project that still has its spec #183; S23, S14
+  s11: A flake that repeats #183; Y9
+  s12: Routed to its officer #183; H11, H8
+  s13: One thread link on two non-nested open tickets #183; S23, S13
+  s14: Open shoulds under Done parents past the threshold #183; S23, T14
+  [*] --> s0
+  s0 --> s1: dydo survey board, read-only and on demand #183; S22, S26
+  s0 --> s2: a real CI red becomes a CI-findings ticket #183; Y9, R22
+  s0 --> s3: dydo needs something from DYTEST #183; Y3
+  s0 --> s4: a flake or runner noise: a timeout, red then green on rerun #183; Y9
+  s0 --> s5: he opens dydo map on the top-level tickets #183; S19, S20, S21, H6
+  s0 --> s6: a mistake is found after landing #183; R30
+  s1 --> s10: a landed Project still has a spec document #183; S23
+  s1 --> s13: one thread link on two non-nested open tickets #183; S23
+  s1 --> s14: open shoulds under Done parents past the threshold, 7 days by default #183; S23, T14
+  s2 --> s12: to the open ticket's officer, or the admiral for a long-closed ticket #183; H11
+  s3 --> s9: filed and built in a DYTEST Project, never patched from dydo #183; Y3, Y1
+  s4 --> s8: it stays a DYTEST result with a count #183; Y9
+  s4 --> s11: it repeats #183; Y9
+  s6 --> s7: it gets a lint, test or rule as well as its fix #183; R30
+  s10 --> s7: the map holder moves its lasting parts and deletes it #183; S14, D11
+  s11 --> s2: a repeating flake becomes a CI-findings ticket #183; Y9
+  s12 --> s7: its officer takes it, or an officer with an open lane pulls it #183; H8, H10, H11
+  s13 --> s7: its officer fixes the record: one agent holds one ticket #183; S7, S13, H5
+  s14 --> s7: the admiral cuts a shoulds batch #183; S17

@@ -1,6 +1,6 @@
 // built from the model; edit there: tools/SkillBuild
 const states = {
-  "Watch": "Findings arrive · S22, S26, Y9",
+  "Watch": "Findings arrive · S22, S26, Y9, Y8",
   "Board": "dydo survey board read · S22, S25, S26, H7",
   "Map": "dydo map opened, his strategic lens · S19, S20, S21, S26, H6",
   "SharedLink": "One thread link on two non-nested open tickets · S23, S13",

@@ -3,7 +3,7 @@ const states = {
   "Start": "A test enters the suite · T1",
   "Written": "A proof test in the ticket's commits · T5, T4",
   "Red": "Shown failing without the code · T3",
-  "Gated": "dydo test gate and dydo code-check on changed files · T13, T21, Y6, T11, T10, T14, Y7",
+  "Gated": "dydo test gate and dydo code-check on changed files · T2, T13, T21, Y6, T11, T10, T14, Y7",
   "GateRed": "A gate red: a failing test, or a static gate · T23, T19",
   "Receipt": "A green receipt keyed by tree; coverage only reported · Y4, T9, T23",
   "Graduated": "Graduated with its job tag · T5, T1, T7",

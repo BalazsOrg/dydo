@@ -1,0 +1,14 @@
+---
+title: "dydo merge and its refusals"
+---
+stateDiagram-v2
+  s0: dydo merge run on a PR #183; R23
+  s1: Already integrated: exit 0 #183; N12 DR 061 #167;2
+  s2: CONFLICT: the merge with the tip is not clean #183; R21, R23
+  s3: A merge commit on the target #183; R32, N12 DR 061 #167;3
+  s4: Refused with a stated reason #183; R19, R23, R26, R27
+  [*] --> s0
+  s0 --> s1: a closed PR already in its base #183; N12 DR 061 #167;2
+  s0 --> s2: the merge with the tip is not clean #183; R21, R23
+  s0 --> s3: every check holds: a merge commit#59; a re-land reverts the revert #183; R23, R24, R29, R32, N12 DR 061 #167;3
+  s0 --> s4: refused: a draft or fork PR, or a closed PR not yet in its base #183; N12 DR 061 #167;2 or refused: a hand-shaped tree, not git merge-tree --write-tree p1 p2 #183; R19 or refused: no PASS on the head, nor on an ancestor followed only by clean syncs #183; R17, R23, R24 or refused: DYTEST holds no green receipt for the combined tree #183; R23, Y4 or refused: a PR into master whose body does not declare it two-way, or whose CI is not green #183; R26 or refused: a PR into master that the dydo.json path list flags one-way #183; R27 or refused: the Review is not Done #183; R17 or refused: the target's tip moved from the pin #183; N12 DR 061 #167;2

@@ -1,0 +1,24 @@
+---
+title: "The tribunal"
+---
+stateDiagram-v2
+  s0: A hard call #183; L18, H5
+  s1: Clerk holds the case file #183; L18
+  s2: Settled by a DR #183; L18
+  s3: Two judges, sealed #183; L18
+  s4: One exchange #183; L18
+  s5: Decided overnight #183; L18, L19, L20
+  s6: Prepared for him #183; L18, L20
+  s7: Proposed DR #183; L21
+  s8: Ruling found wrong, investigated #183; L19
+  s9: His answer scored #183; L20
+  [*] --> s0
+  s0 --> s1: hard: a fresh clerk takes the Question #183; L18
+  s0 --> s2: a DR clearly settles it #183; L18
+  s1 --> s3: two judges from different families take sealed positions #183; L18, R13, R15
+  s3 --> s4: both positions in#59; one exchange #183; L18
+  s4 --> s6: by day, or they disagree, or it is one-way or DR-grade #183; L18, L20, L21
+  s4 --> s5: overnight, the judges agree on a two-way hard call #183; L18, L19, L20
+  s4 --> s7: overnight, both agree on a two-way, seriously blocking DR-grade call #183; L21
+  s5 --> s8: GAP: L19 has a ruling found wrong investigated but names no investigator or the ruling is found wrong #183; L19
+  s6 --> s9: GAP: L20 scores his daytime answers against the prediction but names no scorer or he answers#59; scored against the prediction #183; L20

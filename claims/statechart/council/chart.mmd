@@ -1,0 +1,13 @@
+---
+title: "A council"
+---
+stateDiagram-v2
+  s0: Council convened #183; L14, L15, L16
+  s1: Every member answered, sealed #183; L14
+  s2: Merge confidence waiting for both families #183; L22
+  s3: Synthesised by a non-member #183; L14
+  [*] --> s0
+  s0 --> s1: every member answers alone, sealed #183; L14, L15, L16
+  s0 --> s2: Merge confidence with one family out #183; L22
+  s1 --> s3: a non-member synthesises #183; L14
+  s2 --> s1: something blocks: it runs on one family #183; L22

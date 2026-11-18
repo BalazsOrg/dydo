@@ -1,0 +1,17 @@
+---
+title: "The DR backfill"
+---
+stateDiagram-v2
+  s0: Accepted DR, untagged #183; L12
+  s1: Tags drafted #183; L12
+  s2: Citations checked #183; L12
+  s3: On his review page #183; L12
+  s4: Row approved and merged #183; L12
+  s5: Row rejected #183; L12
+  [*] --> s0
+  s0 --> s1: cheap-tier crew drafts the tags #183; L12
+  s1 --> s2: a reviewer checks every citation #183; L12
+  s2 --> s3: batched onto one review page #183; L12
+  s3 --> s1: he marks the row retag #183; L12
+  s3 --> s4: he marks the row approved #183; L12
+  s3 --> s5: he rejects the row #183; L12

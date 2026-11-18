@@ -31,7 +31,8 @@
             "H10",
             "S14",
             "S15",
-            "R25"
+            "R25",
+            "N13"
           ]
         },
         {
@@ -41,6 +42,7 @@
             "H1",
             "H2",
             "H3",
+            "H20",
             "K14",
             "R5",
             "R13",
@@ -1518,6 +1520,7 @@
           "id": "Gated",
           "title": "dydo test gate and dydo code-check on changed files",
           "spec": [
+            "T2",
             "T13",
             "T21",
             "Y6",
@@ -2072,6 +2075,7 @@
           "id": "Wired",
           "title": "Parts wired, before the Merge hop",
           "spec": [
+            "R1",
             "R2",
             "R6"
           ]
@@ -3099,7 +3103,8 @@
           "spec": [
             "S22",
             "S26",
-            "Y9"
+            "Y9",
+            "Y8"
           ]
         },
         {
@@ -5890,10 +5895,11 @@
           "claim": "claim:Adopter.Swapped",
           "from": "Major",
           "to": "Current",
-          "arrow": "dydo's law read-only at law/dydo/, the two-law template, descriptive-doc rules on by default",
+          "arrow": "dydo's law and glossary read-only, the two-law template, descriptive-doc rules on by default",
           "spec": [
             "N8",
             "L2",
+            "D9",
             "D1"
           ],
           "guard": null,

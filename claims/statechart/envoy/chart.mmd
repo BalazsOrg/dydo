@@ -1,0 +1,25 @@
+---
+title: "A need for Balazs"
+---
+stateDiagram-v2
+  s0: A need for Balazs #183; H16
+  s1: Homework first #183; H16
+  s2: Asked in one line, in his thread #183; H22, H6
+  s3: Decided by the officer #183; H16, L18
+  s4: Passed up the chain #183; H16, H12
+  s5: Queued behind the active envoy #183; H15, H18
+  s6: Sent to the tribunal #183; H5, L18
+  s7: Envoy out #183; H15, H19, H23
+  s8: Envoy reported back #183; H15, H19
+  s9: Envoy thread closed #183; H18, H19
+  [*] --> s0
+  s0 --> s1: the officer above takes the need #183; H16
+  s1 --> s2: he is already in this officer's thread #183; H22, H6
+  s1 --> s3: the homework answers it, or the call is obvious and reversible #183; H16, L18
+  s1 --> s5: only he can settle it #183; H15, H17, S10
+  s1 --> s6: a hard call: competing answers, each good through some lens #183; H5, L18
+  s1 --> s4: a captain passes what remains up the chain #183; H16, H12
+  s4 --> s1: the officer above takes it #183; H12
+  s5 --> s7: the last envoy reported and he closed its thread #183; H18, H19, H23
+  s7 --> s8: the envoy records the result and reports back #183; H15, H19
+  s8 --> s9: he closes the envoy's thread #183; H19, H18

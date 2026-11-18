@@ -1,0 +1,18 @@
+---
+title: "A should"
+---
+stateDiagram-v2
+  s0: A round finds a should #183; R11, S17
+  s1: Already open #183; S17
+  s2: Open should #183; S17
+  s3: Should canceled with a reason #183; S18
+  s4: Should fixed #183; S17, S18
+  s5: Should marked Duplicate #183; S17
+  s6: Should moved out by his call #183; S18
+  [*] --> s0
+  s0 --> s1: a duplicate is already open #183; S17
+  s0 --> s2: no duplicate open: registered under the ticket where found #183; S17
+  s2 --> s3: at the landing: canceled with a reason #183; S18
+  s2 --> s4: fixed in place, when a lane is free, before a round, or at the landing #183; S17
+  s2 --> s5: the batch captain finds it a duplicate #183; S17
+  s2 --> s6: at the landing: moved out by his call #183; S18
