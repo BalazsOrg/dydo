@@ -10,6 +10,7 @@ using static MergeScenario;
 /// have finished green, every required check must be among them, and some suite must hold CI.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: DR 061 §5 (CI green, inert-app exception, refusal names slug and status)")]
 public sealed class CommitChecksTests : IDisposable
 {
     private const string NotGreen = "checks on 0123456789ab are not green: ";

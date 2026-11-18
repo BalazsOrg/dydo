@@ -10,6 +10,7 @@ using static MergeScenario;
 /// names, whatever <c>GH_REPO</c>, <c>GH_HOST</c> or <c>GIT_DIR</c> say.
 /// </summary>
 [Collection("Integration")]
+[Trait("Job", "contract: DR 061 §2 (the repository is the one origin names)")]
 public sealed class MergeCheckoutTests : IDisposable
 {
     private readonly MergeScenario _s = new();
