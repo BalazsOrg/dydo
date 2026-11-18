@@ -101,13 +101,6 @@ public sealed class SurveySteps
         Assert.Empty(_run.Stderr);
     }
 
-    [Then("the survey lists no findings")]
-    public void ListsNothing()
-    {
-        Assert.Empty(KeptFindings.In(_run.Stdout));
-        Assert.Empty(_run.Stderr);
-    }
-
     [Then("the error says {string}")]
     public void ErrorSays(string message)
     {

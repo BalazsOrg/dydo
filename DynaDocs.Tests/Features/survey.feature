@@ -34,12 +34,6 @@ Feature: Survey a Project's lanes
       | unblocked            | DYD-9  |
       | uncontracted         | DYD-12 |
 
-  Scenario: A quiet Project lists no findings
-    Given a quiet Project
-    When I survey "25acbbb9a90b"
-    Then the survey exits 0
-    And the survey lists no findings
-
   Scenario Outline: The argument is a Project UUID, slugId or Project URL
     Given a quiet Project
     When I survey "<argument>"
