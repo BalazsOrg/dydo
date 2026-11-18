@@ -36,7 +36,7 @@ No change in this entry renames a term mechanically, so it has no merge normalis
 `Commands/GuardCommand.ModeSet.cs`, `DynaDocs.Tests/Services/ValidationServiceTests.cs`,
 `DynaDocs.Tests/Commands/ValidateCommandTests.cs`, `DynaDocs.Tests/Integration/ClaudeGuardWiringTests.cs`,
 `DynaDocs.Tests/Features/claude-guard-wiring.feature`, `DynaDocs.Tests/Steps/ClaudeGuardWiringSteps.cs`,
-`DynaDocs.Tests/coverage/test-associations.json`, `dydo/reference/dydo-commands.md`,
+`dydo/reference/dydo-commands.md`,
 `Scaffold/dydo/reference/dydo-commands.md`, and this entry.
 
 ## Related

@@ -66,7 +66,7 @@ Guards stop accidents, not rogue agents.
 
 `Services/PrCallScanner.MergeRoutes.cs`, `DynaDocs.Tests/Services/PrCallScannerBackslashTreeTests.cs`,
 `DynaDocs.Tests/Integration/GuardMergeRouteTests.cs` (two added tests),
-`DynaDocs.Tests/coverage/test-associations.json`, `.github/workflows/ci.yml` (`GUARD_CLASSES`),
+`.github/workflows/ci.yml` (`GUARD_CLASSES`),
 and this entry.
 
 ## Related

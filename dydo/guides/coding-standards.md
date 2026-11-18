@@ -182,17 +182,17 @@ proves after green that they fail without it. Three claims prove a change, and e
   where values vary. It is contract where the ticket calls for Gherkin: the captain decides the set,
   the code-writer writes and wires it without weakening it, and the acceptance runner runs it.
 - A **test** claims one seam inside, in the code's words. It comes and goes
-  with refactors. Every non-trivial module has a test file; generated code and logic-free data types
-  are the only exceptions.
+  with refactors. Every suite test carries a trap, traced contract or edge job tag under
+  [DR 067 T5](../project/decisions/067-what-tests-are-for.md#decision).
 - A **gate** is a command whose exit code proves what neither can state: the coverage bar, the
   mutation run, the docs check.
 
 An acceptance criterion is a scenario when it can be one, else a gate.
 
 Every maintained module has one assurance policy. Build warnings and stack strictness are errors; no
-unused locals, parameters, private members, exports, or files remain; all tests pass and every
-non-trivial module has a test file. Per module, line coverage is at least 80% and branch coverage is
-at least 60%. Per method, HCRAP (`CC² × (1 − coverage)³ + cognitive`) and cognitive complexity are
+unused locals, parameters, private members, exports, or files remain; all tests pass and suite tests
+carry job tags under DR 067 T5's job-tag lint rule. Per module, line coverage is at least 80% and
+branch coverage is at least 60%. Per method, HCRAP (`CC² × (1 − coverage)³ + cognitive`) and cognitive complexity are
 at most 20. Functions have at most seven parameters outside constructors. Nested ternaries are forbidden where a stack has a
 mechanism; clones of at least 15 lines and 100 tokens are forbidden, and namespace or module
 dependency cycles are forbidden.

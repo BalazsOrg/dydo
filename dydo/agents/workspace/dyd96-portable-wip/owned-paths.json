@@ -46,11 +46,6 @@
       "phase": "production"
     },
     {
-      "path": "DynaDocs.Tests/coverage/associations.py",
-      "action": "Replace selected-case witnesses with simple exact source/test file relations",
-      "phase": "production"
-    },
-    {
       "path": "DynaDocs.Tests/coverage/coverage.runsettings",
       "action": "Delete obsolete Coverlet collector runsettings; AltCover preparation is owned by csharp_coverage.py",
       "phase": "production"
@@ -321,11 +316,6 @@
       "phase": "production"
     },
     {
-      "path": "DynaDocs.Tests/coverage/test-associations.json",
-      "action": "Exact current maintained target-to-test-file intention map",
-      "phase": "production"
-    },
-    {
       "path": "DynaDocs.Tests/coverage/tests/javascript_coverage.test.cjs",
       "action": "Meaningful real-boundary/native fixture and focused regressions for named adopted seam; fixtures authored as test data strings",
       "phase": "production"
@@ -347,11 +337,6 @@
     },
     {
       "path": "DynaDocs.Tests/coverage/tests/test_analyzer_configuration.py",
-      "action": "Meaningful real-boundary/native fixture and focused regressions for named adopted seam; fixtures authored as test data strings",
-      "phase": "production"
-    },
-    {
-      "path": "DynaDocs.Tests/coverage/tests/test_associations.py",
       "action": "Meaningful real-boundary/native fixture and focused regressions for named adopted seam; fixtures authored as test data strings",
       "phase": "production"
     },
