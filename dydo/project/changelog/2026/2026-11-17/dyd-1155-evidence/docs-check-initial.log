@@ -1,0 +1,10 @@
+Running as unit: run-p2625557-i149337426.scope; invocation ID: bd1714eb3c53485bbb64fbe527075125
+Checking /home/balazs/.t3/worktrees/DynaDocs/t3-a829c0a8-36dac2b1bcc02af9/dydo...
+
+ERRORS:
+  project/changelog/2026/2026-11-17/dyd-1155-scaffold-pickup.md
+    - Line 77: Broken link: ../../../../../Scaffold/dydo/reference/linear-workspace-standard.md
+
+Found 1 errors, 0 warnings in 896 files.
+
+Found errors.
