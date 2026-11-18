@@ -13,7 +13,7 @@ using static DynaDocs.Tests.Integration.PushedRepository;
 /// </summary>
 [Collection("Integration")]
 [Trait("Job", "contract: DYD-425 and DR 061 decision 7, merge routes are the user's or dydo merge's")]
-public class GuardMergeRouteTests : IntegrationTestBase
+public class GuardMergeRouteTests(PushedProjectTemplates templates) : IntegrationTestBase, IClassFixture<PushedProjectTemplates>
 {
     private const string Sha40 = "0123456789abcdef0123456789abcdef01234567";
 
@@ -24,11 +24,16 @@ public class GuardMergeRouteTests : IntegrationTestBase
 
     private string Worktree => Path.Combine(TestDir, "wt");
 
+    // Each row gets its own copy of the class's built tree, its origin re-pointed at its own copy.
     private async Task InitPushedProject()
     {
-        await InitProjectAsync("none");
-        File.AppendAllText(Path.Combine(TestDir, ".gitignore"), "\n/origin.git/\n/wt/\n");
-        Create(TestDir, Path.Combine(TestDir, "origin.git"));
+        await templates.CopyInto("pushed", TestDir, async tree =>
+        {
+            await InitProjectAsync("none");
+            File.AppendAllText(Path.Combine(tree, ".gitignore"), "\n/origin.git/\n/wt/\n");
+            Create(tree, Path.Combine(tree, "origin.git"));
+        });
+        Git(TestDir, "remote", "set-url", "origin", Path.Combine(TestDir, "origin.git"));
     }
 
     // Words containing a space or quote are single-quoted, which bash and PowerShell both read literally.
