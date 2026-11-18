@@ -151,8 +151,8 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
      agents will keep passing things down. That's not what we want. What we want is for each more
      complex coherent work unit to get it's own orchestrator (who we call captains). If the work is
      too big for one agent to handle well and/or it can properly be parallelized, "cut" then it gets
-     done so." The cutter decides; no agent promotes itself; "too big, re-cut" goes up. Nesting
-     follows coherent units that are too big for one agent or can be parallelised, never passing
+     done so." How cutting works is [DR 065](./065-review-placement-and-the-merge-review-cut.md)
+     decision 15 (B8a). Nesting follows coherent units that are too big for one agent or can be parallelised, never passing
      work down.
    - **No pilot:** "a" (allowed now; the first real use is the pilot). If deep nesting misbehaves,
      or a deeper sub-captain fails, it is handled then as a finding.
@@ -185,8 +185,9 @@ living in built skills (D4's first rule) are in [DR 064](./064-claims-build-the-
      left out. What needs him: things only he can do (an API token, an authorisation) and deep design
      or product calls. Questions should surface during charting and wayfinding, before
      implementation.
-   - If he is needed, the officer above prepares the decision before an envoy goes. This homework
-     step is where a call goes to the council or the tribunal
+   - That the officer above prepares the decision before an envoy goes is
+     [DR 065](./065-review-placement-and-the-merge-review-cut.md) decision 7 (D9 refining B6). This
+     homework step is where a call goes to the council or the tribunal
      ([DR 066](./066-the-law-councils-and-the-tribunal.md)).
    - Only-he-can-do-it items are Enablement tickets, blocking only the work that waits on them. When
      the Enablement is a setup procedure he runs (credentials, cutover), the envoy uses the wizard

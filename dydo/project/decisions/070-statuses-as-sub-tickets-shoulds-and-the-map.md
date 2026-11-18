@@ -123,9 +123,10 @@ The loop itself is DR 065 decision 7 (B6). C3 says how each outcome shows.
      unblocked, a HITL Merge means his click is due; the captain closes it after verifying the merge
      on main. Which merges need him is [DR 071](./071-hierarchy-envoys-and-captain-autonomy.md)
      rules 13 to 19; the landing is DR 065 decision 19.
-   - A real red gate after a two-way merge ("lgtm", C6): the captain reverts, and the Merge goes
-     **Canceled** with "reverted: <gate> red on <merge SHA>". The red gate is a Blocker inside a Fix;
-     a fix-scoped Review follows, then a new Merge. A flake: the Merge goes Done and a Bug is filed.
+   - A real red gate after a two-way merge ("lgtm", C6): the rerun, the revert, the fix-scoped round
+     and the flake are DR 065 decision 14. C6 adds the board states: the reverted Merge goes
+     **Canceled** with "reverted: <gate> red on <merge SHA>", because Done would be false; the red
+     gate is a Blocker inside a Fix (C3); a new Merge sub-ticket follows the fix-scoped Review.
      Revert applies to two-way changes only; a one-way PR carries a recovery plan instead (D16,
      DR 071 rule 15).
 
