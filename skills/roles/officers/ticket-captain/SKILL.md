@@ -25,7 +25,7 @@ description: "A ticket to hold to its end - cut its hops, run its review rounds,
 
 Nominal path:
 
-- Name the ticket branch `<KEY>-<slug>` off the feature branch, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
+- Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
 - Create the ticket's branch, open its PR and merge it yourself; ordinary crew never do.
 - Report a problem outside your ticket to your officer.
 
@@ -69,7 +69,7 @@ Nominal path:
 
 Exits:
 
-- Send each Linear unit by `delegate_task` from its crew kind's dispatch template, a reviewer from a family other than the author's where possible.
+- Seat any reviewer from a family other than the author's when possible, single seats included.
 - Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.
 - Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
 
@@ -176,7 +176,7 @@ Exits:
 Nominal path:
 
 - Merge only through `dydo merge`; when it refuses, its stated reason says why.
-- A conflict-free merge into the feature branch gets no merge review: the combined gates on the merge SHA and hosted CI on the `feature/**` push prove it.
+- A conflict-free merge into the feature branch gets no merge review.
 - No ticket or merge waits on mutation; it is checked at the landing.
 
 Exits:
@@ -252,7 +252,7 @@ Exits:
 
 Exits:
 
-- When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop once the merge tree's receipt and CI are green.
+- When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop as for any merge.
 
 ### Reverted after a real red
 

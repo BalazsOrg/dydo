@@ -11,11 +11,13 @@ stateDiagram-v2
   s6: Fixing the round's blockers and shoulds #183; N5, S9, S17
   s7: Landing prerequisites #183; N7, S18, T12, T8, N14, N15, Y2, Y6, L6, L12, N8, N9
   s8: Landing merge review: a Merge-confidence council #183; N6, R20, L16
-  s9: Balazs walks the landing candidate #183; N6, N4, N3
-  s10: GAP: unknown state
-  s11: Landing PR into master #183; N6, R26, R27
-  s12: Landed on master #183; N6, S14, D11
-  s13: Release tag pushed by Balazs #183; R28, N2, N15
+  s9: A blocker that needs Balazs: up the chain at once #183; R9
+  s10: A fundamental blocker or a new requirement: the officer above re-plans #183; R9
+  s11: Balazs walks the landing candidate #183; N6, N4, N3
+  s12: GAP: unknown state
+  s13: Landing PR into master #183; N6, R26, R27
+  s14: Landed on master #183; N6, S14, D11
+  s15: Release tag pushed by Balazs #183; R28, N2, N15
   [*] --> s0
   s0 --> s1: the admiral staffs a round#59; a fresh area map #183; N5, R13, R14
   s1 --> s2: an area's Read phase starts #183; N5
@@ -27,10 +29,12 @@ stateDiagram-v2
   s5 --> s7: a round finds no blocker and no should #183; N5
   s6 --> s1: the fixes are merged#59; the next round from zero, a fresh area map #183; N5
   s7 --> s8: every landing prerequisite met #183; N7, S18, T12, N15
-  s8 --> s6: the landing merge review finds a blocker #183; R9, R11
-  s8 --> s9: the Merge-confidence council passes the landing candidate #183; N6, L16, R20, H22
-  s6 --> s8: the fixes are merged#59; a full-lens merge-review round #183; R8, R9
-  s9 --> s10: GAP: N6 gives only his acceptance#59; the route when he does not accept is unstated
-  s9 --> s11: Balazs accepts the landing candidate #183; N6
-  s11 --> s12: the landing PR is in master #183; N6, R26
-  s12 --> s13: Balazs pushes the release tag #183; R28, N2, N15
+  s8 --> s6: a blocker is broken or against the spec #183; R9, R11 or a blocker is a security hole #183; R9
+  s8 --> s9: a blocker needs Balazs #183; R9
+  s8 --> s10: a blocker is fundamental, or a new requirement #183; R9
+  s8 --> s11: the Merge-confidence council passes the landing candidate #183; N6, L16, R20, H22
+  s6 --> s8: the fixes are merged#59; a full-lens merge-review round, the security lens first after a security hole #183; R8, R9
+  s11 --> s12: GAP: N6 gives only his acceptance#59; the route when he does not accept is unstated
+  s11 --> s13: Balazs accepts the landing candidate #183; N6
+  s13 --> s14: the landing PR is in master #183; N6, R26
+  s14 --> s15: Balazs pushes the release tag #183; R28, N2, N15

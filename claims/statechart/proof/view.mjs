@@ -10,7 +10,7 @@ const states = {
   "Dropped": "Dropped · T5, T6, T8",
   "Finding": "A finding: an untraced pin, or a missing tag · T1, R3, T5",
   "Old": "An old test measured against the new requirements · T8, T20, T22",
-  "Conformance": "A rewrite's conformance assertion · T6"
+  "Conformance": "A rewrite's conformance suite · T6"
 };
 const steps = {
   "Testing_Delete": "deleted, with one line in the commit when it blocks 4.0.0 work · T8, T22",

@@ -28,6 +28,7 @@ public enum MachineId
     Council,
     Tribunal,
     Law,
+    SlugCheck,
     Backfill,
     Mutation,
     SafeDelete,

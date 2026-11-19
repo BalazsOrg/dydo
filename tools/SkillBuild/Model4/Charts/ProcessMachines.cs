@@ -30,7 +30,12 @@ public static class ProcessMachines
         new(RoleEvaluationState.Approved, "Approved by him at the final candidate, folds and removals included", "K16", "K22")
     ], RoleEvaluationState.Questioned, [RoleEvaluationState.Approved])
     {
-        Gaps = [new(RoleEvaluationState.WrittenFresh, null, "K16 and K22 give his approval at the final candidate, not the route when he rejects a fold or a rewrite")]
+        Gaps =
+        [
+            new(RoleEvaluationState.WrittenFresh, null, "K16 and K22 give his approval of a rewrite at the final candidate, not the route when he rejects it"),
+            new(RoleEvaluationState.Folded, null, "K16 and K22 give his approval of a fold at the final candidate, not the route when he rejects it"),
+            new(RoleEvaluationState.Removed, null, "K16 and K22 give his approval of a removal at the final candidate, not the route when he rejects it")
+        ]
     };
 
     public static readonly Machine Proof = new(MachineId.Proof, "Proof tests and gates",
@@ -45,7 +50,7 @@ public static class ProcessMachines
         new(ProofState.Dropped, "Dropped", "T5", "T6", "T8"),
         new(ProofState.Finding, "A finding: an untraced pin, or a missing tag", "T1", "R3", "T5"),
         new(ProofState.Old, "An old test measured against the new requirements", "T8", "T20", "T22"),
-        new(ProofState.Conformance, "A rewrite's conformance assertion", "T6")
+        new(ProofState.Conformance, "A rewrite's conformance suite", "T6")
     ], ProofState.Start, [ProofState.Graduated, ProofState.Dropped, ProofState.Finding]);
 
     public static readonly Machine Docs = new(MachineId.Docs, "Descriptive docs",

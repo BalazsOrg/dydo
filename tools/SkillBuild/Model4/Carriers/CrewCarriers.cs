@@ -12,6 +12,7 @@ public static class CrewCarriers
         States =
         [
             .. HierarchyMachines.Dispatch.Slots(DispatchState.Briefed, DispatchState.Working),
+            .. ProcessMachines.Proof.Slots(ProofState.Conformance),
             .. MergeMachines.FeatureMerge.Slots(FeatureMergeState.Resolving),
             .. LawMachines.Mutation.Slots(MutationState.Ticketed),
             .. LawMachines.IgnoreEntry.Slots(IgnoreEntryState.OverLimit)

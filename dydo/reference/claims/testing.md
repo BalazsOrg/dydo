@@ -204,13 +204,27 @@ Spec: T5
 
 ## ConformanceSuite
 
-`claim:Testing.ConformanceSuite`: A rewrite gets a conformance suite apart from the graduation rules.
+`claim:Testing.ConformanceSuite`: A rewrite gets a conformance suite, a separate rule in a separate place from the graduation rules.
 
 Spec: T6
 
+**code-writer** (Conformance, nominal):
+
+> A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate, and its 'matches old implementation' assertions go at the rewrite's landing.
+
+## Smells
+
+`claim:Testing.Smells`: Three smells are pruned: tests that change whenever the code does, check that a deleted feature is gone, or can never fail.
+
+Spec: T22
+
 **code-writer** (Working, nominal):
 
-> A rewrite or wide refactor gets a conformance suite kept apart from the graduating tests: its traced assertions graduate, and its 'matches old implementation' assertions go at the rewrite's landing.
+> Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.
+
+**reviewer** (Round, nominal):
+
+> A test that changes whenever the code does, checks that a deleted feature is gone, or can never fail is a finding.
 
 ## Guidance
 

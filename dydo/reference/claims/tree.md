@@ -64,17 +64,17 @@ Spec: R32
 
 ## Branch
 
-`claim:Tree.Branch`: A ticket branch is named by its key off the feature branch; branch, base and worktree are posted before the first edit.
+`claim:Tree.Branch`: A ticket branch is named by its key off the feature branch, or off main for an atomic ticket; branch, base and worktree are posted before the first edit.
 
 Spec: N12 DR 045 §8
 
 **ticket-captain** (Briefed, nominal):
 
-> Name the ticket branch `<KEY>-<slug>` off the feature branch, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
+> Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
 
 **working-tree-standard** (TreeInvariants):
 
-> A ticket branch is `<KEY>-<slug>` off its feature branch, so Linear attaches the branch and PR; its branch, base SHA and worktree path are on the ticket before the first edit.
+> A ticket branch is `<KEY>-<slug>` off its feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; its branch, base SHA and worktree path are on the ticket before the first edit.
 
 ## LandingCandidate
 

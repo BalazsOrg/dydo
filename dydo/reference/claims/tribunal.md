@@ -38,6 +38,18 @@ Spec: L18, R13, R15
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): CaseFile → Sealed, "two judges from different families take sealed positions". A system transition: no skill carries it.
 
+## OneFamily
+
+`claim:Tribunal.OneFamily`: With one family out, Judge decides overnight and prepares by day on one family.
+
+Spec: L22
+
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): CaseFile → Sealed, "one family out: the judges sit on the remaining family".
+
+**admiral** (CaseFile, exit):
+
+> With one family out, the tribunal still runs, on the remaining family: overnight it decides, by day it prepares and he decides.
+
 ## Exchange
 
 `claim:Tribunal.Exchange`: One exchange follows: each answers the other's strongest point or concedes.
@@ -105,16 +117,6 @@ Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Prepared
 Spec: L19
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): DecidedOvernight → Investigated, "the ruling is found wrong". A system transition: no skill carries it.
-
-## OneFamily
-
-`claim:Tribunal.OneFamily`: With one family out, Judge decides overnight and prepares by day on one family.
-
-Spec: L22
-
-**admiral** (HardCall, nominal):
-
-> With one family out, the tribunal runs on the other: overnight it decides, by day it prepares.
 
 ## Clerk
 

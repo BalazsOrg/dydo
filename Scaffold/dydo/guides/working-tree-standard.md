@@ -13,7 +13,7 @@ type: guide
 - No self-review. An agent never reviews its own work or rules on findings about it: its own context biases it, and a fresh context catches what it can't. A leaf's evidence check is a fresh seat the officer sends. Each level checks for itself, never taking a lower level's verdict as its proof. A captain authors only a change too small to need its own review; the review above covers it.
 - One writer per worktree, and commits touch owned paths only.
 - Every writer hop ends on a commit `<KEY> <hop>: <what>`, where `<hop>` is `implement`, `fix` or `merge`, kept unsquashed. Merges are merge commits only, never squash or rebase.
-- A ticket branch is `<KEY>-<slug>` off its feature branch, so Linear attaches the branch and PR; its branch, base SHA and worktree path are on the ticket before the first edit.
+- A ticket branch is `<KEY>-<slug>` off its feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; its branch, base SHA and worktree path are on the ticket before the first edit.
 
 ## Branches
 

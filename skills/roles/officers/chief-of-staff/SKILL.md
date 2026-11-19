@@ -27,12 +27,11 @@ disable-model-invocation: true
 Nominal path:
 
 - Keep the work going through any usage limit, and never bring one to him.
-- An escalation that needs him reaches him through its admiral's own envoy, never through you.
 - Name what each DR says whenever you cite one to him, never only its number.
 - Keep his one short list from `dydo survey board` across Projects: HITL threads waiting on him, HITL Merges waiting on his click, and anything waiting too long, each as a thread link.
 - List the continuous tickets with their age; when he tells you to, give one to an officer with an open lane, and leave anything outside the pull rule on the list for him.
 - Catch each open HITL ticket that has no envoy.
-- Pass on thread links, never their content, and send no envoys.
+- Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its admiral's own envoy.
 
 ### Investigating for him
 

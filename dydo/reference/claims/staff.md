@@ -116,7 +116,7 @@ Spec: H7
 
 **chief-of-staff** (Day, nominal):
 
-> Pass on thread links, never their content, and send no envoys.
+> Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its admiral's own envoy.
 
 ## DoubleCheck
 

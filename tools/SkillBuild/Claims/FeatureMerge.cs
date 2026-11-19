@@ -93,7 +93,7 @@ public static class FeatureMerge
 
     public static readonly Claim NoMergeReview = new("A conflict-free merge into the feature branch gets no merge review.", [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "A conflict-free merge into the feature branch gets no merge review: the combined gates on the merge SHA and hosted CI on the `feature/**` push prove it.", new(FeatureMergeState.Running, 614, MoveKind.Nominal)),
+        new(Skill.TicketCaptain, "A conflict-free merge into the feature branch gets no merge review.", new(FeatureMergeState.Running, 614, MoveKind.Nominal)),
         new(Skill.WorkingTreeStandard, "A conflict-free merge into the feature branch is proved by the combined gates on the merge SHA plus hosted CI on the `feature/**` push; there is no merge review.", new(Section.TreeMerging, 1))
     ])
     { Spec = ["R18"] };

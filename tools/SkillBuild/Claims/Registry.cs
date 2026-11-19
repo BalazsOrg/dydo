@@ -13,7 +13,7 @@ public static class Registry
         DeliveryMachines.Project, HierarchyMachines.Dispatch,
         DeliveryMachines.TicketStatus, DeliveryMachines.Hops, ProcessMachines.Proof, ProcessMachines.Docs, DeliveryMachines.Review,
         HierarchyMachines.Should, MergeMachines.MergeCommand, MergeMachines.FeatureMerge, ProcessMachines.Findings,
-        HierarchyMachines.Liveness, ToolMachines.Map, HierarchyMachines.Envoy, LawMachines.Council, LawMachines.Tribunal, LawMachines.Law,
+        HierarchyMachines.Liveness, ToolMachines.Map, HierarchyMachines.Envoy, LawMachines.Council, LawMachines.Tribunal, LawMachines.Law, LawMachines.SlugCheck,
         LawMachines.Backfill, HierarchyMachines.Staff, DeliveryMachines.Landing, LawMachines.Mutation, MergeMachines.MasterRoute,
         LawMachines.SafeDelete, LawMachines.IgnoreEntry, ProcessMachines.Adopter
     ];
@@ -23,7 +23,7 @@ public static class Registry
         typeof(Role), typeof(Overview), typeof(Build), typeof(Evaluation), typeof(Host), typeof(ChartTool), typeof(Project),
         typeof(Dispatch), typeof(Brief), typeof(Roster), typeof(TicketStatus), typeof(Hops), typeof(Testing), typeof(Gates), typeof(Docs), typeof(Fix), typeof(Review),
         typeof(Should), typeof(MergeCommand), typeof(FeatureMerge), typeof(Findings), typeof(Report), typeof(Liveness), typeof(MapView),
-        typeof(Envoy), typeof(Council), typeof(Tribunal), typeof(Law), typeof(Backfill), typeof(Staff), typeof(Landing),
+        typeof(Envoy), typeof(Council), typeof(Tribunal), typeof(Law), typeof(Slugs), typeof(Backfill), typeof(Staff), typeof(Landing),
         typeof(Inquisition), typeof(Mutation), typeof(MasterRoute), typeof(SafeDelete), typeof(IgnoreEntry), typeof(Adopter),
         typeof(Tree), typeof(Linear), typeof(Scout)
     ];

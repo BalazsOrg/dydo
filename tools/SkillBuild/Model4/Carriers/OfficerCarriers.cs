@@ -24,7 +24,7 @@ public static class OfficerCarriers
             .. HierarchyMachines.Liveness.Slots(LivenessState.Quiet),
             .. DeliveryMachines.Project.Slots(ProjectState.Replanning),
             .. HierarchyMachines.Envoy.Slots(EnvoyState.Homework, EnvoyState.Queued, EnvoyState.Active, EnvoyState.Reported),
-            .. LawMachines.Tribunal.Slots(TribunalState.HardCall, TribunalState.DecidedOvernight, TribunalState.Prepared, TribunalState.ProposedDr),
+            .. LawMachines.Tribunal.Slots(TribunalState.HardCall, TribunalState.CaseFile, TribunalState.DecidedOvernight, TribunalState.Prepared, TribunalState.ProposedDr),
             .. LawMachines.Law.Slots(LawState.Evidence, LawState.Candidate),
             .. HierarchyMachines.Should.Slots(ShouldState.Open),
             .. MergeMachines.MasterRoute.Slots(MasterRouteState.Paced, MasterRouteState.Held),

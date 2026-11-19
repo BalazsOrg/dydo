@@ -12,6 +12,8 @@ public enum LandingState
     RoundFixes,
     Prerequisites,
     MergeReview,
+    Replanned,
+    Escalated,
     Walkthrough,
     Merging,
     Landed,

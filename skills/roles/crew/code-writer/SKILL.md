@@ -46,11 +46,11 @@ Nominal path:
 - Tag each graduating test with its job: trap (naming the bug or pitfall), contract (citing the spec or DR) or edge.
 - Keep proof tests in the ticket's commits, and record their SHA in the receipt and in `proof:`.
 - Make nothing depend on old evidence: a squash or a fresh start must break nothing.
-- A rewrite or wide refactor gets a conformance suite kept apart from the graduating tests: its traced assertions graduate, and its 'matches old implementation' assertions go at the rewrite's landing.
 - Property tests for edges and differential tests for rewrites are guidance, never a gate.
 - Prove the hop with receipts; a DYTEST result for the same tree counts unless later changes put it in doubt.
+- Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.
 - Run tests through `dydo test`, and the static gates through `dydo code-check`, which checks changed files only.
-- Keep every file you change, tests included, under the file token limit: 5k tokens by default, counted as bytes ÷ 4.
+- The file token limit is 5k tokens by default, counted as bytes ÷ 4, for every file you change, tests included.
 - A descriptive doc explains and never authorizes: on what the code does, the code wins; a reason counts only when it links a DR or a principle.
 - Write a new descriptive doc only when invited, and only if its subject is solid, important and expensive to rebuild from code.
 - When your change touches the paths a doc's `explains:` declares, update the doc or state that it holds.
@@ -62,6 +62,12 @@ Nominal path:
 Exits:
 
 - Close your hop Done and return its commit SHA and receipts to the brief's return-to.
+
+### A rewrite's conformance suite
+
+Nominal path:
+
+- A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate, and its 'matches old implementation' assertions go at the rewrite's landing.
 
 ### Resolving a CONFLICT on the ticket branch
 

@@ -8,7 +8,7 @@ type: reference
 
 ## Send
 
-`claim:Dispatch.Send`: A Linear unit goes out by delegate_task from its kind's template, one cross-family seat where possible.
+`claim:Dispatch.Send`: A staffed seat goes out briefed; any reviewer or judge comes from a family other than the author's when possible.
 
 Spec: H3, K14, R15, S1
 
@@ -16,11 +16,11 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **ticket-captain** (Staffing, exit):
 
-> Send each Linear unit by `delegate_task` from its crew kind's dispatch template, a reviewer from a family other than the author's where possible.
+> Seat any reviewer from a family other than the author's when possible, single seats included.
 
 **admiral** (Staffing, exit):
 
-> Send each captain or seat by `delegate_task` from its kind's dispatch template, a reviewer or judge from a family other than the author's where possible.
+> Seat any reviewer or judge from a family other than the author's when possible, single seats included.
 
 **code-writer** (Briefed, arrival):
 

@@ -5,7 +5,7 @@ VARIABLES state, level, envoys
 
 vars == <<state, level, envoys>>
 
-Finals == {"Decided", "AskedInThread", "ToTribunal", "Closed"}
+Finals == {"Decided", "AskedInThread", "ToTribunal", "Closed", "MovedOn"}
 
 Init ==
     /\ state = "Need"
@@ -37,6 +37,13 @@ Envoy_InThread ==
     /\ state = "Homework"
     /\ state' = "AskedInThread"
     /\ UNCHANGED <<level, envoys>>
+
+\* claim:Envoy.MovedOn
+Envoy_MovedOn ==
+    /\ state = "Reported"
+    /\ state' = "MovedOn"
+    /\ envoys' = 0
+    /\ UNCHANGED <<level>>
 
 \* claim:Envoy.NextLevel
 Envoy_NextLevel ==
@@ -87,6 +94,7 @@ Next ==
     \/ Envoy_Decide
     \/ Envoy_Hard
     \/ Envoy_InThread
+    \/ Envoy_MovedOn
     \/ Envoy_NextLevel
     \/ Envoy_Open
     \/ Envoy_PassUp

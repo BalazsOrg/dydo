@@ -12,11 +12,7 @@ type: reference
 
 Spec: H4
 
-Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Unheld → Charting, "the Project opens; it has a live admiral".
-
-**admiral** (Charting, arrival):
-
-> You hold one open Project's outcome from now until it lands.
+Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Unheld → Charting, "the Project opens; it has a live admiral". A system transition: no skill carries it.
 
 ## Charted
 

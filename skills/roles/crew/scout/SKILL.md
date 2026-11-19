@@ -33,7 +33,7 @@ Nominal path:
 - Hand a question about your question up to your dispatcher, never to Balazs.
 - Report a problem outside your question to your officer.
 - On a spec's scout pass, return Questions only, never PASS or FAIL.
-- Answer one factual question from its primary sources (docs, code, Linear, DRs, the spec), naming where each part of the answer lives.
+- Answer one factual question from its primary sources.
 
 Exits:
 

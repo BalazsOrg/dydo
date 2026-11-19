@@ -118,6 +118,11 @@
       "name": "agree",
       "initial": "FALSE",
       "bound": "agree \\in BOOLEAN"
+    },
+    {
+      "name": "oneFamily",
+      "initial": "FALSE",
+      "bound": "oneFamily \\in BOOLEAN"
     }
   ],
   "transitions": [
@@ -159,6 +164,20 @@
       ],
       "guard": null,
       "effect": "night' \\in BOOLEAN /\\ twoWay' \\in BOOLEAN /\\ drGrade' \\in BOOLEAN /\\ blocking' \\in BOOLEAN",
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Tribunal.OneFamily",
+      "from": "CaseFile",
+      "to": "Sealed",
+      "arrow": "one family out: the judges sit on the remaining family",
+      "spec": [
+        "L22"
+      ],
+      "guard": null,
+      "effect": "oneFamily' = TRUE",
       "skills": [
         "admiral"
       ]
@@ -228,7 +247,7 @@
         "R15"
       ],
       "guard": null,
-      "effect": null,
+      "effect": "oneFamily' = FALSE",
       "skills": []
     },
     {

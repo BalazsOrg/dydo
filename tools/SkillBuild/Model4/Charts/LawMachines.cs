@@ -37,7 +37,8 @@ public static class LawMachines
             new("twoWay", "FALSE", "twoWay \\in BOOLEAN"),
             new("drGrade", "FALSE", "drGrade \\in BOOLEAN"),
             new("blocking", "FALSE", "blocking \\in BOOLEAN"),
-            new("agree", "FALSE", "agree \\in BOOLEAN")
+            new("agree", "FALSE", "agree \\in BOOLEAN"),
+            new("oneFamily", "FALSE", "oneFamily \\in BOOLEAN")
         ],
         Gaps = [new(TribunalState.ProposedDr, null, "L21 has him ratify a proposed DR but gives no route when he declines it")]
     };
@@ -53,6 +54,13 @@ public static class LawMachines
         new(LawState.CaseStudy, "Case study prepared", "L9"),
         new(LawState.CaseLaw, "Case study approved", "L9")
     ], LawState.Evidence, [LawState.Mechanical, LawState.Enacted, LawState.Retired, LawState.CaseLaw]);
+
+    public static readonly Machine SlugCheck = new(MachineId.SlugCheck, "A new DR's slugs checked",
+    [
+        new(SlugCheckState.Written, "A new DR: applies: (or new-ground), and one weighed: line per tension it resolved", "L8"),
+        new(SlugCheckState.Valid, "Its slugs valid: dydo check passes", "L8"),
+        new(SlugCheckState.Invalid, "An unknown or malformed slug: dydo check fails", "L8")
+    ], SlugCheckState.Written, [SlugCheckState.Valid]);
 
     public static readonly Machine Backfill = new(MachineId.Backfill, "The DR backfill",
     [

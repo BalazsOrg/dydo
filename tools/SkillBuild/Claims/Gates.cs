@@ -8,7 +8,7 @@ public static class Gates
     { Spec = ["Y6", "T21", "T13"] };
 
     public static readonly Claim TokenLimit = new("Every file, tests included, stays under the 5k-token limit, counted as bytes ÷ 4.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "Keep every file you change, tests included, under the file token limit: 5k tokens by default, counted as bytes ÷ 4.", new(DispatchState.Working, 2302, MoveKind.Nominal))])
+        [new(Skill.CodeWriter, "The file token limit is 5k tokens by default, counted as bytes ÷ 4, for every file you change, tests included.", new(DispatchState.Working, 2302, MoveKind.Nominal))])
     { Spec = ["T15", "T14"] };
 
     public static readonly Claim Coverage = new("Coverage is a report, not a gate.", [Actor.Reviewer],

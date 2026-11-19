@@ -66,6 +66,12 @@ Mutation_Reject ==
     /\ state' = "Dispute"
     /\ UNCHANGED <<cloudRouteNotMuchMoreWork>>
 
+\* claim:Mutation.Rejected
+Mutation_Rejected ==
+    /\ state = "Claimed"
+    /\ state' = "Ticketed"
+    /\ UNCHANGED <<cloudRouteNotMuchMoreWork>>
+
 \* claim:Mutation.Ruled
 Mutation_Ruled ==
     /\ state = "Dispute"
@@ -102,6 +108,7 @@ Next ==
     \/ Mutation_LandingCheck
     \/ Mutation_Lapse
     \/ Mutation_Reject
+    \/ Mutation_Rejected
     \/ Mutation_Ruled
     \/ Mutation_RuledNot
     \/ Mutation_Schedule

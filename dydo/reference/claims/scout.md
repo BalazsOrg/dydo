@@ -24,4 +24,4 @@ Spec: K22, H16
 
 **scout** (Working, nominal):
 
-> Answer one factual question from its primary sources (docs, code, Linear, DRs, the spec), naming where each part of the answer lives.
+> Answer one factual question from its primary sources.

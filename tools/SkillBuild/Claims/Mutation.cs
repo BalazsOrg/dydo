@@ -40,9 +40,12 @@ public static class Mutation
         [new(Skill.Reviewer, "Approve an equivalent mutant one at a time, with a reason, only if you wrote neither the code nor its tests; your approval binds that mutant and its surrounding code.", new(MutationState.Claimed, 1609, MoveKind.Exit))])
     { Spec = ["T12"], Transition = new(MutationState.Claimed, MutationState.Clean, "a fresh independent reviewer approves it") };
 
+    public static readonly Claim Rejected = new("A rejected claim the author accepts leaves the survivor to fix.", [Actor.Reviewer, Actor.CodeWriter], [])
+    { Spec = ["T12"], Transition = new(MutationState.Claimed, MutationState.Ticketed, "rejected, and the author accepts: back to fixing") };
+
     public static readonly Claim Reject = new("A claim disputed between author and reviewer goes to a council.", [Actor.Reviewer, Actor.CodeWriter],
         [new(Skill.Reviewer, "A rejected claim the author disputes goes to a council.", new(MutationState.Claimed, 1610, MoveKind.Exit))])
-    { Spec = ["T12", "L16"], Transition = new(MutationState.Claimed, MutationState.Dispute, "rejected and disputed") };
+    { Spec = ["T12", "L16"], Transition = new(MutationState.Claimed, MutationState.Dispute, "rejected, and the author disputes it: a council") };
 
     public static readonly Claim Ruled = new("The council rules the mutant equivalent.", [Actor.Reviewer], [])
     { Spec = ["T12", "L14"], Transition = new(MutationState.Dispute, MutationState.Clean, "the council rules it equivalent") };

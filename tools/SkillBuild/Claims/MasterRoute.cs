@@ -73,7 +73,7 @@ public static class MasterRoute
     { Spec = ["R27", "R31"], Transition = new(MasterRouteState.HitlMerge, MasterRouteState.Merged, "Balazs clicks the merge") };
 
     public static readonly Claim Woken = new("The survey wakes the captain on a merged PR with its HITL Merge open; the hop closes on green.", [Actor.Survey, Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop once the merge tree's receipt and CI are green.", new(MasterRouteState.Merged, 711, MoveKind.Exit))])
+        [new(Skill.TicketCaptain, "When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop as for any merge.", new(MasterRouteState.Merged, 711, MoveKind.Exit))])
     { Spec = ["R20", "R31"], Transition = new(MasterRouteState.Merged, MasterRouteState.Closed, "receipt and CI green on the merge") };
 
     // The captain's line for a real red is FeatureMerge.RealRed, which covers every merge (K4).

@@ -24,7 +24,7 @@ Spec: T15, T14
 
 **code-writer** (Working, nominal):
 
-> Keep every file you change, tests included, under the file token limit: 5k tokens by default, counted as bytes ÷ 4.
+> The file token limit is 5k tokens by default, counted as bytes ÷ 4, for every file you change, tests included.
 
 ## Coverage
 

@@ -3,11 +3,11 @@ namespace DynaDocs.SkillBuild;
 /// <summary>Crew dispatch and return (M9): staffing a seat, the brief, starting the hop, a re-cut, the return, and the dispatch channel's rules.</summary>
 public static class Dispatch
 {
-    public static readonly Claim Send = new("A Linear unit goes out by delegate_task from its kind's template, one cross-family seat where possible.",
+    public static readonly Claim Send = new("A staffed seat goes out briefed; any reviewer or judge comes from a family other than the author's when possible.",
         [Actor.TicketCaptain, Actor.Admiral, Actor.CodeWriter, Actor.Reviewer, Actor.Scout],
     [
-        new(Skill.TicketCaptain, "Send each Linear unit by `delegate_task` from its crew kind's dispatch template, a reviewer from a family other than the author's where possible.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
-        new(Skill.Admiral, "Send each captain or seat by `delegate_task` from its kind's dispatch template, a reviewer or judge from a family other than the author's where possible.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
+        new(Skill.TicketCaptain, "Seat any reviewer from a family other than the author's when possible, single seats included.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
+        new(Skill.Admiral, "Seat any reviewer or judge from a family other than the author's when possible, single seats included.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
         new(Skill.CodeWriter, "You arrive with a brief from the code-writer dispatch template; work only within it.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
         new(Skill.Reviewer, "You arrive with a brief from the reviewer dispatch template; judge only what it names.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
         new(Skill.Scout, "You arrive with one question and its return-to; you hold no ticket.", new(DispatchState.Briefed, 801, MoveKind.Arrival))

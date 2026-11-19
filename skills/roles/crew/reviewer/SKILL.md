@@ -48,6 +48,7 @@ Nominal path:
 - Never judge work you implemented or fixed.
 - A test that pins an untraced rule, new or inherited, is a finding.
 - Check each graduating test's job tag against its evidence.
+- A test that changes whenever the code does, checks that a deleted feature is gone, or can never fail is a finding.
 - Coverage is a report, never a blocker.
 - On docs, an unlinked 'why' is a finding; on code, a change to paths a doc's `explains:` declares means checking that doc.
 - Report a problem outside your scope to your officer.

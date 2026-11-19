@@ -189,7 +189,7 @@
       "claim": "claim:Mutation.Reject",
       "from": "Claimed",
       "to": "Dispute",
-      "arrow": "rejected and disputed",
+      "arrow": "rejected, and the author disputes it: a council",
       "spec": [
         "T12",
         "L16"
@@ -199,6 +199,18 @@
       "skills": [
         "reviewer"
       ]
+    },
+    {
+      "claim": "claim:Mutation.Rejected",
+      "from": "Claimed",
+      "to": "Ticketed",
+      "arrow": "rejected, and the author accepts: back to fixing",
+      "spec": [
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
     },
     {
       "claim": "claim:Mutation.Ruled",

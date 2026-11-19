@@ -4,7 +4,9 @@
   "title": "The landing",
   "initial": "Integrated",
   "finals": [
-    "Tagged"
+    "Tagged",
+    "Replanned",
+    "Escalated"
   ],
   "states": [
     {
@@ -88,6 +90,20 @@
       ]
     },
     {
+      "id": "Replanned",
+      "title": "A fundamental blocker or a new requirement: the officer above re-plans",
+      "spec": [
+        "R9"
+      ]
+    },
+    {
+      "id": "Escalated",
+      "title": "A blocker that needs Balazs: up the chain at once",
+      "spec": [
+        "R9"
+      ]
+    },
+    {
       "id": "Walkthrough",
       "title": "Balazs walks the landing candidate",
       "spec": [
@@ -139,6 +155,11 @@
       "name": "fixFrom",
       "initial": "\"none\"",
       "bound": "fixFrom \\in {\"none\", \"inquisition\", \"merge\"}"
+    },
+    {
+      "name": "securityFirst",
+      "initial": "FALSE",
+      "bound": "securityFirst \\in BOOLEAN"
     },
     {
       "name": "prereqs",
@@ -275,7 +296,7 @@
       "claim": "claim:Landing.NextMergeRound",
       "from": "RoundFixes",
       "to": "MergeReview",
-      "arrow": "the fixes are merged; a full-lens merge-review round",
+      "arrow": "the fixes are merged; a full-lens merge-review round, the security lens first after a security hole",
       "spec": [
         "R8",
         "R9"
@@ -352,13 +373,55 @@
       "claim": "claim:Landing.ReviewFail",
       "from": "MergeReview",
       "to": "RoundFixes",
-      "arrow": "the landing merge review finds a blocker",
+      "arrow": "a blocker is broken or against the spec",
       "spec": [
         "R9",
         "R11"
       ],
       "guard": null,
       "effect": "fixFrom' = \"merge\"",
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.ReviewFundamental",
+      "from": "MergeReview",
+      "to": "Replanned",
+      "arrow": "a blocker is fundamental, or a new requirement",
+      "spec": [
+        "R9"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.ReviewNeedsHim",
+      "from": "MergeReview",
+      "to": "Escalated",
+      "arrow": "a blocker needs Balazs",
+      "spec": [
+        "R9"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Landing.ReviewSecurity",
+      "from": "MergeReview",
+      "to": "RoundFixes",
+      "arrow": "a blocker is a security hole",
+      "spec": [
+        "R9"
+      ],
+      "guard": null,
+      "effect": "fixFrom' = \"merge\" /\\ securityFirst' = TRUE",
       "skills": [
         "admiral"
       ]

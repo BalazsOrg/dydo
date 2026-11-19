@@ -7,7 +7,7 @@ vars == <<state>>
 
 Finals == {"Approved"}
 
-Open == {"GAP 1"}
+Open == {"GAP 1", "GAP 2", "GAP 3"}
 
 Init ==
     /\ state = "Questioned"
@@ -47,10 +47,20 @@ Evaluation_Rewrite ==
     /\ state = "Kept"
     /\ state' = "WrittenFresh"
 
-\* GAP: K16 and K22 give his approval at the final candidate, not the route when he rejects a fold or a rewrite
+\* GAP: K16 and K22 give his approval of a rewrite at the final candidate, not the route when he rejects it
 Gap1 ==
     /\ state = "WrittenFresh"
     /\ state' = "GAP 1"
+
+\* GAP: K16 and K22 give his approval of a fold at the final candidate, not the route when he rejects it
+Gap2 ==
+    /\ state = "Folded"
+    /\ state' = "GAP 2"
+
+\* GAP: K16 and K22 give his approval of a removal at the final candidate, not the route when he rejects it
+Gap3 ==
+    /\ state = "Removed"
+    /\ state' = "GAP 3"
 
 Done == state \in Finals \cup Open /\ UNCHANGED vars
 
@@ -63,6 +73,8 @@ Next ==
     \/ Evaluation_Remove
     \/ Evaluation_Rewrite
     \/ Gap1
+    \/ Gap2
+    \/ Gap3
     \/ Done
 
 Spec == Init /\ [][Next]_vars

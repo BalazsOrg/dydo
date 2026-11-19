@@ -12,5 +12,6 @@ public enum EnvoyState
     Queued,
     Active,
     Reported,
+    MovedOn,
     Closed
 }

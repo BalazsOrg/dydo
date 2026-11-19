@@ -94,13 +94,21 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 > Approve an equivalent mutant one at a time, with a reason, only if you wrote neither the code nor its tests; your approval binds that mutant and its surrounding code.
 
+## Rejected
+
+`claim:Mutation.Rejected`: A rejected claim the author accepts leaves the survivor to fix.
+
+Spec: T12
+
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Claimed → Ticketed, "rejected, and the author accepts: back to fixing". A system transition: no skill carries it.
+
 ## Reject
 
 `claim:Mutation.Reject`: A claim disputed between author and reviewer goes to a council.
 
 Spec: T12, L16
 
-Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Claimed → Dispute, "rejected and disputed".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Claimed → Dispute, "rejected, and the author disputes it: a council".
 
 **reviewer** (Claimed, exit):
 

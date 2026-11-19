@@ -25,10 +25,6 @@ disable-model-invocation: true
 
 ### Charting the spec and the map
 
-Arrivals:
-
-- You hold one open Project's outcome from now until it lands.
-
 Nominal path:
 
 - Write and refine `Spec: <Project>`, a main Linear document on the Project with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks; a sub-feature that needs defining well gets its own spec, linked from it.
@@ -76,7 +72,7 @@ Exits:
 
 Exits:
 
-- Send each captain or seat by `delegate_task` from its kind's dispatch template, a reviewer or judge from a family other than the author's where possible.
+- Seat any reviewer or judge from a family other than the author's when possible, single seats included.
 - Convene a council only for stakes (the last check before main, or a mistake expensive to undo) or value (a call between good options).
 
 ### Too big: re-cut
@@ -121,7 +117,7 @@ Arrivals:
 
 Nominal path:
 
-- What only he can do, a token or an authorisation, becomes an Enablement ticket; a setup procedure goes through `wizard`.
+- What only he can do, a token or an authorisation, becomes an Enablement ticket.
 - An escalation that needs him goes out through your own envoy, never through the chief of staff.
 
 Exits:
@@ -139,7 +135,7 @@ Nominal path:
 
 Exits:
 
-- Dispatch the next envoy only once the last has reported and he has closed its thread; when he has plainly moved on without closing it, use your discretion.
+- Dispatch the next envoy only once the last has reported and he has closed its thread.
 
 ### Envoy out
 
@@ -153,16 +149,22 @@ Arrivals:
 
 - Read the envoy's result from its ticket.
 
+Exits:
+
+- When he has plainly moved on without closing its thread, use your discretion on sending the next envoy.
+
 ### A hard call
-
-Nominal path:
-
-- With one family out, the tribunal runs on the other: overnight it decides, by day it prepares.
 
 Exits:
 
 - A call a DR clearly settles is not hard: decide it and cite the DR.
 - Give a fresh clerk the Question with only the call, the options unranked, the constraints and the primary facts with sources; you sit on no tribunal.
+
+### Clerk holds the case file
+
+Exits:
+
+- With one family out, the tribunal still runs, on the remaining family: overnight it decides, by day it prepares and he decides.
 
 ### Decided overnight
 
@@ -261,7 +263,7 @@ Nominal path:
 Exits:
 
 - On the council's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.
-- A blocker from the landing merge review goes to fixes like any round's.
+- Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
 
 ### Balazs walks the landing candidate
 

@@ -7,7 +7,8 @@
     "Decided",
     "AskedInThread",
     "ToTribunal",
-    "Closed"
+    "Closed",
+    "MovedOn"
   ],
   "states": [
     {
@@ -88,6 +89,13 @@
         "H18",
         "H19"
       ]
+    },
+    {
+      "id": "MovedOn",
+      "title": "He has moved on, the thread left open",
+      "spec": [
+        "H18"
+      ]
     }
   ],
   "variables": [
@@ -161,6 +169,20 @@
       "skills": [
         "admiral",
         "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.MovedOn",
+      "from": "Reported",
+      "to": "MovedOn",
+      "arrow": "he has plainly moved on, the thread still open: the next envoy may go, at the admiral's discretion",
+      "spec": [
+        "H18"
+      ],
+      "guard": null,
+      "effect": "envoys' = 0",
+      "skills": [
+        "admiral"
       ]
     },
     {

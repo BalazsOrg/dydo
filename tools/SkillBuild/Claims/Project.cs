@@ -3,8 +3,8 @@ namespace DynaDocs.SkillBuild;
 /// <summary>A Project and its admiral (M1): charting, watching, re-planning, and the rules of the watch.</summary>
 public static class Project
 {
-    public static readonly Claim Take = new("Every open Project has a live admiral holding its outcome.", [Actor.Admiral],
-        [new(Skill.Admiral, "You hold one open Project's outcome from now until it lands.", new(ProjectState.Charting, 201, MoveKind.Arrival))])
+    // The admiral's line for this is its role line, Role.Admiral (K4).
+    public static readonly Claim Take = new("Every open Project has a live admiral holding its outcome.", [Actor.Admiral], [])
     { Spec = ["H4"], Transition = new(ProjectState.Unheld, ProjectState.Charting, "the Project opens; it has a live admiral") };
 
     public static readonly Claim Charted = new("Charting ends when the spec exists and the first tickets are contracted.", [Actor.Admiral],

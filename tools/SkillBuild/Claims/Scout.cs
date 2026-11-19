@@ -8,6 +8,6 @@ public static class Scout
     { Spec = ["R4"] };
 
     public static readonly Claim Answer = new("The scout answers one factual question from its primary sources, naming where each part lives.", [Actor.Scout],
-        [new(Skill.Scout, "Answer one factual question from its primary sources (docs, code, Linear, DRs, the spec), naming where each part of the answer lives.", new(DispatchState.Working, 2802, MoveKind.Nominal))])
+        [new(Skill.Scout, "Answer one factual question from its primary sources.", new(DispatchState.Working, 2802, MoveKind.Nominal))])
     { Spec = ["K22", "H16"] };
 }

@@ -12,6 +12,7 @@ stateDiagram-v2
   s7: Envoy out #183; H15, H19, H23
   s8: Envoy reported back #183; H15, H19
   s9: Envoy thread closed #183; H18, H19
+  s10: He has moved on, the thread left open #183; H18
   [*] --> s0
   s0 --> s1: the officer above takes the need #183; H16
   s1 --> s2: he is already in this officer's thread #183; H22, H6
@@ -23,3 +24,4 @@ stateDiagram-v2
   s5 --> s7: the last envoy reported and he closed its thread #183; H18, H19, H23
   s7 --> s8: the envoy records the result and reports back #183; H15, H19
   s8 --> s9: he closes the envoy's thread #183; H19, H18
+  s8 --> s10: he has plainly moved on, the thread still open: the next envoy may go, at the admiral's discretion #183; H18

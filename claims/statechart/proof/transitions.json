@@ -100,7 +100,7 @@
     },
     {
       "id": "Conformance",
-      "title": "A rewrite's conformance assertion",
+      "title": "A rewrite's conformance suite",
       "spec": [
         "T6"
       ]

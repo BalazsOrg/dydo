@@ -258,7 +258,7 @@ Spec: R18
 
 **ticket-captain** (Running, nominal):
 
-> A conflict-free merge into the feature branch gets no merge review: the combined gates on the merge SHA and hosted CI on the `feature/**` push prove it.
+> A conflict-free merge into the feature branch gets no merge review.
 
 **working-tree-standard** (TreeMerging):
 

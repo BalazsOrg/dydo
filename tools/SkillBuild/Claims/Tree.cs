@@ -29,10 +29,10 @@ public static class Tree
     ])
     { Spec = ["R32"] };
 
-    public static readonly Claim Branch = new("A ticket branch is named by its key off the feature branch; branch, base and worktree are posted before the first edit.", [Actor.TicketCaptain],
+    public static readonly Claim Branch = new("A ticket branch is named by its key off the feature branch, or off main for an atomic ticket; branch, base and worktree are posted before the first edit.", [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "Name the ticket branch `<KEY>-<slug>` off the feature branch, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.", new(DispatchState.Briefed, 1905, MoveKind.Nominal)),
-        new(Skill.WorkingTreeStandard, "A ticket branch is `<KEY>-<slug>` off its feature branch, so Linear attaches the branch and PR; its branch, base SHA and worktree path are on the ticket before the first edit.", new(Section.TreeInvariants, 4))
+        new(Skill.TicketCaptain, "Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.", new(DispatchState.Briefed, 1905, MoveKind.Nominal)),
+        new(Skill.WorkingTreeStandard, "A ticket branch is `<KEY>-<slug>` off its feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; its branch, base SHA and worktree path are on the ticket before the first edit.", new(Section.TreeInvariants, 4))
     ])
     { Spec = ["N12 DR 045 §8"] };
 

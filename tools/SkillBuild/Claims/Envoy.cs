@@ -46,7 +46,7 @@ public static class Envoy
     { Spec = ["H15", "H17", "S10"], Transition = new(EnvoyState.Homework, EnvoyState.Queued, "only he can settle it") { Guard = "level = \"admiral\"" } };
 
     public static readonly Claim Send = new("One active envoy per admiral; the next goes once the last reported and he closed its thread.", [Actor.Admiral],
-        [new(Skill.Admiral, "Dispatch the next envoy only once the last has reported and he has closed its thread; when he has plainly moved on without closing it, use your discretion.", new(EnvoyState.Queued, 908, MoveKind.Exit))])
+        [new(Skill.Admiral, "Dispatch the next envoy only once the last has reported and he has closed its thread.", new(EnvoyState.Queued, 908, MoveKind.Exit))])
     {
         Spec = ["H18", "H19", "H23"],
         Transition = new(EnvoyState.Queued, EnvoyState.Active, "the last envoy reported and he closed its thread") { Guard = "envoys = 0", Effect = "envoys' = 1" }
@@ -59,15 +59,21 @@ public static class Envoy
     public static readonly Claim Close = new("After a shared understanding he closes the envoy's thread.", [Actor.Balazs], [])
     { Spec = ["H19", "H18"], Transition = new(EnvoyState.Reported, EnvoyState.Closed, "he closes the envoy's thread") { Effect = "envoys' = 0" } };
 
-    public static readonly Claim Enablement = new("What only he can do becomes an Enablement; a setup procedure goes through wizard.", [Actor.Admiral],
-        [new(Skill.Admiral, "What only he can do, a token or an authorisation, becomes an Enablement ticket; a setup procedure goes through `wizard`.", new(EnvoyState.Homework, 911, MoveKind.Nominal))])
+    public static readonly Claim MovedOn = new("When he has plainly moved on without closing the thread, the next envoy may go at the admiral's discretion.", [Actor.Admiral],
+        [new(Skill.Admiral, "When he has plainly moved on without closing its thread, use your discretion on sending the next envoy.", new(EnvoyState.Reported, 910, MoveKind.Exit))])
+    {
+        Spec = ["H18"],
+        Transition = new(EnvoyState.Reported, EnvoyState.MovedOn, "he has plainly moved on, the thread still open: the next envoy may go, at the admiral's discretion") { Effect = "envoys' = 0" }
+    };
+
+    public static readonly Claim Enablement =new("What only he can do becomes an Enablement.", [Actor.Admiral],
+        [new(Skill.Admiral, "What only he can do, a token or an authorisation, becomes an Enablement ticket.", new(EnvoyState.Homework, 911, MoveKind.Nominal))])
     { Spec = ["H17"] };
 
     public static readonly Claim OwnEnvoy = new("An escalation that needs him goes from the admiral through its own envoy, never through the chief of staff.",
         [Actor.Admiral, Actor.ChiefOfStaff],
     [
-        new(Skill.Admiral, "An escalation that needs him goes out through your own envoy, never through the chief of staff.", new(EnvoyState.Homework, 912, MoveKind.Nominal)),
-        new(Skill.ChiefOfStaff, "An escalation that needs him reaches him through its admiral's own envoy, never through you.", new(StaffState.Day, 912, MoveKind.Nominal))
+        new(Skill.Admiral, "An escalation that needs him goes out through your own envoy, never through the chief of staff.", new(EnvoyState.Homework, 912, MoveKind.Nominal))
     ])
     { Spec = ["H12"] };
 

@@ -112,7 +112,7 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Queued �
 
 **admiral** (Queued, exit):
 
-> Dispatch the next envoy only once the last has reported and he has closed its thread; when he has plainly moved on without closing it, use your discretion.
+> Dispatch the next envoy only once the last has reported and he has closed its thread.
 
 ## Report
 
@@ -134,15 +134,27 @@ Spec: H19, H18
 
 Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Reported → Closed, "he closes the envoy's thread". A system transition: no skill carries it.
 
+## MovedOn
+
+`claim:Envoy.MovedOn`: When he has plainly moved on without closing the thread, the next envoy may go at the admiral's discretion.
+
+Spec: H18
+
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Reported → MovedOn, "he has plainly moved on, the thread still open: the next envoy may go, at the admiral's discretion".
+
+**admiral** (Reported, exit):
+
+> When he has plainly moved on without closing its thread, use your discretion on sending the next envoy.
+
 ## Enablement
 
-`claim:Envoy.Enablement`: What only he can do becomes an Enablement; a setup procedure goes through wizard.
+`claim:Envoy.Enablement`: What only he can do becomes an Enablement.
 
 Spec: H17
 
 **admiral** (Homework, nominal):
 
-> What only he can do, a token or an authorisation, becomes an Enablement ticket; a setup procedure goes through `wizard`.
+> What only he can do, a token or an authorisation, becomes an Enablement ticket.
 
 ## OwnEnvoy
 
@@ -154,9 +166,9 @@ Spec: H12
 
 > An escalation that needs him goes out through your own envoy, never through the chief of staff.
 
-**chief-of-staff** (Day, nominal):
+**chief-of-staff** (Day, nominal, on claim:Staff.LinksOnly):
 
-> An escalation that needs him reaches him through its admiral's own envoy, never through you.
+> Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its admiral's own envoy.
 
 ## Bundle
 

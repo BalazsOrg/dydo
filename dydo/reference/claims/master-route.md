@@ -152,7 +152,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 **ticket-captain** (Merged, exit):
 
-> When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop once the merge tree's receipt and CI are green.
+> When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop as for any merge.
 
 ## RealRed
 

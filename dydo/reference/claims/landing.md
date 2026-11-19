@@ -80,11 +80,11 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes 
 
 ## NextMergeRound
 
-`claim:Landing.NextMergeRound`: A landing merge review with a blocker goes Fix, then a full-lens merge-review round.
+`claim:Landing.NextMergeRound`: A landing merge review with a blocker goes Fix, then a full-lens merge-review round, the security lens first after a security hole.
 
 Spec: R8, R9
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes → MergeReview, "the fixes are merged; a full-lens merge-review round". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes → MergeReview, "the fixes are merged; a full-lens merge-review round, the security lens first after a security hole". A system transition: no skill carries it.
 
 ## CleanRound
 
@@ -132,15 +132,51 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview
 
 ## ReviewFail
 
-`claim:Landing.ReviewFail`: A blocker from the landing merge review goes to fixes.
+`claim:Landing.ReviewFail`: A broken or against-spec blocker from the landing merge review goes to Fix, then the next round.
 
 Spec: R9, R11
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → RoundFixes, "the landing merge review finds a blocker".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → RoundFixes, "a blocker is broken or against the spec".
 
 **admiral** (MergeReview, exit):
 
-> A blocker from the landing merge review goes to fixes like any round's.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+
+## ReviewSecurity
+
+`claim:Landing.ReviewSecurity`: A security hole from the landing merge review goes to Fix, then a round with the security lens first.
+
+Spec: R9
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → RoundFixes, "a blocker is a security hole".
+
+**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+
+## ReviewFundamental
+
+`claim:Landing.ReviewFundamental`: A fundamental landing merge-review blocker, or a new requirement, goes to the officer above to re-plan.
+
+Spec: R9
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Replanned, "a blocker is fundamental, or a new requirement".
+
+**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+
+## ReviewNeedsHim
+
+`claim:Landing.ReviewNeedsHim`: A landing merge-review blocker that needs Balazs goes up the chain at once.
+
+Spec: R9
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Escalated, "a blocker needs Balazs".
+
+**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
 
 ## Accepted
 

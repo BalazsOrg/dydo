@@ -28,8 +28,9 @@ public static class HierarchyMachines
         new(EnvoyState.Queued, "Queued behind the active envoy", "H15", "H18"),
         new(EnvoyState.Active, "Envoy out", "H15", "H19", "H23"),
         new(EnvoyState.Reported, "Envoy reported back", "H15", "H19"),
-        new(EnvoyState.Closed, "Envoy thread closed", "H18", "H19")
-    ], EnvoyState.Need, [EnvoyState.Decided, EnvoyState.AskedInThread, EnvoyState.ToTribunal, EnvoyState.Closed])
+        new(EnvoyState.Closed, "Envoy thread closed", "H18", "H19"),
+        new(EnvoyState.MovedOn, "He has moved on, the thread left open", "H18")
+    ], EnvoyState.Need, [EnvoyState.Decided, EnvoyState.AskedInThread, EnvoyState.ToTribunal, EnvoyState.Closed, EnvoyState.MovedOn])
     {
         Variables =
         [

@@ -41,10 +41,10 @@ public static class Landing
             { Guard = "fixFrom = \"inquisition\"", Effect = "round' = round + 1 /\\ " + Areas }
     };
 
-    public static readonly Claim NextMergeRound = new("A landing merge review with a blocker goes Fix, then a full-lens merge-review round.", [Actor.Admiral], [])
+    public static readonly Claim NextMergeRound = new("A landing merge review with a blocker goes Fix, then a full-lens merge-review round, the security lens first after a security hole.", [Actor.Admiral], [])
     {
         Spec = ["R8", "R9"],
-        Transition = new(LandingState.RoundFixes, LandingState.MergeReview, "the fixes are merged; a full-lens merge-review round") { Guard = "fixFrom = \"merge\"" }
+        Transition = new(LandingState.RoundFixes, LandingState.MergeReview, "the fixes are merged; a full-lens merge-review round, the security lens first after a security hole") { Guard = "fixFrom = \"merge\"" }
     };
 
     public static readonly Claim CleanRound = new("The Project lands only after a round with no blocker and no should.", [Actor.Admiral],
@@ -70,12 +70,27 @@ public static class Landing
         [new(Skill.Admiral, "On the council's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.", new(LandingState.MergeReview, 306, MoveKind.Exit))])
     { Spec = ["N6", "L16", "R20", "H22"], Transition = new(LandingState.MergeReview, LandingState.Walkthrough, "the Merge-confidence council passes the landing candidate") };
 
-    public static readonly Claim ReviewFail = new("A blocker from the landing merge review goes to fixes.", [Actor.Admiral],
-        [new(Skill.Admiral, "A blocker from the landing merge review goes to fixes like any round's.", new(LandingState.MergeReview, 307, MoveKind.Exit))])
+    public static readonly Claim ReviewFail = new("A broken or against-spec blocker from the landing merge review goes to Fix, then the next round.", [Actor.Admiral],
+    [
+        new(Skill.Admiral, "Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.",
+            new(LandingState.MergeReview, 307, MoveKind.Exit), () => [ReviewSecurity!, ReviewFundamental!, ReviewNeedsHim!])
+    ])
     {
         Spec = ["R9", "R11"],
-        Transition = new(LandingState.MergeReview, LandingState.RoundFixes, "the landing merge review finds a blocker") { Effect = "fixFrom' = \"merge\"" }
+        Transition = new(LandingState.MergeReview, LandingState.RoundFixes, "a blocker is broken or against the spec") { Effect = "fixFrom' = \"merge\"" }
     };
+
+    public static readonly Claim ReviewSecurity = new("A security hole from the landing merge review goes to Fix, then a round with the security lens first.", [Actor.Admiral], [])
+    {
+        Spec = ["R9"],
+        Transition = new(LandingState.MergeReview, LandingState.RoundFixes, "a blocker is a security hole") { Effect = "fixFrom' = \"merge\" /\\ securityFirst' = TRUE" }
+    };
+
+    public static readonly Claim ReviewFundamental = new("A fundamental landing merge-review blocker, or a new requirement, goes to the officer above to re-plan.", [Actor.Admiral], [])
+    { Spec = ["R9"], Transition = new(LandingState.MergeReview, LandingState.Replanned, "a blocker is fundamental, or a new requirement") };
+
+    public static readonly Claim ReviewNeedsHim = new("A landing merge-review blocker that needs Balazs goes up the chain at once.", [Actor.Admiral], [])
+    { Spec = ["R9"], Transition = new(LandingState.MergeReview, LandingState.Escalated, "a blocker needs Balazs") };
 
     public static readonly Claim Accepted = new("He accepts the landing candidate, then it merges.", [Actor.Balazs, Actor.Admiral],
         [new(Skill.Admiral, "When he accepts the landing candidate, it merges: AFK when two-way, on his click when one-way.", new(LandingState.Walkthrough, 308, MoveKind.Exit))])

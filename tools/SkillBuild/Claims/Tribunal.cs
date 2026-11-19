@@ -16,7 +16,17 @@ public static class Tribunal
     };
 
     public static readonly Claim Seat = new("The clerk seats two judges from different families from the roster.", [Actor.Reviewer], [])
-    { Spec = ["L18", "R13", "R15"], Transition = new(TribunalState.CaseFile, TribunalState.Sealed, "two judges from different families take sealed positions") };
+    {
+        Spec = ["L18", "R13", "R15"],
+        Transition = new(TribunalState.CaseFile, TribunalState.Sealed, "two judges from different families take sealed positions") { Effect = "oneFamily' = FALSE" }
+    };
+
+    public static readonly Claim OneFamily = new("With one family out, Judge decides overnight and prepares by day on one family.", [Actor.Admiral],
+        [new(Skill.Admiral, "With one family out, the tribunal still runs, on the remaining family: overnight it decides, by day it prepares and he decides.", new(TribunalState.CaseFile, 1410, MoveKind.Exit))])
+    {
+        Spec = ["L22"],
+        Transition = new(TribunalState.CaseFile, TribunalState.Sealed, "one family out: the judges sit on the remaining family") { Effect = "oneFamily' = TRUE" }
+    };
 
     public static readonly Claim Exchange = new("One exchange follows: each answers the other's strongest point or concedes.", [Actor.Reviewer], [])
     { Spec = ["L18"], Transition = new(TribunalState.Sealed, TribunalState.Exchange, "both positions in; one exchange") { Effect = "agree' \\in BOOLEAN" } };
@@ -52,10 +62,6 @@ public static class Tribunal
 
     public static readonly Claim Wrong = new("A ruling found wrong is investigated: why it was made, then a measure.", [], [])
     { Spec = ["L19"], Transition = new(TribunalState.DecidedOvernight, TribunalState.Investigated, "the ruling is found wrong") };
-
-    public static readonly Claim OneFamily = new("With one family out, Judge decides overnight and prepares by day on one family.", [Actor.Admiral],
-        [new(Skill.Admiral, "With one family out, the tribunal runs on the other: overnight it decides, by day it prepares.", new(TribunalState.HardCall, 1410, MoveKind.Nominal))])
-    { Spec = ["L22"] };
 
     public static readonly Claim Clerk = new("The clerk holds the Question, runs it mechanically, keeps the case file neutral and seats two judges.", [Actor.Reviewer],
         [new(Skill.Reviewer, "As the clerk, hold the Question and run it mechanically: keep the case file neutral (the call, the options unranked, the constraints, the primary facts with their sources) and seat two judges from different families from the roster.", new(Section.CouncilJudge, 1411))])

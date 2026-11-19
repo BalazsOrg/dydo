@@ -53,11 +53,13 @@ public static class DeliveryMachines
         new(LandingState.RoundFixes, "Fixing the round's blockers and shoulds", "N5", "S9", "S17"),
         new(LandingState.Prerequisites, "Landing prerequisites", "N7", "S18", "T12", "T8", "N14", "N15", "Y2", "Y6", "L6", "L12", "N8", "N9"),
         new(LandingState.MergeReview, "Landing merge review: a Merge-confidence council", "N6", "R20", "L16"),
+        new(LandingState.Replanned, "A fundamental blocker or a new requirement: the officer above re-plans", "R9"),
+        new(LandingState.Escalated, "A blocker that needs Balazs: up the chain at once", "R9"),
         new(LandingState.Walkthrough, "Balazs walks the landing candidate", "N6", "N4", "N3"),
         new(LandingState.Merging, "Landing PR into master", "N6", "R26", "R27"),
         new(LandingState.Landed, "Landed on master", "N6", "S14", "D11"),
         new(LandingState.Tagged, "Release tag pushed by Balazs", "R28", "N2", "N15")
-    ], LandingState.Integrated, [LandingState.Tagged])
+    ], LandingState.Integrated, [LandingState.Tagged, LandingState.Replanned, LandingState.Escalated])
     {
         Extends = ["Naturals"],
         Variables =
@@ -65,6 +67,7 @@ public static class DeliveryMachines
             new("round", "1", "round <= 3"),
             new("areas", "1", "areas \\in 1..2"),
             new("fixFrom", "\"none\"", "fixFrom \\in {\"none\", \"inquisition\", \"merge\"}"),
+            new("securityFirst", "FALSE", "securityFirst \\in BOOLEAN"),
             new("prereqs", "0", "prereqs <= 10"),
             new("hardened", "FALSE", "hardened \\in BOOLEAN")
         ],
