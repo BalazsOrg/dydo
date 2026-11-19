@@ -16,11 +16,11 @@ N5_BreakBeforeDrive == [][((state' = "DrivePhase" /\ state # state') => state = 
 \* N5: A new inquisition round starts from a fresh area map.
 N5_FreshMapAfterFix == [][((state = "RoundFixes" /\ fixFrom = "inquisition" /\ state' # state) => state' = "Mapped")]_<<vars, seen>>
 
-\* N7, N15, T12: The counted landing prerequisites are complete before merge or tag.
+\* N7, N15, T12, N6: The counted prerequisites are complete from merge review through tagging.
 N7_PrerequisitesBeforeLanding == state \in {"MergeReview", "Walkthrough", "Merging", "Landed", "Tagged"} => prereqs = 10
 
 \* N6: His walkthrough follows the landing merge review.
-N6_ReviewBeforeWalkthrough == state = "Walkthrough" => "MergeReview" \in seen
+N6_ReviewBeforeWalkthrough == [][(state' = "Walkthrough" /\ state # state') => state = "MergeReview"]_<<vars, seen>>
 
 \* N6: The accepted candidate walkthrough precedes merging.
 N6_AcceptanceBeforeMerge == [][((state' = "Merging" /\ state # state') => state = "Walkthrough")]_<<vars, seen>>
@@ -28,7 +28,7 @@ N6_AcceptanceBeforeMerge == [][((state' = "Merging" /\ state # state') => state 
 \* N2: Release tagging waits for guard hardening.
 N2_HardeningBeforeTag == state = "Tagged" => hardened
 
-\* R28, N6: The release tag follows the landing.
-R28_LandingBeforeTag == state = "Tagged" => "Landed" \in seen
+\* N2, N15, T12: The release tag follows landing and its prerequisites; tagger identity is unmodeled.
+N15_LandingBeforeTag == [][(state' = "Tagged" /\ state # state') => state = "Landed"]_<<vars, seen>>
 
 ====

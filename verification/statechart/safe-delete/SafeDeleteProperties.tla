@@ -10,7 +10,7 @@ PropertyNext == Next /\ seen' = seen \cup {state'}
 \* N10: Deletion purges a previously archived branch/worktree.
 N10_ArchiveBeforePurge == state = "Purged" => "Archived" \in seen
 
-\* N10: Purged data is no longer restorable in this archive lifetime.
-N10_PurgeIsFinal == [][((state = "Purged") => state' = "Purged")]_<<vars, seen>>
+\* N10: Structural guard for the purged terminal phase; retention and purge safety remain unmodeled.
+Structural_N10_PurgeIsFinal == [][((state = "Purged") => state' = "Purged")]_<<vars, seen>>
 
 ====

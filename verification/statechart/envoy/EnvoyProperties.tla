@@ -13,8 +13,8 @@ H16_HomeworkBeforeEnvoy == state = "Active" => "Homework" \in seen
 \* H16: Only an admiral dispatches the active envoy.
 H16_OnlyAdmiralSends == state = "Active" => level = "admiral"
 
-\* H18: An active envoy is counted.
-H18_ActiveCount == state = "Active" => envoys = 1
+\* H18: The active-phase counter is one; actual envoy identities/cardinality are unmodeled.
+H18_ActiveCounter == state = "Active" => envoys = 1
 
 \* H19: The envoy reports before calling the thread complete.
 H19_ReportBeforeClose == state = "Closed" => "Reported" \in seen

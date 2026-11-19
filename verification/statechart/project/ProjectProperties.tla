@@ -7,10 +7,10 @@ VARIABLE seen
 PropertyInit == Init /\ seen = {state}
 PropertyNext == Next /\ seen' = seen \cup {state'}
 
-\* R9: Replanning follows a working Project.
-R9_ReplanFromWorkingProject == state = "Replanning" => "Watching" \in seen
+\* H5: Phase check of the admiral's watch before replanning; contracts are unmodeled.
+H5_WatchBeforeReplan == state = "Replanning" => "Watching" \in seen
 
-\* N5: The Project reaches landing after its delivery watch.
-N5_DeliveryBeforeLanding == state = "Landing" => "Watching" \in seen
+\* H5: Phase check of the watch before landing handoff; delivery completion is unmodeled.
+H5_WatchBeforeLanding == state = "Landing" => "Watching" \in seen
 
 ====

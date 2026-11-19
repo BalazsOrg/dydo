@@ -19,8 +19,8 @@ R10_ThirdRoundCheckpoint == state = "Checkpoint" => round = 3 /\ kind # "none"
 \* R9: A fundamental blocker is the replan route.
 R9_FundamentalReplan == state = "Replan" => kind = "fundamental"
 
-\* R9: Human-only blockers are escalated.
-R9_ImmediateHumanEscalation == state = "Escalated" => kind \in {"balazs", "fundamental"}
+\* R9, R10: Escalation carries a human/fundamental blocker; this does not test immediacy.
+R9_EscalationKinds == state = "Escalated" => kind \in {"balazs", "fundamental"}
 
 \* R8: A blocked round requires a fix before the next round.
 R8_FixBetweenBlockedRounds == [][((state' = "Round" /\ round' > round /\ kind # "none") => state = "Fixing")]_<<vars, seen>>

@@ -13,7 +13,7 @@ S6_StartBeforeDone == state = "Done" => "InProgress" \in seen
 \* S3: Starting a step follows Todo.
 S3_TodoBeforeStart == [][((state' = "InProgress" /\ state # state') => state = "Todo")]_<<vars, seen>>
 
-\* S10: Canceled dead work remains closed in this ticket lifetime.
-S10_CanceledStaysClosed == [][((state = "Canceled") => state' = "Canceled")]_<<vars, seen>>
+\* S5: Structural guard for this terminal-status fixture; S5 does not forbid later reopening.
+Structural_S5_CanceledStaysClosed == [][((state = "Canceled") => state' = "Canceled")]_<<vars, seen>>
 
 ====

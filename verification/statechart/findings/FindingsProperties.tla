@@ -7,7 +7,7 @@ VARIABLE seen
 PropertyInit == Init /\ seen = {state}
 PropertyNext == Next /\ seen' = seen \cup {state'}
 
-\* Y9: A first flake is counted before any repeated-flake route.
+\* Y9: A flake goes to counting or the repeated-flake route; count/threshold data is unmodeled.
 Y9_CountFlakes == [][((state = "Flake" /\ state' # state) => state' \in {"Counted", "Repeated"})]_<<vars, seen>>
 
 \* Y1, Y3: Needs from DYTEST are filed in its project.

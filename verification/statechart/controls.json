@@ -103,7 +103,7 @@
   "merge-command": {
     "from": "Refused",
     "to": "Merged",
-    "property": "R23_RefusalIsTerminal"
+    "property": "Structural_R23_RefusalIsTerminal"
   },
   "mutation": {
     "from": "Background",
@@ -121,7 +121,7 @@
   "project": {
     "from": "Unheld",
     "to": "Replanning",
-    "property": "R9_ReplanFromWorkingProject"
+    "property": "H5_WatchBeforeReplan"
   },
   "proof": {
     "from": "Start",

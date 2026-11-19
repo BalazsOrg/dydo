@@ -2,10 +2,10 @@
 EXTENDS ClaimBuild
 
 \* Hand-written from the spec; never generated from the claim model (K3).
-\* seen is a passive history observer. Every model step has exactly one extension.
+\* seen records the current claim edit; each new Edited phase resets its scope.
 VARIABLE seen
 PropertyInit == Init /\ seen = {state}
-PropertyNext == Next /\ seen' = seen \cup {state'}
+PropertyNext == Next /\ seen' = IF state' = "Edited" /\ state # state' THEN {state'} ELSE seen \cup {state'}
 
 \* K3, K20: Claims cannot be approved before successful property checking.
 K20_TlcBeforeApproval == state \in {"Approved", "Released"} => "TlcPassed" \in seen

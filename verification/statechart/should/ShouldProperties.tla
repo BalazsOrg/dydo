@@ -10,7 +10,7 @@ PropertyNext == Next /\ seen' = seen \cup {state'}
 \* S17, S18: A new should is registered before its disposition.
 S17_RegisterBeforeDisposition == state \in {"Done", "Duplicate", "Canceled", "Moved"} => "Open" \in seen
 
-\* S17: An already-open duplicate does not create another should here.
-S17_KnownNotRegisteredAgain == [][((state = "Known") => state' = "Known")]_<<vars, seen>>
+\* S17: Structural guard: a known duplicate ends this registration attempt; lookup content is unmodeled.
+Structural_S17_KnownNotRegisteredAgain == [][((state = "Known") => state' = "Known")]_<<vars, seen>>
 
 ====

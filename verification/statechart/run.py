@@ -30,11 +30,14 @@ def main():
     if args.baseline and args.controls:
         parser.error('--baseline and --controls are exclusive')
     root = Path(__file__).resolve().parents[2]
+    status = subprocess.check_output(['git', 'status', '--porcelain'], cwd=root, text=True).strip()
+    if status:
+        parser.error('checkout is dirty; commit the intended verification inputs before running')
+    source_head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
     scratch = args.out.resolve()
     scratch.mkdir(parents=True, exist_ok=False)
     environment = dict(os.environ)
     environment['JAVA_TOOL_OPTIONS'] = '-Xmx512m -XX:+UseParallelGC'
-    source_head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
     controls = json.loads((Path(__file__).parent / 'controls.json').read_text()) if args.controls else {}
     records = []
     machines = sorted((root / 'claims/statechart').glob('*/*.tla'))
@@ -101,7 +104,8 @@ def main():
         record = {'machine': name, 'command': command, 'inputs': copied,
                   'java_tool_options': environment['JAVA_TOOL_OPTIONS'],
                   'source_head': source_head, 'entry_sha256': digest(entry),
-                  'config_sha256': digest(config), 'expected': expected}
+                  'config_sha256': digest(config), 'runner_sha256': digest(Path(__file__)),
+                  'expected': expected}
         try:
             result = subprocess.run(command, cwd=inputs, env=environment, text=True,
                                     stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -134,6 +138,15 @@ def main():
             record['result'] = 'blocked'
         (scratch / 'runs.json').write_text(json.dumps(records, indent=2) + '\n')
         print(name + ': ' + record['result'] + ' (exit ' + str(record['exit']) + ')', flush=True)
+    final_head = subprocess.check_output(['git', 'rev-parse', 'HEAD'], cwd=root, text=True).strip()
+    final_status = subprocess.check_output(['git', 'status', '--porcelain'], cwd=root, text=True).strip()
+    if final_status or final_head != source_head:
+        for record in records:
+            record['result'] = 'blocked'
+            record['reason'] = 'checkout changed during the run'
+        (scratch / 'runs.json').write_text(json.dumps(records, indent=2) + '\n')
+        print('blocked: checkout changed during the run', file=sys.stderr)
+        return 2
     if args.controls:
         return int(not all(r.get('control_caught') for r in records))
     return int(any(r['result'] != 'pass' for r in records))

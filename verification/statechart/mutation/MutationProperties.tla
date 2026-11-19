@@ -2,13 +2,13 @@
 EXTENDS Mutation
 
 \* Hand-written from the spec; never generated from the claim model (K3).
-\* seen is a passive history observer. Every model step has exactly one extension.
+\* seen records this queued campaign; entering Queued starts a new exact-tree scope.
 VARIABLE seen
 PropertyInit == Init /\ seen = {state}
-PropertyNext == Next /\ seen' = seen \cup {state'}
+PropertyNext == Next /\ seen' = IF state' = "Queued" /\ state # state' THEN {state'} ELSE seen \cup {state'}
 
 \* T12: Landing mutation work is queued before execution.
-T12_QueueBeforeRun == state = "Running" => "Queued" \in seen
+T12_QueueBeforeRun == [][(state' = "Running" /\ state # state') => state = "Queued"]_<<vars, seen>>
 
 \* T12, N15: A clean result follows execution on the landing tree.
 T12_RunBeforeClean == state = "Clean" => "Running" \in seen
