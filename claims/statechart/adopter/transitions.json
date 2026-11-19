@@ -1,0 +1,181 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Adopter",
+  "title": "The adopter update",
+  "initial": "Released",
+  "finals": [
+    "Current",
+    "Harvested"
+  ],
+  "states": [
+    {
+      "id": "Released",
+      "title": "A dydo release ships",
+      "spec": [
+        "K18",
+        "N1"
+      ]
+    },
+    {
+      "id": "Updating",
+      "title": "One ordinary update, with its Upgrade note",
+      "spec": [
+        "K18",
+        "N8",
+        "L2"
+      ]
+    },
+    {
+      "id": "Tailored",
+      "title": "A shipped file the project keeps tailored",
+      "spec": [
+        "N11"
+      ]
+    },
+    {
+      "id": "Consulted",
+      "title": "update-dydo consults the user",
+      "spec": [
+        "N11"
+      ]
+    },
+    {
+      "id": "Major",
+      "title": "4.0.0 as a major update",
+      "spec": [
+        "N1",
+        "N9",
+        "Y5",
+        "D1"
+      ]
+    },
+    {
+      "id": "Current",
+      "title": "Up to date; later builds line-stable",
+      "spec": [
+        "K18"
+      ]
+    },
+    {
+      "id": "Harvested",
+      "title": "Friction and local patches harvested for the next release",
+      "spec": [
+        "H9"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Adopter.Consult",
+      "from": "Tailored",
+      "to": "Consulted",
+      "arrow": "update-dydo consults the user",
+      "spec": [
+        "N11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Adopter.Decided",
+      "from": "Consulted",
+      "to": "Updating",
+      "arrow": "the user decides what happens to it",
+      "spec": [
+        "N11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Adopter.Done",
+      "from": "Updating",
+      "to": "Current",
+      "arrow": "updated; later builds stay line-stable, one claim per bullet",
+      "spec": [
+        "K18"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Adopter.Harvest",
+      "from": "Current",
+      "to": "Harvested",
+      "arrow": "a release is planned: its map holder harvests their Agent friction queues and local patches",
+      "spec": [
+        "H9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Adopter.Major",
+      "from": "Updating",
+      "to": "Major",
+      "arrow": "4.0.0: statuses deleted, DYTEST a prerequisite, the rebuilt skills swapped in",
+      "spec": [
+        "N1",
+        "N9",
+        "Y5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Adopter.Swapped",
+      "from": "Major",
+      "to": "Current",
+      "arrow": "dydo's law and glossary read-only, the two-law template, descriptive-doc rules on by default",
+      "spec": [
+        "N8",
+        "L2",
+        "D9",
+        "D1"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Adopter.Tailored",
+      "from": "Updating",
+      "to": "Tailored",
+      "arrow": "a shipped file the project keeps tailored, docs included",
+      "spec": [
+        "N11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Adopter.Update",
+      "from": "Released",
+      "to": "Updating",
+      "arrow": "one ordinary update with an Upgrade note, through the update-dydo wizard",
+      "spec": [
+        "K18",
+        "N8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

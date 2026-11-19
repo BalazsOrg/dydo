@@ -1,0 +1,277 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Docs",
+  "title": "Descriptive docs",
+  "initial": "Start",
+  "finals": [
+    "NotWritten",
+    "CutDoc"
+  ],
+  "states": [
+    {
+      "id": "Start",
+      "title": "A descriptive doc",
+      "spec": [
+        "D1",
+        "D2"
+      ]
+    },
+    {
+      "id": "Proposed",
+      "title": "A new descriptive doc proposed",
+      "spec": [
+        "D4"
+      ]
+    },
+    {
+      "id": "NotWritten",
+      "title": "Not written",
+      "spec": [
+        "D4",
+        "D3",
+        "D8"
+      ]
+    },
+    {
+      "id": "Invited",
+      "title": "Invited",
+      "spec": [
+        "D4"
+      ]
+    },
+    {
+      "id": "Admitted",
+      "title": "Admitted: solid, important, expensive to rebuild from code",
+      "spec": [
+        "D3"
+      ]
+    },
+    {
+      "id": "Declared",
+      "title": "Its explained code declared in explains:",
+      "spec": [
+        "D5",
+        "D2"
+      ]
+    },
+    {
+      "id": "Flagged",
+      "title": "A change to its paths flagged",
+      "spec": [
+        "D5"
+      ]
+    },
+    {
+      "id": "Finding",
+      "title": "A review finding on it",
+      "spec": [
+        "D6",
+        "D2"
+      ]
+    },
+    {
+      "id": "Grandfathered",
+      "title": "An existing doc, grandfathered",
+      "spec": [
+        "D7"
+      ]
+    },
+    {
+      "id": "CutDoc",
+      "title": "Cut",
+      "spec": [
+        "D7"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Docs.Admit",
+      "from": "Invited",
+      "to": "Admitted",
+      "arrow": "solid, important and expensive to rebuild from code",
+      "spec": [
+        "D3"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.CutDrifted",
+      "from": "Grandfathered",
+      "to": "CutDoc",
+      "arrow": "found drifted or with an unlinked reason: cut",
+      "spec": [
+        "D7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.Declare",
+      "from": "Admitted",
+      "to": "Declared",
+      "arrow": "written, declaring the code it explains in explains:",
+      "spec": [
+        "D5",
+        "D2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.Existing",
+      "from": "Start",
+      "to": "Grandfathered",
+      "arrow": "an existing descriptive doc is grandfathered",
+      "spec": [
+        "D7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.FixDrifted",
+      "from": "Grandfathered",
+      "to": "Declared",
+      "arrow": "found drifted or with an unlinked reason: fixed",
+      "spec": [
+        "D7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.FixFinding",
+      "from": "Finding",
+      "to": "Declared",
+      "arrow": "the finding is fixed",
+      "spec": [
+        "D6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.Flag",
+      "from": "Declared",
+      "to": "Flagged",
+      "arrow": "a change to its paths: dydo check and pr-ready flag it",
+      "spec": [
+        "D5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.GivePaths",
+      "from": "Grandfathered",
+      "to": "Declared",
+      "arrow": "one mechanical ticket gives it its declared paths",
+      "spec": [
+        "D7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.Hold",
+      "from": "Flagged",
+      "to": "Declared",
+      "arrow": "the writer updates the doc or states it holds",
+      "spec": [
+        "D5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.Invite",
+      "from": "Proposed",
+      "to": "Invited",
+      "arrow": "he invites it",
+      "spec": [
+        "D4"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.New",
+      "from": "Start",
+      "to": "Proposed",
+      "arrow": "a new descriptive doc is proposed",
+      "spec": [
+        "D4",
+        "D1"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.Refuse",
+      "from": "Invited",
+      "to": "NotWritten",
+      "arrow": "it fails one of the three tests",
+      "spec": [
+        "D3"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.ReviewFinds",
+      "from": "Declared",
+      "to": "Finding",
+      "arrow": "review finds an unlinked why, or a declared path changed without the doc checked",
+      "spec": [
+        "D6",
+        "D2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Docs.Uninvited",
+      "from": "Proposed",
+      "to": "NotWritten",
+      "arrow": "no invitation, or an architecture plan: not written",
+      "spec": [
+        "D4",
+        "D8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

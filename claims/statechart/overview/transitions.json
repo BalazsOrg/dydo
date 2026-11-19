@@ -1,0 +1,494 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Overview",
+  "title": "dydo 4.0.0",
+  "initial": "ClaimArea",
+  "finals": [
+    "AdopterArea"
+  ],
+  "states": [
+    {
+      "id": "ClaimArea",
+      "title": "The claim build and the role evaluation",
+      "spec": [
+        "K1",
+        "K4",
+        "K6",
+        "K7",
+        "K16",
+        "K22",
+        "K24"
+      ]
+    },
+    {
+      "id": "HostArea",
+      "title": "Host settings, the guard and the statechart tool",
+      "spec": [
+        "N12 DR 055 §1",
+        "N12 DR 056 §1",
+        "N12 DR 062 §1",
+        "H20"
+      ]
+    },
+    {
+      "id": "ProjectArea",
+      "title": "A Project and its admiral",
+      "spec": [
+        "H4",
+        "H5",
+        "H10",
+        "S14",
+        "S15",
+        "R25",
+        "N13"
+      ]
+    },
+    {
+      "id": "TicketArea",
+      "title": "A ticket: dispatch, status and hops",
+      "spec": [
+        "H1",
+        "H2",
+        "H3",
+        "K14",
+        "S3",
+        "S5",
+        "S6",
+        "S12"
+      ]
+    },
+    {
+      "id": "ProofArea",
+      "title": "Proof tests and gates",
+      "spec": [
+        "T1",
+        "T3",
+        "T5",
+        "T13",
+        "T21",
+        "T23",
+        "Y4"
+      ]
+    },
+    {
+      "id": "DocsArea",
+      "title": "Descriptive docs",
+      "spec": [
+        "D1",
+        "D2",
+        "D3",
+        "D4",
+        "D5",
+        "D6",
+        "D7"
+      ]
+    },
+    {
+      "id": "ReviewArea",
+      "title": "The review loop and its shoulds",
+      "spec": [
+        "R2",
+        "R3",
+        "R8",
+        "R9",
+        "R10",
+        "R11",
+        "S8",
+        "S17"
+      ]
+    },
+    {
+      "id": "MergeArea",
+      "title": "dydo merge, the Merge hop and safe delete",
+      "spec": [
+        "R18",
+        "R19",
+        "R20",
+        "R21",
+        "R22",
+        "R23",
+        "N10"
+      ]
+    },
+    {
+      "id": "WatchArea",
+      "title": "Survey, map, liveness and CI findings",
+      "spec": [
+        "S19",
+        "S22",
+        "S23",
+        "S24",
+        "S26",
+        "Y9",
+        "R30"
+      ]
+    },
+    {
+      "id": "JudgementArea",
+      "title": "Envoys, councils, the tribunal and the law",
+      "spec": [
+        "H15",
+        "H16",
+        "L7",
+        "L14",
+        "L18",
+        "L22"
+      ]
+    },
+    {
+      "id": "StaffArea",
+      "title": "Chief of staff, overnight, and DRs awaiting ratification",
+      "spec": [
+        "H7",
+        "L19",
+        "L21"
+      ]
+    },
+    {
+      "id": "LandingArea",
+      "title": "The landing: inquisition, prerequisites and mutation",
+      "spec": [
+        "N5",
+        "N6",
+        "N7",
+        "T12",
+        "N15"
+      ]
+    },
+    {
+      "id": "MasterArea",
+      "title": "The master route",
+      "spec": [
+        "R26",
+        "R27",
+        "R29",
+        "R31"
+      ]
+    },
+    {
+      "id": "Tagged",
+      "title": "4.0.0 tagged",
+      "spec": [
+        "R28",
+        "N2",
+        "N15"
+      ]
+    },
+    {
+      "id": "AdopterArea",
+      "title": "The adopter update",
+      "spec": [
+        "K18",
+        "N1",
+        "N8",
+        "N11"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Overview.Accept",
+      "from": "LandingArea",
+      "to": "MasterArea",
+      "arrow": "his acceptance: the landing PR goes to master",
+      "spec": [
+        "N6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Build",
+      "from": "ClaimArea",
+      "to": "HostArea",
+      "arrow": "the model builds the skills; a project's init turns memory off and commits the guard",
+      "spec": [
+        "K6",
+        "N12 DR 055 §1",
+        "N12 DR 056 §1"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Cut",
+      "from": "ProjectArea",
+      "to": "TicketArea",
+      "arrow": "the admiral cuts a ticket and dispatches its captain",
+      "spec": [
+        "H5",
+        "H3"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Decided",
+      "from": "JudgementArea",
+      "to": "ProjectArea",
+      "arrow": "a Question decided, by him by day or provisionally overnight, is acted on and never ratified",
+      "spec": [
+        "L19",
+        "L20"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Explain",
+      "from": "ProofArea",
+      "to": "DocsArea",
+      "arrow": "a change to declared paths flags its doc",
+      "spec": [
+        "D5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Explained",
+      "from": "DocsArea",
+      "to": "ProofArea",
+      "arrow": "the writer updates the doc or states it holds",
+      "spec": [
+        "D5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.GiveOut",
+      "from": "StaffArea",
+      "to": "ProjectArea",
+      "arrow": "he gives out a ticket from that list, or tells the chief of staff to",
+      "spec": [
+        "H7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Hold",
+      "from": "HostArea",
+      "to": "ProjectArea",
+      "arrow": "an admiral holds a live Project",
+      "spec": [
+        "H4"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Land",
+      "from": "ProjectArea",
+      "to": "LandingArea",
+      "arrow": "every delivery ticket merged: the landing runs",
+      "spec": [
+        "N5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.List",
+      "from": "ProjectArea",
+      "to": "StaffArea",
+      "arrow": "the chief of staff reads the board across Projects into his short list",
+      "spec": [
+        "H7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Merge",
+      "from": "ReviewArea",
+      "to": "MergeArea",
+      "arrow": "the first round with no new blocker: the Merge hop runs dydo merge",
+      "spec": [
+        "R8",
+        "R17",
+        "R23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Need",
+      "from": "ProjectArea",
+      "to": "JudgementArea",
+      "arrow": "a need only he can settle goes up the chain, or a hard call to the tribunal",
+      "spec": [
+        "H16",
+        "L18"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Next",
+      "from": "MergeArea",
+      "to": "ProjectArea",
+      "arrow": "merged: the admiral cuts the next ticket",
+      "spec": [
+        "R20",
+        "H5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Proposed",
+      "from": "JudgementArea",
+      "to": "StaffArea",
+      "arrow": "overnight, both judges agree on a two-way, seriously blocking DR-grade call: a proposed DR",
+      "spec": [
+        "L21"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Prove",
+      "from": "TicketArea",
+      "to": "ProofArea",
+      "arrow": "the Implement hop proves its work with red tests and receipts",
+      "spec": [
+        "R5",
+        "T3"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Ratify",
+      "from": "StaffArea",
+      "to": "ProjectArea",
+      "arrow": "he ratifies the proposed DR",
+      "spec": [
+        "L21"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Refix",
+      "from": "LandingArea",
+      "to": "TicketArea",
+      "arrow": "a landing round's blockers become Fix rN",
+      "spec": [
+        "N5",
+        "S9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Review",
+      "from": "ProofArea",
+      "to": "ReviewArea",
+      "arrow": "the parts are wired; the review opens",
+      "spec": [
+        "R2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Route",
+      "from": "WatchArea",
+      "to": "ProjectArea",
+      "arrow": "findings and CI reds go to their officer",
+      "spec": [
+        "Y9",
+        "H11",
+        "H5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Ship",
+      "from": "Tagged",
+      "to": "AdopterArea",
+      "arrow": "adopters take one ordinary update",
+      "spec": [
+        "K18",
+        "N8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Tag",
+      "from": "MasterArea",
+      "to": "Tagged",
+      "arrow": "Balazs pushes the release tag",
+      "spec": [
+        "R28",
+        "N2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Overview.Watch",
+      "from": "ProjectArea",
+      "to": "WatchArea",
+      "arrow": "the board, the map and liveness are read",
+      "spec": [
+        "S19",
+        "S22",
+        "S24"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

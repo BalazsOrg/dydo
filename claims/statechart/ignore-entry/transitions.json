@@ -1,0 +1,170 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "IgnoreEntry",
+  "title": "A file over the token limit",
+  "initial": "OverLimit",
+  "finals": [
+    "Split",
+    "Ignored",
+    "Stale"
+  ],
+  "states": [
+    {
+      "id": "OverLimit",
+      "title": "A changed file over the token limit",
+      "spec": [
+        "T15",
+        "T16"
+      ]
+    },
+    {
+      "id": "Split",
+      "title": "Split under the limit",
+      "spec": [
+        "T15"
+      ]
+    },
+    {
+      "id": "PathA",
+      "title": "Ignore path (a): a file nobody writes by hand",
+      "spec": [
+        "T17"
+      ]
+    },
+    {
+      "id": "OwnTicket",
+      "title": "Ignore path (b): its own ticket",
+      "spec": [
+        "T18"
+      ]
+    },
+    {
+      "id": "CouncilB",
+      "title": "Path (b) before a council",
+      "spec": [
+        "T18"
+      ]
+    },
+    {
+      "id": "Ignored",
+      "title": "In the ignore file",
+      "spec": [
+        "T17",
+        "T18"
+      ]
+    },
+    {
+      "id": "Stale",
+      "title": "Stale entry: the gate fails",
+      "spec": [
+        "T17"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:IgnoreEntry.Authored",
+      "from": "OverLimit",
+      "to": "OwnTicket",
+      "arrow": "authored code that must stay whole",
+      "spec": [
+        "T18",
+        "T19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:IgnoreEntry.Bless",
+      "from": "CouncilB",
+      "to": "Ignored",
+      "arrow": "he blesses it",
+      "spec": [
+        "T18"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:IgnoreEntry.CheckA",
+      "from": "PathA",
+      "to": "Ignored",
+      "arrow": "the reviewer checks the entry",
+      "spec": [
+        "T17"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "reviewer"
+      ]
+    },
+    {
+      "claim": "claim:IgnoreEntry.Convene",
+      "from": "OwnTicket",
+      "to": "CouncilB",
+      "arrow": "the ticket goes to a council",
+      "spec": [
+        "T18"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:IgnoreEntry.Generated",
+      "from": "OverLimit",
+      "to": "PathA",
+      "arrow": "nobody writes it by hand",
+      "spec": [
+        "T17",
+        "T14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "code-writer"
+      ]
+    },
+    {
+      "claim": "claim:IgnoreEntry.GoStale",
+      "from": "Ignored",
+      "to": "Stale",
+      "arrow": "the entry goes stale",
+      "spec": [
+        "T17"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:IgnoreEntry.Split",
+      "from": "OverLimit",
+      "to": "Split",
+      "arrow": "the writer splits the file",
+      "spec": [
+        "T15",
+        "T16"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "code-writer"
+      ]
+    }
+  ],
+  "gaps": []
+}

@@ -1,0 +1,189 @@
+{
+  "adopter": {
+    "from": "Released",
+    "to": "Current",
+    "property": "K18_UpdateBeforeCurrent"
+  },
+  "backfill": {
+    "from": "Untagged",
+    "to": "Merged",
+    "property": "L12_PageBeforeMerge"
+  },
+  "claim-build": {
+    "from": "Edited",
+    "to": "Approved",
+    "property": "K20_TlcBeforeApproval"
+  },
+  "council": {
+    "from": "Convened",
+    "to": "Synthesised",
+    "property": "L14_AnswersBeforeSynthesis"
+  },
+  "dispatch": {
+    "from": "Staffing",
+    "to": "Working",
+    "property": "K14_BriefBeforeWork"
+  },
+  "docs": {
+    "from": "Start",
+    "to": "Declared",
+    "property": "D3_AdmitBeforeDeclare"
+  },
+  "envoy": {
+    "from": "Need",
+    "to": "Active",
+    "variables": {
+      "level": "\"captain\"",
+      "envoys": "0"
+    },
+    "property": "H16_OnlyAdmiralSends"
+  },
+  "feature-merge": {
+    "from": "MergeTodo",
+    "to": "MergeDone",
+    "property": "R20_GatesBeforeDone"
+  },
+  "findings": {
+    "from": "DytestNeed",
+    "to": "Acted",
+    "property": "Y3_FileInDytest"
+  },
+  "hops": {
+    "from": "Cut",
+    "to": "FixHop",
+    "property": "S9_ReviewBeforeFix"
+  },
+  "host-setup": {
+    "from": "Uninitialised",
+    "to": "Guarded",
+    "property": "N12_InitBeforeGuard"
+  },
+  "ignore-entry": {
+    "from": "OverLimit",
+    "to": "Ignored",
+    "property": "T17_ReviewedPathBeforeIgnore"
+  },
+  "landing": {
+    "from": "Integrated",
+    "to": "Tagged",
+    "variables": {
+      "round": "1",
+      "areas": "1",
+      "fixFrom": "\"none\"",
+      "securityFirst": "FALSE",
+      "prereqs": "0",
+      "hardened": "FALSE"
+    },
+    "property": "N2_HardeningBeforeTag"
+  },
+  "law": {
+    "from": "Evidence",
+    "to": "Enacted",
+    "property": "L13_ProposeBeforeEnact"
+  },
+  "liveness": {
+    "from": "Restarted",
+    "to": "Restarted",
+    "property": "S24_StoppedEventuallyResumed"
+  },
+  "map": {
+    "from": "Closed",
+    "to": "Shown",
+    "property": "S26_ReadBeforeFreshDisplay"
+  },
+  "master-route": {
+    "from": "Offered",
+    "to": "AfkMerge",
+    "variables": {
+      "resyncs": "0",
+      "oneWay": "TRUE"
+    },
+    "property": "R26_TwoWayAfk"
+  },
+  "merge-command": {
+    "from": "Refused",
+    "to": "Merged",
+    "property": "Structural_R23_RefusalIsTerminal"
+  },
+  "mutation": {
+    "from": "Background",
+    "to": "Clean",
+    "variables": {
+      "cloudRouteNotMuchMoreWork": "FALSE"
+    },
+    "property": "T12_RunBeforeClean"
+  },
+  "overview": {
+    "from": "ClaimArea",
+    "to": "MergeArea",
+    "property": "R2_ReviewBeforeMerge"
+  },
+  "project": {
+    "from": "Unheld",
+    "to": "Replanning",
+    "property": "H5_WatchBeforeReplan"
+  },
+  "proof": {
+    "from": "Written",
+    "to": "Graduated",
+    "property": "T3_RedBeforeGraduation"
+  },
+  "review": {
+    "from": "Wired",
+    "to": "Ended",
+    "variables": {
+      "round": "1",
+      "kind": "\"broken\"",
+      "securityFirst": "FALSE"
+    },
+    "property": "R8_NoBlockersAtEnd"
+  },
+  "role-evaluation": {
+    "from": "Questioned",
+    "to": "WrittenFresh",
+    "property": "K22_SurvivorBeforeRewrite"
+  },
+  "safe-delete": {
+    "from": "Live",
+    "to": "Purged",
+    "property": "N10_ArchiveBeforePurge"
+  },
+  "should": {
+    "from": "Found",
+    "to": "Done",
+    "property": "S17_RegisterBeforeDisposition"
+  },
+  "slug-check": {
+    "from": "Invalid",
+    "to": "Valid",
+    "property": "L8_InvalidMustBeRechecked"
+  },
+  "staff": {
+    "from": "MorningBrief",
+    "to": "Muster",
+    "property": "L19_BriefDoesNotRatify"
+  },
+  "statechart-run": {
+    "from": "Invoked",
+    "to": "Charted",
+    "property": "N12_CheckBeforeChart"
+  },
+  "ticket-status": {
+    "from": "New",
+    "to": "Done",
+    "property": "S6_StartBeforeDone"
+  },
+  "tribunal": {
+    "from": "HardCall",
+    "to": "DecidedOvernight",
+    "variables": {
+      "night": "FALSE",
+      "twoWay": "FALSE",
+      "drGrade": "FALSE",
+      "blocking": "FALSE",
+      "agree": "FALSE",
+      "oneFamily": "FALSE"
+    },
+    "property": "L20_NightOnlyProvisional"
+  }
+}

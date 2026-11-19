@@ -1,0 +1,205 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Dispatch",
+  "title": "Crew dispatch and return",
+  "initial": "Staffing",
+  "finals": [
+    "Returned",
+    "CouncilCalled",
+    "SelfAuthored"
+  ],
+  "states": [
+    {
+      "id": "Staffing",
+      "title": "Staffing a seat",
+      "spec": [
+        "R12",
+        "R13",
+        "R14",
+        "R15",
+        "K14"
+      ]
+    },
+    {
+      "id": "Briefed",
+      "title": "Briefed",
+      "spec": [
+        "H3",
+        "K14"
+      ]
+    },
+    {
+      "id": "Working",
+      "title": "Working the hop",
+      "spec": [
+        "H1",
+        "R5"
+      ]
+    },
+    {
+      "id": "ReCut",
+      "title": "Too big: re-cut",
+      "spec": [
+        "H2"
+      ]
+    },
+    {
+      "id": "Returned",
+      "title": "Returned",
+      "spec": [
+        "K14",
+        "R5"
+      ]
+    },
+    {
+      "id": "CouncilCalled",
+      "title": "A council instead of one seat",
+      "spec": [
+        "L16",
+        "L17"
+      ]
+    },
+    {
+      "id": "SelfAuthored",
+      "title": "Authored by the captain",
+      "spec": [
+        "R16"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Dispatch.Council",
+      "from": "Staffing",
+      "to": "CouncilCalled",
+      "arrow": "stakes or value: a council",
+      "spec": [
+        "L16",
+        "L17"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Dispatch.ReCut",
+      "from": "ReCut",
+      "to": "Staffing",
+      "arrow": "the cutter cuts coherent children",
+      "spec": [
+        "H2",
+        "H14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Dispatch.Return",
+      "from": "Working",
+      "to": "Returned",
+      "arrow": "the crew returns to its dispatcher",
+      "spec": [
+        "K14",
+        "R5",
+        "S6",
+        "N12 DR 047 §7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "code-writer",
+        "linear-workspace-standard",
+        "reviewer",
+        "scout",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Dispatch.SelfAuthor",
+      "from": "Staffing",
+      "to": "SelfAuthored",
+      "arrow": "cheaper to do than to brief, too small to need its own review",
+      "spec": [
+        "R16"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Dispatch.Send",
+      "from": "Staffing",
+      "to": "Briefed",
+      "arrow": "one seat, cross-family where possible, sent from its kind's template",
+      "spec": [
+        "H3",
+        "K14",
+        "R15",
+        "S1"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral",
+        "code-writer",
+        "reviewer",
+        "scout",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Dispatch.Start",
+      "from": "Briefed",
+      "to": "Working",
+      "arrow": "the holder starts its hop",
+      "spec": [
+        "S6",
+        "S13"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "code-writer",
+        "linear-workspace-standard",
+        "reviewer",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Dispatch.TooBig",
+      "from": "Briefed",
+      "to": "ReCut",
+      "arrow": "too big for one agent",
+      "spec": [
+        "H2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral",
+        "code-writer",
+        "reviewer",
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    }
+  ],
+  "gaps": []
+}

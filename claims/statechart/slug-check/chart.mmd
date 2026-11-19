@@ -1,0 +1,11 @@
+---
+title: "A new DR's slugs checked"
+---
+stateDiagram-v2
+  s0: A new DR: applies: (or new-ground), and one weighed: line per tension it resolved #183; L8
+  s1: An unknown or malformed slug: dydo check fails #183; L8
+  s2: Its slugs valid: dydo check passes #183; L8
+  [*] --> s0
+  s0 --> s1: an unknown or malformed slug: dydo check fails #183; L8
+  s0 --> s2: every applies: and weighed: slug is valid: dydo check passes #183; L8
+  s1 --> s0: the slug is corrected#59; dydo check runs again #183; L8

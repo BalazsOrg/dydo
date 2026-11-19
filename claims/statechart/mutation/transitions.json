@@ -1,0 +1,281 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Mutation",
+  "title": "The landing's mutation check",
+  "initial": "Background",
+  "finals": [
+    "Clean"
+  ],
+  "states": [
+    {
+      "id": "Background",
+      "title": "Background campaigns in spare capacity",
+      "spec": [
+        "T12"
+      ]
+    },
+    {
+      "id": "Queued",
+      "title": "Landing work queued for the exact tree",
+      "spec": [
+        "T12"
+      ]
+    },
+    {
+      "id": "Running",
+      "title": "Running: incomplete, the landing blocked",
+      "spec": [
+        "T12",
+        "N15"
+      ]
+    },
+    {
+      "id": "Survivors",
+      "title": "A mutant survived",
+      "spec": [
+        "T12"
+      ]
+    },
+    {
+      "id": "Ticketed",
+      "title": "A survivor to fix or claim",
+      "spec": [
+        "T12",
+        "H5",
+        "N6"
+      ]
+    },
+    {
+      "id": "Claimed",
+      "title": "Claimed equivalent",
+      "spec": [
+        "T12"
+      ]
+    },
+    {
+      "id": "Dispute",
+      "title": "Claim disputed: a council",
+      "spec": [
+        "T12",
+        "L14"
+      ]
+    },
+    {
+      "id": "Clean",
+      "title": "No survivor without a fix or an approved equivalent",
+      "spec": [
+        "T12",
+        "N15"
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "cloudRouteNotMuchMoreWork",
+      "initial": "FALSE",
+      "bound": "cloudRouteNotMuchMoreWork \\in BOOLEAN"
+    }
+  ],
+  "transitions": [
+    {
+      "claim": "claim:Mutation.AllKilled",
+      "from": "Running",
+      "to": "Clean",
+      "arrow": "no survivor without a fix or an approved equivalent",
+      "spec": [
+        "T12",
+        "N15"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Mutation.Approve",
+      "from": "Claimed",
+      "to": "Clean",
+      "arrow": "a fresh independent reviewer approves it",
+      "spec": [
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "reviewer"
+      ]
+    },
+    {
+      "claim": "claim:Mutation.ClaimEquivalent",
+      "from": "Ticketed",
+      "to": "Claimed",
+      "arrow": "claimed equivalent, with a reason",
+      "spec": [
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "code-writer"
+      ]
+    },
+    {
+      "claim": "claim:Mutation.Cloud",
+      "from": "Queued",
+      "to": "Running",
+      "arrow": "a large queue spills to the cloud",
+      "spec": [
+        "T12"
+      ],
+      "guard": "cloudRouteNotMuchMoreWork",
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Mutation.CutFix",
+      "from": "Survivors",
+      "to": "Ticketed",
+      "arrow": "the admiral cuts the survivor's fix ticket",
+      "spec": [
+        "N6",
+        "H5",
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Mutation.Fix",
+      "from": "Ticketed",
+      "to": "Queued",
+      "arrow": "fixed; the changed tree's work is queued again",
+      "spec": [
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "code-writer"
+      ]
+    },
+    {
+      "claim": "claim:Mutation.LandingCheck",
+      "from": "Background",
+      "to": "Queued",
+      "arrow": "the landing check judges the Project's diff",
+      "spec": [
+        "T12",
+        "T13"
+      ],
+      "guard": null,
+      "effect": "cloudRouteNotMuchMoreWork' \\in BOOLEAN",
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Mutation.Lapse",
+      "from": "Clean",
+      "to": "Queued",
+      "arrow": "the mutant or its code changes: the approval lapses",
+      "spec": [
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Mutation.Reject",
+      "from": "Claimed",
+      "to": "Dispute",
+      "arrow": "rejected, and the author disputes it: a council",
+      "spec": [
+        "T12",
+        "L16"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "reviewer"
+      ]
+    },
+    {
+      "claim": "claim:Mutation.Rejected",
+      "from": "Claimed",
+      "to": "Ticketed",
+      "arrow": "rejected, and the author accepts: back to fixing",
+      "spec": [
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Mutation.Ruled",
+      "from": "Dispute",
+      "to": "Clean",
+      "arrow": "the council rules it equivalent",
+      "spec": [
+        "T12",
+        "L14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Mutation.RuledNot",
+      "from": "Dispute",
+      "to": "Ticketed",
+      "arrow": "the council rules it a real survivor",
+      "spec": [
+        "T12",
+        "L14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Mutation.Schedule",
+      "from": "Queued",
+      "to": "Running",
+      "arrow": "scheduled like a test run, at normal priority",
+      "spec": [
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Mutation.Survive",
+      "from": "Running",
+      "to": "Survivors",
+      "arrow": "a mutant survives",
+      "spec": [
+        "T12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

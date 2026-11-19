@@ -1,0 +1,26 @@
+---
+title: "The landing's mutation check"
+---
+stateDiagram-v2
+  s0: Background campaigns in spare capacity #183; T12
+  s1: Landing work queued for the exact tree #183; T12
+  s2: Running: incomplete, the landing blocked #183; T12, N15
+  s3: No survivor without a fix or an approved equivalent #183; T12, N15
+  s4: A mutant survived #183; T12
+  s5: A survivor to fix or claim #183; T12, H5, N6
+  s6: Claimed equivalent #183; T12
+  s7: Claim disputed: a council #183; T12, L14
+  [*] --> s0
+  s0 --> s1: the landing check judges the Project's diff #183; T12, T13
+  s1 --> s2: scheduled like a test run, at normal priority #183; T12 or a large queue spills to the cloud #183; T12
+  s2 --> s3: no survivor without a fix or an approved equivalent #183; T12, N15
+  s2 --> s4: a mutant survives #183; T12
+  s3 --> s1: the mutant or its code changes: the approval lapses #183; T12
+  s4 --> s5: the admiral cuts the survivor's fix ticket #183; N6, H5, T12
+  s5 --> s1: fixed#59; the changed tree's work is queued again #183; T12
+  s5 --> s6: claimed equivalent, with a reason #183; T12
+  s6 --> s3: a fresh independent reviewer approves it #183; T12
+  s6 --> s5: rejected, and the author accepts: back to fixing #183; T12
+  s6 --> s7: rejected, and the author disputes it: a council #183; T12, L16
+  s7 --> s3: the council rules it equivalent #183; T12, L14
+  s7 --> s5: the council rules it a real survivor #183; T12, L14

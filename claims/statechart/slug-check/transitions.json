@@ -1,0 +1,75 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "SlugCheck",
+  "title": "A new DR's slugs checked",
+  "initial": "Written",
+  "finals": [
+    "Valid"
+  ],
+  "states": [
+    {
+      "id": "Written",
+      "title": "A new DR: applies: (or new-ground), and one weighed: line per tension it resolved",
+      "spec": [
+        "L8"
+      ]
+    },
+    {
+      "id": "Valid",
+      "title": "Its slugs valid: dydo check passes",
+      "spec": [
+        "L8"
+      ]
+    },
+    {
+      "id": "Invalid",
+      "title": "An unknown or malformed slug: dydo check fails",
+      "spec": [
+        "L8"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Slugs.Corrected",
+      "from": "Invalid",
+      "to": "Written",
+      "arrow": "the slug is corrected; dydo check runs again",
+      "spec": [
+        "L8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Slugs.Invalid",
+      "from": "Written",
+      "to": "Invalid",
+      "arrow": "an unknown or malformed slug: dydo check fails",
+      "spec": [
+        "L8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Slugs.Valid",
+      "from": "Written",
+      "to": "Valid",
+      "arrow": "every applies: and weighed: slug is valid: dydo check passes",
+      "spec": [
+        "L8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

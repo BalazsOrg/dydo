@@ -11,7 +11,9 @@ internal static partial class Names
     [GeneratedRegex(@"[^\p{L}\p{N} _-]")]
     private static partial Regex AnchorPunctuation();
 
-    public static string Kebab(Enum value) => WordBreak().Replace(value.ToString(), "-").ToLowerInvariant();
+    public static string Kebab(Enum value) => Kebab(value.ToString());
+
+    public static string Kebab(string name) => WordBreak().Replace(name, "-").ToLowerInvariant();
 
     public static string Of(Enum value) => $"{value.GetType().Name}.{value}";
 

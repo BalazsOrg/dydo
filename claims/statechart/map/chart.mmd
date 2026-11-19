@@ -1,0 +1,15 @@
+---
+title: "dydo map"
+---
+stateDiagram-v2
+  s0: Map not open #183; S19, H6
+  s1: A fresh read: top-level tickets, open plus closed in the last 3 days faded#59; the view in the URL #183; S19, S20, S21, S26
+  s2: A revisit: the last visit's disposable, machine-local snapshot shown first #183; S26
+  s3: The fresh read stands, its snapshot saved or not#59; Linear stays authoritative #183; S26
+  s4: A card expanded: the same layout at any depth #183; S19
+  [*] --> s0
+  s0 --> s1: he opens a Project's map: a fresh read from Linear #183; S19, S21, S26, H6
+  s0 --> s2: he opens a map he has opened before: last visit's snapshot first #183; S26
+  s1 --> s3: the snapshot is written outside any repository #183; S26 or the cache write fails#59; the fresh read still stands #183; S26
+  s2 --> s1: the fresh read arrives and its changes animate #183; S26
+  s3 --> s4: he expands a card: the same layout at any depth #183; S19

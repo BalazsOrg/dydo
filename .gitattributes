@@ -8,6 +8,19 @@ skills/**/agents/openai.yaml text eol=lf
 setup-skills.mjs text eol=lf
 .codex/agents/*.toml text=auto eol=lf
 
+# The skill builder writes its chart files and why docs with LF, and the golden test compares bytes (K7).
+claims/statechart/** text eol=lf
+dydo/reference/claims/*.md text eol=lf
+
+# The same for the built role skills and both built standards with their Scaffold copies (K6, K7, K12).
+# skills/roles/README.md, hand-written, also matches; it is markdown, already LF under skills/**/*.md above.
+skills/roles/**/*.md text eol=lf
+skills/roles/**/agents/openai.yaml text eol=lf
+dydo/guides/working-tree-standard.md text eol=lf
+dydo/reference/linear-workspace-standard.md text eol=lf
+Scaffold/dydo/guides/working-tree-standard.md text eol=lf
+Scaffold/dydo/reference/linear-workspace-standard.md text eol=lf
+
 # The retained DYD-96 native evidence packet is hashed, not read: its SHA256SUMS
 # is authoritative for every other file in that directory, and the assurance
 # gate's fixture exclusion (gate_inventory._fixture_exclusion) hashes the bytes

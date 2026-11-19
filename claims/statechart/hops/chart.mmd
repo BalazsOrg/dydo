@@ -1,0 +1,27 @@
+---
+title: "A step's hops, by Type label"
+---
+stateDiagram-v2
+  s0: A step is cut #183; S1, S2, S7
+  s1: Implement hop #183; S3
+  s2: One ticket, no hops #183; S4, R12
+  s3: Evidence check beside the leaf #183; S4, R6
+  s4: Review hop, one per round #183; S3, S8
+  s5: Step Done #183; S6
+  s6: AFK Merge hop #183; S12
+  s7: Fix rN beside the leaf #183; S9, R8
+  s8: Fix hop, Fix rN #183; S3, S9
+  s9: HITL Merge hop #183; S12, R27
+  [*] --> s0
+  s0 --> s1: the step has its own review loop: its Implement hop starts #183; S3, S4
+  s0 --> s2: the step has no review loop of its own #183; S4
+  s1 --> s4: Implement hop Done#59; Review r1 starts #183; S3, R2
+  s2 --> s3: the officer adds an evidence-check seat #183; S4, R6
+  s2 --> s5: its holder closes it Done #183; S6
+  s3 --> s5: the evidence check's Review hop is Done #183; S4, S6
+  s3 --> s7: the evidence check finds a blocker #183; S9, R11
+  s4 --> s6: PASS: the Merge hop, AFK into the feature branch or two-way into main #183; S12
+  s4 --> s8: FAIL: a Fix rN hop #183; S3, S9, R11
+  s4 --> s9: PASS: the Merge hop, HITL for a one-way main merge #183; S12, R27
+  s7 --> s3: Fix rN Done#59; the next check runs #183; R8, S9
+  s8 --> s4: Fix rN Done#59; the next round's Review hop #183; S3, S9, R8

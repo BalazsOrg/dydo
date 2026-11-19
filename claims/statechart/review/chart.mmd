@@ -1,0 +1,25 @@
+---
+title: "The review loop"
+---
+stateDiagram-v2
+  s0: Parts wired, before the Merge hop #183; R1, R2, R6
+  s1: Review phase ended #183; R8, R6
+  s2: Review round #183; R3, R5, R6, R8, R12, R15, R33
+  s3: Verdict posted #183; R11, R17, S8
+  s4: Escalated up the chain #183; R9, R10, S10
+  s5: Fix rN #183; S9, R8
+  s6: Sent up to re-plan #183; R9, S10
+  s7: Round-3 checkpoint #183; R10, S10
+  [*] --> s0
+  s0 --> s1: the parent only groups its parts #183; R6
+  s0 --> s2: the parts are wired#59; Review r1 opens #183; R2, R3, R6
+  s2 --> s3: the verdict and the PR line are posted #183; R11, R17, S8
+  s3 --> s4: a blocker needs Balazs #183; R9
+  s3 --> s5: a blocker is broken or against the spec #183; R9, S9 or a blocker is a security hole #183; R9
+  s3 --> s6: a blocker is fundamental, or a new requirement #183; R9
+  s3 --> s1: no new blocker this round #183; R8
+  s3 --> s2: no new blocker, but the officer orders one more round #183; R8
+  s5 --> s2: Fix rN is Done: its blockers Done, proof run on the head #183; S9, R8
+  s3 --> s7: round 3 ends with a blocker #183; R10
+  s7 --> s4: a fundamental break, a new requirement, or a need for Balazs #183; R10, S10
+  s7 --> s5: checkpoint: one more round, the security lens first for a security hole #183; R10, S10, R9

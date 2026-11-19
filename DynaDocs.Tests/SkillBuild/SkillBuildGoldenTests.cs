@@ -6,17 +6,23 @@ using DynaDocs.Tests.SkillBuild.Fixture;
 
 /// <summary>
 /// K7: every committed file that carries the built header is byte for byte what the model builds, so
-/// hand edits cannot creep in. Over the real repository both sides are empty until DYD-1082 (AR1); over
-/// a fixture root the diff names each changed, missing and extra file.
+/// hand edits cannot creep in. Over the real repository it compares the committed role skills, standards,
+/// charts and why docs with the production build; over a fixture root the diff names each changed,
+/// missing and extra file.
 /// </summary>
 public class SkillBuildGoldenTests
 {
     [Fact]
-    [Trait("Job", "contract: K7 golden test over the real repository (B14)")]
+    [Trait("Job", "contract: K7 golden test over the real repository: the committed role skills, standards, charts and why docs are the production build (B14)")]
     public void CommittedBuiltFiles_AreByteForByteTheProductionBuild()
     {
-        var diff = GoldenDiff.Describe(SkillBuilder.Build(ProductionModel.Model).Bytes(), BuiltHeader.Committed(CommittedTree.Root));
+        var built = SkillBuilder.Build(ProductionModel.Model).Bytes();
+        var committed = BuiltHeader.Committed(CommittedTree.Root);
 
+        // Never vacuous: the real build holds the six role spines and both standards (DYD-1082).
+        Assert.Contains("skills/roles/officers/ticket-captain/SKILL.md", committed.Keys);
+        Assert.Contains("dydo/guides/working-tree-standard.md", committed.Keys);
+        var diff = GoldenDiff.Describe(built, committed);
         Assert.True(diff.Length == 0, diff);
     }
 

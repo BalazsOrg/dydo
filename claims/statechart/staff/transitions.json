@@ -1,0 +1,159 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Staff",
+  "title": "The chief of staff",
+  "initial": "Day",
+  "finals": [],
+  "states": [
+    {
+      "id": "Day",
+      "title": "By day",
+      "spec": [
+        "H7"
+      ]
+    },
+    {
+      "id": "Investigating",
+      "title": "Investigating for him",
+      "spec": [
+        "H7"
+      ]
+    },
+    {
+      "id": "Muster",
+      "title": "Muster",
+      "spec": [
+        "L21",
+        "K11"
+      ]
+    },
+    {
+      "id": "NightWatch",
+      "title": "Overnight watch",
+      "spec": [
+        "H7",
+        "H12"
+      ]
+    },
+    {
+      "id": "MorningBrief",
+      "title": "Morning brief",
+      "spec": [
+        "L19",
+        "L21"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Staff.Answered",
+      "from": "Investigating",
+      "to": "Day",
+      "arrow": "findings given to him",
+      "spec": [
+        "H7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "chief-of-staff"
+      ]
+    },
+    {
+      "claim": "claim:Staff.Ask",
+      "from": "Day",
+      "to": "Investigating",
+      "arrow": "he asks for cross-Project thinking, or about an unknown on his machine",
+      "spec": [
+        "H7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "chief-of-staff"
+      ]
+    },
+    {
+      "claim": "claim:Staff.Brief",
+      "from": "MorningBrief",
+      "to": "Day",
+      "arrow": "the brief is given",
+      "spec": [
+        "L19",
+        "L21"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "chief-of-staff"
+      ]
+    },
+    {
+      "claim": "claim:Staff.Morning",
+      "from": "NightWatch",
+      "to": "MorningBrief",
+      "arrow": "the night ends",
+      "spec": [
+        "H7",
+        "L19",
+        "K11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "chief-of-staff"
+      ]
+    },
+    {
+      "claim": "claim:Staff.Muster",
+      "from": "Day",
+      "to": "Muster",
+      "arrow": "overnight mode starts",
+      "spec": [
+        "K11",
+        "L21"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "chief-of-staff"
+      ]
+    },
+    {
+      "claim": "claim:Staff.Watch",
+      "from": "Muster",
+      "to": "NightWatch",
+      "arrow": "DR-grade calls surfaced; the watch starts",
+      "spec": [
+        "L21",
+        "H7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "chief-of-staff"
+      ]
+    }
+  ],
+  "gaps": [
+    {
+      "action": "Gap1",
+      "from": "Day",
+      "to": "Muster",
+      "note": "H7 says the chief of staff runs the overnight watch, not what starts it"
+    },
+    {
+      "action": "Gap2",
+      "from": "NightWatch",
+      "to": "MorningBrief",
+      "note": "H7 and L19 name the watch and the morning brief, not what ends the night"
+    }
+  ]
+}

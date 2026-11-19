@@ -1,0 +1,295 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "ClaimBuild",
+  "title": "The claim build",
+  "initial": "Edited",
+  "finals": [
+    "Released"
+  ],
+  "states": [
+    {
+      "id": "Edited",
+      "title": "A claim edited in the C# model",
+      "spec": [
+        "K1",
+        "K2",
+        "K4",
+        "K17",
+        "K19",
+        "K21"
+      ]
+    },
+    {
+      "id": "Rejected",
+      "title": "The build or its tests refuse",
+      "spec": [
+        "K4",
+        "K7",
+        "K10",
+        "K24"
+      ]
+    },
+    {
+      "id": "Built",
+      "title": "Built files written by the builder",
+      "spec": [
+        "K5",
+        "K6",
+        "K8",
+        "K9",
+        "K12",
+        "K13",
+        "K23",
+        "K26"
+      ]
+    },
+    {
+      "id": "Nudged",
+      "title": "A built file edited by hand: the guard nudges",
+      "spec": [
+        "K6"
+      ]
+    },
+    {
+      "id": "Checked",
+      "title": "Golden, shape and stray-claim checks pass",
+      "spec": [
+        "K7",
+        "K10",
+        "K24"
+      ]
+    },
+    {
+      "id": "TlcPassed",
+      "title": "TLC passes the moves against the hand-written properties",
+      "spec": [
+        "K3",
+        "K20"
+      ]
+    },
+    {
+      "id": "TlcFailed",
+      "title": "TLC fails: the push is not done",
+      "spec": [
+        "K3",
+        "K20"
+      ]
+    },
+    {
+      "id": "InReview",
+      "title": "Model PR read through its built-skill diff",
+      "spec": [
+        "K16"
+      ]
+    },
+    {
+      "id": "Approved",
+      "title": "Claims approved by Balazs",
+      "spec": [
+        "K16",
+        "K20"
+      ]
+    },
+    {
+      "id": "Released",
+      "title": "Built skills shipped downstream",
+      "spec": [
+        "K18",
+        "K15",
+        "K25",
+        "K27",
+        "K28",
+        "K29"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Build.Approve",
+      "from": "InReview",
+      "to": "Approved",
+      "arrow": "he approves: in the 4.0.0 push once, at the final candidate; after it, each model PR",
+      "spec": [
+        "K16",
+        "K20",
+        "K22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.EditThere",
+      "from": "Nudged",
+      "to": "Edited",
+      "arrow": "the edit goes into the model instead",
+      "spec": [
+        "K6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Golden",
+      "from": "Built",
+      "to": "Rejected",
+      "arrow": "the golden test finds a byte difference, or the stray-claim lint finds pasted claim text",
+      "spec": [
+        "K7",
+        "K24"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.HandEdit",
+      "from": "Built",
+      "to": "Nudged",
+      "arrow": "an Edit or Write to a built path",
+      "spec": [
+        "K6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Mend",
+      "from": "Rejected",
+      "to": "Edited",
+      "arrow": "the model is fixed",
+      "spec": [
+        "K6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Pass",
+      "from": "Built",
+      "to": "Checked",
+      "arrow": "golden, shape and stray-claim checks pass, in the suite and in CI",
+      "spec": [
+        "K7",
+        "K10",
+        "K24"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Read",
+      "from": "TlcPassed",
+      "to": "InReview",
+      "arrow": "the model PR is read through its built-skill diff",
+      "spec": [
+        "K16"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Refused",
+      "from": "Edited",
+      "to": "Rejected",
+      "arrow": "the build refuses: a claim not on exactly one line per carrier, a misplaced move, a shape limit",
+      "spec": [
+        "K4",
+        "K10",
+        "K9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Remodel",
+      "from": "TlcFailed",
+      "to": "Edited",
+      "arrow": "the push is not done: the model is fixed and built again",
+      "spec": [
+        "K20",
+        "K6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Ship",
+      "from": "Approved",
+      "to": "Released",
+      "arrow": "downstream gets the built files in one ordinary update",
+      "spec": [
+        "K18"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Tlc",
+      "from": "Checked",
+      "to": "TlcPassed",
+      "arrow": "TLC passes the generated moves against the hand-written properties; the result is recorded with the candidate",
+      "spec": [
+        "K3",
+        "K20",
+        "N14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.TlcFail",
+      "from": "Checked",
+      "to": "TlcFailed",
+      "arrow": "TLC fails a property: the push is not done and nothing goes to his approval",
+      "spec": [
+        "K3",
+        "K20"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.Write",
+      "from": "Edited",
+      "to": "Built",
+      "arrow": "dotnet run --project tools/SkillBuild writes every built file with its header",
+      "spec": [
+        "K6",
+        "K8",
+        "K5",
+        "K12",
+        "K13",
+        "K23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

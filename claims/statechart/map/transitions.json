@@ -1,0 +1,136 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Map",
+  "title": "dydo map",
+  "initial": "Closed",
+  "finals": [
+    "Shown",
+    "Expanded"
+  ],
+  "states": [
+    {
+      "id": "Closed",
+      "title": "Map not open",
+      "spec": [
+        "S19",
+        "H6"
+      ]
+    },
+    {
+      "id": "Snapshot",
+      "title": "A revisit: the last visit's disposable, machine-local snapshot shown first",
+      "spec": [
+        "S26"
+      ]
+    },
+    {
+      "id": "Fresh",
+      "title": "A fresh read: top-level tickets, open plus closed in the last 3 days faded; the view in the URL",
+      "spec": [
+        "S19",
+        "S20",
+        "S21",
+        "S26"
+      ]
+    },
+    {
+      "id": "Shown",
+      "title": "The fresh read stands, its snapshot saved or not; Linear stays authoritative",
+      "spec": [
+        "S26"
+      ]
+    },
+    {
+      "id": "Expanded",
+      "title": "A card expanded: the same layout at any depth",
+      "spec": [
+        "S19"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:MapView.Animate",
+      "from": "Snapshot",
+      "to": "Fresh",
+      "arrow": "the fresh read arrives and its changes animate",
+      "spec": [
+        "S26"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MapView.Expand",
+      "from": "Shown",
+      "to": "Expanded",
+      "arrow": "he expands a card: the same layout at any depth",
+      "spec": [
+        "S19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MapView.Open",
+      "from": "Closed",
+      "to": "Fresh",
+      "arrow": "he opens a Project's map: a fresh read from Linear",
+      "spec": [
+        "S19",
+        "S21",
+        "S26",
+        "H6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MapView.Revisit",
+      "from": "Closed",
+      "to": "Snapshot",
+      "arrow": "he opens a map he has opened before: last visit's snapshot first",
+      "spec": [
+        "S26"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MapView.Save",
+      "from": "Fresh",
+      "to": "Shown",
+      "arrow": "the snapshot is written outside any repository",
+      "spec": [
+        "S26"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MapView.SaveFails",
+      "from": "Fresh",
+      "to": "Shown",
+      "arrow": "the cache write fails; the fresh read still stands",
+      "spec": [
+        "S26"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

@@ -1,0 +1,389 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "FeatureMerge",
+  "title": "The Merge hop into the feature branch",
+  "initial": "MergeTodo",
+  "finals": [
+    "MergeDone"
+  ],
+  "states": [
+    {
+      "id": "MergeTodo",
+      "title": "Merge hop in Todo",
+      "spec": [
+        "S3",
+        "S12"
+      ]
+    },
+    {
+      "id": "PreGate",
+      "title": "Running dydo test gate on the combined tree",
+      "spec": [
+        "R21",
+        "Y4"
+      ]
+    },
+    {
+      "id": "PreFix",
+      "title": "A code-writer fixing a red gate",
+      "spec": [
+        "R21"
+      ]
+    },
+    {
+      "id": "Rereview",
+      "title": "A fresh round on the new head",
+      "spec": [
+        "R8",
+        "R17",
+        "R23",
+        "R24"
+      ]
+    },
+    {
+      "id": "Running",
+      "title": "Running dydo merge",
+      "spec": [
+        "R21",
+        "R23"
+      ]
+    },
+    {
+      "id": "Resolving",
+      "title": "Resolving a CONFLICT on the ticket branch",
+      "spec": [
+        "R19",
+        "R21"
+      ]
+    },
+    {
+      "id": "HunkReview",
+      "title": "Judging a resolution's hunks",
+      "spec": [
+        "R19"
+      ]
+    },
+    {
+      "id": "Gating",
+      "title": "Gates on the merge",
+      "spec": [
+        "R18",
+        "R20"
+      ]
+    },
+    {
+      "id": "Rerun",
+      "title": "Red gate rerun once",
+      "spec": [
+        "R22"
+      ]
+    },
+    {
+      "id": "Reverted",
+      "title": "Merge reverted",
+      "spec": [
+        "R22",
+        "S12",
+        "Y9"
+      ]
+    },
+    {
+      "id": "FixRound",
+      "title": "Fix and fix-scoped round",
+      "spec": [
+        "R22"
+      ]
+    },
+    {
+      "id": "MergeDone",
+      "title": "Merge hop Done",
+      "spec": [
+        "R20"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:FeatureMerge.Conflict",
+      "from": "Running",
+      "to": "Resolving",
+      "arrow": "dydo merge reports CONFLICT",
+      "spec": [
+        "R21",
+        "R19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "code-writer",
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.FixAfterRevert",
+      "from": "Reverted",
+      "to": "FixRound",
+      "arrow": "a Fix follows on the ticket branch",
+      "spec": [
+        "R22",
+        "R21"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.Flake",
+      "from": "Rerun",
+      "to": "MergeDone",
+      "arrow": "green on the rerun: a flake",
+      "spec": [
+        "R22",
+        "Y9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.Green",
+      "from": "Gating",
+      "to": "MergeDone",
+      "arrow": "DYTEST green on the merge tree, CI green on the merge SHA",
+      "spec": [
+        "R18",
+        "R20"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.HandShaped",
+      "from": "Running",
+      "to": "Resolving",
+      "arrow": "refused: a hand-shaped tree",
+      "spec": [
+        "R19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:FeatureMerge.HunksPass",
+      "from": "HunkReview",
+      "to": "PreGate",
+      "arrow": "PASS on the hunks; the gate and the merge run again",
+      "spec": [
+        "R19",
+        "R17"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "reviewer"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.Merge",
+      "from": "Running",
+      "to": "Gating",
+      "arrow": "dydo merge writes the merge commit",
+      "spec": [
+        "R23",
+        "R32"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:FeatureMerge.NoPass",
+      "from": "Running",
+      "to": "Rereview",
+      "arrow": "refused: no PASS on the head or a clean-sync ancestor",
+      "spec": [
+        "R17",
+        "R23",
+        "R24"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:FeatureMerge.NoReceipt",
+      "from": "Running",
+      "to": "PreGate",
+      "arrow": "refused: no green receipt for the combined tree",
+      "spec": [
+        "R21",
+        "R23",
+        "Y4"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:FeatureMerge.PreFixed",
+      "from": "PreFix",
+      "to": "Rereview",
+      "arrow": "the fix moves the head: a fresh round",
+      "spec": [
+        "R8",
+        "R23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:FeatureMerge.PreGreen",
+      "from": "PreGate",
+      "to": "Running",
+      "arrow": "a green receipt for the combined tree",
+      "spec": [
+        "Y4",
+        "R23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:FeatureMerge.PreRed",
+      "from": "PreGate",
+      "to": "PreFix",
+      "arrow": "a real red gate before the merge",
+      "spec": [
+        "R21"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.RealRed",
+      "from": "Rerun",
+      "to": "Reverted",
+      "arrow": "red again: a real red",
+      "spec": [
+        "R22",
+        "Y9",
+        "S12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "linear-workspace-standard",
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.Red",
+      "from": "Gating",
+      "to": "Rerun",
+      "arrow": "a gate goes red after the merge",
+      "spec": [
+        "R22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.Reland",
+      "from": "FixRound",
+      "to": "PreGate",
+      "arrow": "the fix-scoped round passes; re-land",
+      "spec": [
+        "R22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain",
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.RereviewPass",
+      "from": "Rereview",
+      "to": "PreGate",
+      "arrow": "PASS on the new head",
+      "spec": [
+        "R17",
+        "R23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:FeatureMerge.Resolved",
+      "from": "Resolving",
+      "to": "HunkReview",
+      "arrow": "the resolution is committed",
+      "spec": [
+        "R19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "reviewer",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:FeatureMerge.Start",
+      "from": "MergeTodo",
+      "to": "PreGate",
+      "arrow": "the Merge hop's blocker clears",
+      "spec": [
+        "S3",
+        "R21"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

@@ -1,0 +1,175 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "RoleEvaluation",
+  "title": "The nine role skills evaluated",
+  "initial": "Questioned",
+  "finals": [
+    "Approved"
+  ],
+  "states": [
+    {
+      "id": "Questioned",
+      "title": "A role skill questioned: should it exist, or fold into another?",
+      "spec": [
+        "K22",
+        "K19"
+      ]
+    },
+    {
+      "id": "Kept",
+      "title": "Kept as a survivor",
+      "spec": [
+        "K22"
+      ]
+    },
+    {
+      "id": "Folded",
+      "title": "Folded: a survivor carries its responsibilities",
+      "spec": [
+        "K22"
+      ]
+    },
+    {
+      "id": "Removed",
+      "title": "Removed",
+      "spec": [
+        "K22"
+      ]
+    },
+    {
+      "id": "WrittenFresh",
+      "title": "Written fresh from the 4.0.0 decisions and claims",
+      "spec": [
+        "K22",
+        "K19",
+        "K20"
+      ]
+    },
+    {
+      "id": "Approved",
+      "title": "Approved by him at the final candidate, folds and removals included",
+      "spec": [
+        "K16",
+        "K22"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Evaluation.Approve",
+      "from": "WrittenFresh",
+      "to": "Approved",
+      "arrow": "he approves the rewrite with the other claims, at the final candidate",
+      "spec": [
+        "K16",
+        "K22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Evaluation.ApproveFold",
+      "from": "Folded",
+      "to": "Approved",
+      "arrow": "he approves the fold with the other claims, at the final candidate",
+      "spec": [
+        "K16",
+        "K22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Evaluation.ApproveRemoval",
+      "from": "Removed",
+      "to": "Approved",
+      "arrow": "he approves the removal with the other claims, at the final candidate",
+      "spec": [
+        "K16",
+        "K22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Evaluation.Fold",
+      "from": "Questioned",
+      "to": "Folded",
+      "arrow": "questioned, it folds into a survivor, which carries its responsibilities",
+      "spec": [
+        "K22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Evaluation.Keep",
+      "from": "Questioned",
+      "to": "Kept",
+      "arrow": "questioned, it should exist: a survivor",
+      "spec": [
+        "K22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Evaluation.Remove",
+      "from": "Questioned",
+      "to": "Removed",
+      "arrow": "questioned, it should not exist: removed",
+      "spec": [
+        "K22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Evaluation.Rewrite",
+      "from": "Kept",
+      "to": "WrittenFresh",
+      "arrow": "only a survivor is written fresh from the 4.0.0 decisions and claims, simpler and streamlined; its current file is a checklist of what not to lose, never a source",
+      "spec": [
+        "K22",
+        "K19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": [
+    {
+      "action": "Gap1",
+      "from": "WrittenFresh",
+      "to": null,
+      "note": "K16 and K22 give his approval of a rewrite at the final candidate, not the route when he rejects it"
+    },
+    {
+      "action": "Gap2",
+      "from": "Folded",
+      "to": null,
+      "note": "K16 and K22 give his approval of a fold at the final candidate, not the route when he rejects it"
+    },
+    {
+      "action": "Gap3",
+      "from": "Removed",
+      "to": null,
+      "note": "K16 and K22 give his approval of a removal at the final candidate, not the route when he rejects it"
+    }
+  ]
+}

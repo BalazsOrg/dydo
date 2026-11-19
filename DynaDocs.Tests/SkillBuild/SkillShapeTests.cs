@@ -13,13 +13,17 @@ public class SkillShapeTests
     private const string Frontmatter = "---\nname: demo\ndescription: d\n---\n";
     private const string LinksA = "- [A](resources/a.md)\n";
 
-    // The real build is empty until DYD-1082 (AR1); its committed built files are checked as they stand.
+    // The committed built files are checked as they stand on disk, so a hand edit that breaks a limit fails here.
     [Fact]
-    [Trait("Job", "contract: K10 shape tests over the real build (B15)")]
+    [Trait("Job", "contract: K10 shape tests over the real committed role skills and their resources (B15)")]
     public void RealBuiltFiles_MeetEveryShapeLimit()
     {
-        var violations = SkillShape.Violations(CommittedTree.BuiltText());
+        var tree = CommittedTree.BuiltText();
 
+        // Never vacuous: the real tree holds the six role spines and their resources (DYD-1082).
+        Assert.Equal(6, tree.Keys.Count(path => path.StartsWith("skills/roles/", StringComparison.Ordinal) && path.EndsWith("/SKILL.md", StringComparison.Ordinal)));
+        Assert.Contains("skills/roles/crew/reviewer/resources/council.md", tree.Keys);
+        var violations = SkillShape.Violations(tree);
         Assert.True(violations.Count == 0, string.Join('\n', violations));
     }
 

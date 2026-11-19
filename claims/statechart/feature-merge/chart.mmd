@@ -1,0 +1,34 @@
+---
+title: "The Merge hop into the feature branch"
+---
+stateDiagram-v2
+  s0: Merge hop in Todo #183; S3, S12
+  s1: Running dydo test gate on the combined tree #183; R21, Y4
+  s2: A code-writer fixing a red gate #183; R21
+  s3: Running dydo merge #183; R21, R23
+  s4: Gates on the merge #183; R18, R20
+  s5: A fresh round on the new head #183; R8, R17, R23, R24
+  s6: Resolving a CONFLICT on the ticket branch #183; R19, R21
+  s7: Judging a resolution's hunks #183; R19
+  s8: Merge hop Done #183; R20
+  s9: Red gate rerun once #183; R22
+  s10: Merge reverted #183; R22, S12, Y9
+  s11: Fix and fix-scoped round #183; R22
+  [*] --> s0
+  s0 --> s1: the Merge hop's blocker clears #183; S3, R21
+  s1 --> s2: a real red gate before the merge #183; R21
+  s1 --> s3: a green receipt for the combined tree #183; Y4, R23
+  s2 --> s5: the fix moves the head: a fresh round #183; R8, R23
+  s3 --> s1: refused: no green receipt for the combined tree #183; R21, R23, Y4
+  s3 --> s4: dydo merge writes the merge commit #183; R23, R32
+  s3 --> s5: refused: no PASS on the head or a clean-sync ancestor #183; R17, R23, R24
+  s3 --> s6: dydo merge reports CONFLICT #183; R21, R19 or refused: a hand-shaped tree #183; R19
+  s4 --> s8: DYTEST green on the merge tree, CI green on the merge SHA #183; R18, R20
+  s4 --> s9: a gate goes red after the merge #183; R22
+  s5 --> s1: PASS on the new head #183; R17, R23
+  s6 --> s7: the resolution is committed #183; R19
+  s7 --> s1: PASS on the hunks#59; the gate and the merge run again #183; R19, R17
+  s9 --> s8: green on the rerun: a flake #183; R22, Y9
+  s9 --> s10: red again: a real red #183; R22, Y9, S12
+  s10 --> s11: a Fix follows on the ticket branch #183; R22, R21
+  s11 --> s1: the fix-scoped round passes#59; re-land #183; R22

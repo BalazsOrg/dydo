@@ -1,0 +1,211 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "MergeCommand",
+  "title": "dydo merge and its refusals",
+  "initial": "Invoked",
+  "finals": [
+    "Refused",
+    "Conflict",
+    "Merged",
+    "AlreadyIn"
+  ],
+  "states": [
+    {
+      "id": "Invoked",
+      "title": "dydo merge run on a PR",
+      "spec": [
+        "R23"
+      ]
+    },
+    {
+      "id": "Refused",
+      "title": "Refused with a stated reason",
+      "spec": [
+        "R19",
+        "R23",
+        "R26",
+        "R27"
+      ]
+    },
+    {
+      "id": "Conflict",
+      "title": "CONFLICT: the merge with the tip is not clean",
+      "spec": [
+        "R21",
+        "R23"
+      ]
+    },
+    {
+      "id": "Merged",
+      "title": "A merge commit on the target",
+      "spec": [
+        "R32",
+        "N12 DR 061 §3"
+      ]
+    },
+    {
+      "id": "AlreadyIn",
+      "title": "Already integrated: exit 0",
+      "spec": [
+        "N12 DR 061 §2"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:MergeCommand.AlreadyIn",
+      "from": "Invoked",
+      "to": "AlreadyIn",
+      "arrow": "a closed PR already in its base",
+      "spec": [
+        "N12 DR 061 §2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.Conflict",
+      "from": "Invoked",
+      "to": "Conflict",
+      "arrow": "the merge with the tip is not clean",
+      "spec": [
+        "R21",
+        "R23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.DraftOrFork",
+      "from": "Invoked",
+      "to": "Refused",
+      "arrow": "refused: a draft or fork PR, or a closed PR not yet in its base",
+      "spec": [
+        "N12 DR 061 §2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.HandShaped",
+      "from": "Invoked",
+      "to": "Refused",
+      "arrow": "refused: a hand-shaped tree, not git merge-tree --write-tree p1 p2",
+      "spec": [
+        "R19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.Merge",
+      "from": "Invoked",
+      "to": "Merged",
+      "arrow": "every check holds: a merge commit; a re-land reverts the revert",
+      "spec": [
+        "R23",
+        "R24",
+        "R29",
+        "R32",
+        "N12 DR 061 §3"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "working-tree-standard"
+      ]
+    },
+    {
+      "claim": "claim:MergeCommand.NoPass",
+      "from": "Invoked",
+      "to": "Refused",
+      "arrow": "refused: no PASS on the head, nor on an ancestor followed only by clean syncs",
+      "spec": [
+        "R17",
+        "R23",
+        "R24"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.NoReceipt",
+      "from": "Invoked",
+      "to": "Refused",
+      "arrow": "refused: DYTEST holds no green receipt for the combined tree",
+      "spec": [
+        "R23",
+        "Y4"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.NotTwoWay",
+      "from": "Invoked",
+      "to": "Refused",
+      "arrow": "refused: a PR into master whose body does not declare it two-way, or whose CI is not green",
+      "spec": [
+        "R26"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.OneWay",
+      "from": "Invoked",
+      "to": "Refused",
+      "arrow": "refused: a PR into master that the dydo.json path list flags one-way",
+      "spec": [
+        "R27"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.ReviewOpen",
+      "from": "Invoked",
+      "to": "Refused",
+      "arrow": "refused: the Review is not Done",
+      "spec": [
+        "R17"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:MergeCommand.TipMoved",
+      "from": "Invoked",
+      "to": "Refused",
+      "arrow": "refused: the target's tip moved from the pin",
+      "spec": [
+        "N12 DR 061 §2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

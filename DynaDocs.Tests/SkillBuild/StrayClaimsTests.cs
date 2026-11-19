@@ -5,7 +5,7 @@ using DynaDocs.Tests.SkillBuild.Slots;
 
 /// <summary>
 /// K24: claim text pasted by hand outside the built files is reported with its path, line and claim.
-/// Over the real repository the lint has no built lines until DYD-1082 (DYD-1196 F21).
+/// Over the real repository it reads every production built line against every tracked hand-written doc.
 /// </summary>
 public class StrayClaimsTests
 {
@@ -14,9 +14,15 @@ public class StrayClaimsTests
     private static readonly BuiltTree Demo = SkillBuilder.Build(DemoModel.With());
 
     [Fact]
-    [Trait("Job", "contract: K24 the stray-claim lint runs over the real repository beside the golden test (F21)")]
-    public void RealRepository_HasNoStrayClaimText() =>
-        Assert.Empty(StrayClaims.Find(CommittedTree.Root, CommittedTree.Tracked(), SkillBuilder.Build(ProductionModel.Model)));
+    [Trait("Job", "contract: K24 the stray-claim lint runs over the real repository's production lines and hand-written docs, beside the golden test (F21)")]
+    public void RealRepository_HasNoStrayClaimText()
+    {
+        var production = SkillBuilder.Build(ProductionModel.Model);
+
+        // Never vacuous: the production build states hundreds of lines the lint searches for (DYD-1082).
+        Assert.True(production.Map.Count(line => line.Text.Length >= StrayClaims.MinimumLength) > 100);
+        Assert.Empty(StrayClaims.Find(CommittedTree.Root, CommittedTree.Tracked(), production));
+    }
 
     [Fact]
     [Trait("Job", "trap: K24 a claim line pasted into a hand-written doc, even rewrapped, is caught with path, line and claim (F21)")]

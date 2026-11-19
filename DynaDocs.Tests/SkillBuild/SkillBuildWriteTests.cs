@@ -80,18 +80,6 @@ public class SkillBuildWriteTests
     }
 
     [Fact]
-    [Trait("Job", "contract: AR1/K20 the production model declares nothing, so a run writes nothing (B13)")]
-    public void Run_OfTheProductionModel_WritesNothing()
-    {
-        using var root = new TempRoot();
-        root.Write("dydo/guides/working-tree-standard.md", "# Working-Tree Standard\n");
-
-        Assert.Equal((0, "", ""), root.Run(ProductionModel.Model));
-
-        Assert.Equal(["dydo/guides/working-tree-standard.md"], root.Files().Keys);
-    }
-
-    [Fact]
     [Trait("Job", "contract: K23 `-- map` prints one line per claim-stating built line and writes nothing (D19)")]
     public void Map_PrintsPathLineAndClaimIdsAndWritesNothing()
     {

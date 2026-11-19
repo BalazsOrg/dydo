@@ -1,0 +1,291 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Envoy",
+  "title": "A need for Balazs",
+  "initial": "Need",
+  "finals": [
+    "Decided",
+    "AskedInThread",
+    "ToTribunal",
+    "Closed",
+    "MovedOn"
+  ],
+  "states": [
+    {
+      "id": "Need",
+      "title": "A need for Balazs",
+      "spec": [
+        "H16"
+      ]
+    },
+    {
+      "id": "Homework",
+      "title": "Homework first",
+      "spec": [
+        "H16"
+      ]
+    },
+    {
+      "id": "PassedUp",
+      "title": "Passed up the chain",
+      "spec": [
+        "H16",
+        "H12"
+      ]
+    },
+    {
+      "id": "Decided",
+      "title": "Decided by the officer",
+      "spec": [
+        "H16",
+        "L18"
+      ]
+    },
+    {
+      "id": "AskedInThread",
+      "title": "Asked in one line, in his thread",
+      "spec": [
+        "H22",
+        "H6"
+      ]
+    },
+    {
+      "id": "ToTribunal",
+      "title": "Sent to the tribunal",
+      "spec": [
+        "H5",
+        "L18"
+      ]
+    },
+    {
+      "id": "Queued",
+      "title": "Queued behind the active envoy",
+      "spec": [
+        "H15",
+        "H18"
+      ]
+    },
+    {
+      "id": "Active",
+      "title": "Envoy out",
+      "spec": [
+        "H15",
+        "H19",
+        "H23"
+      ]
+    },
+    {
+      "id": "Reported",
+      "title": "Envoy reported back",
+      "spec": [
+        "H15",
+        "H19"
+      ]
+    },
+    {
+      "id": "Closed",
+      "title": "Envoy thread closed",
+      "spec": [
+        "H18",
+        "H19"
+      ]
+    },
+    {
+      "id": "MovedOn",
+      "title": "He has moved on, the thread left open",
+      "spec": [
+        "H18"
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "level",
+      "initial": "\"captain\"",
+      "bound": "level \\in {\"captain\", \"admiral\"}"
+    },
+    {
+      "name": "envoys",
+      "initial": "0",
+      "bound": "envoys \\in {0, 1}"
+    }
+  ],
+  "transitions": [
+    {
+      "claim": "claim:Envoy.Close",
+      "from": "Reported",
+      "to": "Closed",
+      "arrow": "he closes the envoy's thread",
+      "spec": [
+        "H19",
+        "H18"
+      ],
+      "guard": null,
+      "effect": "envoys' = 0",
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Envoy.Decide",
+      "from": "Homework",
+      "to": "Decided",
+      "arrow": "the homework answers it, or the call is obvious and reversible",
+      "spec": [
+        "H16",
+        "L18"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.Hard",
+      "from": "Homework",
+      "to": "ToTribunal",
+      "arrow": "a hard call: competing answers, each good through some lens",
+      "spec": [
+        "H5",
+        "L18"
+      ],
+      "guard": "level = \"admiral\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.InThread",
+      "from": "Homework",
+      "to": "AskedInThread",
+      "arrow": "he is already in this officer's thread",
+      "spec": [
+        "H22",
+        "H6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral",
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.MovedOn",
+      "from": "Reported",
+      "to": "MovedOn",
+      "arrow": "he has plainly moved on, the thread still open: the next envoy may go, at the admiral's discretion",
+      "spec": [
+        "H18"
+      ],
+      "guard": null,
+      "effect": "envoys' = 0",
+      "fair": false,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.NextLevel",
+      "from": "PassedUp",
+      "to": "Homework",
+      "arrow": "the officer above takes it",
+      "spec": [
+        "H12"
+      ],
+      "guard": null,
+      "effect": "level' = \"admiral\"",
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Envoy.Open",
+      "from": "Homework",
+      "to": "Queued",
+      "arrow": "only he can settle it",
+      "spec": [
+        "H15",
+        "H17",
+        "S10"
+      ],
+      "guard": "level = \"admiral\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral",
+        "linear-workspace-standard"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.PassUp",
+      "from": "Homework",
+      "to": "PassedUp",
+      "arrow": "a captain passes what remains up the chain",
+      "spec": [
+        "H16",
+        "H12"
+      ],
+      "guard": "level = \"captain\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.Report",
+      "from": "Active",
+      "to": "Reported",
+      "arrow": "the envoy records the result and reports back",
+      "spec": [
+        "H15",
+        "H19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.Send",
+      "from": "Queued",
+      "to": "Active",
+      "arrow": "the last envoy reported and he closed its thread",
+      "spec": [
+        "H18",
+        "H19",
+        "H23"
+      ],
+      "guard": "envoys = 0",
+      "effect": "envoys' = 1",
+      "fair": false,
+      "skills": [
+        "admiral"
+      ]
+    },
+    {
+      "claim": "claim:Envoy.Take",
+      "from": "Need",
+      "to": "Homework",
+      "arrow": "the officer above takes the need",
+      "spec": [
+        "H16"
+      ],
+      "guard": null,
+      "effect": "level' \\in {\"captain\", \"admiral\"}",
+      "fair": false,
+      "skills": [
+        "admiral",
+        "ticket-captain"
+      ]
+    }
+  ],
+  "gaps": []
+}

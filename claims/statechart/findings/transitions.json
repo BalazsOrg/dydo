@@ -1,0 +1,371 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Findings",
+  "title": "Survey, board and CI findings",
+  "initial": "Watch",
+  "finals": [
+    "Counted",
+    "Filed",
+    "Acted"
+  ],
+  "states": [
+    {
+      "id": "Watch",
+      "title": "Findings arrive",
+      "spec": [
+        "S22",
+        "S26",
+        "Y9",
+        "Y8"
+      ]
+    },
+    {
+      "id": "Board",
+      "title": "dydo survey board read",
+      "spec": [
+        "S22",
+        "S25",
+        "S26",
+        "H7"
+      ]
+    },
+    {
+      "id": "SharedLink",
+      "title": "One thread link on two non-nested open tickets",
+      "spec": [
+        "S23",
+        "S13"
+      ]
+    },
+    {
+      "id": "LandedSpec",
+      "title": "A landed Project that still has its spec",
+      "spec": [
+        "S23",
+        "S14"
+      ]
+    },
+    {
+      "id": "StaleShoulds",
+      "title": "Open shoulds under Done parents past the threshold",
+      "spec": [
+        "S23",
+        "T14"
+      ]
+    },
+    {
+      "id": "CiRed",
+      "title": "A real CI red: a CI-findings ticket",
+      "spec": [
+        "Y9",
+        "H8"
+      ]
+    },
+    {
+      "id": "Routed",
+      "title": "Routed to its officer",
+      "spec": [
+        "H11",
+        "H8"
+      ]
+    },
+    {
+      "id": "Flake",
+      "title": "A flake or runner noise",
+      "spec": [
+        "Y9",
+        "R22"
+      ]
+    },
+    {
+      "id": "Counted",
+      "title": "A DYTEST result with a count",
+      "spec": [
+        "Y9"
+      ]
+    },
+    {
+      "id": "Repeated",
+      "title": "A flake that repeats",
+      "spec": [
+        "Y9"
+      ]
+    },
+    {
+      "id": "Weed",
+      "title": "A mistake found after landing",
+      "spec": [
+        "R30"
+      ]
+    },
+    {
+      "id": "DytestNeed",
+      "title": "Something dydo needs from DYTEST",
+      "spec": [
+        "Y3",
+        "Y1"
+      ]
+    },
+    {
+      "id": "Filed",
+      "title": "Filed in a DYTEST Project",
+      "spec": [
+        "Y3"
+      ]
+    },
+    {
+      "id": "Acted",
+      "title": "Its owner acts",
+      "spec": [
+        "H5"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Findings.BatchShoulds",
+      "from": "StaleShoulds",
+      "to": "Acted",
+      "arrow": "the admiral cuts a shoulds batch",
+      "spec": [
+        "S17"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Count",
+      "from": "Flake",
+      "to": "Counted",
+      "arrow": "it stays a DYTEST result with a count",
+      "spec": [
+        "Y9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.DeleteSpec",
+      "from": "LandedSpec",
+      "to": "Acted",
+      "arrow": "the map holder moves its lasting parts and deletes it",
+      "spec": [
+        "S14",
+        "D11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.FileIt",
+      "from": "DytestNeed",
+      "to": "Filed",
+      "arrow": "filed and built in a DYTEST Project, never patched from dydo",
+      "spec": [
+        "Y3",
+        "Y1"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.FixLink",
+      "from": "SharedLink",
+      "to": "Acted",
+      "arrow": "its officer fixes the record: one agent holds one ticket",
+      "spec": [
+        "S7",
+        "S13",
+        "H5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.LandedSpec",
+      "from": "Board",
+      "to": "LandedSpec",
+      "arrow": "a landed Project still has a spec document",
+      "spec": [
+        "S23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Need",
+      "from": "Watch",
+      "to": "DytestNeed",
+      "arrow": "dydo needs something from DYTEST",
+      "spec": [
+        "Y3"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Noise",
+      "from": "Watch",
+      "to": "Flake",
+      "arrow": "a flake or runner noise: a timeout, red then green on rerun",
+      "spec": [
+        "Y9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Pull",
+      "from": "Routed",
+      "to": "Acted",
+      "arrow": "its officer takes it, or an officer with an open lane pulls it",
+      "spec": [
+        "H8",
+        "H10",
+        "H11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.ReadBoard",
+      "from": "Watch",
+      "to": "Board",
+      "arrow": "dydo survey board, read-only and on demand",
+      "spec": [
+        "S22",
+        "S26"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.RealRed",
+      "from": "Watch",
+      "to": "CiRed",
+      "arrow": "a real CI red becomes a CI-findings ticket",
+      "spec": [
+        "Y9",
+        "R22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Repeat",
+      "from": "Flake",
+      "to": "Repeated",
+      "arrow": "it repeats",
+      "spec": [
+        "Y9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Route",
+      "from": "CiRed",
+      "to": "Routed",
+      "arrow": "to the open ticket's officer, or the admiral for a long-closed ticket",
+      "spec": [
+        "H11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Rule",
+      "from": "Weed",
+      "to": "Acted",
+      "arrow": "it gets a lint, test or rule as well as its fix",
+      "spec": [
+        "R30"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.SharedLink",
+      "from": "Board",
+      "to": "SharedLink",
+      "arrow": "one thread link on two non-nested open tickets",
+      "spec": [
+        "S23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.StaleShoulds",
+      "from": "Board",
+      "to": "StaleShoulds",
+      "arrow": "open shoulds under Done parents past the threshold, 7 days by default",
+      "spec": [
+        "S23",
+        "T14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Ticket",
+      "from": "Repeated",
+      "to": "CiRed",
+      "arrow": "a repeating flake becomes a CI-findings ticket",
+      "spec": [
+        "Y9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Findings.Weed",
+      "from": "Watch",
+      "to": "Weed",
+      "arrow": "a mistake is found after landing",
+      "spec": [
+        "R30"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}
