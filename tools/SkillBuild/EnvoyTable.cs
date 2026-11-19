@@ -2,8 +2,8 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// The envoy skill table the builder checks (H23): each job's fixed skill, and the closed-thread-signal
-/// claim the envoy brief resource must state. <see cref="Check"/> runs in every build;
-/// <see cref="CheckSkillsExist"/> runs against the repository root the tool builds into.
+/// claim the envoy brief resource must state. <see cref="Check"/> and <see cref="CheckBuilt"/> run in
+/// every build; <see cref="CheckSkillsExist"/> runs against the repository root the tool builds into.
 /// </summary>
 public sealed record EnvoyTable(IReadOnlyList<EnvoyJobSkill> Jobs, Claim CloseSignal, Enum Brief)
 {
@@ -35,11 +35,25 @@ public sealed record EnvoyTable(IReadOnlyList<EnvoyJobSkill> Jobs, Claim CloseSi
             if (rows[0].Skill != skill)
                 throw new InvalidDataException($"H23: the envoy skill table gives {job} `{rows[0].Skill}`, not `{skill}`");
         }
-        var brief = model.Skills.SelectMany(skill => skill.Resources).FirstOrDefault(resource => Equals(resource.Id, Brief))
-            ?? throw new InvalidDataException($"H23: no skill declares the envoy brief, {Names.Of(Brief)}");
-        var sections = brief.Sections.Select(section => section.Id).ToHashSet();
-        if (!CloseSignal.Lines.Any(line => sections.Contains(line.Place.Slot)))
+        if (!model.Skills.Any(skill => skill.Resources.Any(resource => Equals(resource.Id, Brief))))
+            throw new InvalidDataException($"H23: no skill declares the envoy brief, {Names.Of(Brief)}");
+    }
+
+    /// <summary>
+    /// The built envoy brief, not the objects this table holds, must carry both: a line mapped to the
+    /// registered closed-thread-signal claim, and the job table exactly as <see cref="Render"/> gives it.
+    /// </summary>
+    internal void CheckBuilt(Model model, ClaimIndex claims, IReadOnlyDictionary<string, string> files, IEnumerable<MapLine> map)
+    {
+        var owner = model.Skills.First(skill => skill.Resources.Any(resource => Equals(resource.Id, Brief)));
+        var briefs = owner.PathsOf(SkillRenderer.FileOf(Brief)).ToHashSet(StringComparer.Ordinal);
+        var signal = claims.Claims.FirstOrDefault(claim => claim.Claim == CloseSignal).Id
+            ?? throw new InvalidDataException("H23: the closed-thread signal is not a claim of the model");
+        if (!map.Any(line => briefs.Contains(line.Path) && line.Claims.Contains(signal)))
             throw new InvalidDataException("H23: the envoy brief states no closed-thread signal");
+        var table = Render(Jobs);
+        if (!briefs.Any(path => files[path].Contains(table, StringComparison.Ordinal)))
+            throw new InvalidDataException("H23: the envoy brief does not state the checked skill table");
     }
 
     internal void CheckSkillsExist(string root)

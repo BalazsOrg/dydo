@@ -29,6 +29,7 @@ public static class SkillBuilder
         }
         // A system transition, a move a command or Linear makes, is carried by no role (AR4).
         StatesEveryClaim(claims.Claims.Where(c => c.Claim is not { Transition: not null, Lines.Count: 0 }).Select(c => c.Id), map);
+        model.Envoys?.CheckBuilt(model, claims, files, map);
         foreach (var (path, text) in chart.Files(claims).Concat(WhyDocs.Render(model.Kinds, claims, chart)))
             files.Add(path, text);
         return new BuiltTree(files, map);

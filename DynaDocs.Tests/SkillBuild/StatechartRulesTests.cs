@@ -101,6 +101,46 @@ public class StatechartRulesTests
     public void SpecCitation_AcceptsOnlySpecRuleIds(string id, bool valid) => Assert.Equal(valid, SpecCitation.IsValid(id));
 
     [Fact]
+    [Trait("Job", "trap: universal rule 1 a citing claim whose only id is a number the spec does not reach fails the build")]
+    public void CitingModel_ClaimCitingK999_FailsTheBuild() =>
+        AssertRejected(ChartModel.With(typeof(LeaseOutOfSpec)),
+            $"claim:{nameof(LeaseOutOfSpec)}.{nameof(LeaseOutOfSpec.Unnumbered)} cites \"K999\", which is not a spec rule id");
+
+    [Fact]
+    [Trait("Job", "trap: universal rule 1 a citing claim whose only reference is N12 with a DR the spec never names fails the build")]
+    public void CitingModel_ClaimCitingN12Dr999_FailsTheBuild() =>
+        AssertRejected(ChartModel.With(typeof(LeaseUnknownDr)),
+            $"claim:{nameof(LeaseUnknownDr)}.{nameof(LeaseUnknownDr.Uncarried)} cites \"N12 DR 999\", which is not a spec rule id");
+
+    [Theory]
+    [Trait("Job", "contract: universal rule 1 each area's ids run from 1 to the spec's last rule (updatedAt 2026-11-18T22:00:15Z), and no further")]
+    [InlineData("K29", "K30")]
+    [InlineData("R33", "R34")]
+    [InlineData("S26", "S27")]
+    [InlineData("H24", "H25")]
+    [InlineData("L23", "L24")]
+    [InlineData("T23", "T24")]
+    [InlineData("D11", "D12")]
+    [InlineData("Y9", "Y10")]
+    [InlineData("N15", "N16")]
+    [InlineData("CA19", "CA20")]
+    public void SpecCitation_StopsAtEachAreasLastRule(string last, string past)
+    {
+        Assert.True(SpecCitation.IsValid(last), last);
+        Assert.False(SpecCitation.IsValid(past), past);
+    }
+
+    [Theory]
+    [Trait("Job", "contract: universal rule 1 N12 names only a DR the spec carries forward or a rule cites")]
+    [InlineData("N12 DR 045 §8", true)]
+    [InlineData("N12 DR 053", true)]
+    [InlineData("N12 DR 072 §1", true)]
+    [InlineData("N12 DR 044", false)]
+    [InlineData("N12 DR 054", false)]
+    [InlineData("N12 DR 073", false)]
+    public void SpecCitation_AcceptsOnlyDrsTheSpecNames(string id, bool valid) => Assert.Equal(valid, SpecCitation.IsValid(id));
+
+    [Fact]
     [Trait("Job", "contract: universal rule 1 and K22 the production model cites the spec and builds the six role skills and both standards")]
     public void ProductionModel_CitesTheSpecAndBuilds()
     {

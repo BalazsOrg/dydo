@@ -115,5 +115,5 @@ internal static class SkillRenderer
         _ => "## Tools and surfaces"
     };
 
-    private static string FileOf(Enum resource) => $"resources/{Names.Kebab(resource)}.md";
+    internal static string FileOf(Enum resource) => $"resources/{Names.Kebab(resource)}.md";
 }
