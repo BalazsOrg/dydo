@@ -89,7 +89,7 @@ reachable; it never reaches a skill.
 
 ## Omissions
 
-- **Properties.** No invariant or liveness property is generated: K3 has them written by hand from the axioms and principles. None is written yet, so TLC checks only that no machine deadlocks; K20's "TLC passes the hand-written properties" (`claim-build`'s TLC passed) is still owed.
+- **Properties.** No invariant or liveness property is generated: K3 has them written by hand, in `verification/statechart/` (DYD-1225), and its `run.py` checks them; all 31 machines pass all 109 (K20). The one progress assumption is model data: weak fairness on `liveness`'s four healing moves (S24), so that machine's config is `SPECIFICATION Spec`.
 - **Cross-machine synchronisation is not modelled.** Each machine runs alone. The overview links the areas, and a state shared in prose (a Merge hop that is both a `hops` final and the start of `feature-merge`) is two states in two machines.
 - **Bounds.** Counters are bounded for TLC only (review rounds ≤ 4, landing rounds ≤ 3, areas per round ≤ 2, re-syncs ≤ 3, landing prerequisites = 10). The spec sets no stop on review rounds (R10).
 - **Two-valued choices are nondeterministic.** The tribunal's night, two-way, DR-grade, blocking and agreement flags, a blocker's kind, a master PR's door, and the cloud route's cost are free choices, not modelled causes.
