@@ -21,4 +21,3 @@ T23_GateBeforeReceipt == state = "Receipt" => "Gated" \in seen
 T12_NoMutationGate == state \notin {"MutationGate", "MutationPending"}
 
 ====
-

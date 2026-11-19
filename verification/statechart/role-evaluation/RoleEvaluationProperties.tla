@@ -14,4 +14,3 @@ K22_SurvivorBeforeRewrite == state = "WrittenFresh" => "Kept" \in seen
 K22_OutcomeBeforeApproval == state = "Approved" => ("WrittenFresh" \in seen \/ "Folded" \in seen \/ "Removed" \in seen)
 
 ====
-

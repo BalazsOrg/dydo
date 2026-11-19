@@ -23,4 +23,3 @@ N12_ApprovalBeforeContinue == state = "Continuing" => "ApprovalRequired" \in see
 N12_CheckBeforeRetainingScratch == state = "ScratchKept" => "Checking" \in seen
 
 ====
-

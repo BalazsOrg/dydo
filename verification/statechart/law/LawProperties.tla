@@ -17,4 +17,3 @@ L9_PrepareBeforeCaseLaw == state = "CaseLaw" => "CaseStudy" \in seen
 L11_EnactBeforeRetire == state = "Retired" => "Enacted" \in seen
 
 ====
-

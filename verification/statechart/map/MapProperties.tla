@@ -17,4 +17,3 @@ S26_SnapshotNeedsFreshRead == [][((state = "Snapshot" /\ state' # state) => stat
 S19_FreshBeforeExpand == state = "Expanded" => "Fresh" \in seen
 
 ====
-

@@ -14,4 +14,3 @@ H7_InvestigationReturns == [][((state = "Investigating" /\ state' # state) => st
 L19_BriefDoesNotRatify == [][((state = "MorningBrief" /\ state' # state) => state' = "Day")]_<<vars, seen>>
 
 ====
-

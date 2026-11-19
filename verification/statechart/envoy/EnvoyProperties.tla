@@ -23,4 +23,3 @@ H19_ReportBeforeClose == state = "Closed" => "Reported" \in seen
 H19_WorkBeforeReport == state = "Reported" => "Active" \in seen
 
 ====
-

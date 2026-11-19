@@ -23,4 +23,3 @@ R22_FixAfterRevert == [][((state = "Reverted" /\ state' # state) => state' = "Fi
 R18_NoMergeReview == state \notin {"MergeReview", "MergeConfidence"}
 
 ====
-

@@ -17,4 +17,3 @@ S24_QuietEventuallyHealed == (state = "Quiet") ~> (state = "Live")
 S24_StoppedEventuallyResumed == (state = "Restarted") ~> (state = "Live")
 
 ====
-

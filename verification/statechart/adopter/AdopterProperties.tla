@@ -14,4 +14,3 @@ K18_UpdateBeforeCurrent == state = "Current" => "Updating" \in seen
 N11_ConsultTailored == [][((state = "Tailored" /\ state' # state) => state' = "Consulted")]_<<vars, seen>>
 
 ====
-

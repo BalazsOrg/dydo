@@ -14,4 +14,3 @@ L14_AnswersBeforeSynthesis == state = "Synthesised" => "Answered" \in seen
 L22_WaitDoesNotDecide == [][((state = "Waiting" /\ state' # state) => state' # "Synthesised")]_<<vars, seen>>
 
 ====
-

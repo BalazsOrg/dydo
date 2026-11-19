@@ -14,4 +14,3 @@ N12_InitBeforeGuard == state = "Guarded" => "Initialised" \in seen
 N12_GuardBeforeDenial == state = "MemoryDenied" => "Guarded" \in seen
 
 ====
-

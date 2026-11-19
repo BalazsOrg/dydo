@@ -14,4 +14,3 @@ S17_RegisterBeforeDisposition == state \in {"Done", "Duplicate", "Canceled", "Mo
 S17_KnownNotRegisteredAgain == [][((state = "Known") => state' = "Known")]_<<vars, seen>>
 
 ====
-

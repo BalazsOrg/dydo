@@ -29,4 +29,3 @@ R8_FixBetweenBlockedRounds == [][((state' = "Round" /\ round' > round /\ kind # 
 R10_CheckpointBeforeFourthFix == state = "Fixing" /\ round = 3 => "Checkpoint" \in seen
 
 ====
-

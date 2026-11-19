@@ -26,4 +26,3 @@ R29_HoldThirdResync == [][((resyncs' = 3 /\ resyncs < 3) => state' = "Held")]_<<
 R20_MergeBeforeClose == state = "Closed" => "Merged" \in seen
 
 ====
-

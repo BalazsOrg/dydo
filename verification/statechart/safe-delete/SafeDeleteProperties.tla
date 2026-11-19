@@ -14,4 +14,3 @@ N10_ArchiveBeforePurge == state = "Purged" => "Archived" \in seen
 N10_PurgeIsFinal == [][((state = "Purged") => state' = "Purged")]_<<vars, seen>>
 
 ====
-

@@ -14,4 +14,3 @@ L8_InvalidMustBeRechecked == [][((state = "Invalid" /\ state' # state) => state'
 L8_ValidIsResult == [][((state = "Valid") => state' = "Valid")]_<<vars, seen>>
 
 ====
-

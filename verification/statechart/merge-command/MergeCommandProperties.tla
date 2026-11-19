@@ -17,4 +17,3 @@ R21_ConflictIsTerminal == [][((state = "Conflict") => state' = "Conflict")]_<<va
 R32_MergeResultStable == [][((state = "Merged") => state' = "Merged")]_<<vars, seen>>
 
 ====
-

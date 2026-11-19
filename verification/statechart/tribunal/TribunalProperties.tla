@@ -26,4 +26,3 @@ L20_PreparedBeforeScore == state = "Scored" => "Prepared" \in seen
 L19_InvestigateProvisional == state = "Investigated" => "DecidedOvernight" \in seen
 
 ====
-

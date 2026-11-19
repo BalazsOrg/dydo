@@ -17,4 +17,3 @@ L12_PageBeforeMerge == state = "Merged" => "OnPage" \in seen
 L12_RejectedCannotMerge == state = "Merged" => "Rejected" \notin seen
 
 ====
-

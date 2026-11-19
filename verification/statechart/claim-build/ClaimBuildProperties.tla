@@ -20,4 +20,3 @@ K20_FailureDoesNotFinish == [][((state = "TlcFailed" /\ state' # state) => state
 K7_ChecksBeforeTlc == state = "TlcPassed" => "Checked" \in seen
 
 ====
-

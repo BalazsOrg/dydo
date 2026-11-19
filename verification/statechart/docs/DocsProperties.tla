@@ -20,4 +20,3 @@ D5_DeclareBeforeFlag == state = "Flagged" => "Declared" \in seen
 D7_DriftFixedOrCut == [][((state = "Finding" /\ state' # state) => state' \in {"Declared", "Admitted", "CutDoc"})]_<<vars, seen>>
 
 ====
-

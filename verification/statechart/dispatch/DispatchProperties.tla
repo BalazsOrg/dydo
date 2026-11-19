@@ -17,4 +17,3 @@ H1_WorkBeforeReturn == state = "Returned" => "Working" \in seen
 H2_RecutBeforeNewBrief == [][((state = "ReCut" /\ state' # state) => state' \in {"Staffing", "Briefed"})]_<<vars, seen>>
 
 ====
-

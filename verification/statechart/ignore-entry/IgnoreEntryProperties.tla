@@ -17,4 +17,3 @@ T17_ReviewedPathBeforeIgnore == state = "Ignored" => ("PathA" \in seen \/ "Counc
 T17_EntryBeforeStaleness == state = "Stale" => "Ignored" \in seen
 
 ====
-

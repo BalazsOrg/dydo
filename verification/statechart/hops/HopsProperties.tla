@@ -20,4 +20,3 @@ R8_FixReturnsToReview == [][((state = "FixHop" /\ state' # state) => state' = "R
 S4_LeafEvidenceFirst == state = "CheckFix" => "EvidenceCheck" \in seen
 
 ====
-

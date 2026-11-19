@@ -17,4 +17,3 @@ N5_LandingBeforeMaster == state = "MasterArea" => "LandingArea" \in seen
 K18_TagBeforeAdopters == state = "AdopterArea" => "Tagged" \in seen
 
 ====
-

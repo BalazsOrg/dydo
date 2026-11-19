@@ -17,4 +17,3 @@ S3_TodoBeforeStart == [][((state' = "InProgress" /\ state # state') => state = "
 S10_CanceledStaysClosed == [][((state = "Canceled") => state' = "Canceled")]_<<vars, seen>>
 
 ====
-
