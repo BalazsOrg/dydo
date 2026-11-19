@@ -18,9 +18,10 @@ public static class Liveness
     public static readonly Claim FoundStopped = Heal(1104, "A stopped hop goes back to Todo and is resumed or restarted.", Stopped, LivenessState.Restarted, "stopped: the hop back to Todo");
 
     public static readonly Claim Resumed = new("The resumed or fresh agent attaches its thread link and works.", [Actor.TicketCaptain], [])
-    { Spec = ["S24", "S13"], Transition = new(LivenessState.Restarted, LivenessState.Live, "the resumed or fresh agent attaches its thread link") };
+    { Spec = ["S24", "S13"], Transition = new(LivenessState.Restarted, LivenessState.Live, "the resumed or fresh agent attaches its thread link") { Fair = true } };
 
     // The officer above heals its own level: the captain its crew, the admiral its captains, the chief of staff overnight only (H12).
+    // Each finding's move is fair (S24: it "heals what it finds"; a stale item "gets picked up again").
     private static Claim Heal(int order, string rule, string text, LivenessState to, string arrow) =>
         new(rule, [Actor.TicketCaptain, Actor.Admiral, Actor.ChiefOfStaff],
         [
@@ -28,5 +29,5 @@ public static class Liveness
             new(Skill.Admiral, text, new(LivenessState.Quiet, order, MoveKind.Exit)),
             new(Skill.ChiefOfStaff, text, new(LivenessState.Quiet, order, MoveKind.Exit))
         ])
-        { Spec = ["S24", "H12"], Transition = new(LivenessState.Quiet, to, arrow) };
+        { Spec = ["S24", "H12"], Transition = new(LivenessState.Quiet, to, arrow) { Fair = true } };
 }

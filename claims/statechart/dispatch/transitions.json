@@ -80,6 +80,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral",
         "ticket-captain"
@@ -96,6 +97,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral",
         "ticket-captain"
@@ -114,6 +116,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "code-writer",
         "linear-workspace-standard",
@@ -132,6 +135,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -149,6 +153,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral",
         "code-writer",
@@ -168,6 +173,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "code-writer",
         "linear-workspace-standard",
@@ -185,6 +191,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral",
         "code-writer",

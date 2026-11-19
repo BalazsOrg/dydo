@@ -28,9 +28,10 @@ public static class Mutation
         [new(Skill.Admiral, "Cut each landing survivor into a fix ticket for a captain.", new(MutationState.Survivors, 1606, MoveKind.Exit))])
     { Spec = ["N6", "H5", "T12"], Transition = new(MutationState.Survivors, MutationState.Ticketed, "the admiral cuts the survivor's fix ticket") };
 
-    public static readonly Claim Fix = new("A survivor is fixed and the mutant runs again.", [Actor.CodeWriter],
+    // T12: a fix changes the tree, so the work for the new tree is stale until it is queued again.
+    public static readonly Claim Fix = new("A survivor is fixed, and the changed tree's mutation work is queued again.", [Actor.CodeWriter],
         [new(Skill.CodeWriter, "Fix a surviving mutant.", new(MutationState.Ticketed, 1607, MoveKind.Exit))])
-    { Spec = ["T12"], Transition = new(MutationState.Ticketed, MutationState.Running, "fixed; the mutant runs again") };
+    { Spec = ["T12"], Transition = new(MutationState.Ticketed, MutationState.Queued, "fixed; the changed tree's work is queued again") };
 
     public static readonly Claim ClaimEquivalent = new("The author claims a survivor equivalent, with a reason, and never approves its own claim.", [Actor.CodeWriter],
         [new(Skill.CodeWriter, "Or claim it equivalent, with a reason; a fresh reviewer decides the claim, never you.", new(MutationState.Ticketed, 1608, MoveKind.Exit))])

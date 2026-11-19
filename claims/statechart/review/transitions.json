@@ -111,6 +111,7 @@
       ],
       "guard": "kind = \"broken\" /\\ round # 3",
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -126,6 +127,7 @@
       ],
       "guard": "kind \\in {\"fundamental\", \"balazs\"}",
       "effect": null,
+      "fair": false,
       "skills": [
         "linear-workspace-standard",
         "ticket-captain"
@@ -143,6 +145,7 @@
       ],
       "guard": "kind \\in {\"broken\", \"security\"}",
       "effect": "securityFirst' = (securityFirst \\/ kind = \"security\")",
+      "fair": false,
       "skills": [
         "linear-workspace-standard",
         "ticket-captain"
@@ -158,6 +161,7 @@
       ],
       "guard": "kind = \"none\"",
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -173,6 +177,7 @@
       ],
       "guard": null,
       "effect": "round' = round + 1",
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -187,6 +192,7 @@
       ],
       "guard": "kind = \"fundamental\"",
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -201,6 +207,7 @@
       ],
       "guard": "kind = \"balazs\"",
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -215,6 +222,7 @@
       ],
       "guard": "kind = \"none\"",
       "effect": "round' = round + 1",
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -231,6 +239,7 @@
       ],
       "guard": null,
       "effect": "round' = 1",
+      "fair": false,
       "skills": [
         "reviewer",
         "ticket-captain"
@@ -248,6 +257,7 @@
       ],
       "guard": null,
       "effect": "kind' \\in {\"none\", \"broken\", \"security\", \"fundamental\", \"balazs\"}",
+      "fair": false,
       "skills": [
         "linear-workspace-standard",
         "reviewer",
@@ -264,6 +274,7 @@
       ],
       "guard": "kind = \"security\" /\\ round # 3",
       "effect": "securityFirst' = TRUE",
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -278,6 +289,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -292,6 +304,7 @@
       ],
       "guard": "round = 3 /\\ kind # \"none\"",
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]

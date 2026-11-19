@@ -55,6 +55,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -68,6 +69,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -80,6 +82,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -93,6 +96,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -106,6 +110,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -118,6 +123,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -130,6 +136,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     }
   ],

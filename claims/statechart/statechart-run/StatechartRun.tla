@@ -75,5 +75,7 @@ Next ==
     \/ ChartTool_Uncertain
     \/ Done
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

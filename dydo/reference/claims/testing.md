@@ -120,11 +120,11 @@ Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Old �
 
 ## Traced
 
-`claim:Testing.Traced`: A test: a traced assertion graduates.
+`claim:Testing.Traced`: A test: a traced assertion is shown failing without the code.
 
-Spec: T6
+Spec: T6, T3
 
-Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Conformance → Graduated, "a traced assertion graduates". A system transition: no skill carries it.
+Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Conformance → Red, "a traced assertion is shown failing without the code". A system transition: no skill carries it.
 
 ## MatchesOld
 
@@ -210,7 +210,7 @@ Spec: T6
 
 **code-writer** (Conformance, nominal):
 
-> A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate, and its 'matches old implementation' assertions go at the rewrite's landing.
+> A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.
 
 ## Smells
 

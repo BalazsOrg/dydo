@@ -30,7 +30,10 @@ These reset points scope checks to the current edit, merge attempt or queued
 campaign. Per-occurrence order also uses action properties: an earlier queue,
 CI watch, citation check or rerun cannot stand for a later occurrence.
 Each generated step has exactly one observer extension; projecting out `seen` gives the original model.
-No action is disabled, no bound is reduced, and no fairness assumption is added.
+No action is disabled, no bound is reduced, and the runner adds no fairness assumption of its own.
+Where the model declares fair moves (its config says `SPECIFICATION Spec`), a property run checks
+`PropertyInit /\ [][PropertyNext]_<<vars, seen>> /\ Fairness` with the model's own `Fairness`;
+controls keep `INIT`/`NEXT`, because their bad traces replace the model's moves.
 The model's `Init` and `Next` remain authoritative. Action-safety properties use
 TLA+'s `[][A]_v` form; the two S24 progress obligations use leads-to (`~>`).
 

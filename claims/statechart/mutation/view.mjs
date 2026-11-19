@@ -15,7 +15,7 @@ const steps = {
   "Mutation_ClaimEquivalent": "claimed equivalent, with a reason · T12",
   "Mutation_Cloud": "a large queue spills to the cloud · T12",
   "Mutation_CutFix": "the admiral cuts the survivor's fix ticket · N6, H5, T12",
-  "Mutation_Fix": "fixed; the mutant runs again · T12",
+  "Mutation_Fix": "fixed; the changed tree's work is queued again · T12",
   "Mutation_LandingCheck": "the landing check judges the Project's diff · T12, T13",
   "Mutation_Lapse": "the mutant or its code changes: the approval lapses · T12",
   "Mutation_Reject": "rejected, and the author disputes it: a council · T12, L16",

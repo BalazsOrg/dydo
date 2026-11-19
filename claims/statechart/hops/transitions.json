@@ -101,6 +101,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "linear-workspace-standard",
         "ticket-captain"
@@ -116,6 +117,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "linear-workspace-standard",
         "ticket-captain"
@@ -132,6 +134,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "linear-workspace-standard",
         "ticket-captain"
@@ -148,6 +151,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -161,6 +165,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -174,6 +179,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -188,6 +194,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -201,6 +208,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "linear-workspace-standard",
         "ticket-captain"
@@ -217,6 +225,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -229,6 +238,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -243,6 +253,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -255,6 +266,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral",
         "linear-workspace-standard",

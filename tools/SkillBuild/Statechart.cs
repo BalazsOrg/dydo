@@ -41,7 +41,7 @@ internal sealed class Statechart
             var transitions = TransitionsOf(machine);
             yield return ($"{FolderOf(machine)}/transitions.json", TransitionsJson.Render(machine, transitions, claims));
             yield return ($"{FolderOf(machine)}/{machine.Id}.tla", TlaModule.Module(machine, transitions));
-            yield return ($"{FolderOf(machine)}/{machine.Id}.cfg", TlaModule.Config(machine));
+            yield return ($"{FolderOf(machine)}/{machine.Id}.cfg", TlaModule.Config(machine, transitions));
             yield return ($"{FolderOf(machine)}/view.mjs", ChartView.Module(machine, transitions));
         }
     }

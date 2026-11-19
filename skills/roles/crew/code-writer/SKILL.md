@@ -67,7 +67,7 @@ Exits:
 
 Nominal path:
 
-- A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate, and its 'matches old implementation' assertions go at the rewrite's landing.
+- A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.
 
 ### Resolving a CONFLICT on the ticket branch
 

@@ -138,6 +138,7 @@
       ],
       "guard": "night /\\ agree /\\ twoWay /\\ ~drGrade",
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -152,6 +153,7 @@
       ],
       "guard": null,
       "effect": "agree' \\in BOOLEAN",
+      "fair": false,
       "skills": []
     },
     {
@@ -164,6 +166,7 @@
       ],
       "guard": null,
       "effect": "night' \\in BOOLEAN /\\ twoWay' \\in BOOLEAN /\\ drGrade' \\in BOOLEAN /\\ blocking' \\in BOOLEAN",
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -178,6 +181,7 @@
       ],
       "guard": null,
       "effect": "oneFamily' = TRUE",
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -194,6 +198,7 @@
       ],
       "guard": "~(night /\\ agree /\\ twoWay) \\/ (drGrade /\\ ~blocking)",
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -208,6 +213,7 @@
       ],
       "guard": "night /\\ agree /\\ twoWay /\\ drGrade /\\ blocking",
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -222,6 +228,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -234,6 +241,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -248,6 +256,7 @@
       ],
       "guard": null,
       "effect": "oneFamily' = FALSE",
+      "fair": false,
       "skills": []
     },
     {
@@ -260,6 +269,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -274,6 +284,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     }
   ],

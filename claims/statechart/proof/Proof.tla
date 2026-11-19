@@ -78,7 +78,7 @@ Testing_ShowRed ==
 \* claim:Testing.Traced
 Testing_Traced ==
     /\ state = "Conformance"
-    /\ state' = "Graduated"
+    /\ state' = "Red"
 
 \* claim:Testing.Untraced
 Testing_Untraced ==
@@ -111,5 +111,7 @@ Next ==
     \/ Testing_Write
     \/ Done
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

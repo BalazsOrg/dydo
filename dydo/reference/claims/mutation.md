@@ -60,11 +60,11 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 ## Fix
 
-`claim:Mutation.Fix`: A survivor is fixed and the mutant runs again.
+`claim:Mutation.Fix`: A survivor is fixed, and the changed tree's mutation work is queued again.
 
 Spec: T12
 
-Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Ticketed → Running, "fixed; the mutant runs again".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Ticketed → Queued, "fixed; the changed tree's work is queued again".
 
 **code-writer** (Ticketed, exit):
 

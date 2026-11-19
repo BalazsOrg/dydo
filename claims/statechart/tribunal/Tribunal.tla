@@ -116,5 +116,7 @@ Next ==
 
 Bounds == night \in BOOLEAN /\ twoWay \in BOOLEAN /\ drGrade \in BOOLEAN /\ blocking \in BOOLEAN /\ agree \in BOOLEAN /\ oneFamily \in BOOLEAN
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

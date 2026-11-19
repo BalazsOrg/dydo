@@ -115,6 +115,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "code-writer",
         "ticket-captain",
@@ -132,6 +133,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain",
         "working-tree-standard"
@@ -148,6 +150,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain",
         "working-tree-standard"
@@ -164,6 +167,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain",
         "working-tree-standard"
@@ -179,6 +183,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -192,6 +197,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "reviewer"
       ]
@@ -207,6 +213,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -221,6 +228,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -235,6 +243,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -248,6 +257,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -261,6 +271,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -273,6 +284,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -289,6 +301,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "linear-workspace-standard",
         "ticket-captain",
@@ -305,6 +318,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain",
         "working-tree-standard"
@@ -320,6 +334,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain",
         "working-tree-standard"
@@ -336,6 +351,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -348,6 +364,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "reviewer",
         "ticket-captain"
@@ -364,6 +381,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     }
   ],

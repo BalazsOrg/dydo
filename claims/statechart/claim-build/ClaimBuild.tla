@@ -93,5 +93,7 @@ Next ==
     \/ Build_Write
     \/ Done
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

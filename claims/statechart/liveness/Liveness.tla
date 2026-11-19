@@ -45,5 +45,7 @@ Next ==
     \/ Liveness_Resumed
     \/ Done
 
-Spec == Init /\ [][Next]_vars
+Fairness == WF_vars(Liveness_FoundAlive) /\ WF_vars(Liveness_FoundBehind) /\ WF_vars(Liveness_FoundStopped) /\ WF_vars(Liveness_Resumed)
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

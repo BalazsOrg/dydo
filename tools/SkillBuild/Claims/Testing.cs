@@ -17,7 +17,7 @@ public static class Testing
     public static readonly Claim Keep = Move(ProofState.Old, ProofState.Graduated, "it meets the new test requirements: kept", "T8", "T22");
     public static readonly Claim Rewritten = Move(ProofState.Old, ProofState.Written, "rewritten to meet them", "T8");
     public static readonly Claim Delete = Move(ProofState.Old, ProofState.Dropped, "deleted, with one line in the commit when it blocks 4.0.0 work", "T8", "T22");
-    public static readonly Claim Traced = Move(ProofState.Conformance, ProofState.Graduated, "a traced assertion graduates", "T6");
+    public static readonly Claim Traced = Move(ProofState.Conformance, ProofState.Red, "a traced assertion is shown failing without the code", "T6", "T3");
     public static readonly Claim MatchesOld = Move(ProofState.Conformance, ProofState.Dropped, "a matches-old-implementation assertion goes at the rewrite's landing", "T6");
 
     public static readonly Claim Jobs = new("A suite test guards a trap, pins a traced contract, or reaches an edge driving can't; an untraced pin is a finding.", [Actor.CodeWriter, Actor.Reviewer],
@@ -51,7 +51,7 @@ public static class Testing
     { Spec = ["T5"] };
 
     public static readonly Claim ConformanceSuite = new("A rewrite gets a conformance suite, a separate rule in a separate place from the graduation rules.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate, and its 'matches old implementation' assertions go at the rewrite's landing.", new(ProofState.Conformance, 2207, MoveKind.Nominal))])
+        [new(Skill.CodeWriter, "A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.", new(ProofState.Conformance, 2207, MoveKind.Nominal))])
     { Spec = ["T6"] };
 
     public static readonly Claim Smells = new("Three smells are pruned: tests that change whenever the code does, check that a deleted feature is gone, or can never fail.",

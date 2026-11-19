@@ -5,8 +5,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// A machine as a TLA+ module and its TLC config (K1, K3): one <c>state</c> variable and the machine's
 /// own, <c>Init</c>, one action per transition named after its claim, one per gap, a <c>Done</c>
-/// stutter so final states do not deadlock, and <c>Next</c> as their disjunction. It holds no
-/// invariant or property: those are written by hand from the axioms (K3).
+/// stutter so final states do not deadlock, <c>Next</c> as their disjunction, and <c>Fairness</c> over
+/// the fair moves in <c>Spec</c>. It holds no invariant or property: those are written by hand from
+/// the axioms (K3).
 /// </summary>
 internal static class TlaModule
 {
@@ -47,12 +48,24 @@ internal static class TlaModule
         lines.AddRange(["Next ==", .. actions.Select(action => "    \\/ " + action), ""]);
         if (machine.Variables.Count > 0)
             lines.AddRange(["Bounds == " + string.Join(" /\\ ", machine.Variables.Select(variable => variable.Bound)), ""]);
-        lines.AddRange(["Spec == Init /\\ [][Next]_vars", "===="]);
+        lines.AddRange([Fairness(transitions), "", "Spec == Init /\\ [][Next]_vars /\\ Fairness", "===="]);
         return string.Join('\n', lines) + "\n";
     }
 
-    public static string Config(Machine machine) =>
-        string.Join('\n', [BuiltHeader.Tla, "INIT Init", "NEXT Next", .. machine.Variables.Count > 0 ? ["CONSTRAINT Bounds"] : Array.Empty<string>()]) + "\n";
+    /// <summary>The config: <c>SPECIFICATION Spec</c> when a move is fair, so TLC assumes its fairness; else <c>INIT</c> and <c>NEXT</c>.</summary>
+    public static string Config(Machine machine, IReadOnlyList<(string Id, Claim Claim)> transitions) =>
+        string.Join('\n',
+        [
+            BuiltHeader.Tla,
+            .. transitions.Any(transition => transition.Claim.Transition!.Fair) ? ["SPECIFICATION Spec"] : (string[])["INIT Init", "NEXT Next"],
+            .. machine.Variables.Count > 0 ? ["CONSTRAINT Bounds"] : Array.Empty<string>()
+        ]) + "\n";
+
+    private static string Fairness(IEnumerable<(string Id, Claim Claim)> transitions)
+    {
+        var fair = transitions.Where(transition => transition.Claim.Transition!.Fair).Select(transition => $"WF_vars({Action(transition.Id)})").ToArray();
+        return "Fairness == " + (fair.Length == 0 ? "TRUE" : string.Join(" /\\ ", fair));
+    }
 
     private static IEnumerable<string> Action(string comment, string name, string from, string to, string? guard, string? effect, string[] extras)
     {

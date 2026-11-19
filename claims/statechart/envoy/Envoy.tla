@@ -105,5 +105,7 @@ Next ==
 
 Bounds == level \in {"captain", "admiral"} /\ envoys \in {0, 1}
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

@@ -183,6 +183,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -198,6 +199,7 @@
       ],
       "guard": "areas = 1",
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -210,6 +212,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -222,6 +225,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -239,6 +243,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -253,6 +258,7 @@
       ],
       "guard": "~hardened",
       "effect": "hardened' = TRUE",
+      "fair": false,
       "skills": []
     },
     {
@@ -265,6 +271,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -278,6 +285,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -290,6 +298,7 @@
       ],
       "guard": "areas > 1",
       "effect": "areas' = areas - 1",
+      "fair": false,
       "skills": []
     },
     {
@@ -303,6 +312,7 @@
       ],
       "guard": "fixFrom = \"merge\"",
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -315,6 +325,7 @@
       ],
       "guard": "fixFrom = \"inquisition\"",
       "effect": "round' = round + 1 /\\ areas' \\in 1..2",
+      "fair": false,
       "skills": []
     },
     {
@@ -338,6 +349,7 @@
       ],
       "guard": "prereqs < 10",
       "effect": "prereqs' = prereqs + 1",
+      "fair": false,
       "skills": []
     },
     {
@@ -350,6 +362,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -365,6 +378,7 @@
       ],
       "guard": "prereqs = 10",
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -380,6 +394,7 @@
       ],
       "guard": null,
       "effect": "fixFrom' = \"merge\"",
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -394,6 +409,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -408,6 +424,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -422,6 +439,7 @@
       ],
       "guard": null,
       "effect": "fixFrom' = \"merge\" /\\ securityFirst' = TRUE",
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -439,6 +457,7 @@
       ],
       "guard": null,
       "effect": "fixFrom' = \"inquisition\"",
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -455,6 +474,7 @@
       ],
       "guard": null,
       "effect": "areas' \\in 1..2",
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -471,6 +491,7 @@
       ],
       "guard": "hardened",
       "effect": null,
+      "fair": false,
       "skills": []
     }
   ],

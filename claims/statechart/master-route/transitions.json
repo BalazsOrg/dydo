@@ -108,6 +108,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -120,6 +121,7 @@
       ],
       "guard": "resyncs < 2",
       "effect": "resyncs' = resyncs + 1",
+      "fair": false,
       "skills": []
     },
     {
@@ -134,6 +136,7 @@
       ],
       "guard": "oneWay",
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -147,6 +150,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -162,6 +166,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -174,6 +179,7 @@
       ],
       "guard": "resyncs = 2",
       "effect": "resyncs' = 3",
+      "fair": false,
       "skills": [
         "admiral",
         "ticket-captain",
@@ -191,6 +197,7 @@
       ],
       "guard": "~oneWay",
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -206,6 +213,7 @@
       ],
       "guard": null,
       "effect": "oneWay' = TRUE",
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -221,6 +229,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     },
     {
@@ -233,6 +242,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]
@@ -247,6 +257,7 @@
       ],
       "guard": null,
       "effect": "resyncs' = 0",
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -261,6 +272,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral",
         "ticket-captain",
@@ -279,6 +291,7 @@
       ],
       "guard": null,
       "effect": "oneWay' = FALSE",
+      "fair": false,
       "skills": [
         "ticket-captain",
         "working-tree-standard"
@@ -295,6 +308,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "ticket-captain"
       ]

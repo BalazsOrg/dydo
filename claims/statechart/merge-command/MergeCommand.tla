@@ -81,5 +81,7 @@ Next ==
     \/ MergeCommand_TipMoved
     \/ Done
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

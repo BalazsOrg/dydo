@@ -127,5 +127,7 @@ Next ==
 
 Bounds == resyncs <= 3 /\ oneWay \in BOOLEAN
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

@@ -15,7 +15,7 @@ public class StatechartFilesTests
     private static readonly BuiltTree Lease = SkillBuilder.Build(ChartModel.With());
 
     [Fact]
-    [Trait("Job", "contract: K1/K3 a machine's module has one action per transition and gap, a Done stutter, and no property")]
+    [Trait("Job", "contract: K1/K3/S24 a machine's module has one action per transition and gap, a Done stutter, weak fairness over its fair moves, and no property")]
     public void LeaseModule_IsTheMachineAsTla() => Assert.Equal(Text("""
         \* built from the model; edit there: tools/SkillBuild
         ---- MODULE Lease ----
@@ -83,16 +83,17 @@ public class StatechartFilesTests
 
         Bounds == fixes <= 2
 
-        Spec == Init /\ [][Next]_vars
+        Fairness == WF_vars(LeaseMoves_Land)
+
+        Spec == Init /\ [][Next]_vars /\ Fairness
         ====
         """), Lease.Files[Folder + "Lease.tla"]);
 
     [Fact]
-    [Trait("Job", "contract: K1 a machine's config names Init and Next, and its bounds as the CONSTRAINT")]
-    public void LeaseConfig_BoundsTheVariables() => Assert.Equal(Text("""
+    [Trait("Job", "contract: K20/S24 a machine with a fair move is checked under its fairness: SPECIFICATION Spec, and its bounds as the CONSTRAINT")]
+    public void LeaseConfig_SpecifiesTheFairSpecAndBoundsTheVariables() => Assert.Equal(Text("""
         \* built from the model; edit there: tools/SkillBuild
-        INIT Init
-        NEXT Next
+        SPECIFICATION Spec
         CONSTRAINT Bounds
         """), Lease.Files[Folder + "Lease.cfg"]);
 
@@ -144,7 +145,9 @@ public class StatechartFilesTests
             Next ==
                 \/ Done
 
-            Spec == Init /\ [][Next]_vars
+            Fairness == TRUE
+
+            Spec == Init /\ [][Next]_vars /\ Fairness
             ====
             """), files["claims/statechart/other/Other.tla"]);
         Assert.Equal(Text("""

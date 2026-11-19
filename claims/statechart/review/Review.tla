@@ -127,5 +127,7 @@ Next ==
 
 Bounds == round <= 4 /\ kind \in {"none", "broken", "security", "fundamental", "balazs"} /\ securityFirst \in BOOLEAN
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

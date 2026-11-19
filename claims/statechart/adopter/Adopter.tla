@@ -63,5 +63,7 @@ Next ==
     \/ Adopter_Update
     \/ Done
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

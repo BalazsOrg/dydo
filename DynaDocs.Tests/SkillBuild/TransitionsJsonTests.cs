@@ -69,6 +69,7 @@ public class TransitionsJsonTests
               ],
               "guard": "fixes < 2",
               "effect": "fixes' = fixes + 1",
+              "fair": false,
               "skills": [
                 "holder",
                 "warden"
@@ -85,6 +86,7 @@ public class TransitionsJsonTests
               ],
               "guard": null,
               "effect": null,
+              "fair": true,
               "skills": []
             },
             {
@@ -98,6 +100,7 @@ public class TransitionsJsonTests
               ],
               "guard": null,
               "effect": null,
+              "fair": false,
               "skills": [
                 "holder",
                 "warden"
@@ -113,6 +116,7 @@ public class TransitionsJsonTests
               ],
               "guard": null,
               "effect": null,
+              "fair": false,
               "skills": [
                 "holder"
               ]

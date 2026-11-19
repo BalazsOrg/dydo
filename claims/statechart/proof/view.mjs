@@ -26,7 +26,7 @@ const steps = {
   "Testing_Rewritten": "rewritten to meet them · T8",
   "Testing_RunGates": "the code goes in; the gates run on changed files · T13, T21, Y6",
   "Testing_ShowRed": "shown failing without the code · T3",
-  "Testing_Traced": "a traced assertion graduates · T6",
+  "Testing_Traced": "a traced assertion is shown failing without the code · T6, T3",
   "Testing_Untraced": "an untraced pin, or a missing job tag · T1, R3, T5",
   "Testing_Write": "a proof test is written for a hop · T5"
 };

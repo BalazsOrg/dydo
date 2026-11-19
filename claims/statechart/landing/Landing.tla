@@ -196,5 +196,7 @@ Next ==
 
 Bounds == round <= 3 /\ areas \in 1..2 /\ fixFrom \in {"none", "inquisition", "merge"} /\ securityFirst \in BOOLEAN /\ prereqs <= 10 /\ hardened \in BOOLEAN
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

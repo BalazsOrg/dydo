@@ -45,7 +45,7 @@ Mutation_CutFix ==
 \* claim:Mutation.Fix
 Mutation_Fix ==
     /\ state = "Ticketed"
-    /\ state' = "Running"
+    /\ state' = "Queued"
     /\ UNCHANGED <<cloudRouteNotMuchMoreWork>>
 
 \* claim:Mutation.LandingCheck
@@ -117,5 +117,7 @@ Next ==
 
 Bounds == cloudRouteNotMuchMoreWork \in BOOLEAN
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

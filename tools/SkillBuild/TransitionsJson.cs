@@ -57,6 +57,7 @@ internal static class TransitionsJson
             Strings(json, "spec", transition.Claim.Spec);
             json.WriteString("guard", move.Guard);
             json.WriteString("effect", move.Effect);
+            json.WriteBoolean("fair", move.Fair);
             Strings(json, "skills", claims.LinesOf(transition.Claim).Select(line => Names.Kebab(line.Line.Skill)).Distinct().Order(StringComparer.Ordinal));
         });
         Array(json, "gaps", machine.Gaps.Select((gap, index) => (gap, index)).ToArray(), pair =>

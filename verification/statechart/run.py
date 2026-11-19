@@ -88,13 +88,26 @@ def prepare_inputs(model, root, inputs, baseline, control):
         copy_source(prop, entry, root, copied)
         copied.append({'path': str(cfg.relative_to(root)), 'sha256': digest(cfg)})
         original = model.with_suffix('.cfg').read_text()
-        original = original.replace('INIT Init', 'INIT PropertyInit').replace('NEXT Next', 'NEXT PropertyNext')
+        if 'SPECIFICATION Spec' in original and not control:
+            entry = fair_wrapper(inputs, prop.stem)
+            original = original.replace('SPECIFICATION Spec', 'SPECIFICATION PropertySpec')
+        else:
+            original = original.replace('SPECIFICATION Spec', 'INIT Init\nNEXT Next')
+            original = original.replace('INIT Init', 'INIT PropertyInit').replace('NEXT Next', 'NEXT PropertyNext')
         config = inputs / cfg.name
         config.write_text(original + '\n' + cfg.read_text())
         expected.extend(re.findall(r'^(?:INVARIANT|PROPERTY) (\S+)$', cfg.read_text(), re.MULTILINE))
         if control:
             inject_control(model, entry, control)
     return entry, config, expected, copied
+
+
+def fair_wrapper(inputs, properties):
+    """The observer under the model's own Fairness (a generated SPECIFICATION Spec); adds no assumption."""
+    wrapper = inputs / (properties + 'Fair.tla')
+    wrapper.write_text('---- MODULE ' + wrapper.stem + ' ----\nEXTENDS ' + properties + '\n'
+                       'PropertySpec == PropertyInit /\\ [][PropertyNext]_<<vars, seen>> /\\ Fairness\n====\n')
+    return wrapper
 
 
 def prepare_view(model, inputs):

@@ -33,5 +33,7 @@ Next ==
     \/ Slugs_Valid
     \/ Done
 
-Spec == Init /\ [][Next]_vars
+Fairness == TRUE
+
+Spec == Init /\ [][Next]_vars /\ Fairness
 ====

@@ -44,6 +44,6 @@ public static class LeaseMoves
     public static readonly Claim Land = new("A passed review lands by command.", [], [])
     {
         Spec = ["R2", "CA19"],
-        Transition = new(LeaseState.Review, LeaseState.Done, "the merge lands")
+        Transition = new(LeaseState.Review, LeaseState.Done, "the merge lands") { Fair = true }
     };
 }

@@ -63,6 +63,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -77,6 +78,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -91,6 +93,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral",
         "linear-workspace-standard"
@@ -106,6 +109,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": [
         "admiral"
       ]
@@ -120,6 +124,7 @@
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
       "skills": []
     }
   ],
