@@ -124,7 +124,7 @@
     "property": "H5_WatchBeforeReplan"
   },
   "proof": {
-    "from": "Start",
+    "from": "Written",
     "to": "Graduated",
     "property": "T3_RedBeforeGraduation"
   },
