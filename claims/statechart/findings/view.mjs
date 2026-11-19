@@ -2,7 +2,6 @@
 const states = {
   "Watch": "Findings arrive · S22, S26, Y9, Y8",
   "Board": "dydo survey board read · S22, S25, S26, H7",
-  "Map": "dydo map opened, his strategic lens · S19, S20, S21, S26, H6",
   "SharedLink": "One thread link on two non-nested open tickets · S23, S13",
   "LandedSpec": "A landed Project that still has its spec · S23, S14",
   "StaleShoulds": "Open shoulds under Done parents past the threshold · S23, T14",
@@ -25,7 +24,6 @@ const steps = {
   "Findings_LandedSpec": "a landed Project still has a spec document · S23",
   "Findings_Need": "dydo needs something from DYTEST · Y3",
   "Findings_Noise": "a flake or runner noise: a timeout, red then green on rerun · Y9",
-  "Findings_OpenMap": "he opens dydo map on the top-level tickets · S19, S20, S21, H6",
   "Findings_Pull": "its officer takes it, or an officer with an open lane pulls it · H8, H10, H11",
   "Findings_ReadBoard": "dydo survey board, read-only and on demand · S22, S26",
   "Findings_RealRed": "a real CI red becomes a CI-findings ticket · Y9, R22",

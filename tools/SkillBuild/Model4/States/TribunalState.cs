@@ -11,6 +11,7 @@ public enum TribunalState
     DecidedOvernight,
     Prepared,
     ProposedDr,
+    Ratified,
     Scored,
     Investigated
 }

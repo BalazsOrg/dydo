@@ -24,7 +24,6 @@ type: guide
 ## Delivery scale and evidence
 
 - Each review round's seats scale with the breadth and depth of the work, with no constant pair; a small leaf may need no review.
-- A leaf or lane gets no full review, only an optional fresh evidence-check seat: a Review hop beside it.
 - The author proves with receipts and a fresh reviewer judges through lenses; nothing is re-run the same way, and a DYTEST result for the same tree counts as proof unless later changes put it in doubt.
 
 ## Delegation

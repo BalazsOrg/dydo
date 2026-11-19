@@ -4,6 +4,10 @@ namespace DynaDocs.SkillBuild;
 public enum LandingState
 {
     Integrated,
+    Mapped,
+    ReadPhase,
+    BreakPhase,
+    DrivePhase,
     Inquisition,
     RoundFixes,
     Prerequisites,

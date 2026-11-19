@@ -4,7 +4,6 @@
   "title": "Survey, board and CI findings",
   "initial": "Watch",
   "finals": [
-    "Map",
     "Counted",
     "Filed",
     "Acted"
@@ -28,17 +27,6 @@
         "S25",
         "S26",
         "H7"
-      ]
-    },
-    {
-      "id": "Map",
-      "title": "dydo map opened, his strategic lens",
-      "spec": [
-        "S19",
-        "S20",
-        "S21",
-        "S26",
-        "H6"
       ]
     },
     {
@@ -230,21 +218,6 @@
       "arrow": "a flake or runner noise: a timeout, red then green on rerun",
       "spec": [
         "Y9"
-      ],
-      "guard": null,
-      "effect": null,
-      "skills": []
-    },
-    {
-      "claim": "claim:Findings.OpenMap",
-      "from": "Watch",
-      "to": "Map",
-      "arrow": "he opens dydo map on the top-level tickets",
-      "spec": [
-        "S19",
-        "S20",
-        "S21",
-        "H6"
       ],
       "guard": null,
       "effect": null,

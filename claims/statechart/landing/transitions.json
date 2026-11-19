@@ -15,8 +15,37 @@
       ]
     },
     {
+      "id": "Mapped",
+      "title": "A round from zero: a fresh area map",
+      "spec": [
+        "N5"
+      ]
+    },
+    {
+      "id": "ReadPhase",
+      "title": "Read phase on an area",
+      "spec": [
+        "N5"
+      ]
+    },
+    {
+      "id": "BreakPhase",
+      "title": "Break phase on the area",
+      "spec": [
+        "N5"
+      ]
+    },
+    {
+      "id": "DrivePhase",
+      "title": "Drive phase on the area",
+      "spec": [
+        "N5",
+        "R3"
+      ]
+    },
+    {
       "id": "Inquisition",
-      "title": "Inquisition round from zero, held by the admiral",
+      "title": "The round's verdict, held by the admiral",
       "spec": [
         "N5",
         "S8"
@@ -102,6 +131,11 @@
       "bound": "round <= 3"
     },
     {
+      "name": "areas",
+      "initial": "1",
+      "bound": "areas \\in 1..2"
+    },
+    {
       "name": "fixFrom",
       "initial": "\"none\"",
       "bound": "fixFrom \\in {\"none\", \"inquisition\", \"merge\"}"
@@ -131,6 +165,31 @@
       "skills": [
         "admiral"
       ]
+    },
+    {
+      "claim": "claim:Landing.AllAreas",
+      "from": "DrivePhase",
+      "to": "Inquisition",
+      "arrow": "every area through its phases: the round's verdict",
+      "spec": [
+        "N5",
+        "S8"
+      ],
+      "guard": "areas = 1",
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.BreakDone",
+      "from": "BreakPhase",
+      "to": "DrivePhase",
+      "arrow": "Break done; Drive, the default next phase",
+      "spec": [
+        "N5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
     },
     {
       "claim": "claim:Landing.CleanRound",
@@ -176,6 +235,18 @@
       "skills": []
     },
     {
+      "claim": "claim:Landing.MapDrawn",
+      "from": "Mapped",
+      "to": "ReadPhase",
+      "arrow": "an area's Read phase starts",
+      "spec": [
+        "N5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
       "claim": "claim:Landing.Merged",
       "from": "Merging",
       "to": "Landed",
@@ -186,6 +257,18 @@
       ],
       "guard": null,
       "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.NextArea",
+      "from": "DrivePhase",
+      "to": "ReadPhase",
+      "arrow": "Drive done; the next area's Read phase",
+      "spec": [
+        "N5"
+      ],
+      "guard": "areas > 1",
+      "effect": "areas' = areas - 1",
       "skills": []
     },
     {
@@ -204,13 +287,13 @@
     {
       "claim": "claim:Landing.NextRound",
       "from": "RoundFixes",
-      "to": "Inquisition",
-      "arrow": "the fixes are merged; the next round starts from zero",
+      "to": "Mapped",
+      "arrow": "the fixes are merged; the next round from zero, a fresh area map",
       "spec": [
         "N5"
       ],
       "guard": "fixFrom = \"inquisition\"",
-      "effect": "round' = round + 1",
+      "effect": "round' = round + 1 /\\ areas' \\in 1..2",
       "skills": []
     },
     {
@@ -234,6 +317,18 @@
       ],
       "guard": "prereqs < 10",
       "effect": "prereqs' = prereqs + 1",
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.ReadDone",
+      "from": "ReadPhase",
+      "to": "BreakPhase",
+      "arrow": "Read done; Break, the default next phase",
+      "spec": [
+        "N5"
+      ],
+      "guard": null,
+      "effect": null,
       "skills": []
     },
     {
@@ -288,15 +383,15 @@
     {
       "claim": "claim:Landing.Staff",
       "from": "Integrated",
-      "to": "Inquisition",
-      "arrow": "the admiral staffs a round",
+      "to": "Mapped",
+      "arrow": "the admiral staffs a round; a fresh area map",
       "spec": [
         "N5",
         "R13",
         "R14"
       ],
       "guard": null,
-      "effect": null,
+      "effect": "areas' \\in 1..2",
       "skills": [
         "admiral"
       ]

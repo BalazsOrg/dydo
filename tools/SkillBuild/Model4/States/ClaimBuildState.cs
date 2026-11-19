@@ -8,7 +8,8 @@ public enum ClaimBuildState
     Built,
     Nudged,
     Checked,
-    TlcChecked,
+    TlcPassed,
+    TlcFailed,
     InReview,
     Approved,
     Released

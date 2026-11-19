@@ -10,7 +10,6 @@ description: "A ticket to hold to its end - cut its hops, run its review rounds,
 
 - You are a ticket captain: you hold one ticket to its end; a sub-captain is a ticket captain one level down.
 - Your officer above is whoever dispatched you; you are the officer above your crew and sub-captains.
-- As a sub-captain, you author nothing.
 
 ## Accountable for
 
@@ -53,7 +52,7 @@ Exits:
 
 - For a leaf's optional evidence check, add a fresh seat as a Review hop beside it, never a full review.
 
-### Hop sub-tickets in step order
+### Review hop, one per round
 
 Exits:
 
@@ -70,9 +69,9 @@ Nominal path:
 
 Exits:
 
-- Send each Linear unit by `delegate_task` from its crew kind's dispatch template; most PRs get one seat, from a family other than the author's where possible.
+- Send each Linear unit by `delegate_task` from its crew kind's dispatch template, a reviewer from a family other than the author's where possible.
 - Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.
-- Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew.
+- Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
 
 ### Too big: re-cut
 
@@ -162,17 +161,11 @@ Exits:
 - Fix a cheap should in place before its parent merges; the rest wait for a shoulds batch.
 - In a shoulds batch, mark each duplicate Duplicate.
 
-### Merge hop in Todo
-
-Exits:
-
-- When the Merge hop's blocker clears, set it In Progress and run the merge yourself.
-
 ### Running dydo test gate on the combined tree
 
 Nominal path:
 
-- Run `dydo test gate` on the combined tree yourself before `dydo merge`.
+- Run `dydo test gate` on the combined tree yourself, then `dydo merge`.
 
 Exits:
 
@@ -208,7 +201,7 @@ Exits:
 Exits:
 
 - Green on the rerun is a flake: the hop is Done, and DYTEST counts the flake; it becomes a ticket only when it repeats.
-- Red again is real: revert at once, cancel the Merge hop with `reverted: <gate> red on <merge SHA>`, and file a CI-findings ticket.
+- Red again, after any merge, is real: revert at once, cancel the Merge hop with `reverted: <gate> red on <merge SHA>`, and file a CI-findings ticket.
 
 ### Merge reverted
 
@@ -241,7 +234,7 @@ Arrivals:
 
 Exits:
 
-- Merge it yourself with `dydo merge` once the re-check is green.
+- Merge a two-way PR yourself with `dydo merge` once the re-check is green.
 
 ### Held after a third forced re-sync
 
@@ -260,13 +253,12 @@ Exits:
 Exits:
 
 - When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop once the merge tree's receipt and CI are green.
-- A real red after a master merge is reverted at once and gets a CI-findings ticket, as after any merge.
 
 ### Reverted after a real red
 
 Exits:
 
-- After the fix and its fix-scoped round, offer the PR again.
+- A reverted master merge re-lands by offering its PR again, paced like the first time.
 
 ### Branch or worktree in use, a T3 worktree included
 

@@ -12,7 +12,7 @@ const states = {
 const steps = {
   "Review_Broken": "a blocker is broken or against the spec · R9, S9",
   "Review_CheckpointEscalate": "a fundamental break, a new requirement, or a need for Balazs · R10, S10",
-  "Review_CheckpointGoOn": "checkpoint: one more round · R10, S10",
+  "Review_CheckpointGoOn": "checkpoint: one more round, the security lens first for a security hole · R10, S10, R9",
   "Review_Clean": "no new blocker this round · R8",
   "Review_FixDone": "Fix rN is Done: its blockers Done, proof run on the head · S9, R8",
   "Review_Fundamental": "a blocker is fundamental, or a new requirement · R9",

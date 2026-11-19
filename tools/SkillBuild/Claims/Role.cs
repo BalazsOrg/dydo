@@ -36,11 +36,9 @@ public static class Role
     ])
     { Spec = ["H12"] };
 
-    public static readonly Claim NoAuthor = new("Admirals and sub-captains never author.", [Actor.Admiral, Actor.TicketCaptain],
-    [
-        new(Skill.Admiral, "You never author: captains and their crew do.", new(HeaderPart.Role, 108)),
-        new(Skill.TicketCaptain, "As a sub-captain, you author nothing.", new(HeaderPart.Role, 108))
-    ])
+    // The sub-captain's half of R16 is in the ticket-captain's Dispatch.SelfAuthor line (K4).
+    public static readonly Claim NoAuthor = new("Admirals never author.", [Actor.Admiral],
+        [new(Skill.Admiral, "You never author: captains and their crew do.", new(HeaderPart.Role, 108))])
     { Spec = ["R16"] };
 
     public static readonly Claim AdmiralAccounts = new("The admiral answers for the Project's outcome.", [Actor.Admiral],

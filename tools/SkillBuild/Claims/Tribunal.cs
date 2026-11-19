@@ -44,10 +44,13 @@ public static class Tribunal
             { Guard = "night /\\ agree /\\ twoWay /\\ drGrade /\\ blocking" }
     };
 
-    public static readonly Claim Score = new("His daytime answers are scored against the prediction, as evidence only.", [Actor.Admiral], [])
+    public static readonly Claim Ratify = new("He ratifies an overnight proposed DR.", [Actor.Balazs], [])
+    { Spec = ["L21"], Transition = new(TribunalState.ProposedDr, TribunalState.Ratified, "he ratifies it") };
+
+    public static readonly Claim Score = new("His daytime answers are scored against the prediction, as evidence only.", [], [])
     { Spec = ["L20"], Transition = new(TribunalState.Prepared, TribunalState.Scored, "he answers; scored against the prediction") };
 
-    public static readonly Claim Wrong = new("A ruling found wrong is investigated: why it was made, then a measure.", [Actor.Admiral], [])
+    public static readonly Claim Wrong = new("A ruling found wrong is investigated: why it was made, then a measure.", [], [])
     { Spec = ["L19"], Transition = new(TribunalState.DecidedOvernight, TribunalState.Investigated, "the ruling is found wrong") };
 
     public static readonly Claim OneFamily = new("With one family out, Judge decides overnight and prepares by day on one family.", [Actor.Admiral],

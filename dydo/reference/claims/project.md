@@ -328,7 +328,7 @@ Spec: N4
 
 **admiral** (Watching, nominal):
 
-> Run a walkthrough on master whenever possible; the landing's walks the landing candidate.
+> Run a walkthrough on master whenever possible.
 
 ## Weeds
 

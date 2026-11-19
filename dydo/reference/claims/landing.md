@@ -12,11 +12,51 @@ type: reference
 
 Spec: N5, R13, R14
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated → Inquisition, "the admiral staffs a round".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated → Mapped, "the admiral staffs a round; a fresh area map".
 
 **admiral** (Integrated, exit):
 
 > Staff each inquisition round from the model roster and `dydo usage`, and tell him in your next envoy bundle.
+
+## MapDrawn
+
+`claim:Landing.MapDrawn`: Each area's phases start with Read.
+
+Spec: N5
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Mapped → ReadPhase, "an area's Read phase starts". A system transition: no skill carries it.
+
+## ReadDone
+
+`claim:Landing.ReadDone`: Read is followed by Break, by default.
+
+Spec: N5
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): ReadPhase → BreakPhase, "Read done; Break, the default next phase". A system transition: no skill carries it.
+
+## BreakDone
+
+`claim:Landing.BreakDone`: Break is followed by Drive, by default.
+
+Spec: N5
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): BreakPhase → DrivePhase, "Break done; Drive, the default next phase". A system transition: no skill carries it.
+
+## NextArea
+
+`claim:Landing.NextArea`: Every area runs its phases.
+
+Spec: N5
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): DrivePhase → ReadPhase, "Drive done; the next area's Read phase". A system transition: no skill carries it.
+
+## AllAreas
+
+`claim:Landing.AllAreas`: Once every area has run its phases, the round has its verdict.
+
+Spec: N5, S8
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): DrivePhase → Inquisition, "every area through its phases: the round's verdict". A system transition: no skill carries it.
 
 ## RoundFound
 
@@ -36,7 +76,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition
 
 Spec: N5
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes → Inquisition, "the fixes are merged; the next round starts from zero". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes → Mapped, "the fixes are merged; the next round from zero, a fresh area map". A system transition: no skill carries it.
 
 ## NextMergeRound
 
@@ -76,7 +116,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): Prerequisit
 
 **admiral** (Prerequisites, exit):
 
-> Open the landing merge review only once every should is Done, Canceled with a reason or moved by his call, and the mutation check on the Project's diff is clean.
+> Open the landing merge review only once every should is closed and the mutation check on the Project's diff is clean.
 
 ## Confident
 

@@ -1,11 +1,31 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>The landing (M2): inquisition rounds from zero held by the admiral, the landing prerequisites, the merge review, his walkthrough, the merge and the tag.</summary>
+/// <summary>The landing (M2): inquisition rounds from zero through their phases, held by the admiral, the landing prerequisites, the merge review, his walkthrough, the merge and the tag.</summary>
 public static class Landing
 {
+    private const string Areas = "areas' \\in 1..2";
+
     public static readonly Claim Staff = new("The admiral staffs each inquisition round from the roster and dydo usage.", [Actor.Admiral],
         [new(Skill.Admiral, "Staff each inquisition round from the model roster and `dydo usage`, and tell him in your next envoy bundle.", new(LandingState.Integrated, 301, MoveKind.Exit))])
-    { Spec = ["N5", "R13", "R14"], Transition = new(LandingState.Integrated, LandingState.Inquisition, "the admiral staffs a round") };
+    { Spec = ["N5", "R13", "R14"], Transition = new(LandingState.Integrated, LandingState.Mapped, "the admiral staffs a round; a fresh area map") { Effect = Areas } };
+
+    public static readonly Claim MapDrawn = new("Each area's phases start with Read.", [Actor.Reviewer], [])
+    { Spec = ["N5"], Transition = new(LandingState.Mapped, LandingState.ReadPhase, "an area's Read phase starts") };
+
+    public static readonly Claim ReadDone = new("Read is followed by Break, by default.", [Actor.Reviewer], [])
+    { Spec = ["N5"], Transition = new(LandingState.ReadPhase, LandingState.BreakPhase, "Read done; Break, the default next phase") };
+
+    public static readonly Claim BreakDone = new("Break is followed by Drive, by default.", [Actor.Reviewer], [])
+    { Spec = ["N5"], Transition = new(LandingState.BreakPhase, LandingState.DrivePhase, "Break done; Drive, the default next phase") };
+
+    public static readonly Claim NextArea = new("Every area runs its phases.", [Actor.Reviewer], [])
+    {
+        Spec = ["N5"],
+        Transition = new(LandingState.DrivePhase, LandingState.ReadPhase, "Drive done; the next area's Read phase") { Guard = "areas > 1", Effect = "areas' = areas - 1" }
+    };
+
+    public static readonly Claim AllAreas = new("Once every area has run its phases, the round has its verdict.", [Actor.Admiral], [])
+    { Spec = ["N5", "S8"], Transition = new(LandingState.DrivePhase, LandingState.Inquisition, "every area through its phases: the round's verdict") { Guard = "areas = 1" } };
 
     public static readonly Claim RoundFound = new("The admiral holds the round it staffs: one verdict, blockers into Fix rN, shoulds registered.", [Actor.Admiral],
         [new(Skill.Admiral, "Hold each round you staff: post one verdict naming each seat and its findings, turn its blockers into Fix rN and register its shoulds.", new(LandingState.Inquisition, 302, MoveKind.Exit))])
@@ -17,8 +37,8 @@ public static class Landing
     public static readonly Claim NextRound = new("After the fixes, the next round starts from zero.", [Actor.Admiral], [])
     {
         Spec = ["N5"],
-        Transition = new(LandingState.RoundFixes, LandingState.Inquisition, "the fixes are merged; the next round starts from zero")
-            { Guard = "fixFrom = \"inquisition\"", Effect = "round' = round + 1" }
+        Transition = new(LandingState.RoundFixes, LandingState.Mapped, "the fixes are merged; the next round from zero, a fresh area map")
+            { Guard = "fixFrom = \"inquisition\"", Effect = "round' = round + 1 /\\ " + Areas }
     };
 
     public static readonly Claim NextMergeRound = new("A landing merge review with a blocker goes Fix, then a full-lens merge-review round.", [Actor.Admiral], [])
@@ -40,11 +60,12 @@ public static class Landing
     };
 
     public static readonly Claim Ready = new("The landing merge review waits for every landing prerequisite.", [Actor.Admiral],
-        [new(Skill.Admiral, "Open the landing merge review only once every should is Done, Canceled with a reason or moved by his call, and the mutation check on the Project's diff is clean.", new(LandingState.Prerequisites, 305, MoveKind.Exit))])
+        [new(Skill.Admiral, "Open the landing merge review only once every should is closed and the mutation check on the Project's diff is clean.", new(LandingState.Prerequisites, 305, MoveKind.Exit))])
     {
         Spec = ["N7", "S18", "T12", "N15"],
         Transition = new(LandingState.Prerequisites, LandingState.MergeReview, "every landing prerequisite met") { Guard = "prereqs = 10" }
     };
+
     public static readonly Claim Confident = new("On the Merge-confidence PASS, the landing candidate goes to his walkthrough.", [Actor.Admiral],
         [new(Skill.Admiral, "On the council's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.", new(LandingState.MergeReview, 306, MoveKind.Exit))])
     { Spec = ["N6", "L16", "R20", "H22"], Transition = new(LandingState.MergeReview, LandingState.Walkthrough, "the Merge-confidence council passes the landing candidate") };

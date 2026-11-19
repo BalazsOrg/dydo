@@ -5,7 +5,6 @@ public enum FindingsState
 {
     Watch,
     Board,
-    Map,
     SharedLink,
     LandedSpec,
     StaleShoulds,

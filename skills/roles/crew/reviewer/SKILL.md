@@ -85,13 +85,23 @@ Exits:
 
 - Check each new ignore entry: an exact path or a generated-directory glob, for a file nobody writes by hand, with a reason.
 
-### Inquisition round from zero, held by the admiral
+### Read phase on an area
 
 Nominal path:
 
 - In an inquisition round, run your phase on your area; by default an area goes Read, then Break, then Drive, and every round starts from zero.
 - Read: look for what is broken in ways neither tests nor clicking around would catch.
+
+### Break phase on the area
+
+Nominal path:
+
 - Break: form hypotheses about how the area fails, then write tests that confirm or refute them.
+
+### Drive phase on the area
+
+Nominal path:
+
 - Drive: run every feature and edge case through the running app, against the spec's problem statement.
 
 ### Returned

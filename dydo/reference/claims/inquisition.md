@@ -12,7 +12,7 @@ type: reference
 
 Spec: N5
 
-**reviewer** (Inquisition, nominal):
+**reviewer** (ReadPhase, nominal):
 
 > In an inquisition round, run your phase on your area; by default an area goes Read, then Break, then Drive, and every round starts from zero.
 
@@ -22,7 +22,7 @@ Spec: N5
 
 Spec: N5
 
-**reviewer** (Inquisition, nominal):
+**reviewer** (ReadPhase, nominal):
 
 > Read: look for what is broken in ways neither tests nor clicking around would catch.
 
@@ -32,7 +32,7 @@ Spec: N5
 
 Spec: N5
 
-**reviewer** (Inquisition, nominal):
+**reviewer** (BreakPhase, nominal):
 
 > Break: form hypotheses about how the area fails, then write tests that confirm or refute them.
 
@@ -42,6 +42,6 @@ Spec: N5
 
 Spec: N5, R3
 
-**reviewer** (Inquisition, nominal):
+**reviewer** (DrivePhase, nominal):
 
 > Drive: run every feature and edge case through the running app, against the spec's problem statement.

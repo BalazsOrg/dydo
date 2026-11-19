@@ -154,9 +154,9 @@ Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict �
 
 `claim:Review.CheckpointGoOn`: At the checkpoint the default is one more round, written on the Review.
 
-Spec: R10, S10
+Spec: R10, S10, R9
 
-Transition in The review loop (`claims/statechart/review/Review.tla`): Checkpoint → Fixing, "checkpoint: one more round".
+Transition in The review loop (`claims/statechart/review/Review.tla`): Checkpoint → Fixing, "checkpoint: one more round, the security lens first for a security hole".
 
 **ticket-captain** (Checkpoint, exit):
 

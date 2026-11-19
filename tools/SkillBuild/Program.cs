@@ -3,6 +3,7 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// <c>dotnet run --project tools/SkillBuild</c>, from the repository root, writes the production
 /// model's built files; <c>-- map</c> prints the line-to-claim map instead (K23) and writes nothing.
+/// Either way it first checks that each envoy table skill is a skill under <c>skills/</c> (H23).
 /// </summary>
 public static class Program
 {
@@ -18,6 +19,7 @@ public static class Program
         }
         try
         {
+            model.Envoys?.CheckSkillsExist(root);
             var tree = SkillBuilder.Build(model);
             if (args.Length == 0) tree.Write(root);
             else foreach (var line in tree.Map) output.WriteLine(line);

@@ -5,7 +5,7 @@ VARIABLES state
 
 vars == <<state>>
 
-Finals == {"Map", "Counted", "Filed", "Acted"}
+Finals == {"Counted", "Filed", "Acted"}
 
 Init ==
     /\ state = "Watch"
@@ -49,11 +49,6 @@ Findings_Need ==
 Findings_Noise ==
     /\ state = "Watch"
     /\ state' = "Flake"
-
-\* claim:Findings.OpenMap
-Findings_OpenMap ==
-    /\ state = "Watch"
-    /\ state' = "Map"
 
 \* claim:Findings.Pull
 Findings_Pull ==
@@ -116,7 +111,6 @@ Next ==
     \/ Findings_LandedSpec
     \/ Findings_Need
     \/ Findings_Noise
-    \/ Findings_OpenMap
     \/ Findings_Pull
     \/ Findings_ReadBoard
     \/ Findings_RealRed

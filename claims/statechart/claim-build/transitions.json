@@ -60,8 +60,16 @@
       ]
     },
     {
-      "id": "TlcChecked",
-      "title": "TLC checks the moves against the hand-written properties",
+      "id": "TlcPassed",
+      "title": "TLC passes the moves against the hand-written properties",
+      "spec": [
+        "K3",
+        "K20"
+      ]
+    },
+    {
+      "id": "TlcFailed",
+      "title": "TLC fails: the push is not done",
       "spec": [
         "K3",
         "K20"
@@ -79,8 +87,7 @@
       "title": "Claims approved by Balazs",
       "spec": [
         "K16",
-        "K20",
-        "K22"
+        "K20"
       ]
     },
     {
@@ -177,7 +184,7 @@
     },
     {
       "claim": "claim:Build.Read",
-      "from": "TlcChecked",
+      "from": "TlcPassed",
       "to": "InReview",
       "arrow": "the model PR is read through its built-skill diff",
       "spec": [
@@ -202,6 +209,19 @@
       "skills": []
     },
     {
+      "claim": "claim:Build.Remodel",
+      "from": "TlcFailed",
+      "to": "Edited",
+      "arrow": "the push is not done: the model is fixed and built again",
+      "spec": [
+        "K20",
+        "K6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
       "claim": "claim:Build.Ship",
       "from": "Approved",
       "to": "Released",
@@ -216,12 +236,25 @@
     {
       "claim": "claim:Build.Tlc",
       "from": "Checked",
-      "to": "TlcChecked",
-      "arrow": "TLC checks the generated moves against the hand-written properties; the result is recorded with the candidate",
+      "to": "TlcPassed",
+      "arrow": "TLC passes the generated moves against the hand-written properties; the result is recorded with the candidate",
       "spec": [
         "K3",
         "K20",
         "N14"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Build.TlcFail",
+      "from": "Checked",
+      "to": "TlcFailed",
+      "arrow": "TLC fails a property: the push is not done and nothing goes to his approval",
+      "spec": [
+        "K3",
+        "K20"
       ],
       "guard": null,
       "effect": null,

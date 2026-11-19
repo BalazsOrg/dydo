@@ -42,13 +42,18 @@ Build_Pass ==
 
 \* claim:Build.Read
 Build_Read ==
-    /\ state = "TlcChecked"
+    /\ state = "TlcPassed"
     /\ state' = "InReview"
 
 \* claim:Build.Refused
 Build_Refused ==
     /\ state = "Edited"
     /\ state' = "Rejected"
+
+\* claim:Build.Remodel
+Build_Remodel ==
+    /\ state = "TlcFailed"
+    /\ state' = "Edited"
 
 \* claim:Build.Ship
 Build_Ship ==
@@ -58,7 +63,12 @@ Build_Ship ==
 \* claim:Build.Tlc
 Build_Tlc ==
     /\ state = "Checked"
-    /\ state' = "TlcChecked"
+    /\ state' = "TlcPassed"
+
+\* claim:Build.TlcFail
+Build_TlcFail ==
+    /\ state = "Checked"
+    /\ state' = "TlcFailed"
 
 \* claim:Build.Write
 Build_Write ==
@@ -76,8 +86,10 @@ Next ==
     \/ Build_Pass
     \/ Build_Read
     \/ Build_Refused
+    \/ Build_Remodel
     \/ Build_Ship
     \/ Build_Tlc
+    \/ Build_TlcFail
     \/ Build_Write
     \/ Done
 

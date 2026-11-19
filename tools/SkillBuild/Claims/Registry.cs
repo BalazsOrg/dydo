@@ -9,19 +9,20 @@ public static class Registry
 {
     public static IReadOnlyList<Machine> Machines { get; } =
     [
-        DeliveryMachines.Overview, ProcessMachines.ClaimBuild, DeliveryMachines.Project, HierarchyMachines.Dispatch,
+        DeliveryMachines.Overview, ProcessMachines.ClaimBuild, ProcessMachines.RoleEvaluation, ToolMachines.HostSetup, ToolMachines.StatechartRun,
+        DeliveryMachines.Project, HierarchyMachines.Dispatch,
         DeliveryMachines.TicketStatus, DeliveryMachines.Hops, ProcessMachines.Proof, ProcessMachines.Docs, DeliveryMachines.Review,
         HierarchyMachines.Should, MergeMachines.MergeCommand, MergeMachines.FeatureMerge, ProcessMachines.Findings,
-        HierarchyMachines.Liveness, HierarchyMachines.Envoy, LawMachines.Council, LawMachines.Tribunal, LawMachines.Law,
+        HierarchyMachines.Liveness, ToolMachines.Map, HierarchyMachines.Envoy, LawMachines.Council, LawMachines.Tribunal, LawMachines.Law,
         LawMachines.Backfill, HierarchyMachines.Staff, DeliveryMachines.Landing, LawMachines.Mutation, MergeMachines.MasterRoute,
         LawMachines.SafeDelete, LawMachines.IgnoreEntry, ProcessMachines.Adopter
     ];
 
     public static IReadOnlyList<Type> Kinds { get; } =
     [
-        typeof(Role), typeof(Overview), typeof(Build), typeof(Project), typeof(Dispatch), typeof(Brief), typeof(Roster),
-        typeof(TicketStatus), typeof(Hops), typeof(Testing), typeof(Gates), typeof(Docs), typeof(Fix), typeof(Review),
-        typeof(Should), typeof(MergeCommand), typeof(FeatureMerge), typeof(Findings), typeof(Report), typeof(Liveness),
+        typeof(Role), typeof(Overview), typeof(Build), typeof(Evaluation), typeof(Host), typeof(ChartTool), typeof(Project),
+        typeof(Dispatch), typeof(Brief), typeof(Roster), typeof(TicketStatus), typeof(Hops), typeof(Testing), typeof(Gates), typeof(Docs), typeof(Fix), typeof(Review),
+        typeof(Should), typeof(MergeCommand), typeof(FeatureMerge), typeof(Findings), typeof(Report), typeof(Liveness), typeof(MapView),
         typeof(Envoy), typeof(Council), typeof(Tribunal), typeof(Law), typeof(Backfill), typeof(Staff), typeof(Landing),
         typeof(Inquisition), typeof(Mutation), typeof(MasterRoute), typeof(SafeDelete), typeof(IgnoreEntry), typeof(Adopter),
         typeof(Tree), typeof(Linear), typeof(Scout)

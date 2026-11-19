@@ -68,11 +68,19 @@ public static class Review
         new(Skill.TicketCaptain, "By default, write `checkpoint: one more round, because …` on the Review and go on.", new(ReviewState.Checkpoint, 512, MoveKind.Exit)),
         new(Skill.LinearWorkspaceStandard, "The round-3 checkpoint is one line on the Review: `checkpoint: one more round, because …` or `escalated: …`.", new(Section.LinearEvidence, 3), () => [CheckpointEscalate!])
     ])
-    { Spec = ["R10", "S10"], Transition = new(ReviewState.Checkpoint, ReviewState.Fixing, "checkpoint: one more round") };
+    {
+        Spec = ["R10", "S10", "R9"],
+        Transition = new(ReviewState.Checkpoint, ReviewState.Fixing, "checkpoint: one more round, the security lens first for a security hole")
+            { Guard = "kind \\in {\"broken\", \"security\"}", Effect = "securityFirst' = (securityFirst \\/ kind = \"security\")" }
+    };
 
     public static readonly Claim CheckpointEscalate = new("At the checkpoint, escalate only for a fundamental break, a new requirement or a need for him.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "Escalate only for a fundamental break, a new requirement or a need for Balazs, writing `escalated: …` on the Review.", new(ReviewState.Checkpoint, 513, MoveKind.Exit))])
-    { Spec = ["R10", "S10"], Transition = new(ReviewState.Checkpoint, ReviewState.Escalated, "a fundamental break, a new requirement, or a need for Balazs") };
+    {
+        Spec = ["R10", "S10"],
+        Transition = new(ReviewState.Checkpoint, ReviewState.Escalated, "a fundamental break, a new requirement, or a need for Balazs")
+            { Guard = "kind \\in {\"fundamental\", \"balazs\"}" }
+    };
 
     public static readonly Claim FixTicket = new("At verdict time blockers become Fix rN with one Blocker ticket each.", [Actor.TicketCaptain],
     [

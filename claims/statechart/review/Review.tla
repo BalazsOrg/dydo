@@ -24,14 +24,17 @@ Review_Broken ==
 \* claim:Review.CheckpointEscalate
 Review_CheckpointEscalate ==
     /\ state = "Checkpoint"
+    /\ kind \in {"fundamental", "balazs"}
     /\ state' = "Escalated"
     /\ UNCHANGED <<round, kind, securityFirst>>
 
 \* claim:Review.CheckpointGoOn
 Review_CheckpointGoOn ==
     /\ state = "Checkpoint"
+    /\ kind \in {"broken", "security"}
     /\ state' = "Fixing"
-    /\ UNCHANGED <<round, kind, securityFirst>>
+    /\ securityFirst' = (securityFirst \/ kind = "security")
+    /\ UNCHANGED <<round, kind>>
 
 \* claim:Review.Clean
 Review_Clean ==

@@ -17,9 +17,13 @@ public static class Build
         "an Edit or Write to a built path", "K6");
     public static readonly Claim EditThere = Move(ClaimBuildState.Nudged, ClaimBuildState.Edited, Actor.CodeWriter,
         "the edit goes into the model instead", "K6");
-    public static readonly Claim Tlc = Move(ClaimBuildState.Checked, ClaimBuildState.TlcChecked, Actor.SkillBuild,
-        "TLC checks the generated moves against the hand-written properties; the result is recorded with the candidate", "K3", "K20", "N14");
-    public static readonly Claim Read = Move(ClaimBuildState.TlcChecked, ClaimBuildState.InReview, Actor.Balazs,
+    public static readonly Claim Tlc = Move(ClaimBuildState.Checked, ClaimBuildState.TlcPassed, Actor.SkillBuild,
+        "TLC passes the generated moves against the hand-written properties; the result is recorded with the candidate", "K3", "K20", "N14");
+    public static readonly Claim TlcFail = Move(ClaimBuildState.Checked, ClaimBuildState.TlcFailed, Actor.SkillBuild,
+        "TLC fails a property: the push is not done and nothing goes to his approval", "K3", "K20");
+    public static readonly Claim Remodel = Move(ClaimBuildState.TlcFailed, ClaimBuildState.Edited, Actor.CodeWriter,
+        "the push is not done: the model is fixed and built again", "K20", "K6");
+    public static readonly Claim Read = Move(ClaimBuildState.TlcPassed, ClaimBuildState.InReview, Actor.Balazs,
         "the model PR is read through its built-skill diff", "K16");
     public static readonly Claim Approve = Move(ClaimBuildState.InReview, ClaimBuildState.Approved, Actor.Balazs,
         "he approves: in the 4.0.0 push once, at the final candidate; after it, each model PR", "K16", "K20", "K22");

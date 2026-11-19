@@ -17,13 +17,13 @@ Hops_AddCheck ==
 
 \* claim:Hops.AfkType
 Hops_AfkType ==
-    /\ state = "Chain"
+    /\ state = "ReviewHop"
     /\ state' = "AfkMerge"
 
 \* claim:Hops.Chain
 Hops_Chain ==
     /\ state = "Cut"
-    /\ state' = "Chain"
+    /\ state' = "ImplementHop"
 
 \* claim:Hops.CheckAgain
 Hops_CheckAgain ==
@@ -40,15 +40,30 @@ Hops_CheckFail ==
     /\ state = "EvidenceCheck"
     /\ state' = "CheckFix"
 
+\* claim:Hops.FixedHop
+Hops_FixedHop ==
+    /\ state = "FixHop"
+    /\ state' = "ReviewHop"
+
 \* claim:Hops.HitlType
 Hops_HitlType ==
-    /\ state = "Chain"
+    /\ state = "ReviewHop"
     /\ state' = "HitlMerge"
+
+\* claim:Hops.ImplementDone
+Hops_ImplementDone ==
+    /\ state = "ImplementHop"
+    /\ state' = "ReviewHop"
 
 \* claim:Hops.LeafDone
 Hops_LeafDone ==
     /\ state = "OneTicket"
     /\ state' = "StepDone"
+
+\* claim:Hops.ReviewFails
+Hops_ReviewFails ==
+    /\ state = "ReviewHop"
+    /\ state' = "FixHop"
 
 \* claim:Hops.Single
 Hops_Single ==
@@ -64,8 +79,11 @@ Next ==
     \/ Hops_CheckAgain
     \/ Hops_CheckDone
     \/ Hops_CheckFail
+    \/ Hops_FixedHop
     \/ Hops_HitlType
+    \/ Hops_ImplementDone
     \/ Hops_LeafDone
+    \/ Hops_ReviewFails
     \/ Hops_Single
     \/ Done
 

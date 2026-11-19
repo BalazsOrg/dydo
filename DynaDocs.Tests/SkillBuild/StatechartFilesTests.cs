@@ -121,6 +121,7 @@ public class StatechartFilesTests
         """), Lease.Files[Folder + "view.mjs"]);
 
     [Fact]
+    [Trait("Job", "edge: K1 a machine with no moves or variables still builds a TLC-runnable module, config and view")]
     public void MachineWithNoMovesOrVariables_BuildsABareModule()
     {
         var files = SkillBuilder.Build(new Model([], []) { Machines = [ChartModel.Other] }).Files;

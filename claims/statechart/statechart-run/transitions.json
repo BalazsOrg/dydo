@@ -1,0 +1,203 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "StatechartRun",
+  "title": "A dydo statechart run",
+  "initial": "Invoked",
+  "finals": [
+    "InvalidOverride",
+    "NonSuccess",
+    "Charted",
+    "ScratchKept"
+  ],
+  "states": [
+    {
+      "id": "Invoked",
+      "title": "dydo statechart invoked",
+      "spec": [
+        "N12 DR 062 §1"
+      ]
+    },
+    {
+      "id": "InvalidOverride",
+      "title": "An explicit invalid override: an error",
+      "spec": [
+        "N12 DR 062 §1"
+      ]
+    },
+    {
+      "id": "Ready",
+      "title": "Ready: verified compatible dependencies, offline, no consent asked again",
+      "spec": [
+        "N12 DR 062 §1"
+      ]
+    },
+    {
+      "id": "ApprovalRequired",
+      "title": "Approval required: a locked plan, the saved request, exit 3",
+      "spec": [
+        "N12 DR 062 §2"
+      ]
+    },
+    {
+      "id": "Continuing",
+      "title": "Authorized continuation: identities verified, locked assets installed",
+      "spec": [
+        "N12 DR 062 §3",
+        "N12 DR 062 §4"
+      ]
+    },
+    {
+      "id": "NonSuccess",
+      "title": "Non-success: denied, unavailable, failed or canceled, the request kept",
+      "spec": [
+        "N12 DR 062 §5"
+      ]
+    },
+    {
+      "id": "Checking",
+      "title": "TLC checking under native statechart ownership",
+      "spec": [
+        "N12 DR 062 §6"
+      ]
+    },
+    {
+      "id": "Charted",
+      "title": "Charted; drain authoritative, registered scratch cleaned",
+      "spec": [
+        "N12 DR 062 §6"
+      ]
+    },
+    {
+      "id": "ScratchKept",
+      "title": "Drain uncertain: scratch kept with a durable reason",
+      "spec": [
+        "N12 DR 062 §6"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:ChartTool.Authorize",
+      "from": "ApprovalRequired",
+      "to": "Continuing",
+      "arrow": "the installed skill submits that exact continuation through the host's normal authorization, and the host grants it",
+      "spec": [
+        "N12 DR 062 §3"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.Check",
+      "from": "Ready",
+      "to": "Checking",
+      "arrow": "the check starts under native statechart ownership, with registered scratch and startup gates",
+      "spec": [
+        "N12 DR 062 §6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.Deny",
+      "from": "ApprovalRequired",
+      "to": "NonSuccess",
+      "arrow": "denied, authorization unavailable or canceled: non-success, the request kept; a local flag, token or receipt is not host approval",
+      "spec": [
+        "N12 DR 062 §3",
+        "N12 DR 062 §5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.Drained",
+      "from": "Checking",
+      "to": "Charted",
+      "arrow": "an authoritative drain: registered-owned scratch is cleaned",
+      "spec": [
+        "N12 DR 062 §6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.InstallFails",
+      "from": "Continuing",
+      "to": "NonSuccess",
+      "arrow": "the installation fails: non-success, the request kept, and no checker starts on an unverified plan",
+      "spec": [
+        "N12 DR 062 §5"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.Installed",
+      "from": "Continuing",
+      "to": "Ready",
+      "arrow": "identities verified, the locked assets installed into owned roots, readiness proved and the receipt published atomically; the saved inputs continue",
+      "spec": [
+        "N12 DR 062 §4"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.Invalid",
+      "from": "Invoked",
+      "to": "InvalidOverride",
+      "arrow": "an explicit invalid override is an error",
+      "spec": [
+        "N12 DR 062 §1"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.Missing",
+      "from": "Invoked",
+      "to": "ApprovalRequired",
+      "arrow": "a dependency is missing: a precise locked plan, a structured event, the saved request and exit 3, proposing dydo statechart resume --request",
+      "spec": [
+        "N12 DR 062 §2"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.Ready",
+      "from": "Invoked",
+      "to": "Ready",
+      "arrow": "its dependencies verified compatible, it runs offline with no repeated installation or consent",
+      "spec": [
+        "N12 DR 062 §1"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:ChartTool.Uncertain",
+      "from": "Checking",
+      "to": "ScratchKept",
+      "arrow": "the drain is uncertain, or only notified: scratch kept with a durable reason",
+      "spec": [
+        "N12 DR 062 §6"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

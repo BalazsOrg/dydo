@@ -36,7 +36,7 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework 
 
 **admiral** (Homework, exit):
 
-> Decide it yourself when the homework answers it, a DR clearly settles it (cite it), or the call is obvious and reversible.
+> Decide it yourself when the homework answers it or the call is obvious and reversible.
 
 ## PassUp
 

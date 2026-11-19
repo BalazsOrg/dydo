@@ -16,7 +16,7 @@ public static class Envoy
     public static readonly Claim Decide = new("An obvious, reversible call, or one the homework or a DR settles, is decided by the officer.", [Actor.TicketCaptain, Actor.Admiral],
     [
         new(Skill.TicketCaptain, "Decide it yourself when the homework answers it, a DR clearly settles it, or the call is obvious and reversible.", new(EnvoyState.Homework, 902, MoveKind.Exit)),
-        new(Skill.Admiral, "Decide it yourself when the homework answers it, a DR clearly settles it (cite it), or the call is obvious and reversible.", new(EnvoyState.Homework, 902, MoveKind.Exit))
+        new(Skill.Admiral, "Decide it yourself when the homework answers it or the call is obvious and reversible.", new(EnvoyState.Homework, 902, MoveKind.Exit))
     ])
     { Spec = ["H16", "L18"], Transition = new(EnvoyState.Homework, EnvoyState.Decided, "the homework answers it, or the call is obvious and reversible") };
 
@@ -103,16 +103,18 @@ public static class Envoy
         [new(Skill.Admiral, "After a shared understanding, and once you have reported back, tell him the thread can be closed.", new(Section.EnvoySession, 924))])
     { Spec = ["H19", "H23"] };
 
+    /// <summary>The envoy skill table, model data the builder checks against H23.</summary>
+    public static readonly IReadOnlyList<EnvoyJobSkill> Jobs =
+    [
+        new(EnvoyJob.Grilling, "grilling"),
+        new(EnvoyJob.Walkthrough, "walkthrough"),
+        new(EnvoyJob.Wayfinding, "wayfinder"),
+        new(EnvoyJob.Question, "co-thinker"),
+        new(EnvoyJob.Enablement, "wizard", "when it is not a setup procedure he runs (credentials, cutover), just ask")
+    ];
+
     public static readonly Claim SkillTable = new("Each envoy job loads a fixed skill.", [Actor.Admiral],
-        [new(Skill.Admiral, """
-            | Job | Skill |
-            |---|---|
-            | Grilling | `grilling` |
-            | Walkthrough | `walkthrough` |
-            | Wayfinding | `wayfinder` |
-            | Question | `co-thinker` |
-            | Enablement | `wizard`; when it is not a setup procedure he runs (credentials, cutover), just ask |
-            """, new(Section.EnvoySkills, 925))])
+        [new(Skill.Admiral, EnvoyTable.Render(Jobs), new(Section.EnvoySkills, 925))])
     { Spec = ["H23"] };
 
     private static Claim Slot(int slot, string text) => new($"The envoy brief's slot {slot}.", [Actor.Admiral],

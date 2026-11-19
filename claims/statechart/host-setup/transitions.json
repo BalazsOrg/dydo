@@ -1,0 +1,137 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "HostSetup",
+  "title": "Host settings and the guard",
+  "initial": "Uninitialised",
+  "finals": [],
+  "states": [
+    {
+      "id": "Uninitialised",
+      "title": "A project before dydo init",
+      "spec": [
+        "N12 DR 056 §1"
+      ]
+    },
+    {
+      "id": "Initialised",
+      "title": "Settings written: native memory off, the Claude guard committed, the allow list local",
+      "spec": [
+        "N12 DR 055 §1",
+        "N12 DR 056 §1–2"
+      ]
+    },
+    {
+      "id": "Guarded",
+      "title": "An agent tool call meets the guard",
+      "spec": [
+        "N12 DR 056 §1",
+        "N12 DR 056 §3"
+      ]
+    },
+    {
+      "id": "MemoryDenied",
+      "title": "A write to a host memory folder refused",
+      "spec": [
+        "N12 DR 055 §2"
+      ]
+    },
+    {
+      "id": "CodexBackground",
+      "title": "Codex's background memory writer, unseen by the guard",
+      "spec": [
+        "N12 DR 055 §3"
+      ]
+    }
+  ],
+  "variables": [],
+  "transitions": [
+    {
+      "claim": "claim:Host.Background",
+      "from": "Initialised",
+      "to": "CodexBackground",
+      "arrow": "Codex's memory runs from a background process the guard never sees",
+      "spec": [
+        "N12 DR 055 §3"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Host.Call",
+      "from": "Initialised",
+      "to": "Guarded",
+      "arrow": "an agent's tool call runs through dydo guard, one policy for Claude and Codex",
+      "spec": [
+        "N12 DR 056 §1",
+        "N12 DR 056 §3"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Host.Deny",
+      "from": "Guarded",
+      "to": "MemoryDenied",
+      "arrow": "a write to a host memory folder is blocked",
+      "spec": [
+        "N12 DR 055 §2"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Host.FlagOff",
+      "from": "CodexBackground",
+      "to": "Initialised",
+      "arrow": "with memories = false it writes nothing: the Codex half rests on that flag",
+      "spec": [
+        "N12 DR 055 §1",
+        "N12 DR 055 §3"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Host.Init",
+      "from": "Uninitialised",
+      "to": "Initialised",
+      "arrow": "dydo init or --join turns native memory off for both hosts, commits one Claude guard entry and keeps the allow list local",
+      "spec": [
+        "N12 DR 055 §1",
+        "N12 DR 056 §1–2"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Host.Pass",
+      "from": "Guarded",
+      "to": "Initialised",
+      "arrow": "not a memory write: the guard's other rules decide the call",
+      "spec": [
+        "N12 DR 056 §1"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
+      "claim": "claim:Host.Refused",
+      "from": "MemoryDenied",
+      "to": "Initialised",
+      "arrow": "the write is refused and the session goes on: the guard stops accidents, not rogue agents",
+      "spec": [
+        "N12 DR 055 §2–3"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    }
+  ],
+  "gaps": []
+}

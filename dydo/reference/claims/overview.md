@@ -8,11 +8,19 @@ type: reference
 
 ## Build
 
-`claim:Overview.Build`: In the overview, the model builds the skills the Project runs on.
+`claim:Overview.Build`: In the overview, the model builds the skills; a project's init turns memory off and commits the guard.
 
-Spec: K1, K6
+Spec: K6, N12 DR 055 §1, N12 DR 056 §1
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ClaimArea → ProjectArea, "the model builds the skills the Project runs on". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ClaimArea → HostArea, "the model builds the skills; a project's init turns memory off and commits the guard". A system transition: no skill carries it.
+
+## Hold
+
+`claim:Overview.Hold`: In the overview, an admiral holds a live Project.
+
+Spec: H4
+
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): HostArea → ProjectArea, "an admiral holds a live Project". A system transition: no skill carries it.
 
 ## Cut
 
@@ -20,31 +28,71 @@ Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ClaimArea 
 
 Spec: H5, H3
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → DispatchArea, "the admiral cuts a ticket and dispatches its captain". A system transition: no skill carries it.
-
-## Start
-
-`claim:Overview.Start`: In the overview, the holder sets its step In Progress.
-
-Spec: S6, S13
-
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): DispatchArea → StatusArea, "the holder sets its step In Progress". A system transition: no skill carries it.
-
-## Hops
-
-`claim:Overview.Hops`: In the overview, a step with its own review loop gets its hops.
-
-Spec: S3, S4
-
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): StatusArea → HopArea, "a step with its own review loop gets its hops". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → TicketArea, "the admiral cuts a ticket and dispatches its captain". A system transition: no skill carries it.
 
 ## Prove
 
-`claim:Overview.Prove`: In the overview, the Implement hop proves with receipts.
+`claim:Overview.Prove`: In the overview, the Implement hop proves its work with red tests and receipts.
 
 Spec: R5, T3
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): HopArea → ProofArea, "the Implement hop proves with receipts". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): TicketArea → ProofArea, "the Implement hop proves its work with red tests and receipts". A system transition: no skill carries it.
+
+## Review
+
+`claim:Overview.Review`: In the overview, the parts are wired; the review opens.
+
+Spec: R2
+
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProofArea → ReviewArea, "the parts are wired; the review opens". A system transition: no skill carries it.
+
+## Merge
+
+`claim:Overview.Merge`: In the overview, the first round with no new blocker: the Merge hop runs dydo merge.
+
+Spec: R8, R17, R23
+
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ReviewArea → MergeArea, "the first round with no new blocker: the Merge hop runs dydo merge". A system transition: no skill carries it.
+
+## Next
+
+`claim:Overview.Next`: In the overview, merged: the admiral cuts the next ticket.
+
+Spec: R20, H5
+
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MergeArea → ProjectArea, "merged: the admiral cuts the next ticket". A system transition: no skill carries it.
+
+## Land
+
+`claim:Overview.Land`: In the overview, every delivery ticket merged: the landing runs.
+
+Spec: N5
+
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → LandingArea, "every delivery ticket merged: the landing runs". A system transition: no skill carries it.
+
+## Accept
+
+`claim:Overview.Accept`: In the overview, his acceptance: the landing PR goes to master.
+
+Spec: N6
+
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): LandingArea → MasterArea, "his acceptance: the landing PR goes to master". A system transition: no skill carries it.
+
+## Tag
+
+`claim:Overview.Tag`: In the overview, Balazs pushes the release tag.
+
+Spec: R28, N2
+
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MasterArea → Tagged, "Balazs pushes the release tag". A system transition: no skill carries it.
+
+## Ship
+
+`claim:Overview.Ship`: In the overview, adopters take one ordinary update.
+
+Spec: K18, N8
+
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): Tagged → AdopterArea, "adopters take one ordinary update". A system transition: no skill carries it.
 
 ## Explain
 
@@ -54,114 +102,82 @@ Spec: D5
 
 Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProofArea → DocsArea, "a change to declared paths flags its doc". A system transition: no skill carries it.
 
-## Review
+## Explained
 
-`claim:Overview.Review`: In the overview, the parts are wired; the review opens.
+`claim:Overview.Explained`: In the overview, the writer updates the doc or states it holds.
 
-Spec: R2
+Spec: D5
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): DocsArea → ReviewArea, "the parts are wired; the review opens". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): DocsArea → ProofArea, "the writer updates the doc or states it holds". A system transition: no skill carries it.
 
-## Shoulds
+## Watch
 
-`claim:Overview.Shoulds`: In the overview, a round finds a should.
+`claim:Overview.Watch`: In the overview, the board, the map and liveness are read.
 
-Spec: S17
+Spec: S19, S22, S24
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ReviewArea → ShouldArea, "a round finds a should". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → WatchArea, "the board, the map and liveness are read". A system transition: no skill carries it.
 
-## Merge
+## Route
 
-`claim:Overview.Merge`: In the overview, PASS on the head: the Merge hop runs dydo merge.
+`claim:Overview.Route`: In the overview, findings and CI reds go to their officer.
 
-Spec: R17, R23
+Spec: Y9, H11, H5
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ShouldArea → MergeArea, "PASS on the head: the Merge hop runs dydo merge". A system transition: no skill carries it.
-
-## Findings
-
-`claim:Overview.Findings`: In the overview, a real red after the merge becomes a CI finding.
-
-Spec: Y9
-
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MergeArea → FindingsArea, "a real red after the merge becomes a CI finding". A system transition: no skill carries it.
-
-## Feed
-
-`claim:Overview.Feed`: In the overview, findings feed the admiral's next cut.
-
-Spec: H5, S22
-
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): FindingsArea → ProjectArea, "findings feed the admiral's next cut". A system transition: no skill carries it.
-
-## Quiet
-
-`claim:Overview.Quiet`: In the overview, the survey finds a quiet hop.
-
-Spec: S23, S24
-
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): FindingsArea → LivenessArea, "the survey finds a quiet hop". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): WatchArea → ProjectArea, "findings and CI reds go to their officer". A system transition: no skill carries it.
 
 ## Need
 
-`claim:Overview.Need`: In the overview, a need only Balazs can settle goes up the chain.
+`claim:Overview.Need`: In the overview, a need only he can settle goes up the chain, or a hard call to the tribunal.
 
-Spec: H16
+Spec: H16, L18
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): LivenessArea → EnvoyArea, "a need only Balazs can settle goes up the chain". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → JudgementArea, "a need only he can settle goes up the chain, or a hard call to the tribunal". A system transition: no skill carries it.
 
-## Hard
+## Decided
 
-`claim:Overview.Hard`: In the overview, a hard call goes to the tribunal.
+`claim:Overview.Decided`: In the overview, a Question decided, by him by day or provisionally overnight, is acted on and never ratified.
 
-Spec: H5, L18
+Spec: L19, L20
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): EnvoyArea → LawArea, "a hard call goes to the tribunal". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): JudgementArea → ProjectArea, "a Question decided, by him by day or provisionally overnight, is acted on and never ratified". A system transition: no skill carries it.
 
-## Night
+## Proposed
 
-`claim:Overview.Night`: In the overview, overnight rulings wait for the morning brief.
+`claim:Overview.Proposed`: In the overview, overnight, both judges agree on a two-way, seriously blocking DR-grade call: a proposed DR.
 
-Spec: L19, L21
+Spec: L21
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): LawArea → StaffArea, "overnight rulings wait for the morning brief". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): JudgementArea → StaffArea, "overnight, both judges agree on a two-way, seriously blocking DR-grade call: a proposed DR". A system transition: no skill carries it.
 
-## Land
+## Ratify
 
-`claim:Overview.Land`: In the overview, every delivery ticket merged: the landing runs.
+`claim:Overview.Ratify`: In the overview, he ratifies the proposed DR.
 
-Spec: N5, T12
+Spec: L21
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): StaffArea → MutationArea, "every delivery ticket merged: the landing runs". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): StaffArea → ProjectArea, "he ratifies the proposed DR". A system transition: no skill carries it.
 
-## Accept
+## List
 
-`claim:Overview.Accept`: In the overview, his acceptance: the landing PR goes to master.
+`claim:Overview.List`: In the overview, the chief of staff reads the board across Projects into his short list.
 
-Spec: N6
+Spec: H7
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MutationArea → MasterArea, "his acceptance: the landing PR goes to master". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → StaffArea, "the chief of staff reads the board across Projects into his short list". A system transition: no skill carries it.
 
-## Archive
+## GiveOut
 
-`claim:Overview.Archive`: In the overview, merged: branches and worktrees archived.
+`claim:Overview.GiveOut`: In the overview, he gives out a ticket from that list, or tells the chief of staff to.
 
-Spec: N10
+Spec: H7
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MasterArea → SafeDeleteArea, "merged: branches and worktrees archived". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): StaffArea → ProjectArea, "he gives out a ticket from that list, or tells the chief of staff to". A system transition: no skill carries it.
 
-## Tag
+## Refix
 
-`claim:Overview.Tag`: In the overview, Balazs pushes the release tag.
+`claim:Overview.Refix`: In the overview, a landing round's blockers become Fix rN.
 
-Spec: R28, N2
+Spec: N5, S9
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): SafeDeleteArea → Tagged, "Balazs pushes the release tag". A system transition: no skill carries it.
-
-## Ship
-
-`claim:Overview.Ship`: In the overview, adopters take one ordinary update.
-
-Spec: K18, N8
-
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): Tagged → AdopterArea, "adopters take one ordinary update". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): LandingArea → TicketArea, "a landing round's blockers become Fix rN". A system transition: no skill carries it.

@@ -7,5 +7,10 @@ namespace DynaDocs.SkillBuild;
 /// </summary>
 public static class ProductionModel
 {
-    public static Model Model { get; } = new(Registry.Kinds, Registry.Skills) { Machines = Registry.Machines, CitesSpec = true };
+    public static Model Model { get; } = new(Registry.Kinds, Registry.Skills)
+    {
+        Machines = Registry.Machines,
+        CitesSpec = true,
+        Envoys = new(Envoy.Jobs, Envoy.CloseSignal, ResourceName.EnvoyBrief)
+    };
 }

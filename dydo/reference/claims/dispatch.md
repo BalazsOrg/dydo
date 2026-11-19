@@ -10,13 +10,13 @@ type: reference
 
 `claim:Dispatch.Send`: A Linear unit goes out by delegate_task from its kind's template, one cross-family seat where possible.
 
-Spec: H3, K14, R15, L17, S1
+Spec: H3, K14, R15, S1
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Staffing → Briefed, "one seat, cross-family where possible, sent from its kind's template".
 
 **ticket-captain** (Staffing, exit):
 
-> Send each Linear unit by `delegate_task` from its crew kind's dispatch template; most PRs get one seat, from a family other than the author's where possible.
+> Send each Linear unit by `delegate_task` from its crew kind's dispatch template, a reviewer from a family other than the author's where possible.
 
 **admiral** (Staffing, exit):
 
@@ -60,7 +60,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **ticket-captain** (Staffing, exit):
 
-> Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew.
+> Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
 
 ## Start
 

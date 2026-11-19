@@ -3,26 +3,26 @@ title: "A PR into master"
 ---
 stateDiagram-v2
   s0: PR into master offered #183; R26, R27
-  s1: One-way: watching its CI #183; R31
-  s2: Waiting for its turn #183; R29
-  s3: HITL Merge waiting on his click #183; R27, R31, S12
-  s4: Re-checking against current master #183; R29
-  s5: AFK merge by its captain #183; R26, S12
+  s1: Waiting for its turn #183; R29
+  s2: Re-checking against current master #183; R29
+  s3: AFK merge by its captain #183; R26, S12
+  s4: One-way: watching its CI #183; R31
+  s5: HITL Merge waiting on his click #183; R27, R31, S12
   s6: Merged into master #183; R26, R31
   s7: Master Merge hop Done #183; R20, R31
   s8: Reverted after a real red #183; R22, Y9
   s9: Held after a third forced re-sync #183; R29
   [*] --> s0
-  s0 --> s1: one-way: a flagged path, or declared by its captain #183; R27
-  s0 --> s2: declared two-way in the PR body #183; R26, R27
-  s1 --> s3: its CI is green #183; R31, S12
-  s2 --> s4: GAP: R29 says the admiral lands PRs one at a time, not how a turn is signalled or the admiral gives it its turn #183; R29
-  s3 --> s6: Balazs clicks the merge #183; R27, R31
-  s4 --> s5: re-check green: PASS, gates green with current master, CI green #183; R26, R29
-  s4 --> s2: master moved: re-sync again #183; R29
-  s5 --> s6: dydo merge merges into master #183; R26
+  s0 --> s1: declared two-way in the PR body#59; it waits for its turn #183; R26, R27, R29 or one-way, flagged or declared#59; it waits for its turn #183; R27, R29
+  s1 --> s2: the admiral gives it its turn #183; R29
+  s2 --> s3: two-way, re-check green: PASS, gates green with current master, CI green #183; R26, R29
+  s2 --> s1: master moved: re-sync again #183; R29
+  s2 --> s4: one-way, re-check green: on to his click #183; R27, R29, R31
+  s3 --> s6: dydo merge merges into master #183; R26
+  s4 --> s5: its CI is green #183; R31, S12
+  s5 --> s6: Balazs clicks the merge #183; R27, R31
   s6 --> s7: receipt and CI green on the merge #183; R20, R31
   s6 --> s8: a real red after the merge #183; R22, Y9
   s8 --> s0: fixed, fix-scoped round passed, offered again #183; R22
-  s4 --> s9: forced to re-sync a third time #183; R29
-  s9 --> s2: the colliding work is sequenced #183; R29
+  s2 --> s9: forced to re-sync a third time #183; R29
+  s9 --> s1: the colliding work is sequenced #183; R29

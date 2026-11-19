@@ -12,6 +12,7 @@ public static class SkillBuilder
     {
         var files = new SortedDictionary<string, string>(StringComparer.Ordinal);
         var map = new List<MapLine>();
+        model.Envoys?.Check(model);
         var (bySkill, _) = ModelIndex.Read(model);
         var claims = new ClaimIndex(ModelIndex.ClaimIds(model.Kinds));
         var chart = new Statechart(model, claims);

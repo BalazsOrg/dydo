@@ -40,8 +40,8 @@ public static class Staff
     { Spec = ["H7"] };
 
     public static readonly Claim LinksOnly = new("It never relays content and sends no envoys.", [Actor.ChiefOfStaff],
-        [new(Skill.ChiefOfStaff, "Pass on thread links, never their content; envoys are the admirals'.", new(StaffState.Day, 1010, MoveKind.Nominal))])
-    { Spec = ["H7", "H12"] };
+        [new(Skill.ChiefOfStaff, "Pass on thread links, never their content, and send no envoys.", new(StaffState.Day, 1010, MoveKind.Nominal))])
+    { Spec = ["H7"] };
 
     public static readonly Claim DoubleCheck = new("Overnight, its 12-hour check on a quiet Project is a cheap double check only.", [Actor.ChiefOfStaff],
         [new(Skill.ChiefOfStaff, "Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the admirals' own scheduled surveys.", new(StaffState.NightWatch, 1011, MoveKind.Nominal))])

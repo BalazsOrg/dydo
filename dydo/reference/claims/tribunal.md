@@ -82,6 +82,14 @@ Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange
 
 > Write the overnight ruling as a `proposed` DR for his ratification; an irreversible call is never decided.
 
+## Ratify
+
+`claim:Tribunal.Ratify`: He ratifies an overnight proposed DR.
+
+Spec: L21
+
+Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): ProposedDr → Ratified, "he ratifies it". A system transition: no skill carries it.
+
 ## Score
 
 `claim:Tribunal.Score`: His daytime answers are scored against the prediction, as evidence only.

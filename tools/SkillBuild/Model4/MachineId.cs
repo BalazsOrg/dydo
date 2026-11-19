@@ -5,6 +5,9 @@ public enum MachineId
 {
     Overview,
     ClaimBuild,
+    RoleEvaluation,
+    HostSetup,
+    StatechartRun,
     Project,
     Landing,
     TicketStatus,
@@ -21,6 +24,7 @@ public enum MachineId
     Liveness,
     Should,
     Findings,
+    Map,
     Council,
     Tribunal,
     Law,

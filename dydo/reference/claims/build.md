@@ -64,11 +64,27 @@ Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): 
 
 ## Tlc
 
-`claim:Build.Tlc`: In the claim build, TLC checks the generated moves against the hand-written properties; the result is recorded with the candidate.
+`claim:Build.Tlc`: In the claim build, TLC passes the generated moves against the hand-written properties; the result is recorded with the candidate.
 
 Spec: K3, K20, N14
 
-Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Checked → TlcChecked, "TLC checks the generated moves against the hand-written properties; the result is recorded with the candidate". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Checked → TlcPassed, "TLC passes the generated moves against the hand-written properties; the result is recorded with the candidate". A system transition: no skill carries it.
+
+## TlcFail
+
+`claim:Build.TlcFail`: In the claim build, TLC fails a property: the push is not done and nothing goes to his approval.
+
+Spec: K3, K20
+
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): Checked → TlcFailed, "TLC fails a property: the push is not done and nothing goes to his approval". A system transition: no skill carries it.
+
+## Remodel
+
+`claim:Build.Remodel`: In the claim build, the push is not done: the model is fixed and built again.
+
+Spec: K20, K6
+
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): TlcFailed → Edited, "the push is not done: the model is fixed and built again". A system transition: no skill carries it.
 
 ## Read
 
@@ -76,7 +92,7 @@ Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): 
 
 Spec: K16
 
-Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): TlcChecked → InReview, "the model PR is read through its built-skill diff". A system transition: no skill carries it.
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): TlcPassed → InReview, "the model PR is read through its built-skill diff". A system transition: no skill carries it.
 
 ## Approve
 

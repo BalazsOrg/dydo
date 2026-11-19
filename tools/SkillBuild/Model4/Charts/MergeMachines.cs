@@ -46,7 +46,6 @@ public static class MergeMachines
     ], MasterRouteState.Offered, [MasterRouteState.Closed])
     {
         Extends = ["Naturals"],
-        Variables = [new("resyncs", "0", "resyncs <= 3")],
-        Gaps = [new(MasterRouteState.Paced, MasterRouteState.Resync, "R29 says the admiral lands PRs one at a time, not how a turn is signalled")]
+        Variables = [new("resyncs", "0", "resyncs <= 3"), new("oneWay", "FALSE", "oneWay \\in BOOLEAN")]
     };
 }

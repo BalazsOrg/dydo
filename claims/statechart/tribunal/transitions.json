@@ -6,7 +6,7 @@
   "finals": [
     "DrSettled",
     "DecidedOvernight",
-    "ProposedDr",
+    "Ratified",
     "Scored",
     "Investigated"
   ],
@@ -66,7 +66,14 @@
     },
     {
       "id": "ProposedDr",
-      "title": "Proposed DR",
+      "title": "Proposed DR awaiting his ratification",
+      "spec": [
+        "L21"
+      ]
+    },
+    {
+      "id": "Ratified",
+      "title": "Proposed DR ratified",
       "spec": [
         "L21"
       ]
@@ -187,6 +194,18 @@
       ]
     },
     {
+      "claim": "claim:Tribunal.Ratify",
+      "from": "ProposedDr",
+      "to": "Ratified",
+      "arrow": "he ratifies it",
+      "spec": [
+        "L21"
+      ],
+      "guard": null,
+      "effect": null,
+      "skills": []
+    },
+    {
       "claim": "claim:Tribunal.Score",
       "from": "Prepared",
       "to": "Scored",
@@ -242,15 +261,9 @@
   "gaps": [
     {
       "action": "Gap1",
-      "from": "Prepared",
-      "to": "Scored",
-      "note": "L20 scores his daytime answers against the prediction but names no scorer"
-    },
-    {
-      "action": "Gap2",
-      "from": "DecidedOvernight",
-      "to": "Investigated",
-      "note": "L19 has a ruling found wrong investigated but names no investigator"
+      "from": "ProposedDr",
+      "to": null,
+      "note": "L21 has him ratify a proposed DR but gives no route when he declines it"
     }
   ]
 }

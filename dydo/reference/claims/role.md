@@ -86,17 +86,13 @@ Spec: H12
 
 ## NoAuthor
 
-`claim:Role.NoAuthor`: Admirals and sub-captains never author.
+`claim:Role.NoAuthor`: Admirals never author.
 
 Spec: R16
 
 **admiral** (Role):
 
 > You never author: captains and their crew do.
-
-**ticket-captain** (Role):
-
-> As a sub-captain, you author nothing.
 
 ## AdmiralAccounts
 

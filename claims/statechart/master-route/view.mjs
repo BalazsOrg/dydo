@@ -14,18 +14,18 @@ const states = {
 const steps = {
   "MasterRoute_AfkDone": "dydo merge merges into master · R26",
   "MasterRoute_Again": "master moved: re-sync again · R29",
+  "MasterRoute_AwaitClick": "one-way, re-check green: on to his click · R27, R29, R31",
   "MasterRoute_CiGreen": "its CI is green · R31, S12",
   "MasterRoute_Click": "Balazs clicks the merge · R27, R31",
   "MasterRoute_Hold": "forced to re-sync a third time · R29",
-  "MasterRoute_Merge": "re-check green: PASS, gates green with current master, CI green · R26, R29",
-  "MasterRoute_OneWay": "one-way: a flagged path, or declared by its captain · R27",
+  "MasterRoute_Merge": "two-way, re-check green: PASS, gates green with current master, CI green · R26, R29",
+  "MasterRoute_OneWay": "one-way, flagged or declared; it waits for its turn · R27, R29",
   "MasterRoute_RealRed": "a real red after the merge · R22, Y9",
   "MasterRoute_Reland": "fixed, fix-scoped round passed, offered again · R22",
   "MasterRoute_Sequenced": "the colliding work is sequenced · R29",
   "MasterRoute_Turn": "the admiral gives it its turn · R29",
-  "MasterRoute_TwoWay": "declared two-way in the PR body · R26, R27",
-  "MasterRoute_Woken": "receipt and CI green on the merge · R20, R31",
-  "Gap1": "GAP: R29 says the admiral lands PRs one at a time, not how a turn is signalled"
+  "MasterRoute_TwoWay": "declared two-way in the PR body; it waits for its turn · R26, R27, R29",
+  "MasterRoute_Woken": "receipt and CI green on the merge · R20, R31"
 };
 export const title = "A PR into master";
 export const state = (v) => states[v.state];

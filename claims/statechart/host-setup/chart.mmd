@@ -1,0 +1,17 @@
+---
+title: "Host settings and the guard"
+---
+stateDiagram-v2
+  s0: A project before dydo init #183; N12 DR 056 #167;1
+  s1: Settings written: native memory off, the Claude guard committed, the allow list local #183; N12 DR 055 #167;1, N12 DR 056 #167;1#8211;2
+  s2: Codex's background memory writer, unseen by the guard #183; N12 DR 055 #167;3
+  s3: An agent tool call meets the guard #183; N12 DR 056 #167;1, N12 DR 056 #167;3
+  s4: A write to a host memory folder refused #183; N12 DR 055 #167;2
+  [*] --> s0
+  s0 --> s1: dydo init or --join turns native memory off for both hosts, commits one Claude guard entry and keeps the allow list local #183; N12 DR 055 #167;1, N12 DR 056 #167;1#8211;2
+  s1 --> s2: Codex's memory runs from a background process the guard never sees #183; N12 DR 055 #167;3
+  s1 --> s3: an agent's tool call runs through dydo guard, one policy for Claude and Codex #183; N12 DR 056 #167;1, N12 DR 056 #167;3
+  s2 --> s1: with memories = false it writes nothing: the Codex half rests on that flag #183; N12 DR 055 #167;1, N12 DR 055 #167;3
+  s3 --> s1: not a memory write: the guard's other rules decide the call #183; N12 DR 056 #167;1
+  s3 --> s4: a write to a host memory folder is blocked #183; N12 DR 055 #167;2
+  s4 --> s1: the write is refused and the session goes on: the guard stops accidents, not rogue agents #183; N12 DR 055 #167;2#8211;3

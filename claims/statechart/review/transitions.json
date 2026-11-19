@@ -124,7 +124,7 @@
         "R10",
         "S10"
       ],
-      "guard": null,
+      "guard": "kind \\in {\"fundamental\", \"balazs\"}",
       "effect": null,
       "skills": [
         "linear-workspace-standard",
@@ -135,13 +135,14 @@
       "claim": "claim:Review.CheckpointGoOn",
       "from": "Checkpoint",
       "to": "Fixing",
-      "arrow": "checkpoint: one more round",
+      "arrow": "checkpoint: one more round, the security lens first for a security hole",
       "spec": [
         "R10",
-        "S10"
+        "S10",
+        "R9"
       ],
-      "guard": null,
-      "effect": null,
+      "guard": "kind \\in {\"broken\", \"security\"}",
+      "effect": "securityFirst' = (securityFirst \\/ kind = \"security\")",
       "skills": [
         "linear-workspace-standard",
         "ticket-captain"

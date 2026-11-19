@@ -6,13 +6,13 @@ public static class Dispatch
     public static readonly Claim Send = new("A Linear unit goes out by delegate_task from its kind's template, one cross-family seat where possible.",
         [Actor.TicketCaptain, Actor.Admiral, Actor.CodeWriter, Actor.Reviewer, Actor.Scout],
     [
-        new(Skill.TicketCaptain, "Send each Linear unit by `delegate_task` from its crew kind's dispatch template; most PRs get one seat, from a family other than the author's where possible.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
+        new(Skill.TicketCaptain, "Send each Linear unit by `delegate_task` from its crew kind's dispatch template, a reviewer from a family other than the author's where possible.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
         new(Skill.Admiral, "Send each captain or seat by `delegate_task` from its kind's dispatch template, a reviewer or judge from a family other than the author's where possible.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
         new(Skill.CodeWriter, "You arrive with a brief from the code-writer dispatch template; work only within it.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
         new(Skill.Reviewer, "You arrive with a brief from the reviewer dispatch template; judge only what it names.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
         new(Skill.Scout, "You arrive with one question and its return-to; you hold no ticket.", new(DispatchState.Briefed, 801, MoveKind.Arrival))
     ])
-    { Spec = ["H3", "K14", "R15", "L17", "S1"], Transition = new(DispatchState.Staffing, DispatchState.Briefed, "one seat, cross-family where possible, sent from its kind's template") };
+    { Spec = ["H3", "K14", "R15", "S1"], Transition = new(DispatchState.Staffing, DispatchState.Briefed, "one seat, cross-family where possible, sent from its kind's template") };
 
     public static readonly Claim Council = new("A council convenes only for stakes or value.", [Actor.TicketCaptain, Actor.Admiral],
     [
@@ -22,7 +22,7 @@ public static class Dispatch
     { Spec = ["L16", "L17"], Transition = new(DispatchState.Staffing, DispatchState.CouncilCalled, "stakes or value: a council") };
 
     public static readonly Claim SelfAuthor = new("A captain authors only a change cheaper to do than to brief and too small to need its own review.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew.", new(DispatchState.Staffing, 803, MoveKind.Exit))])
+        [new(Skill.TicketCaptain, "Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.", new(DispatchState.Staffing, 803, MoveKind.Exit))])
     { Spec = ["R16"], Transition = new(DispatchState.Staffing, DispatchState.SelfAuthored, "cheaper to do than to brief, too small to need its own review") };
 
     public static readonly Claim Start = new("Whoever starts a step sets its hop In Progress and attaches the holder's T3 thread link.",

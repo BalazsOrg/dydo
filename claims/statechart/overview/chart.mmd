@@ -2,44 +2,40 @@
 title: "dydo 4.0.0"
 ---
 stateDiagram-v2
-  s0: The claim build #183; K1, K4, K6, K7, K10, K16, K24
-  s1: Project and its admiral #183; H4, H5, H10, S14, S15, R25, N13
-  s2: Crew dispatch and return #183; H1, H2, H3, H20, K14, R5, R13, R14, R16
-  s3: Ticket statuses #183; S5, S6, S10, S13
-  s4: Hops by Type label #183; S3, S4, S9, S12
-  s5: Proof tests and gates #183; T1, T3, T5, T6, T13, T21, T23, Y4
-  s6: Descriptive docs #183; D1, D2, D3, D4, D5, D6, D7
-  s7: The review loop #183; R2, R3, R8, R9, R10, R11, S8
-  s8: Shoulds #183; S17, S18
-  s9: dydo merge and the feature-branch merge #183; R18, R19, R20, R21, R22, R23, R24
-  s10: Survey, board and CI findings #183; S19, S22, S23, Y9, H11, R30
-  s11: Liveness #183; S24, H12
-  s12: Envoys #183; H15, H16, H18, H19, H22, H23
-  s13: Law, councils and tribunal #183; L7, L11, L14, L16, L18, L22, L23
-  s14: Chief of staff and overnight #183; H7, L19, L20, L21
-  s15: The landing and its mutation check #183; N5, N6, N7, T12, N15
-  s16: The master route #183; R26, R27, R29, R31
-  s17: Safe delete #183; N10
-  s18: 4.0.0 tagged #183; R28, N2, N15
-  s19: The adopter update #183; K18, N1, N8, N11
+  s0: The claim build and the role evaluation #183; K1, K4, K6, K7, K16, K22, K24
+  s1: Host settings, the guard and the statechart tool #183; N12 DR 055 #167;1, N12 DR 056 #167;1, N12 DR 062 #167;1, H20
+  s2: A Project and its admiral #183; H4, H5, H10, S14, S15, R25, N13
+  s3: Envoys, councils, the tribunal and the law #183; H15, H16, L7, L14, L18, L22
+  s4: The landing: inquisition, prerequisites and mutation #183; N5, N6, N7, T12, N15
+  s5: Chief of staff, overnight, and DRs awaiting ratification #183; H7, L19, L21
+  s6: A ticket: dispatch, status and hops #183; H1, H2, H3, K14, S3, S5, S6, S12
+  s7: Survey, map, liveness and CI findings #183; S19, S22, S23, S24, S26, Y9, R30
+  s8: The master route #183; R26, R27, R29, R31
+  s9: Proof tests and gates #183; T1, T3, T5, T13, T21, T23, Y4
+  s10: Descriptive docs #183; D1, D2, D3, D4, D5, D6, D7
+  s11: The review loop and its shoulds #183; R2, R3, R8, R9, R10, R11, S8, S17
+  s12: 4.0.0 tagged #183; R28, N2, N15
+  s13: The adopter update #183; K18, N1, N8, N11
+  s14: dydo merge, the Merge hop and safe delete #183; R18, R19, R20, R21, R22, R23, N10
   [*] --> s0
-  s0 --> s1: the model builds the skills the Project runs on #183; K1, K6
-  s1 --> s2: the admiral cuts a ticket and dispatches its captain #183; H5, H3
-  s2 --> s3: the holder sets its step In Progress #183; S6, S13
-  s3 --> s4: a step with its own review loop gets its hops #183; S3, S4
-  s4 --> s5: the Implement hop proves with receipts #183; R5, T3
-  s5 --> s6: a change to declared paths flags its doc #183; D5
-  s6 --> s7: the parts are wired#59; the review opens #183; R2
-  s7 --> s8: a round finds a should #183; S17
-  s8 --> s9: PASS on the head: the Merge hop runs dydo merge #183; R17, R23
-  s9 --> s10: a real red after the merge becomes a CI finding #183; Y9
-  s10 --> s1: findings feed the admiral's next cut #183; H5, S22
-  s10 --> s11: the survey finds a quiet hop #183; S23, S24
-  s11 --> s12: a need only Balazs can settle goes up the chain #183; H16
-  s12 --> s13: a hard call goes to the tribunal #183; H5, L18
-  s13 --> s14: overnight rulings wait for the morning brief #183; L19, L21
-  s14 --> s15: every delivery ticket merged: the landing runs #183; N5, T12
-  s15 --> s16: his acceptance: the landing PR goes to master #183; N6
-  s16 --> s17: merged: branches and worktrees archived #183; N10
-  s17 --> s18: Balazs pushes the release tag #183; R28, N2
-  s18 --> s19: adopters take one ordinary update #183; K18, N8
+  s0 --> s1: the model builds the skills#59; a project's init turns memory off and commits the guard #183; K6, N12 DR 055 #167;1, N12 DR 056 #167;1
+  s1 --> s2: an admiral holds a live Project #183; H4
+  s2 --> s3: a need only he can settle goes up the chain, or a hard call to the tribunal #183; H16, L18
+  s2 --> s4: every delivery ticket merged: the landing runs #183; N5
+  s2 --> s5: the chief of staff reads the board across Projects into his short list #183; H7
+  s2 --> s6: the admiral cuts a ticket and dispatches its captain #183; H5, H3
+  s2 --> s7: the board, the map and liveness are read #183; S19, S22, S24
+  s3 --> s2: a Question decided, by him by day or provisionally overnight, is acted on and never ratified #183; L19, L20
+  s3 --> s5: overnight, both judges agree on a two-way, seriously blocking DR-grade call: a proposed DR #183; L21
+  s4 --> s6: a landing round's blockers become Fix rN #183; N5, S9
+  s4 --> s8: his acceptance: the landing PR goes to master #183; N6
+  s5 --> s2: he gives out a ticket from that list, or tells the chief of staff to #183; H7 or he ratifies the proposed DR #183; L21
+  s6 --> s9: the Implement hop proves its work with red tests and receipts #183; R5, T3
+  s7 --> s2: findings and CI reds go to their officer #183; Y9, H11, H5
+  s8 --> s12: Balazs pushes the release tag #183; R28, N2
+  s9 --> s10: a change to declared paths flags its doc #183; D5
+  s9 --> s11: the parts are wired#59; the review opens #183; R2
+  s10 --> s9: the writer updates the doc or states it holds #183; D5
+  s11 --> s14: the first round with no new blocker: the Merge hop runs dydo merge #183; R8, R17, R23
+  s12 --> s13: adopters take one ordinary update #183; K18, N8
+  s14 --> s2: merged: the admiral cuts the next ticket #183; R20, H5

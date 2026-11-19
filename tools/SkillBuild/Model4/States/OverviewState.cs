@@ -1,26 +1,21 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>M0: dydo 4.0.0 as a whole, its areas in order.</summary>
+/// <summary>M0: dydo 4.0.0 as a whole: a nominal path through its areas, with branches that return.</summary>
 public enum OverviewState
 {
     ClaimArea,
+    HostArea,
     ProjectArea,
-    DispatchArea,
-    StatusArea,
-    HopArea,
+    TicketArea,
     ProofArea,
     DocsArea,
     ReviewArea,
-    ShouldArea,
     MergeArea,
-    FindingsArea,
-    LivenessArea,
-    EnvoyArea,
-    LawArea,
+    WatchArea,
+    JudgementArea,
     StaffArea,
-    MutationArea,
+    LandingArea,
     MasterArea,
-    SafeDeleteArea,
     Tagged,
     AdopterArea
 }

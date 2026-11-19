@@ -5,7 +5,9 @@ VARIABLES state, night, twoWay, drGrade, blocking, agree
 
 vars == <<state, night, twoWay, drGrade, blocking, agree>>
 
-Finals == {"DrSettled", "DecidedOvernight", "ProposedDr", "Scored", "Investigated"}
+Finals == {"DrSettled", "DecidedOvernight", "Ratified", "Scored", "Investigated"}
+
+Open == {"GAP 1"}
 
 Init ==
     /\ state = "HardCall"
@@ -50,6 +52,12 @@ Tribunal_ProposeDr ==
     /\ state' = "ProposedDr"
     /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree>>
 
+\* claim:Tribunal.Ratify
+Tribunal_Ratify ==
+    /\ state = "ProposedDr"
+    /\ state' = "Ratified"
+    /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree>>
+
 \* claim:Tribunal.Score
 Tribunal_Score ==
     /\ state = "Prepared"
@@ -74,19 +82,13 @@ Tribunal_Wrong ==
     /\ state' = "Investigated"
     /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree>>
 
-\* GAP: L20 scores his daytime answers against the prediction but names no scorer
+\* GAP: L21 has him ratify a proposed DR but gives no route when he declines it
 Gap1 ==
-    /\ state = "Prepared"
-    /\ state' = "Scored"
+    /\ state = "ProposedDr"
+    /\ state' = "GAP 1"
     /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree>>
 
-\* GAP: L19 has a ruling found wrong investigated but names no investigator
-Gap2 ==
-    /\ state = "DecidedOvernight"
-    /\ state' = "Investigated"
-    /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree>>
-
-Done == state \in Finals /\ UNCHANGED vars
+Done == state \in Finals \cup Open /\ UNCHANGED vars
 
 Next ==
     \/ Tribunal_DecideNight
@@ -94,12 +96,12 @@ Next ==
     \/ Tribunal_File
     \/ Tribunal_Prepare
     \/ Tribunal_ProposeDr
+    \/ Tribunal_Ratify
     \/ Tribunal_Score
     \/ Tribunal_Seat
     \/ Tribunal_Settled
     \/ Tribunal_Wrong
     \/ Gap1
-    \/ Gap2
     \/ Done
 
 Bounds == night \in BOOLEAN /\ twoWay \in BOOLEAN /\ drGrade \in BOOLEAN /\ blocking \in BOOLEAN /\ agree \in BOOLEAN

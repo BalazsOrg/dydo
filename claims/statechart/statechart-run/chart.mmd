@@ -1,0 +1,24 @@
+---
+title: "A dydo statechart run"
+---
+stateDiagram-v2
+  s0: dydo statechart invoked #183; N12 DR 062 #167;1
+  s1: Approval required: a locked plan, the saved request, exit 3 #183; N12 DR 062 #167;2
+  s2: An explicit invalid override: an error #183; N12 DR 062 #167;1
+  s3: Ready: verified compatible dependencies, offline, no consent asked again #183; N12 DR 062 #167;1
+  s4: TLC checking under native statechart ownership #183; N12 DR 062 #167;6
+  s5: Authorized continuation: identities verified, locked assets installed #183; N12 DR 062 #167;3, N12 DR 062 #167;4
+  s6: Non-success: denied, unavailable, failed or canceled, the request kept #183; N12 DR 062 #167;5
+  s7: Charted#59; drain authoritative, registered scratch cleaned #183; N12 DR 062 #167;6
+  s8: Drain uncertain: scratch kept with a durable reason #183; N12 DR 062 #167;6
+  [*] --> s0
+  s0 --> s1: a dependency is missing: a precise locked plan, a structured event, the saved request and exit 3, proposing dydo statechart resume --request #183; N12 DR 062 #167;2
+  s0 --> s2: an explicit invalid override is an error #183; N12 DR 062 #167;1
+  s0 --> s3: its dependencies verified compatible, it runs offline with no repeated installation or consent #183; N12 DR 062 #167;1
+  s1 --> s5: the installed skill submits that exact continuation through the host's normal authorization, and the host grants it #183; N12 DR 062 #167;3
+  s1 --> s6: denied, authorization unavailable or canceled: non-success, the request kept#59; a local flag, token or receipt is not host approval #183; N12 DR 062 #167;3, N12 DR 062 #167;5
+  s3 --> s4: the check starts under native statechart ownership, with registered scratch and startup gates #183; N12 DR 062 #167;6
+  s4 --> s7: an authoritative drain: registered-owned scratch is cleaned #183; N12 DR 062 #167;6
+  s4 --> s8: the drain is uncertain, or only notified: scratch kept with a durable reason #183; N12 DR 062 #167;6
+  s5 --> s3: identities verified, the locked assets installed into owned roots, readiness proved and the receipt published atomically#59; the saved inputs continue #183; N12 DR 062 #167;4
+  s5 --> s6: the installation fails: non-success, the request kept, and no checker starts on an unverified plan #183; N12 DR 062 #167;5

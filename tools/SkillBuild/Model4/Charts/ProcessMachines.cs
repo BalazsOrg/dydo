@@ -13,11 +13,25 @@ public static class ProcessMachines
         new(ClaimBuildState.Built, "Built files written by the builder", "K5", "K6", "K8", "K9", "K12", "K13", "K23", "K26"),
         new(ClaimBuildState.Nudged, "A built file edited by hand: the guard nudges", "K6"),
         new(ClaimBuildState.Checked, "Golden, shape and stray-claim checks pass", "K7", "K10", "K24"),
-        new(ClaimBuildState.TlcChecked, "TLC checks the moves against the hand-written properties", "K3", "K20"),
+        new(ClaimBuildState.TlcPassed, "TLC passes the moves against the hand-written properties", "K3", "K20"),
+        new(ClaimBuildState.TlcFailed, "TLC fails: the push is not done", "K3", "K20"),
         new(ClaimBuildState.InReview, "Model PR read through its built-skill diff", "K16"),
-        new(ClaimBuildState.Approved, "Claims approved by Balazs", "K16", "K20", "K22"),
+        new(ClaimBuildState.Approved, "Claims approved by Balazs", "K16", "K20"),
         new(ClaimBuildState.Released, "Built skills shipped downstream", "K18", "K15", "K25", "K27", "K28", "K29")
     ], ClaimBuildState.Edited, [ClaimBuildState.Released]);
+
+    public static readonly Machine RoleEvaluation = new(MachineId.RoleEvaluation, "The nine role skills evaluated",
+    [
+        new(RoleEvaluationState.Questioned, "A role skill questioned: should it exist, or fold into another?", "K22", "K19"),
+        new(RoleEvaluationState.Kept, "Kept as a survivor", "K22"),
+        new(RoleEvaluationState.Folded, "Folded: a survivor carries its responsibilities", "K22"),
+        new(RoleEvaluationState.Removed, "Removed", "K22"),
+        new(RoleEvaluationState.WrittenFresh, "Written fresh from the 4.0.0 decisions and claims", "K22", "K19", "K20"),
+        new(RoleEvaluationState.Approved, "Approved by him at the final candidate, folds and removals included", "K16", "K22")
+    ], RoleEvaluationState.Questioned, [RoleEvaluationState.Approved])
+    {
+        Gaps = [new(RoleEvaluationState.WrittenFresh, null, "K16 and K22 give his approval at the final candidate, not the route when he rejects a fold or a rewrite")]
+    };
 
     public static readonly Machine Proof = new(MachineId.Proof, "Proof tests and gates",
     [
@@ -52,7 +66,6 @@ public static class ProcessMachines
     [
         new(FindingsState.Watch, "Findings arrive", "S22", "S26", "Y9", "Y8"),
         new(FindingsState.Board, "dydo survey board read", "S22", "S25", "S26", "H7"),
-        new(FindingsState.Map, "dydo map opened, his strategic lens", "S19", "S20", "S21", "S26", "H6"),
         new(FindingsState.SharedLink, "One thread link on two non-nested open tickets", "S23", "S13"),
         new(FindingsState.LandedSpec, "A landed Project that still has its spec", "S23", "S14"),
         new(FindingsState.StaleShoulds, "Open shoulds under Done parents past the threshold", "S23", "T14"),
@@ -65,7 +78,7 @@ public static class ProcessMachines
         new(FindingsState.DytestNeed, "Something dydo needs from DYTEST", "Y3", "Y1"),
         new(FindingsState.Filed, "Filed in a DYTEST Project", "Y3"),
         new(FindingsState.Acted, "Its owner acts", "H5")
-    ], FindingsState.Watch, [FindingsState.Map, FindingsState.Counted, FindingsState.Filed, FindingsState.Acted]);
+    ], FindingsState.Watch, [FindingsState.Counted, FindingsState.Filed, FindingsState.Acted]);
 
     public static readonly Machine Adopter = new(MachineId.Adopter, "The adopter update",
     [

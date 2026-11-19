@@ -24,11 +24,12 @@ public static class LawMachines
         new(TribunalState.Exchange, "One exchange", "L18"),
         new(TribunalState.DecidedOvernight, "Decided overnight", "L18", "L19", "L20"),
         new(TribunalState.Prepared, "Prepared for him", "L18", "L20"),
-        new(TribunalState.ProposedDr, "Proposed DR", "L21"),
+        new(TribunalState.ProposedDr, "Proposed DR awaiting his ratification", "L21"),
+        new(TribunalState.Ratified, "Proposed DR ratified", "L21"),
         new(TribunalState.Scored, "His answer scored", "L20"),
         new(TribunalState.Investigated, "Ruling found wrong, investigated", "L19")
     ], TribunalState.HardCall,
-    [TribunalState.DrSettled, TribunalState.DecidedOvernight, TribunalState.ProposedDr, TribunalState.Scored, TribunalState.Investigated])
+    [TribunalState.DrSettled, TribunalState.DecidedOvernight, TribunalState.Ratified, TribunalState.Scored, TribunalState.Investigated])
     {
         Variables =
         [
@@ -38,11 +39,7 @@ public static class LawMachines
             new("blocking", "FALSE", "blocking \\in BOOLEAN"),
             new("agree", "FALSE", "agree \\in BOOLEAN")
         ],
-        Gaps =
-        [
-            new(TribunalState.Prepared, TribunalState.Scored, "L20 scores his daytime answers against the prediction but names no scorer"),
-            new(TribunalState.DecidedOvernight, TribunalState.Investigated, "L19 has a ruling found wrong investigated but names no investigator")
-        ]
+        Gaps = [new(TribunalState.ProposedDr, null, "L21 has him ratify a proposed DR but gives no route when he declines it")]
     };
 
     public static readonly Machine Law = new(MachineId.Law, "How the law grows",

@@ -137,7 +137,7 @@ public static class Project
     { Spec = ["N12 DR 060 §4"] };
 
     public static readonly Claim OnMaster = new("Walkthroughs run on master whenever possible; the landing's walks the candidate.", [Actor.Admiral],
-        [new(Skill.Admiral, "Run a walkthrough on master whenever possible; the landing's walks the landing candidate.", new(ProjectState.Watching, 227, MoveKind.Nominal))])
+        [new(Skill.Admiral, "Run a walkthrough on master whenever possible.", new(ProjectState.Watching, 227, MoveKind.Nominal))])
     { Spec = ["N4"] };
 
     public static readonly Claim Weeds = new("Every weed becomes a rule.", [Actor.Admiral],

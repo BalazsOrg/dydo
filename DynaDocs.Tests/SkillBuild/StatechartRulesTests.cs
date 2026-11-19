@@ -36,6 +36,7 @@ public class StatechartRulesTests
             "a transition stays inside its machine");
 
     [Fact]
+    [Trait("Job", "trap: K1 a transition from a state no machine declares fails the build instead of building a dangling move")]
     public void TransitionFromAStateNoMachineDeclares_FailsTheBuild() =>
         AssertRejected(ChartModel.With(typeof(LeaseCrossing)), "moves from OtherState.Idle, which is no machine's state");
 
@@ -144,6 +145,7 @@ public class StatechartRulesTests
             "state LeaseState.Free is declared twice; a state belongs to exactly one machine");
 
     [Fact]
+    [Trait("Job", "trap: K1 a machine declared twice fails the build, so one machine id never names two charts")]
     public void MachineDeclaredTwice_FailsTheBuild() =>
         AssertRejected(ChartModel.Of([ChartModel.Lease, ChartModel.Lease], Skills), "machine ChartMachine.Lease is declared twice");
 

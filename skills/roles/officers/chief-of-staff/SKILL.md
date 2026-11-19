@@ -32,7 +32,7 @@ Nominal path:
 - Keep his one short list from `dydo survey board` across Projects: HITL threads waiting on him, HITL Merges waiting on his click, and anything waiting too long, each as a thread link.
 - List the continuous tickets with their age; when he tells you to, give one to an officer with an open lane, and leave anything outside the pull rule on the list for him.
 - Catch each open HITL ticket that has no envoy.
-- Pass on thread links, never their content; envoys are the admirals'.
+- Pass on thread links, never their content, and send no envoys.
 
 ### Investigating for him
 

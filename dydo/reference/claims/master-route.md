@@ -10,9 +10,9 @@ type: reference
 
 `claim:MasterRoute.TwoWay`: A two-way PR into master merges AFK by its captain once its evidence is complete.
 
-Spec: R26, R27
+Spec: R26, R27, R29
 
-Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Offered → Paced, "declared two-way in the PR body".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Offered → Paced, "declared two-way in the PR body; it waits for its turn".
 
 **ticket-captain** (Offered, exit):
 
@@ -24,11 +24,11 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 ## OneWay
 
-`claim:MasterRoute.OneWay`: A one-way PR carries a recovery plan and waits on his click.
+`claim:MasterRoute.OneWay`: A one-way PR carries a recovery plan and waits on his click; it is paced like any main-bound merge.
 
-Spec: R27
+Spec: R27, R29
 
-Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Offered → CiWatch, "one-way: a flagged path, or declared by its captain".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Offered → Paced, "one-way, flagged or declared; it waits for its turn".
 
 **ticket-captain** (Offered, exit):
 
@@ -56,15 +56,23 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 ## Merge
 
-`claim:MasterRoute.Merge`: The captain merges once the re-check is green.
+`claim:MasterRoute.Merge`: The captain merges a two-way PR once the re-check is green.
 
 Spec: R26, R29
 
-Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Resync → AfkMerge, "re-check green: PASS, gates green with current master, CI green".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Resync → AfkMerge, "two-way, re-check green: PASS, gates green with current master, CI green".
 
 **ticket-captain** (Resync, exit):
 
-> Merge it yourself with `dydo merge` once the re-check is green.
+> Merge a two-way PR yourself with `dydo merge` once the re-check is green.
+
+## AwaitClick
+
+`claim:MasterRoute.AwaitClick`: A one-way PR whose re-check is green goes on to his click.
+
+Spec: R27, R29, R31
+
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Resync → CiWatch, "one-way, re-check green: on to his click". A system transition: no skill carries it.
 
 ## Again
 
@@ -152,15 +160,11 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 Spec: R22, Y9
 
-Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Merged → Reverted, "a real red after the merge".
-
-**ticket-captain** (Merged, exit):
-
-> A real red after a master merge is reverted at once and gets a CI-findings ticket, as after any merge.
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Merged → Reverted, "a real red after the merge". A system transition: no skill carries it.
 
 ## Reland
 
-`claim:MasterRoute.Reland`: After the fix and its round, the PR is offered again.
+`claim:MasterRoute.Reland`: A reverted master merge re-lands by being offered again.
 
 Spec: R22
 
@@ -168,7 +172,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 **ticket-captain** (Reverted, exit):
 
-> After the fix and its fix-scoped round, offer the PR again.
+> A reverted master merge re-lands by offering its PR again, paced like the first time.
 
 ## OneWayKinds
 

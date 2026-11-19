@@ -9,24 +9,19 @@ public static class DeliveryMachines
 {
     public static readonly Machine Overview = new(MachineId.Overview, "dydo 4.0.0",
     [
-        new(OverviewState.ClaimArea, "The claim build", "K1", "K4", "K6", "K7", "K10", "K16", "K24"),
-        new(OverviewState.ProjectArea, "Project and its admiral", "H4", "H5", "H10", "S14", "S15", "R25", "N13"),
-        new(OverviewState.DispatchArea, "Crew dispatch and return", "H1", "H2", "H3", "H20", "K14", "R5", "R13", "R14", "R16"),
-        new(OverviewState.StatusArea, "Ticket statuses", "S5", "S6", "S10", "S13"),
-        new(OverviewState.HopArea, "Hops by Type label", "S3", "S4", "S9", "S12"),
-        new(OverviewState.ProofArea, "Proof tests and gates", "T1", "T3", "T5", "T6", "T13", "T21", "T23", "Y4"),
+        new(OverviewState.ClaimArea, "The claim build and the role evaluation", "K1", "K4", "K6", "K7", "K16", "K22", "K24"),
+        new(OverviewState.HostArea, "Host settings, the guard and the statechart tool", "N12 DR 055 §1", "N12 DR 056 §1", "N12 DR 062 §1", "H20"),
+        new(OverviewState.ProjectArea, "A Project and its admiral", "H4", "H5", "H10", "S14", "S15", "R25", "N13"),
+        new(OverviewState.TicketArea, "A ticket: dispatch, status and hops", "H1", "H2", "H3", "K14", "S3", "S5", "S6", "S12"),
+        new(OverviewState.ProofArea, "Proof tests and gates", "T1", "T3", "T5", "T13", "T21", "T23", "Y4"),
         new(OverviewState.DocsArea, "Descriptive docs", "D1", "D2", "D3", "D4", "D5", "D6", "D7"),
-        new(OverviewState.ReviewArea, "The review loop", "R2", "R3", "R8", "R9", "R10", "R11", "S8"),
-        new(OverviewState.ShouldArea, "Shoulds", "S17", "S18"),
-        new(OverviewState.MergeArea, "dydo merge and the feature-branch merge", "R18", "R19", "R20", "R21", "R22", "R23", "R24"),
-        new(OverviewState.FindingsArea, "Survey, board and CI findings", "S19", "S22", "S23", "Y9", "H11", "R30"),
-        new(OverviewState.LivenessArea, "Liveness", "S24", "H12"),
-        new(OverviewState.EnvoyArea, "Envoys", "H15", "H16", "H18", "H19", "H22", "H23"),
-        new(OverviewState.LawArea, "Law, councils and tribunal", "L7", "L11", "L14", "L16", "L18", "L22", "L23"),
-        new(OverviewState.StaffArea, "Chief of staff and overnight", "H7", "L19", "L20", "L21"),
-        new(OverviewState.MutationArea, "The landing and its mutation check", "N5", "N6", "N7", "T12", "N15"),
+        new(OverviewState.ReviewArea, "The review loop and its shoulds", "R2", "R3", "R8", "R9", "R10", "R11", "S8", "S17"),
+        new(OverviewState.MergeArea, "dydo merge, the Merge hop and safe delete", "R18", "R19", "R20", "R21", "R22", "R23", "N10"),
+        new(OverviewState.WatchArea, "Survey, map, liveness and CI findings", "S19", "S22", "S23", "S24", "S26", "Y9", "R30"),
+        new(OverviewState.JudgementArea, "Envoys, councils, the tribunal and the law", "H15", "H16", "L7", "L14", "L18", "L22"),
+        new(OverviewState.StaffArea, "Chief of staff, overnight, and DRs awaiting ratification", "H7", "L19", "L21"),
+        new(OverviewState.LandingArea, "The landing: inquisition, prerequisites and mutation", "N5", "N6", "N7", "T12", "N15"),
         new(OverviewState.MasterArea, "The master route", "R26", "R27", "R29", "R31"),
-        new(OverviewState.SafeDeleteArea, "Safe delete", "N10"),
         new(OverviewState.Tagged, "4.0.0 tagged", "R28", "N2", "N15"),
         new(OverviewState.AdopterArea, "The adopter update", "K18", "N1", "N8", "N11")
     ], OverviewState.ClaimArea, [OverviewState.AdopterArea]);
@@ -50,7 +45,11 @@ public static class DeliveryMachines
     public static readonly Machine Landing = new(MachineId.Landing, "The landing",
     [
         new(LandingState.Integrated, "Delivery merged into the feature branch", "N5"),
-        new(LandingState.Inquisition, "Inquisition round from zero, held by the admiral", "N5", "S8"),
+        new(LandingState.Mapped, "A round from zero: a fresh area map", "N5"),
+        new(LandingState.ReadPhase, "Read phase on an area", "N5"),
+        new(LandingState.BreakPhase, "Break phase on the area", "N5"),
+        new(LandingState.DrivePhase, "Drive phase on the area", "N5", "R3"),
+        new(LandingState.Inquisition, "The round's verdict, held by the admiral", "N5", "S8"),
         new(LandingState.RoundFixes, "Fixing the round's blockers and shoulds", "N5", "S9", "S17"),
         new(LandingState.Prerequisites, "Landing prerequisites", "N7", "S18", "T12", "T8", "N14", "N15", "Y2", "Y6", "L6", "L12", "N8", "N9"),
         new(LandingState.MergeReview, "Landing merge review: a Merge-confidence council", "N6", "R20", "L16"),
@@ -64,6 +63,7 @@ public static class DeliveryMachines
         Variables =
         [
             new("round", "1", "round <= 3"),
+            new("areas", "1", "areas \\in 1..2"),
             new("fixFrom", "\"none\"", "fixFrom \\in {\"none\", \"inquisition\", \"merge\"}"),
             new("prereqs", "0", "prereqs <= 10"),
             new("hardened", "FALSE", "hardened \\in BOOLEAN")
@@ -97,7 +97,9 @@ public static class DeliveryMachines
         new(HopsState.OneTicket, "One ticket, no hops", "S4", "R12"),
         new(HopsState.EvidenceCheck, "Evidence check beside the leaf", "S4", "R6"),
         new(HopsState.CheckFix, "Fix rN beside the leaf", "S9", "R8"),
-        new(HopsState.Chain, "Hop sub-tickets in step order", "S3"),
+        new(HopsState.ImplementHop, "Implement hop", "S3"),
+        new(HopsState.ReviewHop, "Review hop, one per round", "S3", "S8"),
+        new(HopsState.FixHop, "Fix hop, Fix rN", "S3", "S9"),
         new(HopsState.StepDone, "Step Done", "S6"),
         new(HopsState.AfkMerge, "AFK Merge hop", "S12"),
         new(HopsState.HitlMerge, "HITL Merge hop", "S12", "R27")

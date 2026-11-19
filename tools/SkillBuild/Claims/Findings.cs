@@ -5,8 +5,6 @@ public static class Findings
 {
     public static readonly Claim ReadBoard = Move(FindingsState.Watch, FindingsState.Board, Actor.Survey,
         "dydo survey board, read-only and on demand", "S22", "S26");
-    public static readonly Claim OpenMap = Move(FindingsState.Watch, FindingsState.Map, Actor.Balazs,
-        "he opens dydo map on the top-level tickets", "S19", "S20", "S21", "H6");
     public static readonly Claim SharedLink = Move(FindingsState.Board, FindingsState.SharedLink, Actor.Survey,
         "one thread link on two non-nested open tickets", "S23");
     public static readonly Claim LandedSpec = Move(FindingsState.Board, FindingsState.LandedSpec, Actor.Survey,

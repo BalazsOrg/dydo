@@ -1,7 +1,11 @@
 // built from the model; edit there: tools/SkillBuild
 const states = {
   "Integrated": "Delivery merged into the feature branch · N5",
-  "Inquisition": "Inquisition round from zero, held by the admiral · N5, S8",
+  "Mapped": "A round from zero: a fresh area map · N5",
+  "ReadPhase": "Read phase on an area · N5",
+  "BreakPhase": "Break phase on the area · N5",
+  "DrivePhase": "Drive phase on the area · N5, R3",
+  "Inquisition": "The round's verdict, held by the admiral · N5, S8",
   "RoundFixes": "Fixing the round's blockers and shoulds · N5, S9, S17",
   "Prerequisites": "Landing prerequisites · N7, S18, T12, T8, N14, N15, Y2, Y6, L6, L12, N8, N9",
   "MergeReview": "Landing merge review: a Merge-confidence council · N6, R20, L16",
@@ -13,17 +17,22 @@ const states = {
 };
 const steps = {
   "Landing_Accepted": "Balazs accepts the landing candidate · N6",
+  "Landing_AllAreas": "every area through its phases: the round's verdict · N5, S8",
+  "Landing_BreakDone": "Break done; Drive, the default next phase · N5",
   "Landing_CleanRound": "a round finds no blocker and no should · N5",
   "Landing_Confident": "the Merge-confidence council passes the landing candidate · N6, L16, R20, H22",
   "Landing_Hardened": "the Guard hardening Project lands · N2",
+  "Landing_MapDrawn": "an area's Read phase starts · N5",
   "Landing_Merged": "the landing PR is in master · N6, R26",
+  "Landing_NextArea": "Drive done; the next area's Read phase · N5",
   "Landing_NextMergeRound": "the fixes are merged; a full-lens merge-review round · R8, R9",
-  "Landing_NextRound": "the fixes are merged; the next round starts from zero · N5",
+  "Landing_NextRound": "the fixes are merged; the next round from zero, a fresh area map · N5",
   "Landing_PrerequisiteMet": "a prerequisite met: shoulds closed, mutation clean, purge done, evidence rewritten on his click, DYTEST wired in, principle descriptions written, backfill page passed, law shipped, Upgrade note and re-measure, statuses Enablement · N7, S18, T12, N15, T8, N14, Y2, Y6, L6, L12, N8, N9",
+  "Landing_ReadDone": "Read done; Break, the default next phase · N5",
   "Landing_Ready": "every landing prerequisite met · N7, S18, T12, N15",
   "Landing_ReviewFail": "the landing merge review finds a blocker · R9, R11",
   "Landing_RoundFound": "the round finds a blocker or a should · N5, S8, S9, S17",
-  "Landing_Staff": "the admiral staffs a round · N5, R13, R14",
+  "Landing_Staff": "the admiral staffs a round; a fresh area map · N5, R13, R14",
   "Landing_Tag": "Balazs pushes the release tag · R28, N2, N15",
   "Gap1": "GAP: N6 gives only his acceptance; the route when he does not accept is unstated"
 };

@@ -112,11 +112,11 @@ Spec: H7
 
 `claim:Staff.LinksOnly`: It never relays content and sends no envoys.
 
-Spec: H7, H12
+Spec: H7
 
 **chief-of-staff** (Day, nominal):
 
-> Pass on thread links, never their content; envoys are the admirals'.
+> Pass on thread links, never their content, and send no envoys.
 
 ## DoubleCheck
 

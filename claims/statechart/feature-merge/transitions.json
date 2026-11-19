@@ -359,15 +359,12 @@
       "to": "PreGate",
       "arrow": "the Merge hop's blocker clears",
       "spec": [
-        "R21",
         "S3",
-        "S6"
+        "R21"
       ],
       "guard": null,
       "effect": null,
-      "skills": [
-        "ticket-captain"
-      ]
+      "skills": []
     }
   ],
   "gaps": []

@@ -8,15 +8,11 @@ type: reference
 
 ## Start
 
-`claim:FeatureMerge.Start`: The captain runs the merge itself when the Merge hop's blocker clears.
+`claim:FeatureMerge.Start`: The Merge hop's blocker clears, blocked in step order.
 
-Spec: R21, S3, S6
+Spec: S3, R21
 
-Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): MergeTodo → PreGate, "the Merge hop's blocker clears".
-
-**ticket-captain** (MergeTodo, exit):
-
-> When the Merge hop's blocker clears, set it In Progress and run the merge yourself.
+Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): MergeTodo → PreGate, "the Merge hop's blocker clears". A system transition: no skill carries it.
 
 ## PreGreen
 
@@ -192,7 +188,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 **ticket-captain** (Rerun, exit):
 
-> Red again is real: revert at once, cancel the Merge hop with `reverted: <gate> red on <merge SHA>`, and file a CI-findings ticket.
+> Red again, after any merge, is real: revert at once, cancel the Merge hop with `reverted: <gate> red on <merge SHA>`, and file a CI-findings ticket.
 
 **linear-workspace-standard** (LinearStatuses):
 
@@ -242,7 +238,7 @@ Spec: R21, Y4
 
 **ticket-captain** (PreGate, nominal):
 
-> Run `dydo test gate` on the combined tree yourself before `dydo merge`.
+> Run `dydo test gate` on the combined tree yourself, then `dydo merge`.
 
 ## OneEntry
 

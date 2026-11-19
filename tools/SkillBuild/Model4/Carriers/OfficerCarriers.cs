@@ -59,11 +59,11 @@ public static class OfficerCarriers
         States =
         [
             .. HierarchyMachines.Dispatch.Slots(DispatchState.Briefed),
-            .. DeliveryMachines.Hops.Slots(HopsState.Cut, HopsState.OneTicket, HopsState.Chain),
+            .. DeliveryMachines.Hops.Slots(HopsState.Cut, HopsState.OneTicket, HopsState.ReviewHop),
             .. HierarchyMachines.Dispatch.Slots(DispatchState.Staffing, DispatchState.ReCut, DispatchState.Returned),
             .. DeliveryMachines.Review.Slots(ReviewState.Wired, ReviewState.Round, ReviewState.Verdict, ReviewState.Fixing, ReviewState.Checkpoint),
             .. HierarchyMachines.Should.Slots(ShouldState.Found, ShouldState.Open),
-            .. MergeMachines.FeatureMerge.Slots(FeatureMergeState.MergeTodo, FeatureMergeState.PreGate, FeatureMergeState.Running,
+            .. MergeMachines.FeatureMerge.Slots(FeatureMergeState.PreGate, FeatureMergeState.Running,
                 FeatureMergeState.Resolving, FeatureMergeState.Gating, FeatureMergeState.Rerun, FeatureMergeState.Reverted, FeatureMergeState.FixRound),
             .. MergeMachines.MasterRoute.Slots(MasterRouteState.Offered, MasterRouteState.Resync, MasterRouteState.Held,
                 MasterRouteState.CiWatch, MasterRouteState.Merged, MasterRouteState.Reverted),

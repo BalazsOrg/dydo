@@ -31,7 +31,7 @@ const steps = {
   "FeatureMerge_Reland": "the fix-scoped round passes; re-land · R22",
   "FeatureMerge_RereviewPass": "PASS on the new head · R17, R23",
   "FeatureMerge_Resolved": "the resolution is committed · R19",
-  "FeatureMerge_Start": "the Merge hop's blocker clears · R21, S3, S6"
+  "FeatureMerge_Start": "the Merge hop's blocker clears · S3, R21"
 };
 export const title = "The Merge hop into the feature branch";
 export const state = (v) => states[v.state];

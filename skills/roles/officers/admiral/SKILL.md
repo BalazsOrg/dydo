@@ -61,7 +61,7 @@ Nominal path:
 - Keep the one-way path list in `dydo.json`.
 - When a Milestone's last ticket merges into the feature branch, offer its walkthrough through a fresh envoy; a skip is a verdict to go on.
 - Overnight, the skeleton's Walkthrough blocks nothing: post `DECIDED` on it, carry on, and treat a wrong direction as a revert.
-- Run a walkthrough on master whenever possible; the landing's walks the landing candidate.
+- Run a walkthrough on master whenever possible.
 - Give each mistake found after landing a lint, test or rule as well as its fix.
 - Keep the work going through any usage limit, and never bring one to him.
 - Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
@@ -126,7 +126,7 @@ Nominal path:
 
 Exits:
 
-- Decide it yourself when the homework answers it, a DR clearly settles it (cite it), or the call is obvious and reversible.
+- Decide it yourself when the homework answers it or the call is obvious and reversible.
 - When he is already in your thread, ask the one line there with the host question tool.
 - Send a hard call, one with competing answers each good through some lens, to the tribunal.
 - For what only he can settle, open a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket; a Question blocks only what waits on it.
@@ -176,7 +176,7 @@ Arrivals:
 
 - Send a prepared call to him through an envoy, with both positions; he decides.
 
-### Proposed DR
+### Proposed DR awaiting his ratification
 
 Arrivals:
 
@@ -229,7 +229,7 @@ Exits:
 
 - Staff each inquisition round from the model roster and `dydo usage`, and tell him in your next envoy bundle.
 
-### Inquisition round from zero, held by the admiral
+### The round's verdict, held by the admiral
 
 Exits:
 
@@ -244,7 +244,7 @@ Nominal path:
 
 Exits:
 
-- Open the landing merge review only once every should is Done, Canceled with a reason or moved by his call, and the mutation check on the Project's diff is clean.
+- Open the landing merge review only once every should is closed and the mutation check on the Project's diff is clean.
 
 ### A mutant survived
 

@@ -3,9 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>The Merge hop into the feature branch (M7): the captain's own merge, a conflict on the ticket branch, the gates, a flake, a real red, the revert and the re-land.</summary>
 public static class FeatureMerge
 {
-    public static readonly Claim Start = new("The captain runs the merge itself when the Merge hop's blocker clears.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "When the Merge hop's blocker clears, set it In Progress and run the merge yourself.", new(FeatureMergeState.MergeTodo, 601, MoveKind.Exit))])
-    { Spec = ["R21", "S3", "S6"], Transition = new(FeatureMergeState.MergeTodo, FeatureMergeState.PreGate, "the Merge hop's blocker clears") };
+    // The captain's lines are Dispatch.Start (it starts the hop) and GateFirst (it runs the gate and the merge), so this arrow has none (K4).
+    public static readonly Claim Start = new("The Merge hop's blocker clears, blocked in step order.", [Actor.Linear], [])
+    { Spec = ["S3", "R21"], Transition = new(FeatureMergeState.MergeTodo, FeatureMergeState.PreGate, "the Merge hop's blocker clears") };
 
     public static readonly Claim PreGreen = new("dydo test gate leaves a green receipt for the combined tree; the merge runs.", [Actor.Dytest], [])
     { Spec = ["Y4", "R23"], Transition = new(FeatureMergeState.PreGate, FeatureMergeState.Running, "a green receipt for the combined tree") };
@@ -68,7 +68,7 @@ public static class FeatureMerge
 
     public static readonly Claim RealRed = new("A real red is reverted at once and becomes a CI-findings ticket.", [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "Red again is real: revert at once, cancel the Merge hop with `reverted: <gate> red on <merge SHA>`, and file a CI-findings ticket.", new(FeatureMergeState.Rerun, 609, MoveKind.Exit)),
+        new(Skill.TicketCaptain, "Red again, after any merge, is real: revert at once, cancel the Merge hop with `reverted: <gate> red on <merge SHA>`, and file a CI-findings ticket.", new(FeatureMergeState.Rerun, 609, MoveKind.Exit)),
         new(Skill.LinearWorkspaceStandard, "A reverted Merge goes Canceled with `reverted: <gate> red on <merge SHA>`.", new(Section.LinearStatuses, 4)),
         new(Skill.WorkingTreeStandard, "A gate red after a merge reruns once; green is a flake and the hop is Done; red again is real: the captain reverts at once and files a CI-findings ticket, a Fix follows on the ticket branch, then a fix-scoped round, then a re-land where `dydo merge` reverts the revert.",
             new(Section.TreeMerging, 5), () => [Red, Flake, FixAfterRevert!, Reland!])
@@ -84,7 +84,7 @@ public static class FeatureMerge
     { Spec = ["R22"], Transition = new(FeatureMergeState.FixRound, FeatureMergeState.PreGate, "the fix-scoped round passes; re-land") };
 
     public static readonly Claim GateFirst = new("The captain runs dydo test gate itself before dydo merge.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "Run `dydo test gate` on the combined tree yourself before `dydo merge`.", new(FeatureMergeState.PreGate, 612, MoveKind.Nominal))])
+        [new(Skill.TicketCaptain, "Run `dydo test gate` on the combined tree yourself, then `dydo merge`.", new(FeatureMergeState.PreGate, 612, MoveKind.Nominal))])
     { Spec = ["R21", "Y4"] };
 
     public static readonly Claim OneEntry = new("dydo merge is the one entry point and states why it refuses.", [Actor.TicketCaptain],

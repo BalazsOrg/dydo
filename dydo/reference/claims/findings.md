@@ -14,14 +14,6 @@ Spec: S22, S26
 
 Transition in Survey, board and CI findings (`claims/statechart/findings/Findings.tla`): Watch → Board, "dydo survey board, read-only and on demand". A system transition: no skill carries it.
 
-## OpenMap
-
-`claim:Findings.OpenMap`: A finding: he opens dydo map on the top-level tickets.
-
-Spec: S19, S20, S21, H6
-
-Transition in Survey, board and CI findings (`claims/statechart/findings/Findings.tla`): Watch → Map, "he opens dydo map on the top-level tickets". A system transition: no skill carries it.
-
 ## SharedLink
 
 `claim:Findings.SharedLink`: A finding: one thread link on two non-nested open tickets.

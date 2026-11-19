@@ -29,7 +29,7 @@ public static class CrewCarriers
             .. MergeMachines.FeatureMerge.Slots(FeatureMergeState.HunkReview),
             .. LawMachines.Mutation.Slots(MutationState.Claimed),
             .. LawMachines.IgnoreEntry.Slots(IgnoreEntryState.PathA),
-            .. DeliveryMachines.Landing.Slots(LandingState.Inquisition),
+            .. DeliveryMachines.Landing.Slots(LandingState.ReadPhase, LandingState.BreakPhase, LandingState.DrivePhase),
             .. HierarchyMachines.Dispatch.Slots(DispatchState.Returned)
         ],
         Resources =
