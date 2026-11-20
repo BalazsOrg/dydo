@@ -84,7 +84,7 @@ Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled R
 
 Layer: AGENTS.md says to cut along what one agent understands together; opening the tickets is the holder's act.
 
-Reason: Each part then has one agent that answers for it.
+Reason: Each part then has a single owner who answers for it.
 
 **ticket-captain** (Split; read by TicketCaptain):
 

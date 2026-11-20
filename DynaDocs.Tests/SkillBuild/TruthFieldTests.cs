@@ -39,7 +39,7 @@ public class TruthFieldTests
 
     [Theory]
     [Trait("Job", "contract: DYD-1372 A3d a reason that only restates its rule or its spec citation fails the build")]
-    [InlineData(typeof(KeeperRestated), nameof(KeeperRestated.Echo), "0 of 6")]
+    [InlineData(typeof(KeeperRestated), nameof(KeeperRestated.Echo), "0 of 4")]
     [InlineData(typeof(KeeperSpecOnly), nameof(KeeperSpecOnly.Cited), "0 of 0")]
     public void ReasonThatOnlyRestates_FailsTheBuild(Type kind, string member, string own) =>
         AssertRejected(kind, $"claim:{kind.Name}.{member}: its reason restates its rule or its spec citation, with {own} words its own");
@@ -48,7 +48,7 @@ public class TruthFieldTests
     [Trait("Job", "trap: DYD-1372 A3d r1 G4 a reason that restates its rule but for one word fails the build: at least half of its words are its own")]
     public void ReasonWithOneWordOfItsOwn_FailsTheBuild() =>
         AssertRejected(typeof(KeeperMostlyRestated),
-            "claim:KeeperMostlyRestated.Bell: its reason restates its rule or its spec citation, with 1 of 5 words its own; at least half must be, " +
+            "claim:KeeperMostlyRestated.Bell: its reason restates its rule or its spec citation, with 1 of 4 words its own; at least half must be, " +
             "and a reason says what the claim prevents or enables");
 
     [Theory]
@@ -114,6 +114,11 @@ public class TruthFieldTests
         AssertRejected(typeof(KeeperOpenCombined), "the line of claim:KeeperOpenCombined.Unseen also states claim:KeeperOpenCombined.Seen, and one of them is open");
 
     [Fact]
+    [Trait("Job", "trap: DYD-1372 A3d r2 S3 function words are no words of a reason's own: a restated rule padded with them fails the build")]
+    public void ReasonPaddedWithFunctionWords_FailsTheBuild() =>
+        AssertRejected(typeof(KeeperPaddedReason), "claim:KeeperPaddedReason.Bell: its reason restates its rule or its spec citation, with 1 of 5 words its own");
+
+    [Fact]
     [Trait("Job", "edge: DYD-1372 A3d r1 G4 a reason with exactly half of its words its own builds")]
     public void ReasonWithHalfItsWordsItsOwn_Builds() =>
         Assert.Contains("- Ring the bell at noon.\n", SkillBuilder.Build(TruthModel.With(typeof(KeeperHalfOwnReason))).Files[Spine]);
@@ -176,24 +181,42 @@ public class TruthFieldTests
     }
 
     [Fact]
-    [Trait("Job", "trap: DYD-1372 A3e r1 G3 a code evidence no skill line reaches, a system transition's, is checked against the repository too")]
-    public void CodeEvidenceOfASystemTransition_FailsTheRun()
+    [Trait("Job", "trap: DYD-1372 A3e r1 G3 a code evidence no truth-checked skill's line reaches, a claim only a legacy skill states, is checked against the repository too")]
+    public void CodeEvidenceOfAClaimOnlyALegacySkillStates_FailsTheRun()
     {
         using var root = new TempRoot();
 
-        var (exit, _, error) = root.Run(TruthModel.With(typeof(KeeperPathMove)));
+        var (exit, _, error) = root.Run(TruthModel.Replacing(TruthModel.Entries, typeof(ClerkCodePath)));
 
         Assert.Equal(1, exit);
-        Assert.Equal("SkillBuild failed: claim:KeeperPathMove.Tide: its code evidence, docs/tide.md, is no path in the repository\n", error.ReplaceLineEndings("\n"));
+        Assert.Equal("SkillBuild failed: claim:ClerkCodePath.Filed: its code evidence, docs/clerk.md, is no path in the repository\n", error.ReplaceLineEndings("\n"));
         Assert.Empty(root.Files());
     }
 
+    [Theory]
+    [Trait("Job", "trap: DYD-1372 A3e r2 N4 a code evidence that exists on this machine only, as an absolute path, a path through .. or an untracked file, fails the run")]
+    [InlineData(typeof(KeeperAbsolutePath), true, "/")]
+    [InlineData(typeof(KeeperParentPath), true, "docs/../docs/keeper.md")]
+    [InlineData(typeof(KeeperCodePath), false, "docs/keeper.md")]
+    public void CodeEvidenceTheRepositoryDoesNotTrackByThatName_FailsTheRun(Type kind, bool tracked, string path)
+    {
+        using var root = new TempRoot();
+        root.Write("docs/keeper.md", "# Keeper\n");
+        if (tracked) root.Track();
+
+        var (exit, _, error) = root.Run(TruthModel.With(kind));
+
+        Assert.Equal(1, exit);
+        Assert.Equal($"SkillBuild failed: claim:{kind.Name}.Filed: its code evidence, {path}, is no path in the repository\n", error.ReplaceLineEndings("\n"));
+    }
+
     [Fact]
-    [Trait("Job", "edge: DYD-1372 A3e a code evidence naming a path the repository holds lets the run go on")]
+    [Trait("Job", "edge: DYD-1372 A3e a code evidence naming, from the root, a path the repository tracks lets the run go on")]
     public void CodeEvidenceNamingAPath_TheRunGoesOn()
     {
         using var root = new TempRoot();
         root.Write("docs/keeper.md", "# Keeper\n");
+        root.Track();
 
         var (exit, _, error) = root.Run(TruthModel.With(typeof(KeeperCodePath)));
 

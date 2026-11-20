@@ -86,6 +86,74 @@ public class LedgerTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1372 A7 r2 L1 a kept line says what became of each clause its claims leave out: dropped, deferred or withheld, printed under the line")]
+    public void ClausesOfAKeptLine_ArePrintedUnderIt()
+    {
+        var kept = Fate.Kept(OldMoves.Cap, KeeperMoves.Limit)
+            .Dropped("at eight", Question.Reason, "Nobody knows where eight came from.")
+            .Deferred("the runs", "Its manual is not rebuilt here.")
+            .Withheld("Cap", KeeperOpen.Unseen);
+
+        var ledger = SkillBuilder.Build(TruthModel.Replacing([.. TruthModel.Entries.Where(fate => fate.Line != OldMoves.Cap), kept], typeof(KeeperOpen)))
+            .Files[Review + "keeper-ledger-2.md"];
+
+        Assert.Contains(
+            "`claim:OldMoves.Cap`, kept in `claim:KeeperMoves.Limit`\n\n> Cap the runs at eight.\n\n" +
+            "A clause of it, dropped, it fails Reason: Nobody knows where eight came from.\n\n> at eight\n\n" +
+            "A clause of it, deferred: Its manual is not rebuilt here.\n\n> the runs\n\n" +
+            "A clause of it, withheld (open) in `claim:KeeperOpen.Unseen`\n\n> Cap\n\n", ledger);
+    }
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A7 r2 L1 a clause the legacy line does not hold word for word, or a blank one, fails the build")]
+    public void ClauseNotQuotedFromItsLine_FailsTheBuild()
+    {
+        AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Dropped("at nine", Question.Reason, "Nobody knows.")),
+            "keeper: the clause \"at nine\" of claim:OldMoves.Cap is not in its legacy line; a clause is quoted from the line, word for word");
+        AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Deferred(" ", "Not rebuilt here.")),
+            "keeper: the clause \" \" of claim:OldMoves.Cap is not in its legacy line");
+    }
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A7 r2 L1 a dropped or deferred clause with no reason, and a clause withheld in a claim that is not open, fail the build")]
+    public void ClauseWithNoAccount_FailsTheBuild()
+    {
+        AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Dropped("at eight", Question.Reason, " ")),
+            "keeper: the clause \"at eight\" of claim:OldMoves.Cap has no reason; a dropped or deferred clause says why in one line");
+        AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Deferred("at eight", "")),
+            "keeper: the clause \"at eight\" of claim:OldMoves.Cap has no reason");
+        AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Withheld("at eight", KeeperMoves.Owns)),
+            "keeper: the clause \"at eight\" of claim:OldMoves.Cap is withheld in a claim that is not an open claim the skill carries");
+    }
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A7 r2 L1 only a kept line has clauses: one on a dropped or deferred entry fails the build")]
+    public void ClauseOnAnEntryThatIsNotAKeptLine_FailsTheBuild() =>
+        AssertRejected(Swap(OldMoves.Cap, Fate.Dropped(OldMoves.Cap, Question.Handled, "The proxy limits the runs.").Deferred("at eight", "Later.")),
+            "keeper: the ledger gives claim:OldMoves.Cap a clause; only a kept line has clauses");
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 F r2 S4 a line of a skill not yet migrated that names a resource the replacing skill does not build is listed for review, and the build goes on")]
+    public void LegacyLineNamingAnUnbuiltResource_IsListedNotFailed() =>
+        Assert.Equal(StatechartFilesTests.Text("""
+            ---
+            area: reference
+            type: reference
+            ---
+            <!-- built from the model; edit there: tools/SkillBuild -->
+
+            # Lines that name a resource no longer built
+
+            Lines of the skills and standards not yet truth-checked that name a resource of a legacy skill which the skill that replaced it does not build. Each sends its reader to a file that is not there; these are listed, not hidden, until their skill is switched over or the resource is rebuilt.
+
+            ## clerk
+
+            `claim:ClerkStale.Hand` names `resources/stale.md` of `keeper`, which the skill that replaced the legacy `keeper` does not build:
+
+            > Hand a stale watch to `/keeper`, with its `stale` resource.
+            """), SkillBuilder.Build(TruthModel.Replacing(TruthModel.Entries, typeof(ClerkStale))).Files[Review + "unbuilt-resources.md"]);
+
+    [Fact]
     [Trait("Job", "contract: DYD-1372 A7 a legacy spine line or resource with no ledger entry fails the build, naming each one")]
     public void LedgerMissingAnEntry_FailsTheBuildNamingIt()
     {

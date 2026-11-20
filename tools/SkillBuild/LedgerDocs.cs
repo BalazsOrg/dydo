@@ -4,7 +4,8 @@ namespace DynaDocs.SkillBuild;
 /// A <see cref="Ledger"/>, checked complete and built for review (DYD-1295 2119cd65): one file per
 /// section of the legacy spine under <c>dydo/reference/claim-review/</c>, each claim line and each
 /// linked resource with what became of it: kept, withheld with the open claim that holds it, dropped
-/// or deferred. Sections keep every file under the token limit.
+/// or deferred, and under a kept line each clause its claims leave out, with that clause's own fate.
+/// Sections keep every file under the token limit.
 /// </summary>
 internal static class LedgerDocs
 {
@@ -34,6 +35,7 @@ internal static class LedgerDocs
         var resources = Keyed<Enum>(skill, "resource", skill.Ledger.Entries.Where(fate => fate.Resource is not null),
             fate => fate.Resource, [.. legacy.Resources.Select(resource => resource.Id)]);
         foreach (var fate in skill.Ledger.Entries) Sound(skill, fate, carried, claims);
+        foreach (var line in sections.SelectMany(section => section.Lines)) Quoted(skill, lines[line.Owner], line, carried, claims);
         for (var index = 0; index < sections.Count; index++)
         {
             var (title, placed, linked) = sections[index];
@@ -43,6 +45,11 @@ internal static class LedgerDocs
             {
                 page.Block($"`claim:{line.Owner}`, {Outcome(lines[line.Owner], carried, claims)}");
                 page.Block(WhyDocs.Quote(line.Line.Text));
+                foreach (var clause in lines[line.Owner].Clauses)
+                {
+                    page.Block("A clause of it, " + Outcome(clause, claims));
+                    page.Block(WhyDocs.Quote(clause.Quote));
+                }
             }
             foreach (var resource in linked)
                 page.Block($"Resource `{SkillRenderer.FileOf(resource.Id)}` ({resource.Title}), {Outcome(resources[resource.Id], carried, claims)}");
@@ -88,6 +95,8 @@ internal static class LedgerDocs
     private static void Sound(SkillSpec skill, Fate fate, IReadOnlyDictionary<string, bool> carried, ClaimIndex claims)
     {
         var what = Named(fate.Line is { } line ? claims.IdOf(line) : fate.Resource);
+        if (fate.Clauses.Count > 0 && (fate.Kind != FateKind.Kept || fate.Line is null))
+            throw new InvalidDataException($"{skill.Name}: the ledger gives {what} a clause; only a kept line has clauses, the parts its claims leave out");
         if (fate.Kind != FateKind.Kept)
         {
             if (string.IsNullOrWhiteSpace(fate.Why))
@@ -99,6 +108,28 @@ internal static class LedgerDocs
         if (fate.Line is not null && (fate.By.Count == 0 || fate.By.Any(by => claims.IdOf(by) is not { } id || !carried.ContainsKey(id))))
             throw new InvalidDataException($"{skill.Name}: the ledger keeps {what} in no claim, or in a claim the skill does not carry");
     }
+
+    // A clause is quoted from its legacy line as the model holds it, and says what became of it.
+    private static void Quoted(SkillSpec skill, Fate fate, Placed line, IReadOnlyDictionary<string, bool> carried, ClaimIndex claims)
+    {
+        foreach (var clause in fate.Clauses)
+        {
+            var what = $"{skill.Name}: the clause \"{clause.Quote}\" of claim:{line.Owner}";
+            if (string.IsNullOrWhiteSpace(clause.Quote) || !line.Line.Text.Contains(clause.Quote, StringComparison.Ordinal))
+                throw new InvalidDataException($"{what} is not in its legacy line; a clause is quoted from the line, word for word");
+            if (clause.Open is null && string.IsNullOrWhiteSpace(clause.Why))
+                throw new InvalidDataException($"{what} has no reason; a dropped or deferred clause says why in one line");
+            if (clause.Open is { } open && !(claims.IdOf(open) is { } id && carried.GetValueOrDefault(id)))
+                throw new InvalidDataException($"{what} is withheld in a claim that is not an open claim the skill carries");
+        }
+    }
+
+    private static string Outcome(Clause clause, ClaimIndex claims) => clause switch
+    {
+        { Open: { } open } => $"withheld (open) in `claim:{claims.IdOf(open)}`",
+        { Fails: { } fails } => $"dropped, it fails {fails}: {clause.Why}",
+        _ => $"deferred: {clause.Why}"
+    };
 
     private static string Outcome(Fate fate, IReadOnlyDictionary<string, bool> carried, ClaimIndex claims) => fate.Kind switch
     {

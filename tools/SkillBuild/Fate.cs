@@ -4,7 +4,8 @@ namespace DynaDocs.SkillBuild;
 /// One <see cref="Ledger"/> entry: what became of one line of a legacy spine, named by the claim that
 /// holds the line, or of one legacy resource, named by its id. Kept: the new claims that state it, or
 /// the new resource that replaces it. Dropped: the truth question it fails, and why in one line.
-/// Deferred: why it is not rebuilt yet.
+/// Deferred: why it is not rebuilt yet. A kept line whose claims leave a part of it out says what
+/// became of that part, clause by clause: <c>Fate.Kept(line, by).Dropped("its words", fails, why)</c>.
 /// </summary>
 public sealed record Fate
 {
@@ -29,6 +30,9 @@ public sealed record Fate
 
     public string? Why { get; private init; }
 
+    /// <summary>The parts of a kept line that its claims do not state, each quoted from the line with its own fate.</summary>
+    public IReadOnlyList<Clause> Clauses { get; private init; } = [];
+
     public static Fate Kept(Claim line, params Claim[] by) => new(FateKind.Kept, line, null) { By = by };
 
     public static Fate Kept(Enum resource, Enum by) => new(FateKind.Kept, null, resource) { ByResource = by };
@@ -40,4 +44,15 @@ public sealed record Fate
     public static Fate Deferred(Claim line, string why) => new(FateKind.Deferred, line, null) { Why = why };
 
     public static Fate Deferred(Enum resource, string why) => new(FateKind.Deferred, null, resource) { Why = why };
+
+    /// <summary>A clause of this kept line that is gone: the words as the legacy line has them, the question they fail, and why.</summary>
+    public Fate Dropped(string clause, Question fails, string why) => With(new(clause, fails, why, null));
+
+    /// <summary>A clause of this kept line that is not rebuilt yet, and why.</summary>
+    public Fate Deferred(string clause, string why) => With(new(clause, null, why, null));
+
+    /// <summary>A clause of this kept line that an open claim of the skill holds, so no built file states it yet.</summary>
+    public Fate Withheld(string clause, Claim open) => With(new(clause, null, null, open));
+
+    private Fate With(Clause clause) => this with { Clauses = [.. Clauses, clause] };
 }

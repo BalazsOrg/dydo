@@ -55,7 +55,7 @@ public static class CaptainSplit
         Spec = ["H13", "H14"],
         Truth = new(Evidence.Run(Children),
             Layer: "AGENTS.md says to cut along what one agent understands together; opening the tickets is the holder's act.",
-            Reason: "Each part then has one agent that answers for it."),
+            Reason: "Each part then has a single owner who answers for it."),
         Transition = new(CaptainState.Taken, CaptainState.Split, "the ticket is bigger than one agent: it is cut")
     };
 

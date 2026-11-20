@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace DynaDocs.SkillBuild;
@@ -13,11 +14,10 @@ namespace DynaDocs.SkillBuild;
 /// </summary>
 internal static partial class TruthCheck
 {
-    // Words that carry no reason: the ones a sentence leans on to point at its rule or its citation.
-    private static readonly HashSet<string> Filler = new(StringComparer.Ordinal)
+    // Words that carry no reason beside the stop words: the ones a sentence leans on to point at its rule or its citation.
+    private static readonly HashSet<string> Pointers = new(StringComparer.Ordinal)
     {
-        "a", "an", "the", "it", "is", "as", "so", "that", "this", "because", "since", "per", "see", "by", "of", "to", "and", "or",
-        "says", "said", "spec", "rule", "rules", "claim", "dr", "decision", "record", "section", "required", "requires"
+        "per", "see", "says", "said", "spec", "rule", "rules", "claim", "dr", "decision", "record", "section", "required", "requires"
     };
 
     [GeneratedRegex("[a-z0-9]+")]
@@ -49,14 +49,21 @@ internal static partial class TruthCheck
             withheld.Add(placed);
         }
         foreach (var placed in lines.Where(placed => !withheld.Contains(placed)))
-        {
-            if (CommandNames.Missing(placed.Line.Text).FirstOrDefault() is { } missing)
-                throw new InvalidDataException($"{skill.Name}: the line of claim:{placed.Owner} names {missing}");
-            if (CommandNames.InProse(placed.Line.Text).FirstOrDefault() is { } prose)
-                throw new InvalidDataException(
-                    $"{skill.Name}: the line of claim:{placed.Owner} names `{prose}` outside code; a command is written in code, where the build checks it against the CLI");
-        }
+            if (Miscommanded($"{skill.Name}: the line of claim:{placed.Owner}", placed.Line.Text) is { } problem)
+                throw new InvalidDataException(problem);
         return withheld;
+    }
+
+    /// <summary>
+    /// The first <c>dydo …</c> command <paramref name="text"/> names that the CLI does not have, or names outside
+    /// code, as the failure of <paramref name="where"/>; or none. A claim line is read, then each whole built file.
+    /// </summary>
+    public static string? Miscommanded(string where, string text)
+    {
+        if (CommandNames.Missing(text).FirstOrDefault() is { } missing) return $"{where} names {missing}";
+        return CommandNames.InProse(text).FirstOrDefault() is { } prose
+            ? $"{where} names `{prose}` outside code; a command is written in code, where the build checks it against the CLI"
+            : null;
     }
 
     /// <summary>
@@ -80,11 +87,14 @@ internal static partial class TruthCheck
         }
     }
 
-    /// <summary>Each code-path evidence a claim carries names a path that exists under <paramref name="root"/>.</summary>
+    /// <summary>
+    /// Each code-path evidence a claim carries names, from <paramref name="root"/>, a file or a folder the repository
+    /// tracks there: never an absolute path, a path through <c>..</c>, or a file only this machine holds.
+    /// </summary>
     public static void CheckPaths(Model model, string root)
     {
         foreach (var (claim, id) in ModelIndex.ClaimIds(model.Kinds))
-            if (claim.Truth is { Evidence: { Kind: EvidenceKind.Code, Text: var path } } && !Exists(root, path))
+            if (claim.Truth is { Evidence: { Kind: EvidenceKind.Code, Text: var path } } && !Tracked(root, path))
                 throw new InvalidDataException($"claim:{id}: its code evidence, {path}, is no path in the repository");
     }
 
@@ -108,11 +118,19 @@ internal static partial class TruthCheck
         return null;
     }
 
-    // A path names a file or a folder; an anchor after `#` or a line after `:` is not part of it.
-    private static bool Exists(string root, string path)
+    // A path names a file or a folder; an anchor after `#` or a line after `:` is not part of it. Git lists what it tracks there by its
+    // name from the root, so only a path written that way is one of them, or the folder of one.
+    private static bool Tracked(string root, string path)
     {
-        var file = Path.Combine(root, path.Split('#', ':')[0]);
-        return File.Exists(file) || Directory.Exists(file);
+        var named = path.Split('#', ':')[0].TrimEnd('/');
+        using var git = Process.Start(new ProcessStartInfo("git", ["--literal-pathspecs", "-C", root, "ls-files", "-z", "--", named])
+        {
+            RedirectStandardOutput = true,
+            RedirectStandardError = true
+        })!;
+        var listed = git.StandardOutput.ReadToEnd().Split('\0', StringSplitOptions.RemoveEmptyEntries);
+        git.WaitForExit();
+        return listed.Any(file => file == named || file.StartsWith(named + "/", StringComparison.Ordinal));
     }
 
     private static void ReadBy(SkillSpec skill, Placed placed)
@@ -126,10 +144,11 @@ internal static partial class TruthCheck
     }
 
     /// <summary>
-    /// No field is empty, a command evidence names a real command, and the reason is its own: of its words that
-    /// are neither filler nor a citation, at least half are in neither the rule, the claim's lines nor its spec
-    /// ids. That is a floor. Whether those words say what the claim prevents or enables is a reviewer's to
-    /// judge, claim by claim, from the review list the why docs are.
+    /// No field is empty, a command evidence names a real command, and the reason is its own: of its content
+    /// words, the ones that are no English stop word (<see cref="StopWords"/>), pointer or citation, at least
+    /// half are in neither the rule, the claim's lines nor its spec ids. That is a floor, and padding with
+    /// content words still clears it. Whether those words say what the claim prevents or enables is a
+    /// reviewer's to judge, claim by claim, from the review list the why docs are.
     /// </summary>
     private static void Answered(string id, Claim claim, Truth truth)
     {
@@ -149,7 +168,7 @@ internal static partial class TruthCheck
     private static (int Own, int Words) OwnWords(string reason, Claim claim)
     {
         var said = WordsOf(string.Join(' ', [claim.Rule, .. claim.Lines.Select(line => line.Text), .. claim.Spec]));
-        var words = WordsOf(reason).Where(word => !Filler.Contains(word) && !CitationWord().IsMatch(word)).ToArray();
+        var words = WordsOf(reason).Where(word => !StopWords.English.Contains(word) && !Pointers.Contains(word) && !CitationWord().IsMatch(word)).ToArray();
         return (words.Count(word => !said.Contains(word)), words.Length);
     }
 

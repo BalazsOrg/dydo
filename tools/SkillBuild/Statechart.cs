@@ -13,6 +13,9 @@ internal sealed class Statechart
     // A truth-checked skill's slots, each with the states its phase or scenario covers (DYD-1372 A8).
     private readonly Dictionary<(Enum Skill, Enum Slot), IReadOnlyList<Enum>> _covered = [];
 
+    // Each machine a truth-checked skill covers a state of, with those skills.
+    private readonly Dictionary<Machine, HashSet<Enum>> _covering = [];
+
     public Statechart(Model model, ClaimIndex claims)
     {
         foreach (var machine in model.Machines) Declare(machine, model.CitesSpec);
@@ -48,6 +51,23 @@ internal sealed class Statechart
             yield return ($"{FolderOf(machine)}/{machine.Id}.cfg", TlaModule.Config(machine, transitions));
             yield return ($"{FolderOf(machine)}/view.mjs", ChartView.Module(machine, transitions));
         }
+    }
+
+    /// <summary>
+    /// The arrows of a machine a truth-checked skill covers are that skill's own claims (DYD-1372 A8): each carries
+    /// its <see cref="Truth"/> and is stated by a line of a skill that covers the machine, so none is built unanswered.
+    /// </summary>
+    public void OwnsItsArrows(ClaimIndex claims)
+    {
+        foreach (var (machine, skills) in _covering)
+            foreach (var (id, claim) in _transitions[machine])
+            {
+                var arrow = $"claim:{id} is an arrow of {Names.Of(machine.Id)}, which {string.Join(", ", skills.Select(Names.Kebab))} covers";
+                if (claim.Truth is null)
+                    throw new InvalidDataException($"{arrow}, and it carries no Truth; a truth-checked skill's machine is built from claims that answer for themselves");
+                if (!claims.LinesOf(claim).Any(stated => skills.Contains(stated.Line.Skill)))
+                    throw new InvalidDataException($"{arrow}, and no line of that skill states it; the arrows of a truth-checked skill's machine are its own claims");
+            }
     }
 
     private void Declare(Machine machine, bool citesSpec)
@@ -114,6 +134,8 @@ internal sealed class Statechart
         foreach (var state in states.Where(state => !_machineOf.ContainsKey(state)))
             throw new InvalidDataException($"{skill.Name}: {what} covers {Names.Of(state)}, which is no machine's state");
         foreach (var slot in slots) _covered[(skill.Id, slot.Id)] = states;
+        foreach (var machine in states.Select(state => _machineOf[state]))
+            (_covering.TryGetValue(machine, out var skills) ? skills : _covering[machine] = []).Add(skill.Id);
     }
 
     private static bool IsMove(Place? place, Transition transition) => place?.Step switch
