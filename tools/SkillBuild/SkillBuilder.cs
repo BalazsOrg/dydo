@@ -49,7 +49,7 @@ public static class SkillBuilder
         map.AddRange(file.Stated.Select(line => new MapLine(path, line.Line, line.Text, line.Placed.Claims)));
     }
 
-    // DYD-1372 A4, A7: each truth-checked skill's open claims and its ledger, then the legacy lines that name a missing command.
+    // DYD-1372 A4, A7, F: each truth-checked skill's open claims and its ledger, the legacy lines that name a missing command, then every skill not yet migrated.
     private static IEnumerable<(string Path, string Text)> Review(Dictionary<SkillSpec, List<Placed>> bySkill, HashSet<Enum> replaced,
         Dictionary<SkillSpec, SkillLayout> layouts, Dictionary<SkillSpec, HashSet<Placed>> open, ClaimIndex claims)
     {
@@ -63,6 +63,10 @@ public static class SkillBuilder
         }
         foreach (var file in ReviewDocs.Commands(bySkill.Where(pair => !pair.Key.TruthChecked)
                      .Select(pair => (pair.Key, !replaced.Contains(pair.Key.Id), (IReadOnlyList<Placed>)pair.Value))))
+            yield return file;
+        foreach (var file in ReviewDocs.Unmigrated(
+                     bySkill.Where(pair => !pair.Key.TruthChecked && !replaced.Contains(pair.Key.Id)).Select(pair => (pair.Key, (IReadOnlyList<Placed>)pair.Value)),
+                     bySkill.Keys.Any(skill => skill.TruthChecked)))
             yield return file;
     }
 

@@ -38,7 +38,11 @@ public class LedgerTests
     [Trait("Job", "contract: DYD-1372 A7 the build emits the ledger, one file per section of the legacy spine: each line and linked resource with its fate")]
     public void Ledger_IsBuiltBySectionOfTheLegacySpine()
     {
-        Assert.Equal([Review + "keeper-ledger-1.md", Review + "keeper-ledger-2.md", Review + "keeper-ledger-3.md", Review + "keeper-open.md", Review + "legacy-commands.md"],
+        Assert.Equal(
+            [
+                Review + "keeper-ledger-1.md", Review + "keeper-ledger-2.md", Review + "keeper-ledger-3.md", Review + "keeper-open.md", Review + "legacy-commands.md",
+                Review + "not-yet-migrated.md"
+            ],
             Built.Files.Keys.Where(path => path.StartsWith(Review, StringComparison.Ordinal)));
         Assert.EndsWith("# Ledger: keeper, the job paragraph\n\nWhat became of each line of the legacy `keeper` spine in this section, and of each resource it links.\n\n" +
                         "`claim:OldMoves.Owns`, kept in `claim:KeeperMoves.Owns`\n\n> You keep one thing.\n", Built.Files[Review + "keeper-ledger-1.md"]);
