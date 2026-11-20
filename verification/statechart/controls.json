@@ -10,22 +10,13 @@
     "property": "L12_PageBeforeMerge"
   },
   "captain": {
-    "from": "Repairing",
+    "from": "Question",
     "to": "Finishing",
     "variables": {
       "round": "1",
       "extra": "FALSE"
     },
-    "property": "R19_ReviewAfterMergeRepair",
-    "additional": {
-      "from": "InReview",
-      "to": "Returned",
-      "variables": {
-        "round": "3",
-        "extra": "FALSE"
-      },
-      "property": "S10_CheckpointBeforeThirdRoundEscalation"
-    }
+    "property": "H16_AnswerOrPassUpBeforeContinuing"
   },
   "claim-build": {
     "from": "Edited",

@@ -7,9 +7,9 @@ VARIABLE seen
 PropertyInit == Init /\ seen = {state}
 PropertyNext == Next /\ seen' = seen \cup {state'}
 
-\* S6, DYD-1295 7b3d2e3e: Closing Done follows work and finishing.
-\* The model can test phase order; it has no predicate for meeting the contract.
-S6_WorkBeforeDone ==
+\* DYD-1295 7b3d2e3e: "It's done when it's contract is met. Period."
+\* This checks the work and Finishing phases before Done. Contract satisfaction is unobservable.
+WorkPhaseBeforeDone ==
     [][(state' = "Done" /\ state # "Done" =>
         state = "Finishing" /\ seen \cap {"Leaf", "Waiting"} # {})]_<<vars, seen>>
 
@@ -18,12 +18,14 @@ S6_WorkBeforeDone ==
 H3_WaitAfterSplit ==
     [][(state = "Split" /\ state' # state => state' = "Waiting")]_<<vars, seen>>
 
-\* H16, S10, DYD-1295 519126ab: A leaf suspended on a Question resumes
-\* the leaf, with no shortcut out to finishing. Only leaf Questions are modelled.
-H16_ResumeLeafAfterQuestion ==
-    [][(state = "Question" /\ state' # state => state' = "Leaf")]_<<vars, seen>>
+\* H16, DYD-1295 519126ab: The officer waits while the Question captain
+\* investigates. An answer resumes the leaf; an unsettled Question goes up.
+\* These phases check the exits from the wait. The answer and open ticket are unobservable.
+H16_AnswerOrPassUpBeforeContinuing ==
+    [][(state = "Question" /\ state' # state =>
+        state' \in {"Leaf", "Returned"})]_<<vars, seen>>
 
-\* R2, R8, R12, R16: Once review has started, every entry to finishing
+\* R8: Once review has started, every entry to finishing
 \* follows a clear round. Only a review round can produce that result.
 R8_ClearBeforeFinish ==
     [][ /\ (state' = "Clear" /\ state # "Clear" => state = "InReview")
@@ -82,8 +84,10 @@ R19_ReviewAfterMergeRepair ==
             state = "Clear" /\ "InReview" \in seen)
     ]_<<vars, seen>>
 
-\* H2, DYD-1295 7b3d2e3e: Returning ends this holder's run.
-H2_ReturnedIsTerminal ==
+\* H1 and AGENTS.md (Sort yourself): Crew does its one job and returns.
+\* Ticket Captain (Finish): "end on a commit, and return its SHA".
+\* Returning ends the current holder's run, including a handoff to its officer.
+H1_ReturnedIsTerminal ==
     [][(state = "Returned" => UNCHANGED vars)]_<<vars, seen>>
 
 ====

@@ -92,11 +92,10 @@ run; the acceptance run includes all 31 machines.
 
 The DYD-1372 captain prototype adds a separate diagnostic scope. Run the
 ordinary check with `--machine captain` and run the registered control with
-`--controls --machine captain`. The runner accepts one control per machine.
-For the second trace, pass `controls["captain"]["additional"]` to the runner's
-`check_machine` in a fresh scratch run. This uses the same entry-point injection
-and checks that the named property breaks. See [the captain obligations](captain/obligations.md)
-for the expected findings and the limits of the phase model.
+`--controls --machine captain`. The registered trace tries to finish with a
+Question still pending. The repair and escalation shortcuts use the same runner
+entry point in separate scratch runs. Their commands, results and model limits
+are in [the captain obligations](captain/obligations.md).
 
 ## Model observability owed to the candidate captain
 
