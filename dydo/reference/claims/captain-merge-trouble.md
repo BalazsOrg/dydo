@@ -78,6 +78,8 @@ Reason: The pin on the old head would refuse, and rightly.
 
 Spec: K9
 
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Repairing → Returned, "a conflict that cannot be resolved goes to the officer".
+
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
 Layer: Two tickets that collide have two captains, and neither can re-order the other's work.
@@ -189,6 +191,8 @@ Reason: A re-merge of the old commits would land nothing and still report succes
 `claim:CaptainMergeTrouble.Lost`: A red gate the captain cannot get fixed goes to its officer.
 
 Spec: K9
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Repairing → Returned, "a red gate that cannot be fixed goes to the officer".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 

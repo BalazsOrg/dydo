@@ -56,7 +56,7 @@ public static class CaptainCarrier
             new("Get it reviewed", Slot.Paragraph(CaptainSlot.Reviewed), Slot.Steps(CaptainSlot.Rounds),
                 Slot.Bullets(CaptainSlot.Routes, "A blocker's route, by what it shows:"), Slot.Paragraph(CaptainSlot.Mine))
             {
-                States = [CaptainState.Leaf, CaptainState.Waiting, CaptainState.InReview, CaptainState.Fixing],
+                States = [CaptainState.Leaf, CaptainState.Waiting, CaptainState.InReview, CaptainState.Clear, CaptainState.Fixing],
                 Resources = [Round]
             },
             new("Finish", Slot.Paragraph(CaptainSlot.Who), Slot.Bullets(CaptainSlot.Cases), Slot.Paragraph(CaptainSlot.Close))
@@ -79,7 +79,7 @@ public static class CaptainCarrier
             new(CaptainResource.RedGate, "A red gate after the merge", Slot.Paragraph(CaptainSlot.RedLead), Slot.Steps(CaptainSlot.RedSteps, "Red again is real:"),
                 Slot.Paragraph(CaptainSlot.RedEnd))
             {
-                States = [CaptainState.Finishing]
+                States = [CaptainState.Finishing, CaptainState.Repairing]
             },
             new(CaptainResource.NeedForTheUser, "A need for the user", Slot.Paragraph(CaptainSlot.NeedLead), Slot.Bullets(CaptainSlot.NeedRules)) { States = [CaptainState.Question] }
         ]

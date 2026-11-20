@@ -60,7 +60,7 @@ Post the SHA a child returns on its ticket, to resume from, and send what it rep
 ## 4. Get it reviewed
 
 Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
-If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge; a part your officer merges is reviewed with its whole.
+If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.
 A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.
 
 1. Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.

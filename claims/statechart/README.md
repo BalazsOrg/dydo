@@ -143,14 +143,20 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 
 One more machine, outside the overview and its 31: the states of a captain holding one ticket, built
 from the truth-checked ticket-captain prototype's own claims (DYD-1295 519126ab). `round` counts review
-rounds and is bounded at 4 only so TLC ends; the skill sets no cap. A third round that still has a
-blocker leaves only through the checkpoint (R10, S10), and a repaired conflict or red gate returns to
-finishing only through a review round (R19, R21). A splitting captain's Question is one more child it
-waits on, so only a leaf has a Question state of its own. The chart draws 23 of the 24 arrows: ordering
-one more round after a clear one is a self-loop. TLC line from the run on the claim model of DYD-1372
-fix r0; it holds `NoDeadlock`. Its properties are written by hand under `verification/statechart/`,
-from his rulings and never from this model (K3).
+rounds and is bounded at 4 only so TLC ends; the skill sets no cap.
+
+- A round that found no new blocker is a state of its own. The review rounds end from it, and the one
+  more round the captain may order leaves only from it, once (`extra`), so a round with a blocker
+  reaches the next only through a Fix (R8).
+- A third round that still has a blocker leaves only through the checkpoint (R10, S10).
+- A repaired conflict or red gate goes on only through a review round, or back to the officer when it
+  cannot be finished (R19, R21).
+- A splitting captain's Question is one more child it waits on, so only a leaf has a Question state.
+
+The chart draws 26 of the 27 arrows: a repair's two ways back to the officer share one. TLC line from
+the run on the claim model of DYD-1372 fix r0b; it holds `NoDeadlock`. Its properties are written by
+hand under `verification/statechart/`, from his rulings and never from this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 12 | 24 | 0 | 30 states, 51 steps |
+| A captain and its ticket | `captain` | 13 | 27 | 0 | 56 states, 99 steps |

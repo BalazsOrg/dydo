@@ -54,7 +54,8 @@ public static class CaptainMergeTrouble
         Spec = ["K9"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
             Layer: "Two tickets that collide have two captains, and neither can re-order the other's work.",
-            Reason: "The officer above both is the first one able to sequence them.")
+            Reason: "The officer above both is the first one able to sequence them."),
+        Transition = new(CaptainState.Repairing, CaptainState.Returned, "a conflict that cannot be resolved goes to the officer")
     };
 
     public static readonly Claim Rerun = new("A gate red after the merge is rerun once.", Me,
@@ -122,7 +123,8 @@ public static class CaptainMergeTrouble
         Spec = ["K9"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
             Layer: "A reverted merge leaves the ticket open with nobody but its captain watching it.",
-            Reason: "The officer can re-plan around a part that will not go in.")
+            Reason: "The officer can re-plan around a part that will not go in."),
+        Transition = new(CaptainState.Repairing, CaptainState.Returned, "a red gate that cannot be fixed goes to the officer")
     };
 
     private static Line At(Enum slot, int order, string text) =>

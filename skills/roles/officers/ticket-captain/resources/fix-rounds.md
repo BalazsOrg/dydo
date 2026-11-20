@@ -8,5 +8,5 @@
 - When your officer re-plans, cancel each sub-ticket the new plan drops, with a one-line reason.
 
 **The checkpoint.**
-After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket, and run it.
+After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket; its blockers then go to a Fix, as in any round.
 Write `escalated: …` instead, and take it to your officer, only for a fundamental break, a new requirement or a need for the user.

@@ -113,7 +113,8 @@ public static class CaptainTrouble
 
     public static readonly Claim Checkpoint = new("At the checkpoint the default is one more round, noted on the Review ticket.", Me,
     [
-        At(CaptainSlot.FixCheckpoint, 1, "After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket, and run it.",
+        At(CaptainSlot.FixCheckpoint, 1,
+            "After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket; its blockers then go to a Fix, as in any round.",
             () => [Third])
     ])
     {

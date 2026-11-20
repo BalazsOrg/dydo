@@ -172,7 +172,7 @@ Reason: Three blocked rounds say something other than the code may be wrong, and
 
 **ticket-captain** (FixCheckpoint; read by TicketCaptain, on claim:CaptainTrouble.Checkpoint):
 
-> After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket, and run it.
+> After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket; its blockers then go to a Fix, as in any round.
 
 ## Checkpoint
 
@@ -190,7 +190,7 @@ Reason: A written reason makes the captain look at why three rounds were not eno
 
 **ticket-captain** (FixCheckpoint; read by TicketCaptain):
 
-> After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket, and run it.
+> After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket; its blockers then go to a Fix, as in any round.
 
 ## Escalate
 

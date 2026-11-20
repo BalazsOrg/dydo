@@ -44,7 +44,7 @@ public static class CaptainReview
     public static readonly Claim Whose = new("Whoever merges a piece of work has it reviewed first; a part is reviewed with the parent it joins.", Me,
     [
         At(CaptainSlot.Reviewed, 2,
-            "If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge; a part your officer merges is reviewed with its whole.",
+            "If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.",
             () => [Pr])
     ])
     {
@@ -151,17 +151,30 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "Nothing counts rounds or closes the loop.",
             Reason: "A round that barely passed can be looked at again without anyone inventing a blocker."),
-        Transition = new(CaptainState.InReview, CaptainState.InReview, "no new blocker, and one more round is ordered") { Effect = "round' = round + 1" }
+        Transition = new(CaptainState.Clear, CaptainState.InReview, "one more round is ordered, once")
+        {
+            Guard = "~extra",
+            Effect = "round' = round + 1 /\\ extra' = TRUE"
+        }
+    };
+
+    public static readonly Claim Cleared = new("A round that finds no new blocker is clear, whatever shoulds and nits it found.", Me, [])
+    {
+        Spec = ["R8", "R11"],
+        Truth = new(Evidence.Run("Linear, team Dydo, Severity labels read 2026-11-20: only the blocker is described as a FAIL, \"a review blocker stays a FAIL\"; a should is a ticket and a nit a line."),
+            Layer: "`dydo merge` reads a PASS line and cannot tell a clear round from one whose blockers were left out.",
+            Reason: "A should can wait, so it never keeps a round from ending."),
+        Transition = new(CaptainState.InReview, CaptainState.Clear, "the round finds no new blocker")
     };
 
     public static readonly Claim Clean = new("The first round with no new blocker ends the review rounds.", Me,
-        [At(CaptainSlot.Rounds, 4, "Repeat until a round finds no new blocker; you may order one more.", () => [OneMore])])
+        [At(CaptainSlot.Rounds, 4, "Repeat until a round finds no new blocker; you may order one more.", () => [OneMore, Cleared])])
     {
         Spec = ["R8"],
         Truth = new(Evidence.Run(Rounds),
             Layer: "`dydo merge` needs one PASS on the head and knows nothing of earlier rounds.",
             Reason: "The loop ends on evidence, with no cap that would let a known blocker through."),
-        Transition = new(CaptainState.InReview, CaptainState.Finishing, "a round finds no new blocker")
+        Transition = new(CaptainState.Clear, CaptainState.Finishing, "no further round is ordered: the review rounds end")
     };
 
     public static readonly Claim Mine = new("A blocker found in a change a captain wrote goes to a fresh writer.", Me,

@@ -8,6 +8,7 @@ public enum CaptainState
     Split,
     Waiting,
     InReview,
+    Clear,
     Fixing,
     Checkpoint,
     Repairing,

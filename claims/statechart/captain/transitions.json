@@ -48,6 +48,13 @@
       ]
     },
     {
+      "id": "Clear",
+      "title": "A round found no new blocker",
+      "spec": [
+        "R8"
+      ]
+    },
+    {
       "id": "Fixing",
       "title": "Fixing",
       "spec": [
@@ -107,6 +114,11 @@
       "name": "round",
       "initial": "1",
       "bound": "round <= 4"
+    },
+    {
+      "name": "extra",
+      "initial": "FALSE",
+      "bound": "extra \\in BOOLEAN"
     }
   ],
   "transitions": [
@@ -203,6 +215,36 @@
       ]
     },
     {
+      "claim": "claim:CaptainMergeTrouble.Lost",
+      "from": "Repairing",
+      "to": "Returned",
+      "arrow": "a red gate that cannot be fixed goes to the officer",
+      "spec": [
+        "K9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainMergeTrouble.Stuck",
+      "from": "Repairing",
+      "to": "Returned",
+      "arrow": "a conflict that cannot be resolved goes to the officer",
+      "spec": [
+        "K9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainMerging.Broken",
       "from": "Finishing",
       "to": "Repairing",
@@ -220,11 +262,27 @@
     },
     {
       "claim": "claim:CaptainReview.Clean",
-      "from": "InReview",
+      "from": "Clear",
       "to": "Finishing",
-      "arrow": "a round finds no new blocker",
+      "arrow": "no further round is ordered: the review rounds end",
       "spec": [
         "R8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Cleared",
+      "from": "InReview",
+      "to": "Clear",
+      "arrow": "the round finds no new blocker",
+      "spec": [
+        "R8",
+        "R11"
       ],
       "guard": null,
       "effect": null,
@@ -266,14 +324,14 @@
     },
     {
       "claim": "claim:CaptainReview.OneMore",
-      "from": "InReview",
+      "from": "Clear",
       "to": "InReview",
-      "arrow": "no new blocker, and one more round is ordered",
+      "arrow": "one more round is ordered, once",
       "spec": [
         "R8"
       ],
-      "guard": null,
-      "effect": "round' = round + 1",
+      "guard": "~extra",
+      "effect": "round' = round + 1 /\\ extra' = TRUE",
       "fair": false,
       "skills": [
         "ticket-captain"

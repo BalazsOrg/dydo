@@ -166,7 +166,7 @@ public class TicketCaptainPrototypeTests
 
         Assert.NotEmpty(claims);
         Assert.All(claims, claim => Assert.Contains("\"claim:Captain", claim));
-        Assert.All(new[] { "Taken", "Leaf", "Split", "Waiting", "InReview", "Fixing", "Checkpoint", "Repairing", "Question", "Finishing", "Done", "Returned" },
+        Assert.All(new[] { "Taken", "Leaf", "Split", "Waiting", "InReview", "Clear", "Fixing", "Checkpoint", "Repairing", "Question", "Finishing", "Done", "Returned" },
             state => Assert.Contains($"\"{state}\"", arrows));
         Assert.Contains("VARIABLES state, round", Built.Value.Files["claims/statechart/captain/Captain.tla"]);
     }
@@ -186,15 +186,32 @@ public class TicketCaptainPrototypeTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 r0 13 R19 R21 a conflict or red-gate repair has a state of its own, and its only way back to Finishing is a review round")]
+    [Trait("Job", "contract: DYD-1372 r0 13 r0b 3 R19 R21 a conflict or red-gate repair has a state of its own: it goes on only through a review round, or back to the officer when it cannot be finished")]
     public void CaptainMachine_SendsARepairBackThroughAReview()
     {
         Assert.Contains(Arrow("CaptainMerging.Broken", "Finishing", "Repairing"), Arrows);
         Assert.Contains(Arrow("CaptainMergeTrouble.Hunks", "Repairing", "InReview"), Arrows);
-        Assert.Equal(1, Arrows.Split("\"from\": \"Repairing\"").Length - 1);
+        Assert.Contains(Arrow("CaptainMergeTrouble.Stuck", "Repairing", "Returned"), Arrows);
+        Assert.Contains(Arrow("CaptainMergeTrouble.Lost", "Repairing", "Returned"), Arrows);
+        Assert.Equal(3, Arrows.Split("\"from\": \"Repairing\"").Length - 1);
         Assert.DoesNotContain("\"from\": \"Finishing\",\n      \"to\": \"Waiting\"", Arrows);
         Assert.Contains(Arrow("CaptainReview.Groups", "Waiting", "Finishing"), Arrows);
-        Assert.Contains(Arrow("CaptainReview.OneMore", "InReview", "InReview"), Arrows);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0b 1 2 R8 R10 a clear round is a state of its own: the review rounds end from it, one more round is ordered only from it and only once, and a blocked round reaches the next only through a Fix")]
+    public void CaptainMachine_OrdersOneMoreRoundOnlyAfterAClearOne()
+    {
+        var module = Built.Value.Files["claims/statechart/captain/Captain.tla"];
+
+        Assert.Contains(Arrow("CaptainReview.Cleared", "InReview", "Clear"), Arrows);
+        Assert.Contains(Arrow("CaptainReview.Clean", "Clear", "Finishing"), Arrows);
+        Assert.Contains(Arrow("CaptainReview.OneMore", "Clear", "InReview"), Arrows);
+        Assert.DoesNotContain("\"from\": \"InReview\",\n      \"to\": \"InReview\"", Arrows);
+        Assert.DoesNotContain("\"from\": \"InReview\",\n      \"to\": \"Finishing\"", Arrows);
+        Assert.Contains("CaptainReview_OneMore ==\n    /\\ state = \"Clear\"\n    /\\ ~extra\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1 /\\ extra' = TRUE\n", module);
+        Assert.Contains("CaptainTrouble_NextRound ==\n    /\\ state = \"Fixing\"\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1\n", module);
+        Assert.Equal(2, module.Split("round' = round + 1").Length - 1);
     }
 
     private static string Arrows => Built.Value.Files["claims/statechart/captain/transitions.json"];
@@ -205,7 +222,7 @@ public class TicketCaptainPrototypeTests
     [Trait("Job", "contract: DYD-1372 r0 2 the captain that merges opens its PR, from a tree dydo pr-ready passes, before the review; the legacy line that said so is kept")]
     public void ReviewPhase_HasTheMergerOpenItsPrFirst()
     {
-        Assert.Contains("If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge", Section("## 4. Get it reviewed"));
+        Assert.Contains("If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge;", Section("## 4. Get it reviewed"));
         Assert.Contains("`claim:Tree.CrewLimits`, kept in `claim:CaptainReview.Pr`", Built.Value.Files[Review + "ticket-captain-ledger-2.md"]);
     }
 
@@ -224,6 +241,8 @@ public class TicketCaptainPrototypeTests
     public void Scenarios_NameTheToolTheirActUses()
     {
         Assert.Contains("Give a Fix to its writer's thread, with `t3_thread_send`,", Resource("fix-rounds"));
+        Assert.Contains("write `checkpoint: one more round, because …` on the Review ticket; its blockers then go to a Fix, as in any round.", Resource("fix-rounds"));
+        Assert.DoesNotContain("run it", Resource("fix-rounds"));
         Assert.Contains("`git revert -m 1 <merge SHA>`", Resource("red-gate"));
     }
 

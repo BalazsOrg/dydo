@@ -54,7 +54,7 @@ Reason: The verdict's PASS line and `dydo merge` both need a PR that shows exact
 
 **ticket-captain** (Reviewed; read by TicketCaptain, on claim:CaptainReview.Whose):
 
-> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge; a part your officer merges is reviewed with its whole.
+> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.
 
 ## Whose
 
@@ -70,7 +70,7 @@ Reason: A part reviewed alone and again inside its parent is reviewed twice for 
 
 **ticket-captain** (Reviewed; read by TicketCaptain):
 
-> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge; a part your officer merges is reviewed with its whole.
+> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.
 
 ## NoLoop
 
@@ -214,7 +214,7 @@ Reason: Fixing toward a plan that is itself wrong builds more of the wrong thing
 
 Spec: R8
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → InReview, "no new blocker, and one more round is ordered".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Clear → InReview, "one more round is ordered, once".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 
@@ -226,13 +226,31 @@ Reason: A round that barely passed can be looked at again without anyone inventi
 
 > Repeat until a round finds no new blocker; you may order one more.
 
+## Cleared
+
+`claim:CaptainReview.Cleared`: A round that finds no new blocker is clear, whatever shoulds and nits it found.
+
+Spec: R8, R11
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Clear, "the round finds no new blocker".
+
+Evidence (run): Linear, team Dydo, Severity labels read 2026-11-20: only the blocker is described as a FAIL, "a review blocker stays a FAIL"; a should is a ticket and a nit a line.
+
+Layer: `dydo merge` reads a PASS line and cannot tell a clear round from one whose blockers were left out.
+
+Reason: A should can wait, so it never keeps a round from ending.
+
+**ticket-captain** (Rounds; read by TicketCaptain, on claim:CaptainReview.Clean):
+
+> Repeat until a round finds no new blocker; you may order one more.
+
 ## Clean
 
 `claim:CaptainReview.Clean`: The first round with no new blocker ends the review rounds.
 
 Spec: R8
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Finishing, "a round finds no new blocker".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Clear → Finishing, "no further round is ordered: the review rounds end".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 
