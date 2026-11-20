@@ -39,11 +39,12 @@ The user should spend attention on intent and value choices. Agents implement, t
 review, coordinate, and audit from independently reviewable contracts.
 
 - Officers hold one thing and never switch: the ticket-captain, the default officer, holds a ticket,
-  and the chief-of-staff the board; an admiral holds a Project only when the user invokes one. They
-  keep Linear current.
-- A Project's map holder, the user or an admiral the user invoked, charts it with `wayfinder`.
-- Crew are spawned for one bounded job, hold nothing, and return their result: code-writer,
-  docs-writer, reviewer, inquisitor, research, scout.
+  the coordinator a Project and the chief-of-staff the board (H1, H4). They keep Linear current.
+- The coordinator decides mechanically only; every judgement goes to a fresh agent's ticket (H5).
+- A Project's map holder is its coordinator with a captain on a Wayfinding ticket, which charts it
+  with `wayfinder` (S14; DYD-1195 b46e8343).
+- Crew are spawned for one bounded job, hold nothing, and return their result: implementer,
+  reviewer, research, scout (DYD-1082 1bc04dce change 3).
 - Every other skill, `co-thinker` among them, is a plain skill any session loads when the work needs
   it.
 - A fresh agent independently reviews each implementation ticket before the user harmonizes it.
