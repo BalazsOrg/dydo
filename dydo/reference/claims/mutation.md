@@ -48,15 +48,15 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 ## CutFix
 
-`claim:Mutation.CutFix`: The admiral holds the landing and cuts each survivor's fix ticket for a captain.
+`claim:Mutation.CutFix`: The coordinator holds the landing and opens each survivor's fix ticket for a captain.
 
 Spec: N6, H5, T12
 
-Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Survivors → Ticketed, "the admiral cuts the survivor's fix ticket".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Survivors → Ticketed, "the coordinator opens the survivor's fix ticket".
 
-**admiral** (Survivors, exit):
+**coordinator** (Survivors, exit):
 
-> Cut each landing survivor into a fix ticket for a captain.
+> Open a fix ticket for each landing survivor and put a captain on it.
 
 ## Fix
 
@@ -66,9 +66,9 @@ Spec: T12
 
 Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Ticketed → Queued, "fixed; the changed tree's work is queued again".
 
-**code-writer** (Ticketed, exit):
+**implementer** (Ticketed, exit):
 
-> Fix a surviving mutant.
+> Fix a surviving mutant: sharpen the test that missed it, or delete the code it shows nothing needs.
 
 ## ClaimEquivalent
 
@@ -78,7 +78,7 @@ Spec: T12
 
 Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Ticketed → Claimed, "claimed equivalent, with a reason".
 
-**code-writer** (Ticketed, exit):
+**implementer** (Ticketed, exit):
 
 > Or claim it equivalent, with a reason; a fresh reviewer decides the claim, never you.
 
@@ -140,10 +140,10 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 ## Totals
 
-`claim:Mutation.Totals`: He sees the totals of approved equivalents per feature.
+`claim:Mutation.Totals`: He sees the totals of approved equivalents per feature, through the coordinator's envoy, the one channel to him.
 
-Spec: T12
+Spec: T12, H6, H12
 
-**admiral** (Prerequisites, nominal):
+**coordinator** (Prerequisites, nominal):
 
-> Show him the per-feature totals of approved equivalent mutants.
+> Post the per-feature totals of approved equivalent mutants on your HITL queue as an FYI for him, riding in the next envoy.

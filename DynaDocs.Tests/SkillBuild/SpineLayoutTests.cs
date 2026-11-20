@@ -5,8 +5,8 @@ using DynaDocs.SkillBuild;
 using DynaDocs.Tests.SkillBuild.Slots;
 
 /// <summary>
-/// K9's spine and appendices, K26's Codex metadata and K6's header and destinations, as the slot
-/// fixture builds them (DYD-1196 A5, B9, B10, B11, C18).
+/// K9's spine and scenarios, K14's dispatch template, K26's Codex metadata and K6's header and
+/// destinations, as the slot fixture builds them (DYD-1196 A5, B9, B10, B11, C18).
 /// </summary>
 public class SpineLayoutTests
 {
@@ -14,9 +14,12 @@ public class SpineLayoutTests
 
     private static readonly IReadOnlyDictionary<string, string> Built = SkillBuilder.Build(DemoModel.With()).Files;
 
+    // S5 (review r1): K9 supersedes DR 064 §7's state outline, so each phase is one numbered checklist of its
+    // slots in order, a state's arrivals, then its nominal path, then its exits; no slot heading, no move label.
+    // Every item is numbered 1, which Markdown numbers in order, so an inserted line renumbers no other (K18).
     [Fact]
-    [Trait("Job", "contract: K9 the spine renders header parts, states by move, routines, then its resource list (A5, C18)")]
-    public void Spine_RendersHeaderStatesRoutinesAndResourcesInOrder() =>
+    [Trait("Job", "contract: K9 S5 the spine renders its job paragraph, each phase as one numbered checklist then its links, then When things go wrong")]
+    public void Spine_RendersJobPhasesAndWhenThingsGoWrongInOrder() =>
         Assert.Equal(
             """
             ---
@@ -28,57 +31,39 @@ public class SpineLayoutTests
 
             # Demo
 
-            ## Role
+            You own one ticket from intake to return.
+            You return to the officer who sent you.
 
-            - You own one ticket from intake to return.
+            ## 1. Take the ticket
 
-            ## Accountable for
+            1. You answer for the proof of your change.
+            1. Your worktree and its branch.
+            1. Read the brief first.
+            1. Check the worktree is clean.
+            1. Check the base is an ancestor of HEAD.
+            1. Stop when the lease goes stale.
 
-            - You answer for the proof of your change.
+            ## 2. Do the work
 
-            ## Tools and surfaces
+            1. Start work once intake is done.
+            1. Dispatch crew with a ticket.
 
-            - Your worktree and its branch.
-
-            ## States
-
-            ### Intake
-
-            Arrivals:
-
-            - Read the brief first.
-
-            Nominal path:
-
-            - Check the worktree is clean.
-            - Check the base is an ancestor of HEAD.
-
-            Exits:
-
-            - Stop when the lease goes stale. ([Stale lease](resources/stale-lease.md))
-
-            ### Work
-
-            Arrivals:
-
-            - Start work once intake is done.
-
-            ## Routines
-
-            ### Dispatch crew
-
-            - Dispatch crew with a ticket.
-
-            ## Resources
+            Resources:
 
             - [Guide](resources/guide.md)
+            - [Crew brief](resources/brief.md)
+
+            ## When things go wrong
+
+            - Each scenario ends resolved or escalated.
+            - [Stale lease](resources/stale-lease.md)
 
             """.ReplaceLineEndings("\n"),
             Built[Folder + "SKILL.md"]);
 
     [Fact]
-    [Trait("Job", "contract: K9 an appendix is its own file, linked from the move that raises it (A5, C18)")]
-    public void Appendix_IsAResourceFileWithItsLinesInOrder() =>
+    [Trait("Job", "contract: K9 a scenario is its own resource file, linked from When things go wrong")]
+    public void Scenario_IsAResourceFileWithItsLinesInOrder() =>
         Assert.Equal(
             """
             <!-- built from the model; edit there: tools/SkillBuild -->
@@ -90,6 +75,20 @@ public class SpineLayoutTests
 
             """.ReplaceLineEndings("\n"),
             Built[Folder + "resources/stale-lease.md"]);
+
+    [Fact]
+    [Trait("Job", "contract: K14 a dispatch template opens with its default skill set, each skill named with a slash")]
+    public void Template_OpensWithItsSkillsEachWithASlash() =>
+        Assert.Equal(
+            """
+            <!-- built from the model; edit there: tools/SkillBuild -->
+
+            # Crew brief
+
+            Skills: /demo
+
+            """.ReplaceLineEndings("\n"),
+            Built[Folder + "resources/brief.md"]);
 
     [Fact]
     [Trait("Job", "trap: a fenced block bulleted line by line breaks, so a multi-line line is emitted verbatim")]

@@ -11,16 +11,16 @@ public static class Findings
         "a landed Project still has a spec document", "S23");
     public static readonly Claim StaleShoulds = Move(FindingsState.Board, FindingsState.StaleShoulds, Actor.Survey,
         "open shoulds under Done parents past the threshold, 7 days by default", "S23", "T14");
-    public static readonly Claim FixLink = Move(FindingsState.SharedLink, FindingsState.Acted, Actor.Admiral,
+    public static readonly Claim FixLink = Move(FindingsState.SharedLink, FindingsState.Acted, Actor.Coordinator,
         "its officer fixes the record: one agent holds one ticket", "S7", "S13", "H5");
-    public static readonly Claim DeleteSpec = Move(FindingsState.LandedSpec, FindingsState.Acted, Actor.Admiral,
+    public static readonly Claim DeleteSpec = Move(FindingsState.LandedSpec, FindingsState.Acted, Actor.Coordinator,
         "the map holder moves its lasting parts and deletes it", "S14", "D11");
-    public static readonly Claim BatchShoulds = Move(FindingsState.StaleShoulds, FindingsState.Acted, Actor.Admiral,
-        "the admiral cuts a shoulds batch", "S17");
+    public static readonly Claim BatchShoulds = Move(FindingsState.StaleShoulds, FindingsState.Acted, Actor.Coordinator,
+        "the coordinator cuts a shoulds batch", "S17");
     public static readonly Claim RealRed = Move(FindingsState.Watch, FindingsState.CiRed, Actor.Ci,
         "a real CI red becomes a CI-findings ticket", "Y9", "R22");
-    public static readonly Claim Route = Move(FindingsState.CiRed, FindingsState.Routed, Actor.Admiral,
-        "to the open ticket's officer, or the admiral for a long-closed ticket", "H11");
+    public static readonly Claim Route = Move(FindingsState.CiRed, FindingsState.Routed, Actor.Coordinator,
+        "to the open ticket's officer, or the coordinator for a long-closed ticket", "H11");
     public static readonly Claim Pull = Move(FindingsState.Routed, FindingsState.Acted, Actor.TicketCaptain,
         "its officer takes it, or an officer with an open lane pulls it", "H8", "H10", "H11");
     public static readonly Claim Noise = Move(FindingsState.Watch, FindingsState.Flake, Actor.Dytest,
@@ -31,13 +31,13 @@ public static class Findings
         "it repeats", "Y9");
     public static readonly Claim Ticket = Move(FindingsState.Repeated, FindingsState.CiRed, Actor.Dytest,
         "a repeating flake becomes a CI-findings ticket", "Y9");
-    public static readonly Claim Weed = Move(FindingsState.Watch, FindingsState.Weed, Actor.Admiral,
+    public static readonly Claim Weed = Move(FindingsState.Watch, FindingsState.Weed, Actor.Coordinator,
         "a mistake is found after landing", "R30");
-    public static readonly Claim Rule = Move(FindingsState.Weed, FindingsState.Acted, Actor.Admiral,
+    public static readonly Claim Rule = Move(FindingsState.Weed, FindingsState.Acted, Actor.Coordinator,
         "it gets a lint, test or rule as well as its fix", "R30");
-    public static readonly Claim Need = Move(FindingsState.Watch, FindingsState.DytestNeed, Actor.Admiral,
+    public static readonly Claim Need = Move(FindingsState.Watch, FindingsState.DytestNeed, Actor.Coordinator,
         "dydo needs something from DYTEST", "Y3");
-    public static readonly Claim FileIt = Move(FindingsState.DytestNeed, FindingsState.Filed, Actor.Admiral,
+    public static readonly Claim FileIt = Move(FindingsState.DytestNeed, FindingsState.Filed, Actor.Coordinator,
         "filed and built in a DYTEST Project, never patched from dydo", "Y3", "Y1");
 
     private static Claim Move(FindingsState from, FindingsState to, Actor actor, string arrow, params string[] spec) =>

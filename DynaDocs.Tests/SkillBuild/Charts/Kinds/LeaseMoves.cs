@@ -6,10 +6,10 @@ using DynaDocs.SkillBuild;
 public static class LeaseMoves
 {
     public static readonly Claim HoldsOneLease = new("The holder holds one lease.", [ChartSkill.Holder],
-        [new(ChartSkill.Holder, "You hold one lease at a time.", new(HeaderPart.Role, 1))]) { Spec = ["K9"] };
+        [new(ChartSkill.Holder, "You hold one lease at a time.", new(SpinePart.Job, 1))]) { Spec = ["K9"] };
 
     public static readonly Claim ReviewsReturns = new("The warden reviews what holders return.", [ChartSkill.Warden],
-        [new(ChartSkill.Warden, "You review each returned lease.", new(HeaderPart.Role, 1))]) { Spec = ["R1"] };
+        [new(ChartSkill.Warden, "You review each returned lease.", new(SpinePart.Job, 1))]) { Spec = ["R1"] };
 
     public static readonly Claim Take = new("A holder takes a free lease when dispatched.", [ChartSkill.Holder],
         [new(ChartSkill.Holder, "Take the lease when dispatched.", new(LeaseState.Held, 1, MoveKind.Arrival))])

@@ -6,5 +6,5 @@ using DynaDocs.SkillBuild;
 public static class LeaseUnknownDr
 {
     public static readonly Claim Uncarried = new("Cite a DR the spec carries.", [ChartSkill.Holder],
-        [new(ChartSkill.Holder, "Cite a DR the spec carries.", new(HeaderPart.Role, 2))]) { Spec = ["N12 DR 999"] };
+        [new(ChartSkill.Holder, "Cite a DR the spec carries.", new(SpinePart.Job, 2))]) { Spec = ["N12 DR 999"] };
 }

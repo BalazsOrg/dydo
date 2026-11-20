@@ -102,6 +102,14 @@ Spec: K16, K20, K22
 
 Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): InReview → Approved, "he approves: in the 4.0.0 push once, at the final candidate; after it, each model PR". A system transition: no skill carries it.
 
+## Rejected
+
+`claim:Build.Rejected`: In the claim build, he rejects a change at his walkthrough: new captains on new tickets edit the model, and the candidate is rebuilt (DYD-1195 8661b8f4).
+
+Spec: K16, K22
+
+Transition in The claim build (`claims/statechart/claim-build/ClaimBuild.tla`): InReview → Edited, "he rejects a change at his walkthrough: new captains on new tickets edit the model, and the candidate is rebuilt (DYD-1195 8661b8f4)". A system transition: no skill carries it.
+
 ## Ship
 
 `claim:Build.Ship`: In the claim build, downstream gets the built files in one ordinary update.

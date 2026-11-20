@@ -27,7 +27,7 @@ public class WhyDocTests
 
         Spec: K9
 
-        **holder** (Role):
+        **holder** (Job):
 
         > You hold one lease at a time.
 
@@ -37,7 +37,7 @@ public class WhyDocTests
 
         Spec: R1
 
-        **warden** (Role):
+        **warden** (Job):
 
         > You review each returned lease.
 
@@ -111,7 +111,7 @@ public class WhyDocTests
         var doc = SkillBuilder.Build(DemoModel.With()).Files["dydo/reference/claims/demo-moves.md"];
 
         Assert.Contains("## ResumeAfterSaving\n\n`claim:DemoMoves.ResumeAfterSaving`: Resume once the work is saved.\n\n" +
-                        "**demo** (StaleLease, on claim:DemoMoves.SaveTheWork):\n\n> Save the work, then resume.\n", doc);
+                        "**demo** (StaleLeaseSteps, on claim:DemoMoves.SaveTheWork):\n\n> Save the work, then resume.\n", doc);
         Assert.Contains("**demo** (Commands):\n\n> ```bash\n> dydo check\n> ```\n", doc);
     }
 

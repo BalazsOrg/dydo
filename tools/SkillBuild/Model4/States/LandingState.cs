@@ -15,6 +15,7 @@ public enum LandingState
     Replanned,
     Escalated,
     Walkthrough,
+    NotAccepted,
     Merging,
     Landed,
     Tagged

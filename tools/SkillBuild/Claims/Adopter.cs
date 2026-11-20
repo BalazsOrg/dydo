@@ -17,7 +17,7 @@ public static class Adopter
         "dydo's law and glossary read-only, the two-law template, descriptive-doc rules on by default", "N8", "L2", "D9", "D1");
     public static readonly Claim Done = Move(AdopterState.Updating, AdopterState.Current, Actor.UpdateDydo,
         "updated; later builds stay line-stable, one claim per bullet", "K18");
-    public static readonly Claim Harvest = Move(AdopterState.Current, AdopterState.Harvested, Actor.Admiral,
+    public static readonly Claim Harvest = Move(AdopterState.Current, AdopterState.Harvested, Actor.Coordinator,
         "a release is planned: its map holder harvests their Agent friction queues and local patches", "H9");
 
     private static Claim Move(AdopterState from, AdopterState to, Actor actor, string arrow, params string[] spec) =>

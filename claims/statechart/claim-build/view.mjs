@@ -20,6 +20,7 @@ const steps = {
   "Build_Pass": "golden, shape and stray-claim checks pass, in the suite and in CI · K7, K10, K24",
   "Build_Read": "the model PR is read through its built-skill diff · K16",
   "Build_Refused": "the build refuses: a claim not on exactly one line per carrier, a misplaced move, a shape limit · K4, K10, K9",
+  "Build_Rejected": "he rejects a change at his walkthrough: new captains on new tickets edit the model, and the candidate is rebuilt (DYD-1195 8661b8f4) · K16, K22",
   "Build_Remodel": "the push is not done: the model is fixed and built again · K20, K6",
   "Build_Ship": "downstream gets the built files in one ordinary update · K18",
   "Build_Tlc": "TLC passes the generated moves against the hand-written properties; the result is recorded with the candidate · K3, K20, N14",

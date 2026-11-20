@@ -5,9 +5,7 @@ VARIABLES state, night, twoWay, drGrade, blocking, agree, oneFamily
 
 vars == <<state, night, twoWay, drGrade, blocking, agree, oneFamily>>
 
-Finals == {"DrSettled", "DecidedOvernight", "Ratified", "Scored", "Investigated"}
-
-Open == {"GAP 1"}
+Finals == {"DrSettled", "DecidedOvernight", "Ratified", "Declined", "Scored", "Investigated"}
 
 Init ==
     /\ state = "HardCall"
@@ -21,8 +19,14 @@ Init ==
 \* claim:Tribunal.DecideNight
 Tribunal_DecideNight ==
     /\ state = "Exchange"
-    /\ night /\ agree /\ twoWay /\ ~drGrade
+    /\ agree /\ twoWay /\ ~drGrade
     /\ state' = "DecidedOvernight"
+    /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree, oneFamily>>
+
+\* claim:Tribunal.Decline
+Tribunal_Decline ==
+    /\ state = "ProposedDr"
+    /\ state' = "Declined"
     /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree, oneFamily>>
 
 \* claim:Tribunal.Exchange
@@ -39,6 +43,12 @@ Tribunal_File ==
     /\ night' \in BOOLEAN /\ twoWay' \in BOOLEAN /\ drGrade' \in BOOLEAN /\ blocking' \in BOOLEAN
     /\ UNCHANGED <<agree, oneFamily>>
 
+\* claim:Tribunal.HisCall
+Tribunal_HisCall ==
+    /\ state = "HardCall"
+    /\ state' = "Prepared"
+    /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree, oneFamily>>
+
 \* claim:Tribunal.OneFamily
 Tribunal_OneFamily ==
     /\ state = "CaseFile"
@@ -49,7 +59,7 @@ Tribunal_OneFamily ==
 \* claim:Tribunal.Prepare
 Tribunal_Prepare ==
     /\ state = "Exchange"
-    /\ ~(night /\ agree /\ twoWay) \/ (drGrade /\ ~blocking)
+    /\ ~agree \/ ~twoWay \/ (drGrade /\ ~(night /\ blocking))
     /\ state' = "Prepared"
     /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree, oneFamily>>
 
@@ -91,18 +101,14 @@ Tribunal_Wrong ==
     /\ state' = "Investigated"
     /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree, oneFamily>>
 
-\* GAP: L21 has him ratify a proposed DR but gives no route when he declines it
-Gap1 ==
-    /\ state = "ProposedDr"
-    /\ state' = "GAP 1"
-    /\ UNCHANGED <<night, twoWay, drGrade, blocking, agree, oneFamily>>
-
-Done == state \in Finals \cup Open /\ UNCHANGED vars
+Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
     \/ Tribunal_DecideNight
+    \/ Tribunal_Decline
     \/ Tribunal_Exchange
     \/ Tribunal_File
+    \/ Tribunal_HisCall
     \/ Tribunal_OneFamily
     \/ Tribunal_Prepare
     \/ Tribunal_ProposeDr
@@ -111,7 +117,6 @@ Next ==
     \/ Tribunal_Seat
     \/ Tribunal_Settled
     \/ Tribunal_Wrong
-    \/ Gap1
     \/ Done
 
 Bounds == night \in BOOLEAN /\ twoWay \in BOOLEAN /\ drGrade \in BOOLEAN /\ blocking \in BOOLEAN /\ agree \in BOOLEAN /\ oneFamily \in BOOLEAN

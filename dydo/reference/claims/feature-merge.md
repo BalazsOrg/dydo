@@ -24,7 +24,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 ## PreRed
 
-`claim:FeatureMerge.PreRed`: A real red gate goes to a code-writer.
+`claim:FeatureMerge.PreRed`: A real red gate goes to an implementer.
 
 Spec: R21
 
@@ -32,7 +32,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 **ticket-captain** (PreGate, exit):
 
-> On a real red gate, send a code-writer to fix it on the ticket branch.
+> On a real red gate before the merge, send an implementer to fix it on the ticket branch.
 
 ## PreFixed
 
@@ -76,7 +76,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 ## Conflict
 
-`claim:FeatureMerge.Conflict`: A CONFLICT goes to a code-writer, resolved only on the ticket branch.
+`claim:FeatureMerge.Conflict`: A CONFLICT goes to an implementer, resolved only on the ticket branch.
 
 Spec: R21, R19
 
@@ -84,9 +84,9 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 **ticket-captain** (Running, exit):
 
-> On `CONFLICT`, send a code-writer to resolve it on the ticket branch.
+> On `CONFLICT`, send an implementer to resolve it on the ticket branch.
 
-**code-writer** (Resolving, arrival):
+**implementer** (Resolving, arrival):
 
 > Resolve a merge conflict on the ticket branch only, then commit it as `<KEY> merge: <what>`.
 
@@ -212,7 +212,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 **ticket-captain** (Reverted, exit):
 
-> Send a code-writer to fix it on the ticket branch, then hold a fix-scoped round.
+> Send an implementer to fix it on the ticket branch, then hold a fix-scoped round.
 
 ## Reland
 

@@ -27,16 +27,9 @@ public static class ProcessMachines
         new(RoleEvaluationState.Folded, "Folded: a survivor carries its responsibilities", "K22"),
         new(RoleEvaluationState.Removed, "Removed", "K22"),
         new(RoleEvaluationState.WrittenFresh, "Written fresh from the 4.0.0 decisions and claims", "K22", "K19", "K20"),
+        new(RoleEvaluationState.Changed, "Rejected at his walkthrough: a change for new captains on new tickets", "K22", "K16"),
         new(RoleEvaluationState.Approved, "Approved by him at the final candidate, folds and removals included", "K16", "K22")
-    ], RoleEvaluationState.Questioned, [RoleEvaluationState.Approved])
-    {
-        Gaps =
-        [
-            new(RoleEvaluationState.WrittenFresh, null, "K16 and K22 give his approval of a rewrite at the final candidate, not the route when he rejects it"),
-            new(RoleEvaluationState.Folded, null, "K16 and K22 give his approval of a fold at the final candidate, not the route when he rejects it"),
-            new(RoleEvaluationState.Removed, null, "K16 and K22 give his approval of a removal at the final candidate, not the route when he rejects it")
-        ]
-    };
+    ], RoleEvaluationState.Questioned, [RoleEvaluationState.Approved]);
 
     public static readonly Machine Proof = new(MachineId.Proof, "Proof tests and gates",
     [

@@ -82,15 +82,17 @@
       "claim": "claim:Should.Cancel",
       "from": "Open",
       "to": "Canceled",
-      "arrow": "at the landing: canceled with a reason",
+      "arrow": "canceled with a reason by its batch captain",
       "spec": [
-        "S18"
+        "S18",
+        "S17",
+        "H5"
       ],
       "guard": null,
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "ticket-captain"
       ]
     },
     {
@@ -136,7 +138,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {

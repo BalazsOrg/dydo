@@ -30,7 +30,7 @@ Spec: R33, K29
 
 > Never rule on findings about work you authored.
 
-**reviewer** (Round, nominal):
+**reviewer** (Briefed, nominal):
 
 > Never judge work you implemented or fixed.
 
@@ -40,7 +40,7 @@ Spec: R33, K29
 
 Spec: N12 DR 045 §8
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > One writer per worktree: commit only inside your owned paths.
 
@@ -54,9 +54,9 @@ Spec: N12 DR 045 §8
 
 Spec: R32
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
-> End the hop on one commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed.
+> End the hop on one commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed; a merge is a merge commit that keeps both parents.
 
 **working-tree-standard** (TreeInvariants):
 
@@ -110,7 +110,7 @@ Spec: K29
 
 > Create the ticket's branch, open its PR and merge it yourself; ordinary crew never do.
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Your hop is commits on the brief's branch; the branch, its PR and its merge are the captain's.
 
@@ -122,4 +122,4 @@ Spec: H13, H14
 
 **working-tree-standard** (TreeDelegation):
 
-> Sub-captains are allowed with no hard cap, cut only for coherent units too big for one agent or able to run in parallel; the practical ceiling is admiral → captain → sub-captain → second-order sub-captain → crew, and bad nesting, or a deeper sub-captain that fails, is dealt with as a finding.
+> Sub-captains are allowed with no hard cap, cut only for coherent units too big for one agent or able to run in parallel; the practical ceiling is coordinator → captain → sub-captain → second-order sub-captain → crew, and bad nesting, or a deeper sub-captain that fails, is dealt with as a finding.

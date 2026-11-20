@@ -28,15 +28,15 @@ Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Li
 
 **ticket-captain** (Quiet, exit):
 
-> Alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
+> A liveness finding on a hop that is alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
 
-**admiral** (Quiet, exit):
+**coordinator** (Quiet, exit):
 
-> Alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
+> A liveness finding on a hop that is alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
 
 **chief-of-staff** (Quiet, exit):
 
-> Alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
+> A liveness finding on a hop that is alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
 
 ## FoundBehind
 
@@ -48,15 +48,15 @@ Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Li
 
 **ticket-captain** (Quiet, exit):
 
-> Record behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
+> A liveness finding on a hop whose record is behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
 
-**admiral** (Quiet, exit):
+**coordinator** (Quiet, exit):
 
-> Record behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
+> A liveness finding on a hop whose record is behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
 
 **chief-of-staff** (Quiet, exit):
 
-> Record behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
+> A liveness finding on a hop whose record is behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
 
 ## FoundStopped
 
@@ -68,15 +68,15 @@ Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Re
 
 **ticket-captain** (Quiet, exit):
 
-> Stopped: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
+> A liveness finding on a stopped hop: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
 
-**admiral** (Quiet, exit):
+**coordinator** (Quiet, exit):
 
-> Stopped: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
+> A liveness finding on a stopped hop: comment `liveness <UTC time>: stopped` and set the hop back to Todo; resume the same agent's thread the first time, and dispatch a fresh agent when the same hop stops again; the old thread link stays as history.
 
 **chief-of-staff** (Quiet, exit):
 
-> Stopped: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
+> A liveness finding on a stopped hop: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
 
 ## Resumed
 

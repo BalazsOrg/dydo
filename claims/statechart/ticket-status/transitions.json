@@ -118,9 +118,37 @@
       "claim": "claim:TicketStatus.Contract",
       "from": "Backlog",
       "to": "Todo",
-      "arrow": "the admiral contracts an uncontracted ticket",
+      "arrow": "a Wayfinding captain contracts it",
       "spec": [
-        "N12 DR 063 §4"
+        "N12 DR 063 §4",
+        "S5",
+        "H5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.Filed",
+      "from": "New",
+      "to": "Backlog",
+      "arrow": "filed without a contract",
+      "spec": [
+        "S5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.Future",
+      "from": "New",
+      "to": "FutureFeature",
+      "arrow": "an unscheduled strategic possibility",
+      "spec": [
+        "S5"
       ],
       "guard": null,
       "effect": null,
@@ -147,6 +175,19 @@
       "arrow": "opened in Todo, ahead of its turn if a hop",
       "spec": [
         "S3"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:TicketStatus.Promote",
+      "from": "FutureFeature",
+      "to": "Backlog",
+      "arrow": "he promotes it; it waits in Backlog until contracted",
+      "spec": [
+        "S5"
       ],
       "guard": null,
       "effect": null,
@@ -182,24 +223,5 @@
       "skills": []
     }
   ],
-  "gaps": [
-    {
-      "action": "Gap1",
-      "from": "New",
-      "to": "FutureFeature",
-      "note": "S5 lists FutureFeature, but no rule says what enters it"
-    },
-    {
-      "action": "Gap2",
-      "from": "FutureFeature",
-      "to": null,
-      "note": "S5 lists FutureFeature, but no rule says how a ticket leaves it"
-    },
-    {
-      "action": "Gap3",
-      "from": "New",
-      "to": "Backlog",
-      "note": "S5 lists Backlog, but no rule says when a ticket is filed there"
-    }
-  ]
+  "gaps": []
 }

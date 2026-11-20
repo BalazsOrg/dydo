@@ -18,17 +18,17 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Seat any reviewer from a family other than the author's when possible, single seats included.
 
-**admiral** (Staffing, exit):
+**implementer** (Briefed, arrival):
 
-> Seat any reviewer or judge from a family other than the author's when possible, single seats included.
-
-**code-writer** (Briefed, arrival):
-
-> You arrive with a brief from the code-writer dispatch template; work only within it.
+> You arrive with a brief from the implementer dispatch template; work only within it.
 
 **reviewer** (Briefed, arrival):
 
 > You arrive with a brief from the reviewer dispatch template; judge only what it names.
+
+**research** (Briefed, arrival):
+
+> You arrive with a brief from the research dispatch template: one question a choice waits on, and its return-to.
 
 **scout** (Briefed, arrival):
 
@@ -44,11 +44,17 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **ticket-captain** (Staffing, exit):
 
-> Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.
+> Convene a council only for a heavy PR, one that meets the stakes or value test: stakes is the last check before main or a mistake expensive to undo, and value is a call between good options where what he would choose is the question.
 
-**admiral** (Staffing, exit):
+## HighStakes
 
-> Convene a council only for stakes (the last check before main, or a mistake expensive to undo) or value (a call between good options).
+`claim:Dispatch.HighStakes`: A high-stakes Review is guard or security work, a base other tickets build on, or the late whole-system simplify review.
+
+Spec: L16
+
+**ticket-captain** (Staffing, exit):
+
+> A high-stakes Review is guard or security work, a base other tickets build on, or the late whole-system simplify review.
 
 ## SelfAuthor
 
@@ -70,9 +76,9 @@ Spec: S6, S13
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Briefed → Working, "the holder starts its hop".
 
-**code-writer** (Briefed, exit):
+**implementer** (Briefed, exit):
 
-> Start your hop: set it In Progress and attach your T3 thread link titled `T3 · code-writer · <model>`.
+> Start your hop: set it In Progress and attach your T3 thread link titled `T3 · implementer · <model>`.
 
 **reviewer** (Briefed, exit):
 
@@ -88,13 +94,13 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 ## TooBig
 
-`claim:Dispatch.TooBig`: Crew return too big, re-cut; the cutter decides whether a unit gets children; no agent promotes itself.
+`claim:Dispatch.TooBig`: Crew return too big, re-cut; a captain decides whether a unit under it gets children, and above a top-level captain a fresh Wayfinding captain decides while the coordinator only opens its ticket; no agent promotes itself.
 
-Spec: H2
+Spec: H2, H5
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Briefed → ReCut, "too big for one agent".
 
-**code-writer** (Briefed, exit):
+**implementer** (Briefed, exit):
 
 > A job too big for one agent goes back as `too big, re-cut`.
 
@@ -104,15 +110,15 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **ticket-captain** (ReCut, arrival):
 
-> On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children; a ticket too big for you goes back to your officer the same way, and you never promote yourself.
+> On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children, and never promote yourself.
 
-**admiral** (ReCut, arrival):
+**coordinator** (ReCut, arrival):
 
-> On `too big, re-cut`, you are the cutter: decide whether the unit gets children.
+> A captain's `too big, re-cut` comes to you, but the cut is never yours: open a Wayfinding ticket for it and put a fresh captain on it, who decides; you only sequence what that ticket files.
 
 **working-tree-standard** (TreeDelegation):
 
-> The cutter, the officer above, decides whether a unit gets children; no agent promotes itself, and crew return `too big, re-cut`.
+> A captain decides whether a unit under it gets children; above a top-level captain, a fresh Wayfinding captain decides and the coordinator only opens its ticket; no agent promotes itself, and crew return `too big, re-cut`.
 
 ## ReCut
 
@@ -126,9 +132,9 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.
 
-**admiral** (ReCut, exit):
+**coordinator** (ReCut, exit):
 
-> Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.
+> Once its captain files the children, sequence them and put a captain on each ready one.
 
 ## Return
 
@@ -138,7 +144,7 @@ Spec: K14, R5, S6, N12 DR 047 §7
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Working → Returned, "the crew returns to its dispatcher".
 
-**code-writer** (Working, exit):
+**implementer** (Working, exit):
 
 > Close your hop Done and return its commit SHA and receipts to the brief's return-to.
 
@@ -146,9 +152,13 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Return your verdict, or your seat's findings, to the brief's return-to.
 
+**research** (Working, exit):
+
+> Return the answer to the brief's return-to.
+
 **scout** (Working, exit):
 
-> Return the answer and its sources to the brief's return-to.
+> Return your passages, or your Questions, with their sources to the brief's return-to.
 
 **ticket-captain** (Returned, arrival):
 
@@ -158,19 +168,43 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Whoever started a step closes it; a parent's In Progress means its officer holds it.
 
+## CloseTicket
+
+`claim:Dispatch.CloseTicket`: The captain that started its ticket closes it Done once the work is merged, or its result recorded for a ticket that merges nothing.
+
+Spec: S6, N12 DR 047 §7
+
+**ticket-captain** (Close):
+
+> Close your ticket Done once its work is merged, or, on a ticket that merges nothing, once its result is on the ticket.
+
+## CaptainReturn
+
+`claim:Dispatch.CaptainReturn`: A ticket captain, a sub-captain included, returns one line to its brief's return-to; everything else is on the record.
+
+Spec: H23, K14, S6
+
+**ticket-captain** (Close):
+
+> Then return one line to your brief's return-to, `done <KEY>: merged`, or `done <KEY>` for a ticket that merges nothing; a sub-captain returns the same, and everything else is on the ticket.
+
 ## Template
 
-`claim:Dispatch.Template`: An officer briefs crew from the crew kind's dispatch template and never reads a crew skill to brief it.
+`claim:Dispatch.Template`: Dispatching any agent names every skill its role requires with a slash: its kind's dispatch template carries the default set and the dispatcher adds the ticket's own; an officer never reads a crew skill to brief it (DYD-1082 01266a65, c1c52e25).
 
 Spec: K14, K29
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
-> Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.
+> Brief each captain from the ticket-captain dispatch template and name every skill its role requires with a slash: the template carries the default set, and you add the ticket's own skills.
+
+**chief-of-staff** (Dispatching):
+
+> Brief a coordinator from the coordinator dispatch template and name every skill its role requires with a slash; the template carries the default set.
 
 **ticket-captain** (Dispatching):
 
-> Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.
+> Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
 
 ## Channel
 
@@ -178,7 +212,7 @@ Spec: K14, K29
 
 Spec: H3
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 
@@ -186,7 +220,7 @@ Spec: H3
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 
-**code-writer** (Working, nominal):
+**implementer** (Build):
 
 > A native helper you start shares your checkout; you commit its work.
 
@@ -214,7 +248,7 @@ Spec: H3
 
 Spec: N12 DR 057 §1, N12 DR 057 §3, H3
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
 
@@ -236,21 +270,21 @@ Spec: N12 DR 057 §1, N12 DR 057 §3, H3
 
 Spec: N12 DR 057 §2
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > On a captain's `parent_not_active`, dispatch its crew for it.
 
 **ticket-captain** (Dispatching):
 
-> A native child can't `delegate_task`: on `parent_not_active`, ask your officer to dispatch it.
+> A native child can't `delegate_task`: when it hits `parent_not_active`, ask your officer to make that dispatch.
 
 **chief-of-staff** (Dispatching):
 
-> On `parent_not_active`, ask him to dispatch it.
+> A native child can't `delegate_task`: when it hits `parent_not_active`, ask him to make that dispatch.
 
 **working-tree-standard** (TreeDelegation):
 
-> A native child lives only inside its dispatcher's turn and cannot call `delegate_task`: on `parent_not_active`, a captain asks its officer, the chief of staff asks the user, and the admiral dispatches a captain's crew for it.
+> A native child lives only inside its dispatcher's turn and cannot call `delegate_task`: on `parent_not_active`, a captain asks its officer, the chief of staff asks the user, and the coordinator dispatches a captain's crew for it.
 
 ## CodexCap
 
@@ -258,7 +292,7 @@ Spec: N12 DR 057 §2
 
 Spec: N12 DR 057 §4
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
 
@@ -276,15 +310,19 @@ Spec: N12 DR 057 §4
 
 Spec: N12 DR 057 §6
 
-**code-writer** (Working, nominal):
+**implementer** (WhenThingsGoWrong):
 
 > Hand a question up to your captain, never to Balazs.
 
-**reviewer** (Round, nominal):
+**reviewer** (WhenThingsGoWrong):
 
 > Hand a question up to your captain, never to Balazs.
 
-**scout** (Working, nominal):
+**research** (WhenThingsGoWrong):
+
+> Hand a question about your question up to your dispatcher, never to Balazs.
+
+**scout** (WhenThingsGoWrong):
 
 > Hand a question about your question up to your dispatcher, never to Balazs.
 

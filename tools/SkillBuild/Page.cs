@@ -2,7 +2,7 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// A Markdown file as it is built: frontmatter, the header, the H1, then headings and lines. A
-/// one-line claim line is one bullet, so a rebuild's diff touches only the lines that changed (K18);
+/// one-line claim line is one bullet, or one sentence line of a paragraph, so a rebuild's diff touches only the lines that changed (K18);
 /// a multi-line one is emitted verbatim, with any fence it leaves open closed.
 /// </summary>
 internal sealed class Page
@@ -27,13 +27,29 @@ internal sealed class Page
 
     public void Link(string title, string target) => _lines.Add($"- [{title}]({target})");
 
-    public void State(Placed placed, string suffix = "")
+    /// <summary>A one-line claim line as plain text: consecutive sentences read as one paragraph.</summary>
+    public void Sentence(Placed placed)
+    {
+        _lines.Add(placed.Line.Text);
+        _stated.Add((_lines.Count, placed.Line.Text, placed));
+    }
+
+    /// <summary>A claim line as a bullet.</summary>
+    public void State(Placed placed) => Item("- ", placed);
+
+    /// <summary>
+    /// A claim line as a numbered checklist item. Every item is numbered 1, which Markdown numbers in
+    /// order, so a line added or dropped renumbers no other (K18).
+    /// </summary>
+    public void Step(Placed placed) => Item("1. ", placed);
+
+    private void Item(string marker, Placed placed)
     {
         var block = placed.Line.Text.Split('\n');
         var fence = MarkdownFence.Unclosed(block);
         if (block.Length == 1 && fence is null)
         {
-            _lines.Add("- " + placed.Line.Text + suffix);
+            _lines.Add(marker + placed.Line.Text);
             _stated.Add((_lines.Count, placed.Line.Text, placed));
             return;
         }

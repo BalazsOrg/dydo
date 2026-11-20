@@ -56,11 +56,11 @@ Transition in Survey, board and CI findings (`claims/statechart/findings/Finding
 
 ## BatchShoulds
 
-`claim:Findings.BatchShoulds`: A finding: the admiral cuts a shoulds batch.
+`claim:Findings.BatchShoulds`: A finding: the coordinator cuts a shoulds batch.
 
 Spec: S17
 
-Transition in Survey, board and CI findings (`claims/statechart/findings/Findings.tla`): StaleShoulds → Acted, "the admiral cuts a shoulds batch". A system transition: no skill carries it.
+Transition in Survey, board and CI findings (`claims/statechart/findings/Findings.tla`): StaleShoulds → Acted, "the coordinator cuts a shoulds batch". A system transition: no skill carries it.
 
 ## RealRed
 
@@ -72,11 +72,11 @@ Transition in Survey, board and CI findings (`claims/statechart/findings/Finding
 
 ## Route
 
-`claim:Findings.Route`: A finding: to the open ticket's officer, or the admiral for a long-closed ticket.
+`claim:Findings.Route`: A finding: to the open ticket's officer, or the coordinator for a long-closed ticket.
 
 Spec: H11
 
-Transition in Survey, board and CI findings (`claims/statechart/findings/Findings.tla`): CiRed → Routed, "to the open ticket's officer, or the admiral for a long-closed ticket". A system transition: no skill carries it.
+Transition in Survey, board and CI findings (`claims/statechart/findings/Findings.tla`): CiRed → Routed, "to the open ticket's officer, or the coordinator for a long-closed ticket". A system transition: no skill carries it.
 
 ## Pull
 

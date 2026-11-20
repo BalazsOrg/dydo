@@ -5,9 +5,9 @@
 `Commands/GuardCommand.WorkerLane.cs` classifies every dydo command: worker-allowed, or on the
 top-level-only list. A hook call carrying `agent_id` is a sub-agent's, and `Commands/GuardCommand.cs`
 refuses it any dydo word off the first list and prints both lists. The skills hand sub-agents these
-commands: the admiral check-in's surveyor runs `dydo survey`, crew run `dydo statechart` (with its
+commands: a surveyor runs `dydo survey`, crew run `dydo statechart` (with its
 `install-skill` and `resume` verbs, which the guard reads as the same first word), the gates, and the
-Merge code-writer's `dydo merge <pr> --match-head-commit <sha> --match-base-commit <sha>`. The journey does not claim every shell dialect or nudge; `GuardWorkerLaneTests` covers
+Merge implementer's `dydo merge <pr> --match-head-commit <sha> --match-base-commit <sha>`. The journey does not claim every shell dialect or nudge; `GuardWorkerLaneTests` covers
 the guard's parsing.
 
 ## Which callers this is

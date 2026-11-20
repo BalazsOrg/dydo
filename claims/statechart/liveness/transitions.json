@@ -43,8 +43,8 @@
       "effect": null,
       "fair": true,
       "skills": [
-        "admiral",
         "chief-of-staff",
+        "coordinator",
         "ticket-captain"
       ]
     },
@@ -61,8 +61,8 @@
       "effect": null,
       "fair": true,
       "skills": [
-        "admiral",
         "chief-of-staff",
+        "coordinator",
         "ticket-captain"
       ]
     },
@@ -79,8 +79,8 @@
       "effect": null,
       "fair": true,
       "skills": [
-        "admiral",
         "chief-of-staff",
+        "coordinator",
         "ticket-captain"
       ]
     },

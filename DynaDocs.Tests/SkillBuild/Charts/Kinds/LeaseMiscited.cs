@@ -6,5 +6,5 @@ using DynaDocs.SkillBuild;
 public static class LeaseMiscited
 {
     public static readonly Claim Misnamed = new("Cite a real rule.", [ChartSkill.Holder],
-        [new(ChartSkill.Holder, "Cite a real rule.", new(HeaderPart.Role, 2))]) { Spec = ["K9", "X4"] };
+        [new(ChartSkill.Holder, "Cite a real rule.", new(SpinePart.Job, 2))]) { Spec = ["K9", "X4"] };
 }

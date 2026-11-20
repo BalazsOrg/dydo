@@ -17,24 +17,27 @@ public static class HierarchyMachines
         new(DispatchState.SelfAuthored, "Authored by the captain", "R16")
     ], DispatchState.Staffing, [DispatchState.Returned, DispatchState.CouncilCalled, DispatchState.SelfAuthored]);
 
+    // A need follows the Question stages (H16, H23; DYD-1195 317eb49f, 3a854e37): no officer does its homework, and
+    // his thread closes only when he closes it (893e1f5b). The council child's own route, a call it prepares for him
+    // included, is the tribunal's (L18); this machine ends there. `level` is the officer whose ticket or queue holds
+    // the need: a captain, under which its Question is a sub-ticket, or the coordinator, whose HITL queue it joins.
     public static readonly Machine Envoy = new(MachineId.Envoy, "A need for Balazs",
     [
-        new(EnvoyState.Need, "A need for Balazs", "H16"),
-        new(EnvoyState.Homework, "Homework first", "H16"),
-        new(EnvoyState.PassedUp, "Passed up the chain", "H16", "H12"),
-        new(EnvoyState.Decided, "Decided by the officer", "H16", "L18"),
+        new(EnvoyState.Need, "A need, where it arises", "H16", "H22"),
+        new(EnvoyState.Decided, "Decided where it arises: obvious and reversible", "H16", "H5"),
         new(EnvoyState.AskedInThread, "Asked in one line, in his thread", "H22", "H6"),
-        new(EnvoyState.ToTribunal, "Sent to the tribunal", "H5", "L18"),
-        new(EnvoyState.Queued, "Queued behind the active envoy", "H15", "H18"),
-        new(EnvoyState.Active, "Envoy out", "H15", "H19", "H23"),
+        new(EnvoyState.Research, "A research Question, held by a fresh captain", "H16", "H23", "L18", "L21"),
+        new(EnvoyState.Answered, "Answered by its research", "H16", "L18"),
+        new(EnvoyState.Council, "A council child, AFK", "H23", "L18", "L23"),
+        new(EnvoyState.Queued, "On his HITL queue, behind the active envoy", "H16", "H18", "H23"),
+        new(EnvoyState.Active, "Envoy out", "H15", "H18", "H19", "H23"),
         new(EnvoyState.Reported, "Envoy reported back", "H15", "H19"),
-        new(EnvoyState.Closed, "Envoy thread closed", "H18", "H19"),
-        new(EnvoyState.MovedOn, "He has moved on, the thread left open", "H18")
-    ], EnvoyState.Need, [EnvoyState.Decided, EnvoyState.AskedInThread, EnvoyState.ToTribunal, EnvoyState.Closed, EnvoyState.MovedOn])
+        new(EnvoyState.Closed, "Envoy thread closed", "H18", "H19")
+    ], EnvoyState.Need, [EnvoyState.Decided, EnvoyState.AskedInThread, EnvoyState.Answered, EnvoyState.Council, EnvoyState.Closed])
     {
         Variables =
         [
-            new("level", "\"captain\"", "level \\in {\"captain\", \"admiral\"}"),
+            new("level", "\"captain\"", "level \\in {\"captain\", \"coordinator\"}"),
             new("envoys", "0", "envoys \\in {0, 1}")
         ]
     };
@@ -46,14 +49,7 @@ public static class HierarchyMachines
         new(StaffState.Muster, "Muster", "L21", "K11"),
         new(StaffState.NightWatch, "Overnight watch", "H7", "H12"),
         new(StaffState.MorningBrief, "Morning brief", "L19", "L21")
-    ], StaffState.Day, [])
-    {
-        Gaps =
-        [
-            new(StaffState.Day, StaffState.Muster, "H7 says the chief of staff runs the overnight watch, not what starts it"),
-            new(StaffState.NightWatch, StaffState.MorningBrief, "H7 and L19 name the watch and the morning brief, not what ends the night")
-        ]
-    };
+    ], StaffState.Day, []);
 
     public static readonly Machine Liveness = new(MachineId.Liveness, "Liveness",
     [

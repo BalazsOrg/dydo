@@ -10,7 +10,7 @@ const states = {
 };
 const steps = {
   "Should_AlreadyOpen": "a duplicate is already open · S17",
-  "Should_Cancel": "at the landing: canceled with a reason · S18",
+  "Should_Cancel": "canceled with a reason by its batch captain · S18, S17, H5",
   "Should_Dup": "the batch captain finds it a duplicate · S17",
   "Should_Fixed": "fixed in place, when a lane is free, before a round, or at the landing · S17",
   "Should_Move": "at the landing: moved out by his call · S18",

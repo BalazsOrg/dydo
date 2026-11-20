@@ -22,10 +22,12 @@ blocks planning or implementation and is too big or too uncertain to settle inli
 discovery → Question Ticket*: an agent in fog first runs a bounded discovery - the Decision index, the
 feature specs, the ticket's own links, the glossary, the code - and only when that comes up empty does
 the question become a ticket that records what was searched and blocks every named plan or
-implementation ticket awaiting its answer. A crew member raises a hand to its captain. Captains file
-local Question Sub-tickets; the Project's map holder, the user or an invoked admiral, alone files
-Project-level Questions. An invoked admiral routes AFK homework and sends only HITL judgment to the user.
-Facts are the agent's job; choices are the user's.
+implementation ticket awaiting its answer. A crew member raises a hand to its captain. Whoever
+receives a passed-up need opens a Question for it and waits on it: a Question Sub-ticket under a
+captain, a Project-level Question under the coordinator. A fresh captain holds the Question and
+researches it first, then answers it, sends it to a council (a Question with Mode AFK), or puts it
+on the coordinator's HITL queue when it is worth the user's time (H16, H18, L18; DYD-1195 317eb49f,
+3a854e37, 87c1e2e6). Facts are the agent's job; a call reaches the user only when it needs him.
 
 Its resolution is an *answer* posted on the ticket. The answer graduates to a Decision Record only when
 it is hard to reverse, surprising later, and the result of a real trade-off. Tickets carry questions,
@@ -41,9 +43,8 @@ Decision Records carry decisions, and the two are linked rather than copied.
   [feature spec](../reference/feature-spec-convention.md); reconcile affected contracts when intent shifts.
 - **Ticket** - high resolution, just in time: the Ticket Captain's compact acceptance contract on the
   parent ticket or a direct lane Sub-ticket, with its scenarios where the ticket carries Gherkin, owned
-  paths and gates, exact enough to build. The spawned `code-writer` builds from it. The contract is
-  reviewed with the code; the Captain may buy a `spec` review of it before any code for one risk it
-  records in the contract.
+  paths and gates, exact enough to build. The spawned `implementer` builds from it. A contract gets
+  no review loop of its own; a spec gets at most one scout pass, which returns Questions (R4).
 
 ## Claimed, isolated, executed
 
@@ -57,43 +58,35 @@ Linear owns the ticket's status, priority, assignee, blockers and updates throug
 worktree, session, commits, PR and test runs are evidence for that ticket, never additional work
 records.
 
-Every delivery kind starts with the captain making its contract exact. The captain sets
-Implementing at the author's spawn, a code-writer or a docs-writer, and In Review at a
-reviewer's, the optional spec review before any code included. A parent whose lanes run is In Progress. The writer
+Every delivery kind starts with the captain making its contract exact. Linear has seven statuses
+(S5); a step with its own review loop shows its progress in hop sub-tickets: Implement, Review (one
+per round), Fix and Merge. The writer
 posts nothing before code unless the work splits into disjoint lanes or the contract is inexact;
 its IMPLEMENTED return carries the hop SHA, the red proof, the gates run and any blocker. A
 scenario changes only through a fresh author's fix hop. Every hop's SHA is posted, preserved and passed to the next crew member.
 
-## Reviewed before it merges
+## Reviewed, then merged
 
-A fresh reviewer judges the candidate against the rubric it targets before any merge, and where the
-merge has a Merge Ticket a second reviewer applies the `merge` rubric after the merge lands. An
-atomic ticket's merge into main has none; its ticket review PASS, green CI and the user's click stand
-in its place. Each reviewer returns the review block, which is posted on the work judged: its ticket or Merge Ticket, and in the PR body when present. A fifth consecutive FAIL on the same review loop is
-itself an escalation - stop looping and raise a hand. Review, inquisition and the verdict's rule are in
-the [Work Model](./work-model.md); the review block's one-line form is locked in the
+The [Work Model](./work-model.md#review-and-inquisition) holds review, merges, the inquisition and
+the landing; the review block's one-line form is locked in the
 [Linear Workspace Standard](../reference/linear-workspace-standard.md#communication-and-evidence).
+In short:
 
-A reviewed PR sets the source ticket Ready to Merge and the captain returns `done <key>: PR ready`.
-A Project ticket's final Merge Sub-ticket runs when its native blocker clears; the parent stays Ready to Merge.
-The captain directs the merge by one code-writer and a fresh merge review, then marks both
-Done and returns `done <key>: merged`. A Merge Sub-ticket never waits in Ready to Merge. The landing
-Merge does: the user clicks its reviewed PR as a merge commit.
-
-A FAIL, one or more blockers, returns to Implementing: a fresh author of the change's kind -
-`code-writer`, or `docs-writer` for a documentation change - takes the next fix hop
-with the FAIL block's blockers as its contract, amending a scenario only where the block names it. Corrections carry new
-commits and fresh reviews. From either verdict, the captain files each should as its own ticket and
-records each nit as one line on the ticket ([severity](../reference/dydo-glossary.md)). Merge FAIL
-fixes integration defects inside Merge. A source defect is reverted there, Merge closes Canceled
-and source returns to Implementing; if a later merge depends on it, a following fix ticket replaces
-the revert.
+- A fresh reviewer judges the wired parent once, before its Merge hop, and the verdict goes on its
+  Review hop (R2, R17).
+- A FAIL's blockers become Fix rN, an `implementer`'s fix hop with those blockers as its contract;
+  a fresh full-lens round follows (R8, S9).
+- After round 3 comes a checkpoint, not a stop: by default one more round (R10).
+- A merge into the feature branch has no review: its Merge hop is Done on a green DYTEST receipt on
+  the merge tree and green hosted CI on the merge SHA (R18, R20).
+- Only the landing keeps a merge review (R20, N6).
+- The captain files each should as its own ticket and records each nit as one line
+  ([severity](../reference/dydo-glossary.md)).
 
 ## Raising a hand
 
 The ladder runs crew → its Ticket Captain → commissioning officers → user. A sub-captain
-raises a hand to the captain above it; a top-level captain reaches an invoked admiral, or the
-user as Project map holder when no admiral is invoked. Agents
+raises a hand to the captain above it; a top-level captain reaches the coordinator (H12). Agents
 settle operational conflicts themselves by precedence, highest first: the user's live instruction, a
 Decision Record, the feature spec (pinned), the ticket contract,
 coding standards, existing code. The user
@@ -101,24 +94,23 @@ is reached only for a conflict with a Decision Record - is it truth, or is it ob
 external state agents cannot coordinate, or for authority the contract cannot supply.
 
 A crew member raises its hand by returning to its Ticket Captain; a comment on the ticket and, when
-the work is blocked, a Question Ticket wired as a blocker are the captain's rungs. The code-writer's
+the work is blocked, a Question Ticket wired as a blocker are the captain's rungs. The implementer's
 one pre-code comment naming lanes or an inexact contract is its scoped exception, not a hand-raise.
 A blocked captain releases: post the resume SHA, push the branch, clean the worktrees it or its crew
 made (lanes, merge checkouts, temp checkouts) with `dydo clean --dry-run <worktree>`, then
 `dydo clean <worktree>`, run from outside that tree, return the parent to Todo and unassign. The
 worktree its thread runs in belongs to T3: leave it. A user takeover does the same; a dead session leaves its
-last recorded hop without a final push. The map holder's next wake - an invoked admiral's, or the
-user's own return to the board when none is invoked - picks up blocker-cleared work.
+last recorded hop without a final push. The coordinator's next wake picks up blocker-cleared work (H5).
 
 ## Where the user is asked
 
 Project route approval; Questions and HITL work; an escalation that survived the ladder; each
-Milestone's Walkthrough, where only the walking skeleton's verdict holds back the work built on it,
-except overnight; confirming an Inquisition and its commission, a model per phase and the swarm
-width; the feature → main merge-commit click; and the landing's Walkthrough after it. A Milestone's
-findings become tickets in the Project as they arrive; the landing's reopen a lap in the same
-Project. An atomic ticket branches from main and has no Merge Sub-ticket: once its
-PR carries a reviewer PASS and CI is green, the user clicks it, and its captain closes it Done.
+Milestone's Walkthrough, where only the walking skeleton's verdict holds back the work built on it;
+and the landing's Walkthrough, which he accepts before the landing merges (N6).
+A Milestone's findings become tickets in the Project as they arrive; a landing he does not accept
+turns its findings into tickets in the same Project, and another landing follows (N6). A two-way PR
+into main, an atomic ticket's or the landing's, merges AFK by its captain once its evidence is
+complete; a one-way one waits for his click (R26, R27).
 The [workspace standard](../reference/linear-workspace-standard.md) owns the Type/Mode and priority rules.
 
 Linear status is the only delivery status. dydo does not copy it into frontmatter, infer it from Git,

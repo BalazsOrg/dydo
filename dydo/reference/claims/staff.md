@@ -32,39 +32,39 @@ Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Investig
 
 ## Muster
 
-`claim:Staff.Muster`: Overnight mode, the chief of staff's and the admiral's, starts at muster.
+`claim:Staff.Muster`: The night starts with his muster; overnight mode is the chief of staff's alone (DYD-1082 555a8300 gap 6, DYD-1195 33520d6c).
 
-Spec: K11, L21
+Spec: H7, K11
 
-Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Day → Muster, "overnight mode starts".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Day → Muster, "he musters: the night starts".
 
 **chief-of-staff** (Muster, arrival):
 
-> Overnight mode starts at muster, which you hold.
+> His muster starts the night: load `overnight-mode` and hold the muster with him; overnight mode is yours alone, and the coordinators run as they do by day.
 
 ## Watch
 
-`claim:Staff.Watch`: DR-grade calls surface at muster; then the overnight watch runs.
+`claim:Staff.Watch`: At muster the chief of staff lists every open dr-grade call as a thread link; then the overnight watch runs.
 
 Spec: L21, H7
 
-Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Muster → NightWatch, "DR-grade calls surfaced; the watch starts".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Muster → NightWatch, "the DR-grade calls listed; the watch starts".
 
 **chief-of-staff** (Muster, exit):
 
-> Surface every pending DR-grade call to him at muster, then start the overnight watch.
+> At muster, list for him every open ticket labelled `dr-grade` as a thread link, then start the overnight watch.
 
 ## Morning
 
-`claim:Staff.Morning`: The night ends in the morning brief.
+`claim:Staff.Morning`: The night ends on his return, and the morning brief closes it (DYD-1082 555a8300 gap 7).
 
-Spec: H7, L19, K11
+Spec: H7, L19
 
-Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): NightWatch → MorningBrief, "the night ends".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): NightWatch → MorningBrief, "he returns: the night ends".
 
 **chief-of-staff** (NightWatch, exit):
 
-> When the night ends, write the morning brief.
+> When he returns, the night ends: give him the morning brief.
 
 ## Brief
 
@@ -72,7 +72,7 @@ Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): NightWat
 
 Spec: L19, L21
 
-Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): MorningBrief → Day, "the brief is given".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): MorningBrief → Day, "the morning brief closes the night".
 
 **chief-of-staff** (MorningBrief, exit):
 
@@ -116,7 +116,191 @@ Spec: H7
 
 **chief-of-staff** (Day, nominal):
 
-> Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its admiral's own envoy.
+> Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its coordinator's own envoy.
+
+## MusterReady
+
+`claim:Staff.MusterReady`: The muster is a checklist held with him present, after overnight-mode's transition preflight; the night starts once it is done.
+
+Spec: K11, H7, K22
+
+**chief-of-staff** (Muster):
+
+> Hold this checklist with him present, after `overnight-mode`'s transition preflight; the night starts only once every line is done.
+
+## MusterAsk
+
+`claim:Staff.MusterAsk`: Each live coordinator returns a muster report to a fixed request.
+
+Spec: K11, H7, K22
+
+**chief-of-staff** (Muster):
+
+> Ask each live coordinator for its muster report, with the request below.
+
+## MusterUnblock
+
+`claim:Staff.MusterUnblock`: Operational blockers are resolved while he is present, each fix verified with evidence.
+
+Spec: K11, K22
+
+**chief-of-staff** (Muster):
+
+> Resolve each operational blocker while he is present, verifying each fix with evidence.
+
+## MusterPermissions
+
+`claim:Staff.MusterPermissions`: Each permission the night needs is exercised safely and its real result recorded; no dummy merge.
+
+Spec: K11, K22
+
+**chief-of-staff** (Muster):
+
+> Exercise each permission the night's work needs through a safe, authorised operation where one exists, such as contacting the coordinator, each session's Linear writes and feature-branch merges, and record the real result; an unprotected branch proves no merge permission, and a dummy merge is never run.
+
+## MusterGaps
+
+`claim:Staff.MusterGaps`: An exercise that can't run or an item left unresolved is a gap with his explicit disposition.
+
+Spec: K11, K22
+
+**chief-of-staff** (Muster):
+
+> Keep an exercise you can't run, or an item left unresolved, as a gap, and get his explicit disposition for the work that depends on it.
+
+## MusterStopLine
+
+`claim:Staff.MusterStopLine`: A stop line he wants goes in the Project plan the coordinator reads; there are no night orders (DYD-1195 33520d6c).
+
+Spec: K11
+
+**chief-of-staff** (Muster):
+
+> A stop line he wants goes in the Project plan, which its coordinator reads; there are no night orders.
+
+## MusterRunnable
+
+`claim:Staff.MusterRunnable`: Each coordinator confirms its next work is runnable before the night starts.
+
+Spec: K11, K22
+
+**chief-of-staff** (Muster):
+
+> Get each coordinator's confirmation that its next work is runnable.
+
+## MusterList
+
+`claim:Staff.MusterList`: He gets each coordinator's thread link and its readiness, never a report's content.
+
+Spec: K11, H7, H6
+
+**chief-of-staff** (Muster):
+
+> List for him each coordinator's thread link and its readiness in the form below, never a report's content; then the muster is ready.
+
+## MusterRequest
+
+`claim:Staff.MusterRequest`: The muster request a coordinator answers.
+
+Spec: K11, K22, H5
+
+**chief-of-staff** (MusterRequest):
+
+> ```text
+> His muster request for <date>, <Project>. Return:
+> Intent: his goals and purpose for the Project in your own words, by /in-your-own-words, apart from the work.
+> Work: your next tickets in fill order, the first runnable one, and the plan's stop line, or none.
+> Blockers: each operational obstacle, and the evidence that would show it fixed.
+> Permissions: each action the night's work needs, with a safe exercise for it, or the gap.
+> ```
+
+## MusterForm
+
+`claim:Staff.MusterForm`: The line each Project gets on his muster list: its coordinator's thread link and readiness.
+
+Spec: K11, H7
+
+**chief-of-staff** (MusterList):
+
+> ```text
+> <Project> — <coordinator thread link> — <ready, or not ready>
+> ```
+
+## SurveyRead
+
+`claim:Staff.SurveyRead`: Each watch tick reads the board across the Projects against the last observation, keeping no shadow board.
+
+Spec: H7, K22, S26
+
+**chief-of-staff** (NightSurvey):
+
+> Each watch tick, read `dydo survey board` across the Projects and compare it with your last observation; keep no shadow board.
+
+## SurveyThreads
+
+`claim:Staff.SurveyThreads`: Where progress is unclear, the coordinator's thread is read, a captain's only as needed.
+
+Spec: H7, K22
+
+**chief-of-staff** (NightSurvey):
+
+> Where progress is unclear, read the coordinator's thread, and a captain's only as needed, and check every nudge still unanswered.
+
+## SurveyFinds
+
+`claim:Staff.SurveyFinds`: The survey looks for idle officers with runnable work, unanswered nudges, blockers and colliding work.
+
+Spec: H7, H12, K22
+
+**chief-of-staff** (NightSurvey):
+
+> Look for an idle officer with runnable work, an unanswered nudge, a blocker that needs intervention and colliding work; an unchanged board or a quiet running task alone is no stall.
+
+## SurveyComplete
+
+`claim:Staff.SurveyComplete`: A tick is quiet only once every Project and nudge is checked; an unreadable source leaves it incomplete.
+
+Spec: H7, K22
+
+**chief-of-staff** (NightSurvey):
+
+> A tick ends quiet only once every Project and every outstanding nudge is checked; a source you could not read leaves it incomplete, to resolve, never quiet.
+
+## MorningFill
+
+`claim:Staff.MorningFill`: The morning brief is filled in the conversation after the verified shutdown, writing nothing to the repo.
+
+Spec: H7, K11, K22
+
+**chief-of-staff** (MorningBrief):
+
+> Fill this in the conversation once `overnight-mode` has verified the shutdown, writing nothing to the repo.
+
+## MorningTemplate
+
+`claim:Staff.MorningTemplate`: The morning brief's form: the night, PRs awaiting his click, proposed DRs to ratify, what waits on him, and next.
+
+Spec: H7, L19, L21, K22
+
+**chief-of-staff** (MorningBrief):
+
+> ```text
+> ## The night
+> <one real visual of the work touched>
+> - <result; at most three result lines>
+>
+> ## PRs into master awaiting your click
+> - <title> (<PR link>): <result>. Review <verdict>; CI <state on the current head>.
+>
+> ## Proposed DRs to ratify
+> - <title> (<thread link>): <what it decides>. Ratify or decline.
+>
+> ## Waiting on you
+> - <each HITL thread waiting on him, as a thread link>
+>
+> ## Next
+> 1. <next action and its owner>
+> ```
 
 ## DoubleCheck
 
@@ -126,4 +310,4 @@ Spec: H7, H12
 
 **chief-of-staff** (NightWatch, nominal):
 
-> Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the admirals' own scheduled surveys.
+> Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the coordinators' own scheduled surveys.

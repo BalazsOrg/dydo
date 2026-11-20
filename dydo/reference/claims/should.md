@@ -64,15 +64,25 @@ Transition in A should (`claims/statechart/should/Should.tla`): Open → Duplica
 
 ## Cancel
 
-`claim:Should.Cancel`: At the landing a should is canceled only with a reason.
+`claim:Should.Cancel`: A should is canceled only with a reason, by the captain of the Shoulds batch holding it.
 
-Spec: S18
+Spec: S18, S17, H5
 
-Transition in A should (`claims/statechart/should/Should.tla`): Open → Canceled, "at the landing: canceled with a reason".
+Transition in A should (`claims/statechart/should/Should.tla`): Open → Canceled, "canceled with a reason by its batch captain".
 
-**admiral** (Open, exit):
+**ticket-captain** (Open, exit):
 
-> At the landing, cancel a should only with a reason.
+> In a shoulds batch, cancel a should only with a one-line reason.
+
+## Check
+
+`claim:Should.Check`: At the landing the coordinator checks each should's state mechanically and routes any still open into a Shoulds batch.
+
+Spec: S18, S17, H5
+
+**coordinator** (Open, nominal):
+
+> At the landing, check each should's state: Done, Canceled with a reason, or moved out on his call; put any still open in a Shoulds batch.
 
 ## Move
 
@@ -82,23 +92,23 @@ Spec: S18
 
 Transition in A should (`claims/statechart/should/Should.tla`): Open → Moved, "at the landing: moved out by his call".
 
-**admiral** (Open, exit):
+**coordinator** (Open, exit):
 
 > At the landing, move a should out of the Project only on his call.
 
 ## Batch
 
-`claim:Should.Batch`: The admiral cuts a Shoulds batch N root ticket for one captain at the set moments.
+`claim:Should.Batch`: The coordinator cuts a Shoulds batch N root ticket for one captain at the set moments.
 
 Spec: S17
 
-**admiral** (Open, nominal):
+**coordinator** (Open, nominal):
 
 > Collect shoulds into a `Shoulds batch N` root ticket (Type `Feature` by default) cut for one captain when a lane is free, before an inquisition round, or at the landing.
 
 **linear-workspace-standard** (LinearShoulds):
 
-> Shoulds are collected into a `Shoulds batch N` root ticket the admiral cuts for one captain (Type `Feature` by default); there is no standing collection ticket.
+> Shoulds are collected into a `Shoulds batch N` root ticket the coordinator cuts for one captain (Type `Feature` by default); there is no standing collection ticket.
 
 ## Reparent
 

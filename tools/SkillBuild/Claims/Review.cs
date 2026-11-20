@@ -36,16 +36,16 @@ public static class Review
         Transition = new(ReviewState.Verdict, ReviewState.Fixing, "a blocker is a security hole") { Guard = "kind = \"security\" /\\ round # 3", Effect = "securityFirst' = TRUE" }
     };
 
-    public static readonly Claim Fundamental = new("A fundamental blocker or a new requirement goes to the officer above to re-plan.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "Send a fundamental blocker or a new requirement to the officer above to re-plan.", new(ReviewState.Verdict, 506, MoveKind.Exit))])
-    { Spec = ["R9"], Transition = new(ReviewState.Verdict, ReviewState.Replan, "a blocker is fundamental, or a new requirement") { Guard = "kind = \"fundamental\"" } };
+    public static readonly Claim Fundamental = new("A fundamental blocker or a new requirement goes to the officer above to re-plan; above a top-level captain a fresh Wayfinding captain re-plans, and the coordinator only opens its ticket.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Send a fundamental blocker or a new requirement to the officer above to re-plan; when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans.", new(ReviewState.Verdict, 506, MoveKind.Exit))])
+    { Spec = ["R9", "H5"], Transition = new(ReviewState.Verdict, ReviewState.Replan, "a blocker is fundamental, or a new requirement") { Guard = "kind = \"fundamental\"" } };
 
     public static readonly Claim NeedsBalazs = new("A blocker that needs Balazs goes up the chain at once.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "Pass a blocker that needs Balazs up the chain at once.", new(ReviewState.Verdict, 507, MoveKind.Exit))])
     { Spec = ["R9"], Transition = new(ReviewState.Verdict, ReviewState.Escalated, "a blocker needs Balazs") { Guard = "kind = \"balazs\"" } };
 
     public static readonly Claim Clean = new("By default the first round with no new blocker ends the phase.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "By default, the first round with no new blocker ends the phase.", new(ReviewState.Verdict, 508, MoveKind.Exit))])
+        [new(Skill.TicketCaptain, "By default, the first round with no new blocker ends the review rounds.", new(ReviewState.Verdict, 508, MoveKind.Exit))])
     { Spec = ["R8"], Transition = new(ReviewState.Verdict, ReviewState.Ended, "no new blocker this round") { Guard = "kind = \"none\"" } };
 
     public static readonly Claim OneMore = new("The officer running the rounds may order one more round.", [Actor.TicketCaptain],
@@ -92,7 +92,7 @@ public static class Review
     public static readonly Claim Nit = new("A nit is one line on its record.", [Actor.TicketCaptain, Actor.Reviewer],
     [
         new(Skill.TicketCaptain, "Record each nit as one line on its record.", new(ReviewState.Verdict, 515, MoveKind.Nominal)),
-        new(Skill.Reviewer, "Holding the round alone, record each nit as one line on its record.", new(ReviewState.Round, 515, MoveKind.Nominal)),
+        new(Skill.Reviewer, "Holding the round alone, record each nit as one line on its record.", new(ReviewState.Round, 525, MoveKind.Nominal)),
         new(Skill.LinearWorkspaceStandard, "A nit is one line on its record; an inquisition round's nits go on that round's nit ticket.", new(Section.LinearEvidence, 4))
     ])
     { Spec = ["S11"] };
@@ -121,10 +121,10 @@ public static class Review
     { Spec = ["R8"] };
 
     public static readonly Claim NoRerun = new("A fresh reviewer judges through lenses and re-runs nothing the same way.", [Actor.Reviewer],
-        [new(Skill.Reviewer, "Judge through your lenses and re-run nothing the author ran the same way, unless enough has changed since that its result is in doubt.", new(ReviewState.Round, 521, MoveKind.Nominal))])
+        [new(Skill.Reviewer, "Re-run what the author already ran, driving included, only when enough has changed since that its result is in doubt.", new(ReviewerPart.Tools, 3215))])
     { Spec = ["R5"] };
 
-    public static readonly Claim Statechart = new("A statechart is used only for a finished subsystem that has a state machine.", [Actor.Reviewer],
-        [new(Skill.Reviewer, "Use a statechart only for a finished subsystem that has a state machine.", new(ReviewState.Round, 522, MoveKind.Nominal))])
+    // The reviewer states it on Toolset.FormalNeeds's combined line (R34).
+    public static readonly Claim Statechart = new("A statechart is used only for a finished subsystem that has a state machine.", [Actor.Reviewer], [])
     { Spec = ["R7"] };
 }

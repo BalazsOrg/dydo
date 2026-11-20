@@ -10,10 +10,20 @@ Finals == {"Landing"}
 Init ==
     /\ state = "Unheld"
 
+\* claim:Coordination.Idle
+Coordination_Idle ==
+    /\ state = "Watching"
+    /\ state' = "Unheld"
+
+\* claim:Coordination.Wake
+Coordination_Wake ==
+    /\ state = "Unheld"
+    /\ state' = "Watching"
+
 \* claim:Project.Charted
 Project_Charted ==
     /\ state = "Charting"
-    /\ state' = "Watching"
+    /\ state' = "Unheld"
 
 \* claim:Project.Replan
 Project_Replan ==
@@ -35,26 +45,16 @@ Project_Take ==
     /\ state = "Unheld"
     /\ state' = "Charting"
 
-\* GAP: H4 names idle Projects but never defines when a Project goes idle
-Gap1 ==
-    /\ state = "Watching"
-    /\ state' = "Unheld"
-
-\* GAP: H4 says who holds a live Project, not who starts or wakes its admiral
-Gap2 ==
-    /\ state = "Unheld"
-    /\ state' = "Watching"
-
 Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
+    \/ Coordination_Idle
+    \/ Coordination_Wake
     \/ Project_Charted
     \/ Project_Replan
     \/ Project_Replanned
     \/ Project_StartLanding
     \/ Project_Take
-    \/ Gap1
-    \/ Gap2
     \/ Done
 
 Fairness == TRUE

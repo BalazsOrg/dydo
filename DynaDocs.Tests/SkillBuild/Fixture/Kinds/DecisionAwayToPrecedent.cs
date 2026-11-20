@@ -97,7 +97,7 @@ public static class DecisionAwayToPrecedent
         "Make the call the way the user would, or prepare it with the answer he would give, tested by a tribunal of three against his own words; a judge answers as he would, in the spirit of his words, citing why he decided.",
         [A.Officer, A.AnyAgent],
         [
-            new(S.WhatWouldBalazsDo, "Make the call the way he would, or prepare it with the answer he would give.", new(HeaderPart.Role, 2))
+            new(S.WhatWouldBalazsDo, "Make the call the way he would, or prepare it with the answer he would give.", new(SpinePart.Job, 2))
         ]);
 
     public static readonly Claim DecideInHisSpirit = new(

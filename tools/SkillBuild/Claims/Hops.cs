@@ -3,10 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>A step's hops, by Type label (M4): one ticket, or a chain of typed hop sub-tickets, and its Merge hop's kind.</summary>
 public static class Hops
 {
-    public static readonly Claim Single = new("A leaf lane or a batched should is one ticket, with no hops.", [Actor.TicketCaptain, Actor.Admiral],
+    public static readonly Claim Single = new("A leaf lane or a batched should is one ticket, with no hops.", [Actor.TicketCaptain],
     [
         new(Skill.TicketCaptain, "A leaf lane or a batched should stays one ticket, with no hops.", new(HopsState.Cut, 401, MoveKind.Exit)),
-        new(Skill.Admiral, "A leaf lane or a batched should stays one ticket, with no hops.", new(HopsState.Cut, 401, MoveKind.Exit)),
         new(Skill.LinearWorkspaceStandard, "A leaf lane or a batched should is one ticket, with no hops.", new(Section.LinearTickets, 4))
     ])
     { Spec = ["S4"], Transition = new(HopsState.Cut, HopsState.OneTicket, "the step has no review loop of its own") };
@@ -34,7 +33,7 @@ public static class Hops
     public static readonly Claim CheckAgain = new("After the fix, the next evidence check runs.", [Actor.TicketCaptain], [])
     { Spec = ["R8", "S9"], Transition = new(HopsState.CheckFix, HopsState.EvidenceCheck, "Fix rN Done; the next check runs") };
 
-    public static readonly Claim ImplementDone = new("The Implement hop is Done before the Review hop starts, in step order.", [Actor.CodeWriter], [])
+    public static readonly Claim ImplementDone = new("The Implement hop is Done before the Review hop starts, in step order.", [Actor.Implementer], [])
     { Spec = ["S3", "R2"], Transition = new(HopsState.ImplementHop, HopsState.ReviewHop, "Implement hop Done; Review r1 starts") };
 
     public static readonly Claim ReviewFails = new("A Review hop with a blocker is followed by a Fix hop.", [Actor.TicketCaptain], [])

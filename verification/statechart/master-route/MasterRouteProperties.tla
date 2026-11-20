@@ -19,7 +19,7 @@ R31_CiBeforeClick == [][(state' = "HitlMerge" /\ state # state') => state = "CiW
 \* R29: Each attempt enters its AFK/CI route from the recheck phase; actual tip/tree freshness is unmodeled.
 R29_RecheckBeforeMerge == [][(state' \in {"AfkMerge", "CiWatch"} /\ state # state') => state = "Resync"]_<<vars, seen>>
 
-\* R29: The third forced resync is held for admiral sequencing.
+\* R29: The third forced resync is held for the coordinator's sequencing.
 R29_HoldThirdResync == [][((resyncs' = 3 /\ resyncs < 3) => state' = "Held")]_<<vars, seen>>
 
 \* R31: The captain closes its master Merge after observing the merge.

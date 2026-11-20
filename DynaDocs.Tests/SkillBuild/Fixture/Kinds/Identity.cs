@@ -30,7 +30,7 @@ public static class Identity
         "An invoked admiral holds the Project map until the user takes it back, owns the map and how its tickets move, integrate and finish together, and the frontline stays the user's.",
         [A.Admiral],
         [
-            new(S.Admiral, "The user invoked you as a right hand for throughput, such as AFK work overnight: you hold the map until he takes it back, and the frontline stays his.", new(HeaderPart.Role, 2))
+            new(S.Admiral, "The user invoked you as a right hand for throughput, such as AFK work overnight: you hold the map until he takes it back, and the frontline stays his.", new(SpinePart.Job, 2))
         ]);
 
     public static readonly Claim AdmiralProjectAltitude = new(
@@ -51,7 +51,7 @@ public static class Identity
         "The ticket-captain stays accountable for the ticket, its evidence and every change, including crew edits and the complete integrated diff, though the crew does the work.",
         [A.TicketCaptain],
         [
-            new(S.TicketCaptain, "Your crew works; you remain accountable for every change.", new(HeaderPart.Role, 2)),
+            new(S.TicketCaptain, "Your crew works; you remain accountable for every change.", new(SpinePart.Job, 2)),
             new(S.WorkingTreeStandard, "One Ticket Captain owns the parent ticket and its integrated outcome end to end.", new(F.WorkingTreeStandardInvariants, 2))
         ]);
 
@@ -74,7 +74,7 @@ public static class Identity
         "The ticket's contract sets the destination; the code-writer chooses the route.",
         [A.TicketCaptain],
         [
-            new(S.TicketCaptain, "The ticket is your ship: its contract sets the destination; the code-writer finds the route.", new(HeaderPart.Role, 1))
+            new(S.TicketCaptain, "The ticket is your ship: its contract sets the destination; the code-writer finds the route.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim CosFixMechanicalHandBackJudgement = new(
@@ -116,14 +116,14 @@ public static class Identity
         "The ticket-captain is the default officer: every ticket gets a captain whether or not the user invoked an admiral.",
         [A.TicketCaptain],
         [
-            new(S.TicketCaptain, "You are the default officer: a ticket gets a captain whether or not the user has invoked an admiral.", new(HeaderPart.Role, 3))
+            new(S.TicketCaptain, "You are the default officer: a ticket gets a captain whether or not the user has invoked an admiral.", new(SpinePart.Job, 3))
         ]);
 
     public static readonly Claim DocsWriterWritesOneChange = new(
         "The docs-writer writes or corrects one reviewed documentation change, an inquisition's own record included, for its Ticket Captain, and makes it true.",
         [A.DocsWriter],
         [
-            new(S.DocsWriter, "Write or correct one reviewed change, an inquisition's own record included, for its Ticket Captain.", new(HeaderPart.Role, 1))
+            new(S.DocsWriter, "Write or correct one reviewed change, an inquisition's own record included, for its Ticket Captain.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim DriveLeavesVerificationSkill = new(
@@ -159,7 +159,7 @@ public static class Identity
         "The inquisitor skill is used when an inquisition captain sends a phase (Read, Break or Drive) and an area.",
         [A.Inquisitor],
         [
-            new(S.Inquisitor, "Use when an inquisition's captain sends you a phase and an area.", new(HeaderPart.Role, 1))
+            new(S.Inquisitor, "Use when an inquisition's captain sends you a phase and an area.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim InquisitorWorkerOneReturn = new(
@@ -174,7 +174,7 @@ public static class Identity
         [A.MapHolder],
         [
             new(S.LinearWorkspaceStandard, "The map holder is the user, or an admiral the user invoked, for a Project, and the captain for a ticket; the Project description names the Project's current holder.", new(F.LinearWorkspaceStandardWhoHoldsWhat, 1), () => [Identity.ProjectDescriptionNamesMapHolder!]),
-            new(S.Wayfinder, "A Project's map holder is the user, driving the map in his own session, or an admiral the user invoked, until the user takes the map back; the Project description names the current holder.", new(HeaderPart.Role, 3), () => [Identity.ProjectDescriptionNamesMapHolder!])
+            new(S.Wayfinder, "A Project's map holder is the user, driving the map in his own session, or an admiral the user invoked, until the user takes the map back; the Project description names the current holder.", new(SpinePart.Job, 3), () => [Identity.ProjectDescriptionNamesMapHolder!])
         ]);
 
     public static readonly Claim MapHolderHeldTicketNoCaptainBranchPrReview = new(
@@ -237,14 +237,14 @@ public static class Identity
         "The reviewer judges one candidate against one rubric and lets no blocker past; corrections and status are the invoker's.",
         [A.Reviewer],
         [
-            new(S.Reviewer, "Gandalf at the bridge: judge one candidate against one rubric, and let no blocker past.", new(HeaderPart.Role, 1))
+            new(S.Reviewer, "Gandalf at the bridge: judge one candidate against one rubric, and let no blocker past.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim ScoutCollectsResearcherConcludes = new(
         "The scout collects evidence from one source family for one question and concludes nothing; the researcher verifies, pools and concludes.",
         [A.Research, A.Scout],
         [
-            new(S.Scout, "Collect evidence from one source family for one question; you conclude nothing.", new(HeaderPart.Role, 1))
+            new(S.Scout, "Collect evidence from one source family for one question; you conclude nothing.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim SurveyorReadOnlyNoOfficerRole = new(

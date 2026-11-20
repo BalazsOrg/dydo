@@ -8,67 +8,71 @@ type: reference
 
 ## Staff
 
-`claim:Landing.Staff`: The admiral staffs each inquisition round from the roster and dydo usage.
+`claim:Landing.Staff`: The coordinator opens the Inquisition ticket; its root captain staffs the round from the roster and the quotas and tells him as an FYI on the HITL queue (DYD-1195 6deea8c0).
 
-Spec: N5, R13, R14
+Spec: N5, H5, R13, R14
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated → Mapped, "the admiral staffs a round; a fresh area map".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated → Mapped, "the Inquisition ticket opens; its root captain staffs a round and draws a fresh feature map".
 
-**admiral** (Integrated, exit):
+**coordinator** (Integrated, exit):
 
-> Staff each inquisition round from the model roster and `dydo usage`, and tell him in your next envoy bundle.
+> Once every delivery ticket is merged, open the Inquisition ticket for a fresh root inquisition captain.
+
+**ticket-captain** (Mapped, arrival):
+
+> As the root, staff the round yourself: the provider, the models and the swarm width, from the model roster and `dydo usage`; post the staffing on the coordinator's HITL queue as an FYI for him, riding in the next envoy.
 
 ## MapDrawn
 
-`claim:Landing.MapDrawn`: Each area's phases start with Read.
+`claim:Landing.MapDrawn`: Each slice's lenses start with Read, its own sub-agent.
 
-Spec: N5
+Spec: N5, R34
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): Mapped → ReadPhase, "an area's Read phase starts". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Mapped → ReadPhase, "a slice's Read lens starts". A system transition: no skill carries it.
 
 ## ReadDone
 
-`claim:Landing.ReadDone`: Read is followed by Break, by default.
+`claim:Landing.ReadDone`: Read is followed by Break, run by a separate sub-agent (DYD-1082 8239d5b6).
 
-Spec: N5
+Spec: N5, R34
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): ReadPhase → BreakPhase, "Read done; Break, the default next phase". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): ReadPhase → BreakPhase, "Read done; Break, a separate sub-agent". A system transition: no skill carries it.
 
 ## BreakDone
 
-`claim:Landing.BreakDone`: Break is followed by Drive, by default.
+`claim:Landing.BreakDone`: Break is followed by Drive, run by a separate sub-agent (DYD-1082 8239d5b6).
+
+Spec: N5, R34
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): BreakPhase → DrivePhase, "Break done; Drive, a separate sub-agent". A system transition: no skill carries it.
+
+## NextSlice
+
+`claim:Landing.NextSlice`: Every slice runs its lenses.
 
 Spec: N5
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): BreakPhase → DrivePhase, "Break done; Drive, the default next phase". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): DrivePhase → ReadPhase, "Drive done; the next slice's Read lens". A system transition: no skill carries it.
 
-## NextArea
+## AllSlices
 
-`claim:Landing.NextArea`: Every area runs its phases.
-
-Spec: N5
-
-Transition in The landing (`claims/statechart/landing/Landing.tla`): DrivePhase → ReadPhase, "Drive done; the next area's Read phase". A system transition: no skill carries it.
-
-## AllAreas
-
-`claim:Landing.AllAreas`: Once every area has run its phases, the round has its verdict.
+`claim:Landing.AllSlices`: Once every slice has run its lenses, the round has its verdict.
 
 Spec: N5, S8
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): DrivePhase → Inquisition, "every area through its phases: the round's verdict". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): DrivePhase → Inquisition, "every slice through its lenses: the round's verdict". A system transition: no skill carries it.
 
 ## RoundFound
 
-`claim:Landing.RoundFound`: The admiral holds the round it staffs: one verdict, blockers into Fix rN, shoulds registered.
+`claim:Landing.RoundFound`: The root inquisition captain holds the round: one verdict stitched from the groups, blockers into Fix rN, shoulds registered, nits on the round's nit ticket.
 
-Spec: N5, S8, S9, S17
+Spec: N5, S8, S9, S11, S17
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition → RoundFixes, "the round finds a blocker or a should".
 
-**admiral** (Inquisition, exit):
+**ticket-captain** (Inquisition, exit):
 
-> Hold each round you staff: post one verdict naming each seat and its findings, turn its blockers into Fix rN and register its shoulds.
+> Hold the round: post one verdict, stitched from the groups' results, naming each seat and its findings; turn its blockers into Fix rN, register its shoulds and put its nits on the round's nit ticket.
 
 ## NextRound
 
@@ -76,7 +80,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition
 
 Spec: N5
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes → Mapped, "the fixes are merged; the next round from zero, a fresh area map". A system transition: no skill carries it.
+Transition in The landing (`claims/statechart/landing/Landing.tla`): RoundFixes → Mapped, "the fixes are merged; the next round from zero, a fresh feature map". A system transition: no skill carries it.
 
 ## NextMergeRound
 
@@ -94,7 +98,7 @@ Spec: N5
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition → Prerequisites, "a round finds no blocker and no should".
 
-**admiral** (Inquisition, exit):
+**coordinator** (Inquisition, exit):
 
 > The Project lands only after an inquisition round that finds no blocker and no should.
 
@@ -114,7 +118,7 @@ Spec: N7, S18, T12, N15
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Prerequisites → MergeReview, "every landing prerequisite met".
 
-**admiral** (Prerequisites, exit):
+**coordinator** (Prerequisites, exit):
 
 > Open the landing merge review only once every should is closed and the mutation check on the Project's diff is clean.
 
@@ -126,9 +130,9 @@ Spec: N6, L16, R20, H22
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Walkthrough, "the Merge-confidence council passes the landing candidate".
 
-**admiral** (MergeReview, exit):
+**coordinator** (MergeReview, exit):
 
-> On the council's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.
+> On the landing merge review's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.
 
 ## ReviewFail
 
@@ -138,9 +142,9 @@ Spec: R9, R11
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → RoundFixes, "a blocker is broken or against the spec".
 
-**admiral** (MergeReview, exit):
+**coordinator** (MergeReview, exit):
 
-> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ## ReviewSecurity
 
@@ -150,21 +154,21 @@ Spec: R9
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → RoundFixes, "a blocker is a security hole".
 
-**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+**coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
-> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ## ReviewFundamental
 
-`claim:Landing.ReviewFundamental`: A fundamental landing merge-review blocker, or a new requirement, goes to the officer above to re-plan.
+`claim:Landing.ReviewFundamental`: A fundamental landing merge-review blocker, or a new requirement, goes to a fresh captain on a Wayfinding ticket to re-plan; the coordinator only opens its ticket.
 
-Spec: R9
+Spec: R9, H5
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Replanned, "a blocker is fundamental, or a new requirement".
 
-**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+**coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
-> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ## ReviewNeedsHim
 
@@ -174,9 +178,9 @@ Spec: R9
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Escalated, "a blocker needs Balazs".
 
-**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+**coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
-> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ## Accepted
 
@@ -186,9 +190,33 @@ Spec: N6
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Walkthrough → Merging, "Balazs accepts the landing candidate".
 
-**admiral** (Walkthrough, exit):
+**coordinator** (Walkthrough, exit):
 
 > When he accepts the landing candidate, it merges: AFK when two-way, on his click when one-way.
+
+## NotAccepted
+
+`claim:Landing.NotAccepted`: A landing walkthrough he does not accept files its findings as tickets in the same Project (DYD-1082 555a8300 gap 5).
+
+Spec: N6
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Walkthrough → NotAccepted, "he does not accept: his findings become tickets in the same Project".
+
+**ticket-captain** (Walkthrough, exit):
+
+> When he does not accept the landing walkthrough, file each of his findings as a ticket in the same Project.
+
+## ReCut
+
+`claim:Landing.ReCut`: After a landing walkthrough not accepted, a fix captain re-cuts the branch and another landing follows (DYD-1082 555a8300 gap 5).
+
+Spec: N6
+
+Transition in The landing (`claims/statechart/landing/Landing.tla`): NotAccepted → Integrated, "a fix captain re-cuts the branch; another landing follows".
+
+**ticket-captain** (NotAccepted, exit):
+
+> As its fix captain, re-cut the landing branch once the findings' tickets are merged; another landing follows.
 
 ## Merged
 
@@ -216,13 +244,17 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): Landed → 
 
 ## SpecGone
 
-`claim:Landing.SpecGone`: At acceptance, the spec's lasting parts move and the spec and plan files are deleted.
+`claim:Landing.SpecGone`: At acceptance, the Wayfinding captain moves the spec's lasting parts and deletes the spec and plan files; the coordinator only opens its ticket.
 
-Spec: S14, D11, N7
+Spec: S14, D11, N7, H4, H5
 
-**admiral** (Merging, nominal):
+**coordinator** (Merging, nominal):
 
-> Once he accepts, move the spec's lasting parts to DRs, the glossary, docs and the verification map, then delete the spec and the plan files.
+> Once he accepts the landing candidate, open a Wayfinding ticket to move the spec's lasting parts and delete the spec and the plan files.
+
+**ticket-captain** (Wayfinding):
+
+> At the landing, once he accepts, move the spec's lasting parts to DRs, the glossary, docs and the verification map, then delete the spec and the plan files.
 
 ## TagIsHis
 
@@ -230,6 +262,6 @@ Spec: S14, D11, N7
 
 Spec: R28, N2
 
-**admiral** (Landed, nominal):
+**coordinator** (Landed, nominal):
 
 > The release tag is his to push.

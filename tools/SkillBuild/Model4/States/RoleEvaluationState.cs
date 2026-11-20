@@ -8,5 +8,6 @@ public enum RoleEvaluationState
     Folded,
     Removed,
     WrittenFresh,
+    Changed,
     Approved
 }

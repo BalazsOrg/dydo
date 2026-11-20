@@ -127,7 +127,7 @@
       "claim": "claim:Findings.BatchShoulds",
       "from": "StaleShoulds",
       "to": "Acted",
-      "arrow": "the admiral cuts a shoulds batch",
+      "arrow": "the coordinator cuts a shoulds batch",
       "spec": [
         "S17"
       ],
@@ -291,7 +291,7 @@
       "claim": "claim:Findings.Route",
       "from": "CiRed",
       "to": "Routed",
-      "arrow": "to the open ticket's officer, or the admiral for a long-closed ticket",
+      "arrow": "to the open ticket's officer, or the coordinator for a long-closed ticket",
       "spec": [
         "H11"
       ],

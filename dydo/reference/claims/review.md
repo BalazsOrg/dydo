@@ -80,15 +80,15 @@ Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict â
 
 ## Fundamental
 
-`claim:Review.Fundamental`: A fundamental blocker or a new requirement goes to the officer above to re-plan.
+`claim:Review.Fundamental`: A fundamental blocker or a new requirement goes to the officer above to re-plan; above a top-level captain a fresh Wayfinding captain re-plans, and the coordinator only opens its ticket.
 
-Spec: R9
+Spec: R9, H5
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict â†’ Replan, "a blocker is fundamental, or a new requirement".
 
 **ticket-captain** (Verdict, exit):
 
-> Send a fundamental blocker or a new requirement to the officer above to re-plan.
+> Send a fundamental blocker or a new requirement to the officer above to re-plan; when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans.
 
 ## NeedsBalazs
 
@@ -112,7 +112,7 @@ Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict â
 
 **ticket-captain** (Verdict, exit):
 
-> By default, the first round with no new blocker ends the phase.
+> By default, the first round with no new blocker ends the review rounds.
 
 ## OneMore
 
@@ -274,9 +274,9 @@ Spec: R8
 
 Spec: R5
 
-**reviewer** (Round, nominal):
+**reviewer** (Tools):
 
-> Judge through your lenses and re-run nothing the author ran the same way, unless enough has changed since that its result is in doubt.
+> Re-run what the author already ran, driving included, only when enough has changed since that its result is in doubt.
 
 ## Statechart
 
@@ -284,6 +284,6 @@ Spec: R5
 
 Spec: R7
 
-**reviewer** (Round, nominal):
+**reviewer** (DriveAndFormal, on claim:Toolset.FormalNeeds):
 
-> Use a statechart only for a finished subsystem that has a state machine.
+> Formal needs a purpose-built model of the subject, or a statechart, which is only for a finished subsystem that has a state machine.

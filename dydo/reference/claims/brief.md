@@ -6,13 +6,13 @@ type: reference
 
 # Claims: Brief
 
-## CodeWriterBrief
+## ImplementerBrief
 
-`claim:Brief.CodeWriterBrief`: The code-writer dispatch template's slots.
+`claim:Brief.ImplementerBrief`: The implementer dispatch template's slots.
 
 Spec: K14
 
-**ticket-captain** (CodeWriterBrief):
+**ticket-captain** (ImplementerBrief):
 
 > Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · findings (Fix only) · model and effort · return to.
 
@@ -20,15 +20,11 @@ Spec: K14
 
 `claim:Brief.ReviewerBrief`: The reviewer dispatch template's slots.
 
-Spec: K14, R3, R6
+Spec: K14, R3, R6, R34
 
 **ticket-captain** (ReviewerBrief):
 
-> Ticket and contract · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
-
-**admiral** (ReviewerBrief):
-
-> Ticket and contract · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
+> Ticket and contract · the level: a leaf's evidence check, a ticket review, a feature or Milestone review, or an inquisition slice · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
 
 ## ScoutBrief
 
@@ -40,9 +36,9 @@ Spec: K14, R4
 
 > The question, or the spec for a scout pass · model and effort · return to.
 
-**admiral** (ScoutBrief):
+**research** (ScoutBrief):
 
-> The question, or the spec for a scout pass · model and effort · return to.
+> The question · the one source family to search · model and effort · return to.
 
 ## CaptainBrief
 
@@ -52,21 +48,27 @@ Spec: K14, H23
 
 **ticket-captain** (TicketCaptainBrief):
 
-> Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain is briefed from this template too.
+> Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain or a job ticket's captain is briefed from this template too, adding its job's skill from the table below.
 
-**admiral** (TicketCaptainBrief):
+**coordinator** (TicketCaptainBrief):
 
-> Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain is briefed from this template too.
+> Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to.
+
+## ResearchBrief
+
+`claim:Brief.ResearchBrief`: The research dispatch template's slots.
+
+Spec: K14, K30
+
+**ticket-captain** (ResearchBrief):
+
+> The question, and the choice it waits on · model and effort · return to.
 
 ## Lenses
 
 `claim:Brief.Lenses`: The officer names the lenses in the brief; lenses shift up the tree.
 
 Spec: R6
-
-**admiral** (Dispatching):
-
-> Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
 
 **ticket-captain** (Dispatching):
 
@@ -78,10 +80,6 @@ Spec: R6
 
 Spec: R3
 
-**admiral** (Dispatching):
-
-> Name the governing spec in each reviewer's brief, or say there is none.
-
 **ticket-captain** (Dispatching):
 
 > Name the governing spec in each reviewer's brief, or say there is none.
@@ -91,10 +89,6 @@ Spec: R3
 `claim:Brief.ScoutPass`: No review loop on a plan, spec or contract; a spec gets at most one scout pass.
 
 Spec: R4
-
-**admiral** (Dispatching):
-
-> A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
 
 **ticket-captain** (Dispatching):
 

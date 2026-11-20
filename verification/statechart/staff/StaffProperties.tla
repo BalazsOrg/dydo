@@ -13,4 +13,11 @@ H7_InvestigationReturns == [][((state = "Investigating" /\ state' # state) => st
 \* L19: The morning brief returns to duty, not a Question-ratification phase.
 L19_BriefDoesNotRatify == [][((state = "MorningBrief" /\ state' # state) => state' = "Day")]_<<vars, seen>>
 
+\* H7 (DYD-1082 555a8300 gap 6): the night starts with his muster.
+H7_NightStartsAtMuster == [][((state' = "NightWatch" /\ state # state') => state = "Muster")]_<<vars, seen>>
+
+\* H7 (DYD-1082 555a8300 gap 7): the night ends on his return, and the morning brief closes it.
+\* His return itself is unmodeled.
+H7_NightEndsInMorningBrief == [][((state = "NightWatch" /\ state' # state) => state' = "MorningBrief")]_<<vars, seen>>
+
 ====

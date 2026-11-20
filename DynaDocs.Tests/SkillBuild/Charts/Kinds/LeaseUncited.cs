@@ -6,5 +6,5 @@ using DynaDocs.SkillBuild;
 public static class LeaseUncited
 {
     public static readonly Claim Silent = new("Say nothing of the spec.", [ChartSkill.Holder],
-        [new(ChartSkill.Holder, "Say nothing of the spec.", new(HeaderPart.Role, 2))]);
+        [new(ChartSkill.Holder, "Say nothing of the spec.", new(SpinePart.Job, 2))]);
 }

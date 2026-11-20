@@ -7,16 +7,17 @@ stateDiagram-v2
   s2: Kept as a survivor #183; K22
   s3: Removed #183; K22
   s4: Approved by him at the final candidate, folds and removals included #183; K16, K22
-  s5: GAP: unknown state
+  s5: Rejected at his walkthrough: a change for new captains on new tickets #183; K22, K16
   s6: Written fresh from the 4.0.0 decisions and claims #183; K22, K19, K20
   [*] --> s0
   s0 --> s1: questioned, it folds into a survivor, which carries its responsibilities #183; K22
   s0 --> s2: questioned, it should exist: a survivor #183; K22
   s0 --> s3: questioned, it should not exist: removed #183; K22
   s1 --> s4: he approves the fold with the other claims, at the final candidate #183; K16, K22
-  s1 --> s5: GAP: K16 and K22 give his approval of a fold at the final candidate, not the route when he rejects it
+  s1 --> s5: he rejects the fold: a change for new captains on new tickets #183; K22, K16
   s2 --> s6: only a survivor is written fresh from the 4.0.0 decisions and claims, simpler and streamlined#59; its current file is a checklist of what not to lose, never a source #183; K22, K19
   s3 --> s4: he approves the removal with the other claims, at the final candidate #183; K16, K22
-  s3 --> s5: GAP: K16 and K22 give his approval of a removal at the final candidate, not the route when he rejects it
+  s3 --> s5: he rejects the removal: a change for new captains on new tickets #183; K22, K16
+  s5 --> s0: new captains on new tickets question it again with his verdict, and rebuild #183; K22, K16
   s6 --> s4: he approves the rewrite with the other claims, at the final candidate #183; K16, K22
-  s6 --> s5: GAP: K16 and K22 give his approval of a rewrite at the final candidate, not the route when he rejects it
+  s6 --> s5: he rejects the rewrite: a change for new captains on new tickets #183; K22, K16

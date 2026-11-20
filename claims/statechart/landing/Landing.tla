@@ -8,8 +8,6 @@ vars == <<state, round, areas, fixFrom, securityFirst, prereqs, hardened>>
 
 Finals == {"Tagged", "Replanned", "Escalated"}
 
-Open == {"GAP 1"}
-
 Init ==
     /\ state = "Integrated"
     /\ round = 1
@@ -25,8 +23,8 @@ Landing_Accepted ==
     /\ state' = "Merging"
     /\ UNCHANGED <<round, areas, fixFrom, securityFirst, prereqs, hardened>>
 
-\* claim:Landing.AllAreas
-Landing_AllAreas ==
+\* claim:Landing.AllSlices
+Landing_AllSlices ==
     /\ state = "DrivePhase"
     /\ areas = 1
     /\ state' = "Inquisition"
@@ -70,14 +68,6 @@ Landing_Merged ==
     /\ state' = "Landed"
     /\ UNCHANGED <<round, areas, fixFrom, securityFirst, prereqs, hardened>>
 
-\* claim:Landing.NextArea
-Landing_NextArea ==
-    /\ state = "DrivePhase"
-    /\ areas > 1
-    /\ state' = "ReadPhase"
-    /\ areas' = areas - 1
-    /\ UNCHANGED <<round, fixFrom, securityFirst, prereqs, hardened>>
-
 \* claim:Landing.NextMergeRound
 Landing_NextMergeRound ==
     /\ state = "RoundFixes"
@@ -93,6 +83,20 @@ Landing_NextRound ==
     /\ round' = round + 1 /\ areas' \in 1..2
     /\ UNCHANGED <<fixFrom, securityFirst, prereqs, hardened>>
 
+\* claim:Landing.NextSlice
+Landing_NextSlice ==
+    /\ state = "DrivePhase"
+    /\ areas > 1
+    /\ state' = "ReadPhase"
+    /\ areas' = areas - 1
+    /\ UNCHANGED <<round, fixFrom, securityFirst, prereqs, hardened>>
+
+\* claim:Landing.NotAccepted
+Landing_NotAccepted ==
+    /\ state = "Walkthrough"
+    /\ state' = "NotAccepted"
+    /\ UNCHANGED <<round, areas, fixFrom, securityFirst, prereqs, hardened>>
+
 \* claim:Landing.PrerequisiteMet
 Landing_PrerequisiteMet ==
     /\ state = "Prerequisites"
@@ -100,6 +104,12 @@ Landing_PrerequisiteMet ==
     /\ state' = "Prerequisites"
     /\ prereqs' = prereqs + 1
     /\ UNCHANGED <<round, areas, fixFrom, securityFirst, hardened>>
+
+\* claim:Landing.ReCut
+Landing_ReCut ==
+    /\ state = "NotAccepted"
+    /\ state' = "Integrated"
+    /\ UNCHANGED <<round, areas, fixFrom, securityFirst, prereqs, hardened>>
 
 \* claim:Landing.ReadDone
 Landing_ReadDone ==
@@ -161,27 +171,23 @@ Landing_Tag ==
     /\ state' = "Tagged"
     /\ UNCHANGED <<round, areas, fixFrom, securityFirst, prereqs, hardened>>
 
-\* GAP: N6 gives only his acceptance; the route when he does not accept is unstated
-Gap1 ==
-    /\ state = "Walkthrough"
-    /\ state' = "GAP 1"
-    /\ UNCHANGED <<round, areas, fixFrom, securityFirst, prereqs, hardened>>
-
-Done == state \in Finals \cup Open /\ UNCHANGED vars
+Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
     \/ Landing_Accepted
-    \/ Landing_AllAreas
+    \/ Landing_AllSlices
     \/ Landing_BreakDone
     \/ Landing_CleanRound
     \/ Landing_Confident
     \/ Landing_Hardened
     \/ Landing_MapDrawn
     \/ Landing_Merged
-    \/ Landing_NextArea
     \/ Landing_NextMergeRound
     \/ Landing_NextRound
+    \/ Landing_NextSlice
+    \/ Landing_NotAccepted
     \/ Landing_PrerequisiteMet
+    \/ Landing_ReCut
     \/ Landing_ReadDone
     \/ Landing_Ready
     \/ Landing_ReviewFail
@@ -191,7 +197,6 @@ Next ==
     \/ Landing_RoundFound
     \/ Landing_Staff
     \/ Landing_Tag
-    \/ Gap1
     \/ Done
 
 Bounds == round <= 3 /\ areas \in 1..2 /\ fixFrom \in {"none", "inquisition", "merge"} /\ securityFirst \in BOOLEAN /\ prereqs <= 10 /\ hardened \in BOOLEAN

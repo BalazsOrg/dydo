@@ -40,11 +40,11 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 Spec: R29
 
-Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Paced → Resync, "the admiral gives it its turn".
+Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Paced → Resync, "the coordinator gives it its turn".
 
-**admiral** (Paced, exit):
+**coordinator** (Paced, exit):
 
-> Land main-bound merges one at a time; each re-checks against current master just before landing.
+> Give main-bound merges their turn one at a time, by blocking relations, then the oldest ready PR first; its captain re-checks against current master just before landing and merges.
 
 **ticket-captain** (Resync, arrival):
 
@@ -52,7 +52,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 **working-tree-standard** (TreeMerging):
 
-> Main-bound merges land one at a time, paced by the admiral; each re-checks against current master just before landing, and a PR forced to re-sync a third time is held while the admiral sequences the colliding work.
+> Main-bound merges land one at a time, paced by the coordinator; each re-checks against current master just before landing, and a PR forced to re-sync a third time is held while the coordinator sequences the colliding work.
 
 ## Merge
 
@@ -84,7 +84,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 ## Hold
 
-`claim:MasterRoute.Hold`: A PR forced to re-sync a third time is held while the admiral sequences the colliding work.
+`claim:MasterRoute.Hold`: A PR forced to re-sync a third time is held while the coordinator sequences the colliding work.
 
 Spec: R29
 
@@ -92,25 +92,25 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 **working-tree-standard** (TreeMerging, on claim:MasterRoute.Turn):
 
-> Main-bound merges land one at a time, paced by the admiral; each re-checks against current master just before landing, and a PR forced to re-sync a third time is held while the admiral sequences the colliding work.
+> Main-bound merges land one at a time, paced by the coordinator; each re-checks against current master just before landing, and a PR forced to re-sync a third time is held while the coordinator sequences the colliding work.
 
-**admiral** (Held, arrival):
+**coordinator** (Held, arrival):
 
-> Hold a PR forced to re-sync a third time and sequence the colliding work.
+> Hold a PR forced to re-sync a third time and sequence the colliding work, lower ticket number first.
 
 **ticket-captain** (Held, arrival):
 
-> A third forced re-sync holds your PR until the admiral sequences the colliding work.
+> A third forced re-sync holds your PR until the coordinator sequences the colliding work.
 
 ## Sequenced
 
-`claim:MasterRoute.Sequenced`: The admiral releases a held PR once the colliding work is sequenced.
+`claim:MasterRoute.Sequenced`: The coordinator releases a held PR once the colliding work is sequenced.
 
 Spec: R29
 
 Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Held → Paced, "the colliding work is sequenced".
 
-**admiral** (Held, exit):
+**coordinator** (Held, exit):
 
 > Release the held PR once the colliding work is sequenced.
 

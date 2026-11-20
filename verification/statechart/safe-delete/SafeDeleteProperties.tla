@@ -13,4 +13,8 @@ N10_ArchiveBeforePurge == state = "Purged" => "Archived" \in seen
 \* N10: Structural guard for the purged terminal phase; retention and purge safety remain unmodeled.
 Structural_N10_PurgeIsFinal == [][((state = "Purged") => state' = "Purged")]_<<vars, seen>>
 
+\* N10 (DYD-1082 555a8300 gap 10; DYD-1195 70df9ff8): `dydo archive restore` brings back only what the
+\* archive holds; a branch or worktree turns live again only from the archive.
+N10_RestoreOnlyArchived == [][((state' = "Live" /\ state # state') => state = "Archived")]_<<vars, seen>>
+
 ====

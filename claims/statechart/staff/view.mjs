@@ -9,12 +9,10 @@ const states = {
 const steps = {
   "Staff_Answered": "findings given to him · H7",
   "Staff_Ask": "he asks for cross-Project thinking, or about an unknown on his machine · H7",
-  "Staff_Brief": "the brief is given · L19, L21",
-  "Staff_Morning": "the night ends · H7, L19, K11",
-  "Staff_Muster": "overnight mode starts · K11, L21",
-  "Staff_Watch": "DR-grade calls surfaced; the watch starts · L21, H7",
-  "Gap1": "GAP: H7 says the chief of staff runs the overnight watch, not what starts it",
-  "Gap2": "GAP: H7 and L19 name the watch and the morning brief, not what ends the night"
+  "Staff_Brief": "the morning brief closes the night · L19, L21",
+  "Staff_Morning": "he returns: the night ends · H7, L19",
+  "Staff_Muster": "he musters: the night starts · H7, K11",
+  "Staff_Watch": "the DR-grade calls listed; the watch starts · L21, H7"
 };
 export const title = "The chief of staff";
 export const state = (v) => states[v.state];

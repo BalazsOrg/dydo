@@ -15,7 +15,7 @@ const steps = {
   "Review_CheckpointGoOn": "checkpoint: one more round, the security lens first for a security hole · R10, S10, R9",
   "Review_Clean": "no new blocker this round · R8",
   "Review_FixDone": "Fix rN is Done: its blockers Done, proof run on the head · S9, R8",
-  "Review_Fundamental": "a blocker is fundamental, or a new requirement · R9",
+  "Review_Fundamental": "a blocker is fundamental, or a new requirement · R9, H5",
   "Review_NeedsBalazs": "a blocker needs Balazs · R9",
   "Review_OneMore": "no new blocker, but the officer orders one more round · R8",
   "Review_Open": "the parts are wired; Review r1 opens · R2, R3, R6",

@@ -126,7 +126,7 @@ public static class ContractMoveToWriter
             new(S.Research, "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; do not preload the whole standard.", new(F.ResearchMustReads, 4)),
             new(S.Reviewer, "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; do not preload the whole standard.", new(F.ReviewerMustReads, 6)),
             new(S.TicketCaptain, "From the repository root, read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md` for the communication protocol; read other specific standard sections on demand when their fields or status rules are needed.", new(F.TicketCaptainMustReads, 8)),
-            new(S.Wayfinder, "For a communication protocol, from the repository root read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md`, not the whole workspace standard.", new(HeaderPart.Role, 5))
+            new(S.Wayfinder, "For a communication protocol, from the repository root read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md`, not the whole workspace standard.", new(SpinePart.Job, 5))
         ]);
 
     public static readonly Claim ReadQuestionAsStated = new(

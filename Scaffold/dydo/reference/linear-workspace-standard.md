@@ -48,7 +48,7 @@ type: reference
 
 - A should is registered as a child of the ticket where it was found, after the round holder checks the open shoulds under that ticket and its ancestors for a duplicate.
 - A should's parent may close Done while the should stays open.
-- Shoulds are collected into a `Shoulds batch N` root ticket the admiral cuts for one captain (Type `Feature` by default); there is no standing collection ticket.
+- Shoulds are collected into a `Shoulds batch N` root ticket the coordinator cuts for one captain (Type `Feature` by default); there is no standing collection ticket.
 - The batch captain re-parents the shoulds into it and keeps a `related: found in <KEY> rN` link on each.
 - The batch captain marks a duplicate should Duplicate.
 

@@ -12,7 +12,7 @@ public static class WayfindingRouteToWrite
         "Wayfinding charts the visible route as Wayfinding Tickets and resolves them one at a time, graduating what becomes specifiable into fresh tickets, until the destination is reached; it finds the route and does not charge at the destination.",
         [A.AnyAgent, A.MapHolder],
         [
-            new(S.Wayfinder, "Chart the visible route as Wayfinding Tickets and resolve them one at a time until the destination is reached.", new(HeaderPart.Role, 1))
+            new(S.Wayfinder, "Chart the visible route as Wayfinding Tickets and resolve them one at a time until the destination is reached.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim ScaffoldChartAndApproval = new(

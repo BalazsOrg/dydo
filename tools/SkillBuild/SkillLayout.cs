@@ -1,9 +1,10 @@
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// One skill's slots and the lines placed in them (K9), checked: every line has a placement in a
-/// declared slot, a move is one line in a state, no two lines share an order in a slot, and every
-/// appendix is linked from a move.
+/// One skill's slots and the lines placed in them (K9), checked: a skill's spine is its job paragraph,
+/// titled phases and scenarios, and a standard holds sections only; every line has a placement in a
+/// declared slot; a move is one line in a state; a job line is one line; no two lines share an order in
+/// a slot.
 /// </summary>
 internal sealed class SkillLayout
 {
@@ -16,9 +17,6 @@ internal sealed class SkillLayout
         _skill = skill;
         Declare(skill);
         foreach (var line in lines) Add(line);
-        foreach (var appendix in skill.Appendices)
-            if (!_lines.Values.SelectMany(placed => placed).Any(placed => Equals(placed.Line.Place.Appendix, appendix.Id)))
-                throw Error($"appendix {Names.Of(appendix.Id)} is linked from no move");
     }
 
     /// <summary>A slot's lines: moves by step, then each by its order.</summary>
@@ -28,25 +26,37 @@ internal sealed class SkillLayout
 
     private void Declare(SkillSpec skill)
     {
-        if (skill.IsStandard && skill.States.Count + skill.Routines.Count + skill.Resources.Count + skill.Appendices.Count > 0)
-            throw Error("a standard holds sections only");
-        if (!skill.IsStandard)
-            foreach (var part in Enum.GetValues<HeaderPart>()) Declare(part, SlotKind.Header);
-        Declare(skill.States, SlotKind.State);
-        Declare(skill.Routines, SlotKind.Routine);
-        Declare(skill.Sections, SlotKind.Section, opensFile: skill.IsStandard);
-        foreach (var resource in skill.Resources) Declare(resource.Sections, SlotKind.Section, opensFile: true);
-        Declare(skill.Appendices, SlotKind.Appendix);
+        if (skill.IsStandard)
+        {
+            if (skill.Phases.Count + skill.Scenarios.Count > 0) throw Error("a standard holds sections only");
+            Declare(skill.Sections);
+            return;
+        }
+        if (skill.Sections.Count > 0)
+            throw Error("a skill's spine is its job paragraph, phases and scenarios; sections belong to a standard");
+        Declare(SpinePart.Job, SlotKind.Job);
+        Declare(SpinePart.WhenThingsGoWrong, SlotKind.Lines);
+        foreach (var phase in skill.Phases)
+        {
+            if (string.IsNullOrWhiteSpace(phase.Title)) throw Error("a job phase needs a title");
+            Declare(phase.Slots);
+        }
+        var files = new HashSet<string>(StringComparer.Ordinal);
+        foreach (var resource in skill.Resources)
+        {
+            if (!files.Add(SkillRenderer.FileOf(resource.Id))) throw Error($"resource {Names.Of(resource.Id)} is declared twice");
+            Declare(resource.Slots);
+        }
     }
 
-    private void Declare(IReadOnlyList<Slot> slots, SlotKind kind, bool opensFile = false)
+    // Each list's first slot may be untitled: its lines follow the phase's, the resource's or the standard's heading.
+    private void Declare(IReadOnlyList<Slot> slots)
     {
         for (var index = 0; index < slots.Count; index++)
         {
-            var mayBeUntitled = kind == SlotKind.Section && opensFile && index == 0;
-            if (slots[index].Title is null && !mayBeUntitled)
-                throw Error($"{Names.Of(slots[index].Id)} needs a title; only a file's opening section may have none");
-            Declare(slots[index].Id, kind);
+            if (slots[index].Title is null && (index > 0 || slots[index].IsState))
+                throw Error($"{Names.Of(slots[index].Id)} needs a title; only the slot that opens a phase, resource or standard may have none");
+            Declare(slots[index].Id, slots[index].IsState ? SlotKind.State : SlotKind.Lines);
         }
     }
 
@@ -61,10 +71,8 @@ internal sealed class SkillLayout
         if (!_kinds.TryGetValue(place.Slot, out var kind))
             throw Error($"claim:{line.Owner} is placed in {Names.Of(place.Slot)}, which the skill does not declare");
         var inState = kind == SlotKind.State;
-        if (inState != place.Step.HasValue || (inState ? line.Line.Text.Contains('\n') : place.Appendix is not null))
-            throw Error($"claim:{line.Owner}: a line in a state is a one-line move with its step, and only a move has a step or an appendix");
-        if (place.Appendix is not null && _kinds.GetValueOrDefault(place.Appendix) != SlotKind.Appendix)
-            throw Error($"claim:{line.Owner} links {Names.Of(place.Appendix)}, which the skill does not declare as an appendix");
+        if (inState != place.Step.HasValue || (kind != SlotKind.Lines && line.Line.Text.Contains('\n')))
+            throw Error($"claim:{line.Owner}: a line in a state is a one-line move with its step, only a move has a step, and a job line is one line");
         var lines = _lines.TryGetValue(place.Slot, out var placed) ? placed : _lines[place.Slot] = [];
         if (lines.Any(other => other.Line.Place.Step == place.Step && other.Line.Place.Order == place.Order))
             throw Error($"claim:{line.Owner} takes order {place.Order} in {Names.Of(place.Slot)}, which another line holds");

@@ -23,7 +23,7 @@ const steps = {
   "MasterRoute_RealRed": "a real red after the merge · R22, Y9",
   "MasterRoute_Reland": "fixed, fix-scoped round passed, offered again · R22",
   "MasterRoute_Sequenced": "the colliding work is sequenced · R29",
-  "MasterRoute_Turn": "the admiral gives it its turn · R29",
+  "MasterRoute_Turn": "the coordinator gives it its turn · R29",
   "MasterRoute_TwoWay": "declared two-way in the PR body; it waits for its turn · R26, R27, R29",
   "MasterRoute_Woken": "receipt and CI green on the merge · R20, R31"
 };

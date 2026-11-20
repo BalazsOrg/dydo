@@ -1,6 +1,6 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>A PR into master (M8): two-way AFK by its captain, one-way on his click, paced one at a time by the admiral.</summary>
+/// <summary>A PR into master (M8): two-way AFK by its captain, one-way on his click, paced one at a time by the coordinator.</summary>
 public static class MasterRoute
 {
     public static readonly Claim TwoWay = new("A two-way PR into master merges AFK by its captain once its evidence is complete.", [Actor.TicketCaptain],
@@ -20,14 +20,14 @@ public static class MasterRoute
         Transition = new(MasterRouteState.Offered, MasterRouteState.Paced, "one-way, flagged or declared; it waits for its turn") { Effect = "oneWay' = TRUE" }
     };
 
-    public static readonly Claim Turn = new("Main-bound merges land one at a time; each re-checks against current master just before landing.", [Actor.Admiral, Actor.TicketCaptain],
+    public static readonly Claim Turn = new("Main-bound merges land one at a time; each re-checks against current master just before landing.", [Actor.Coordinator, Actor.TicketCaptain],
     [
-        new(Skill.Admiral, "Land main-bound merges one at a time; each re-checks against current master just before landing.", new(MasterRouteState.Paced, 703, MoveKind.Exit)),
+        new(Skill.Coordinator, "Give main-bound merges their turn one at a time, by blocking relations, then the oldest ready PR first; its captain re-checks against current master just before landing and merges.", new(MasterRouteState.Paced, 703, MoveKind.Exit)),
         new(Skill.TicketCaptain, "On your turn, re-sync with current master and re-check.", new(MasterRouteState.Resync, 703, MoveKind.Arrival)),
-        new(Skill.WorkingTreeStandard, "Main-bound merges land one at a time, paced by the admiral; each re-checks against current master just before landing, and a PR forced to re-sync a third time is held while the admiral sequences the colliding work.",
+        new(Skill.WorkingTreeStandard, "Main-bound merges land one at a time, paced by the coordinator; each re-checks against current master just before landing, and a PR forced to re-sync a third time is held while the coordinator sequences the colliding work.",
             new(Section.TreeMerging, 8), () => [Hold!])
     ])
-    { Spec = ["R29"], Transition = new(MasterRouteState.Paced, MasterRouteState.Resync, "the admiral gives it its turn") };
+    { Spec = ["R29"], Transition = new(MasterRouteState.Paced, MasterRouteState.Resync, "the coordinator gives it its turn") };
 
     public static readonly Claim Merge = new("The captain merges a two-way PR once the re-check is green.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "Merge a two-way PR yourself with `dydo merge` once the re-check is green.", new(MasterRouteState.Resync, 704, MoveKind.Exit))])
@@ -48,18 +48,18 @@ public static class MasterRoute
         Transition = new(MasterRouteState.Resync, MasterRouteState.Paced, "master moved: re-sync again") { Guard = "resyncs < 2", Effect = "resyncs' = resyncs + 1" }
     };
 
-    public static readonly Claim Hold = new("A PR forced to re-sync a third time is held while the admiral sequences the colliding work.", [Actor.Admiral, Actor.TicketCaptain],
+    public static readonly Claim Hold = new("A PR forced to re-sync a third time is held while the coordinator sequences the colliding work.", [Actor.Coordinator, Actor.TicketCaptain],
     [
-        new(Skill.Admiral, "Hold a PR forced to re-sync a third time and sequence the colliding work.", new(MasterRouteState.Held, 706, MoveKind.Arrival)),
-        new(Skill.TicketCaptain, "A third forced re-sync holds your PR until the admiral sequences the colliding work.", new(MasterRouteState.Held, 706, MoveKind.Arrival))
+        new(Skill.Coordinator, "Hold a PR forced to re-sync a third time and sequence the colliding work, lower ticket number first.", new(MasterRouteState.Held, 706, MoveKind.Arrival)),
+        new(Skill.TicketCaptain, "A third forced re-sync holds your PR until the coordinator sequences the colliding work.", new(MasterRouteState.Held, 706, MoveKind.Arrival))
     ])
     {
         Spec = ["R29"],
         Transition = new(MasterRouteState.Resync, MasterRouteState.Held, "forced to re-sync a third time") { Guard = "resyncs = 2", Effect = "resyncs' = 3" }
     };
 
-    public static readonly Claim Sequenced = new("The admiral releases a held PR once the colliding work is sequenced.", [Actor.Admiral],
-        [new(Skill.Admiral, "Release the held PR once the colliding work is sequenced.", new(MasterRouteState.Held, 707, MoveKind.Exit))])
+    public static readonly Claim Sequenced = new("The coordinator releases a held PR once the colliding work is sequenced.", [Actor.Coordinator],
+        [new(Skill.Coordinator, "Release the held PR once the colliding work is sequenced.", new(MasterRouteState.Held, 707, MoveKind.Exit))])
     { Spec = ["R29"], Transition = new(MasterRouteState.Held, MasterRouteState.Paced, "the colliding work is sequenced") { Effect = "resyncs' = 0" } };
 
     public static readonly Claim AfkDone = new("dydo merge merges the two-way PR into master.", [Actor.DydoMerge], [])

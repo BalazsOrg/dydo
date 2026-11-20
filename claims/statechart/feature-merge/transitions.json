@@ -25,7 +25,7 @@
     },
     {
       "id": "PreFix",
-      "title": "A code-writer fixing a red gate",
+      "title": "An implementer fixing a red gate",
       "spec": [
         "R21"
       ]
@@ -117,7 +117,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "code-writer",
+        "implementer",
         "ticket-captain",
         "working-tree-standard"
       ]

@@ -12,7 +12,7 @@ type: reference
 
 Spec: N12 DR 058 §3
 
-**code-writer** (Working, nominal):
+**implementer** (Build):
 
 > On a Fix, check each blocker's severity against the source, not the label; fix only the blockers, and put a label you dispute in your return with its evidence (file:line, test, output).
 
@@ -22,6 +22,6 @@ Spec: N12 DR 058 §3
 
 Spec: N12 DR 058 §4
 
-**code-writer** (Working, nominal):
+**implementer** (Build):
 
 > On a Fix, prefer the change that deletes or narrows code; review never grows the change.

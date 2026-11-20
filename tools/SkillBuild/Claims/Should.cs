@@ -25,18 +25,23 @@ public static class Should
     ])
     { Spec = ["S17"], Transition = new(ShouldState.Open, ShouldState.Duplicate, "the batch captain finds it a duplicate") };
 
-    public static readonly Claim Cancel = new("At the landing a should is canceled only with a reason.", [Actor.Admiral],
-        [new(Skill.Admiral, "At the landing, cancel a should only with a reason.", new(ShouldState.Open, 1205, MoveKind.Exit))])
-    { Spec = ["S18"], Transition = new(ShouldState.Open, ShouldState.Canceled, "at the landing: canceled with a reason") };
+    // H5: canceling is a judgement, so it is the batch captain's, never the coordinator's; the coordinator only checks the state (Check).
+    public static readonly Claim Cancel = new("A should is canceled only with a reason, by the captain of the Shoulds batch holding it.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "In a shoulds batch, cancel a should only with a one-line reason.", new(ShouldState.Open, 1205, MoveKind.Exit))])
+    { Spec = ["S18", "S17", "H5"], Transition = new(ShouldState.Open, ShouldState.Canceled, "canceled with a reason by its batch captain") };
 
-    public static readonly Claim Move = new("At the landing a should moves out only by his call.", [Actor.Balazs, Actor.Admiral],
-        [new(Skill.Admiral, "At the landing, move a should out of the Project only on his call.", new(ShouldState.Open, 1206, MoveKind.Exit))])
+    public static readonly Claim Check = new("At the landing the coordinator checks each should's state mechanically and routes any still open into a Shoulds batch.", [Actor.Coordinator],
+        [new(Skill.Coordinator, "At the landing, check each should's state: Done, Canceled with a reason, or moved out on his call; put any still open in a Shoulds batch.", new(ShouldState.Open, 1210, MoveKind.Nominal))])
+    { Spec = ["S18", "S17", "H5"] };
+
+    public static readonly Claim Move = new("At the landing a should moves out only by his call.", [Actor.Balazs, Actor.Coordinator],
+        [new(Skill.Coordinator, "At the landing, move a should out of the Project only on his call.", new(ShouldState.Open, 1206, MoveKind.Exit))])
     { Spec = ["S18"], Transition = new(ShouldState.Open, ShouldState.Moved, "at the landing: moved out by his call") };
 
-    public static readonly Claim Batch = new("The admiral cuts a Shoulds batch N root ticket for one captain at the set moments.", [Actor.Admiral],
+    public static readonly Claim Batch = new("The coordinator cuts a Shoulds batch N root ticket for one captain at the set moments.", [Actor.Coordinator],
     [
-        new(Skill.Admiral, "Collect shoulds into a `Shoulds batch N` root ticket (Type `Feature` by default) cut for one captain when a lane is free, before an inquisition round, or at the landing.", new(ShouldState.Open, 1207, MoveKind.Nominal)),
-        new(Skill.LinearWorkspaceStandard, "Shoulds are collected into a `Shoulds batch N` root ticket the admiral cuts for one captain (Type `Feature` by default); there is no standing collection ticket.", new(Section.LinearShoulds, 3))
+        new(Skill.Coordinator, "Collect shoulds into a `Shoulds batch N` root ticket (Type `Feature` by default) cut for one captain when a lane is free, before an inquisition round, or at the landing.", new(ShouldState.Open, 1207, MoveKind.Nominal)),
+        new(Skill.LinearWorkspaceStandard, "Shoulds are collected into a `Shoulds batch N` root ticket the coordinator cuts for one captain (Type `Feature` by default); there is no standing collection ticket.", new(Section.LinearShoulds, 3))
     ])
     { Spec = ["S17"] };
 

@@ -118,7 +118,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "code-writer"
+        "implementer"
       ]
     },
     {
@@ -138,7 +138,7 @@
       "claim": "claim:Mutation.CutFix",
       "from": "Survivors",
       "to": "Ticketed",
-      "arrow": "the admiral cuts the survivor's fix ticket",
+      "arrow": "the coordinator opens the survivor's fix ticket",
       "spec": [
         "N6",
         "H5",
@@ -148,7 +148,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -163,7 +163,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "code-writer"
+        "implementer"
       ]
     },
     {

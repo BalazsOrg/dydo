@@ -1,13 +1,14 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>The 4.0.0 carriers: the six role skills and the two standards (K22, K12).</summary>
+/// <summary>The 4.0.0 carriers: the three officer skills, the four crew kinds (K30) and the two standards (K22, K12).</summary>
 public enum Skill
 {
-    Admiral,
+    Coordinator,
     ChiefOfStaff,
     TicketCaptain,
-    CodeWriter,
+    Implementer,
     Reviewer,
+    Research,
     Scout,
     WorkingTreeStandard,
     LinearWorkspaceStandard

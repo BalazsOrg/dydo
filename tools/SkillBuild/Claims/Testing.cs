@@ -20,55 +20,55 @@ public static class Testing
     public static readonly Claim Traced = Move(ProofState.Conformance, ProofState.Red, "a traced assertion is shown failing without the code", "T6", "T3");
     public static readonly Claim MatchesOld = Move(ProofState.Conformance, ProofState.Dropped, "a matches-old-implementation assertion goes at the rewrite's landing", "T6");
 
-    public static readonly Claim Jobs = new("A suite test guards a trap, pins a traced contract, or reaches an edge driving can't; an untraced pin is a finding.", [Actor.CodeWriter, Actor.Reviewer],
+    public static readonly Claim Jobs = new("A suite test guards a trap, pins a traced contract, or reaches an edge driving can't; an untraced pin is a finding.", [Actor.Implementer, Actor.Reviewer],
     [
-        new(Skill.CodeWriter, "Write a suite test only to guard a trap, pin a traced contract (spec or DR), or reach an edge driving can't.", new(DispatchState.Working, 2201, MoveKind.Nominal)),
-        new(Skill.Reviewer, "A test that pins an untraced rule, new or inherited, is a finding.", new(ReviewState.Round, 2201, MoveKind.Nominal))
+        new(Skill.Implementer, "Write a suite test only to guard a trap, pin a traced contract (spec or DR), or reach an edge driving can't.", new(ImplementerPart.Code, 2201)),
+        new(Skill.Reviewer, "A test that pins an untraced rule, new or inherited, is a finding.", new(ReviewerPart.Findings, 2201))
     ])
     { Spec = ["T1", "R3"] };
 
-    public static readonly Claim RedCheck = new("Every graduating test is shown failing without the code; a Bug starts from a red reproduction.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "Show every graduating test failing without the code; a Bug still starts from a red reproduction.", new(DispatchState.Working, 2202, MoveKind.Nominal))])
+    public static readonly Claim RedCheck = new("Every graduating test is shown failing without the code; a Bug starts from a red reproduction.", [Actor.Implementer],
+        [new(Skill.Implementer, "Show every graduating test failing without the code: stash the code, run the test, restore; a Bug still starts from a red reproduction.", new(ImplementerPart.Code, 2202))])
     { Spec = ["T3"] };
 
-    public static readonly Claim Boundary = new("A test drives the deepest boundary that can observe the behaviour.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "Test at the deepest module boundary, or the product boundary, that can observe the behaviour; a unit test graduates only for an edge or trap that test can't reach cheaply.", new(DispatchState.Working, 2203, MoveKind.Nominal))])
+    public static readonly Claim Boundary = new("A test drives the deepest boundary that can observe the behaviour.", [Actor.Implementer],
+        [new(Skill.Implementer, "Test at the deepest module boundary, or the product boundary, that can observe the behaviour; a unit test graduates only for an edge or trap that test can't reach cheaply.", new(ImplementerPart.Code, 2191))])
     { Spec = ["T4"] };
 
-    public static readonly Claim JobTag = new("A graduating test carries a job tag naming its evidence; the reviewer checks each tag.", [Actor.CodeWriter, Actor.Reviewer],
+    public static readonly Claim JobTag = new("A graduating test carries a job tag naming its evidence; the reviewer checks each tag.", [Actor.Implementer, Actor.Reviewer],
     [
-        new(Skill.CodeWriter, "Tag each graduating test with its job: trap (naming the bug or pitfall), contract (citing the spec or DR) or edge.", new(DispatchState.Working, 2204, MoveKind.Nominal)),
-        new(Skill.Reviewer, "Check each graduating test's job tag against its evidence.", new(ReviewState.Round, 2204, MoveKind.Nominal))
+        new(Skill.Implementer, "Tag each graduating test with its job: trap (naming the bug or pitfall), contract (citing the spec or DR) or edge.", new(ImplementerPart.Code, 2204)),
+        new(Skill.Reviewer, "Check each graduating test's job tag against its evidence.", new(ReviewerPart.Findings, 2204))
     ])
     { Spec = ["T5"] };
 
-    public static readonly Claim ProofSha = new("Proof tests live in the ticket's commits; the receipt and proof: record the SHA.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "Keep proof tests in the ticket's commits, and record their SHA in the receipt and in `proof:`.", new(DispatchState.Working, 2205, MoveKind.Nominal))])
+    public static readonly Claim ProofSha = new("Proof tests live in the ticket's commits; the receipt and proof: record the SHA.", [Actor.Implementer],
+        [new(Skill.Implementer, "Keep proof tests in the ticket's commits, and record their SHA in the receipt and in `proof:`.", new(ImplementerPart.Code, 2205))])
     { Spec = ["T5"] };
 
-    public static readonly Claim OldEvidence = new("Old evidence is never load-bearing.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "Make nothing depend on old evidence: a squash or a fresh start must break nothing.", new(DispatchState.Working, 2206, MoveKind.Nominal))])
+    public static readonly Claim OldEvidence = new("Old evidence is never load-bearing.", [Actor.Implementer],
+        [new(Skill.Implementer, "Make nothing depend on old evidence: a squash or a fresh start must break nothing.", new(ImplementerPart.Code, 2206))])
     { Spec = ["T5"] };
 
-    public static readonly Claim ConformanceSuite = new("A rewrite gets a conformance suite, a separate rule in a separate place from the graduation rules.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.", new(ProofState.Conformance, 2207, MoveKind.Nominal))])
+    public static readonly Claim ConformanceSuite = new("A rewrite gets a conformance suite, a separate rule in a separate place from the graduation rules.", [Actor.Implementer],
+        [new(Skill.Implementer, "A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.", new(ImplementerPart.Code, 2213))])
     { Spec = ["T6"] };
 
     public static readonly Claim Smells = new("Three smells are pruned: tests that change whenever the code does, check that a deleted feature is gone, or can never fail.",
-        [Actor.CodeWriter, Actor.Reviewer],
+        [Actor.Implementer, Actor.Reviewer],
     [
-        new(Skill.CodeWriter, "Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.", new(DispatchState.Working, 2210, MoveKind.Nominal)),
-        new(Skill.Reviewer, "A test that changes whenever the code does, checks that a deleted feature is gone, or can never fail is a finding.", new(ReviewState.Round, 2210, MoveKind.Nominal))
+        new(Skill.Implementer, "Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.", new(ImplementerPart.Code, 2210)),
+        new(Skill.Reviewer, "A test that changes whenever the code does, checks that a deleted feature is gone, or can never fail is a finding.", new(ReviewerPart.Findings, 2210))
     ])
     { Spec = ["T22"] };
 
-    public static readonly Claim Guidance = new("Property and differential tests are guidance, not a gate.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "Property tests for edges and differential tests for rewrites are guidance, never a gate.", new(DispatchState.Working, 2208, MoveKind.Nominal))])
+    public static readonly Claim Guidance = new("Property and differential tests are guidance, not a gate.", [Actor.Implementer],
+        [new(Skill.Implementer, "Property tests for edges and differential tests for rewrites are guidance, never a gate.", new(ImplementerPart.Code, 2212))])
     { Spec = ["T7"] };
 
-    public static readonly Claim Receipts = new("The author proves with receipts; a DYTEST result for the same state counts.", [Actor.CodeWriter],
+    public static readonly Claim Receipts = new("The author proves with receipts; a DYTEST result for the same state counts.", [Actor.Implementer],
     [
-        new(Skill.CodeWriter, "Prove the hop with receipts; a DYTEST result for the same tree counts unless later changes put it in doubt.", new(DispatchState.Working, 2209, MoveKind.Nominal)),
+        new(Skill.Implementer, "Prove the hop with receipts; a DYTEST result for the same tree counts unless later changes put it in doubt.", new(DispatchState.Working, 1900, MoveKind.Nominal)),
         new(Skill.WorkingTreeStandard, "The author proves with receipts and a fresh reviewer judges through lenses; nothing is re-run the same way, and a DYTEST result for the same tree counts as proof unless later changes put it in doubt.", new(Section.TreeDelivery, 3))
     ])
     { Spec = ["R5"] };
