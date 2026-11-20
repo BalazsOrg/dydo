@@ -12,4 +12,4 @@ Your ticket is one question a choice waits on. Answer it with every claim cited 
 6. Write the answer first, then each claim with its citation (a path at its commit, or a URL) and its exact passage, what stayed unsettled, and every family searched, the empty ones included.
 
 **On a Question ticket:**
-Research first. When the facts settle the call, put the answer on the ticket; when they do not, return it to your officer as a need for the user, with what you found.
+Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, and return it to your officer as unsettled.

@@ -42,10 +42,16 @@ CaptainFinish_Return ==
     /\ state' = "Returned"
     /\ UNCHANGED <<round>>
 
+\* claim:CaptainMergeTrouble.Hunks
+CaptainMergeTrouble_Hunks ==
+    /\ state = "Repairing"
+    /\ state' = "InReview"
+    /\ UNCHANGED <<round>>
+
 \* claim:CaptainMerging.Broken
 CaptainMerging_Broken ==
     /\ state = "Finishing"
-    /\ state' = "Waiting"
+    /\ state' = "Repairing"
     /\ UNCHANGED <<round>>
 
 \* claim:CaptainReview.Clean
@@ -57,6 +63,7 @@ CaptainReview_Clean ==
 \* claim:CaptainReview.Fix
 CaptainReview_Fix ==
     /\ state = "InReview"
+    /\ round # 3
     /\ state' = "Fixing"
     /\ UNCHANGED <<round>>
 
@@ -65,6 +72,12 @@ CaptainReview_Groups ==
     /\ state = "Waiting"
     /\ state' = "Finishing"
     /\ UNCHANGED <<round>>
+
+\* claim:CaptainReview.OneMore
+CaptainReview_OneMore ==
+    /\ state = "InReview"
+    /\ state' = "InReview"
+    /\ round' = round + 1
 
 \* claim:CaptainReview.Other
 CaptainReview_Other ==
@@ -75,6 +88,7 @@ CaptainReview_Other ==
 \* claim:CaptainReview.Replan
 CaptainReview_Replan ==
     /\ state = "InReview"
+    /\ round # 3
     /\ state' = "Returned"
     /\ UNCHANGED <<round>>
 
@@ -108,6 +122,18 @@ CaptainTrouble_Ask ==
     /\ state' = "Question"
     /\ UNCHANGED <<round>>
 
+\* claim:CaptainTrouble.Checkpoint
+CaptainTrouble_Checkpoint ==
+    /\ state = "Checkpoint"
+    /\ state' = "Fixing"
+    /\ UNCHANGED <<round>>
+
+\* claim:CaptainTrouble.Escalate
+CaptainTrouble_Escalate ==
+    /\ state = "Checkpoint"
+    /\ state' = "Returned"
+    /\ UNCHANGED <<round>>
+
 \* claim:CaptainTrouble.NextRound
 CaptainTrouble_NextRound ==
     /\ state = "Fixing"
@@ -126,6 +152,13 @@ CaptainTrouble_SplitRest ==
     /\ state' = "Split"
     /\ UNCHANGED <<round>>
 
+\* claim:CaptainTrouble.Third
+CaptainTrouble_Third ==
+    /\ state = "InReview"
+    /\ round = 3
+    /\ state' = "Checkpoint"
+    /\ UNCHANGED <<round>>
+
 Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
@@ -134,10 +167,12 @@ Next ==
     \/ CaptainFinish_Close
     \/ CaptainFinish_HandOver
     \/ CaptainFinish_Return
+    \/ CaptainMergeTrouble_Hunks
     \/ CaptainMerging_Broken
     \/ CaptainReview_Clean
     \/ CaptainReview_Fix
     \/ CaptainReview_Groups
+    \/ CaptainReview_OneMore
     \/ CaptainReview_Other
     \/ CaptainReview_Replan
     \/ CaptainReview_Whole
@@ -145,9 +180,12 @@ Next ==
     \/ CaptainSplit_Leaf
     \/ CaptainTrouble_Answered
     \/ CaptainTrouble_Ask
+    \/ CaptainTrouble_Checkpoint
+    \/ CaptainTrouble_Escalate
     \/ CaptainTrouble_NextRound
     \/ CaptainTrouble_ReCut
     \/ CaptainTrouble_SplitRest
+    \/ CaptainTrouble_Third
     \/ Done
 
 Bounds == round <= 4

@@ -80,7 +80,7 @@ Reason: The officer knows how the part fits the whole, which the child did not.
 
 Spec: S9
 
-Evidence (tool): t3_thread_send: "A send to a finished child thread starts a fresh task and returns its `taskId`."
+Evidence (run): This skill's own Fix came so: its captain sent fix r0 to the thread that wrote hop 2. t3_thread_send: "A send to a finished child thread starts a fresh task and returns its `taskId`."
 
 Layer: T3 will resume any thread, and cannot tell a useful context from a spent one.
 
@@ -88,7 +88,7 @@ Reason: The writer already understands the code, until its context is what stand
 
 **ticket-captain** (FixRules; read by TicketCaptain):
 
-> Give a Fix to its writer's thread while that thread is alive and has room in its context; give it to a fresh agent when the context is heavy or a blocker says the approach was wrong.
+> Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong.
 
 ## Parallel
 
@@ -156,15 +156,35 @@ Reason: A dropped ticket left open looks like work someone still owes.
 
 > When your officer re-plans, cancel each sub-ticket the new plan drops, with a one-line reason.
 
-## Checkpoint
+## Third
 
-`claim:CaptainTrouble.Checkpoint`: After round 3 with a blocker comes a checkpoint: by default one more round, noted on the Review ticket.
+`claim:CaptainTrouble.Third`: A third round that still has a blocker goes to the checkpoint before anything else.
 
-Spec: R10, S10
+Spec: R10
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Checkpoint, "a third round still has a blocker: the checkpoint".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, r2 and r3, each followed by a Review titled a fresh review; r4 is titled the checkpoint round.
 
 Layer: Nothing counts rounds, so nothing would notice a loop that never ends.
+
+Reason: Three blocked rounds say something other than the code may be wrong, and a fourth should not start unasked.
+
+**ticket-captain** (FixCheckpoint; read by TicketCaptain, on claim:CaptainTrouble.Checkpoint):
+
+> After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket, and run it.
+
+## Checkpoint
+
+`claim:CaptainTrouble.Checkpoint`: At the checkpoint the default is one more round, noted on the Review ticket.
+
+Spec: R10, S10
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Checkpoint → Fixing, "`checkpoint: one more round, because …`: the blockers go to a Fix".
+
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, r2 and r3, each followed by a Review titled a fresh review; r4 is titled the checkpoint round.
+
+Layer: The Review ticket takes any comment, and nothing asks for this one.
 
 Reason: A written reason makes the captain look at why three rounds were not enough.
 
@@ -177,6 +197,8 @@ Reason: A written reason makes the captain look at why three rounds were not eno
 `claim:CaptainTrouble.Escalate`: At the checkpoint a captain escalates only for a fundamental break, a new requirement or a need for the user.
 
 Spec: R10
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Checkpoint → Returned, "`escalated: …`: a fundamental break, a new requirement or a need for the user goes to the officer".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
@@ -242,25 +264,25 @@ Reason: The answer outlives both threads, for whoever meets the same call next.
 
 ## Up
 
-`claim:CaptainTrouble.Up`: A need only the user can settle is passed up to the officer.
+`claim:CaptainTrouble.Up`: A Question that comes back unsettled is passed up to the officer, with what was found.
 
 Spec: H16, H12
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
-Layer: A captain has no tool that opens a thread with the user.
+Layer: A captain has no tool that opens a thread with the user, and its officer is the only one above it.
 
-Reason: Needs reach the user one at a time, from one place, instead of from every captain at once.
+Reason: Whether a call is worth the user's time is weighed once, above, instead of by every captain that meets one.
 
 **ticket-captain** (NeedRules; read by TicketCaptain):
 
-> When the answer is that only the user can settle it, pass the need to your officer and leave the Question open.
+> When a Question comes back unsettled, pass it to your officer with what was found, and leave it open.
 
 ## InThread
 
 `claim:CaptainTrouble.InThread`: When the user is already in an officer's thread, it may ask a one-line question there.
 
-Spec: H22
+Spec: H22, L18
 
 Evidence (tool): AskUserQuestion: "Use this tool only when you are blocked on a decision that is genuinely the user's to make".
 
@@ -270,7 +292,7 @@ Reason: A ticket and a wait for something the user can answer in a word would be
 
 **ticket-captain** (NeedRules; read by TicketCaptain):
 
-> When the user is already in your thread, ask the one line there, with the host's question tool.
+> When the user is already in your thread, you may ask one line there, with the host's question tool: never what the sources can answer, and never a call that only wants the user's approval.
 
 ## Cite
 

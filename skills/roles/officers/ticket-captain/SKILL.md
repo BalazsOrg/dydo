@@ -36,8 +36,8 @@ You commit what a helper changes.
 Cut a bigger ticket into sub-tickets, one per part another captain will hold; a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
 Write each sub-ticket's contract in its description: its outcome, how it fits your ticket, and the spec sections it serves, quoted and linked.
 Label its Mode: AFK, or HITL when the user must take part.
-Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; a small leaf stays one ticket. (open: his call)
-Once you split, write a change yourself only when that is cheaper than briefing it and too small to need review.
+Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; a small leaf is one ticket. (open: his call)
+Once you split, write a change yourself only when it is cheaper than briefing it and too small to need review.
 
 ## 3. Dispatch
 
@@ -60,15 +60,18 @@ Post the SHA a child returns on its ticket, to resume from, and send what it rep
 ## 4. Get it reviewed
 
 Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
-What you merge, you get reviewed first; a part your officer merges is reviewed with its whole.
-A plan, spec or contract gets no review rounds; a risky spec gets at most one pass by a native helper, which returns questions.
+If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge; a part your officer merges is reviewed with its whole.
 A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.
 
 1. Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.
 2. A lone reviewer records its own round; a round of several seats is yours to record, by [A round's record](resources/round.md).
-3. Send a blocker that is broken, against the spec or a security hole to a Fix ticket, one sub-ticket per blocker inside it. (open: his call)
-4. Send a fundamental blocker or a new requirement to your officer, for a re-plan.
-5. Repeat until a round finds no new blocker; you may order one more.
+3. Route each blocker, as below.
+4. Repeat until a round finds no new blocker; you may order one more.
+
+**A blocker's route, by what it shows:**
+
+- Work that is broken, against the spec or a security hole: a Fix ticket, one sub-ticket per blocker inside it. (open: his call)
+- A fundamental fault, or a new requirement: your officer, for a re-plan.
 
 A blocker found in a change you wrote goes to a fresh writer.
 

@@ -44,7 +44,7 @@ Reason: Its own context hides from a writer exactly what a fresh reader would ca
 
 Spec: R34, R5
 
-Evidence (code): `skills/roles/crew/reviewer/resources/toolset.md`
+Evidence (run): The user's table, verbatim from spec R34 with its legend and two footer rules, as `skills/roles/crew/reviewer/resources/toolset.md` holds it today. Read against `dydo/guides/testing-strategy.md`, 2026-11-20: this repository's test facade has no `--feature` and no `--heavy`, and DYTEST, whose results "mutation on changed" reads, is not built, so the cells "tagged + feature", "suite + --heavy + mutation" and "mutation on changed" cannot be run as written here yet.
 
 Layer: Every tool in the row is there for the taking at every level; nothing meters review.
 
@@ -52,6 +52,8 @@ Reason: Review is expensive, so each level spends only what it can find somethin
 
 **ticket-captain** (ReviewRow; read by TicketCaptain):
 
+> Legend: **due** every time; **if** when warranted; **–** not at this level.
+>
 > | | Read<br>local | Read<br>vs spec | Read<br>whole / gestalt | Run tests | Hypothesis<br>custom tests | Drive<br>the app | Formal<br>statechart, … |
 > | --- | --- | --- | --- | --- | --- | --- | --- |
 > | Leaf evidence check<br>a lane or hop, optional seat | due | if<br>drift only | – | due<br>its receipts, tagged | – | – | – |
@@ -59,7 +61,9 @@ Reason: Review is expensive, so each level spends only what it can find somethin
 > | Feature / Milestone<br>a subsystem is done | if | due | due | due<br>feature + suite | due<br>at the seams | due<br>its journeys | if<br>it has a state machine |
 > | Inquisition<br>before landing, per slice | due<br>every slice | due | due | due<br>suite + --heavy + mutation | due<br>every hypothesis | due | due |
 >
-> **due** every time; **if** when warranted; **–** not at this level. Never re-run what the author ran the same way: a receipt for the same state counts. The security baseline is always on.
+> > Every row: never re-run what the author ran the same way; a test receipt for the same state counts (spec R5). The security baseline is always on.
+> >
+> > How it's used: the officer's brief names the level; the reviewer works its row.
 
 ## Built
 

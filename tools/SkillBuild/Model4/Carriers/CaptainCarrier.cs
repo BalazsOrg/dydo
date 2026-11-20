@@ -15,14 +15,15 @@ public static class CaptainCarrier
         Slot.Bullets(CaptainSlot.ImplementShoulds, "On a batch of shoulds:"), Slot.Paragraph(CaptainSlot.ImplementEnd, "To finish:"));
 
     private static readonly Resource Review = new(CaptainResource.Review, "Review",
-        Slot.Paragraph(CaptainSlot.ReviewLead), Slot.Paragraph(CaptainSlot.ReviewRow, "Work only your level's row:"),
+        Slot.Paragraph(CaptainSlot.ReviewLead), Slot.Paragraph(CaptainSlot.ReviewRow),
         Slot.Bullets(CaptainSlot.ReviewRules), Slot.Bullets(CaptainSlot.ReviewHolding, "Your return:"));
 
     private static readonly Resource Research = new(CaptainResource.Research, "Research",
         Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Steps(CaptainSlot.ResearchSteps), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"));
 
     private static readonly Resource Briefs = new(CaptainResource.Briefs, "Briefs",
-        Slot.Paragraph(CaptainSlot.BriefLead), Slot.Bullets(CaptainSlot.BriefAll, "Every brief names:"), Slot.Bullets(CaptainSlot.BriefReview, "A review brief also names:"));
+        Slot.Paragraph(CaptainSlot.BriefLead), Slot.Bullets(CaptainSlot.BriefAll, "Every brief names:"), Slot.Bullets(CaptainSlot.BriefReview, "A review brief also names:"),
+        Slot.Paragraph(CaptainSlot.BriefNone));
 
     private static readonly Resource Filler = new(CaptainResource.Filler, "Filler", Slot.Paragraph(CaptainSlot.FillerLead), Slot.Bullets(CaptainSlot.FillerRules));
 
@@ -52,7 +53,8 @@ public static class CaptainCarrier
                 States = [CaptainState.Split, CaptainState.Waiting],
                 Resources = [Briefs, Filler]
             },
-            new("Get it reviewed", Slot.Paragraph(CaptainSlot.Reviewed), Slot.Steps(CaptainSlot.Rounds), Slot.Paragraph(CaptainSlot.Mine))
+            new("Get it reviewed", Slot.Paragraph(CaptainSlot.Reviewed), Slot.Steps(CaptainSlot.Rounds),
+                Slot.Bullets(CaptainSlot.Routes, "A blocker's route, by what it shows:"), Slot.Paragraph(CaptainSlot.Mine))
             {
                 States = [CaptainState.Leaf, CaptainState.Waiting, CaptainState.InReview, CaptainState.Fixing],
                 Resources = [Round]
@@ -68,10 +70,17 @@ public static class CaptainCarrier
             new(CaptainResource.TooBig, "Too big to hold", Slot.Steps(CaptainSlot.TooBigSteps), Slot.Paragraph(CaptainSlot.TooBigChild)) { States = [CaptainState.Leaf] },
             new(CaptainResource.FixRounds, "Fix rounds", Slot.Bullets(CaptainSlot.FixRules), Slot.Paragraph(CaptainSlot.FixCheckpoint, "The checkpoint."))
             {
-                States = [CaptainState.Fixing, CaptainState.InReview]
+                States = [CaptainState.Fixing, CaptainState.InReview, CaptainState.Checkpoint]
             },
-            new(CaptainResource.MergeConflict, "A merge conflict", Slot.Steps(CaptainSlot.ConflictSteps), Slot.Paragraph(CaptainSlot.ConflictEnd)) { States = [CaptainState.Finishing] },
-            new(CaptainResource.RedGate, "A red gate after the merge", Slot.Steps(CaptainSlot.RedSteps), Slot.Paragraph(CaptainSlot.RedEnd)) { States = [CaptainState.Finishing] },
+            new(CaptainResource.MergeConflict, "A merge conflict", Slot.Steps(CaptainSlot.ConflictSteps), Slot.Paragraph(CaptainSlot.ConflictEnd))
+            {
+                States = [CaptainState.Finishing, CaptainState.Repairing]
+            },
+            new(CaptainResource.RedGate, "A red gate after the merge", Slot.Paragraph(CaptainSlot.RedLead), Slot.Steps(CaptainSlot.RedSteps, "Red again is real:"),
+                Slot.Paragraph(CaptainSlot.RedEnd))
+            {
+                States = [CaptainState.Finishing]
+            },
             new(CaptainResource.NeedForTheUser, "A need for the user", Slot.Paragraph(CaptainSlot.NeedLead), Slot.Bullets(CaptainSlot.NeedRules)) { States = [CaptainState.Question] }
         ]
     };

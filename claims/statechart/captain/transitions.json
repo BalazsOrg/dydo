@@ -33,9 +33,10 @@
     },
     {
       "id": "Waiting",
-      "title": "Waiting on children",
+      "title": "Waiting on children, a Question's captain among them",
       "spec": [
-        "H3"
+        "H3",
+        "H16"
       ]
     },
     {
@@ -55,8 +56,25 @@
       ]
     },
     {
+      "id": "Checkpoint",
+      "title": "At the checkpoint after a third blocked round",
+      "spec": [
+        "R10",
+        "S10"
+      ]
+    },
+    {
+      "id": "Repairing",
+      "title": "Repairing a conflict or a red gate",
+      "spec": [
+        "R19",
+        "R21",
+        "R22"
+      ]
+    },
+    {
       "id": "Question",
-      "title": "Waiting on a Question",
+      "title": "A leaf's own work waiting on a Question",
       "spec": [
         "H16"
       ]
@@ -141,7 +159,7 @@
       "claim": "claim:CaptainFinish.HandOver",
       "from": "Leaf",
       "to": "Finishing",
-      "arrow": "the work is whole, and its review and merge are the officer's",
+      "arrow": "the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer",
       "spec": [
         "R32",
         "R5"
@@ -170,10 +188,25 @@
       ]
     },
     {
+      "claim": "claim:CaptainMergeTrouble.Hunks",
+      "from": "Repairing",
+      "to": "InReview",
+      "arrow": "the repair is in: a fresh review of what it changed",
+      "spec": [
+        "R19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainMerging.Broken",
       "from": "Finishing",
-      "to": "Waiting",
-      "arrow": "a conflict or a real red gate: an Implement ticket",
+      "to": "Repairing",
+      "arrow": "a conflict or a real red gate: an Implement ticket repairs it",
       "spec": [
         "R21",
         "R19"
@@ -204,12 +237,12 @@
       "claim": "claim:CaptainReview.Fix",
       "from": "InReview",
       "to": "Fixing",
-      "arrow": "a round returns a blocker: a Fix ticket",
+      "arrow": "a round other than the third returns a blocker: a Fix ticket",
       "spec": [
         "R9",
         "S9"
       ],
-      "guard": null,
+      "guard": "round # 3",
       "effect": null,
       "fair": false,
       "skills": [
@@ -220,12 +253,27 @@
       "claim": "claim:CaptainReview.Groups",
       "from": "Waiting",
       "to": "Finishing",
-      "arrow": "the ticket only groups parts: no review",
+      "arrow": "the children are back and the ticket only groups parts: no review of its own",
       "spec": [
         "R6"
       ],
       "guard": null,
       "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.OneMore",
+      "from": "InReview",
+      "to": "InReview",
+      "arrow": "no new blocker, and one more round is ordered",
+      "spec": [
+        "R8"
+      ],
+      "guard": null,
+      "effect": "round' = round + 1",
       "fair": false,
       "skills": [
         "ticket-captain"
@@ -251,11 +299,11 @@
       "claim": "claim:CaptainReview.Replan",
       "from": "InReview",
       "to": "Returned",
-      "arrow": "a blocker is fundamental or a new requirement: back to the officer",
+      "arrow": "in a round other than the third, a blocker is fundamental or a new requirement: back to the officer",
       "spec": [
         "R9"
       ],
-      "guard": null,
+      "guard": "round # 3",
       "effect": null,
       "fair": false,
       "skills": [
@@ -342,6 +390,37 @@
       ]
     },
     {
+      "claim": "claim:CaptainTrouble.Checkpoint",
+      "from": "Checkpoint",
+      "to": "Fixing",
+      "arrow": "`checkpoint: one more round, because …`: the blockers go to a Fix",
+      "spec": [
+        "R10",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.Escalate",
+      "from": "Checkpoint",
+      "to": "Returned",
+      "arrow": "`escalated: …`: a fundamental break, a new requirement or a need for the user goes to the officer",
+      "spec": [
+        "R10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainTrouble.NextRound",
       "from": "Fixing",
       "to": "InReview",
@@ -382,6 +461,21 @@
         "H14"
       ],
       "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.Third",
+      "from": "InReview",
+      "to": "Checkpoint",
+      "arrow": "a third round still has a blocker: the checkpoint",
+      "spec": [
+        "R10"
+      ],
+      "guard": "round = 3",
       "effect": null,
       "fair": false,
       "skills": [

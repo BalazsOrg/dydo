@@ -33,8 +33,20 @@ public static class CaptainReview
         Transition = new(CaptainState.Leaf, CaptainState.InReview, "the leaf's change is whole: another agent reviews it")
     };
 
-    public static readonly Claim Whose = new("Whoever merges a piece of work gets it reviewed first; a part is reviewed with the parent it joins.", Me,
-        [At(CaptainSlot.Reviewed, 2, "What you merge, you get reviewed first; a part your officer merges is reviewed with its whole.")])
+    public static readonly Claim Pr = new("The captain that merges its work opens the PR for it, from a clean and pushed tree, before its review.", Me, [])
+    {
+        Spec = ["R17", "R21"],
+        Truth = new(Evidence.Command("dydo pr-ready --body <file>"),
+            Layer: "The guard refuses a `gh` PR call from a dirty or unpushed tree and reads no other way of opening one; nothing opens the PR for a captain.",
+            Reason: "The verdict's PASS line and `dydo merge` both need a PR that shows exactly the reviewed commit.")
+    };
+
+    public static readonly Claim Whose = new("Whoever merges a piece of work has it reviewed first; a part is reviewed with the parent it joins.", Me,
+    [
+        At(CaptainSlot.Reviewed, 2,
+            "If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge; a part your officer merges is reviewed with its whole.",
+            () => [Pr])
+    ])
     {
         Spec = ["R2"],
         Truth = new(Evidence.Code("Services/Merge/PullRequestMerge.cs"),
@@ -43,7 +55,7 @@ public static class CaptainReview
     };
 
     public static readonly Claim NoLoop = new("A plan, spec or contract gets no review loop; a spec gets at most one Questions pass by a native helper, chosen by risk.", Me,
-        [At(CaptainSlot.Reviewed, 3, "A plan, spec or contract gets no review rounds; a risky spec gets at most one pass by a native helper, which returns questions.")])
+        [At(CaptainSlot.BriefNone, 1, "Write no review brief for a plan, spec or contract: it gets no review rounds, and a risky spec at most one pass by a native helper, which returns questions.")])
     {
         Spec = ["R4"],
         Truth = new(Evidence.Tool("Agent: a native sub-agent, awaited within the turn, returns its report to its caller alone."),
@@ -53,7 +65,7 @@ public static class CaptainReview
 
     public static readonly Claim Severity = new("A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.", Me,
     [
-        At(CaptainSlot.Reviewed, 4,
+        At(CaptainSlot.Reviewed, 3,
             "A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.")
     ])
     {
@@ -69,7 +81,7 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "Linear nests tickets for any reason; whether a parent integrates anything is known to its captain.",
             Reason: "A grouping adds no behaviour for a reviewer to find wrong."),
-        Transition = new(CaptainState.Waiting, CaptainState.Finishing, "the ticket only groups parts: no review")
+        Transition = new(CaptainState.Waiting, CaptainState.Finishing, "the children are back and the ticket only groups parts: no review of its own")
     };
 
     public static readonly Claim Whole = new("Once its parts are wired, a parent is reviewed once: each part, the parts together, their harmony.", Me,
@@ -98,27 +110,39 @@ public static class CaptainReview
             Reason: "One verdict per round, however many seats looked.")
     };
 
-    public static readonly Claim Fix = new("A blocker that is broken, against the spec or a security hole goes to a Fix ticket holding one sub-ticket per blocker.", Me,
+    public static readonly Claim Route = new("The officer running the rounds routes each blocker by its kind.", Me,
+        [At(CaptainSlot.Rounds, 3, "Route each blocker, as below.")])
+    {
+        Spec = ["R9"],
+        Truth = new(Evidence.Run(Rounds),
+            Layer: "A FAIL stops `dydo merge` and sends the finding nowhere.",
+            Reason: "Each kind has one place that can act on it, and the wrong place sits on it.")
+    };
+
+    public static readonly Claim Fix = new("A blocker on work that is broken, against the spec or a security hole goes to a Fix ticket holding one sub-ticket per blocker.", Me,
     [
-        At(CaptainSlot.Rounds, 3,
-            "Send a blocker that is broken, against the spec or a security hole to a Fix ticket, one sub-ticket per blocker inside it. (open: his call)")
+        At(CaptainSlot.Routes, 1,
+            "Work that is broken, against the spec or a security hole: a Fix ticket, one sub-ticket per blocker inside it. (open: his call)")
     ])
     {
         Spec = ["R9", "S9"],
         Truth = new(Evidence.Run(Rounds + " Fix r3, DYD-1339, holds no sub-ticket, so one per blocker is the spec's rule and not yet the practice."),
             Layer: "A FAIL stops `dydo merge`; it opens no ticket for the fix.",
             Reason: "Each blocker can be closed, and seen closed, on its own."),
-        Transition = new(CaptainState.InReview, CaptainState.Fixing, "a round returns a blocker: a Fix ticket")
+        Transition = new(CaptainState.InReview, CaptainState.Fixing, "a round other than the third returns a blocker: a Fix ticket") { Guard = "round # 3" }
     };
 
     public static readonly Claim Replan = new("A fundamental blocker or a new requirement goes to the officer above for a re-plan.", Me,
-        [At(CaptainSlot.Rounds, 4, "Send a fundamental blocker or a new requirement to your officer, for a re-plan.")])
+        [At(CaptainSlot.Routes, 2, "A fundamental fault, or a new requirement: your officer, for a re-plan.")])
     {
         Spec = ["R9"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
             Layer: "A Fix can only repair what the plan asked for; nothing below the officer can change the plan.",
             Reason: "Fixing toward a plan that is itself wrong builds more of the wrong thing."),
-        Transition = new(CaptainState.InReview, CaptainState.Returned, "a blocker is fundamental or a new requirement: back to the officer")
+        Transition = new(CaptainState.InReview, CaptainState.Returned, "in a round other than the third, a blocker is fundamental or a new requirement: back to the officer")
+        {
+            Guard = "round # 3"
+        }
     };
 
     public static readonly Claim OneMore = new("The officer running the rounds may order one more after a round with no new blocker.", Me, [])
@@ -126,11 +150,12 @@ public static class CaptainReview
         Spec = ["R8"],
         Truth = new(Evidence.Run(Rounds),
             Layer: "Nothing counts rounds or closes the loop.",
-            Reason: "A round that barely passed can be looked at again without anyone inventing a blocker.")
+            Reason: "A round that barely passed can be looked at again without anyone inventing a blocker."),
+        Transition = new(CaptainState.InReview, CaptainState.InReview, "no new blocker, and one more round is ordered") { Effect = "round' = round + 1" }
     };
 
     public static readonly Claim Clean = new("The first round with no new blocker ends the review rounds.", Me,
-        [At(CaptainSlot.Rounds, 5, "Repeat until a round finds no new blocker; you may order one more.", () => [OneMore])])
+        [At(CaptainSlot.Rounds, 4, "Repeat until a round finds no new blocker; you may order one more.", () => [OneMore])])
     {
         Spec = ["R8"],
         Truth = new(Evidence.Run(Rounds),

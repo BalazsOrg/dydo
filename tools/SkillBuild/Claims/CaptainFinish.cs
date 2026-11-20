@@ -26,7 +26,8 @@ public static class CaptainFinish
         Truth = new(Evidence.Run(OwnBrief + "\"IMPLEMENTED DYD-1372 hop 2 at <SHA>\", then \"the gate commands with their exits\"."),
             Layer: "T3 returns the child's words; without a SHA they point at nothing the officer can check out.",
             Reason: "The officer merges and reviews exactly what was proved, and nothing that came after."),
-        Transition = new(CaptainState.Leaf, CaptainState.Finishing, "the work is whole, and its review and merge are the officer's")
+        Transition = new(CaptainState.Leaf, CaptainState.Finishing,
+            "the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer")
     };
 
     public static readonly Claim Merged = new("A captain that merges its work returns one line, done and merged.", Me,

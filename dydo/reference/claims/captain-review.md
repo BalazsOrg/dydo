@@ -40,9 +40,25 @@ Reason: A writer's own context hides from it what a fresh one sees at once.
 
 > Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
 
+## Pr
+
+`claim:CaptainReview.Pr`: The captain that merges its work opens the PR for it, from a clean and pushed tree, before its review.
+
+Spec: R17, R21
+
+Evidence (command): `dydo pr-ready --body <file>`
+
+Layer: The guard refuses a `gh` PR call from a dirty or unpushed tree and reads no other way of opening one; nothing opens the PR for a captain.
+
+Reason: The verdict's PASS line and `dydo merge` both need a PR that shows exactly the reviewed commit.
+
+**ticket-captain** (Reviewed; read by TicketCaptain, on claim:CaptainReview.Whose):
+
+> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge; a part your officer merges is reviewed with its whole.
+
 ## Whose
 
-`claim:CaptainReview.Whose`: Whoever merges a piece of work gets it reviewed first; a part is reviewed with the parent it joins.
+`claim:CaptainReview.Whose`: Whoever merges a piece of work has it reviewed first; a part is reviewed with the parent it joins.
 
 Spec: R2
 
@@ -54,7 +70,7 @@ Reason: A part reviewed alone and again inside its parent is reviewed twice for 
 
 **ticket-captain** (Reviewed; read by TicketCaptain):
 
-> What you merge, you get reviewed first; a part your officer merges is reviewed with its whole.
+> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge; a part your officer merges is reviewed with its whole.
 
 ## NoLoop
 
@@ -68,9 +84,9 @@ Layer: Nothing limits how often a document is sent for review.
 
 Reason: First make it work, then make it good: rounds on a plan polish what building will change.
 
-**ticket-captain** (Reviewed; read by TicketCaptain):
+**ticket-captain** (BriefNone; read by TicketCaptain):
 
-> A plan, spec or contract gets no review rounds; a risky spec gets at most one pass by a native helper, which returns questions.
+> Write no review brief for a plan, spec or contract: it gets no review rounds, and a risky spec at most one pass by a native helper, which returns questions.
 
 ## Severity
 
@@ -94,7 +110,7 @@ Reason: The three words decide what happens next, so they are defined before the
 
 Spec: R6
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Finishing, "the ticket only groups parts: no review".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Finishing, "the children are back and the ticket only groups parts: no review of its own".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 
@@ -140,13 +156,29 @@ Reason: One verdict per round, however many seats looked.
 
 > A lone reviewer records its own round; a round of several seats is yours to record, by A round's record (`resources/round.md`).
 
+## Route
+
+`claim:CaptainReview.Route`: The officer running the rounds routes each blocker by its kind.
+
+Spec: R9
+
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
+
+Layer: A FAIL stops `dydo merge` and sends the finding nowhere.
+
+Reason: Each kind has one place that can act on it, and the wrong place sits on it.
+
+**ticket-captain** (Rounds; read by TicketCaptain):
+
+> Route each blocker, as below.
+
 ## Fix
 
-`claim:CaptainReview.Fix`: A blocker that is broken, against the spec or a security hole goes to a Fix ticket holding one sub-ticket per blocker.
+`claim:CaptainReview.Fix`: A blocker on work that is broken, against the spec or a security hole goes to a Fix ticket holding one sub-ticket per blocker.
 
 Spec: R9, S9
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Fixing, "a round returns a blocker: a Fix ticket".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Fixing, "a round other than the third returns a blocker: a Fix ticket".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3. Fix r3, DYD-1339, holds no sub-ticket, so one per blocker is the spec's rule and not yet the practice.
 
@@ -154,9 +186,9 @@ Layer: A FAIL stops `dydo merge`; it opens no ticket for the fix.
 
 Reason: Each blocker can be closed, and seen closed, on its own.
 
-**ticket-captain** (Rounds; read by TicketCaptain):
+**ticket-captain** (Routes; read by TicketCaptain):
 
-> Send a blocker that is broken, against the spec or a security hole to a Fix ticket, one sub-ticket per blocker inside it. (open: his call)
+> Work that is broken, against the spec or a security hole: a Fix ticket, one sub-ticket per blocker inside it. (open: his call)
 
 ## Replan
 
@@ -164,7 +196,7 @@ Reason: Each blocker can be closed, and seen closed, on its own.
 
 Spec: R9
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Returned, "a blocker is fundamental or a new requirement: back to the officer".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Returned, "in a round other than the third, a blocker is fundamental or a new requirement: back to the officer".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
@@ -172,15 +204,17 @@ Layer: A Fix can only repair what the plan asked for; nothing below the officer 
 
 Reason: Fixing toward a plan that is itself wrong builds more of the wrong thing.
 
-**ticket-captain** (Rounds; read by TicketCaptain):
+**ticket-captain** (Routes; read by TicketCaptain):
 
-> Send a fundamental blocker or a new requirement to your officer, for a re-plan.
+> A fundamental fault, or a new requirement: your officer, for a re-plan.
 
 ## OneMore
 
 `claim:CaptainReview.OneMore`: The officer running the rounds may order one more after a round with no new blocker.
 
 Spec: R8
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → InReview, "no new blocker, and one more round is ordered".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 

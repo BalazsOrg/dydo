@@ -60,9 +60,8 @@ public class TicketCaptainPrototypeTests
         Assert.Collection(steps,
             step => Assert.StartsWith("1. Once the parts are wired, dispatch a Review ticket", step),
             step => Assert.StartsWith("2. A lone reviewer records its own round; a round of several seats is yours to record", step),
-            step => Assert.StartsWith("3. Send a blocker", step),
-            step => Assert.StartsWith("4. Send a fundamental blocker", step),
-            step => Assert.StartsWith("5. Repeat until a round finds no new blocker", step));
+            step => Assert.StartsWith("3. Route each blocker", step),
+            step => Assert.StartsWith("4. Repeat until a round finds no new blocker", step));
         Assert.DoesNotContain("judge", Spine, StringComparison.OrdinalIgnoreCase);
     }
 
@@ -82,6 +81,10 @@ public class TicketCaptainPrototypeTests
     [InlineData("rule on")]
     [InlineData("authors nothing")]
     [InlineData("review the parent")]
+    [InlineData("a blocker that is broken")]
+    [InlineData("you get reviewed")]
+    [InlineData("need for the user, with")]
+    [InlineData("only the user can settle")]
     [InlineData("<KEY>-<slug>")]
     [InlineData("Create the ticket's branch")]
     [InlineData("Codex")]
@@ -122,7 +125,7 @@ public class TicketCaptainPrototypeTests
         Assert.All(marked, line => Assert.EndsWith(OpenMark, line));
         Assert.Collection(marked,
             line => Assert.StartsWith("Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets", line),
-            line => Assert.StartsWith("3. Send a blocker that is broken, against the spec or a security hole to a Fix ticket", line));
+            line => Assert.StartsWith("- Work that is broken, against the spec or a security hole: a Fix ticket", line));
     }
 
     [Fact]
@@ -131,8 +134,8 @@ public class TicketCaptainPrototypeTests
     {
         var open = Built.Value.Files[Review + "ticket-captain-open.md"].Split('\n').Where(line => line.StartsWith("## ", StringComparison.Ordinal));
 
-        Assert.Equal(["## Captain.Thread", "## CaptainDispatch.Roster", "## CaptainDispatch.Usage", "## CaptainMerging.Mutation"], open);
-        Assert.All(new[] { "thread's link", "roster", "dydo usage", "waits on mutation" },
+        Assert.Equal(["## Captain.Thread", "## CaptainDispatch.Roster", "## CaptainDispatch.Usage", "## CaptainMerging.Archive", "## CaptainMerging.Mutation"], open);
+        Assert.All(new[] { "thread's link", "roster", "dydo usage", "dydo archive", "waits on mutation" },
             withheld => Assert.All(Files, file => Assert.DoesNotContain(withheld, file.Value, StringComparison.Ordinal)));
     }
 
@@ -148,8 +151,8 @@ public class TicketCaptainPrototypeTests
         Assert.Equal(
             [
                 "`claim:Role.CaptainAccounts`, dropped, it fails Verify", "`claim:Role.CaptainTools`, dropped, it fails Need", "`claim:Tree.Branch`, dropped, it fails Handled",
-                "`claim:Tree.CrewLimits`, dropped, it fails Handled", "`claim:Dispatch.Foreground`, dropped, it fails Handled",
-                "`claim:Dispatch.ParentNotActive`, dropped, it fails Need", "`claim:Dispatch.CodexCap`, dropped, it fails Reason"
+                "`claim:Dispatch.Foreground`, dropped, it fails Handled", "`claim:Dispatch.ParentNotActive`, dropped, it fails Need",
+                "`claim:Dispatch.CodexCap`, dropped, it fails Reason"
             ],
             entries.Where(entry => entry.Contains(", dropped,", StringComparison.Ordinal)).Select(entry => entry[..entry.IndexOf(':', entry.IndexOf("fails", StringComparison.Ordinal))]));
     }
@@ -163,9 +166,102 @@ public class TicketCaptainPrototypeTests
 
         Assert.NotEmpty(claims);
         Assert.All(claims, claim => Assert.Contains("\"claim:Captain", claim));
-        Assert.All(new[] { "Taken", "Leaf", "Split", "Waiting", "InReview", "Fixing", "Question", "Finishing", "Done", "Returned" },
+        Assert.All(new[] { "Taken", "Leaf", "Split", "Waiting", "InReview", "Fixing", "Checkpoint", "Repairing", "Question", "Finishing", "Done", "Returned" },
             state => Assert.Contains($"\"{state}\"", arrows));
         Assert.Contains("VARIABLES state, round", Built.Value.Files["claims/statechart/captain/Captain.tla"]);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0 11 12 R10 S10 a third round that still has a blocker leaves only through the checkpoint, to one more round or to the officer")]
+    public void CaptainMachine_SendsAThirdBlockedRoundThroughTheCheckpoint()
+    {
+        var module = Built.Value.Files["claims/statechart/captain/Captain.tla"];
+
+        Assert.Contains(Arrow("CaptainTrouble.Third", "InReview", "Checkpoint"), Arrows);
+        Assert.Contains(Arrow("CaptainTrouble.Checkpoint", "Checkpoint", "Fixing"), Arrows);
+        Assert.Contains(Arrow("CaptainTrouble.Escalate", "Checkpoint", "Returned"), Arrows);
+        Assert.Contains("CaptainTrouble_Third ==\n    /\\ state = \"InReview\"\n    /\\ round = 3\n", module);
+        Assert.Contains("CaptainReview_Fix ==\n    /\\ state = \"InReview\"\n    /\\ round # 3\n", module);
+        Assert.Contains("CaptainReview_Replan ==\n    /\\ state = \"InReview\"\n    /\\ round # 3\n", module);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0 13 R19 R21 a conflict or red-gate repair has a state of its own, and its only way back to Finishing is a review round")]
+    public void CaptainMachine_SendsARepairBackThroughAReview()
+    {
+        Assert.Contains(Arrow("CaptainMerging.Broken", "Finishing", "Repairing"), Arrows);
+        Assert.Contains(Arrow("CaptainMergeTrouble.Hunks", "Repairing", "InReview"), Arrows);
+        Assert.Equal(1, Arrows.Split("\"from\": \"Repairing\"").Length - 1);
+        Assert.DoesNotContain("\"from\": \"Finishing\",\n      \"to\": \"Waiting\"", Arrows);
+        Assert.Contains(Arrow("CaptainReview.Groups", "Waiting", "Finishing"), Arrows);
+        Assert.Contains(Arrow("CaptainReview.OneMore", "InReview", "InReview"), Arrows);
+    }
+
+    private static string Arrows => Built.Value.Files["claims/statechart/captain/transitions.json"];
+
+    private static string Arrow(string claim, string from, string to) => $"\"claim\": \"claim:{claim}\",\n      \"from\": \"{from}\",\n      \"to\": \"{to}\"";
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0 2 the captain that merges opens its PR, from a tree dydo pr-ready passes, before the review; the legacy line that said so is kept")]
+    public void ReviewPhase_HasTheMergerOpenItsPrFirst()
+    {
+        Assert.Contains("If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed there before you merge", Section("## 4. Get it reviewed"));
+        Assert.Contains("`claim:Tree.CrewLimits`, kept in `claim:CaptainReview.Pr`", Built.Value.Files[Review + "ticket-captain-ledger-2.md"]);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0 3 an unsettled Question goes back to the officer with what was found, and no line routes it to the user")]
+    public void UnsettledQuestion_GoesToTheOfficerNotTheUser()
+    {
+        Assert.Contains("and return it to your officer as unsettled.", Resource("research"));
+        Assert.DoesNotContain("user", Resource("research"));
+        Assert.Contains("When a Question comes back unsettled, pass it to your officer with what was found", Resource("need-for-the-user"));
+        Assert.Contains("never a call that only wants the user's approval", Resource("need-for-the-user"));
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0 4 5 W9 a scenario names the tool or command its act uses: t3_thread_send for a Fix, git revert for a red merge")]
+    public void Scenarios_NameTheToolTheirActUses()
+    {
+        Assert.Contains("Give a Fix to its writer's thread, with `t3_thread_send`,", Resource("fix-rounds"));
+        Assert.Contains("`git revert -m 1 <merge SHA>`", Resource("red-gate"));
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0 8 W3 after a red merge the rerun and its two outcomes are prose, and the numbered steps are the ones that follow a real red")]
+    public void RedGate_NumbersOnlyTheStepsOfARealRed()
+    {
+        var red = Resource("red-gate");
+        var steps = red.Split('\n').Where(line => line.Length > 2 && char.IsDigit(line[0]) && line[1] == '.').ToArray();
+
+        Assert.Contains("\nRerun the red run once.\nGreen on the rerun is a flake: the merge is done.\n\n**Red again is real:**\n\n1. Revert the merge", red);
+        Assert.Collection(steps,
+            step => Assert.StartsWith("1. Revert the merge", step),
+            step => Assert.StartsWith("2. Cancel the Merge sub-ticket", step),
+            step => Assert.StartsWith("3. Dispatch an Implement ticket", step),
+            step => Assert.StartsWith("4. Merge the fixed branch again", step));
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0 9 the level table is the user's, verbatim with its legend and footers, and its claim's evidence names the cells this repository cannot run yet")]
+    public void LevelTable_IsVerbatimAndItsEvidenceNamesWhatCannotRunYet()
+    {
+        var review = Resource("review");
+        var why = Built.Value.Files["dydo/reference/claims/captain-reviewing.md"];
+
+        Assert.Contains("Legend: **due** every time; **if** when warranted; **–** not at this level.\n\n| | Read<br>local |", review);
+        Assert.Contains("> Every row: never re-run what the author ran the same way; a test receipt for the same state counts (spec R5). The security baseline is always on.\n>\n" +
+                        "> How it's used: the officer's brief names the level; the reviewer works its row.\n", review);
+        Assert.Contains("The user's table, verbatim from spec R34", why);
+        Assert.Contains("has no `--feature` and no `--heavy`", why);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 r0 10 a brief names the same three mergers the Finish phase has")]
+    public void Brief_NamesTheThreeMergersOfFinish()
+    {
+        Assert.Contains("- Who merges the work: the child, you, or nobody when it merges nothing.\n", Resource("briefs"));
+        Assert.All(new[] { "- **Your officer:**", "- **You:**", "- **Nobody:**" }, merger => Assert.Contains(merger, Section("## 5. Finish")));
     }
 
     private static string Resource(string name) => Built.Value.Files[$"{Folder}resources/{name}.md"];

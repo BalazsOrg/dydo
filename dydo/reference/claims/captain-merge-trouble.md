@@ -44,6 +44,8 @@ Reason: The merge can be resumed from the ticket by whoever holds it next.
 
 Spec: R19
 
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Repairing → InReview, "the repair is in: a fresh review of what it changed".
+
 Evidence (code): `Services/Merge/PullRequestMerge.cs`
 
 Layer: `dydo merge` refuses the new head until a PASS names it, and says nothing of who may give one.
@@ -98,7 +100,7 @@ Layer: Hosted CI reports red and stays red until somebody reruns it.
 
 Reason: One rerun tells a flake from a break at the cost of a few minutes.
 
-**ticket-captain** (RedSteps; read by TicketCaptain):
+**ticket-captain** (RedLead; read by TicketCaptain):
 
 > Rerun the red run once.
 
@@ -114,25 +116,41 @@ Layer: CI keeps no count of which runs turned green on a second try.
 
 Reason: A merge that is sound is not reverted for a test that wobbled.
 
-**ticket-captain** (RedSteps; read by TicketCaptain):
+**ticket-captain** (RedLead; read by TicketCaptain):
 
 > Green on the rerun is a flake: the merge is done.
 
 ## Revert
 
-`claim:CaptainMergeTrouble.Revert`: Red again is real: the captain reverts the merge at once, cancels the Merge sub-ticket and files a Bug.
+`claim:CaptainMergeTrouble.Revert`: A real red after a merge is reverted on the feature branch at once, by the captain.
 
-Spec: R22, S12
+Spec: R22
 
-Evidence (code): `Commands/GuardCommand.MergeRoutes.cs`
+Evidence (run): Each layer read 2026-11-20, no revert yet made: GitHub reports `feature/dydo-4-0-0` unprotected and under no ruleset; the guard's own corpus lets `git push --force-with-lease origin feature/x` through (`GuardShellCorpusTests`), its merge-route block naming only the default branch; the feature branch's history holds no revert.
 
-Layer: The guard stops a push to the default branch only, so the revert on the feature branch is the captain's to make.
+Layer: The guard stops a push to the default branch only, and nothing reverts a red merge by itself.
 
 Reason: Everyone else builds on the feature branch, and every hour it stays red is theirs too.
 
 **ticket-captain** (RedSteps; read by TicketCaptain):
 
-> Red again is real: revert the merge at once, cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file a Bug for what broke.
+> Revert the merge on the feature branch at once: `git revert -m 1 <merge SHA>`, pushed.
+
+## Cancelled
+
+`claim:CaptainMergeTrouble.Cancelled`: A reverted Merge is cancelled with its reason, and what broke becomes a CI-findings ticket.
+
+Spec: R22, S12
+
+Evidence (run): Linear, team Dydo, read 2026-11-20: the status Canceled exists, and so does the Project "CI findings".
+
+Layer: Linear leaves the Merge sub-ticket open after a revert, as if the merge still stood.
+
+Reason: The record says why the merge is gone, and the break has a ticket of its own.
+
+**ticket-captain** (RedSteps; read by TicketCaptain):
+
+> Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings.
 
 ## Repair
 

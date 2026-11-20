@@ -3,7 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// The ticket-captain prototype's one machine (DYD-1372 A8): the states of a captain holding one
 /// ticket, from taking it to returning. Its arrows are the prototype's own claims. <c>round</c> counts
-/// review rounds and is bounded only so TLC ends; the skill sets no cap.
+/// review rounds and is bounded only so TLC ends; the skill sets no cap. A third round that still has a
+/// blocker leaves only through the checkpoint (R10), and a repaired conflict or red gate returns to
+/// finishing only through a review round (R19). A splitting captain's Question is one more child it waits on.
 /// </summary>
 public static class CaptainMachines
 {
@@ -12,10 +14,12 @@ public static class CaptainMachines
         new(CaptainState.Taken, "Taken", "S6", "S15"),
         new(CaptainState.Leaf, "Working it as a leaf", "S2", "S7"),
         new(CaptainState.Split, "Split into sub-tickets", "S1", "S15"),
-        new(CaptainState.Waiting, "Waiting on children", "H3"),
+        new(CaptainState.Waiting, "Waiting on children, a Question's captain among them", "H3", "H16"),
         new(CaptainState.InReview, "In review", "R2", "R8"),
         new(CaptainState.Fixing, "Fixing", "S9", "R8"),
-        new(CaptainState.Question, "Waiting on a Question", "H16"),
+        new(CaptainState.Checkpoint, "At the checkpoint after a third blocked round", "R10", "S10"),
+        new(CaptainState.Repairing, "Repairing a conflict or a red gate", "R19", "R21", "R22"),
+        new(CaptainState.Question, "A leaf's own work waiting on a Question", "H16"),
         new(CaptainState.Finishing, "Finishing", "R21", "S6"),
         new(CaptainState.Done, "Done", "S6"),
         new(CaptainState.Returned, "Returned to its officer", "H23")

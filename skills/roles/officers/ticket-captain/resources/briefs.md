@@ -8,7 +8,7 @@ Brief without loading the child's kind resource: the child loads its own.
 
 - The ticket, by its key, and its kind.
 - `/ticket-captain`, then every other skill the ticket needs, each with a slash.
-- Who merges the work: the child, or you.
+- Who merges the work: the child, you, or nobody when it merges nothing.
 - For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes.
 - For a question: the question, and the choice that waits on it.
 
@@ -18,3 +18,5 @@ Brief without loading the child's kind resource: the child loads its own.
 - The governing spec, or that there is none.
 - The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. A leaf gets at most the check, never a full review.
 - The lenses, which rise up the tree: it works, with a security baseline; then it integrates; then it is optimal, secure, performant and in harmony. A first version never gets a final one's lenses.
+
+Write no review brief for a plan, spec or contract: it gets no review rounds, and a risky spec at most one pass by a native helper, which returns questions.

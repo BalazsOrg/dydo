@@ -38,6 +38,16 @@ Withheld from Seats:
 
 > Read `dydo usage` and balance vendors across every seat you fill.
 
+## CaptainMerging.Archive
+
+`claim:CaptainMerging.Archive`: After a merge the captain archives the branches and worktrees its dispatches created.
+
+Open: Dry runs with the built CLI, 2026-11-20, on this ticket's own T3-made worktree and its branch: `dydo archive worktree` refused, "T3 ownership/activity unavailable … target retained", and `dydo archive branch` refused, "Branch is checked out elsewhere". Every worktree a dispatch creates is T3's (`Services/SafeDeleteT3Policy.cs`; spec CA19, DYD-1216).
+
+Withheld from MergeSteps:
+
+> Archive each branch and worktree your dispatches created, with `dydo archive branch <target>` and `dydo archive worktree <target>`; the archive keeps them 30 days.
+
 ## CaptainMerging.Mutation
 
 `claim:CaptainMerging.Mutation`: No ticket or merge waits on mutation testing.

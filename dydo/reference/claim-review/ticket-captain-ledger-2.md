@@ -36,7 +36,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
 
-`claim:Tree.CrewLimits`, dropped, it fails Handled: T3 makes the checkout before the agent starts (`delegate_task`'s `isolation`), so a line on naming or creating a branch has every agent solve it again (1ffbc4c8). Who merges is in the brief (claim CaptainBriefs.Merger).
+`claim:Tree.CrewLimits`, kept in `claim:CaptainReview.Pr`, `claim:CaptainBriefs.Merger`
 
 > Create the ticket's branch, open its PR and merge it yourself; ordinary crew never do.
 

@@ -68,7 +68,7 @@ Reason: It decides how the child finishes, and two agents never both merge.
 
 **ticket-captain** (BriefAll; read by TicketCaptain):
 
-> Who merges the work: the child, or you.
+> Who merges the work: the child, you, or nobody when it merges nothing.
 
 ## Change
 

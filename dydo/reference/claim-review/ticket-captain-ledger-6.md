@@ -40,7 +40,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > A gate red after the merge reruns once through DYTEST.
 
-`claim:SafeDelete.Archive`, kept in `claim:CaptainMerging.Archive`
+`claim:SafeDelete.Archive`, kept in `claim:CaptainMerging.Archive` (open, not rendered)
 
 > After a merge, safe-delete the branches and worktrees you made with `dydo archive`; it keeps them 30 days, then purges them.
 

@@ -120,16 +120,16 @@ Reason: Its reader checks any claim in one step, and sees where nobody looked.
 
 ## Question
 
-`claim:CaptainResearch.Question`: A Question's captain researches first, answers what the facts settle, and returns the rest as a need for the user.
+`claim:CaptainResearch.Question`: A Question's captain researches first, answers what the facts settle, and returns the rest to its officer as unsettled, with the call laid out.
 
-Spec: H16
+Spec: H16, L18
 
-Evidence (run): Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, "Resolution: the answer, posted on close".
+Evidence (run): Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, "Resolution: the answer, posted on close"; it holds no label for a council yet.
 
-Layer: Nothing keeps a question that the sources could answer from being put to the user.
+Layer: Where an unsettled call goes next is its route, and the council that takes most of them has no resource in this skill yet.
 
-Reason: The user is asked only what nothing else can answer reliably.
+Reason: Options left unranked let whoever decides weigh them without the researcher's leaning.
 
 **ticket-captain** (ResearchQuestion; read by TicketCaptain):
 
-> Research first. When the facts settle the call, put the answer on the ticket; when they do not, return it to your officer as a need for the user, with what you found.
+> Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, and return it to your officer as unsettled.

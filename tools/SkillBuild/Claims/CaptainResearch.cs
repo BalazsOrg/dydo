@@ -84,16 +84,17 @@ public static class CaptainResearch
             Reason: "Its reader checks any claim in one step, and sees where nobody looked.")
     };
 
-    public static readonly Claim Question = new("A Question's captain researches first, answers what the facts settle, and returns the rest as a need for the user.", Me,
+    public static readonly Claim Question = new("A Question's captain researches first, answers what the facts settle, and returns the rest to its officer as unsettled, with the call laid out.", Me,
     [
         At(CaptainSlot.ResearchQuestion, 1,
-            "Research first. When the facts settle the call, put the answer on the ticket; when they do not, return it to your officer as a need for the user, with what you found.")
+            "Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, " +
+            "and return it to your officer as unsettled.")
     ])
     {
-        Spec = ["H16"],
-        Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, \"Resolution: the answer, posted on close\"."),
-            Layer: "Nothing keeps a question that the sources could answer from being put to the user.",
-            Reason: "The user is asked only what nothing else can answer reliably.")
+        Spec = ["H16", "L18"],
+        Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, \"Resolution: the answer, posted on close\"; it holds no label for a council yet."),
+            Layer: "Where an unsettled call goes next is its route, and the council that takes most of them has no resource in this skill yet.",
+            Reason: "Options left unranked let whoever decides weigh them without the researcher's leaning.")
     };
 
     private static Line At(Enum slot, int order, string text) =>

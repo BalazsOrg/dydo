@@ -53,11 +53,11 @@ public static class CaptainTrouble
     public static readonly Claim FixOwner = new("A Fix goes to its writer's thread while that thread has room, and to a fresh agent otherwise.", Me,
     [
         At(CaptainSlot.FixRules, 1,
-            "Give a Fix to its writer's thread while that thread is alive and has room in its context; give it to a fresh agent when the context is heavy or a blocker says the approach was wrong.")
+            "Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong.")
     ])
     {
         Spec = ["S9"],
-        Truth = new(Evidence.Tool("t3_thread_send: \"A send to a finished child thread starts a fresh task and returns its `taskId`.\""),
+        Truth = new(Evidence.Run("This skill's own Fix came so: its captain sent fix r0 to the thread that wrote hop 2. t3_thread_send: \"A send to a finished child thread starts a fresh task and returns its `taskId`.\""),
             Layer: "T3 will resume any thread, and cannot tell a useful context from a spent one.",
             Reason: "The writer already understands the code, until its context is what stands in the way.")
     };
@@ -102,13 +102,26 @@ public static class CaptainTrouble
             Reason: "A dropped ticket left open looks like work someone still owes.")
     };
 
-    public static readonly Claim Checkpoint = new("After round 3 with a blocker comes a checkpoint: by default one more round, noted on the Review ticket.", Me,
-        [At(CaptainSlot.FixCheckpoint, 1, "After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket, and run it.")])
+    public static readonly Claim Third = new("A third round that still has a blocker goes to the checkpoint before anything else.", Me, [])
+    {
+        Spec = ["R10"],
+        Truth = new(Evidence.Run(Rounds),
+            Layer: "Nothing counts rounds, so nothing would notice a loop that never ends.",
+            Reason: "Three blocked rounds say something other than the code may be wrong, and a fourth should not start unasked."),
+        Transition = new(CaptainState.InReview, CaptainState.Checkpoint, "a third round still has a blocker: the checkpoint") { Guard = "round = 3" }
+    };
+
+    public static readonly Claim Checkpoint = new("At the checkpoint the default is one more round, noted on the Review ticket.", Me,
+    [
+        At(CaptainSlot.FixCheckpoint, 1, "After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket, and run it.",
+            () => [Third])
+    ])
     {
         Spec = ["R10", "S10"],
         Truth = new(Evidence.Run(Rounds),
-            Layer: "Nothing counts rounds, so nothing would notice a loop that never ends.",
-            Reason: "A written reason makes the captain look at why three rounds were not enough.")
+            Layer: "The Review ticket takes any comment, and nothing asks for this one.",
+            Reason: "A written reason makes the captain look at why three rounds were not enough."),
+        Transition = new(CaptainState.Checkpoint, CaptainState.Fixing, "`checkpoint: one more round, because …`: the blockers go to a Fix")
     };
 
     public static readonly Claim Escalate = new("At the checkpoint a captain escalates only for a fundamental break, a new requirement or a need for the user.", Me,
@@ -120,7 +133,8 @@ public static class CaptainTrouble
         Spec = ["R10"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
             Layer: "An officer hears nothing of a loop below it until the captain speaks.",
-            Reason: "Most of the time the right answer is one more round, and an escalation stops work that could go on.")
+            Reason: "Most of the time the right answer is one more round, and an escalation stops work that could go on."),
+        Transition = new(CaptainState.Checkpoint, CaptainState.Returned, "`escalated: …`: a fundamental break, a new requirement or a need for the user goes to the officer")
     };
 
     public static readonly Claim Sources = new("What research can answer never reaches the user.", Me,
@@ -152,19 +166,22 @@ public static class CaptainTrouble
         Transition = new(CaptainState.Question, CaptainState.Leaf, "the answer is on the Question ticket")
     };
 
-    public static readonly Claim Up = new("A need only the user can settle is passed up to the officer.", Me,
-        [At(CaptainSlot.NeedRules, 3, "When the answer is that only the user can settle it, pass the need to your officer and leave the Question open.")])
+    public static readonly Claim Up = new("A Question that comes back unsettled is passed up to the officer, with what was found.", Me,
+        [At(CaptainSlot.NeedRules, 3, "When a Question comes back unsettled, pass it to your officer with what was found, and leave it open.")])
     {
         Spec = ["H16", "H12"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
-            Layer: "A captain has no tool that opens a thread with the user.",
-            Reason: "Needs reach the user one at a time, from one place, instead of from every captain at once.")
+            Layer: "A captain has no tool that opens a thread with the user, and its officer is the only one above it.",
+            Reason: "Whether a call is worth the user's time is weighed once, above, instead of by every captain that meets one.")
     };
 
     public static readonly Claim InThread = new("When the user is already in an officer's thread, it may ask a one-line question there.", Me,
-        [At(CaptainSlot.NeedRules, 4, "When the user is already in your thread, ask the one line there, with the host's question tool.")])
+    [
+        At(CaptainSlot.NeedRules, 4,
+            "When the user is already in your thread, you may ask one line there, with the host's question tool: never what the sources can answer, and never a call that only wants the user's approval.")
+    ])
     {
-        Spec = ["H22"],
+        Spec = ["H22", "L18"],
         Truth = new(Evidence.Tool("AskUserQuestion: \"Use this tool only when you are blocked on a decision that is genuinely the user's to make\"."),
             Layer: "The tool asks whenever it is called; whether the user is there to answer, only the thread shows.",
             Reason: "A ticket and a wait for something the user can answer in a word would be overkill.")

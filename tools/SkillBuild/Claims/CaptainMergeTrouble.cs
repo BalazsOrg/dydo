@@ -35,7 +35,8 @@ public static class CaptainMergeTrouble
         Spec = ["R19"],
         Truth = new(Evidence.Code(MergeCode),
             Layer: "`dydo merge` refuses the new head until a PASS names it, and says nothing of who may give one.",
-            Reason: "A resolution is the one part of a merge that somebody wrote by hand.")
+            Reason: "A resolution is the one part of a merge that somebody wrote by hand."),
+        Transition = new(CaptainState.Repairing, CaptainState.InReview, "the repair is in: a fresh review of what it changed")
     };
 
     public static readonly Claim Again = new("The merge runs again once the hunks pass, on the new head.", Me,
@@ -57,7 +58,7 @@ public static class CaptainMergeTrouble
     };
 
     public static readonly Claim Rerun = new("A gate red after the merge is rerun once.", Me,
-        [At(CaptainSlot.RedSteps, 1, "Rerun the red run once.")])
+        [At(CaptainSlot.RedLead, 1, "Rerun the red run once.")])
     {
         Spec = ["R22"],
         Truth = new(Evidence.Tool("ci_rerun: \"Re-run a PR's failing checks, or one named check.\""),
@@ -66,7 +67,7 @@ public static class CaptainMergeTrouble
     };
 
     public static readonly Claim Flake = new("Green on the rerun is a flake, and the merge is done.", Me,
-        [At(CaptainSlot.RedSteps, 2, "Green on the rerun is a flake: the merge is done.")])
+        [At(CaptainSlot.RedLead, 2, "Green on the rerun is a flake: the merge is done.")])
     {
         Spec = ["R22"],
         Truth = new(Evidence.Code(".github/workflows/ci.yml"),
@@ -74,20 +75,28 @@ public static class CaptainMergeTrouble
             Reason: "A merge that is sound is not reverted for a test that wobbled.")
     };
 
-    public static readonly Claim Revert = new("Red again is real: the captain reverts the merge at once, cancels the Merge sub-ticket and files a Bug.", Me,
-    [
-        At(CaptainSlot.RedSteps, 3,
-            "Red again is real: revert the merge at once, cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file a Bug for what broke.")
-    ])
+    public static readonly Claim Revert = new("A real red after a merge is reverted on the feature branch at once, by the captain.", Me,
+        [At(CaptainSlot.RedSteps, 1, "Revert the merge on the feature branch at once: `git revert -m 1 <merge SHA>`, pushed.")])
     {
-        Spec = ["R22", "S12"],
-        Truth = new(Evidence.Code("Commands/GuardCommand.MergeRoutes.cs"),
-            Layer: "The guard stops a push to the default branch only, so the revert on the feature branch is the captain's to make.",
+        Spec = ["R22"],
+        Truth = new(Evidence.Run("Each layer read 2026-11-20, no revert yet made: GitHub reports `feature/dydo-4-0-0` unprotected and under no ruleset; the guard's own corpus " +
+                                 "lets `git push --force-with-lease origin feature/x` through (`GuardShellCorpusTests`), its merge-route block naming only the default branch; " +
+                                 "the feature branch's history holds no revert."),
+            Layer: "The guard stops a push to the default branch only, and nothing reverts a red merge by itself.",
             Reason: "Everyone else builds on the feature branch, and every hour it stays red is theirs too.")
     };
 
+    public static readonly Claim Cancelled = new("A reverted Merge is cancelled with its reason, and what broke becomes a CI-findings ticket.", Me,
+        [At(CaptainSlot.RedSteps, 2, "Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings.")])
+    {
+        Spec = ["R22", "S12"],
+        Truth = new(Evidence.Run("Linear, team Dydo, read 2026-11-20: the status Canceled exists, and so does the Project \"CI findings\"."),
+            Layer: "Linear leaves the Merge sub-ticket open after a revert, as if the merge still stood.",
+            Reason: "The record says why the merge is gone, and the break has a ticket of its own.")
+    };
+
     public static readonly Claim Repair = new("After a revert, an Implement ticket fixes it on the ticket's branch, then a review round scoped to the fix.", Me,
-        [At(CaptainSlot.RedSteps, 4, "Dispatch an Implement ticket to fix it on your ticket's branch, then a review round scoped to the fix.")])
+        [At(CaptainSlot.RedSteps, 3, "Dispatch an Implement ticket to fix it on your ticket's branch, then a review round scoped to the fix.")])
     {
         Spec = ["R22"],
         Truth = new(Evidence.Code(MergeCode),
@@ -97,7 +106,7 @@ public static class CaptainMergeTrouble
 
     public static readonly Claim Reland = new("The fixed branch is merged again through a PR that itself restores the reverted change.", Me,
     [
-        At(CaptainSlot.RedSteps, 5,
+        At(CaptainSlot.RedSteps, 4,
             "Merge the fixed branch again through a new PR that brings the reverted change back itself: `dydo merge` undoes no revert, and calls the old PR already integrated.")
     ])
     {

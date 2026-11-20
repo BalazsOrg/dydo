@@ -57,7 +57,9 @@ public static class CaptainMerging
     ])
     {
         Spec = ["N10", "N12 DR 045 §8"],
-        Truth = new(Evidence.Command("dydo archive branch <target> --dry-run"),
+        Truth = new(Evidence.Open("Dry runs with the built CLI, 2026-11-20, on this ticket's own T3-made worktree and its branch: `dydo archive worktree` refused, " +
+                                  "\"T3 ownership/activity unavailable … target retained\", and `dydo archive branch` refused, \"Branch is checked out elsewhere\". " +
+                                  "Every worktree a dispatch creates is T3's (`Services/SafeDeleteT3Policy.cs`; spec CA19, DYD-1216)."),
             Layer: "T3 makes a child's worktree and leaves it standing: `git worktree list` on the writer's host showed 237.",
             Reason: "Merged checkouts pile up on the host, and an archive can be undone where a delete cannot.")
     };
@@ -78,7 +80,7 @@ public static class CaptainMerging
         Truth = new(Evidence.Code(MergeCode),
             Layer: "On a conflict `dydo merge` refuses and merges nothing; it repairs neither that nor a red gate.",
             Reason: "A captain that repairs the work it is about to merge has written what nobody reviewed."),
-        Transition = new(CaptainState.Finishing, CaptainState.Waiting, "a conflict or a real red gate: an Implement ticket")
+        Transition = new(CaptainState.Finishing, CaptainState.Repairing, "a conflict or a real red gate: an Implement ticket repairs it")
     };
 
     public static readonly Claim Mutation = new("No ticket or merge waits on mutation testing.", Me,

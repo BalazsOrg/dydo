@@ -28,7 +28,7 @@ Reason: The three ways of finishing differ, and a captain that picks the wrong o
 
 Spec: R32, R5
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Finishing, "the work is whole, and its review and merge are the officer's".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Finishing, "the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer".
 
 Evidence (run): This skill's writer was briefed (DYD-1372 hop 2): "IMPLEMENTED DYD-1372 hop 2 at <SHA>", then "the gate commands with their exits".
 

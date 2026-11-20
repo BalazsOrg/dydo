@@ -76,7 +76,7 @@ Reason: The merge commit is the first time the combined tree runs on the host ev
 
 Spec: N10, N12 DR 045 §8
 
-Evidence (command): `dydo archive branch <target> --dry-run`
+Evidence: open, so no skill states this claim yet. Dry runs with the built CLI, 2026-11-20, on this ticket's own T3-made worktree and its branch: `dydo archive worktree` refused, "T3 ownership/activity unavailable … target retained", and `dydo archive branch` refused, "Branch is checked out elsewhere". Every worktree a dispatch creates is T3's (`Services/SafeDeleteT3Policy.cs`; spec CA19, DYD-1216).
 
 Layer: T3 makes a child's worktree and leaves it standing: `git worktree list` on the writer's host showed 237.
 
@@ -108,7 +108,7 @@ Reason: A clean merge adds no line anyone wrote, so the gates and CI prove it.
 
 Spec: R21, R19
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Finishing → Waiting, "a conflict or a real red gate: an Implement ticket".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Finishing → Repairing, "a conflict or a real red gate: an Implement ticket repairs it".
 
 Evidence (code): `Services/Merge/PullRequestMerge.cs`
 

@@ -29,7 +29,7 @@ public static class CaptainLedger
         Fate.Kept(Project.Weeds, CaptainImplement.Weed),
         Fate.Deferred(Council.Hold, Chair),
         Fate.Dropped(Tree.Branch, Question.Handled, Checkout),
-        Fate.Dropped(Tree.CrewLimits, Question.Handled, Checkout + " Who merges is in the brief (claim CaptainBriefs.Merger)."),
+        Fate.Kept(Tree.CrewLimits, CaptainReview.Pr, CaptainBriefs.Merger),
         Fate.Kept(Report.Up, Captain.ReportUp),
         Fate.Kept(Dispatch.Start, Captain.Start, Captain.Thread),
         Fate.Kept(Project.OneTicket, CaptainSplit.OneTicket),

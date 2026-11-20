@@ -9,6 +9,8 @@ public enum CaptainState
     Waiting,
     InReview,
     Fixing,
+    Checkpoint,
+    Repairing,
     Question,
     Finishing,
     Done,

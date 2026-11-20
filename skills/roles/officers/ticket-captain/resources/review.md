@@ -5,7 +5,7 @@
 Your ticket is a review: one candidate, judged at the level your brief names, and the verdict is yours.
 Never judge work you implemented or fixed.
 
-**Work only your level's row:**
+Legend: **due** every time; **if** when warranted; **–** not at this level.
 
 | | Read<br>local | Read<br>vs spec | Read<br>whole / gestalt | Run tests | Hypothesis<br>custom tests | Drive<br>the app | Formal<br>statechart, … |
 | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -14,7 +14,9 @@ Never judge work you implemented or fixed.
 | Feature / Milestone<br>a subsystem is done | if | due | due | due<br>feature + suite | due<br>at the seams | due<br>its journeys | if<br>it has a state machine |
 | Inquisition<br>before landing, per slice | due<br>every slice | due | due | due<br>suite + --heavy + mutation | due<br>every hypothesis | due | due |
 
-**due** every time; **if** when warranted; **–** not at this level. Never re-run what the author ran the same way: a receipt for the same state counts. The security baseline is always on.
+> Every row: never re-run what the author ran the same way; a test receipt for the same state counts (spec R5). The security baseline is always on.
+>
+> How it's used: the officer's brief names the level; the reviewer works its row.
 
 - Drive and Formal are due only where the tool is built and the subject is settled; report a tool the project lacks to your officer as a finding, instead of building it.
 - Judge the change, and the behaviour it inherits unchanged, against the spec's problem statement and goals, not only the contract.

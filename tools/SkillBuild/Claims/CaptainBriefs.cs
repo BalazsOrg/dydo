@@ -39,7 +39,7 @@ public static class CaptainBriefs
     };
 
     public static readonly Claim Merger = new("A brief names who merges the work.", Me,
-        [At(CaptainSlot.BriefAll, 3, "Who merges the work: the child, or you.")])
+        [At(CaptainSlot.BriefAll, 3, "Who merges the work: the child, you, or nobody when it merges nothing.")])
     {
         Spec = ["K14", "R21"],
         Truth = new(Evidence.Run(OwnBrief + "\"Do not push; no PR; no merge.\""),

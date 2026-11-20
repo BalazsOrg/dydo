@@ -136,7 +136,7 @@ Reason: The board then shows which step a piece of work has reached without anyo
 
 **ticket-captain** (Split; read by TicketCaptain):
 
-> Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; a small leaf stays one ticket. (open: his call)
+> Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; a small leaf is one ticket. (open: his call)
 
 ## Small
 
@@ -152,4 +152,4 @@ Reason: A captain that wrote the work can no longer be impartial about the findi
 
 **ticket-captain** (Split; read by TicketCaptain):
 
-> Once you split, write a change yourself only when that is cheaper than briefing it and too small to need review.
+> Once you split, write a change yourself only when it is cheaper than briefing it and too small to need review.
