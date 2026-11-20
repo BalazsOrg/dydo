@@ -1,0 +1,393 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Captain",
+  "title": "A captain and its ticket",
+  "initial": "Taken",
+  "finals": [
+    "Returned"
+  ],
+  "states": [
+    {
+      "id": "Taken",
+      "title": "Taken",
+      "spec": [
+        "S6",
+        "S15"
+      ]
+    },
+    {
+      "id": "Leaf",
+      "title": "Working it as a leaf",
+      "spec": [
+        "S2",
+        "S7"
+      ]
+    },
+    {
+      "id": "Split",
+      "title": "Split into sub-tickets",
+      "spec": [
+        "S1",
+        "S15"
+      ]
+    },
+    {
+      "id": "Waiting",
+      "title": "Waiting on children",
+      "spec": [
+        "H3"
+      ]
+    },
+    {
+      "id": "InReview",
+      "title": "In review",
+      "spec": [
+        "R2",
+        "R8"
+      ]
+    },
+    {
+      "id": "Fixing",
+      "title": "Fixing",
+      "spec": [
+        "S9",
+        "R8"
+      ]
+    },
+    {
+      "id": "Question",
+      "title": "Waiting on a Question",
+      "spec": [
+        "H16"
+      ]
+    },
+    {
+      "id": "Finishing",
+      "title": "Finishing",
+      "spec": [
+        "R21",
+        "S6"
+      ]
+    },
+    {
+      "id": "Done",
+      "title": "Done",
+      "spec": [
+        "S6"
+      ]
+    },
+    {
+      "id": "Returned",
+      "title": "Returned to its officer",
+      "spec": [
+        "H23"
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "round",
+      "initial": "1",
+      "bound": "round <= 4"
+    }
+  ],
+  "transitions": [
+    {
+      "claim": "claim:Captain.Filler",
+      "from": "Taken",
+      "to": "Returned",
+      "arrow": "a filler ticket fails its check and goes back",
+      "spec": [
+        "H11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainDispatch.Send",
+      "from": "Split",
+      "to": "Waiting",
+      "arrow": "each sub-ticket is dispatched",
+      "spec": [
+        "H3"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainFinish.Close",
+      "from": "Finishing",
+      "to": "Done",
+      "arrow": "the contract is met: the ticket closes Done",
+      "spec": [
+        "S6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainFinish.HandOver",
+      "from": "Leaf",
+      "to": "Finishing",
+      "arrow": "the work is whole, and its review and merge are the officer's",
+      "spec": [
+        "R32",
+        "R5"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainFinish.Return",
+      "from": "Done",
+      "to": "Returned",
+      "arrow": "one line goes back to the officer",
+      "spec": [
+        "H23",
+        "K14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainMerging.Broken",
+      "from": "Finishing",
+      "to": "Waiting",
+      "arrow": "a conflict or a real red gate: an Implement ticket",
+      "spec": [
+        "R21",
+        "R19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Clean",
+      "from": "InReview",
+      "to": "Finishing",
+      "arrow": "a round finds no new blocker",
+      "spec": [
+        "R8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Fix",
+      "from": "InReview",
+      "to": "Fixing",
+      "arrow": "a round returns a blocker: a Fix ticket",
+      "spec": [
+        "R9",
+        "S9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Groups",
+      "from": "Waiting",
+      "to": "Finishing",
+      "arrow": "the ticket only groups parts: no review",
+      "spec": [
+        "R6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Other",
+      "from": "Leaf",
+      "to": "InReview",
+      "arrow": "the leaf's change is whole: another agent reviews it",
+      "spec": [
+        "R33",
+        "R12"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Replan",
+      "from": "InReview",
+      "to": "Returned",
+      "arrow": "a blocker is fundamental or a new requirement: back to the officer",
+      "spec": [
+        "R9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Whole",
+      "from": "Waiting",
+      "to": "InReview",
+      "arrow": "the parts are wired: a Review of the whole is dispatched",
+      "spec": [
+        "R2",
+        "R1"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainSplit.Cut",
+      "from": "Taken",
+      "to": "Split",
+      "arrow": "the ticket is bigger than one agent: it is cut",
+      "spec": [
+        "H13",
+        "H14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainSplit.Leaf",
+      "from": "Taken",
+      "to": "Leaf",
+      "arrow": "the ticket fits one agent",
+      "spec": [
+        "S2",
+        "S7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.Answered",
+      "from": "Question",
+      "to": "Leaf",
+      "arrow": "the answer is on the Question ticket",
+      "spec": [
+        "H16"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.Ask",
+      "from": "Leaf",
+      "to": "Question",
+      "arrow": "a call that is not obvious: a Question sub-ticket",
+      "spec": [
+        "H16",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.NextRound",
+      "from": "Fixing",
+      "to": "InReview",
+      "arrow": "the Fix is Done: a fresh round",
+      "spec": [
+        "R8",
+        "S9"
+      ],
+      "guard": null,
+      "effect": "round' = round + 1",
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.ReCut",
+      "from": "Leaf",
+      "to": "Returned",
+      "arrow": "`too big, re-cut`: neither the work nor its split fits",
+      "spec": [
+        "H2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.SplitRest",
+      "from": "Leaf",
+      "to": "Split",
+      "arrow": "the leaf proves too big: what is left is cut",
+      "spec": [
+        "H13",
+        "H14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    }
+  ],
+  "gaps": []
+}

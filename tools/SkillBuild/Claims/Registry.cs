@@ -17,7 +17,7 @@ public static class Registry
         HierarchyMachines.Should, MergeMachines.MergeCommand, MergeMachines.FeatureMerge, ProcessMachines.Findings,
         HierarchyMachines.Liveness, ToolMachines.Map, HierarchyMachines.Envoy, LawMachines.Council, LawMachines.Tribunal, LawMachines.Law, LawMachines.SlugCheck,
         LawMachines.Backfill, HierarchyMachines.Staff, DeliveryMachines.Landing, LawMachines.Mutation, MergeMachines.MasterRoute,
-        LawMachines.SafeDelete, LawMachines.IgnoreEntry, ProcessMachines.Adopter
+        LawMachines.SafeDelete, LawMachines.IgnoreEntry, ProcessMachines.Adopter, CaptainMachines.Captain
     ];
 
     public static IReadOnlyList<Type> Kinds { get; } =
@@ -70,7 +70,19 @@ public static class Registry
         typeof(Linear),
         typeof(Scout),
         typeof(Recovery),
-        typeof(Captain)
+        typeof(Captain),
+        typeof(CaptainSplit),
+        typeof(CaptainDispatch),
+        typeof(CaptainBriefs),
+        typeof(CaptainReview),
+        typeof(CaptainRound),
+        typeof(CaptainFinish),
+        typeof(CaptainMerging),
+        typeof(CaptainImplement),
+        typeof(CaptainReviewing),
+        typeof(CaptainResearch),
+        typeof(CaptainTrouble),
+        typeof(CaptainMergeTrouble)
     ];
 
     public static IReadOnlyList<SkillSpec> Skills { get; } =

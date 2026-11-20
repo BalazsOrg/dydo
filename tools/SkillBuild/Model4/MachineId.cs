@@ -1,6 +1,6 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>The 4.0.0 machines (K1); the overview orders them.</summary>
+/// <summary>The 4.0.0 machines (K1); the overview orders them. <see cref="Captain"/> is the ticket-captain prototype's (DYD-1372), outside the overview.</summary>
 public enum MachineId
 {
     Overview,
@@ -33,5 +33,6 @@ public enum MachineId
     Mutation,
     SafeDelete,
     IgnoreEntry,
-    Adopter
+    Adopter,
+    Captain
 }

@@ -1,7 +1,57 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>The ticket-captain prototype's slots (DYD-1372). PLACEHOLDER: hop 2 declares the prototype's own.</summary>
+/// <summary>
+/// The ticket-captain prototype's slots (DYD-1372), in the order its files read: the five phases of
+/// its spine, its kind resources, the resources its phases link, and its scenarios.
+/// </summary>
 public enum CaptainSlot
 {
-    Hold
+    Take,
+    Kinds,
+    Hold,
+    Leaf,
+    Split,
+    Briefs,
+    Seats,
+    Sending,
+    Lanes,
+    Returns,
+    Reviewed,
+    Rounds,
+    Mine,
+    Who,
+    Cases,
+    Close,
+    ImplementLead,
+    ImplementRules,
+    ImplementFix,
+    ImplementConflict,
+    ImplementShoulds,
+    ImplementEnd,
+    ReviewLead,
+    ReviewRow,
+    ReviewRules,
+    ReviewHolding,
+    ResearchLead,
+    ResearchSteps,
+    ResearchQuestion,
+    BriefLead,
+    BriefAll,
+    BriefReview,
+    FillerLead,
+    FillerRules,
+    RoundSteps,
+    RoundRules,
+    MergeSteps,
+    MergeRules,
+    TooBigSteps,
+    TooBigChild,
+    FixRules,
+    FixCheckpoint,
+    ConflictSteps,
+    ConflictEnd,
+    RedSteps,
+    RedEnd,
+    NeedLead,
+    NeedRules
 }
