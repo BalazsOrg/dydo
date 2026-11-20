@@ -38,11 +38,14 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   captain, a Project ticket under the coordinator. A fresh captain holds it and researches first,
   then answers it, sends it to a council, or puts it on the coordinator's HITL queue when it is
   worth the user's time (H16, H18, L18; DYD-1195 317eb49f, 3a854e37, 87c1e2e6).
-- **Council** - a Question ticket with Mode AFK, chaired by a ticket captain with its council-chair
-  resource; the deliberation sits on the ticket next to the answer (L16, L23; DYD-1195 ea16ea28).
-- **Tribunal** - the council's Judge procedure: three members testing one call against the user's own
-  words, the officer that raised it and two fresh judges, one per vendor (L18, L23). Its output
-  is **unratified** and becomes precedent only when the user answers it `RATIFIED`.
+- **Council** - a Question ticket at stage `council`, with Mode AFK, chaired by a ticket captain with
+  its council-chair resource; the deliberation sits on the ticket next to the answer (L16, L23, H23;
+  DYD-1195 ea16ea28).
+- **Tribunal** - the council's Judge procedure (L18, L23). Its members are two judges from different
+  families, who take sealed positions on a neutral case file, then exchange once; the chairing
+  captain is not a member (L18). Judges who agree on a two-way call decide it; otherwise the call is
+  prepared for the user (L18, L20). A decided Question is provisional: acted on, never ratified
+  (L19). The user ratifies only a `proposed` DR, decided overnight (L21).
 - **Frontier** - the open, unblocked, unassigned map tickets: the edge of what a Project knows.
   Linear's own blocking relations and assignment render it; there is no separate navigation object.
 
@@ -92,8 +95,8 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 - **User command** - a skill only the user invokes by name, never reached for by a model:
   grill-me, bro, improve-codebase-architecture, create-verification-skill,
   create-formal-verification-skill, statechart, update-dydo.
-- **Rubric** - the one named standard a reviewer judges a candidate against: code, docs,
-  spec, or merge.
+- **Rubric** - the one named standard a reviewer judges a candidate against: code or docs (D6). A
+  spec gets no review, only an optional scout pass that returns Questions (R4).
 
 ## Execution and proof
 
@@ -102,9 +105,8 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 - **Reviewed intent** - the rule that implementation begins only from an independently reviewable
   contract: an atomic ticket, or a Project's tickets with their applicable feature specs and Decisions.
 - **Scenario** - one acceptance criterion at the product's boundary, written in Gherkin in the
-  ticket's feature files by the implementer, where the ticket's contract calls for Gherkin. It is
-  contract: the captain decides the set and the writer wires it without weakening it; a change to it
-  is a contract amendment.
+  ticket's feature files, where the ticket's contract calls for Gherkin. It is contract: the captain
+  decides the set, and it is wired without weakening it; a change to it is a contract amendment.
 - **Gate** - any explicit pass/fail checkpoint.
 - **Hop** - one crew member's committed pass over a ticket branch: `implement`, `fix` or `merge`, and
   `proof` for a proof test on a proof branch, a Break reviewer's included. Its SHA is evidence on the ticket,
@@ -120,25 +122,25 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   at the final walkthrough for the user to promote; an inquisition's nits go on its round's nit
   ticket instead (DR 059). The fix-hop author checks each label against
   the source and may change it with evidence; the captain records the change and its reason.
-- **Merge review** - the `merge` rubric run after every merge that has a Merge Ticket: a mechanical
-  spot check of the integrated state that also proves the Project's acceptance criteria at a feature's
-  final merge. An atomic ticket's merge into main has none; its ticket review PASS, green CI and the
-  user's click stand in its place.
-- **Inquisition** - a user-confirmed Type held by a captain: one round of audit of the integrated
-  feature. Its captain conducts and never hunts: it draws the area map, runs every applicable phase
-  on every area through reviewers, whose lenses the phases are (N5; DYD-1082 1bc04dce change 5), triages each finding by severity, and delivers its own
-  record. It files outcomes, never PASS or FAIL. Rounds repeat from zero until one finds no blocker
-  and no should (DR 059).
-- **Round** - one Inquisition, started from zero with a fresh area map, never a recheck of an
+- **Merge review** - kept only at the landing, as a Merge-confidence council on the landing
+  candidate before the user's walkthrough (R20, L16, N6). A merge into the feature branch has none;
+  the combined gates on the merge SHA and hosted CI prove it (R18).
+- **Inquisition** - review at the landing level, held by a ticket captain with its
+  inquisition-captain resource: the landed work cut by feature and staffed with reviewers (N5;
+  DYD-1082 1bc04dce change 5). Its captain conducts and never hunts: it draws the feature map, has
+  each lens run on every slice by its own reviewer, and triages each finding by severity. Its record
+  is written by an implementer (N12). Rounds repeat from zero until one finds no blocker and no
+  should (N5, DR 059).
+- **Round** - one Inquisition, started from zero with a fresh feature map, never a recheck of an
   earlier round's findings; each round has its own Bugs and nit ticket.
-- **Area** - a small piece of the landed work's code, architecture or files; one file can be an
-  area, and a seam between two areas is its own area. A big area gets superficial coverage.
-- **Area map** - the table of areas the inquisition captain draws from the landing diff and the
-  file layout, on the Inquisition ticket, each row saying which phases apply or why not.
-- **Phase** - in an inquisition, one of an area's three tracks, run in order: **Read** hunts what neither
-  a test nor a drive would catch and tags the rest `testable` or `drivable`; **Break** decides
-  hypotheses with its own proof tests on a proof branch; **Drive** runs the area's journeys
-  through the project's verification skill and API. A plain skill or doc area gets Read only.
+- **Slice** - one small piece of the feature map: a feature, or a seam where features meet (N5).
+- **Feature map** - the slices the root inquisition captain draws from the landed diff, posted on
+  the Inquisition ticket (N5).
+- **Lens** - in an inquisition, one of Read, Break and Drive, run on a slice in that order, each by
+  its own reviewer (N5, R34). **Read** hunts what neither a test nor a drive would catch; **Break**
+  decides hypotheses with its own proof tests on a proof branch; **Drive** runs the slice's
+  journeys through the project's verification skill. A prose slice gets Read only (N12). "Phase"
+  names only a role spine's job phases (K9).
 - **Findings register** - `inquisition-register.md` at the root of the audit branch: one row per
   finding with its severity, proof, sightings and disposition, pushed after every return.
 - **Sighting** - a further place and proof of a finding already in the register; the same bug seen
@@ -151,18 +153,20 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 - **Nit ticket** - the one `Feature` per round that holds the round's nits, held by the map holder
   and linked to its Inquisition; a nit needs no proof, and the user decides each at the Project's
   final walkthrough.
-- **Group Sub-ticket** - one slice of an area map above about 10 areas, with its own captain and
-  audit branch; the parent captain runs the cross-group triage and delivers the one record.
-- **Merge** - a Type for one merge operation, with its own implement/review chain and
-  integrated gates. The user clicks the Project landing and an atomic ticket's PR, which has no Merge
-  Ticket; every operation preserves hop SHAs.
+- **Group Sub-ticket** - up to about 10 slices of a feature map above about 10, held by a
+  sub-captain; the root captain stitches the groups' results and keeps the seams between groups as
+  slices of its own (N5).
+- **Merge** - the Type of a Merge hop, one merge operation (Todo → In Progress → Done) with no
+  Review under it. It is Done when DYTEST holds a green receipt on the merge tree and hosted CI is
+  green on the merge SHA (R20). Its captain runs `dydo merge` itself (R21). A two-way PR into master
+  merges AFK, by its captain, once its evidence is complete (R26).
 - **Release** - a captain leaves a resume SHA on the record, pushes its branch, removes the worktree,
   returns the parent to `Todo`, unassigns and wires any blocker. A dead session has no final push.
 - **Review block** - the reviewer's whole return, and the only thing that fills a Ticket Captain's
   review slot, in the one-line `PASS` or `FAIL` form of the
   [Linear Workspace Standard](./linear-workspace-standard.md#communication-and-evidence). A PASS binds one candidate under one contract; a change to
-  either calls for a fresh review. It lives on the work judged: its Merge Ticket for a merge, otherwise
-  its ticket; a PR carries the block when one exists.
+  either calls for a fresh review. It lives on its Review sub-ticket; a PR body carries only a
+  one-line PASS naming that Review ticket (R17).
 - **Evidence** - a commit, PR, test result, review verdict, or audit artifact linked to a ticket; it
   is not another work item.
 - **Working-tree standard** - the shared rules for opening a feature branch, claiming a ticket by
@@ -176,7 +180,8 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 
 These words survive only in older documents. Campaign, Sprint, Slice, backlog item, and the
 separate observed-problem Issue are not dydo 3 PM objects: use the Linear Initiative, Project, and
-ticket where work is live, though a slice may still name an implementation technique. Tier-1
+ticket where work is live, though a slice may still name an implementation technique or an
+inquisition's slice. Tier-1
 manager, orchestrator, and the run-sprint workflow (internally
 run-issues) gave way to the officers - a Ticket Captain owns one ticket, and a coordinator
 holds each open Project. The Project Planner gave way to the map holder, who charts with
@@ -189,7 +194,8 @@ and the tightening or hardening pass retired the same day (DR 047, amended 2026-
 shows `In Review`. Wayfinding map, Waypoint, and the Frontier they defined are gone: a Project's map is its
 Linear description, and frontier now means the map tickets above. Workflow retired with the old inquisition harness. Inquisition is now a ticket Type with the
 filing outcome above; its parts and lenses, its proof-only code-writer and its separate record
-Feature gave way to the area map, its phases and its own record (DR 059). The 2026-11-19
+Feature gave way to the area map, its phases and its own record (DR 059); the area map, areas and
+phases then gave way to the feature map, slices and lenses (N5). The 2026-11-19
 walkthrough renamed or retired four roles (DYD-1082 1bc04dce changes 4, 5, 7, 9): the admiral is the
 coordinator; `code-writer` and `docs-writer` are one `implementer`; the inquisitor kind is gone, its
 phases now reviewer lenses; `what-would-balazs-do` retired into the ticket captain's council-chair

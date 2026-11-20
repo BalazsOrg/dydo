@@ -20,12 +20,12 @@ officer never becomes another officer ([Decision 050](../project/decisions/050-o
 |---|---|---|---|
 | Think | any session, loading co-thinker | ripe intent, and a Decision Record when the choice earns one | - |
 | Chart and plan a Project | the user creates it; the map holder, the coordinator with a captain on a Wayfinding ticket, charts it with wayfinder (S14; DYD-1195 b46e8343) | the map in the Linear Project, first tickets, Questions | user approval of the charted route |
-| Make a ticket exact | ticket-captain, through its compact acceptance contract | a just-in-time contract with no hidden implementation decisions; the route stays the writer's | optional spec review |
+| Make a ticket exact | ticket-captain, through its compact acceptance contract | a just-in-time contract with no hidden implementation decisions; the route stays the writer's | none; a spec gets at most one scout pass, which returns Questions (R4) |
 | Implement | ticket-captain | a ticket branch, a PR into the feature branch, or into main for an atomic ticket, evidence on the ticket | reviewer PASS |
-| Coordinate | the coordinator, mechanically (H5) | captains in flight, dead lanes restarted, merges paced; each judgement routed to a fresh agent's ticket | each captain directs its own merge review |
-| Inquisition | ticket-captain | an area map, each area read, broken with proof tests and driven through the app; Bugs, a nit ticket and its own inquisition record; rounds from zero until clean | the user confirms Backlog → Todo and sets the commission; it files rather than gates |
-| Land | the user | the feature branch merged into main | the user's own hands |
-| Walkthrough | a ticket captain on the Walkthrough ticket, with the user, at each Milestone and after the landing (H15, H23) | the product inspected as it stands, his verdict or skip, findings as tickets in the same Project | the walking skeleton's verdict holds back the work built on it, except overnight; an empty landing walkthrough closes the Project |
+| Coordinate | the coordinator, mechanically (H5) | captains in flight, dead lanes restarted, merges paced; each judgement routed to a fresh agent's ticket | each merge into the feature branch: the combined gates on the merge SHA and hosted CI, with no merge review (R18, R20) |
+| Inquisition | a ticket captain with the inquisition-captain resource, on the ticket the coordinator opens (N5, H5) | a feature map, each slice read, broken with proof tests and driven through the app, each lens by its own reviewer; Fix tickets, registered shoulds and a nit ticket; rounds from zero until clean (N5, S9, S11) | the Project lands only after a round with no blocker and no should (N5) |
+| Walkthrough | a ticket captain on the Walkthrough ticket, with the user, at each Milestone and on the landing candidate (H15, H23, N6) | the product inspected as it stands, his verdict or skip, findings as tickets in the same Project | the walking skeleton's verdict or skip holds back the next Milestone's tickets; the landing merges only once he accepts its candidate (N6) |
+| Land | the coordinator paces it (H5) | the feature branch, with master merged in, merged into main (N6) | a merge review, then his acceptance at the landing walkthrough, then an AFK merge when two-way or his click when one-way (N6, R26, R27) |
 
 Some work has no stage of its own: chief-of-staff triages the user's attention and never delivers,
 and any session may reach for retro, writing-for-agents and diagnosing-bugs; bro is the user's
@@ -91,27 +91,27 @@ to a ticket. They are not extra levels in the work graph.
 
 ## Review and inquisition
 
-1. **Ticket review** - a fresh reviewer with the rubric the candidate targets: code or docs
-   before merge; `spec` on the contract before any code
-   only for one risk the Ticket Captain records in the contract.
-2. **Merge review** - a reviewer with the `merge` rubric after every merge that has a Merge Ticket
-   (a lane into its parent, a ticket into the feature, the landing): a mechanical spot check
-   scaled to what landed, which at the final feature merge also proves Project and feature-spec acceptance criteria.
-   An atomic ticket's merge into main has none; its ticket review PASS, green CI and the user's
-   click stand in its place.
-3. **Inquisition** - user-confirmed and captain-conducted, with the ticket captain's
-   inquisition-captain resource: the captain maps the landed work into small areas, and reviewers
-   run Read, Break and Drive on each as lenses, Break proving with its own tests and Drive through
-   the project's verification skill (N5; DYD-1082 1bc04dce change 5). Each finding is triaged by severity:
-   blockers and shoulds become Bugs, nits go on one nit ticket per round, judgment calls become
-   Questions. The Inquisition then delivers its own record through the normal docs chain and
-   closes once; see the
-   [working-tree standard](../guides/working-tree-standard.md).
-   Rounds repeat from zero until one finds no blocker and no should
-   ([DR 059](../project/decisions/059-inquisition-rebuilt-area-map-three-phases-rounds-until-clean.md)).
+1. **Ticket review** - a fresh reviewer with the rubric the candidate targets, code or docs, before
+   merge. A plan, spec or contract gets no review loop; a spec gets at most one scout pass, which
+   returns Questions, never PASS or FAIL (R4).
+2. **Merges** - a Merge hop has no review under it: it is Done when DYTEST holds a green receipt on
+   the merge tree and hosted CI is green on the merge SHA (R18, R20). A two-way PR into master
+   merges AFK, by its captain, once its evidence is complete; a one-way one waits for the user's
+   click (R26, R27).
+3. **Inquisition** - held by a ticket captain with its inquisition-captain resource, on the ticket
+   the coordinator opens (N5, H5). The captain draws a feature map from the landed work, and
+   reviewers run the Read, Break and Drive lenses on each slice, each lens by its own reviewer,
+   Break proving with its own tests and Drive through the project's verification skill (N5;
+   DYD-1082 1bc04dce change 5). At the verdict, blockers become a Fix ticket, shoulds are
+   registered, and nits go on the round's nit ticket (S9, S11). Rounds repeat from zero until one
+   finds no blocker and no should
+   ([DR 059](../project/decisions/059-inquisition-rebuilt-area-map-three-phases-rounds-until-clean.md), N5).
    It catches what got through; it never proves zero defects.
+4. **Landing** - the only merge review left: a Merge-confidence council on the landing candidate,
+   then the user's walkthrough acceptance, then an AFK merge when two-way or the user's click when
+   one-way (R20, L16, N6).
 
-Every reviewer verdict is the same **review block**: on the Merge Ticket for a merge, otherwise on its ticket, and in the PR body when one exists; its one-line form is locked in the
+Every reviewer verdict is the same **review block**: on its Review sub-ticket, with a one-line PASS naming that Review ticket in the PR body (R17); its one-line form is locked in the
 [Linear Workspace Standard](../reference/linear-workspace-standard.md#communication-and-evidence). Independence here is independence of *context*: the
 reviewer arrives fresh and reads the candidate itself rather than the story told about it. Every
 finding carries a [severity](../reference/dydo-glossary.md), `blocker`, `should` or `nit`, and only

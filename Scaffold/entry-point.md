@@ -9,4 +9,4 @@ Linear owns live work. Git and dydo own durable knowledge and evidence.
 - Thinking with the user? Load `co-thinker`.
 - Load any other skill when the work needs it; each skill names the next.
 
-The user hands out the officer roles by name: a ticket-captain by default, an admiral only when invoked.
+The user hands out the officer roles by name: a ticket-captain by default, a coordinator only when invoked.

@@ -13,8 +13,8 @@ clear one part of the route at a time.
 
 The **map holder** charts and grills. A Project's map holder is two agents: its coordinator, which
 keeps the work on track mechanically, and a ticket captain on a Wayfinding ticket, which loads this
-skill and does the deciding (S14, S15). The coordinator only sequences what the Wayfinding captain
-files. A Ticket Captain may chart local fog inside one approved delivery outcome.
+skill and does the deciding (H4, S14, S15; DYD-1195 b46e8343). The coordinator only sequences what
+the Wayfinding captain files. A Ticket Captain may chart local fog inside one approved delivery outcome.
 
 For a communication protocol, from the repository root read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md`, not the whole workspace standard.
 
@@ -107,16 +107,24 @@ broken this).
   question.
 - **Grilling**: Conversation. The default case. Always call the Skill tool twice, for
   "grilling" and "domain-modeling".
-- **Question**: One prepared human choice that authoritative sources and the other ticket types
-  cannot settle. The ticket carries the homework, credible options, trade-offs, and recommendation.
+- **Question** (Mode set by its stage): one open call. Whoever opens it sets its stage label:
+  `research` or `council` (AFK), or `his-call` (HITL) (H23).
+  - A need passed up opens at stage `research`, held by a fresh ticket captain who researches it
+    first with `research` crew (H16, H23).
+  - After the research, its captain answers it, or opens a child Question (L18):
+    - a `council` child, an AFK council chaired with the ticket captain's council-chair resource
+      (L23);
+    - a `his-call` child, which joins the coordinator's HITL queue, only when the call is worth the
+      user's time (H16, H18).
 - **Enablement** (HITL or AFK): the access, environment, credentials or material other work needs,
   as the standard defines it: nothing to decide, prototype, or research, but the work is blocked
   until it is done. Signing up for a service so its API can be judged, provisioning access, moving
   data so its shape can be seen. This is the one Wayfinding type that _does_ rather than decides.
 
 A captain drives Enablement alone where it can (AFK); for human-only steps it uses `wizard` in
-a top-level HITL session. Prototype also has a captain; Research, Grilling and Question stay with
-the map holder. Resolved when the work is done; the answer records what was done and any resulting
+a top-level HITL session. Prototype also has a captain. A Grilling goes to a fresh ticket captain,
+and a Question to a fresh ticket captain at its stage (H15, H16, H22). Research stays with the map
+holder. Enablement is resolved when the work is done; the answer records what was done and any resulting
 facts (credentials location, new URLs, row counts) later tickets depend on.
 
 ## Fog of war
@@ -147,15 +155,19 @@ ticket, and what is out of scope.
 
 Search the governing Decision Records, Project plan, specifications, documentation, standards, code,
 tests, and prior answers first. Use Research, Prototype, Grilling, or Enablement where they can clear
-the fog. `Question` is the last rung: create it only when human judgment still remains.
+the fog.
+
+- Decide an obvious, reversible call where it arises; it never becomes a ticket (H16).
+- Decide a call a Decision Record clearly settles, citing the record (L18).
+- Open a Question at stage `research` for any other call (L18, H23).
 
 Fog can surface through several hands:
 
 | Found by | Recording path |
 |---|---|
 | Project's map holder | create and wire it while charting, or as delivery clears Project fog |
-| Code Writer or other crew | return a prepared hand-raise to the Ticket Captain |
-| Ticket Captain | create a local Sub-ticket, or escalate a Project-level packet to the Project's map holder |
+| An implementer or other crew | return it to the Ticket Captain |
+| Ticket Captain | create a local Sub-ticket, or pass a Project-level need up to the coordinator, which opens it as a `research` Question (H16) |
 
 An answer graduates to a Decision Record only when it is hard to reverse, surprising later, and the
 result of a real trade-off. The ticket carries the question and its working resolution; the Decision
@@ -216,8 +228,8 @@ one, take the next ticket rather than asking the user to choose.
 
 1. Load the **map**: the low-resolution view, not every ticket body.
 2. Choose the ticket. If one was named, use it. Otherwise take the first pickable frontier ticket in `Todo`.
-   A captain-held Type goes to its Ticket Captain, which claims it. For a map-holder-held Type,
-   claim it before work; a Question still waits for the user's answer.
+   A captain-held Type goes to its Ticket Captain, which claims it; a Question goes to a fresh
+   ticket captain at its stage (H16, H23). For a map-holder-held Type, claim it before work.
 3. Resolve a Wayfinding Ticket. **Zoom as needed**: fetch the full body of any related or closed ticket
    on demand; use whichever methods the `## Notes` block names. Follow the ticket Type above.
 4. Record the resolution when the Type's outcome is reached: post the answer as a **resolution
