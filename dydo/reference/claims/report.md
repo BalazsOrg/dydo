@@ -12,15 +12,19 @@ type: reference
 
 Spec: R5
 
-**implementer** (Working, nominal):
+**implementer** (WhenThingsGoWrong):
 
 > Report a problem outside your scope to your officer.
 
-**reviewer** (Round, nominal):
+**reviewer** (WhenThingsGoWrong):
 
 > Report a problem outside your scope to your officer.
 
-**scout** (Working, nominal):
+**research** (WhenThingsGoWrong):
+
+> Report a problem outside your question to your officer.
+
+**scout** (WhenThingsGoWrong):
 
 > Report a problem outside your question to your officer.
 

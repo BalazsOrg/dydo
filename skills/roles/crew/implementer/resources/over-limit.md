@@ -8,3 +8,4 @@ Exits:
 
 - Split a file you change that passes the token limit.
 - For a file nobody writes by hand, add its exact path or generated-directory glob to the ignore file in your PR, with a reason.
+- A file you write by hand that must stay whole past the limit goes back to your captain for path (b); your PR never adds its own entry.

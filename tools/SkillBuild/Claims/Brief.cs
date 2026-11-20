@@ -14,10 +14,11 @@ public static class Brief
     ])
     { Spec = ["K14", "R3", "R6"] };
 
-    public static readonly Claim ScoutBrief = new("The scout dispatch template's slots.", [Actor.TicketCaptain, Actor.Coordinator],
+    public static readonly Claim ScoutBrief = new("The scout dispatch template's slots.", [Actor.TicketCaptain, Actor.Coordinator, Actor.Research],
     [
         new(Skill.TicketCaptain, "The question, or the spec for a scout pass · model and effort · return to.", new(Section.ScoutBrief, 3003)),
-        new(Skill.Coordinator, "The question, or the spec for a scout pass · model and effort · return to.", new(Section.ScoutBrief, 3003))
+        new(Skill.Coordinator, "The question, or the spec for a scout pass · model and effort · return to.", new(Section.ScoutBrief, 3003)),
+        new(Skill.Research, "The question · the one source family to search · model and effort · return to.", new(Section.ScoutBrief, 3003))
     ])
     { Spec = ["K14", "R4"] };
 

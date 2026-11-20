@@ -124,7 +124,7 @@ Transition in Descriptive docs (`claims/statechart/docs/Docs.tla`): Grandfathere
 
 Spec: D2
 
-**implementer** (Working, nominal):
+**implementer** (Docs):
 
 > A descriptive doc explains and never authorizes: on what the code does, the code wins; a reason counts only when it links a DR or a principle.
 
@@ -134,7 +134,7 @@ Spec: D2
 
 Spec: D4, D3
 
-**implementer** (Working, nominal):
+**implementer** (Docs):
 
 > Write a new descriptive doc only when invited, and only if its subject is solid, important and expensive to rebuild from code.
 
@@ -144,7 +144,7 @@ Spec: D4, D3
 
 Spec: D5
 
-**implementer** (Working, nominal):
+**implementer** (Docs):
 
 > When your change touches the paths a doc's `explains:` declares, update the doc or state that it holds.
 
@@ -154,7 +154,7 @@ Spec: D5
 
 Spec: L8
 
-**implementer** (Working, nominal):
+**implementer** (Docs):
 
 > A new DR you write carries `applies:` (or `new-ground`) and one `weighed: <slug> over <slug>, because <reason>` for each tension it resolved.
 
@@ -164,6 +164,6 @@ Spec: L8
 
 Spec: D6
 
-**reviewer** (Round, nominal):
+**reviewer** (Findings):
 
 > On docs, an unlinked 'why' is a finding; on code, a change to paths a doc's `explains:` declares means checking that doc.

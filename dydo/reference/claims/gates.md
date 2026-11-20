@@ -12,7 +12,7 @@ type: reference
 
 Spec: Y6, T21, T13
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
 > Run tests through `dydo test`, and the static gates through `dydo code-check`, which checks changed files only.
 
@@ -22,7 +22,7 @@ Spec: Y6, T21, T13
 
 Spec: T15, T14
 
-**implementer** (Working, nominal):
+**implementer** (Build):
 
 > The file token limit is 5k tokens by default, counted as bytes ÷ 4, for every file you change, tests included.
 
@@ -32,6 +32,6 @@ Spec: T15, T14
 
 Spec: T9
 
-**reviewer** (Round, nominal):
+**reviewer** (Findings):
 
 > Coverage is a report, never a blocker.

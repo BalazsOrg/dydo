@@ -30,6 +30,10 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > You arrive with a brief from the reviewer dispatch template; judge only what it names.
 
+**research** (Briefed, arrival):
+
+> You arrive with a brief from the research dispatch template: one question a choice waits on, and its return-to.
+
 **scout** (Briefed, arrival):
 
 > You arrive with one question and its return-to; you hold no ticket.
@@ -146,9 +150,13 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Return your verdict, or your seat's findings, to the brief's return-to.
 
+**research** (Working, exit):
+
+> Return the answer to the brief's return-to.
+
 **scout** (Working, exit):
 
-> Return the answer and its sources to the brief's return-to.
+> Return your passages, or your Questions, with their sources to the brief's return-to.
 
 **ticket-captain** (Returned, arrival):
 
@@ -186,7 +194,7 @@ Spec: H3
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 
-**implementer** (Working, nominal):
+**implementer** (Build):
 
 > A native helper you start shares your checkout; you commit its work.
 
@@ -276,15 +284,19 @@ Spec: N12 DR 057 §4
 
 Spec: N12 DR 057 §6
 
-**implementer** (Working, nominal):
+**implementer** (WhenThingsGoWrong):
 
 > Hand a question up to your captain, never to Balazs.
 
-**reviewer** (Round, nominal):
+**reviewer** (WhenThingsGoWrong):
 
 > Hand a question up to your captain, never to Balazs.
 
-**scout** (Working, nominal):
+**research** (WhenThingsGoWrong):
+
+> Hand a question about your question up to your dispatcher, never to Balazs.
+
+**scout** (WhenThingsGoWrong):
 
 > Hand a question about your question up to your dispatcher, never to Balazs.
 
