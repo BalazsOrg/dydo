@@ -4,12 +4,13 @@ namespace DynaDocs.SkillBuild;
 public static class Dispatch
 {
     public static readonly Claim Send = new("A staffed seat goes out briefed; any reviewer or judge comes from a family other than the author's when possible.",
-        [Actor.TicketCaptain, Actor.Coordinator, Actor.Implementer, Actor.Reviewer, Actor.Scout],
+        [Actor.TicketCaptain, Actor.Coordinator, Actor.Implementer, Actor.Reviewer, Actor.Research, Actor.Scout],
     [
         new(Skill.TicketCaptain, "Seat any reviewer from a family other than the author's when possible, single seats included.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
         new(Skill.Coordinator, "Seat any reviewer or judge from a family other than the author's when possible, single seats included.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
         new(Skill.Implementer, "You arrive with a brief from the implementer dispatch template; work only within it.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
         new(Skill.Reviewer, "You arrive with a brief from the reviewer dispatch template; judge only what it names.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
+        new(Skill.Research, "You arrive with a brief from the research dispatch template: one question a choice waits on, and its return-to.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
         new(Skill.Scout, "You arrive with one question and its return-to; you hold no ticket.", new(DispatchState.Briefed, 801, MoveKind.Arrival))
     ])
     { Spec = ["H3", "K14", "R15", "S1"], Transition = new(DispatchState.Staffing, DispatchState.Briefed, "one seat, cross-family where possible, sent from its kind's template") };
@@ -54,11 +55,12 @@ public static class Dispatch
     { Spec = ["H2", "H14"], Transition = new(DispatchState.ReCut, DispatchState.Staffing, "the cutter cuts coherent children") };
 
     public static readonly Claim Return = new("Crew return to their dispatcher, and whoever started a step closes it.",
-        [Actor.Implementer, Actor.Reviewer, Actor.Scout, Actor.TicketCaptain],
+        [Actor.Implementer, Actor.Reviewer, Actor.Research, Actor.Scout, Actor.TicketCaptain],
     [
         new(Skill.Implementer, "Close your hop Done and return its commit SHA and receipts to the brief's return-to.", new(DispatchState.Working, 807, MoveKind.Exit)),
         new(Skill.Reviewer, "Return your verdict, or your seat's findings, to the brief's return-to.", new(DispatchState.Returned, 807, MoveKind.Arrival)),
-        new(Skill.Scout, "Return the answer and its sources to the brief's return-to.", new(DispatchState.Working, 807, MoveKind.Exit)),
+        new(Skill.Research, "Return the answer to the brief's return-to.", new(DispatchState.Working, 807, MoveKind.Exit)),
+        new(Skill.Scout, "Return your passages, or your Questions, with their sources to the brief's return-to.", new(DispatchState.Working, 807, MoveKind.Exit)),
         new(Skill.TicketCaptain, "Every crew return comes back to you: post its hop's SHA on the hop as the resume point.", new(DispatchState.Returned, 807, MoveKind.Arrival)),
         new(Skill.LinearWorkspaceStandard, "Whoever started a step closes it; a parent's In Progress means its officer holds it.", new(Section.LinearStatuses, 2))
     ])
@@ -77,7 +79,7 @@ public static class Dispatch
     [
         new(Skill.Coordinator, "A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.", new(Routine.Dispatching, 809)),
         new(Skill.TicketCaptain, "A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.", new(Routine.Dispatching, 809)),
-        new(Skill.Implementer, "A native helper you start shares your checkout; you commit its work.", new(DispatchState.Working, 809, MoveKind.Nominal)),
+        new(Skill.Implementer, "A native helper you start shares your checkout; you commit its work.", new(ImplementerPart.Build, 809)),
         new(Skill.WorkingTreeStandard, "A Linear unit goes out by `delegate_task`. A native sub-agent never gets one: it shares its holder's checkout, and the holder commits.", new(Section.TreeDelegation, 1))
     ])
     { Spec = ["H3"] };
@@ -118,11 +120,12 @@ public static class Dispatch
     ])
     { Spec = ["N12 DR 057 §4"] };
 
-    public static readonly Claim AskUp = new("Crew hand their questions up and never ask the user directly.", [Actor.Implementer, Actor.Reviewer, Actor.Scout],
+    public static readonly Claim AskUp = new("Crew hand their questions up and never ask the user directly.", [Actor.Implementer, Actor.Reviewer, Actor.Research, Actor.Scout],
     [
-        new(Skill.Implementer, "Hand a question up to your captain, never to Balazs.", new(DispatchState.Working, 814, MoveKind.Nominal)),
-        new(Skill.Reviewer, "Hand a question up to your captain, never to Balazs.", new(ReviewState.Round, 814, MoveKind.Nominal)),
-        new(Skill.Scout, "Hand a question about your question up to your dispatcher, never to Balazs.", new(DispatchState.Working, 814, MoveKind.Nominal)),
+        new(Skill.Implementer, "Hand a question up to your captain, never to Balazs.", new(SpinePart.WhenThingsGoWrong, 814)),
+        new(Skill.Reviewer, "Hand a question up to your captain, never to Balazs.", new(SpinePart.WhenThingsGoWrong, 814)),
+        new(Skill.Research, "Hand a question about your question up to your dispatcher, never to Balazs.", new(SpinePart.WhenThingsGoWrong, 814)),
+        new(Skill.Scout, "Hand a question about your question up to your dispatcher, never to Balazs.", new(SpinePart.WhenThingsGoWrong, 814)),
         new(Skill.WorkingTreeStandard, "Crew take their questions to their captain, never to the user.", new(Section.TreeDelegation, 6))
     ])
     { Spec = ["N12 DR 057 §6"] };

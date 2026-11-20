@@ -92,7 +92,7 @@ public static class Review
     public static readonly Claim Nit = new("A nit is one line on its record.", [Actor.TicketCaptain, Actor.Reviewer],
     [
         new(Skill.TicketCaptain, "Record each nit as one line on its record.", new(ReviewState.Verdict, 515, MoveKind.Nominal)),
-        new(Skill.Reviewer, "Holding the round alone, record each nit as one line on its record.", new(ReviewState.Round, 515, MoveKind.Nominal)),
+        new(Skill.Reviewer, "Holding the round alone, record each nit as one line on its record.", new(ReviewState.Round, 525, MoveKind.Nominal)),
         new(Skill.LinearWorkspaceStandard, "A nit is one line on its record; an inquisition round's nits go on that round's nit ticket.", new(Section.LinearEvidence, 4))
     ])
     { Spec = ["S11"] };
@@ -121,10 +121,10 @@ public static class Review
     { Spec = ["R8"] };
 
     public static readonly Claim NoRerun = new("A fresh reviewer judges through lenses and re-runs nothing the same way.", [Actor.Reviewer],
-        [new(Skill.Reviewer, "Judge through your lenses and re-run nothing the author ran the same way, unless enough has changed since that its result is in doubt.", new(ReviewState.Round, 521, MoveKind.Nominal))])
+        [new(Skill.Reviewer, "Re-run what the author already ran, driving included, only when enough has changed since that its result is in doubt.", new(ReviewerPart.Tools, 3215))])
     { Spec = ["R5"] };
 
-    public static readonly Claim Statechart = new("A statechart is used only for a finished subsystem that has a state machine.", [Actor.Reviewer],
-        [new(Skill.Reviewer, "Use a statechart only for a finished subsystem that has a state machine.", new(ReviewState.Round, 522, MoveKind.Nominal))])
+    // The reviewer states it on Toolset.FormalNeeds's combined line (R34).
+    public static readonly Claim Statechart = new("A statechart is used only for a finished subsystem that has a state machine.", [Actor.Reviewer], [])
     { Spec = ["R7"] };
 }

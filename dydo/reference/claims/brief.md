@@ -44,6 +44,10 @@ Spec: K14, R4
 
 > The question, or the spec for a scout pass · model and effort · return to.
 
+**research** (ScoutBrief):
+
+> The question · the one source family to search · model and effort · return to.
+
 ## CaptainBrief
 
 `claim:Brief.CaptainBrief`: The ticket-captain dispatch template's slots; a sub-captain is briefed from it too.

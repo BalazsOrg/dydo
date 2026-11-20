@@ -30,7 +30,7 @@ public static class Mutation
 
     // T12: a fix changes the tree, so the work for the new tree is stale until it is queued again.
     public static readonly Claim Fix = new("A survivor is fixed, and the changed tree's mutation work is queued again.", [Actor.Implementer],
-        [new(Skill.Implementer, "Fix a surviving mutant.", new(MutationState.Ticketed, 1607, MoveKind.Exit))])
+        [new(Skill.Implementer, "Fix a surviving mutant: sharpen the test that missed it, or delete the code it shows nothing needs.", new(MutationState.Ticketed, 1607, MoveKind.Exit))])
     { Spec = ["T12"], Transition = new(MutationState.Ticketed, MutationState.Queued, "fixed; the changed tree's work is queued again") };
 
     public static readonly Claim ClaimEquivalent = new("The author claims a survivor equivalent, with a reason, and never approves its own claim.", [Actor.Implementer],

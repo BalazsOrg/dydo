@@ -140,11 +140,11 @@ Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Confo
 
 Spec: T1, R3
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
 > Write a suite test only to guard a trap, pin a traced contract (spec or DR), or reach an edge driving can't.
 
-**reviewer** (Round, nominal):
+**reviewer** (Findings):
 
 > A test that pins an untraced rule, new or inherited, is a finding.
 
@@ -154,9 +154,9 @@ Spec: T1, R3
 
 Spec: T3
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
-> Show every graduating test failing without the code; a Bug still starts from a red reproduction.
+> Show every graduating test failing without the code: stash the code, run the test, restore; a Bug still starts from a red reproduction.
 
 ## Boundary
 
@@ -164,7 +164,7 @@ Spec: T3
 
 Spec: T4
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
 > Test at the deepest module boundary, or the product boundary, that can observe the behaviour; a unit test graduates only for an edge or trap that test can't reach cheaply.
 
@@ -174,11 +174,11 @@ Spec: T4
 
 Spec: T5
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
 > Tag each graduating test with its job: trap (naming the bug or pitfall), contract (citing the spec or DR) or edge.
 
-**reviewer** (Round, nominal):
+**reviewer** (Findings):
 
 > Check each graduating test's job tag against its evidence.
 
@@ -188,7 +188,7 @@ Spec: T5
 
 Spec: T5
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
 > Keep proof tests in the ticket's commits, and record their SHA in the receipt and in `proof:`.
 
@@ -198,7 +198,7 @@ Spec: T5
 
 Spec: T5
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
 > Make nothing depend on old evidence: a squash or a fresh start must break nothing.
 
@@ -208,7 +208,7 @@ Spec: T5
 
 Spec: T6
 
-**implementer** (Conformance, nominal):
+**implementer** (Code):
 
 > A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.
 
@@ -218,11 +218,11 @@ Spec: T6
 
 Spec: T22
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
 > Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.
 
-**reviewer** (Round, nominal):
+**reviewer** (Findings):
 
 > A test that changes whenever the code does, checks that a deleted feature is gone, or can never fail is a finding.
 
@@ -232,7 +232,7 @@ Spec: T22
 
 Spec: T7
 
-**implementer** (Working, nominal):
+**implementer** (Code):
 
 > Property tests for edges and differential tests for rewrites are guidance, never a gate.
 

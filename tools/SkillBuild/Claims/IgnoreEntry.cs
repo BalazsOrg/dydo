@@ -15,8 +15,11 @@ public static class IgnoreEntry
         [new(Skill.Reviewer, "Check each new ignore entry: an exact path or a generated-directory glob, for a file nobody writes by hand, with a reason.", new(IgnoreEntryState.PathA, 1803, MoveKind.Exit))])
     { Spec = ["T17"], Transition = new(IgnoreEntryState.PathA, IgnoreEntryState.Ignored, "the reviewer checks the entry") };
 
-    public static readonly Claim Authored = new("Path (b): authored code goes through its own ticket, a council and his blessing; a PR can't add its own entry.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "An authored file that must pass the limit takes path (b): its own ticket, a council, then his blessing; its PR never adds its own entry.", new(IgnoreEntryState.OverLimit, 1804, MoveKind.Exit))])
+    public static readonly Claim Authored = new("Path (b): authored code goes through its own ticket, a council and his blessing; a PR can't add its own entry.", [Actor.TicketCaptain, Actor.Implementer],
+    [
+        new(Skill.TicketCaptain, "An authored file that must pass the limit takes path (b): its own ticket, a council, then his blessing; its PR never adds its own entry.", new(IgnoreEntryState.OverLimit, 1804, MoveKind.Exit)),
+        new(Skill.Implementer, "A file you write by hand that must stay whole past the limit goes back to your captain for path (b); your PR never adds its own entry.", new(IgnoreEntryState.OverLimit, 1804, MoveKind.Exit))
+    ])
     { Spec = ["T18", "T19"], Transition = new(IgnoreEntryState.OverLimit, IgnoreEntryState.OwnTicket, "authored code that must stay whole") };
 
     public static readonly Claim Convene = new("The path (b) ticket goes to a council.", [Actor.Coordinator], [])
