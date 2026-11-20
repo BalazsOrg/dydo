@@ -13,14 +13,16 @@
     "from": "Repairing",
     "to": "Finishing",
     "variables": {
-      "round": "1"
+      "round": "1",
+      "extra": "FALSE"
     },
     "property": "R19_ReviewAfterMergeRepair",
     "additional": {
       "from": "InReview",
       "to": "Returned",
       "variables": {
-        "round": "3"
+        "round": "3",
+        "extra": "FALSE"
       },
       "property": "S10_CheckpointBeforeThirdRoundEscalation"
     }

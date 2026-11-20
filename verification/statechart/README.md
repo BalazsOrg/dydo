@@ -95,7 +95,7 @@ ordinary check with `--machine captain` and run the registered control with
 `--controls --machine captain`. The runner accepts one control per machine.
 For the second trace, pass `controls["captain"]["additional"]` to the runner's
 `check_machine` in a fresh scratch run. This uses the same entry-point injection
-and checks that the named property breaks. See [the captain obligations](obligations.md#captain-prototype-dyd-1372)
+and checks that the named property breaks. See [the captain obligations](captain/obligations.md)
 for the expected findings and the limits of the phase model.
 
 ## Model observability owed to the candidate captain
