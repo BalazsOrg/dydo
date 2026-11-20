@@ -112,7 +112,7 @@ Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict â
 
 **ticket-captain** (Verdict, exit):
 
-> By default, the first round with no new blocker ends the phase.
+> By default, the first round with no new blocker ends the review rounds.
 
 ## OneMore
 

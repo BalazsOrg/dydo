@@ -44,7 +44,7 @@ Spec: R4
 
 **scout** (Working, nominal):
 
-> On a spec's Questions pass, return Questions only, never PASS or FAIL.
+> Return only Questions from that pass, never PASS or FAIL.
 
 ## PassHow
 
@@ -54,4 +54,4 @@ Spec: R4, K30
 
 **scout** (Working, nominal):
 
-> Read the spec as the implementer who must build it, and turn each choice it leaves open into a Question.
+> On a spec's Questions pass, read the spec as the implementer who must build it, and turn each choice it leaves open into a Question.

@@ -4,4 +4,4 @@
 
 Skills: /coordinator
 
-- The Project · model and effort.
+- The Project and its plan, in place of ticket and contract · model and effort · return to. Branch, worktree and base, owned paths, gates, proof recipe and findings don't apply: a coordinator never authors.

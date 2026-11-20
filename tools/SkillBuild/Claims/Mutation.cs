@@ -24,9 +24,9 @@ public static class Mutation
     public static readonly Claim AllKilled = new("No survivor is left without a fix or an approved equivalent.", [Actor.Dytest], [])
     { Spec = ["T12", "N15"], Transition = new(MutationState.Running, MutationState.Clean, "no survivor without a fix or an approved equivalent") };
 
-    public static readonly Claim CutFix = new("The coordinator holds the landing and cuts each survivor's fix ticket for a captain.", [Actor.Coordinator],
+    public static readonly Claim CutFix = new("The coordinator holds the landing and opens each survivor's fix ticket for a captain.", [Actor.Coordinator],
         [new(Skill.Coordinator, "Open a fix ticket for each landing survivor and put a captain on it.", new(MutationState.Survivors, 1606, MoveKind.Exit))])
-    { Spec = ["N6", "H5", "T12"], Transition = new(MutationState.Survivors, MutationState.Ticketed, "the coordinator cuts the survivor's fix ticket") };
+    { Spec = ["N6", "H5", "T12"], Transition = new(MutationState.Survivors, MutationState.Ticketed, "the coordinator opens the survivor's fix ticket") };
 
     // T12: a fix changes the tree, so the work for the new tree is stale until it is queued again.
     public static readonly Claim Fix = new("A survivor is fixed, and the changed tree's mutation work is queued again.", [Actor.Implementer],
@@ -57,7 +57,7 @@ public static class Mutation
     public static readonly Claim Lapse = new("An approval lapses when the mutant or its surrounding code changes.", [Actor.Dytest], [])
     { Spec = ["T12"], Transition = new(MutationState.Clean, MutationState.Queued, "the mutant or its code changes: the approval lapses") };
 
-    public static readonly Claim Totals = new("He sees the totals of approved equivalents per feature.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Show him the per-feature totals of approved equivalent mutants.", new(LandingState.Prerequisites, 1614, MoveKind.Nominal))])
-    { Spec = ["T12"] };
+    public static readonly Claim Totals = new("He sees the totals of approved equivalents per feature, through the coordinator's envoy, the one channel to him.", [Actor.Coordinator],
+        [new(Skill.Coordinator, "Post the per-feature totals of approved equivalent mutants on your HITL queue as an FYI for him, riding in the next envoy.", new(LandingState.Prerequisites, 1614, MoveKind.Nominal))])
+    { Spec = ["T12", "H6", "H12"] };
 }

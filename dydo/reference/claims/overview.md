@@ -24,11 +24,11 @@ Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): HostArea �
 
 ## Cut
 
-`claim:Overview.Cut`: In the overview, the coordinator cuts a ticket and dispatches its captain.
+`claim:Overview.Cut`: In the overview, a Wayfinding captain cuts the ticket; the coordinator opens, sequences and dispatches its captain.
 
-Spec: H5, H3
+Spec: H2, H4, H5, H3
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → TicketArea, "the coordinator cuts a ticket and dispatches its captain". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → TicketArea, "a Wayfinding captain cuts the ticket; the coordinator opens, sequences and dispatches its captain". A system transition: no skill carries it.
 
 ## Prove
 
@@ -56,11 +56,11 @@ Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ReviewArea
 
 ## Next
 
-`claim:Overview.Next`: In the overview, merged: the coordinator cuts the next ticket.
+`claim:Overview.Next`: In the overview, merged: the coordinator dispatches the next ticket in sequence.
 
 Spec: R20, H5
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MergeArea → ProjectArea, "merged: the coordinator cuts the next ticket". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MergeArea → ProjectArea, "merged: the coordinator dispatches the next ticket in sequence". A system transition: no skill carries it.
 
 ## Land
 

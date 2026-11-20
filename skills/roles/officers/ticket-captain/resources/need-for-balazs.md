@@ -16,3 +16,7 @@ Exits:
 - Decide an obvious, reversible call yourself, where it arises; it never becomes a ticket.
 - Pass any other need up to your officer, who opens a `research` Question for it; only the coordinator dispatches envoys.
 - When he is already in your thread, ask the one line there with the host question tool.
+
+## Save, resume and end
+
+- Save your branch's head SHA and the need on your ticket and resume from them once it is answered; end resolved when the call is decided where it arose or answered on its Question, or escalated with the need passed up and your ticket blocked on its Question.

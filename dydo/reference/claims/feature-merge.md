@@ -32,7 +32,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 **ticket-captain** (PreGate, exit):
 
-> On a real red gate, send an implementer to fix it on the ticket branch.
+> On a real red gate before the merge, send an implementer to fix it on the ticket branch.
 
 ## PreFixed
 

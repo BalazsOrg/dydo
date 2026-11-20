@@ -70,13 +70,13 @@ Spec: H23
 
 ## EnvoySlots
 
-`claim:JobTickets.EnvoySlots`: The captain that opens a his-call child writes the envoy brief's seven slots on it.
+`claim:JobTickets.EnvoySlots`: The envoy's own ticket captain writes the envoy brief's seven slots from its ticket, the his-call Question or a bundle's wrapper; the coordinator writes none.
 
-Spec: H19, H23
+Spec: H19, H18, H23
 
-**ticket-captain** (Question):
+**ticket-captain** (Hitl):
 
-> On a `his-call` child you open, write the envoy brief's seven slots: the ticket and why it needs him · what's settled · sources to read first · the stop line · where to record, in his words · return and closing summary · the opening rule, a fresh 2–3-line picture, then the first question with its recommendation.
+> Holding a `his-call` Question or a bundle's wrapper, write the envoy brief's seven slots from it before you open with him: the ticket and why it needs him · what's settled · sources to read first · the stop line · where to record, in his words · return and closing summary · the opening rule, a fresh 2–3-line picture, then the first question with its recommendation.
 
 ## Deciding
 

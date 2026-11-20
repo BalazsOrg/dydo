@@ -48,11 +48,11 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 ## CutFix
 
-`claim:Mutation.CutFix`: The coordinator holds the landing and cuts each survivor's fix ticket for a captain.
+`claim:Mutation.CutFix`: The coordinator holds the landing and opens each survivor's fix ticket for a captain.
 
 Spec: N6, H5, T12
 
-Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Survivors → Ticketed, "the coordinator cuts the survivor's fix ticket".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Survivors → Ticketed, "the coordinator opens the survivor's fix ticket".
 
 **coordinator** (Survivors, exit):
 
@@ -140,10 +140,10 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 ## Totals
 
-`claim:Mutation.Totals`: He sees the totals of approved equivalents per feature.
+`claim:Mutation.Totals`: He sees the totals of approved equivalents per feature, through the coordinator's envoy, the one channel to him.
 
-Spec: T12
+Spec: T12, H6, H12
 
 **coordinator** (Prerequisites, nominal):
 
-> Show him the per-feature totals of approved equivalent mutants.
+> Post the per-feature totals of approved equivalent mutants on your HITL queue as an FYI for him, riding in the next envoy.

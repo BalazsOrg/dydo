@@ -6,7 +6,6 @@
 
 - Every Question carries a stage label, set by whoever opens it: `research` and `council` are Mode AFK, `his-call` Mode HITL, and the stage, not the parent's Type, picks how it is held.
 - A research Question you open under another Question stays at stage `research`.
-- On a `his-call` child you open, write the envoy brief's seven slots: the ticket and why it needs him · what's settled · sources to read first · the stop line · where to record, in his words · return and closing summary · the opening rule, a fresh 2–3-line picture, then the first question with its recommendation.
 
 ## A research Question, held by a fresh captain
 
@@ -43,6 +42,7 @@ Exits:
 
 ## With him: Grilling, Walkthrough, Enablement and his-call
 
+- Holding a `his-call` Question or a bundle's wrapper, write the envoy brief's seven slots from it before you open with him: the ticket and why it needs him · what's settled · sources to read first · the stop line · where to record, in his words · return and closing summary · the opening rule, a fresh 2–3-line picture, then the first question with its recommendation.
 - Changes during a session with him reach you as dispatcher updates; never ask him to repeat them.
 - After a shared understanding, and once you have reported back, tell him the thread can be closed.
 - Record the result on your ticket, in his words.

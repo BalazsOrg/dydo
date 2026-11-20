@@ -14,8 +14,11 @@ public class SpineLayoutTests
 
     private static readonly IReadOnlyDictionary<string, string> Built = SkillBuilder.Build(DemoModel.With()).Files;
 
+    // S5 (review r1): K9 supersedes DR 064 §7's state outline, so each phase is one numbered checklist of its
+    // slots in order, a state's arrivals, then its nominal path, then its exits; no slot heading, no move label.
+    // Every item is numbered 1, which Markdown numbers in order, so an inserted line renumbers no other (K18).
     [Fact]
-    [Trait("Job", "contract: K9 the spine renders its job paragraph, numbered phases with their slots and links, then When things go wrong")]
+    [Trait("Job", "contract: K9 S5 the spine renders its job paragraph, each phase as one numbered checklist then its links, then When things go wrong")]
     public void Spine_RendersJobPhasesAndWhenThingsGoWrongInOrder() =>
         Assert.Equal(
             """
@@ -33,38 +36,17 @@ public class SpineLayoutTests
 
             ## 1. Take the ticket
 
-            - You answer for the proof of your change.
-
-            ### Tools and surfaces
-
-            - Your worktree and its branch.
-
-            ### Intake
-
-            Arrivals:
-
-            - Read the brief first.
-
-            Nominal path:
-
-            - Check the worktree is clean.
-            - Check the base is an ancestor of HEAD.
-
-            Exits:
-
-            - Stop when the lease goes stale.
+            1. You answer for the proof of your change.
+            1. Your worktree and its branch.
+            1. Read the brief first.
+            1. Check the worktree is clean.
+            1. Check the base is an ancestor of HEAD.
+            1. Stop when the lease goes stale.
 
             ## 2. Do the work
 
-            ### Work
-
-            Arrivals:
-
-            - Start work once intake is done.
-
-            ### Dispatch crew
-
-            - Dispatch crew with a ticket.
+            1. Start work once intake is done.
+            1. Dispatch crew with a ticket.
 
             Resources:
 

@@ -44,6 +44,113 @@ public static class Staff
             new(StaffState.Day, 1010, MoveKind.Nominal), () => [Envoy.OwnEnvoy])])
     { Spec = ["H7"] };
 
+    // The muster, night survey and morning brief resources: the pre-candidate chief of staff's checklist and templates
+    // (K22), less the night orders and the admiral's standing orders, which DYD-1195 33520d6c (Q12) superseded.
+    private const string Request = """
+        ```text
+        His muster request for <date>, <Project>. Return:
+        Intent: his goals and purpose for the Project in your own words, by /in-your-own-words, apart from the work.
+        Work: your next tickets in fill order, the first runnable one, and the plan's stop line, or none.
+        Blockers: each operational obstacle, and the evidence that would show it fixed.
+        Permissions: each action the night's work needs, with a safe exercise for it, or the gap.
+        ```
+        """;
+
+    private const string Present = """
+        ```text
+        <Project> — <coordinator thread link>
+        Intent, as the coordinator reads it: <verbatim read-back>
+        Work: <next tickets, the first runnable one>
+        Stop line: <the plan's, or none>
+        Unblock now: <obstacle; fix; evidence it holds>
+        Permissions: <action; safe exercise; result, or the gap>
+        ```
+        """;
+
+    private const string MorningForm = """
+        ```text
+        ## The night
+        <one real visual of the work touched>
+        - <result; at most three result lines>
+
+        ## PRs into master awaiting your click
+        - <title> (<PR link>): <result>. Review <verdict>; CI <state on the current head>.
+
+        ## Proposed DRs to ratify
+        - <title> (<thread link>): <what it decides>. Ratify or decline.
+
+        ## Waiting on you
+        - <each HITL thread waiting on him, as a thread link>
+
+        ## Next
+        1. <next action and its owner>
+        ```
+        """;
+
+    public static readonly Claim MusterReady = new("The muster is a checklist held with him present, after overnight-mode's transition preflight; the night starts once it is done.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "Hold this checklist with him present, after `overnight-mode`'s transition preflight; the night starts only once every line is done.", new(ChiefOfStaffResource.Muster, 2001))])
+    { Spec = ["K11", "H7", "K22"] };
+
+    public static readonly Claim MusterAsk = new("Each live coordinator returns a muster report to a fixed request.", [Actor.ChiefOfStaff, Actor.Coordinator],
+        [new(Skill.ChiefOfStaff, "Ask each live coordinator for its muster report, with the request below.", new(ChiefOfStaffResource.Muster, 2002))])
+    { Spec = ["K11", "H7", "K22"] };
+
+    public static readonly Claim MusterShow = new("He sees each report, its intent read-back apart from the work, and his corrections go back to its coordinator.", [Actor.ChiefOfStaff, Actor.Balazs],
+        [new(Skill.ChiefOfStaff, "Show him each report verbatim in the form below, the intent read-back apart from the work, and send each coordinator his corrections to its read-back.", new(ChiefOfStaffResource.Muster, 2003))])
+    { Spec = ["K11", "H7", "K22"] };
+
+    public static readonly Claim MusterUnblock = new("Operational blockers are resolved while he is present, each fix verified with evidence.", [Actor.ChiefOfStaff, Actor.Balazs],
+        [new(Skill.ChiefOfStaff, "Resolve each operational blocker while he is present, verifying each fix with evidence.", new(ChiefOfStaffResource.Muster, 2004))])
+    { Spec = ["K11", "K22"] };
+
+    public static readonly Claim MusterPermissions = new("Each permission the night needs is exercised safely and its real result recorded; no dummy merge.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "Exercise each permission the night's work needs through a safe, authorised operation where one exists, such as contacting the coordinator, each session's Linear writes and feature-branch merges, and record the real result; an unprotected branch proves no merge permission, and a dummy merge is never run.", new(ChiefOfStaffResource.Muster, 2005))])
+    { Spec = ["K11", "K22"] };
+
+    public static readonly Claim MusterGaps = new("An exercise that can't run or an item left unresolved is a gap with his explicit disposition.", [Actor.ChiefOfStaff, Actor.Balazs],
+        [new(Skill.ChiefOfStaff, "Keep an exercise you can't run, or an item left unresolved, as a gap, and get his explicit disposition for the work that depends on it.", new(ChiefOfStaffResource.Muster, 2006))])
+    { Spec = ["K11", "K22"] };
+
+    public static readonly Claim MusterStopLine = new("A stop line he wants goes in the Project plan the coordinator reads; there are no night orders (DYD-1195 33520d6c).", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "A stop line he wants goes in the Project plan, which its coordinator reads; there are no night orders.", new(ChiefOfStaffResource.Muster, 2007))])
+    { Spec = ["K11"] };
+
+    public static readonly Claim MusterRunnable = new("Each coordinator confirms its next work is runnable before the night starts.", [Actor.ChiefOfStaff, Actor.Coordinator],
+        [new(Skill.ChiefOfStaff, "Get each coordinator's confirmation that its next work is runnable; then the muster is ready.", new(ChiefOfStaffResource.Muster, 2008))])
+    { Spec = ["K11", "K22"] };
+
+    public static readonly Claim MusterRequest = new("The muster request a coordinator answers.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, Request, new(ChiefOfStaffSlot.MusterRequest, 2010))])
+    { Spec = ["K11", "K22", "H5"] };
+
+    public static readonly Claim MusterForm = new("The form each Project's report is shown to him in.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, Present, new(ChiefOfStaffSlot.MusterPresent, 2011))])
+    { Spec = ["K11", "K22"] };
+
+    public static readonly Claim SurveyRead = new("Each watch tick reads the board across the Projects against the last observation, keeping no shadow board.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "Each watch tick, read `dydo survey board` across the Projects and compare it with your last observation; keep no shadow board.", new(ChiefOfStaffResource.NightSurvey, 2030))])
+    { Spec = ["H7", "K22", "S26"] };
+
+    public static readonly Claim SurveyThreads = new("Where progress is unclear, the coordinator's thread is read, a captain's only as needed.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "Where progress is unclear, read the coordinator's thread, and a captain's only as needed, and check every nudge still unanswered.", new(ChiefOfStaffResource.NightSurvey, 2031))])
+    { Spec = ["H7", "K22"] };
+
+    public static readonly Claim SurveyFinds = new("The survey looks for idle officers with runnable work, unanswered nudges, blockers and colliding work.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "Look for an idle officer with runnable work, an unanswered nudge, a blocker that needs intervention and colliding work; an unchanged board or a quiet running task alone is no stall.", new(ChiefOfStaffResource.NightSurvey, 2032))])
+    { Spec = ["H7", "H12", "K22"] };
+
+    public static readonly Claim SurveyComplete = new("A tick is quiet only once every Project and nudge is checked; an unreadable source leaves it incomplete.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "A tick ends quiet only once every Project and every outstanding nudge is checked; a source you could not read leaves it incomplete, to resolve, never quiet.", new(ChiefOfStaffResource.NightSurvey, 2033))])
+    { Spec = ["H7", "K22"] };
+
+    public static readonly Claim MorningFill = new("The morning brief is filled in the conversation after the verified shutdown, writing nothing to the repo.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "Fill this in the conversation once `overnight-mode` has verified the shutdown, writing nothing to the repo.", new(ChiefOfStaffResource.MorningBrief, 2020))])
+    { Spec = ["H7", "K11", "K22"] };
+
+    public static readonly Claim MorningTemplate = new("The morning brief's form: the night, PRs awaiting his click, proposed DRs to ratify, what waits on him, and next.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, MorningForm, new(ChiefOfStaffResource.MorningBrief, 2021))])
+    { Spec = ["H7", "L19", "L21", "K22"] };
+
     public static readonly Claim DoubleCheck = new("Overnight, its 12-hour check on a quiet Project is a cheap double check only.", [Actor.ChiefOfStaff],
         [new(Skill.ChiefOfStaff, "Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the coordinators' own scheduled surveys.", new(StaffState.NightWatch, 1011, MoveKind.Nominal))])
     { Spec = ["H7", "H12"] };

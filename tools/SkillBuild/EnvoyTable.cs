@@ -22,12 +22,12 @@ public sealed record EnvoyTable(IReadOnlyList<EnvoyJobSkill> Jobs, Claim CloseSi
         [(EnvoyJob.Enablement, null)] = ("wizard", null)
     };
 
-    /// <summary>The table as the skill states it: one row per job, the skill in code, its resource, then its note.</summary>
+    /// <summary>The table as the skill states it: one row per job, the skill in code with its slash (K14), its resource, then its note.</summary>
     public static string Render(IEnumerable<EnvoyJobSkill> jobs) => string.Join("\n",
     [
         "| Job | Skill |",
         "|---|---|",
-        .. jobs.Select(row => $"| {row.Key} | `{row.Skill}`{(row.Resource is null ? "" : $", with its `{Names.Kebab(row.Resource)}` resource")}{(row.Note is null ? "" : "; " + row.Note)} |")
+        .. jobs.Select(row => $"| {row.Key} | `/{row.Skill}`{(row.Resource is null ? "" : $", with its `{Names.Kebab(row.Resource)}` resource")}{(row.Note is null ? "" : "; " + row.Note)} |")
     ]);
 
     internal void Check(Model model)

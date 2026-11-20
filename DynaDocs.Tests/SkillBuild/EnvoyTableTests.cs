@@ -102,9 +102,20 @@ public class EnvoyTableTests
         var brief = SkillBuilder.Build(ProductionModel.Model).Files["skills/roles/officers/ticket-captain/resources/ticket-captain-brief.md"];
 
         Assert.Contains(EnvoyTable.Render(Envoy.Jobs), brief);
-        Assert.Contains("| Question at stage `research` | `ticket-captain`; it dispatches `research` crew |", brief);
-        Assert.Contains("| Question at stage `council` | `ticket-captain`, with its `council-chair` resource |", brief);
-        Assert.Contains("| Question at stage `his-call` | `co-thinker` |", brief);
+        Assert.Contains("| Question at stage `research` | `/ticket-captain`; it dispatches `research` crew |", brief);
+        Assert.Contains("| Question at stage `council` | `/ticket-captain`, with its `council-chair` resource |", brief);
+        Assert.Contains("| Question at stage `his-call` | `/co-thinker` |", brief);
+    }
+
+    // Review r1 nit 2: a dispatch names each skill with a slash (K14), the job table's skills included.
+    [Fact]
+    [Trait("Job", "contract: H23 K14 the job table names each job's skill with a slash")]
+    public void Table_NamesEachSkillWithASlash()
+    {
+        var rows = EnvoyTable.Render(Envoy.Jobs).Split('\n')[2..];
+
+        Assert.Equal(Envoy.Jobs.Count, rows.Length);
+        Assert.All(Envoy.Jobs.Zip(rows), pair => Assert.StartsWith($"| {pair.First.Key} | `/{pair.First.Skill}`", pair.Second));
     }
 
     [Fact]
@@ -167,12 +178,21 @@ public class EnvoyTableTests
     [Trait("Job", "edge: H23 every table skill under skills/, at any depth, lets the run go on")]
     public void TableSkillsAllUnderSkills_TheRunGoesOn()
     {
-        using var root = Skills("grilling", "walkthrough", "wayfinder", "co-thinker", "deep/wizard");
+        // The other skills the production prose names (review r1 S7) are the checkout's own, so only the table's decide.
+        using var root = Skills(["grilling", "walkthrough", "wayfinder", "co-thinker", "deep/wizard", .. HandWrittenOutsideTheTable()]);
 
-        Assert.Equal(0, root.Run(ProductionModel.Model, "map").Exit);
+        var (exit, _, error) = root.Run(ProductionModel.Model, "map");
+
+        Assert.True(exit == 0, error);
     }
 
     private static Model With(EnvoyTable table) => ProductionModel.Model with { Envoys = table };
+
+    private static IEnumerable<string> HandWrittenOutsideTheTable() => Directory
+        .EnumerateFiles(Path.Combine(CommittedTree.Root, "skills"), "SKILL.md", SearchOption.AllDirectories)
+        .Where(file => !BuiltHeader.Carries(file))
+        .Select(file => Path.GetFileName(Path.GetDirectoryName(file))!)
+        .Except(Table.Jobs.Select(row => row.Skill), StringComparer.Ordinal);
 
     private static TempRoot Skills(params string[] names)
     {

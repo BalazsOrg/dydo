@@ -292,13 +292,17 @@ Spec: N4
 
 ## Weeds
 
-`claim:Project.Weeds`: Every weed becomes a rule.
+`claim:Project.Weeds`: Every weed becomes a rule: a mistake found after landing gets a ticket, whose captain picks its fix and a lint, test or rule.
 
-Spec: R30
+Spec: R30, H5
 
 **coordinator** (Merges):
 
-> Give each mistake found after landing a lint, test or rule as well as its fix.
+> Open a ticket for each mistake found after landing and put a captain on it.
+
+**ticket-captain** (Take):
+
+> Holding a ticket for a mistake found after landing, pick its fix and the lint, test or rule that keeps it from recurring.
 
 ## Usage
 

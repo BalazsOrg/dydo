@@ -20,3 +20,7 @@ Exits:
 Exits:
 
 - Re-land with `dydo merge`, which reverts the revert.
+
+## Save, resume and end
+
+- Save the merge SHA and the red gate on the Merge hop and resume from them; end resolved once the rerun is green or the re-land merges green, or escalated to your officer with what you can't resolve.

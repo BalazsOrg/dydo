@@ -59,6 +59,14 @@ public static class Council
         [new(Skill.TicketCaptain, "With one family out, Merge confidence at the landing waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.", new(TicketCaptainSlot.Council, 1308))])
     { Spec = ["L22"] };
 
+    public static readonly Claim MemberSlots = new("A member's brief names every skill the seat needs with a slash, like any dispatch.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Skills: every skill the seat needs, each with a slash · the one question · model and effort · return to.", new(TicketCaptainSlot.Member, 1300))])
+    { Spec = ["K14", "L14"] };
+
+    public static readonly Claim SynthesiserSlots = new("The synthesiser's brief names every skill the seat needs with a slash, like any dispatch.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Skills: every skill the seat needs, each with a slash · the members' sealed answers · model and effort · return to.", new(TicketCaptainSlot.Synthesiser, 1300))])
+    { Spec = ["K14", "L14"] };
+
     public static readonly Claim Member = new("A member answers alone, sealed and read-only, on the same thing as every other member.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "Answer the one question alone, sealed and read-only; every member looks at the same thing.", new(TicketCaptainSlot.Member, 1309))])
     { Spec = ["L14", "L16"] };

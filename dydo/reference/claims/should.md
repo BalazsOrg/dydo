@@ -64,15 +64,25 @@ Transition in A should (`claims/statechart/should/Should.tla`): Open → Duplica
 
 ## Cancel
 
-`claim:Should.Cancel`: At the landing a should is canceled only with a reason.
+`claim:Should.Cancel`: A should is canceled only with a reason, by the captain of the Shoulds batch holding it.
 
-Spec: S18
+Spec: S18, S17, H5
 
-Transition in A should (`claims/statechart/should/Should.tla`): Open → Canceled, "at the landing: canceled with a reason".
+Transition in A should (`claims/statechart/should/Should.tla`): Open → Canceled, "canceled with a reason by its batch captain".
 
-**coordinator** (Open, exit):
+**ticket-captain** (Open, exit):
 
-> At the landing, cancel a should only with a reason.
+> In a shoulds batch, cancel a should only with a one-line reason.
+
+## Check
+
+`claim:Should.Check`: At the landing the coordinator checks each should's state mechanically and routes any still open into a Shoulds batch.
+
+Spec: S18, S17, H5
+
+**coordinator** (Open, nominal):
+
+> At the landing, check each should's state: Done, Canceled with a reason, or moved out on his call; put any still open in a Shoulds batch.
 
 ## Move
 

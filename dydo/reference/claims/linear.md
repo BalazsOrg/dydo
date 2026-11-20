@@ -64,11 +64,11 @@ Spec: S1
 
 `claim:Linear.Priority`: Priority marks which of his tickets he takes next.
 
-Spec: N12 DR 047 §11
+Spec: N12 DR 047 §11, H5
 
 **coordinator** (Queued, nominal):
 
-> Set Priority on every ticket waiting on him, a Question or a HITL ticket, and re-set it as blockers change: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; Urgent only in an emergency; AFK tickets carry none.
+> Set Priority on every ticket waiting on him, a Question or a HITL ticket, and re-set it as blockers change: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; never set Urgent, since an emergency is a judgement call; AFK tickets carry none.
 
 **linear-workspace-standard** (LinearPriority):
 

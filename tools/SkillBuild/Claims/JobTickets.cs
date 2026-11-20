@@ -38,9 +38,9 @@ public static class JobTickets
         [new(Skill.TicketCaptain, "A research Question you open under another Question stays at stage `research`.", new(TicketCaptainSlot.Question, 3106))])
     { Spec = ["H23"] };
 
-    public static readonly Claim EnvoySlots = new("The captain that opens a his-call child writes the envoy brief's seven slots on it.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "On a `his-call` child you open, write the envoy brief's seven slots: the ticket and why it needs him · what's settled · sources to read first · the stop line · where to record, in his words · return and closing summary · the opening rule, a fresh 2–3-line picture, then the first question with its recommendation.", new(TicketCaptainSlot.Question, 3107))])
-    { Spec = ["H19", "H23"] };
+    public static readonly Claim EnvoySlots = new("The envoy's own ticket captain writes the envoy brief's seven slots from its ticket, the his-call Question or a bundle's wrapper; the coordinator writes none.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Holding a `his-call` Question or a bundle's wrapper, write the envoy brief's seven slots from it before you open with him: the ticket and why it needs him · what's settled · sources to read first · the stop line · where to record, in his words · return and closing summary · the opening rule, a fresh 2–3-line picture, then the first question with its recommendation.", new(TicketCaptainSlot.Hitl, 921))])
+    { Spec = ["H19", "H18", "H23"] };
 
     public static readonly Claim Deciding = new("A Wayfinding captain is the deciding half of the map holder; the coordinator keeps it on track (DYD-1195 b46e8343).", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "Holding a Wayfinding ticket, you are the deciding half of the Project's map holder: the coordinator keeps the map on track, mechanically, and every call on it is yours.", new(TicketCaptainSlot.Wayfinding, 3108))])

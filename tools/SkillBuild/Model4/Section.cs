@@ -8,6 +8,7 @@ public enum Section
     EnvoySkills,
     ImplementerBrief,
     ReviewerBrief,
+    ResearchBrief,
     ScoutBrief,
     TicketCaptainBrief,
     TreeIntro,

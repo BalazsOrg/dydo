@@ -32,9 +32,12 @@ public static class ReviewerCarrier
         ],
         Scenarios =
         [
-            new(ReviewerScenario.Hunks, "A conflict's hunks", MergeMachines.FeatureMerge.Slots(FeatureMergeState.HunkReview)),
-            new(ReviewerScenario.Equivalent, "An equivalent-mutant claim", LawMachines.Mutation.Slots(MutationState.Claimed)),
-            new(ReviewerScenario.IgnoreEntry, "A new ignore entry", LawMachines.IgnoreEntry.Slots(IgnoreEntryState.PathA))
+            new(ReviewerScenario.Hunks, "A conflict's hunks",
+                [.. MergeMachines.FeatureMerge.Slots(FeatureMergeState.HunkReview), ScenarioSlots.Close(ScenarioClose.Hunks)]),
+            new(ReviewerScenario.Equivalent, "An equivalent-mutant claim",
+                [.. LawMachines.Mutation.Slots(MutationState.Claimed), ScenarioSlots.Close(ScenarioClose.Equivalent)]),
+            new(ReviewerScenario.IgnoreEntry, "A new ignore entry",
+                [.. LawMachines.IgnoreEntry.Slots(IgnoreEntryState.PathA), ScenarioSlots.Close(ScenarioClose.IgnoreEntry)])
         ]
     };
 }

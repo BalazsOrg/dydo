@@ -55,14 +55,14 @@ public static class Tribunal
     { Spec = ["L18"], Transition = new(TribunalState.Sealed, TribunalState.Exchange, "both positions in; one exchange") { Effect = "agree' \\in BOOLEAN" } };
 
     public static readonly Claim DecideNight = new("Judges agreeing on a two-way hard call decide it, provisionally, overnight or by day for a call not worth his time (DYD-1195 87c1e2e6).", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "When both judges agree on a two-way hard call, it is decided: record it citing its law and precedent; it is acted on, provisional, and never ratified.", new(TribunalState.DecidedOvernight, 1409, MoveKind.Arrival))])
+        [new(Skill.TicketCaptain, "When both judges agree on a two-way hard call that is not DR-grade, it is decided: record it citing its law and precedent; it is acted on, provisional, and never ratified.", new(TribunalState.DecidedOvernight, 1409, MoveKind.Arrival))])
     {
         Spec = ["L18", "L19", "L20"],
         Transition = new(TribunalState.Exchange, TribunalState.DecidedOvernight, "the judges agree on a two-way hard call") { Guard = "agree /\\ twoWay /\\ ~drGrade" }
     };
 
     public static readonly Claim Prepare = new("On disagreement, or for a one-way or DR-grade call, the tribunal prepares it for him with both positions.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "When they disagree, the precedent points both ways, or the call is one-way or DR-grade, return it prepared, with both positions, to the Question that opened the council, which sends it to him as a `his-call` child.", new(TribunalState.Prepared, 1410, MoveKind.Arrival))])
+        [new(Skill.TicketCaptain, "When they disagree, the precedent points both ways, or the call is one-way, return it prepared, with both positions, to the Question that opened the council, which sends it to him as a `his-call` child; a DR-grade call too, except the overnight one below.", new(TribunalState.Prepared, 1410, MoveKind.Arrival))])
     {
         Spec = ["L18", "L20", "L21", "H23"],
         Transition = new(TribunalState.Exchange, TribunalState.Prepared, "they disagree, or it is one-way or DR-grade")
@@ -91,6 +91,10 @@ public static class Tribunal
 
     public static readonly Claim Wrong = new("A ruling found wrong is investigated: why it was made, then a measure.", [], [])
     { Spec = ["L19"], Transition = new(TribunalState.DecidedOvernight, TribunalState.Investigated, "the ruling is found wrong") };
+
+    public static readonly Claim JudgeSlots = new("A judge's brief names every skill the seat needs with a slash, like any dispatch.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Skills: every skill the seat needs, each with a slash · the case file · model and effort · return to.", new(TicketCaptainSlot.Judge, 1400))])
+    { Spec = ["K14", "L18"] };
 
     public static readonly Claim Judge = new("Each judge alone maps options to axioms, finds precedent, names his choice and covers two duties.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "Alone, map each option to the axioms it serves, find precedent through `weighed:`, name what Balazs would choose and why, and answer both duties: should this be done at all, and is the frame too narrow?", new(TicketCaptainSlot.Judge, 1413))])

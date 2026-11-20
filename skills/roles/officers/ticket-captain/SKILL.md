@@ -13,28 +13,16 @@ A Question, Grilling, Walkthrough, Wayfinding or Enablement ticket is held the s
 
 ## 1. Take the ticket
 
-- Your tools: Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.
-- Holding a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket, work it by [Job tickets](resources/job-tickets.md).
-- Holding an Inquisition ticket or one of its sub-tickets, conduct it by [the inquisition captain](resources/inquisition-captain.md).
-- Dispatched onto a filler ticket, check it is small, two-way and needs no design call; if not, send it back unassigned with a one-line reason.
-
-### A council child, AFK
-
-Arrivals:
-
-- Holding a Question at stage `council`, chair it by [the council chair](resources/council-chair.md).
-
-### Briefed
-
-Nominal path:
-
-- Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
-- Create the ticket's branch, open its PR and merge it yourself; ordinary crew never do.
-- Report a problem outside your ticket to your officer.
-
-Exits:
-
-- Set your ticket In Progress and attach your T3 thread link titled `T3 · ticket-captain · <model>`.
+1. Your tools: Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.
+1. Holding a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket, work it by [Job tickets](resources/job-tickets.md).
+1. Holding an Inquisition ticket or one of its sub-tickets, conduct it by [the inquisition captain](resources/inquisition-captain.md).
+1. Dispatched onto a filler ticket, check it is small, two-way and needs no design call; if not, send it back unassigned with a one-line reason.
+1. Holding a ticket for a mistake found after landing, pick its fix and the lint, test or rule that keeps it from recurring.
+1. Holding a Question at stage `council`, chair it by [the council chair](resources/council-chair.md).
+1. Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
+1. Create the ticket's branch, open its PR and merge it yourself; ordinary crew never do.
+1. Report a problem outside your ticket to your officer.
+1. Set your ticket In Progress and attach your T3 thread link titled `T3 · ticket-captain · <model>`.
 
 Resources:
 
@@ -45,71 +33,39 @@ Resources:
 
 ## 2. Cut the hops
 
-### A step is cut
-
-Nominal path:
-
-- One agent holds one ticket; wrap several steps for one agent in one ticket.
-- Write each sub-ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
-- Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
-
-Exits:
-
-- A leaf lane or a batched should stays one ticket, with no hops.
-- A step with its own review loop gets hop sub-tickets typed Implement, Review (one per round), Fix and Merge, blocked in step order; you may open them ahead in Todo.
-
-### One ticket, no hops
-
-Exits:
-
-- For a leaf's optional evidence check, add a fresh seat as a Review hop beside it, never a full review.
-
-### Review hop, one per round
-
-Exits:
-
-- Type the Merge hop AFK Merge for a feature-branch merge or a two-way main merge.
-- Type the Merge hop HITL Merge only for a one-way main merge.
+1. One agent holds one ticket; wrap several steps for one agent in one ticket.
+1. Write each sub-ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
+1. Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
+1. A leaf lane or a batched should stays one ticket, with no hops.
+1. A step with its own review loop gets hop sub-tickets typed Implement, Review (one per round), Fix and Merge, blocked in step order; you may open them ahead in Todo.
+1. For a leaf's optional evidence check, add a fresh seat as a Review hop beside it, never a full review.
+1. Type the Merge hop AFK Merge for a feature-branch merge or a two-way main merge.
+1. Type the Merge hop HITL Merge only for a one-way main merge.
 
 ## 3. Staff and dispatch
 
-- Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
-- The model roster is his to write; his text goes here.
-- Read `dydo usage` and balance vendors for every seat you fill, sub-captains and crew as well as reviewers.
-- Scale each round's seats with the breadth and depth of the work; there is no constant pair.
-- Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
-- Name the governing spec in each reviewer's brief, or say there is none.
-- A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
-- A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
-- Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.
-- Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
-- A native child can't `delegate_task`: on `parent_not_active`, ask your officer to dispatch it.
-- A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
-- Keep the work going through any usage limit, and never bring one to him.
-
-### Staffing a seat
-
-Nominal path:
-
-- Keep your level's lanes full, toward a soft target of four; when the mainline can't fill one, pull your own pickable side tickets first, then continuous tickets.
-- Pull without asking only a ticket that is Mode AFK; a Bug or small Feature at Severity should or lower, or an unrated CI finding; two-way; no design call; oldest first.
-- A continuous ticket you pull follows your chain from then on.
-
-Exits:
-
-- Seat any reviewer from a family other than the author's when possible, single seats included.
-- Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.
-- Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
-
-### Returned
-
-Arrivals:
-
-- Every crew return comes back to you: post its hop's SHA on the hop as the resume point.
-
-Nominal path:
-
-- Route an out-of-scope report from your crew to the owner's ticket or a new Bug.
+1. Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
+1. The model roster is his to write; his text goes here.
+1. Read `dydo usage` and balance vendors for every seat you fill, sub-captains and crew as well as reviewers.
+1. Scale each round's seats with the breadth and depth of the work; there is no constant pair.
+1. Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
+1. Name the governing spec in each reviewer's brief, or say there is none.
+1. A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
+1. A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
+1. Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.
+1. Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
+1. A native child can't `delegate_task`: when it hits `parent_not_active`, ask your officer to make that dispatch.
+1. A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
+1. Keep the work going through any usage limit, and never bring one to him.
+1. Keep your level's lanes full, toward a soft target of four; when the mainline can't fill one, pull your own pickable side tickets first, then continuous tickets.
+1. Pull without asking only a ticket that is Mode AFK; a Bug or small Feature at Severity should or lower, or an unrated CI finding; two-way; no design call; oldest first.
+1. A continuous ticket you pull follows your chain from then on.
+1. Seat any reviewer from a family other than the author's when possible, single seats included.
+1. Convene a council only for a heavy PR, one that meets the stakes or value test: stakes is the last check before main or a mistake expensive to undo, and value is a call between good options where what he would choose is the question.
+1. A high-stakes Review is guard or security work, a base other tickets build on, or the late whole-system simplify review.
+1. Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
+1. Every crew return comes back to you: post its hop's SHA on the hop as the resume point.
+1. Route an out-of-scope report from your crew to the owner's ticket or a new Bug.
 
 Resources:
 
@@ -121,93 +77,41 @@ Resources:
 
 ## 4. Run the review rounds
 
-### Parts wired, before the Merge hop
+1. Once the parts are wired and before the Merge hop, review the parent once: each part, the parts together, and their harmony.
+1. Skip the parent's review when it only groups parts.
+1. Holding a round with several seats, post one verdict naming each seat's model and provider and its blockers, and write the PR line at the same moment.
+1. At verdict time, turn the blockers into Fix rN with one Blocker ticket per blocker inside it; for parallel writers, split it into Fix rNb.
+1. Record each nit as one line on its record.
+1. A blocker a later review finds in a change you made goes to a crew writer.
+1. Record every severity a fix-hop author changed, with its reason.
+1. Never rule on findings about work you authored.
+1. A broken or against-spec blocker is fixed, then the next round runs.
+1. A security hole is fixed, and the next round runs with the security lens first.
+1. Send a fundamental blocker or a new requirement to the officer above to re-plan.
+1. Pass a blocker that needs Balazs up the chain at once.
+1. By default, the first round with no new blocker ends the review rounds.
+1. You may still order one more round after a round with no new blocker.
+1. After round 3 with a blocker, stop at the checkpoint and decide on purpose.
+1. Holding the round, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where it was found.
+1. Holding a Shoulds batch, re-parent each should into it, keeping a `related: found in <KEY> rN` link on it.
+1. A parent may close Done while its shoulds stay open.
+1. Fix a cheap should in place before its parent merges; the rest wait for a shoulds batch.
+1. In a shoulds batch, mark each duplicate Duplicate.
+1. In a shoulds batch, cancel a should only with a one-line reason.
 
-Exits:
+## 5. Merge, clean up and close
 
-- Once the parts are wired and before the Merge hop, review the parent once: each part, the parts together, and their harmony.
-- Skip the parent's review when it only groups parts.
-
-### Review round
-
-Exits:
-
-- Holding a round with several seats, post one verdict naming each seat's model and provider and its blockers, and write the PR line at the same moment.
-
-### Verdict posted
-
-Nominal path:
-
-- At verdict time, turn the blockers into Fix rN with one Blocker ticket per blocker inside it; for parallel writers, split it into Fix rNb.
-- Record each nit as one line on its record.
-- A blocker a later review finds in a change you made goes to a crew writer.
-- Record every severity a fix-hop author changed, with its reason.
-- Never rule on findings about work you authored.
-
-Exits:
-
-- A broken or against-spec blocker is fixed, then the next round runs.
-- A security hole is fixed, and the next round runs with the security lens first.
-- Send a fundamental blocker or a new requirement to the officer above to re-plan.
-- Pass a blocker that needs Balazs up the chain at once.
-- By default, the first round with no new blocker ends the phase.
-- You may still order one more round after a round with no new blocker.
-- After round 3 with a blocker, stop at the checkpoint and decide on purpose.
-
-### A round finds a should
-
-Exits:
-
-- Holding the round, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where it was found.
-
-### Open should
-
-Nominal path:
-
-- Holding a Shoulds batch, re-parent each should into it, keeping a `related: found in <KEY> rN` link on it.
-- A parent may close Done while its shoulds stay open.
-
-Exits:
-
-- Fix a cheap should in place before its parent merges; the rest wait for a shoulds batch.
-- In a shoulds batch, mark each duplicate Duplicate.
-
-## 5. Merge and clean up
-
-### Running dydo test gate on the combined tree
-
-Nominal path:
-
-- Run `dydo test gate` on the combined tree yourself, then `dydo merge`.
-
-Exits:
-
-- On a real red gate, send an implementer to fix it on the ticket branch.
-
-### Running dydo merge
-
-Nominal path:
-
-- Merge only through `dydo merge`; when it refuses, its stated reason says why.
-- A conflict-free merge into the feature branch gets no merge review.
-- No ticket or merge waits on mutation; it is checked at the landing.
-
-Exits:
-
-- On `CONFLICT`, send an implementer to resolve it on the ticket branch.
-
-### Gates on the merge
-
-Exits:
-
-- Close the Merge hop Done once DYTEST holds a green receipt on the merge tree and hosted CI is green on the merge SHA.
-- A gate red after the merge reruns once through DYTEST.
-
-### Branch or worktree in use, a T3 worktree included
-
-Exits:
-
-- After a merge, safe-delete the branches and worktrees you made with `dydo archive`; it keeps them 30 days, then purges them.
+1. Run `dydo test gate` on the combined tree yourself, then `dydo merge`.
+1. On a real red gate before the merge, send an implementer to fix it on the ticket branch.
+1. Merge only through `dydo merge`; when it refuses, its stated reason says why.
+1. A conflict-free merge into the feature branch gets no merge review.
+1. No ticket or merge waits on mutation; it is checked at the landing.
+1. On `CONFLICT`, send an implementer to resolve it on the ticket branch.
+1. Close the Merge hop Done once DYTEST holds a green receipt on the merge tree and hosted CI is green on the merge SHA.
+1. A gate red after the merge reruns once through DYTEST.
+1. After a merge, safe-delete the branches and worktrees you made with `dydo archive`; it keeps them 30 days, then purges them.
+1. Close your ticket Done once its work is merged, or, on a ticket that merges nothing, once its result is on the ticket.
+1. Then return one line to your brief's return-to, `done <KEY>: merged`, or `done <KEY>` for a ticket that merges nothing; a sub-captain returns the same, and everything else is on the ticket.
 
 Resources:
 

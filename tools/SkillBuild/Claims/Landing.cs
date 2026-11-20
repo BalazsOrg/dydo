@@ -14,7 +14,7 @@ public static class Landing
         [Actor.Coordinator, Actor.TicketCaptain],
     [
         new(Skill.Coordinator, "Once every delivery ticket is merged, open the Inquisition ticket for a fresh root inquisition captain.", new(LandingState.Integrated, 301, MoveKind.Exit)),
-        new(Skill.TicketCaptain, "As the root, staff the round yourself: the provider, the models and the swarm width, from the model roster and `dydo usage`; post the staffing on the coordinator's HITL queue as an FYI for him.", new(LandingState.Mapped, 301, MoveKind.Arrival))
+        new(Skill.TicketCaptain, "As the root, staff the round yourself: the provider, the models and the swarm width, from the model roster and `dydo usage`; post the staffing on the coordinator's HITL queue as an FYI for him, riding in the next envoy.", new(LandingState.Mapped, 301, MoveKind.Arrival))
     ])
     { Spec = ["N5", "H5", "R13", "R14"], Transition = new(LandingState.Integrated, LandingState.Mapped, "the Inquisition ticket opens; its root captain staffs a round and draws a fresh feature map") { Effect = Areas } };
 
@@ -77,7 +77,7 @@ public static class Landing
     };
 
     public static readonly Claim Confident = new("On the Merge-confidence PASS, the landing candidate goes to his walkthrough.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "On the council's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.", new(LandingState.MergeReview, 306, MoveKind.Exit))])
+        [new(Skill.Coordinator, "On the landing merge review's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.", new(LandingState.MergeReview, 306, MoveKind.Exit))])
     { Spec = ["N6", "L16", "R20", "H22"], Transition = new(LandingState.MergeReview, LandingState.Walkthrough, "the Merge-confidence council passes the landing candidate") };
 
     public static readonly Claim ReviewFail = new("A broken or against-spec blocker from the landing merge review goes to Fix, then the next round.", [Actor.Coordinator],
@@ -128,7 +128,7 @@ public static class Landing
     public static readonly Claim SpecGone = new("At acceptance, the Wayfinding captain moves the spec's lasting parts and deletes the spec and plan files; the coordinator only opens its ticket.",
         [Actor.Coordinator, Actor.TicketCaptain],
     [
-        new(Skill.Coordinator, "Once he accepts, open a Wayfinding ticket to move the spec's lasting parts and delete the spec and the plan files.", new(LandingState.Merging, 311, MoveKind.Nominal)),
+        new(Skill.Coordinator, "Once he accepts the landing candidate, open a Wayfinding ticket to move the spec's lasting parts and delete the spec and the plan files.", new(LandingState.Merging, 311, MoveKind.Nominal)),
         new(Skill.TicketCaptain, "At the landing, once he accepts, move the spec's lasting parts to DRs, the glossary, docs and the verification map, then delete the spec and the plan files.", new(TicketCaptainSlot.Wayfinding, 3120))
     ])
     { Spec = ["S14", "D11", "N7", "H4", "H5"] };

@@ -18,6 +18,10 @@ public partial class MigrationFixtureTests
     [GeneratedRegex(@"^- \[[^\]]+\]\([^)\s]+\)$")]
     private static partial Regex LinkOnly();
 
+    // A one-line claim line's marker: a bullet, or a phase's numbered checklist item (K9, review r1 S5).
+    [GeneratedRegex(@"^(- |[0-9]+\. )")]
+    private static partial Regex Item();
+
     private static readonly IReadOnlySet<string> ModelIds = FixtureModel.Model.Kinds
         .SelectMany(kind => kind.GetFields(BindingFlags.Public | BindingFlags.Static)
             .Where(field => field.FieldType == typeof(Claim))
@@ -64,7 +68,8 @@ public partial class MigrationFixtureTests
         foreach (var line in Migration.Tree.Map)
         {
             var built = Migration.Tree.Files[line.Path].Split('\n')[line.Line - 1];
-            Assert.True(built == line.Text || built.StartsWith("- " + line.Text, StringComparison.Ordinal), $"{line}: {built}");
+            var item = Item().Match(built);
+            Assert.True(built == line.Text || (item.Success && built[item.Length..].StartsWith(line.Text, StringComparison.Ordinal)),$"{line}: {built}");
             Assert.All(line.Claims, id => Assert.Contains(id, ModelIds));
         }
     }
@@ -78,7 +83,7 @@ public partial class MigrationFixtureTests
         {
             var lines = text.Split('\n');
             for (var index = 0; index < lines.Length; index++)
-                if (lines[index].StartsWith("- ", StringComparison.Ordinal) && !LinkOnly().IsMatch(lines[index]))
+                if (Item().IsMatch(lines[index]) && !LinkOnly().IsMatch(lines[index]))
                     Assert.True(mapped.Contains((path, index + 1)), $"{path}:{index + 1} states no claim: {lines[index]}");
         }
     }

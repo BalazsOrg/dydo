@@ -138,7 +138,7 @@
       "claim": "claim:Mutation.CutFix",
       "from": "Survivors",
       "to": "Ticketed",
-      "arrow": "the coordinator cuts the survivor's fix ticket",
+      "arrow": "the coordinator opens the survivor's fix ticket",
       "spec": [
         "N6",
         "H5",

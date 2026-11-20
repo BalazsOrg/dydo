@@ -33,8 +33,10 @@ public static class ImplementerCarrier
         ],
         Scenarios =
         [
-            new(ImplementerScenario.Survivor, "A surviving mutant", LawMachines.Mutation.Slots(MutationState.Ticketed)),
-            new(ImplementerScenario.OverLimit, "A file over the token limit", LawMachines.IgnoreEntry.Slots(IgnoreEntryState.OverLimit))
+            new(ImplementerScenario.Survivor, "A surviving mutant",
+                [.. LawMachines.Mutation.Slots(MutationState.Ticketed), ScenarioSlots.Close(ScenarioClose.Survivor)]),
+            new(ImplementerScenario.OverLimit, "A file over the token limit",
+                [.. LawMachines.IgnoreEntry.Slots(IgnoreEntryState.OverLimit), ScenarioSlots.Close(ScenarioClose.OverLimit)])
         ]
     };
 }

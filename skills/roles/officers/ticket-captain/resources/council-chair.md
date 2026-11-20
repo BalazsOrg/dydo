@@ -26,13 +26,13 @@ Exits:
 
 Arrivals:
 
-- When both judges agree on a two-way hard call, it is decided: record it citing its law and precedent; it is acted on, provisional, and never ratified.
+- When both judges agree on a two-way hard call that is not DR-grade, it is decided: record it citing its law and precedent; it is acted on, provisional, and never ratified.
 
 ## Prepared for him: a his-call child
 
 Arrivals:
 
-- When they disagree, the precedent points both ways, or the call is one-way or DR-grade, return it prepared, with both positions, to the Question that opened the council, which sends it to him as a `his-call` child.
+- When they disagree, the precedent points both ways, or the call is one-way, return it prepared, with both positions, to the Question that opened the council, which sends it to him as a `his-call` child; a DR-grade call too, except the overnight one below.
 
 ## Proposed DR awaiting his ratification
 

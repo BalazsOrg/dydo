@@ -68,7 +68,8 @@ public static class Registry
         typeof(Adopter),
         typeof(Tree),
         typeof(Linear),
-        typeof(Scout)
+        typeof(Scout),
+        typeof(Recovery)
     ];
 
     public static IReadOnlyList<SkillSpec> Skills { get; } =
