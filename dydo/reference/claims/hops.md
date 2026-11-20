@@ -18,10 +18,6 @@ Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): 
 
 > A leaf lane or a batched should stays one ticket, with no hops.
 
-**coordinator** (Cut, exit):
-
-> A leaf lane or a batched should stays one ticket, with no hops.
-
 **linear-workspace-standard** (LinearTickets):
 
 > A leaf lane or a batched should is one ticket, with no hops.

@@ -80,7 +80,7 @@
       "claim": "claim:Staff.Brief",
       "from": "MorningBrief",
       "to": "Day",
-      "arrow": "the brief is given",
+      "arrow": "the morning brief closes the night",
       "spec": [
         "L19",
         "L21"
@@ -96,11 +96,10 @@
       "claim": "claim:Staff.Morning",
       "from": "NightWatch",
       "to": "MorningBrief",
-      "arrow": "the night ends",
+      "arrow": "he returns: the night ends",
       "spec": [
         "H7",
-        "L19",
-        "K11"
+        "L19"
       ],
       "guard": null,
       "effect": null,
@@ -113,10 +112,10 @@
       "claim": "claim:Staff.Muster",
       "from": "Day",
       "to": "Muster",
-      "arrow": "overnight mode starts",
+      "arrow": "he musters: the night starts",
       "spec": [
-        "K11",
-        "L21"
+        "H7",
+        "K11"
       ],
       "guard": null,
       "effect": null,
@@ -129,7 +128,7 @@
       "claim": "claim:Staff.Watch",
       "from": "Muster",
       "to": "NightWatch",
-      "arrow": "DR-grade calls surfaced; the watch starts",
+      "arrow": "the DR-grade calls listed; the watch starts",
       "spec": [
         "L21",
         "H7"
@@ -142,18 +141,5 @@
       ]
     }
   ],
-  "gaps": [
-    {
-      "action": "Gap1",
-      "from": "Day",
-      "to": "Muster",
-      "note": "H7 says the chief of staff runs the overnight watch, not what starts it"
-    },
-    {
-      "action": "Gap2",
-      "from": "NightWatch",
-      "to": "MorningBrief",
-      "note": "H7 and L19 name the watch and the morning brief, not what ends the night"
-    }
-  ]
+  "gaps": []
 }

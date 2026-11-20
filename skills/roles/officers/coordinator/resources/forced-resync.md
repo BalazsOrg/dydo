@@ -6,7 +6,7 @@
 
 Arrivals:
 
-- Hold a PR forced to re-sync a third time and sequence the colliding work.
+- Hold a PR forced to re-sync a third time and sequence the colliding work, lower ticket number first.
 
 Exits:
 

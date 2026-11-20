@@ -72,7 +72,7 @@ Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Re
 
 **coordinator** (Quiet, exit):
 
-> Stopped: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
+> Stopped: comment `liveness <UTC time>: stopped` and set the hop back to Todo; resume the same agent's thread the first time, and dispatch a fresh agent when the same hop stops again; the old thread link stays as history.
 
 **chief-of-staff** (Quiet, exit):
 

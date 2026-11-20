@@ -29,6 +29,7 @@ public static class Registry
         typeof(Host),
         typeof(ChartTool),
         typeof(Project),
+        typeof(Coordination),
         typeof(Dispatch),
         typeof(Brief),
         typeof(Roster),

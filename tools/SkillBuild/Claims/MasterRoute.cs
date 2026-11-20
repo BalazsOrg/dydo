@@ -22,7 +22,7 @@ public static class MasterRoute
 
     public static readonly Claim Turn = new("Main-bound merges land one at a time; each re-checks against current master just before landing.", [Actor.Coordinator, Actor.TicketCaptain],
     [
-        new(Skill.Coordinator, "Land main-bound merges one at a time; each re-checks against current master just before landing.", new(MasterRouteState.Paced, 703, MoveKind.Exit)),
+        new(Skill.Coordinator, "Give main-bound merges their turn one at a time, by blocking relations, then the oldest ready PR first; its captain re-checks against current master just before landing and merges.", new(MasterRouteState.Paced, 703, MoveKind.Exit)),
         new(Skill.TicketCaptain, "On your turn, re-sync with current master and re-check.", new(MasterRouteState.Resync, 703, MoveKind.Arrival)),
         new(Skill.WorkingTreeStandard, "Main-bound merges land one at a time, paced by the coordinator; each re-checks against current master just before landing, and a PR forced to re-sync a third time is held while the coordinator sequences the colliding work.",
             new(Section.TreeMerging, 8), () => [Hold!])
@@ -50,7 +50,7 @@ public static class MasterRoute
 
     public static readonly Claim Hold = new("A PR forced to re-sync a third time is held while the coordinator sequences the colliding work.", [Actor.Coordinator, Actor.TicketCaptain],
     [
-        new(Skill.Coordinator, "Hold a PR forced to re-sync a third time and sequence the colliding work.", new(MasterRouteState.Held, 706, MoveKind.Arrival)),
+        new(Skill.Coordinator, "Hold a PR forced to re-sync a third time and sequence the colliding work, lower ticket number first.", new(MasterRouteState.Held, 706, MoveKind.Arrival)),
         new(Skill.TicketCaptain, "A third forced re-sync holds your PR until the coordinator sequences the colliding work.", new(MasterRouteState.Held, 706, MoveKind.Arrival))
     ])
     {

@@ -82,7 +82,6 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "coordinator",
         "ticket-captain"
       ]
     },
@@ -156,7 +155,6 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "coordinator",
         "implementer",
         "research",
         "reviewer",

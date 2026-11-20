@@ -6,8 +6,8 @@
 
 Arrivals:
 
-- On `too big, re-cut`, you are the cutter: decide whether the unit gets children.
+- A captain's `too big, re-cut` comes to you as its cutter: open a Wayfinding ticket for the re-cut and put a fresh captain on it, since cutting is its call.
 
 Exits:
 
-- Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.
+- Once its captain files the children, sequence them and put a captain on each ready one.

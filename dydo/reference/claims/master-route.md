@@ -44,7 +44,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 **coordinator** (Paced, exit):
 
-> Land main-bound merges one at a time; each re-checks against current master just before landing.
+> Give main-bound merges their turn one at a time, by blocking relations, then the oldest ready PR first; its captain re-checks against current master just before landing and merges.
 
 **ticket-captain** (Resync, arrival):
 
@@ -96,7 +96,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 **coordinator** (Held, arrival):
 
-> Hold a PR forced to re-sync a third time and sequence the colliding work.
+> Hold a PR forced to re-sync a third time and sequence the colliding work, lower ticket number first.
 
 **ticket-captain** (Held, arrival):
 

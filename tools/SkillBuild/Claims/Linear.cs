@@ -19,9 +19,8 @@ public static class Linear
         [new(Skill.LinearWorkspaceStandard, "The Mode label, AFK or HITL, says who the work waits on.", new(Section.LinearLabels, 2))])
     { Spec = ["S6"] };
 
-    public static readonly Claim CutRule = new("The cut rule: a ticket only when someone other than the asker uses what the work leaves.", [Actor.Coordinator, Actor.TicketCaptain],
+    public static readonly Claim CutRule = new("The cut rule: a ticket only when someone other than the asker uses what the work leaves.", [Actor.TicketCaptain],
     [
-        new(Skill.Coordinator, "Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.", new(ProjectState.Watching, 2006, MoveKind.Nominal)),
         new(Skill.TicketCaptain, "Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.", new(HopsState.Cut, 2006, MoveKind.Nominal)),
         new(Skill.LinearWorkspaceStandard, "A ticket exists only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.", new(Section.LinearTickets, 2))
     ])
@@ -29,7 +28,7 @@ public static class Linear
 
     public static readonly Claim Priority = new("Priority marks which of his tickets he takes next.", [Actor.Coordinator],
     [
-        new(Skill.Coordinator, "Set Priority on every ticket waiting on him, a Question or a HITL ticket, and re-set it as blockers change: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; Urgent only in an emergency; AFK tickets carry none.", new(ProjectState.Watching, 2007, MoveKind.Nominal)),
+        new(Skill.Coordinator, "Set Priority on every ticket waiting on him, a Question or a HITL ticket, and re-set it as blockers change: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; Urgent only in an emergency; AFK tickets carry none.", new(EnvoyState.Queued, 2007, MoveKind.Nominal)),
         new(Skill.LinearWorkspaceStandard, "Priority marks which of his tickets he takes next, so the one unlocking the most AFK work goes first: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; Urgent is an emergency, never a default; AFK tickets carry none.", new(Section.LinearPriority, 1))
     ])
     { Spec = ["N12 DR 047 §11"] };

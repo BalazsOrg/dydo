@@ -18,10 +18,6 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → 
 
 > A need for Balazs from below: do the homework first in docs, code, Linear, DRs and the spec.
 
-**coordinator** (Homework, arrival):
-
-> A need for Balazs, yours or passed up to you: do the homework first in docs, code, Linear, DRs and the spec.
-
 ## Decide
 
 `claim:Envoy.Decide`: An obvious, reversible call, or one the homework or a DR settles, is decided by the officer.
@@ -33,10 +29,6 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework 
 **ticket-captain** (Homework, exit):
 
 > Decide it yourself when the homework answers it, a DR clearly settles it, or the call is obvious and reversible.
-
-**coordinator** (Homework, exit):
-
-> Decide it yourself when the homework answers it or the call is obvious and reversible.
 
 ## PassUp
 
@@ -70,21 +62,13 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework 
 
 > When he is already in your thread, ask the one line there with the host question tool.
 
-**coordinator** (Homework, exit):
-
-> When he is already in your thread, ask the one line there with the host question tool.
-
 ## Hard
 
 `claim:Envoy.Hard`: Hard calls go to the council: the tribunal.
 
 Spec: H5, L18
 
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → ToTribunal, "a hard call: competing answers, each good through some lens".
-
-**coordinator** (Homework, exit):
-
-> Send a hard call, one with competing answers each good through some lens, to the tribunal.
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → ToTribunal, "a hard call: competing answers, each good through some lens". A system transition: no skill carries it.
 
 ## Open
 
@@ -94,9 +78,9 @@ Spec: H15, H17, S10
 
 Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → Queued, "only he can settle it".
 
-**coordinator** (Homework, exit):
+**coordinator** (Queued, arrival):
 
-> For what only he can settle, open a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket; a Question blocks only what waits on it.
+> A need for him arrives on your HITL queue as its own HITL ticket, a `his-call` Question, a Grilling, Walkthrough or Wayfinding, or an Enablement for what only he can do, a token or an authorisation; each carries the blocking relations of the work that waits on it.
 
 **linear-workspace-standard** (LinearTickets):
 
@@ -112,7 +96,7 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Queued �
 
 **coordinator** (Queued, exit):
 
-> Dispatch the next envoy only once the last has reported and he has closed its thread.
+> Send the next envoy only once the last has reported and he has closed its thread.
 
 ## Report
 
@@ -134,27 +118,15 @@ Spec: H19, H18
 
 Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Reported → Closed, "he closes the envoy's thread". A system transition: no skill carries it.
 
-## MovedOn
-
-`claim:Envoy.MovedOn`: When he has plainly moved on without closing the thread, the next envoy may go at the coordinator's discretion.
-
-Spec: H18
-
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Reported → MovedOn, "he has plainly moved on, the thread still open: the next envoy may go, at the coordinator's discretion".
-
-**coordinator** (Reported, exit):
-
-> When he has plainly moved on without closing its thread, use your discretion on sending the next envoy.
-
 ## Enablement
 
 `claim:Envoy.Enablement`: What only he can do becomes an Enablement.
 
 Spec: H17
 
-**coordinator** (Homework, nominal):
+**coordinator** (Queued, arrival, on claim:Envoy.Open):
 
-> What only he can do, a token or an authorisation, becomes an Enablement ticket.
+> A need for him arrives on your HITL queue as its own HITL ticket, a `his-call` Question, a Grilling, Walkthrough or Wayfinding, or an Enablement for what only he can do, a token or an authorisation; each carries the blocking relations of the work that waits on it.
 
 ## OwnEnvoy
 
@@ -162,9 +134,9 @@ Spec: H17
 
 Spec: H12
 
-**coordinator** (Homework, nominal):
+**coordinator** (Active, nominal):
 
-> An escalation that needs him goes out through your own envoy, never through the chief of staff.
+> Everything that needs him goes out through your own envoy, never through the chief of staff.
 
 **chief-of-staff** (Day, nominal, on claim:Staff.LinksOnly):
 
@@ -172,23 +144,23 @@ Spec: H12
 
 ## Bundle
 
-`claim:Envoy.Bundle`: The queue behind the active envoy is triaged at the coordinator's discretion, bundled per origin.
+`claim:Envoy.Bundle`: Every waiting need from one origin goes in one wrapper ticket the coordinator opens, which takes the members' place in the queue (DYD-1195 893e1f5b).
 
-Spec: H18
+Spec: H18, L13
 
 **coordinator** (Queued, nominal):
 
-> Triage the queue behind the active envoy at your discretion, bundling needs from one origin into one envoy.
+> Bundle every waiting need from one origin, the ticket whose captain passed them up: open a wrapper ticket, Type Question at stage `his-call` and Mode HITL, parent its member Questions and Enablements under it, and let it take their place in the queue; L13's proposals ride in a wrapper whose origin is the Project.
 
 ## Template
 
-`claim:Envoy.Template`: Each envoy is briefed from the envoy brief and loads its job's skill.
+`claim:Envoy.Template`: An envoy is a fresh ticket captain dispatched onto the queued ticket itself, loading every job skill it needs (DYD-1082 1b6b6a5d Q17).
 
-Spec: H19, H23
+Spec: H15, H16, H18, H23, K14
 
 **coordinator** (Active, nominal):
 
-> Brief each envoy from the envoy brief (`resources/envoy-brief.md`), with its job's skill from the table there.
+> Dispatch each envoy onto the ticket at the head of the queue, opening no other: a fresh ticket captain from the ticket-captain brief, naming every job skill from the envoy brief (`resources/envoy-brief.md`)'s table that its ticket or a wrapper's members need.
 
 ## SlotTicket
 

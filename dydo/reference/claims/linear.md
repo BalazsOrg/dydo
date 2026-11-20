@@ -52,10 +52,6 @@ Spec: S6
 
 Spec: S1
 
-**coordinator** (Watching, nominal):
-
-> Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
-
 **ticket-captain** (Cut, nominal):
 
 > Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
@@ -70,7 +66,7 @@ Spec: S1
 
 Spec: N12 DR 047 §11
 
-**coordinator** (Watching, nominal):
+**coordinator** (Queued, nominal):
 
 > Set Priority on every ticket waiting on him, a Question or a HITL ticket, and re-set it as blockers change: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; Urgent only in an emergency; AFK tickets carry none.
 
