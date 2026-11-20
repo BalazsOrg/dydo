@@ -15,7 +15,7 @@ const steps = {
   "Dispatch_SelfAuthor": "cheaper to do than to brief, too small to need its own review · R16",
   "Dispatch_Send": "one seat, cross-family where possible, sent from its kind's template · H3, K14, R15, S1",
   "Dispatch_Start": "the holder starts its hop · S6, S13",
-  "Dispatch_TooBig": "too big for one agent · H2"
+  "Dispatch_TooBig": "too big for one agent · H2, H5"
 };
 export const title = "Crew dispatch and return";
 export const state = (v) => states[v.state];

@@ -34,7 +34,7 @@ type: guide
 - A native child lives only inside its dispatcher's turn and cannot call `delegate_task`: on `parent_not_active`, a captain asks its officer, the chief of staff asks the user, and the coordinator dispatches a captain's crew for it.
 - A brief that sends out Codex agents names a cap: start around 8, go toward 16 only while runs stay clean, and back off on `429 turn_rate_limit_exceeded`; a capacity 429 means retry after a few minutes, never a blocker.
 - Crew take their questions to their captain, never to the user.
-- The cutter, the officer above, decides whether a unit gets children; no agent promotes itself, and crew return `too big, re-cut`.
+- A captain decides whether a unit under it gets children; above a top-level captain, a fresh Wayfinding captain decides and the coordinator only opens its ticket; no agent promotes itself, and crew return `too big, re-cut`.
 - Crew work inside their ticket's contract, owned paths and gates, and commit their own hop.
 - Ordinary crew do not create its branch, open its PR or merge it.
 - Sub-captains are allowed with no hard cap, cut only for coherent units too big for one agent or able to run in parallel; the practical ceiling is coordinator → captain → sub-captain → second-order sub-captain → crew, and bad nesting, or a deeper sub-captain that fails, is dealt with as a finding.

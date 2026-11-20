@@ -105,8 +105,8 @@ last recorded hop without a final push. The coordinator's next wake picks up blo
 ## Where the user is asked
 
 Project route approval; Questions and HITL work; an escalation that survived the ladder; each
-Milestone's Walkthrough, where only the walking skeleton's verdict holds back the work built on it,
-except overnight; and the landing's Walkthrough, which he accepts before the landing merges (N6).
+Milestone's Walkthrough, where only the walking skeleton's verdict holds back the work built on it;
+and the landing's Walkthrough, which he accepts before the landing merges (N6).
 A Milestone's findings become tickets in the Project as they arrive; a landing he does not accept
 turns its findings into tickets in the same Project, and another landing follows (N6). A two-way PR
 into main, an atomic ticket's or the landing's, merges AFK by its captain once its evidence is

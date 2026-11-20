@@ -206,8 +206,8 @@ Charting starts from a Linear Project and a loose destination.
    **If this surfaces no fog** (the way to the destination is already clear, the whole journey small
    enough for one session), no map is needed.
 3. **Write the map:** Destination and Notes filled in, Resolutions so far empty, the fog sketched into
-   **Not yet specified**. A Project's own spec is its `Spec: <Project>` Linear document (S14); this step covers feature specs inside it. For shared behavior or decisions needing one current anchor, choose an
-   applicable reviewed architecture plan or feature spec, creating a spec where needed under
+   **Not yet specified**. A Project's own spec is its `Spec: <Project>` Linear document (S14); this step covers feature specs inside it. For shared behavior or decisions needing one current anchor, choose
+   the governing spec or one of its linked feature specs, creating a feature spec where needed under
    `dydo/reference/feature-spec-convention.md`. Commit a new spec under the map holder's custody and
    make that commit reachable to recipients before relying on its Project-map link; otherwise record
    the anchor as unresolved. Atomic intent stays in its ticket.

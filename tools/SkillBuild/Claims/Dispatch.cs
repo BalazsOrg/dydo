@@ -38,16 +38,16 @@ public static class Dispatch
     ])
     { Spec = ["S6", "S13"], Transition = new(DispatchState.Briefed, DispatchState.Working, "the holder starts its hop") };
 
-    public static readonly Claim TooBig = new("Crew return too big, re-cut; the cutter decides whether a unit gets children; no agent promotes itself.",
+    public static readonly Claim TooBig = new("Crew return too big, re-cut; a captain decides whether a unit under it gets children, and above a top-level captain a fresh Wayfinding captain decides while the coordinator only opens its ticket; no agent promotes itself.",
         [Actor.Implementer, Actor.Reviewer, Actor.TicketCaptain, Actor.Coordinator],
     [
         new(Skill.Implementer, "A job too big for one agent goes back as `too big, re-cut`.", new(DispatchState.Briefed, 805, MoveKind.Exit)),
         new(Skill.Reviewer, "A candidate too big for one seat goes back as `too big, re-cut`.", new(DispatchState.Briefed, 805, MoveKind.Exit)),
         new(Skill.TicketCaptain, "On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children, and never promote yourself.", new(DispatchState.ReCut, 805, MoveKind.Arrival)),
         new(Skill.Coordinator, "A captain's `too big, re-cut` comes to you as its cutter: open a Wayfinding ticket for the re-cut and put a fresh captain on it, since cutting is its call.", new(DispatchState.ReCut, 805, MoveKind.Arrival)),
-        new(Skill.WorkingTreeStandard, "The cutter, the officer above, decides whether a unit gets children; no agent promotes itself, and crew return `too big, re-cut`.", new(Section.TreeDelegation, 7))
+        new(Skill.WorkingTreeStandard, "A captain decides whether a unit under it gets children; above a top-level captain, a fresh Wayfinding captain decides and the coordinator only opens its ticket; no agent promotes itself, and crew return `too big, re-cut`.", new(Section.TreeDelegation, 7))
     ])
-    { Spec = ["H2"], Transition = new(DispatchState.Briefed, DispatchState.ReCut, "too big for one agent") };
+    { Spec = ["H2", "H5"], Transition = new(DispatchState.Briefed, DispatchState.ReCut, "too big for one agent") };
 
     public static readonly Claim ReCut = new("The cutter cuts only coherent units, never to pass work down.", [Actor.TicketCaptain, Actor.Coordinator],
     [

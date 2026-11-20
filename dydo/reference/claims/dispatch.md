@@ -94,9 +94,9 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 ## TooBig
 
-`claim:Dispatch.TooBig`: Crew return too big, re-cut; the cutter decides whether a unit gets children; no agent promotes itself.
+`claim:Dispatch.TooBig`: Crew return too big, re-cut; a captain decides whether a unit under it gets children, and above a top-level captain a fresh Wayfinding captain decides while the coordinator only opens its ticket; no agent promotes itself.
 
-Spec: H2
+Spec: H2, H5
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Briefed → ReCut, "too big for one agent".
 
@@ -118,7 +118,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **working-tree-standard** (TreeDelegation):
 
-> The cutter, the officer above, decides whether a unit gets children; no agent promotes itself, and crew return `too big, re-cut`.
+> A captain decides whether a unit under it gets children; above a top-level captain, a fresh Wayfinding captain decides and the coordinator only opens its ticket; no agent promotes itself, and crew return `too big, re-cut`.
 
 ## ReCut
 

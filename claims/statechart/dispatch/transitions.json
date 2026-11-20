@@ -187,7 +187,8 @@
       "to": "ReCut",
       "arrow": "too big for one agent",
       "spec": [
-        "H2"
+        "H2",
+        "H5"
       ],
       "guard": null,
       "effect": null,
