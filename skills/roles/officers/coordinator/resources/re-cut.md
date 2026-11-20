@@ -6,7 +6,7 @@
 
 Arrivals:
 
-- A captain's `too big, re-cut` comes to you as its cutter: open a Wayfinding ticket for the re-cut and put a fresh captain on it, since cutting is its call.
+- A captain's `too big, re-cut` comes to you, but the cut is never yours: open a Wayfinding ticket for it and put a fresh captain on it, who decides; you only sequence what that ticket files.
 
 Exits:
 

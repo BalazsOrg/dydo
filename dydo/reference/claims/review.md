@@ -80,15 +80,15 @@ Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict â
 
 ## Fundamental
 
-`claim:Review.Fundamental`: A fundamental blocker or a new requirement goes to the officer above to re-plan.
+`claim:Review.Fundamental`: A fundamental blocker or a new requirement goes to the officer above to re-plan; above a top-level captain a fresh Wayfinding captain re-plans, and the coordinator only opens its ticket.
 
-Spec: R9
+Spec: R9, H5
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict â†’ Replan, "a blocker is fundamental, or a new requirement".
 
 **ticket-captain** (Verdict, exit):
 
-> Send a fundamental blocker or a new requirement to the officer above to re-plan.
+> Send a fundamental blocker or a new requirement to the officer above to re-plan; when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans.
 
 ## NeedsBalazs
 

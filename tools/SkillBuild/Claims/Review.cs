@@ -36,9 +36,9 @@ public static class Review
         Transition = new(ReviewState.Verdict, ReviewState.Fixing, "a blocker is a security hole") { Guard = "kind = \"security\" /\\ round # 3", Effect = "securityFirst' = TRUE" }
     };
 
-    public static readonly Claim Fundamental = new("A fundamental blocker or a new requirement goes to the officer above to re-plan.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "Send a fundamental blocker or a new requirement to the officer above to re-plan.", new(ReviewState.Verdict, 506, MoveKind.Exit))])
-    { Spec = ["R9"], Transition = new(ReviewState.Verdict, ReviewState.Replan, "a blocker is fundamental, or a new requirement") { Guard = "kind = \"fundamental\"" } };
+    public static readonly Claim Fundamental = new("A fundamental blocker or a new requirement goes to the officer above to re-plan; above a top-level captain a fresh Wayfinding captain re-plans, and the coordinator only opens its ticket.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Send a fundamental blocker or a new requirement to the officer above to re-plan; when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans.", new(ReviewState.Verdict, 506, MoveKind.Exit))])
+    { Spec = ["R9", "H5"], Transition = new(ReviewState.Verdict, ReviewState.Replan, "a blocker is fundamental, or a new requirement") { Guard = "kind = \"fundamental\"" } };
 
     public static readonly Claim NeedsBalazs = new("A blocker that needs Balazs goes up the chain at once.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "Pass a blocker that needs Balazs up the chain at once.", new(ReviewState.Verdict, 507, MoveKind.Exit))])

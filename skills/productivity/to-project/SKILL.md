@@ -17,8 +17,8 @@ records it without another interview.
    the records and source FutureFeature when present. Done when the Project carries the intent and
    its provenance, with unresolved points still identified as unresolved.
 3. Create the Project in `Backlog`, with no tickets. The Project's own spec is its `Spec: <Project>` Linear document, which the map holder writes and refines (S14); the rest of this step covers feature specs. When shared behavior or decisions need one
-   current anchor, read `dydo/reference/feature-spec-convention.md` from the repository root. Link an
-   applicable reviewed architecture plan or feature spec; if neither supplies the anchor, prepare a
+   current anchor, read `dydo/reference/feature-spec-convention.md` from the repository root. Link the
+   governing spec or one of its linked feature specs; if neither supplies the anchor, prepare a
    feature spec from settled intent for the map holder's custody. The map holder commits a new spec
    at its convention path and makes that commit reachable to recipients before relying on its Project
    link; otherwise record the anchor as unresolved. An atomic outcome stays in its eventual ticket.

@@ -87,7 +87,7 @@ Resources:
 1. Never rule on findings about work you authored.
 1. A broken or against-spec blocker is fixed, then the next round runs.
 1. A security hole is fixed, and the next round runs with the security lens first.
-1. Send a fundamental blocker or a new requirement to the officer above to re-plan.
+1. Send a fundamental blocker or a new requirement to the officer above to re-plan; when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans.
 1. Pass a blocker that needs Balazs up the chain at once.
 1. By default, the first round with no new blocker ends the review rounds.
 1. You may still order one more round after a round with no new blocker.

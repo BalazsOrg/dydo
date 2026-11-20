@@ -44,7 +44,7 @@ public static class Dispatch
         new(Skill.Implementer, "A job too big for one agent goes back as `too big, re-cut`.", new(DispatchState.Briefed, 805, MoveKind.Exit)),
         new(Skill.Reviewer, "A candidate too big for one seat goes back as `too big, re-cut`.", new(DispatchState.Briefed, 805, MoveKind.Exit)),
         new(Skill.TicketCaptain, "On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children, and never promote yourself.", new(DispatchState.ReCut, 805, MoveKind.Arrival)),
-        new(Skill.Coordinator, "A captain's `too big, re-cut` comes to you as its cutter: open a Wayfinding ticket for the re-cut and put a fresh captain on it, since cutting is its call.", new(DispatchState.ReCut, 805, MoveKind.Arrival)),
+        new(Skill.Coordinator, "A captain's `too big, re-cut` comes to you, but the cut is never yours: open a Wayfinding ticket for it and put a fresh captain on it, who decides; you only sequence what that ticket files.", new(DispatchState.ReCut, 805, MoveKind.Arrival)),
         new(Skill.WorkingTreeStandard, "A captain decides whether a unit under it gets children; above a top-level captain, a fresh Wayfinding captain decides and the coordinator only opens its ticket; no agent promotes itself, and crew return `too big, re-cut`.", new(Section.TreeDelegation, 7))
     ])
     { Spec = ["H2", "H5"], Transition = new(DispatchState.Briefed, DispatchState.ReCut, "too big for one agent") };
