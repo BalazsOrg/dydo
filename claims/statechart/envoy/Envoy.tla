@@ -38,13 +38,6 @@ Envoy_InThread ==
     /\ state' = "AskedInThread"
     /\ UNCHANGED <<level, envoys>>
 
-\* claim:Envoy.MovedOn
-Envoy_MovedOn ==
-    /\ state = "Reported"
-    /\ state' = "MovedOn"
-    /\ envoys' = 0
-    /\ UNCHANGED <<level>>
-
 \* claim:Envoy.NextLevel
 Envoy_NextLevel ==
     /\ state = "PassedUp"
@@ -94,7 +87,6 @@ Next ==
     \/ Envoy_Decide
     \/ Envoy_Hard
     \/ Envoy_InThread
-    \/ Envoy_MovedOn
     \/ Envoy_NextLevel
     \/ Envoy_Open
     \/ Envoy_PassUp

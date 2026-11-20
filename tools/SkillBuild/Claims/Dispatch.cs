@@ -4,20 +4,18 @@ namespace DynaDocs.SkillBuild;
 public static class Dispatch
 {
     public static readonly Claim Send = new("A staffed seat goes out briefed; any reviewer or judge comes from a family other than the author's when possible.",
-        [Actor.TicketCaptain, Actor.Coordinator, Actor.Implementer, Actor.Reviewer, Actor.Scout],
+        [Actor.TicketCaptain, Actor.Implementer, Actor.Reviewer, Actor.Scout],
     [
         new(Skill.TicketCaptain, "Seat any reviewer from a family other than the author's when possible, single seats included.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
-        new(Skill.Coordinator, "Seat any reviewer or judge from a family other than the author's when possible, single seats included.", new(DispatchState.Staffing, 801, MoveKind.Exit)),
         new(Skill.Implementer, "You arrive with a brief from the implementer dispatch template; work only within it.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
         new(Skill.Reviewer, "You arrive with a brief from the reviewer dispatch template; judge only what it names.", new(DispatchState.Briefed, 801, MoveKind.Arrival)),
         new(Skill.Scout, "You arrive with one question and its return-to; you hold no ticket.", new(DispatchState.Briefed, 801, MoveKind.Arrival))
     ])
     { Spec = ["H3", "K14", "R15", "S1"], Transition = new(DispatchState.Staffing, DispatchState.Briefed, "one seat, cross-family where possible, sent from its kind's template") };
 
-    public static readonly Claim Council = new("A council convenes only for stakes or value.", [Actor.TicketCaptain, Actor.Coordinator],
+    public static readonly Claim Council = new("A council convenes only for stakes or value.", [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.", new(DispatchState.Staffing, 802, MoveKind.Exit)),
-        new(Skill.Coordinator, "Convene a council only for stakes (the last check before main, or a mistake expensive to undo) or value (a call between good options).", new(DispatchState.Staffing, 802, MoveKind.Exit))
+        new(Skill.TicketCaptain, "Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.", new(DispatchState.Staffing, 802, MoveKind.Exit))
     ])
     { Spec = ["L16", "L17"], Transition = new(DispatchState.Staffing, DispatchState.CouncilCalled, "stakes or value: a council") };
 
@@ -41,7 +39,7 @@ public static class Dispatch
         new(Skill.Implementer, "A job too big for one agent goes back as `too big, re-cut`.", new(DispatchState.Briefed, 805, MoveKind.Exit)),
         new(Skill.Reviewer, "A candidate too big for one seat goes back as `too big, re-cut`.", new(DispatchState.Briefed, 805, MoveKind.Exit)),
         new(Skill.TicketCaptain, "On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children; a ticket too big for you goes back to your officer the same way, and you never promote yourself.", new(DispatchState.ReCut, 805, MoveKind.Arrival)),
-        new(Skill.Coordinator, "On `too big, re-cut`, you are the cutter: decide whether the unit gets children.", new(DispatchState.ReCut, 805, MoveKind.Arrival)),
+        new(Skill.Coordinator, "A captain's `too big, re-cut` comes to you as its cutter: open a Wayfinding ticket for the re-cut and put a fresh captain on it, since cutting is its call.", new(DispatchState.ReCut, 805, MoveKind.Arrival)),
         new(Skill.WorkingTreeStandard, "The cutter, the officer above, decides whether a unit gets children; no agent promotes itself, and crew return `too big, re-cut`.", new(Section.TreeDelegation, 7))
     ])
     { Spec = ["H2"], Transition = new(DispatchState.Briefed, DispatchState.ReCut, "too big for one agent") };
@@ -49,7 +47,7 @@ public static class Dispatch
     public static readonly Claim ReCut = new("The cutter cuts only coherent units, never to pass work down.", [Actor.TicketCaptain, Actor.Coordinator],
     [
         new(Skill.TicketCaptain, "Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.", new(DispatchState.ReCut, 806, MoveKind.Exit)),
-        new(Skill.Coordinator, "Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.", new(DispatchState.ReCut, 806, MoveKind.Exit))
+        new(Skill.Coordinator, "Once its captain files the children, sequence them and put a captain on each ready one.", new(DispatchState.ReCut, 806, MoveKind.Exit))
     ])
     { Spec = ["H2", "H14"], Transition = new(DispatchState.ReCut, DispatchState.Staffing, "the cutter cuts coherent children") };
 
@@ -65,9 +63,10 @@ public static class Dispatch
     { Spec = ["K14", "R5", "S6", "N12 DR 047 §7"], Transition = new(DispatchState.Working, DispatchState.Returned, "the crew returns to its dispatcher") };
 
     public static readonly Claim Template = new("An officer briefs crew from the crew kind's dispatch template and never reads a crew skill to brief it.",
-        [Actor.Coordinator, Actor.TicketCaptain],
+        [Actor.Coordinator, Actor.TicketCaptain, Actor.ChiefOfStaff],
     [
-        new(Skill.Coordinator, "Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.", new(Routine.Dispatching, 808)),
+        new(Skill.Coordinator, "Brief each captain from the ticket-captain dispatch template and name every skill its role requires with a slash: the template carries the default set, and you add the ticket's own skills.", new(Routine.Dispatching, 808)),
+        new(Skill.ChiefOfStaff, "Brief a coordinator from the coordinator dispatch template and name every skill its role requires with a slash; the template carries the default set.", new(Routine.Dispatching, 808)),
         new(Skill.TicketCaptain, "Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.", new(Routine.Dispatching, 808))
     ])
     { Spec = ["K14", "K29"] };

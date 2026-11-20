@@ -3,3 +3,5 @@
 # Coordinator brief
 
 Skills: /coordinator
+
+- The Project · model and effort.

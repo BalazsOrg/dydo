@@ -6,4 +6,4 @@
 
 Exits:
 
-- Cut each landing survivor into a fix ticket for a captain.
+- Open a fix ticket for each landing survivor and put a captain on it.

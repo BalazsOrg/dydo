@@ -40,16 +40,6 @@ Staff_Watch ==
     /\ state = "Muster"
     /\ state' = "NightWatch"
 
-\* GAP: H7 says the chief of staff runs the overnight watch, not what starts it
-Gap1 ==
-    /\ state = "Day"
-    /\ state' = "Muster"
-
-\* GAP: H7 and L19 name the watch and the morning brief, not what ends the night
-Gap2 ==
-    /\ state = "NightWatch"
-    /\ state' = "MorningBrief"
-
 Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
@@ -59,8 +49,6 @@ Next ==
     \/ Staff_Morning
     \/ Staff_Muster
     \/ Staff_Watch
-    \/ Gap1
-    \/ Gap2
     \/ Done
 
 Fairness == TRUE

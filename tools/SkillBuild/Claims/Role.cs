@@ -3,13 +3,13 @@ namespace DynaDocs.SkillBuild;
 /// <summary>Each role's job paragraph (K9), what it is accountable for, and the tools and surfaces it touches.</summary>
 public static class Role
 {
-    public static readonly Claim Coordinator = new("The coordinator is the live officer that holds one open Project's outcome.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "You are a coordinator: the live officer holding one open Project's outcome, from charting to landing.", new(SpinePart.Job, 101))])
-    { Spec = ["H4", "H1"] };
+    public static readonly Claim Coordinator = new("The coordinator is the live officer that keeps one open Project moving, mechanically, to its landing (DYD-1082 555a8300 Q21).", [Actor.Coordinator],
+        [new(Skill.Coordinator, "You are a coordinator: you keep one open Project moving, mechanically, from the day it is up to its landing.", new(SpinePart.Job, 101))])
+    { Spec = ["H4", "H5", "H1"] };
 
-    public static readonly Claim ChiefOfStaff = new("The chief of staff keeps his short list across Projects and the overnight watch.", [Actor.ChiefOfStaff],
-        [new(Skill.ChiefOfStaff, "You are the chief of staff: his one short list across Projects by day, the overnight watch by night, and mostly idle by day.", new(SpinePart.Job, 102))])
-    { Spec = ["H7"] };
+    public static readonly Claim ChiefOfStaff = new("The chief of staff keeps his short list across Projects by day and holds the night, from his muster to the morning brief (DYD-1082 a1b21b59 Q12).", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "You are the chief of staff: by day you keep his one short list across Projects and are otherwise mostly idle, and the night is yours, from his muster to the morning brief.", new(SpinePart.Job, 102))])
+    { Spec = ["H7", "K11"] };
 
     public static readonly Claim TicketCaptain = new("A ticket captain holds one ticket to its end; a sub-captain is one a level down.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "You are a ticket captain: you hold one ticket to its end; a sub-captain is a ticket captain one level down.", new(SpinePart.Job, 103))])
@@ -34,23 +34,23 @@ public static class Role
     public static readonly Claim Chain = new("The officer-above chain is sub-captain, captain, coordinator, chief of staff.",
         [Actor.Coordinator, Actor.TicketCaptain, Actor.ChiefOfStaff],
     [
-        new(Skill.Coordinator, "You are the officer above your captains; the chief of staff is yours.", new(SpinePart.Job, 107)),
+        new(Skill.Coordinator, "You are the officer above your captains; the chief of staff is yours.", new(SpinePart.Job, 108)),
         new(Skill.TicketCaptain, "Your officer above is whoever dispatched you; you are the officer above your crew and sub-captains.", new(SpinePart.Job, 107)),
-        new(Skill.ChiefOfStaff, "You are the top of the officer-above chain, above the coordinators.", new(SpinePart.Job, 107))
+        new(Skill.ChiefOfStaff, "You are the top of the officer-above chain, above the coordinators.", new(SpinePart.Job, 111))
     ])
     { Spec = ["H12"] };
 
     // The sub-captain's half of R16 is in the ticket-captain's Dispatch.SelfAuthor line (K4).
     public static readonly Claim NoAuthor = new("Coordinators never author.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "You never author: captains and their crew do.", new(SpinePart.Job, 108))])
+        [new(Skill.Coordinator, "You never author: captains and their crew do.", new(SpinePart.Job, 109))])
     { Spec = ["R16"] };
 
     public static readonly Claim CoordinatorAccounts = new("The coordinator answers for the Project's outcome.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "The Project's outcome: its spec, its map, its feature branch, its envoys and its landing.", new(Routine.Accountable, 109))])
-    { Spec = ["H4", "S14", "R25", "H16", "N6"] };
+        [new(Skill.Coordinator, "You answer for its outcome: its lanes, its HITL queue, its merges and its landing.", new(SpinePart.Job, 102))])
+    { Spec = ["H4", "H18", "R25", "N6"] };
 
-    public static readonly Claim StaffAccounts = new("The chief of staff answers for his short list and the overnight watch.", [Actor.ChiefOfStaff],
-        [new(Skill.ChiefOfStaff, "His short list, and the overnight watch.", new(Routine.Accountable, 110))])
+    public static readonly Claim StaffAccounts = new("The chief of staff answers for his short list and the night watch.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "You answer for that short list and for the night watch.", new(SpinePart.Job, 110))])
     { Spec = ["H7"] };
 
     public static readonly Claim CaptainAccounts = new("The ticket captain answers for its ticket's outcome.", [Actor.TicketCaptain],
@@ -70,11 +70,11 @@ public static class Role
     { Spec = ["K22"] };
 
     public static readonly Claim CoordinatorTools = new("The coordinator's tools and surfaces.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "`dydo survey board <project>`, the board and its liveness findings, Linear, `dydo usage`, `delegate_task`, T3 `schedule_task`, `dydo.json`.", new(Routine.ToolsAndSurfaces, 115))])
-    { Spec = ["H5", "S22", "S24", "R14", "H3", "R27", "N12 DR 047"] };
+        [new(Skill.Coordinator, "Your tools: Linear, `dydo survey board <project>` with its liveness findings, `dydo usage`, `delegate_task`, and T3 `schedule_task`.", new(CoordinatorSlot.WakeUp, 1302))])
+    { Spec = ["H5", "S22", "S24", "R14", "H3", "N12 DR 047"] };
 
     public static readonly Claim StaffTools = new("The chief of staff's tools and surfaces.", [Actor.ChiefOfStaff],
-        [new(Skill.ChiefOfStaff, "`dydo survey board` across Projects, Linear, T3 thread links.", new(Routine.ToolsAndSurfaces, 116))])
+        [new(Skill.ChiefOfStaff, "Your tools: `dydo survey board` across Projects, Linear, and T3 thread links.", new(ChiefOfStaffSlot.Tools, 116))])
     { Spec = ["H7", "S22"] };
 
     public static readonly Claim CaptainTools = new("The ticket captain's tools and surfaces.", [Actor.TicketCaptain],

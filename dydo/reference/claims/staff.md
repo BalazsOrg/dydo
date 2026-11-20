@@ -32,39 +32,39 @@ Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Investig
 
 ## Muster
 
-`claim:Staff.Muster`: Overnight mode, the chief of staff's and the coordinator's, starts at muster.
+`claim:Staff.Muster`: The night starts with his muster; overnight mode is the chief of staff's alone (DYD-1082 555a8300 gap 6, DYD-1195 33520d6c).
 
-Spec: K11, L21
+Spec: H7, K11
 
-Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Day → Muster, "overnight mode starts".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Day → Muster, "he musters: the night starts".
 
 **chief-of-staff** (Muster, arrival):
 
-> Overnight mode starts at muster, which you hold.
+> His muster starts the night: load `overnight-mode` and hold the muster with him; overnight mode is yours alone, and the coordinators run as they do by day.
 
 ## Watch
 
-`claim:Staff.Watch`: DR-grade calls surface at muster; then the overnight watch runs.
+`claim:Staff.Watch`: At muster the chief of staff lists every open dr-grade call as a thread link; then the overnight watch runs.
 
 Spec: L21, H7
 
-Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Muster → NightWatch, "DR-grade calls surfaced; the watch starts".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Muster → NightWatch, "the DR-grade calls listed; the watch starts".
 
 **chief-of-staff** (Muster, exit):
 
-> Surface every pending DR-grade call to him at muster, then start the overnight watch.
+> At muster, list for him every open ticket labelled `dr-grade` as a thread link, then start the overnight watch.
 
 ## Morning
 
-`claim:Staff.Morning`: The night ends in the morning brief.
+`claim:Staff.Morning`: The night ends on his return, and the morning brief closes it (DYD-1082 555a8300 gap 7).
 
-Spec: H7, L19, K11
+Spec: H7, L19
 
-Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): NightWatch → MorningBrief, "the night ends".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): NightWatch → MorningBrief, "he returns: the night ends".
 
 **chief-of-staff** (NightWatch, exit):
 
-> When the night ends, write the morning brief.
+> When he returns, the night ends: give him the morning brief.
 
 ## Brief
 
@@ -72,7 +72,7 @@ Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): NightWat
 
 Spec: L19, L21
 
-Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): MorningBrief → Day, "the brief is given".
+Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): MorningBrief → Day, "the morning brief closes the night".
 
 **chief-of-staff** (MorningBrief, exit):
 

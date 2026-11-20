@@ -8,23 +8,23 @@ type: reference
 
 ## Coordinator
 
-`claim:Role.Coordinator`: The coordinator is the live officer that holds one open Project's outcome.
+`claim:Role.Coordinator`: The coordinator is the live officer that keeps one open Project moving, mechanically, to its landing (DYD-1082 555a8300 Q21).
 
-Spec: H4, H1
+Spec: H4, H5, H1
 
 **coordinator** (Job):
 
-> You are a coordinator: the live officer holding one open Project's outcome, from charting to landing.
+> You are a coordinator: you keep one open Project moving, mechanically, from the day it is up to its landing.
 
 ## ChiefOfStaff
 
-`claim:Role.ChiefOfStaff`: The chief of staff keeps his short list across Projects and the overnight watch.
+`claim:Role.ChiefOfStaff`: The chief of staff keeps his short list across Projects by day and holds the night, from his muster to the morning brief (DYD-1082 a1b21b59 Q12).
 
-Spec: H7
+Spec: H7, K11
 
 **chief-of-staff** (Job):
 
-> You are the chief of staff: his one short list across Projects by day, the overnight watch by night, and mostly idle by day.
+> You are the chief of staff: by day you keep his one short list across Projects and are otherwise mostly idle, and the night is yours, from his muster to the morning brief.
 
 ## TicketCaptain
 
@@ -108,21 +108,21 @@ Spec: R16
 
 `claim:Role.CoordinatorAccounts`: The coordinator answers for the Project's outcome.
 
-Spec: H4, S14, R25, H16, N6
+Spec: H4, H18, R25, N6
 
-**coordinator** (Accountable):
+**coordinator** (Job):
 
-> The Project's outcome: its spec, its map, its feature branch, its envoys and its landing.
+> You answer for its outcome: its lanes, its HITL queue, its merges and its landing.
 
 ## StaffAccounts
 
-`claim:Role.StaffAccounts`: The chief of staff answers for his short list and the overnight watch.
+`claim:Role.StaffAccounts`: The chief of staff answers for his short list and the night watch.
 
 Spec: H7
 
-**chief-of-staff** (Accountable):
+**chief-of-staff** (Job):
 
-> His short list, and the overnight watch.
+> You answer for that short list and for the night watch.
 
 ## CaptainAccounts
 
@@ -168,11 +168,11 @@ Spec: K22
 
 `claim:Role.CoordinatorTools`: The coordinator's tools and surfaces.
 
-Spec: H5, S22, S24, R14, H3, R27, N12 DR 047
+Spec: H5, S22, S24, R14, H3, N12 DR 047
 
-**coordinator** (ToolsAndSurfaces):
+**coordinator** (WakeUp):
 
-> `dydo survey board <project>`, the board and its liveness findings, Linear, `dydo usage`, `delegate_task`, T3 `schedule_task`, `dydo.json`.
+> Your tools: Linear, `dydo survey board <project>` with its liveness findings, `dydo usage`, `delegate_task`, and T3 `schedule_task`.
 
 ## StaffTools
 
@@ -180,9 +180,9 @@ Spec: H5, S22, S24, R14, H3, R27, N12 DR 047
 
 Spec: H7, S22
 
-**chief-of-staff** (ToolsAndSurfaces):
+**chief-of-staff** (Tools):
 
-> `dydo survey board` across Projects, Linear, T3 thread links.
+> Your tools: `dydo survey board` across Projects, Linear, and T3 thread links.
 
 ## CaptainTools
 

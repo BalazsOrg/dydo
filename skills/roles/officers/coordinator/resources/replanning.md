@@ -6,8 +6,8 @@
 
 Arrivals:
 
-- A fundamental blocker or a new requirement from below: re-plan the affected part of the map.
+- A fundamental blocker or a new requirement from below: open a Wayfinding ticket to re-plan the affected part of the map, and put a fresh captain on it.
 
 Exits:
 
-- Cancel each dead hop with a one-line reason, then go back to watching.
+- Once the re-plan is filed and its dead hops are Canceled with a one-line reason, sequence what it filed and go back to watching.

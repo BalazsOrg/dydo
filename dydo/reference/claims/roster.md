@@ -14,16 +14,7 @@ Spec: R13
 
 **coordinator** (Dispatching):
 
-> Pick each seat's model from this roster; it is his to edit, and he fills or approves the strengths, fits and not-for columns.
->
-> | Model | Vendor | Tier (B7) | Strengths | Fits | Not for |
-> |---|---|---|---|---|---|
-> | Sonnet | Anthropic | check: evidence and behaviour checks | | | |
-> | Luna | OpenAI | check: evidence and behaviour checks | | | |
-> | Opus 5.5 | Anthropic | normal: ordinary reviews at lower and middle levels | | | |
-> | GPT 6.2 Sol | OpenAI | normal: ordinary reviews at lower and middle levels | | | |
-> | Fable | Anthropic | strong: non-obvious discovery, and the late whole-system "simplify" review | | | |
-> | Astra | OpenAI | strong: non-obvious discovery, and the late whole-system "simplify" review | | | |
+> The model roster is his to write; his text goes here.
 
 **ticket-captain** (Dispatching):
 
@@ -44,9 +35,9 @@ Spec: R13
 
 Spec: R14
 
-**coordinator** (Dispatching):
+**coordinator** (Dispatching, on claim:Coordination.Seats):
 
-> Read `dydo usage` and balance vendors for every seat you fill, captains and crew as well as reviewers.
+> Staff every seat by one fixed rule, never by judgement: from the roster's models in its tier whose vendor still has quota in `dydo usage`, skipping a vendor below 20% unless every vendor is, take the vendor that resets soonest, then more remaining quota, then roster order.
 
 **ticket-captain** (Dispatching):
 
@@ -57,10 +48,6 @@ Spec: R14
 `claim:Roster.Seats`: Seats scale with the breadth and depth of the work.
 
 Spec: R12
-
-**coordinator** (Dispatching):
-
-> Scale each round's seats with the breadth and depth of the work; there is no constant pair.
 
 **ticket-captain** (Dispatching):
 
