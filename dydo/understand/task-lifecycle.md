@@ -22,10 +22,12 @@ blocks planning or implementation and is too big or too uncertain to settle inli
 discovery → Question Ticket*: an agent in fog first runs a bounded discovery - the Decision index, the
 feature specs, the ticket's own links, the glossary, the code - and only when that comes up empty does
 the question become a ticket that records what was searched and blocks every named plan or
-implementation ticket awaiting its answer. A crew member raises a hand to its captain. Captains file
-local Question Sub-tickets; the Project's map holder, the user or an invoked admiral, alone files
-Project-level Questions. An invoked admiral routes AFK homework and sends only HITL judgment to the user.
-Facts are the agent's job; choices are the user's.
+implementation ticket awaiting its answer. A crew member raises a hand to its captain. Whoever
+receives a passed-up need opens a Question for it and waits on it: a Question Sub-ticket under a
+captain, a Project-level Question under the coordinator. A fresh captain holds the Question and
+researches it first, then answers it, sends it to a council (a Question with Mode AFK), or puts it
+on the coordinator's HITL queue when it is worth the user's time (H16, H18, L18; DYD-1195 317eb49f,
+3a854e37, 87c1e2e6). Facts are the agent's job; a call reaches the user only when it needs him.
 
 Its resolution is an *answer* posted on the ticket. The answer graduates to a Decision Record only when
 it is hard to reverse, surprising later, and the result of a real trade-off. Tickets carry questions,
@@ -41,7 +43,7 @@ Decision Records carry decisions, and the two are linked rather than copied.
   [feature spec](../reference/feature-spec-convention.md); reconcile affected contracts when intent shifts.
 - **Ticket** - high resolution, just in time: the Ticket Captain's compact acceptance contract on the
   parent ticket or a direct lane Sub-ticket, with its scenarios where the ticket carries Gherkin, owned
-  paths and gates, exact enough to build. The spawned `code-writer` builds from it. The contract is
+  paths and gates, exact enough to build. The spawned `implementer` builds from it. The contract is
   reviewed with the code; the Captain may buy a `spec` review of it before any code for one risk it
   records in the contract.
 
@@ -58,7 +60,7 @@ worktree, session, commits, PR and test runs are evidence for that ticket, never
 records.
 
 Every delivery kind starts with the captain making its contract exact. The captain sets
-Implementing at the author's spawn, a code-writer or a docs-writer, and In Review at a
+Implementing at the implementer's spawn, and In Review at a
 reviewer's, the optional spec review before any code included. A parent whose lanes run is In Progress. The writer
 posts nothing before code unless the work splits into disjoint lanes or the contract is inexact;
 its IMPLEMENTED return carries the hop SHA, the red proof, the gates run and any blocker. A
@@ -76,12 +78,12 @@ the [Work Model](./work-model.md); the review block's one-line form is locked in
 
 A reviewed PR sets the source ticket Ready to Merge and the captain returns `done <key>: PR ready`.
 A Project ticket's final Merge Sub-ticket runs when its native blocker clears; the parent stays Ready to Merge.
-The captain directs the merge by one code-writer and a fresh merge review, then marks both
+The captain directs the merge by one implementer and a fresh merge review, then marks both
 Done and returns `done <key>: merged`. A Merge Sub-ticket never waits in Ready to Merge. The landing
 Merge does: the user clicks its reviewed PR as a merge commit.
 
-A FAIL, one or more blockers, returns to Implementing: a fresh author of the change's kind -
-`code-writer`, or `docs-writer` for a documentation change - takes the next fix hop
+A FAIL, one or more blockers, returns to Implementing: an `implementer` takes the next fix hop,
+loading its code or docs resource for the change's kind,
 with the FAIL block's blockers as its contract, amending a scenario only where the block names it. Corrections carry new
 commits and fresh reviews. From either verdict, the captain files each should as its own ticket and
 records each nit as one line on the ticket ([severity](../reference/dydo-glossary.md)). Merge FAIL
@@ -92,8 +94,7 @@ the revert.
 ## Raising a hand
 
 The ladder runs crew → its Ticket Captain → commissioning officers → user. A sub-captain
-raises a hand to the captain above it; a top-level captain reaches an invoked admiral, or the
-user as Project map holder when no admiral is invoked. Agents
+raises a hand to the captain above it; a top-level captain reaches the coordinator (H12). Agents
 settle operational conflicts themselves by precedence, highest first: the user's live instruction, a
 Decision Record, the feature spec (pinned), the ticket contract,
 coding standards, existing code. The user
@@ -101,14 +102,13 @@ is reached only for a conflict with a Decision Record - is it truth, or is it ob
 external state agents cannot coordinate, or for authority the contract cannot supply.
 
 A crew member raises its hand by returning to its Ticket Captain; a comment on the ticket and, when
-the work is blocked, a Question Ticket wired as a blocker are the captain's rungs. The code-writer's
+the work is blocked, a Question Ticket wired as a blocker are the captain's rungs. The implementer's
 one pre-code comment naming lanes or an inexact contract is its scoped exception, not a hand-raise.
 A blocked captain releases: post the resume SHA, push the branch, clean the worktrees it or its crew
 made (lanes, merge checkouts, temp checkouts) with `dydo clean --dry-run <worktree>`, then
 `dydo clean <worktree>`, run from outside that tree, return the parent to Todo and unassign. The
 worktree its thread runs in belongs to T3: leave it. A user takeover does the same; a dead session leaves its
-last recorded hop without a final push. The map holder's next wake - an invoked admiral's, or the
-user's own return to the board when none is invoked - picks up blocker-cleared work.
+last recorded hop without a final push. The coordinator's next wake picks up blocker-cleared work (H5).
 
 ## Where the user is asked
 

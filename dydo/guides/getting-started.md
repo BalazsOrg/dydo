@@ -124,8 +124,8 @@ Done when `dydo check` no longer warns about uncustomized foundation documents.
 
 ## 7. Host configuration
 
-The spawn tree needs three layers below the top-level session - the user's own, or an invoked
-admiral's: ticket-captain, crew, scout.
+The spawn tree needs three layers below the top-level session - the user's own, or a
+coordinator's: ticket-captain, crew, and a scout under research.
 
 - Claude Code: `.claude/settings.json` contains `env.CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH = "3"`.
 - Codex: the project's `.codex/config.toml` contains `[agents]` with `max_depth = 3` and
@@ -149,9 +149,9 @@ touching a status, which only a captain sets.
 
 ## Run work through Linear
 
-The operating model is in [Control Flow](../understand/control-flow.md): an idea goes to a
-co-thinker, a ripe one becomes a Project through `to-project`, the map holder - the user by default,
-or an invoked admiral - reads the Project and acts, captains own tickets, every merge inside a
+The operating model is in the [Work Model](../understand/work-model.md): an idea goes to a
+co-thinker, a ripe one becomes a Project through `to-project`, the Project's coordinator keeps
+captains on its ready tickets (H4, H5), captains own tickets, every merge inside a
 Project is a Merge Ticket, and the user acts at the gates,
 clicking an atomic ticket's reviewed PR into main. The
 [Working-Tree Standard](./working-tree-standard.md) says which branch and worktree each of them works
@@ -163,5 +163,4 @@ in.
 - [Linear Workspace Standard](../reference/linear-workspace-standard.md)
 - [Configuration](../reference/configuration.md)
 - [Customizing Roles](./customizing-roles.md)
-- [Control Flow](../understand/control-flow.md)
 - [Work Model](../understand/work-model.md)

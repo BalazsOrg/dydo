@@ -5,12 +5,11 @@
 Several dydo skills contain adaptations of material from
 [mattpocock/skills](https://github.com/mattpocock/skills), originally pinned at commit
 `6654f6b60cd9d5be8b54c6fafe44346dabeb3b76`. Each adapted file records its source attribution in its own
-header in the canonical `skills/<category>/<name>/` folders (`roles/officers/`, `roles/crew/`, `engineering/`,
+header in the canonical `skills/<category>/<name>/` folders (`engineering/`,
 `productivity/`).
 
 | Upstream skill | Adapted in |
 |---|---|
-| `code-review` | `skills/roles/crew/reviewer/resources/code.md` |
 | `codebase-design` | `skills/engineering/codebase-design/SKILL.md`, `skills/engineering/codebase-design/resources/deepening.md`, `skills/engineering/codebase-design/resources/design-it-twice.md` |
 | `diagnosing-bugs` | `skills/engineering/diagnosing-bugs/SKILL.md` |
 | `domain-modeling` | `skills/engineering/domain-modeling/SKILL.md` |
@@ -19,9 +18,7 @@ header in the canonical `skills/<category>/<name>/` folders (`roles/officers/`, 
 | `handoff` | `skills/productivity/handoff/SKILL.md` |
 | `improve-codebase-architecture` | `skills/engineering/improve-codebase-architecture/SKILL.md`, `skills/engineering/improve-codebase-architecture/resources/html-report.md` |
 | `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
-| `research` | `skills/roles/crew/research/SKILL.md` |
 | `retro` | `skills/productivity/retro/SKILL.md` |
-| `tdd` | `skills/roles/crew/code-writer/SKILL.md`, `skills/roles/crew/code-writer/resources/tests.md`, `skills/roles/crew/reviewer/resources/code.md` |
 | `teach` | `skills/productivity/teach/SKILL.md`, `skills/productivity/teach/resources/mission-format.md`, `skills/productivity/teach/resources/glossary-format.md`, `skills/productivity/teach/resources/learning-record-format.md`, `skills/productivity/teach/resources/resources-format.md` |
 | `to-spec` | `skills/productivity/to-project/SKILL.md` |
 | `to-tickets` | `skills/productivity/to-ticket/SKILL.md` |
@@ -39,7 +36,6 @@ the original baseline; correcting the local glossary path in `design-it-twice.md
 |---|---|
 | `pr` | `skills/engineering/pr/SKILL.md`, `skills/engineering/pr/agents/openai.yaml`, `skills/engineering/pr/CREDITS.md` |
 | `retro` Automated checks and Coding standards lenses | `skills/productivity/retro/SKILL.md` |
-| `tdd` glossary read | `skills/roles/crew/code-writer/SKILL.md` |
 
 The `pr` files above retain the pinned upstream baseline, credits and metadata, with local
 independent-review and glossary-path adaptations in `SKILL.md`; their attribution is recorded here
@@ -145,14 +141,12 @@ SOFTWARE.
 ## tstack
 
 These dydo skills contain adaptations of material from
-[t3dotgg/tstack](https://github.com/t3dotgg/tstack), `skills/full-send` and `skills/babysit-pr`,
+[t3dotgg/tstack](https://github.com/t3dotgg/tstack), `skills/full-send`,
 pinned at the commit each row names. Each adapted file repeats the attribution in its own header.
 
 | Upstream skill | Commit | Adapted in |
 |---|---|---|
 | `full-send`: Proof | `1085050f3baed1ac724caa4a8166145fb2ac88af` | `skills/engineering/maintain-verification-skill/SKILL.md` |
-| `full-send`: Merge gate | `1085050f3baed1ac724caa4a8166145fb2ac88af` | `skills/roles/officers/ticket-captain/SKILL.md` |
-| `babysit-pr`: PR watch | `6efae364201abc9d9f07443e9caa461f42e51090` | `skills/roles/officers/ticket-captain/SKILL.md` |
 
 MIT License
 

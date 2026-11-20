@@ -176,7 +176,7 @@ proves after green that they fail without it. Three claims prove a change, and e
 
 - A **scenario** claims behaviour at the product's boundary, in glossary words, with example tables
   where values vary. It is contract where the ticket calls for Gherkin: the captain decides the set,
-  the code-writer writes and wires it without weakening it, and the acceptance runner runs it.
+  the implementer writes and wires it without weakening it, and the acceptance runner runs it.
 - A **test** claims one seam inside, in the code's words. It comes and goes
   with refactors. Every suite test carries a trap, traced contract or edge job tag under
   [DR 067 T5](https://github.com/BalazsOrg/dydo/blob/f1500384668a1ec011902b4adac782f9ba18b0ea/dydo/project/decisions/067-what-tests-are-for.md#decision).
