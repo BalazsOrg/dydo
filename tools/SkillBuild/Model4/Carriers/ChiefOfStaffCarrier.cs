@@ -30,7 +30,7 @@ public static class ChiefOfStaffCarrier
                 Resources =
                 [
                     new(ChiefOfStaffResource.Muster, "Muster", new Slot(ChiefOfStaffResource.Muster),
-                        new(ChiefOfStaffSlot.MusterRequest, "Request to each coordinator"), new(ChiefOfStaffSlot.MusterPresent, "Present to him"))
+                        new(ChiefOfStaffSlot.MusterRequest, "Request to each coordinator"), new(ChiefOfStaffSlot.MusterList, "List for him"))
                 ]
             },
             new("Keep the night watch", HierarchyMachines.Staff.Slots(StaffState.NightWatch))

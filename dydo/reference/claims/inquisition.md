@@ -196,6 +196,36 @@ Spec: N12 DR 059
 
 > Well-defined means one obvious fix inside one slice, small, touching no contract, DR or public interface; any doubt means no patch, nits are never patched, and the inquisition merges nothing but its own record.
 
+## ProofBranch
+
+`claim:Inquisition.ProofBranch`: Each Break seat proves on its own proof branch, cut from the audit SHA, which never merges (DR 059 ruling 8).
+
+Spec: N12 DR 059, N5, K22
+
+**ticket-captain** (InquisitionRound):
+
+> Brief each Break seat on its own proof branch, `proof/<KEY>-<slice>-<n>`, cut from the audit SHA with the test paths it may touch, `<n>` counting that slice's Break seats; a proof branch never merges.
+
+## ProofPush
+
+`claim:Inquisition.ProofPush`: A Break seat's proof branch is pushed on its return; its red-test SHAs are the reproductions.
+
+Spec: N12 DR 059, K22
+
+**ticket-captain** (InquisitionRound):
+
+> When a Break seat returns, push its proof branch: its red-test SHAs are the findings' reproductions.
+
+## ProofRetention
+
+`claim:Inquisition.ProofRetention`: The captain holding the slices keeps each open finding's reproduction on a pushed ref until its ticket's captain adopts it (DR 059 ruling 8).
+
+Spec: N12 DR 059, K19, K22
+
+**ticket-captain** (InquisitionRound):
+
+> Holding slices, keep each open finding's red-test SHA reachable from a pushed ref apart from the audit branch, its proof branch or its patch branch, linked on its ticket, until that ticket's captain records adopting it; cleanup never deletes those refs.
+
 ## Record
 
 `claim:Inquisition.Record`: The round's record is its last step: an implementer writes it, a fresh reviewer checks it, and it merges into the feature branch (DR 059 ruling 8, N12).

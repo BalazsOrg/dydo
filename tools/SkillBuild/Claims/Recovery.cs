@@ -17,9 +17,10 @@ public static class Recovery
     ])
     { Spec = ["K9", "H2", "H16"] };
 
-    public static readonly Claim FixRounds = new("A fix round saves the verdict's head, resumes the Fix from it, and ends on a clean round or the checkpoint's escalation.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "Save the verdict's head SHA on the Review hop and resume Fix rN from it; end resolved when a round finds no new blocker, or escalated only from the checkpoint, written `escalated: …` on the Review.", new(ScenarioClose.FixRounds, 4002))])
-    { Spec = ["K9", "R8", "R10"] };
+    // Review r2 R2-S1: R9's routes escalate at once, in any round; R10's checkpoint decides only at round 3.
+    public static readonly Claim FixRounds = new("A fix round saves the verdict's head, resumes the Fix from it, and ends on a clean round, or escalated by R9's routes at once or by the round-3 checkpoint.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Save the verdict's head SHA on the Review hop and resume Fix rN from it; end resolved when a round finds no new blocker, or escalated in any round as soon as a blocker is fundamental, a new requirement or needs Balazs, and at round 3 by the checkpoint's `escalated: …` on the Review.", new(ScenarioClose.FixRounds, 4002))])
+    { Spec = ["K9", "R8", "R9", "R10"] };
 
     public static readonly Claim MergeConflict = new("A conflict saves the resolution's commit, resumes the merge from it, and ends merged or escalated.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "Save the resolution's commit SHA on the Merge hop and resume the merge from it; end resolved once the hunks pass and the merge runs green, " + UpToOfficer, new(ScenarioClose.MergeConflict, 4003))])

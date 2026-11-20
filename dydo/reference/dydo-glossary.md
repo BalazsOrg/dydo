@@ -43,9 +43,11 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   DYD-1195 ea16ea28).
 - **Tribunal** - the council's Judge procedure (L18, L23). Its members are two judges from different
   families, who take sealed positions on a neutral case file, then exchange once; the chairing
-  captain is not a member (L18). Judges who agree on a two-way call decide it; otherwise the call is
-  prepared for the user (L18, L20). A decided Question is provisional: acted on, never ratified
-  (L19). The user ratifies only a `proposed` DR, decided overnight (L21).
+  captain is not a member (L18). Judges who agree on a two-way call that is not DR-grade decide it;
+  otherwise the call is prepared for the user (L18, L20). A one-way or DR-grade call is always
+  prepared, except overnight, when both judges agree on a two-way, seriously blocking DR-grade call:
+  that one becomes a `proposed` DR (L18, L21). A decided Question is provisional: acted on, never
+  ratified (L19). The user ratifies only a `proposed` DR (L21).
 - **Frontier** - the open, unblocked, unassigned map tickets: the edge of what a Project knows.
   Linear's own blocking relations and assignment render it; there is no separate navigation object.
 

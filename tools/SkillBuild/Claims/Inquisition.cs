@@ -87,7 +87,22 @@ public static class Inquisition
         [new(Skill.TicketCaptain, "Well-defined means one obvious fix inside one slice, small, touching no contract, DR or public interface; any doubt means no patch, nits are never patched, and the inquisition merges nothing but its own record.", new(TicketCaptainSlot.InquisitionRound, 2923))])
     { Spec = ["N12 DR 059"] };
 
-    public static readonly Claim Record = new("The round's record is its last step: an implementer writes it, a fresh reviewer checks it, and it merges into the feature branch (DR 059 ruling 8, N12).", [Actor.TicketCaptain],
+    // Review r2 R2-S4: the pre-candidate's proof branches and their retention (c916a9ca inquisition.md steps 6, 7
+    // and 10), kept as DR 059 keeps them: "Audit and proof branches never merge, and each open Bug's reproduction
+    // ref is retained as before."
+    public static readonly Claim ProofBranch = new("Each Break seat proves on its own proof branch, cut from the audit SHA, which never merges (DR 059 ruling 8).", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Brief each Break seat on its own proof branch, `proof/<KEY>-<slice>-<n>`, cut from the audit SHA with the test paths it may touch, `<n>` counting that slice's Break seats; a proof branch never merges.", new(TicketCaptainSlot.InquisitionRound, 2924))])
+    { Spec = ["N12 DR 059", "N5", "K22"] };
+
+    public static readonly Claim ProofPush = new("A Break seat's proof branch is pushed on its return; its red-test SHAs are the reproductions.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "When a Break seat returns, push its proof branch: its red-test SHAs are the findings' reproductions.", new(TicketCaptainSlot.InquisitionRound, 2925))])
+    { Spec = ["N12 DR 059", "K22"] };
+
+    public static readonly Claim ProofRetention = new("The captain holding the slices keeps each open finding's reproduction on a pushed ref until its ticket's captain adopts it (DR 059 ruling 8).", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Holding slices, keep each open finding's red-test SHA reachable from a pushed ref apart from the audit branch, its proof branch or its patch branch, linked on its ticket, until that ticket's captain records adopting it; cleanup never deletes those refs.", new(TicketCaptainSlot.InquisitionRound, 2926))])
+    { Spec = ["N12 DR 059", "K19", "K22"] };
+
+    public static readonly Claim Record =new("The round's record is its last step: an implementer writes it, a fresh reviewer checks it, and it merges into the feature branch (DR 059 ruling 8, N12).", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "As the root, deliver the round's one record as its last step, through your ticket's own Implement, Review and Merge hops: an implementer writes it from the pushed register, a fresh reviewer checks it, and it merges into the feature branch.", new(TicketCaptainSlot.InquisitionRecord, 2930))])
     { Spec = ["N12 DR 059", "K31", "N5"] };
 

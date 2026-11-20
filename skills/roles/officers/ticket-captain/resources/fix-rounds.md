@@ -21,4 +21,4 @@ Exits:
 
 ## Save, resume and end
 
-- Save the verdict's head SHA on the Review hop and resume Fix rN from it; end resolved when a round finds no new blocker, or escalated only from the checkpoint, written `escalated: …` on the Review.
+- Save the verdict's head SHA on the Review hop and resume Fix rN from it; end resolved when a round finds no new blocker, or escalated in any round as soon as a blocker is fundamental, a new requirement or needs Balazs, and at round 3 by the checkpoint's `escalated: …` on the Review.

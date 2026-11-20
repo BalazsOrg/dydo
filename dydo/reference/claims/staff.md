@@ -138,16 +138,6 @@ Spec: K11, H7, K22
 
 > Ask each live coordinator for its muster report, with the request below.
 
-## MusterShow
-
-`claim:Staff.MusterShow`: He sees each report, its intent read-back apart from the work, and his corrections go back to its coordinator.
-
-Spec: K11, H7, K22
-
-**chief-of-staff** (Muster):
-
-> Show him each report verbatim in the form below, the intent read-back apart from the work, and send each coordinator his corrections to its read-back.
-
 ## MusterUnblock
 
 `claim:Staff.MusterUnblock`: Operational blockers are resolved while he is present, each fix verified with evidence.
@@ -196,7 +186,17 @@ Spec: K11, K22
 
 **chief-of-staff** (Muster):
 
-> Get each coordinator's confirmation that its next work is runnable; then the muster is ready.
+> Get each coordinator's confirmation that its next work is runnable.
+
+## MusterList
+
+`claim:Staff.MusterList`: He gets each coordinator's thread link and its readiness, never a report's content.
+
+Spec: K11, H7, H6
+
+**chief-of-staff** (Muster):
+
+> List for him each coordinator's thread link and its readiness in the form below, never a report's content; then the muster is ready.
 
 ## MusterRequest
 
@@ -216,19 +216,14 @@ Spec: K11, K22, H5
 
 ## MusterForm
 
-`claim:Staff.MusterForm`: The form each Project's report is shown to him in.
+`claim:Staff.MusterForm`: The line each Project gets on his muster list: its coordinator's thread link and readiness.
 
-Spec: K11, K22
+Spec: K11, H7
 
-**chief-of-staff** (MusterPresent):
+**chief-of-staff** (MusterList):
 
 > ```text
-> <Project> — <coordinator thread link>
-> Intent, as the coordinator reads it: <verbatim read-back>
-> Work: <next tickets, the first runnable one>
-> Stop line: <the plan's, or none>
-> Unblock now: <obstacle; fix; evidence it holds>
-> Permissions: <action; safe exercise; result, or the gap>
+> <Project> — <coordinator thread link> — <ready, or not ready>
 > ```
 
 ## SurveyRead

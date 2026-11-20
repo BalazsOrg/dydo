@@ -29,6 +29,9 @@ Arrivals:
 - Pass a finding that needs a judgement call up as a need, like any other.
 - A blocker or should a Break seat proved red, with a well-defined fix, gets the fix prepared mid-round: brief an implementer for a Bug on its own branch off the audit SHA, red test first, and at the verdict attach the branch and its SHA to the finding's ticket, whose captain verifies and reviews it once.
 - Well-defined means one obvious fix inside one slice, small, touching no contract, DR or public interface; any doubt means no patch, nits are never patched, and the inquisition merges nothing but its own record.
+- Brief each Break seat on its own proof branch, `proof/<KEY>-<slice>-<n>`, cut from the audit SHA with the test paths it may touch, `<n>` counting that slice's Break seats; a proof branch never merges.
+- When a Break seat returns, push its proof branch: its red-test SHAs are the findings' reproductions.
+- Holding slices, keep each open finding's red-test SHA reachable from a pushed ref apart from the audit branch, its proof branch or its patch branch, linked on its ticket, until that ticket's captain records adopting it; cleanup never deletes those refs.
 
 ## The round's verdict, held by its root inquisition captain
 

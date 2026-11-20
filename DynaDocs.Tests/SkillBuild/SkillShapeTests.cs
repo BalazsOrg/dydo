@@ -50,13 +50,13 @@ public class SkillShapeTests
 
         var violations = SkillShape.RoleSpineViolations(tree, RealScenarios);
 
-        Assert.Contains($"{RealCaptain}: no {Wrong} to link its scenarios (K9)", violations);
+        Assert.Contains($"{RealCaptain}: no {Wrong} (K9)", violations);
         Assert.Contains($"{RealCaptain}: links the scenario skills/roles/officers/ticket-captain/resources/fix-rounds.md outside {Wrong} (K9)", violations);
     }
 
     // Codex's probe (DYD-1294, review r1 B7): every role spine cut down to one job sentence, its resources left in place.
     [Fact]
-    [Trait("Job", "trap: K9 B7 every real role spine cut to its job paragraph fails: no phase, and no When things go wrong where it has scenarios")]
+    [Trait("Job", "trap: K9 B7 every real role spine cut to its job paragraph fails: no phase, and no When things go wrong")]
     public void EveryRealSpine_CutToItsJobParagraph_Fails()
     {
         var tree = CommittedTree.BuiltText().ToDictionary(StringComparer.Ordinal);
@@ -65,10 +65,22 @@ public class SkillShapeTests
 
         var violations = SkillShape.RoleSpineViolations(tree, RealScenarios);
 
-        var withScenarios = spines.Where(spine => RealScenarios.Any(path => path.StartsWith(spine[..^"SKILL.md".Length], StringComparison.Ordinal))).ToArray();
-        Assert.True(withScenarios.Length >= 5, string.Join(", ", withScenarios));
         Assert.All(spines, spine => Assert.Contains($"{spine}: no numbered job phase (K9)", violations));
-        Assert.All(withScenarios, spine => Assert.Contains($"{spine}: no {Wrong} to link its scenarios (K9)", violations));
+        Assert.All(spines, spine => Assert.Contains($"{spine}: no {Wrong} (K9)", violations));
+    }
+
+    // Review r2 B7: K9 requires the section on every role spine; research and scout declare no scenario.
+    [Theory]
+    [Trait("Job", "trap: K9 B7 the real research or scout spine without its When things go wrong section fails")]
+    [InlineData("skills/roles/crew/research/SKILL.md")]
+    [InlineData("skills/roles/crew/scout/SKILL.md")]
+    public void RealSpineWithoutScenarios_WithoutItsWhenThingsGoWrongSection_Fails(string spine)
+    {
+        var tree = CommittedTree.BuiltText().ToDictionary(StringComparer.Ordinal);
+        Assert.DoesNotContain(RealScenarios, path => path.StartsWith(spine[..^"SKILL.md".Length], StringComparison.Ordinal));
+        tree[spine] = tree[spine][..tree[spine].IndexOf(SkillShape.WhenThingsGoWrong, StringComparison.Ordinal)];
+
+        Assert.Equal(new[] { $"{spine}: no {Wrong} (K9)" }, SkillShape.RoleSpineViolations(tree, RealScenarios));
     }
 
     [Fact]
@@ -77,20 +89,27 @@ public class SkillShapeTests
         Assert.Empty(SkillShape.RoleSpineViolations(Tree((RoleSpine, Role()), (RoleScenario, "# A\n")), Scenario));
 
     [Fact]
-    [Trait("Job", "edge: K9 a role without scenarios needs no When things go wrong")]
-    public void RoleSpine_WithoutScenariosOrWhenThingsGoWrong_Passes() =>
-        Assert.Empty(SkillShape.RoleSpineViolations(Tree((RoleSpine, Role(wrong: ""))), new HashSet<string>()));
+    [Trait("Job", "contract: K9 B7 a role without scenarios and without When things go wrong fails")]
+    public void RoleSpine_WithoutScenariosOrWhenThingsGoWrong_Fails() =>
+        Assert.Equal(new[] { $"{RoleSpine}: no {Wrong} (K9)" },
+            SkillShape.RoleSpineViolations(Tree((RoleSpine, Role(wrong: ""))), new HashSet<string>()));
 
     [Fact]
-    [Trait("Job", "contract: K9 B7 a role spine of only its job paragraph, with no numbered phase, fails")]
+    [Trait("Job", "edge: K9 a role without scenarios passes with a When things go wrong of plain lines")]
+    public void RoleSpine_WithoutScenariosWithWhenThingsGoWrong_Passes() =>
+        Assert.Empty(SkillShape.RoleSpineViolations(
+            Tree((RoleSpine, Role(wrong: SkillShape.WhenThingsGoWrong + "\n\n- Hand a question up to your dispatcher.\n"))), new HashSet<string>()));
+
+    [Fact]
+    [Trait("Job", "contract: K9 B7 a role spine of only its job paragraph fails: no phase, no When things go wrong")]
     public void RoleSpine_OfOnlyAJobParagraph_Fails() =>
-        Assert.Equal(new[] { $"{RoleSpine}: no numbered job phase (K9)" },
+        Assert.Equal(new[] { $"{RoleSpine}: no numbered job phase (K9)", $"{RoleSpine}: no {Wrong} (K9)" },
             SkillShape.RoleSpineViolations(Tree((RoleSpine, Frontmatter + DynaDocs.SkillBuild.BuiltHeader.Markdown + "\n\n# Demo\n\nYou pool and verify.\n")), new HashSet<string>()));
 
     [Fact]
     [Trait("Job", "contract: K9 B7 a role with a scenario and no When things go wrong fails")]
     public void RoleSpine_WithAScenarioButNoWhenThingsGoWrong_Fails() =>
-        Assert.Equal(new[] { $"{RoleSpine}: no {Wrong} to link its scenarios (K9)" },
+        Assert.Equal(new[] { $"{RoleSpine}: no {Wrong} (K9)" },
             SkillShape.RoleSpineViolations(Tree((RoleSpine, Role(wrong: "")), (RoleScenario, "# A\n")), Scenario));
 
     [Fact]

@@ -75,8 +75,8 @@ internal static partial class SkillShape
     /// <summary>
     /// K9's role spine, for every <c>SKILL.md</c> under <c>skills/roles/</c>: after its title, one opening
     /// job paragraph, then job phases numbered from 1 without a gap, at least one, each one numbered
-    /// checklist followed by its resource links, then at most one "When things go wrong", last, which a
-    /// role with <paramref name="scenarios"/> must have, linking each of them there and nowhere else;
+    /// checklist followed by its resource links, then exactly one "When things go wrong", last, whatever
+    /// its <paramref name="scenarios"/>, linking each of them there and nowhere else (review r2 B7);
     /// every link it makes resolves in the tree; and every role resource is under 100 lines.
     /// </summary>
     /// <param name="scenarios">Each scenario resource's path as the model declares it (<see cref="Scenarios"/>): the text alone cannot tell a scenario from a phase's resource.</param>
@@ -156,15 +156,15 @@ internal static partial class SkillShape
     private static bool IsChecklistLine(string line) =>
         line.Length == 0 || line == "Resources:" || ChecklistItem().IsMatch(line) || LinkItem().IsMatch(line);
 
-    // K9: "a 'When things go wrong' section that links one resource per scenario", and only there.
+    // K9: every spine has "a 'When things go wrong' section that links one resource per scenario", and links them only there.
     private static IEnumerable<string> ScenarioLinks(string spine, List<(string Heading, string[] Lines)> sections, string[] scenarios)
     {
         var linked = sections.Select(section => (section.Heading, Targets: Links(spine, string.Join('\n', section.Lines)))).ToArray();
         foreach (var path in scenarios.Where(path => linked.Any(section => section.Heading != WhenThingsGoWrong && section.Targets.Contains(path))))
             yield return $"{spine}: links the scenario {path} outside \"{WhenThingsGoWrong}\" (K9)";
         var wrong = linked.Where(section => section.Heading == WhenThingsGoWrong).SelectMany(section => section.Targets).ToHashSet(StringComparer.Ordinal);
-        if (scenarios.Length > 0 && !linked.Any(section => section.Heading == WhenThingsGoWrong))
-            yield return $"{spine}: no \"{WhenThingsGoWrong}\" to link its scenarios (K9)";
+        if (!linked.Any(section => section.Heading == WhenThingsGoWrong))
+            yield return $"{spine}: no \"{WhenThingsGoWrong}\" (K9)";
         else
             foreach (var path in scenarios.Where(path => !wrong.Contains(path)))
                 yield return $"{spine}: the scenario {path} is not linked from \"{WhenThingsGoWrong}\" (K9)";

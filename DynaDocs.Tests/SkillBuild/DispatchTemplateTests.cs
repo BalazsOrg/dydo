@@ -77,6 +77,26 @@ public class DispatchTemplateTests
         Assert.Equal(2, root.Files().Count);
     }
 
+    // Review r2 S7: `Skills: **/reviewr**` built through the public entry point; each Markdown emphasis form is checked.
+    [Theory]
+    [Trait("Job", "contract: K14 S7 a misnamed skill inside bold, italic or code fails the run through the public entry point, which writes nothing")]
+    [InlineData("reviewr")]
+    [InlineData("scoutt")]
+    [InlineData("researh")]
+    [InlineData("implementr")]
+    [InlineData("codewriter")]
+    [InlineData("inquisitr")]
+    public void EmphasisedProseSkillUnderNoSkillFolder_FailsTheRun(string name)
+    {
+        using var root = new TempRoot();
+
+        var (exit, _, error) = root.Run(Prose(typeof(DemoEmphasisedSkills)));
+
+        Assert.Equal(1, exit);
+        Assert.Matches($@"K14: .*skills/roles/crew/demo/SKILL\.md:[0-9]+ /{name}(;|\r?$)", error);
+        Assert.Empty(root.Files());
+    }
+
     [Fact]
     [Trait("Job", "edge: K14 S7 prose naming a built or a hand-written skill with a slash lets the run go on; paths, files, URLs and and/or name none")]
     public void ProseSkillsHandWrittenOrBuilt_TheRunGoesOn()

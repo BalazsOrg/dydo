@@ -22,13 +22,13 @@ Spec: K9, H2, H16
 
 ## FixRounds
 
-`claim:Recovery.FixRounds`: A fix round saves the verdict's head, resumes the Fix from it, and ends on a clean round or the checkpoint's escalation.
+`claim:Recovery.FixRounds`: A fix round saves the verdict's head, resumes the Fix from it, and ends on a clean round, or escalated by R9's routes at once or by the round-3 checkpoint.
 
-Spec: K9, R8, R10
+Spec: K9, R8, R9, R10
 
 **ticket-captain** (FixRounds):
 
-> Save the verdict's head SHA on the Review hop and resume Fix rN from it; end resolved when a round finds no new blocker, or escalated only from the checkpoint, written `escalated: …` on the Review.
+> Save the verdict's head SHA on the Review hop and resume Fix rN from it; end resolved when a round finds no new blocker, or escalated in any round as soon as a blocker is fundamental, a new requirement or needs Balazs, and at round 3 by the checkpoint's `escalated: …` on the Review.
 
 ## MergeConflict
 

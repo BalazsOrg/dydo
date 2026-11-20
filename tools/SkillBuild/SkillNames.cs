@@ -11,9 +11,10 @@ namespace DynaDocs.SkillBuild;
 /// </summary>
 internal static partial class SkillNames
 {
-    // A skill named with a slash: after a line's start, a space, "(", a backtick or a quote, a kebab-case
-    // name that no path segment, file extension or plugin name continues.
-    [GeneratedRegex(@"(?<=^|[\s(`""'])/(?<name>[a-z][a-z0-9]*(?:-[a-z0-9]+)*)(?![\w/-]|[.:]\w)")]
+    // A skill named with a slash: after a line's start, a space, "(", a backtick or a quote, then any run of
+    // bold or italic markers (review r2 S7), a kebab-case name that no path segment, file extension, plugin
+    // name or snake_case word continues; a closing `_` run ends it like `*`.
+    [GeneratedRegex(@"(?<=(?:^|[\s(`""'])[*_]*)/(?<name>[a-z][a-z0-9]*(?:-[a-z0-9]+)*)(?![^\W_]|[/-]|_+(?:[^\W_]|[/-])|[.:]\w)")]
     private static partial Regex Named();
 
     public static void Check(Model model, BuiltTree tree, string root)

@@ -56,14 +56,9 @@ public static class Staff
         ```
         """;
 
-    private const string Present = """
+    private const string Listed = """
         ```text
-        <Project> — <coordinator thread link>
-        Intent, as the coordinator reads it: <verbatim read-back>
-        Work: <next tickets, the first runnable one>
-        Stop line: <the plan's, or none>
-        Unblock now: <obstacle; fix; evidence it holds>
-        Permissions: <action; safe exercise; result, or the gap>
+        <Project> — <coordinator thread link> — <ready, or not ready>
         ```
         """;
 
@@ -95,10 +90,6 @@ public static class Staff
         [new(Skill.ChiefOfStaff, "Ask each live coordinator for its muster report, with the request below.", new(ChiefOfStaffResource.Muster, 2002))])
     { Spec = ["K11", "H7", "K22"] };
 
-    public static readonly Claim MusterShow = new("He sees each report, its intent read-back apart from the work, and his corrections go back to its coordinator.", [Actor.ChiefOfStaff, Actor.Balazs],
-        [new(Skill.ChiefOfStaff, "Show him each report verbatim in the form below, the intent read-back apart from the work, and send each coordinator his corrections to its read-back.", new(ChiefOfStaffResource.Muster, 2003))])
-    { Spec = ["K11", "H7", "K22"] };
-
     public static readonly Claim MusterUnblock = new("Operational blockers are resolved while he is present, each fix verified with evidence.", [Actor.ChiefOfStaff, Actor.Balazs],
         [new(Skill.ChiefOfStaff, "Resolve each operational blocker while he is present, verifying each fix with evidence.", new(ChiefOfStaffResource.Muster, 2004))])
     { Spec = ["K11", "K22"] };
@@ -116,16 +107,21 @@ public static class Staff
     { Spec = ["K11"] };
 
     public static readonly Claim MusterRunnable = new("Each coordinator confirms its next work is runnable before the night starts.", [Actor.ChiefOfStaff, Actor.Coordinator],
-        [new(Skill.ChiefOfStaff, "Get each coordinator's confirmation that its next work is runnable; then the muster is ready.", new(ChiefOfStaffResource.Muster, 2008))])
+        [new(Skill.ChiefOfStaff, "Get each coordinator's confirmation that its next work is runnable.", new(ChiefOfStaffResource.Muster, 2008))])
     { Spec = ["K11", "K22"] };
+
+    // Review r2 R2-B1: H7's "never relays content" holds at muster too, and H6 spares him the coordinator threads.
+    public static readonly Claim MusterList = new("He gets each coordinator's thread link and its readiness, never a report's content.", [Actor.ChiefOfStaff, Actor.Balazs],
+        [new(Skill.ChiefOfStaff, "List for him each coordinator's thread link and its readiness in the form below, never a report's content; then the muster is ready.", new(ChiefOfStaffResource.Muster, 2009))])
+    { Spec = ["K11", "H7", "H6"] };
 
     public static readonly Claim MusterRequest = new("The muster request a coordinator answers.", [Actor.ChiefOfStaff],
         [new(Skill.ChiefOfStaff, Request, new(ChiefOfStaffSlot.MusterRequest, 2010))])
     { Spec = ["K11", "K22", "H5"] };
 
-    public static readonly Claim MusterForm = new("The form each Project's report is shown to him in.", [Actor.ChiefOfStaff],
-        [new(Skill.ChiefOfStaff, Present, new(ChiefOfStaffSlot.MusterPresent, 2011))])
-    { Spec = ["K11", "K22"] };
+    public static readonly Claim MusterForm = new("The line each Project gets on his muster list: its coordinator's thread link and readiness.", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, Listed, new(ChiefOfStaffSlot.MusterList, 2011))])
+    { Spec = ["K11", "H7"] };
 
     public static readonly Claim SurveyRead = new("Each watch tick reads the board across the Projects against the last observation, keeping no shadow board.", [Actor.ChiefOfStaff],
         [new(Skill.ChiefOfStaff, "Each watch tick, read `dydo survey board` across the Projects and compare it with your last observation; keep no shadow board.", new(ChiefOfStaffResource.NightSurvey, 2030))])
