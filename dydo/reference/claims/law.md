@@ -12,11 +12,7 @@ type: reference
 
 Spec: L7, L11
 
-Transition in How the law grows (`claims/statechart/law/Law.tla`): Evidence → Candidate, "his answer departs from his precedent or his law, or other evidence arrives".
-
-**coordinator** (Evidence, exit):
-
-> Treat an answer of his that departs from his precedent or his law as an amendment candidate, never noise.
+Transition in How the law grows (`claims/statechart/law/Law.tla`): Evidence → Candidate, "his answer departs from his precedent or his law, or other evidence arrives". A system transition: no skill carries it.
 
 ## Mechanical
 
@@ -24,11 +20,7 @@ Transition in How the law grows (`claims/statechart/law/Law.tla`): Evidence → 
 
 Spec: L7, L13
 
-Transition in How the law grows (`claims/statechart/law/Law.tla`): Candidate → Mechanical, "no reasonable person would choose otherwise".
-
-**coordinator** (Candidate, exit):
-
-> If no reasonable person could choose otherwise, make it a test, lint or gate; those are the agents'.
+Transition in How the law grows (`claims/statechart/law/Law.tla`): Candidate → Mechanical, "no reasonable person would choose otherwise". A system transition: no skill carries it.
 
 ## Propose
 
@@ -36,11 +28,7 @@ Transition in How the law grows (`claims/statechart/law/Law.tla`): Candidate →
 
 Spec: L7, L13
 
-Transition in How the law grows (`claims/statechart/law/Law.tla`): Candidate → Proposed, "a reasonable person could choose otherwise and still be right".
-
-**coordinator** (Candidate, exit):
-
-> If a reasonable person could choose otherwise and still be right, propose a principle; batch proposals per Project into a Milestone walkthrough or one envoy bundle.
+Transition in How the law grows (`claims/statechart/law/Law.tla`): Candidate → Proposed, "a reasonable person could choose otherwise and still be right". A system transition: no skill carries it.
 
 ## Enact
 
@@ -64,11 +52,7 @@ Transition in How the law grows (`claims/statechart/law/Law.tla`): Enacted → R
 
 Spec: L9, L8
 
-Transition in How the law grows (`claims/statechart/law/Law.tla`): Evidence → CaseStudy, "a call looks precedential".
-
-**coordinator** (Evidence, exit):
-
-> When a call looks precedential, prepare a case study in git under `cases/` linking its Linear origin, for his approval.
+Transition in How the law grows (`claims/statechart/law/Law.tla`): Evidence → CaseStudy, "a call looks precedential". A system transition: no skill carries it.
 
 ## Approve
 

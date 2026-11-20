@@ -4,4 +4,4 @@
 
 Skills: /scout
 
-- The question, or the spec for a scout pass · model and effort · return to.
+- The question · the one source family to search · model and effort · return to.

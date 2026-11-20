@@ -26,10 +26,6 @@ Spec: K14, R3, R6
 
 > Ticket and contract · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
 
-**coordinator** (ReviewerBrief):
-
-> Ticket and contract · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
-
 ## ScoutBrief
 
 `claim:Brief.ScoutBrief`: The scout dispatch template's slots.
@@ -40,9 +36,9 @@ Spec: K14, R4
 
 > The question, or the spec for a scout pass · model and effort · return to.
 
-**coordinator** (ScoutBrief):
+**research** (ScoutBrief):
 
-> The question, or the spec for a scout pass · model and effort · return to.
+> The question · the one source family to search · model and effort · return to.
 
 ## CaptainBrief
 
@@ -64,10 +60,6 @@ Spec: K14, H23
 
 Spec: R6
 
-**coordinator** (Dispatching):
-
-> Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
-
 **ticket-captain** (Dispatching):
 
 > Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
@@ -78,10 +70,6 @@ Spec: R6
 
 Spec: R3
 
-**coordinator** (Dispatching):
-
-> Name the governing spec in each reviewer's brief, or say there is none.
-
 **ticket-captain** (Dispatching):
 
 > Name the governing spec in each reviewer's brief, or say there is none.
@@ -91,10 +79,6 @@ Spec: R3
 `claim:Brief.ScoutPass`: No review loop on a plan, spec or contract; a spec gets at most one scout pass.
 
 Spec: R4
-
-**coordinator** (Dispatching):
-
-> A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
 
 **ticket-captain** (Dispatching):
 

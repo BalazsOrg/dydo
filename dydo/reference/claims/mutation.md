@@ -56,7 +56,7 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 **coordinator** (Survivors, exit):
 
-> Cut each landing survivor into a fix ticket for a captain.
+> Open a fix ticket for each landing survivor and put a captain on it.
 
 ## Fix
 
@@ -68,7 +68,7 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 **implementer** (Ticketed, exit):
 
-> Fix a surviving mutant.
+> Fix a surviving mutant: sharpen the test that missed it, or delete the code it shows nothing needs.
 
 ## ClaimEquivalent
 

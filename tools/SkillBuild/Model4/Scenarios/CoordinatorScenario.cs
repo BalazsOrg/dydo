@@ -4,8 +4,8 @@ namespace DynaDocs.SkillBuild;
 public enum CoordinatorScenario
 {
     ReCut,
-    Liveness,
     Replanning,
+    RejectedFiller,
     ForcedResync,
     Survivors
 }

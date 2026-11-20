@@ -100,9 +100,7 @@
       "guard": null,
       "effect": null,
       "fair": false,
-      "skills": [
-        "coordinator"
-      ]
+      "skills": []
     },
     {
       "claim": "claim:Law.Enact",
@@ -135,9 +133,7 @@
       "guard": null,
       "effect": null,
       "fair": false,
-      "skills": [
-        "coordinator"
-      ]
+      "skills": []
     },
     {
       "claim": "claim:Law.Precedential",
@@ -151,9 +147,7 @@
       "guard": null,
       "effect": null,
       "fair": false,
-      "skills": [
-        "coordinator"
-      ]
+      "skills": []
     },
     {
       "claim": "claim:Law.Propose",
@@ -167,9 +161,7 @@
       "guard": null,
       "effect": null,
       "fair": false,
-      "skills": [
-        "coordinator"
-      ]
+      "skills": []
     },
     {
       "claim": "claim:Law.Retire",

@@ -3,20 +3,18 @@ namespace DynaDocs.SkillBuild;
 /// <summary>A need for Balazs (M10): homework first, decided where it can be, up the chain, and out by one envoy at a time; the envoy brief's slots.</summary>
 public static class Envoy
 {
-    public static readonly Claim Take = new("The officer above takes a need for Balazs and does the homework first.", [Actor.TicketCaptain, Actor.Coordinator],
+    public static readonly Claim Take = new("The officer above takes a need for Balazs and does the homework first.", [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "A need for Balazs from below: do the homework first in docs, code, Linear, DRs and the spec.", new(EnvoyState.Homework, 901, MoveKind.Arrival)),
-        new(Skill.Coordinator, "A need for Balazs, yours or passed up to you: do the homework first in docs, code, Linear, DRs and the spec.", new(EnvoyState.Homework, 901, MoveKind.Arrival))
+        new(Skill.TicketCaptain, "A need for Balazs from below: do the homework first in docs, code, Linear, DRs and the spec.", new(EnvoyState.Homework, 901, MoveKind.Arrival))
     ])
     {
         Spec = ["H16"],
         Transition = new(EnvoyState.Need, EnvoyState.Homework, "the officer above takes the need") { Effect = "level' \\in {\"captain\", \"coordinator\"}" }
     };
 
-    public static readonly Claim Decide = new("An obvious, reversible call, or one the homework or a DR settles, is decided by the officer.", [Actor.TicketCaptain, Actor.Coordinator],
+    public static readonly Claim Decide = new("An obvious, reversible call, or one the homework or a DR settles, is decided by the officer.", [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "Decide it yourself when the homework answers it, a DR clearly settles it, or the call is obvious and reversible.", new(EnvoyState.Homework, 902, MoveKind.Exit)),
-        new(Skill.Coordinator, "Decide it yourself when the homework answers it or the call is obvious and reversible.", new(EnvoyState.Homework, 902, MoveKind.Exit))
+        new(Skill.TicketCaptain, "Decide it yourself when the homework answers it, a DR clearly settles it, or the call is obvious and reversible.", new(EnvoyState.Homework, 902, MoveKind.Exit))
     ])
     { Spec = ["H16", "L18"], Transition = new(EnvoyState.Homework, EnvoyState.Decided, "the homework answers it, or the call is obvious and reversible") };
 
@@ -27,26 +25,26 @@ public static class Envoy
     public static readonly Claim NextLevel = new("The officer above takes the need passed up.", [Actor.Coordinator], [])
     { Spec = ["H12"], Transition = new(EnvoyState.PassedUp, EnvoyState.Homework, "the officer above takes it") { Effect = "level' = \"coordinator\"" } };
 
-    public static readonly Claim InThread = new("When he is already in an officer's thread, it may ask one line there with the host question tool.", [Actor.TicketCaptain, Actor.Coordinator],
+    public static readonly Claim InThread = new("When he is already in an officer's thread, it may ask one line there with the host question tool.", [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "When he is already in your thread, ask the one line there with the host question tool.", new(EnvoyState.Homework, 905, MoveKind.Exit)),
-        new(Skill.Coordinator, "When he is already in your thread, ask the one line there with the host question tool.", new(EnvoyState.Homework, 905, MoveKind.Exit))
+        new(Skill.TicketCaptain, "When he is already in your thread, ask the one line there with the host question tool.", new(EnvoyState.Homework, 905, MoveKind.Exit))
     ])
     { Spec = ["H22", "H6"], Transition = new(EnvoyState.Homework, EnvoyState.AskedInThread, "he is already in this officer's thread") };
 
-    public static readonly Claim Hard = new("Hard calls go to the council: the tribunal.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Send a hard call, one with competing answers each good through some lens, to the tribunal.", new(EnvoyState.Homework, 906, MoveKind.Exit))])
+    // DYD-1285 took the coordinator's line off: judging hardness is the Question captain's (DYD-1195 87c1e2e6); this move has no carrier yet.
+    public static readonly Claim Hard = new("Hard calls go to the council: the tribunal.", [], [])
     { Spec = ["H5", "L18"], Transition = new(EnvoyState.Homework, EnvoyState.ToTribunal, "a hard call: competing answers, each good through some lens") { Guard = "level = \"coordinator\"" } };
 
     public static readonly Claim Open = new("What only he can settle becomes an envoy job's ticket; a Question blocks only what waits on it.", [Actor.Coordinator],
     [
-        new(Skill.Coordinator, "For what only he can settle, open a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket; a Question blocks only what waits on it.", new(EnvoyState.Homework, 907, MoveKind.Exit)),
+        new(Skill.Coordinator, "A need for him arrives on your HITL queue as its own HITL ticket, a `his-call` Question, a Grilling, Walkthrough or Wayfinding, or an Enablement for what only he can do, a token or an authorisation; each carries the blocking relations of the work that waits on it.",
+            new(EnvoyState.Queued, 907, MoveKind.Arrival), () => [Enablement!]),
         new(Skill.LinearWorkspaceStandard, "A need for Balazs becomes a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket; a Question blocks only what waits on it.", new(Section.LinearTickets, 9))
     ])
     { Spec = ["H15", "H17", "S10"], Transition = new(EnvoyState.Homework, EnvoyState.Queued, "only he can settle it") { Guard = "level = \"coordinator\"" } };
 
     public static readonly Claim Send = new("One active envoy per coordinator; the next goes once the last reported and he closed its thread.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Dispatch the next envoy only once the last has reported and he has closed its thread.", new(EnvoyState.Queued, 908, MoveKind.Exit))])
+        [new(Skill.Coordinator, "Send the next envoy only once the last has reported and he has closed its thread.", new(EnvoyState.Queued, 908, MoveKind.Exit))])
     {
         Spec = ["H18", "H19", "H23"],
         Transition = new(EnvoyState.Queued, EnvoyState.Active, "the last envoy reported and he closed its thread") { Guard = "envoys = 0", Effect = "envoys' = 1" }
@@ -59,31 +57,24 @@ public static class Envoy
     public static readonly Claim Close = new("After a shared understanding he closes the envoy's thread.", [Actor.Balazs], [])
     { Spec = ["H19", "H18"], Transition = new(EnvoyState.Reported, EnvoyState.Closed, "he closes the envoy's thread") { Effect = "envoys' = 0" } };
 
-    public static readonly Claim MovedOn = new("When he has plainly moved on without closing the thread, the next envoy may go at the coordinator's discretion.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "When he has plainly moved on without closing its thread, use your discretion on sending the next envoy.", new(EnvoyState.Reported, 910, MoveKind.Exit))])
-    {
-        Spec = ["H18"],
-        Transition = new(EnvoyState.Reported, EnvoyState.MovedOn, "he has plainly moved on, the thread still open: the next envoy may go, at the coordinator's discretion") { Effect = "envoys' = 0" }
-    };
-
-    public static readonly Claim Enablement =new("What only he can do becomes an Enablement.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "What only he can do, a token or an authorisation, becomes an Enablement ticket.", new(EnvoyState.Homework, 911, MoveKind.Nominal))])
+    // The coordinator states this in Open's combined line.
+    public static readonly Claim Enablement = new("What only he can do becomes an Enablement.", [Actor.Coordinator], [])
     { Spec = ["H17"] };
 
     public static readonly Claim OwnEnvoy = new("An escalation that needs him goes from the coordinator through its own envoy, never through the chief of staff.",
         [Actor.Coordinator, Actor.ChiefOfStaff],
     [
-        new(Skill.Coordinator, "An escalation that needs him goes out through your own envoy, never through the chief of staff.", new(EnvoyState.Homework, 912, MoveKind.Nominal))
+        new(Skill.Coordinator, "Everything that needs him goes out through your own envoy, never through the chief of staff.", new(EnvoyState.Active, 915, MoveKind.Nominal))
     ])
     { Spec = ["H12"] };
 
-    public static readonly Claim Bundle = new("The queue behind the active envoy is triaged at the coordinator's discretion, bundled per origin.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Triage the queue behind the active envoy at your discretion, bundling needs from one origin into one envoy.", new(EnvoyState.Queued, 913, MoveKind.Nominal))])
-    { Spec = ["H18"] };
+    public static readonly Claim Bundle = new("Every waiting need from one origin goes in one wrapper ticket the coordinator opens, which takes the members' place in the queue (DYD-1195 893e1f5b).", [Actor.Coordinator],
+        [new(Skill.Coordinator, "Bundle every waiting need from one origin, the ticket whose captain passed them up: open a wrapper ticket, Type Question at stage `his-call` and Mode HITL, parent its member Questions and Enablements under it, and let it take their place in the queue; L13's proposals ride in a wrapper whose origin is the Project.", new(EnvoyState.Queued, 913, MoveKind.Nominal))])
+    { Spec = ["H18", "L13"] };
 
-    public static readonly Claim Template = new("Each envoy is briefed from the envoy brief and loads its job's skill.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Brief each envoy from [the envoy brief](resources/envoy-brief.md), with its job's skill from the table there.", new(EnvoyState.Active, 914, MoveKind.Nominal))])
-    { Spec = ["H19", "H23"] };
+    public static readonly Claim Template = new("An envoy is a fresh ticket captain dispatched onto the queued ticket itself, loading every job skill it needs (DYD-1082 1b6b6a5d Q17).", [Actor.Coordinator],
+        [new(Skill.Coordinator, "Dispatch each envoy onto the ticket at the head of the queue, opening no other: a fresh ticket captain from the ticket-captain brief, naming every job skill from [the envoy brief](resources/envoy-brief.md)'s table that its ticket or a wrapper's members need.", new(EnvoyState.Active, 914, MoveKind.Nominal))])
+    { Spec = ["H15", "H16", "H18", "H23", "K14"] };
 
     public static readonly Claim SlotTicket = Slot(1, "The ticket, and why it needs him.");
     public static readonly Claim SlotSettled = Slot(2, "What's settled.");
@@ -101,7 +92,7 @@ public static class Envoy
     [
         new(Skill.Coordinator, "Name what each DR says whenever you cite one to him, never only its number.", new(Section.EnvoySession, 923)),
         new(Skill.TicketCaptain, "Name what each DR says whenever you cite one to him, never only its number.", new(EnvoyState.Homework, 923, MoveKind.Nominal)),
-        new(Skill.ChiefOfStaff, "Name what each DR says whenever you cite one to him, never only its number.", new(StaffState.Day, 923, MoveKind.Nominal))
+        new(Skill.ChiefOfStaff, "Name what each DR says whenever you cite one to him, never only its number.", new(StaffState.Day, 1011, MoveKind.Nominal))
     ])
     { Spec = ["H24"] };
 

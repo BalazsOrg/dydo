@@ -3,10 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>A step's hops, by Type label (M4): one ticket, or a chain of typed hop sub-tickets, and its Merge hop's kind.</summary>
 public static class Hops
 {
-    public static readonly Claim Single = new("A leaf lane or a batched should is one ticket, with no hops.", [Actor.TicketCaptain, Actor.Coordinator],
+    public static readonly Claim Single = new("A leaf lane or a batched should is one ticket, with no hops.", [Actor.TicketCaptain],
     [
         new(Skill.TicketCaptain, "A leaf lane or a batched should stays one ticket, with no hops.", new(HopsState.Cut, 401, MoveKind.Exit)),
-        new(Skill.Coordinator, "A leaf lane or a batched should stays one ticket, with no hops.", new(HopsState.Cut, 401, MoveKind.Exit)),
         new(Skill.LinearWorkspaceStandard, "A leaf lane or a batched should is one ticket, with no hops.", new(Section.LinearTickets, 4))
     ])
     { Spec = ["S4"], Transition = new(HopsState.Cut, HopsState.OneTicket, "the step has no review loop of its own") };

@@ -138,7 +138,6 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "coordinator",
         "ticket-captain"
       ]
     },
@@ -154,9 +153,7 @@
       "guard": "level = \"coordinator\"",
       "effect": null,
       "fair": false,
-      "skills": [
-        "coordinator"
-      ]
+      "skills": []
     },
     {
       "claim": "claim:Envoy.InThread",
@@ -171,23 +168,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "coordinator",
         "ticket-captain"
-      ]
-    },
-    {
-      "claim": "claim:Envoy.MovedOn",
-      "from": "Reported",
-      "to": "MovedOn",
-      "arrow": "he has plainly moved on, the thread still open: the next envoy may go, at the coordinator's discretion",
-      "spec": [
-        "H18"
-      ],
-      "guard": null,
-      "effect": "envoys' = 0",
-      "fair": false,
-      "skills": [
-        "coordinator"
       ]
     },
     {
@@ -282,7 +263,6 @@
       "effect": "level' \\in {\"captain\", \"coordinator\"}",
       "fair": false,
       "skills": [
-        "coordinator",
         "ticket-captain"
       ]
     }

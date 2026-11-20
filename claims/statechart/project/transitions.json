@@ -21,7 +21,8 @@
         "S14",
         "S15",
         "S16",
-        "N12 DR 060 §1"
+        "N12 DR 060 §1",
+        "H5"
       ]
     },
     {
@@ -53,13 +54,12 @@
   "variables": [],
   "transitions": [
     {
-      "claim": "claim:Project.Charted",
-      "from": "Charting",
-      "to": "Watching",
-      "arrow": "the spec exists and the first tickets are contracted",
+      "claim": "claim:Coordination.Idle",
+      "from": "Watching",
+      "to": "Unheld",
+      "arrow": "Paused in Linear, or no coordinator or agent running in it: idle",
       "spec": [
-        "S14",
-        "S15"
+        "H4"
       ],
       "guard": null,
       "effect": null,
@@ -69,12 +69,45 @@
       ]
     },
     {
+      "claim": "claim:Coordination.Wake",
+      "from": "Unheld",
+      "to": "Watching",
+      "arrow": "he or the chief of staff starts or wakes its coordinator",
+      "spec": [
+        "H4",
+        "H7"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "chief-of-staff",
+        "coordinator"
+      ]
+    },
+    {
+      "claim": "claim:Project.Charted",
+      "from": "Charting",
+      "to": "Unheld",
+      "arrow": "the Project is up: the spec exists and the first tickets are contracted",
+      "spec": [
+        "S14",
+        "S15",
+        "H4"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
       "claim": "claim:Project.Replan",
       "from": "Watching",
       "to": "Replanning",
       "arrow": "a blocker is fundamental, or a new requirement",
       "spec": [
-        "R9"
+        "R9",
+        "H5"
       ],
       "guard": null,
       "effect": null,
@@ -118,9 +151,10 @@
       "claim": "claim:Project.Take",
       "from": "Unheld",
       "to": "Charting",
-      "arrow": "the Project opens; it has a live coordinator",
+      "arrow": "he opens the Project and charts it, HITL",
       "spec": [
-        "H4"
+        "H5",
+        "S14"
       ],
       "guard": null,
       "effect": null,
@@ -128,18 +162,5 @@
       "skills": []
     }
   ],
-  "gaps": [
-    {
-      "action": "Gap1",
-      "from": "Watching",
-      "to": "Unheld",
-      "note": "H4 names idle Projects but never defines when a Project goes idle"
-    },
-    {
-      "action": "Gap2",
-      "from": "Unheld",
-      "to": "Watching",
-      "note": "H4 says who holds a live Project, not who starts or wakes its coordinator"
-    }
-  ]
+  "gaps": []
 }

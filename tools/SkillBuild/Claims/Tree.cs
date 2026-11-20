@@ -11,7 +11,7 @@ public static class Tree
     [
         new(Skill.WorkingTreeStandard, "No self-review. An agent never reviews its own work or rules on findings about it: its own context biases it, and a fresh context catches what it can't. A leaf's evidence check is a fresh seat the officer sends. Each level checks for itself, never taking a lower level's verdict as its proof. A captain authors only a change too small to need its own review; the review above covers it.", new(Section.TreeInvariants, 1)),
         new(Skill.TicketCaptain, "Never rule on findings about work you authored.", new(ReviewState.Verdict, 1902, MoveKind.Nominal)),
-        new(Skill.Reviewer, "Never judge work you implemented or fixed.", new(ReviewState.Round, 1902, MoveKind.Nominal))
+        new(Skill.Reviewer, "Never judge work you implemented or fixed.", new(DispatchState.Briefed, 3203, MoveKind.Nominal))
     ])
     { Spec = ["R33", "K29"] };
 
@@ -24,7 +24,7 @@ public static class Tree
 
     public static readonly Claim Commits = new("Every writer hop ends on a commit named for its hop, kept unsquashed; merges are merge commits only.", [Actor.Implementer],
     [
-        new(Skill.Implementer, "End the hop on one commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed.", new(DispatchState.Working, 1904, MoveKind.Nominal)),
+        new(Skill.Implementer, "End the hop on one commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed; a merge is a merge commit that keeps both parents.", new(DispatchState.Working, 1904, MoveKind.Nominal)),
         new(Skill.WorkingTreeStandard, "Every writer hop ends on a commit `<KEY> <hop>: <what>`, where `<hop>` is `implement`, `fix` or `merge`, kept unsquashed. Merges are merge commits only, never squash or rebase.", new(Section.TreeInvariants, 3))
     ])
     { Spec = ["R32"] };

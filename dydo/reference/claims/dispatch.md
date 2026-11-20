@@ -18,10 +18,6 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Seat any reviewer from a family other than the author's when possible, single seats included.
 
-**coordinator** (Staffing, exit):
-
-> Seat any reviewer or judge from a family other than the author's when possible, single seats included.
-
 **implementer** (Briefed, arrival):
 
 > You arrive with a brief from the implementer dispatch template; work only within it.
@@ -29,6 +25,10 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 **reviewer** (Briefed, arrival):
 
 > You arrive with a brief from the reviewer dispatch template; judge only what it names.
+
+**research** (Briefed, arrival):
+
+> You arrive with a brief from the research dispatch template: one question a choice waits on, and its return-to.
 
 **scout** (Briefed, arrival):
 
@@ -45,10 +45,6 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 **ticket-captain** (Staffing, exit):
 
 > Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.
-
-**coordinator** (Staffing, exit):
-
-> Convene a council only for stakes (the last check before main, or a mistake expensive to undo) or value (a call between good options).
 
 ## SelfAuthor
 
@@ -108,7 +104,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **coordinator** (ReCut, arrival):
 
-> On `too big, re-cut`, you are the cutter: decide whether the unit gets children.
+> A captain's `too big, re-cut` comes to you as its cutter: open a Wayfinding ticket for the re-cut and put a fresh captain on it, since cutting is its call.
 
 **working-tree-standard** (TreeDelegation):
 
@@ -128,7 +124,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **coordinator** (ReCut, exit):
 
-> Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.
+> Once its captain files the children, sequence them and put a captain on each ready one.
 
 ## Return
 
@@ -146,9 +142,13 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Return your verdict, or your seat's findings, to the brief's return-to.
 
+**research** (Working, exit):
+
+> Return the answer to the brief's return-to.
+
 **scout** (Working, exit):
 
-> Return the answer and its sources to the brief's return-to.
+> Return your passages, or your Questions, with their sources to the brief's return-to.
 
 **ticket-captain** (Returned, arrival):
 
@@ -166,7 +166,11 @@ Spec: K14, K29
 
 **coordinator** (Dispatching):
 
-> Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.
+> Brief each captain from the ticket-captain dispatch template and name every skill its role requires with a slash: the template carries the default set, and you add the ticket's own skills.
+
+**chief-of-staff** (Dispatching):
+
+> Brief a coordinator from the coordinator dispatch template and name every skill its role requires with a slash; the template carries the default set.
 
 **ticket-captain** (Dispatching):
 
@@ -186,7 +190,7 @@ Spec: H3
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 
-**implementer** (Working, nominal):
+**implementer** (Build):
 
 > A native helper you start shares your checkout; you commit its work.
 
@@ -276,15 +280,19 @@ Spec: N12 DR 057 §4
 
 Spec: N12 DR 057 §6
 
-**implementer** (Working, nominal):
+**implementer** (WhenThingsGoWrong):
 
 > Hand a question up to your captain, never to Balazs.
 
-**reviewer** (Round, nominal):
+**reviewer** (WhenThingsGoWrong):
 
 > Hand a question up to your captain, never to Balazs.
 
-**scout** (Working, nominal):
+**research** (WhenThingsGoWrong):
+
+> Hand a question about your question up to your dispatcher, never to Balazs.
+
+**scout** (WhenThingsGoWrong):
 
 > Hand a question about your question up to your dispatcher, never to Balazs.
 

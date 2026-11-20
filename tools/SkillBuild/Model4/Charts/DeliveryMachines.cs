@@ -29,18 +29,11 @@ public static class DeliveryMachines
     public static readonly Machine Project = new(MachineId.Project, "A Project and its coordinator",
     [
         new(ProjectState.Unheld, "No live coordinator: not started, idle or closed", "H4"),
-        new(ProjectState.Charting, "Charting the spec and the map", "S14", "S15", "S16", "N12 DR 060 §1"),
+        new(ProjectState.Charting, "Charting the spec and the map", "S14", "S15", "S16", "N12 DR 060 §1", "H5"),
         new(ProjectState.Watching, "Watching the survey, the board and liveness", "H5", "H10", "H11", "R25"),
         new(ProjectState.Replanning, "Re-planning after a fundamental blocker or a new requirement", "R9", "S10"),
         new(ProjectState.Landing, "All delivery merged: the landing runs", "N5")
-    ], ProjectState.Unheld, [ProjectState.Landing])
-    {
-        Gaps =
-        [
-            new(ProjectState.Watching, ProjectState.Unheld, "H4 names idle Projects but never defines when a Project goes idle"),
-            new(ProjectState.Unheld, ProjectState.Watching, "H4 says who holds a live Project, not who starts or wakes its coordinator")
-        ]
-    };
+    ], ProjectState.Unheld, [ProjectState.Landing]);
 
     public static readonly Machine Landing = new(MachineId.Landing, "The landing",
     [

@@ -46,14 +46,7 @@ public static class HierarchyMachines
         new(StaffState.Muster, "Muster", "L21", "K11"),
         new(StaffState.NightWatch, "Overnight watch", "H7", "H12"),
         new(StaffState.MorningBrief, "Morning brief", "L19", "L21")
-    ], StaffState.Day, [])
-    {
-        Gaps =
-        [
-            new(StaffState.Day, StaffState.Muster, "H7 says the chief of staff runs the overnight watch, not what starts it"),
-            new(StaffState.NightWatch, StaffState.MorningBrief, "H7 and L19 name the watch and the morning brief, not what ends the night")
-        ]
-    };
+    ], StaffState.Day, []);
 
     public static readonly Machine Liveness = new(MachineId.Liveness, "Liveness",
     [

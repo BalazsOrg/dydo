@@ -1,9 +1,10 @@
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// The chief of staff (K22, H7), explicit-only (K27, N12 DR 045 §9). It starts or wakes a coordinator,
-/// so it links the coordinator's dispatch template (K14). Its phases hold its machine states in the
-/// order it meets them (K9).
+/// The chief of staff (K22, H7), explicit-only (K27, N12 DR 045 §9). It starts or wakes a coordinator (H4,
+/// DYD-1082 555a8300 gap 2), so it links the coordinator's dispatch template (K14). Its five phases are
+/// the day's short list, investigating, and the night it owns from muster to morning brief (DYD-1082
+/// a1b21b59 Q12, DYD-1195 33520d6c), each holding its machine state (K9).
 /// </summary>
 public static class ChiefOfStaffCarrier
 {
@@ -13,16 +14,20 @@ public static class ChiefOfStaffCarrier
         ExplicitOnly = true,
         Phases =
         [
-            new("Day",
+            new("Keep his short list",
             [
-                new(Routine.Accountable, "Accountable for"), new(Routine.ToolsAndSurfaces, "Tools and surfaces"),
-                .. HierarchyMachines.Staff.Slots(StaffState.Day, StaffState.Investigating),
-                new(Routine.Dispatching, "Dispatching crew with tickets")
+                new(ChiefOfStaffSlot.Tools),
+                .. HierarchyMachines.Staff.Slots(StaffState.Day),
+                .. DeliveryMachines.Project.Slots(ProjectState.Unheld),
+                new(Routine.Dispatching, "Dispatching a coordinator")
             ])
             {
                 Resources = [CoordinatorCarrier.Brief]
             },
-            new("Night", HierarchyMachines.Staff.Slots(StaffState.Muster, StaffState.NightWatch, StaffState.MorningBrief))
+            new("Investigate for him", HierarchyMachines.Staff.Slots(StaffState.Investigating)),
+            new("Hold the muster", HierarchyMachines.Staff.Slots(StaffState.Muster)),
+            new("Keep the night watch", HierarchyMachines.Staff.Slots(StaffState.NightWatch)),
+            new("Give the morning brief", HierarchyMachines.Staff.Slots(StaffState.MorningBrief))
         ],
         Scenarios = [new(ChiefOfStaffScenario.Liveness, "Liveness", HierarchyMachines.Liveness.Slots(LivenessState.Quiet))]
     };

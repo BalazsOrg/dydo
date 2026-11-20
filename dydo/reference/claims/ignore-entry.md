@@ -54,6 +54,10 @@ Transition in A file over the token limit (`claims/statechart/ignore-entry/Ignor
 
 > An authored file that must pass the limit takes path (b): its own ticket, a council, then his blessing; its PR never adds its own entry.
 
+**implementer** (OverLimit, exit):
+
+> A file you write by hand that must stay whole past the limit goes back to your captain for path (b); your PR never adds its own entry.
+
 ## Convene
 
 `claim:IgnoreEntry.Convene`: The path (b) ticket goes to a council.

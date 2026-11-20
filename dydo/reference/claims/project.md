@@ -8,35 +8,31 @@ type: reference
 
 ## Take
 
-`claim:Project.Take`: Every open Project has a live coordinator holding its outcome.
+`claim:Project.Take`: He opens a Project and charts it HITL, with its grillings and first wayfindings (DYD-1082 555a8300 Q21).
 
-Spec: H4
+Spec: H5, S14
 
-Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Unheld → Charting, "the Project opens; it has a live coordinator". A system transition: no skill carries it.
+Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Unheld → Charting, "he opens the Project and charts it, HITL". A system transition: no skill carries it.
 
 ## Charted
 
-`claim:Project.Charted`: Charting ends when the spec exists and the first tickets are contracted.
+`claim:Project.Charted`: Charting ends once the spec exists and the first tickets are contracted; the Project then waits for its coordinator (DYD-1082 555a8300 Q21).
 
-Spec: S14, S15
+Spec: S14, S15, H4
 
-Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Charting → Watching, "the spec exists and the first tickets are contracted".
-
-**coordinator** (Charting, exit):
-
-> Leave charting once `Spec: <Project>` exists and the first tickets carry contracts that quote and link it.
+Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Charting → Unheld, "the Project is up: the spec exists and the first tickets are contracted". A system transition: no skill carries it.
 
 ## Replan
 
 `claim:Project.Replan`: A fundamental blocker or a new requirement goes to the officer above to re-plan.
 
-Spec: R9
+Spec: R9, H5
 
 Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Watching → Replanning, "a blocker is fundamental, or a new requirement".
 
 **coordinator** (Replanning, arrival):
 
-> A fundamental blocker or a new requirement from below: re-plan the affected part of the map.
+> A fundamental blocker or a new requirement from below: open a Wayfinding ticket to re-plan the affected part of the map, and put a fresh captain on it.
 
 ## Replanned
 
@@ -48,7 +44,7 @@ Transition in A Project and its coordinator (`claims/statechart/project/Project.
 
 **coordinator** (Replanning, exit):
 
-> Cancel each dead hop with a one-line reason, then go back to watching.
+> Once the re-plan is filed and its dead hops are Canceled with a one-line reason, sequence what it filed and go back to watching.
 
 **linear-workspace-standard** (LinearStatuses):
 
@@ -72,23 +68,13 @@ Transition in A Project and its coordinator (`claims/statechart/project/Project.
 
 Spec: S14
 
-**coordinator** (Charting, nominal):
-
-> Write and refine `Spec: <Project>`, a main Linear document on the Project with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks; a sub-feature that needs defining well gets its own spec, linked from it.
-
 **linear-workspace-standard** (LinearSpec):
 
 > The spec is a main Linear document on the Project, `Spec: <Project>`, with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks. A sub-feature that needs defining well gets its own spec, linked from it. The map holder writes and refines it; at acceptance it is deleted after its lasting parts move to DRs, the glossary, docs and the verification map.
 
-## SpecGuards
+**coordinator** (Routing, on claim:Project.Rechart):
 
-`claim:Project.SpecGuards`: The spec, not a DR, is the guard: every feature has one.
-
-Spec: S16
-
-**coordinator** (Charting, nominal):
-
-> Give every feature a spec, whether or not a DR backs it.
+> Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.
 
 ## FeatureBranch
 
@@ -96,7 +82,7 @@ Spec: S16
 
 Spec: N12 DR 045 §8
 
-**coordinator** (Charting, nominal):
+**coordinator** (Lanes):
 
 > Open `feature/<project-slug>` from main before the first ticket branch.
 
@@ -104,35 +90,15 @@ Spec: N12 DR 045 §8
 
 > A Project's feature branch, `feature/<project-slug>`, is cut from main before its first ticket branch.
 
-## Milestones
-
-`claim:Project.Milestones`: The map holder places few Milestones while charting, the walking skeleton first.
-
-Spec: N12 DR 060 §1
-
-**coordinator** (Charting, nominal):
-
-> Place the Project's Milestones in Linear while charting: few, each a chunk where drift from his intent would show, the walking skeleton first and the landing last; every delivery ticket belongs to one.
-
-## Skeleton
-
-`claim:Project.Skeleton`: Only the walking skeleton's Walkthrough blocks the next Milestone.
-
-Spec: N12 DR 060 §3
-
-**coordinator** (Charting, nominal):
-
-> File the walking skeleton's Walkthrough with the map, as a native blocker of the next Milestone's tickets until his verdict or skip; later Milestones' Walkthroughs block nothing.
-
 ## Harvest
 
 `claim:Project.Harvest`: A release's map holder harvests adopters' friction queues and local patches.
 
 Spec: H9
 
-**coordinator** (Charting, nominal):
+**coordinator** (Routing, on claim:Project.Rechart):
 
-> Charting a release, first harvest the adopters' Agent friction queues and local patches.
+> Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.
 
 ## Tick
 
@@ -170,9 +136,9 @@ Spec: N12 DR 047, H5
 
 Spec: H10
 
-**coordinator** (Watching, nominal):
+**coordinator** (Lanes):
 
-> Keep your level's lanes full, toward a soft target of four; when the mainline can't fill one, pull your own pickable side tickets first, then continuous tickets.
+> Fill each lane with a captain, toward a soft target of four, oldest first at each step: ready tickets the plan names (unblocked and contracted), then the open Shoulds batch, or a new one when shoulds wait outside a batch, then the survey's `pickable` side tickets, then continuous tickets, those blocking a ticket in your Project first.
 
 **ticket-captain** (Staffing, nominal):
 
@@ -184,9 +150,9 @@ Spec: H10
 
 Spec: H11
 
-**coordinator** (Watching, nominal):
+**coordinator** (Lanes):
 
-> Pull without asking only a ticket that is Mode AFK; a Bug or small Feature at Severity should or lower, or an unrated CI finding; two-way; no design call; oldest first.
+> Pull a filler only when its labels already meet the pull rule: Mode AFK; Type Bug or Feature at Severity should or lower, or an unrated CI finding; unblocked; oldest first; its captain checks small, two-way and no design call.
 
 **ticket-captain** (Staffing, nominal):
 
@@ -198,7 +164,7 @@ Spec: H11
 
 Spec: H8
 
-**coordinator** (Watching, nominal):
+**coordinator** (Lanes):
 
 > A continuous ticket you pull follows your chain from then on.
 
@@ -208,23 +174,19 @@ Spec: H8
 
 ## CiFinding
 
-`claim:Project.CiFinding`: A CI finding goes to its open ticket's officer, or to the coordinator for a long-closed one.
+`claim:Project.CiFinding`: A CI finding goes to its open ticket's officer; for a closed ticket in an open Project the coordinator opens its ticket, as a child of one closed within 14 days.
 
-Spec: H11
+Spec: H11, H8
 
 **coordinator** (Watching, nominal):
 
-> Send a CI finding for an open ticket to that ticket's officer; one for a long-closed ticket is yours.
+> Send a CI finding for an open ticket to that ticket's officer; for a ticket closed more than 14 days ago, open a new ticket, and for one closed more recently, open it as a child of the closed ticket.
 
 ## OneTicket
 
 `claim:Project.OneTicket`: One agent holds one ticket; several steps for one agent are wrapped in one ticket.
 
 Spec: S7
-
-**coordinator** (Watching, nominal):
-
-> One agent holds one ticket; wrap several steps for one agent in one ticket.
 
 **ticket-captain** (Cut, nominal):
 
@@ -240,10 +202,6 @@ Spec: S7
 
 Spec: S15
 
-**coordinator** (Watching, nominal):
-
-> Write each ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
-
 **ticket-captain** (Cut, nominal):
 
 > Write each sub-ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
@@ -258,19 +216,19 @@ Spec: S15
 
 Spec: S15
 
-**coordinator** (Watching, nominal):
+**coordinator** (Routing, on claim:Project.Rechart):
 
-> When the spec changes, reconcile the open contracts.
+> Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.
 
 ## Uncontracted
 
-`claim:Project.Uncontracted`: The coordinator contracts an uncontracted Backlog ticket to Todo.
+`claim:Project.Uncontracted`: An uncontracted Backlog ticket is contracted to Todo by a captain on a Wayfinding ticket (DYD-1082 1b6b6a5d Q16).
 
-Spec: N12 DR 063 §4
+Spec: N12 DR 063 §4, H5
 
-**coordinator** (Watching, nominal):
+**coordinator** (Routing, on claim:Project.Rechart):
 
-> Contract an `uncontracted` ticket (Backlog, unassigned, no open blocker) to Todo.
+> Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.
 
 ## FeatureBranchYours
 
@@ -278,7 +236,7 @@ Spec: N12 DR 063 §4
 
 Spec: R25
 
-**coordinator** (Watching, nominal):
+**coordinator** (Merges):
 
 > Merges into your feature branch need no approval but yours.
 
@@ -288,13 +246,13 @@ Spec: R25
 
 ## OneWayPaths
 
-`claim:Project.OneWayPaths`: The coordinator keeps the one-way path list in dydo.json.
+`claim:Project.OneWayPaths`: The guard-path list in dydo.json is his policy; the coordinator opens a ticket carrying each decision of his, for an implementer to make.
 
-Spec: R27
+Spec: R27, R16
 
-**coordinator** (Watching, nominal):
+**coordinator** (Merges):
 
-> Keep the one-way path list in `dydo.json`.
+> When he decides a guard-path addition or removal, open a ticket carrying his decision for an implementer to edit `dydo.json`; its PR is one-way.
 
 ## MilestoneWalk
 
@@ -302,19 +260,9 @@ Spec: R27
 
 Spec: N12 DR 060 §2, H22
 
-**coordinator** (Watching, nominal):
+**coordinator** (Merges):
 
-> When a Milestone's last ticket merges into the feature branch, offer its walkthrough through a fresh envoy; a skip is a verdict to go on.
-
-## NightSkeleton
-
-`claim:Project.NightSkeleton`: Overnight, the skeleton's Walkthrough blocks nothing.
-
-Spec: N12 DR 060 §4
-
-**coordinator** (Watching, nominal):
-
-> Overnight, the skeleton's Walkthrough blocks nothing: post `DECIDED` on it, carry on, and treat a wrong direction as a revert.
+> When a Milestone's last ticket merges into the feature branch, its Walkthrough ticket joins your HITL queue for a fresh envoy; a skip is a verdict to go on.
 
 ## OnMaster
 
@@ -322,7 +270,7 @@ Spec: N12 DR 060 §4
 
 Spec: N4
 
-**coordinator** (Watching, nominal):
+**coordinator** (Merges):
 
 > Run a walkthrough on master whenever possible.
 
@@ -332,7 +280,7 @@ Spec: N4
 
 Spec: R30
 
-**coordinator** (Watching, nominal):
+**coordinator** (Merges):
 
 > Give each mistake found after landing a lint, test or rule as well as its fix.
 
@@ -356,10 +304,10 @@ Spec: H21
 
 ## Rechart
 
-`claim:Project.Rechart`: The coordinator re-charts as fog clears.
+`claim:Project.Rechart`: Re-charting, cutting and every other map call go to a fresh captain on a Wayfinding ticket; the coordinator sequences what it files (DYD-1082 1b6b6a5d Q16, DYD-1195 b46e8343).
 
 Spec: H5, N12 DR 045 §5
 
-**coordinator** (Wayfinding):
+**coordinator** (Routing):
 
-> Re-chart as fog clears: create, split, drop or resequence tickets.
+> Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.

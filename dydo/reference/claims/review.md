@@ -274,9 +274,9 @@ Spec: R8
 
 Spec: R5
 
-**reviewer** (Round, nominal):
+**reviewer** (Tools):
 
-> Judge through your lenses and re-run nothing the author ran the same way, unless enough has changed since that its result is in doubt.
+> Re-run what the author already ran, driving included, only when enough has changed since that its result is in doubt.
 
 ## Statechart
 
@@ -284,6 +284,6 @@ Spec: R5
 
 Spec: R7
 
-**reviewer** (Round, nominal):
+**reviewer** (DriveAndFormal, on claim:Toolset.FormalNeeds):
 
-> Use a statechart only for a finished subsystem that has a state machine.
+> Formal needs a purpose-built model of the subject, or a statechart, which is only for a finished subsystem that has a state machine.

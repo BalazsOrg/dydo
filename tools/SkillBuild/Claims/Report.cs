@@ -3,11 +3,12 @@ namespace DynaDocs.SkillBuild;
 /// <summary>Out-of-scope problems (R5): any agent reports one to its officer, which routes it.</summary>
 public static class Report
 {
-    public static readonly Claim Up = new("Any agent reports a problem outside its scope to its officer.", [Actor.Implementer, Actor.Reviewer, Actor.Scout, Actor.TicketCaptain],
+    public static readonly Claim Up = new("Any agent reports a problem outside its scope to its officer.", [Actor.Implementer, Actor.Reviewer, Actor.Research, Actor.Scout, Actor.TicketCaptain],
     [
-        new(Skill.Implementer, "Report a problem outside your scope to your officer.", new(DispatchState.Working, 2601, MoveKind.Nominal)),
-        new(Skill.Reviewer, "Report a problem outside your scope to your officer.", new(ReviewState.Round, 2601, MoveKind.Nominal)),
-        new(Skill.Scout, "Report a problem outside your question to your officer.", new(DispatchState.Working, 2601, MoveKind.Nominal)),
+        new(Skill.Implementer, "Report a problem outside your scope to your officer.", new(SpinePart.WhenThingsGoWrong, 2601)),
+        new(Skill.Reviewer, "Report a problem outside your scope to your officer.", new(SpinePart.WhenThingsGoWrong, 2601)),
+        new(Skill.Research, "Report a problem outside your question to your officer.", new(SpinePart.WhenThingsGoWrong, 2601)),
+        new(Skill.Scout, "Report a problem outside your question to your officer.", new(SpinePart.WhenThingsGoWrong, 2601)),
         new(Skill.TicketCaptain, "Report a problem outside your ticket to your officer.", new(DispatchState.Briefed, 2601, MoveKind.Nominal))
     ])
     { Spec = ["R5"] };

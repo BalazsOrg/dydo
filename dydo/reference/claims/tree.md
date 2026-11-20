@@ -30,7 +30,7 @@ Spec: R33, K29
 
 > Never rule on findings about work you authored.
 
-**reviewer** (Round, nominal):
+**reviewer** (Briefed, nominal):
 
 > Never judge work you implemented or fixed.
 
@@ -56,7 +56,7 @@ Spec: R32
 
 **implementer** (Working, nominal):
 
-> End the hop on one commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed.
+> End the hop on one commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed; a merge is a merge commit that keeps both parents.
 
 **working-tree-standard** (TreeInvariants):
 
