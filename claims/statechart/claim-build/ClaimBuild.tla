@@ -50,6 +50,11 @@ Build_Refused ==
     /\ state = "Edited"
     /\ state' = "Rejected"
 
+\* claim:Build.Rejected
+Build_Rejected ==
+    /\ state = "InReview"
+    /\ state' = "Edited"
+
 \* claim:Build.Remodel
 Build_Remodel ==
     /\ state = "TlcFailed"
@@ -86,6 +91,7 @@ Next ==
     \/ Build_Pass
     \/ Build_Read
     \/ Build_Refused
+    \/ Build_Rejected
     \/ Build_Remodel
     \/ Build_Ship
     \/ Build_Tlc

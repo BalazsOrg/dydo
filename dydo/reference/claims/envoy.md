@@ -12,15 +12,11 @@ type: reference
 
 Spec: H16
 
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → Homework, "the officer above takes the need".
-
-**ticket-captain** (Homework, arrival):
-
-> A need for Balazs from below: do the homework first in docs, code, Linear, DRs and the spec.
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → Homework, "the officer above takes the need". A system transition: no skill carries it.
 
 ## Decide
 
-`claim:Envoy.Decide`: An obvious, reversible call, or one the homework or a DR settles, is decided by the officer.
+`claim:Envoy.Decide`: An obvious, reversible call is decided where it arises and never becomes a ticket (DYD-1195 3a854e37).
 
 Spec: H16, L18
 
@@ -28,7 +24,7 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework 
 
 **ticket-captain** (Homework, exit):
 
-> Decide it yourself when the homework answers it, a DR clearly settles it, or the call is obvious and reversible.
+> Decide an obvious, reversible call yourself, where it arises; it never becomes a ticket.
 
 ## PassUp
 
@@ -40,7 +36,7 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework 
 
 **ticket-captain** (Homework, exit):
 
-> Pass what remains up the chain to your officer; only the coordinator sends envoys.
+> Pass any other need up to your officer, who opens a `research` Question for it; only the coordinator dispatches envoys.
 
 ## NextLevel
 
@@ -242,6 +238,10 @@ Spec: H19
 
 > Changes during the session reach you as dispatcher updates; never ask him to repeat them.
 
+**ticket-captain** (Hitl):
+
+> Changes during a session with him reach you as dispatcher updates; never ask him to repeat them.
+
 ## NameDrs
 
 `claim:Envoy.NameDrs`: A question put to him names what each DR says, never only its number.
@@ -270,9 +270,13 @@ Spec: H19, H23
 
 > After a shared understanding, and once you have reported back, tell him the thread can be closed.
 
+**ticket-captain** (Hitl):
+
+> After a shared understanding, and once you have reported back, tell him the thread can be closed.
+
 ## SkillTable
 
-`claim:Envoy.SkillTable`: Each envoy job loads a fixed skill.
+`claim:Envoy.SkillTable`: Each job ticket loads a fixed skill; a Question's stage label picks its row.
 
 Spec: H23
 
@@ -283,5 +287,19 @@ Spec: H23
 > | Grilling | `grilling` |
 > | Walkthrough | `walkthrough` |
 > | Wayfinding | `wayfinder` |
-> | Question | `co-thinker` |
+> | Question at stage `research` | `ticket-captain`; it dispatches `research` crew |
+> | Question at stage `council` | `ticket-captain`, with its `council-chair` resource |
+> | Question at stage `his-call` | `co-thinker` |
+> | Enablement | `wizard`; when it is not a setup procedure he runs (credentials, cutover), just ask |
+
+**ticket-captain** (TicketCaptainBrief):
+
+> | Job | Skill |
+> |---|---|
+> | Grilling | `grilling` |
+> | Walkthrough | `walkthrough` |
+> | Wayfinding | `wayfinder` |
+> | Question at stage `research` | `ticket-captain`; it dispatches `research` crew |
+> | Question at stage `council` | `ticket-captain`, with its `council-chair` resource |
+> | Question at stage `his-call` | `co-thinker` |
 > | Enablement | `wizard`; when it is not a setup procedure he runs (credentials, cutover), just ask |

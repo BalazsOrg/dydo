@@ -25,8 +25,9 @@ public static class Project
     { Spec = ["N5"], Transition = new(ProjectState.Watching, ProjectState.Landing, "every delivery ticket is merged into the feature branch") };
 
     // The coordinator states this in Rechart's combined line: its half of the map holder wakes the Wayfinding captain (DYD-1195 b46e8343).
-    public static readonly Claim SpecDoc = new("The spec is a main Linear document on the Project, written and refined by the map holder.", [Actor.Coordinator],
+    public static readonly Claim SpecDoc = new("The spec is a main Linear document on the Project, written and refined by the map holder.", [Actor.Coordinator, Actor.TicketCaptain],
     [
+        new(Skill.TicketCaptain, "Write and refine `Spec: <Project>`, the Project's main Linear document with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks; a sub-feature that needs defining well gets its own spec, linked from it.", new(TicketCaptainSlot.Wayfinding, 3110)),
         new(Skill.LinearWorkspaceStandard, "The spec is a main Linear document on the Project, `Spec: <Project>`, with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks. A sub-feature that needs defining well gets its own spec, linked from it. The map holder writes and refines it; at acceptance it is deleted after its lasting parts move to DRs, the glossary, docs and the verification map.", new(Section.LinearSpec, 1))
     ])
     { Spec = ["S14"] };
@@ -39,7 +40,8 @@ public static class Project
     { Spec = ["N12 DR 045 §8"] };
 
     // The coordinator states this in Rechart's combined line (DYD-1195 b46e8343: the release harvest is the Wayfinding captain's).
-    public static readonly Claim Harvest = new("A release's map holder harvests adopters' friction queues and local patches.", [Actor.Coordinator], [])
+    public static readonly Claim Harvest = new("A release's map holder harvests adopters' friction queues and local patches.", [Actor.Coordinator, Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "When a release is planned, harvest the adopters' Agent friction queues and local patches.", new(TicketCaptainSlot.Wayfinding, 3119))])
     { Spec = ["H9"] };
 
     public static readonly Claim Tick = new("The coordinator's watch is a deterministic loop over the survey, the board and liveness.", [Actor.Coordinator],
@@ -94,12 +96,14 @@ public static class Project
     { Spec = ["S15"] };
 
     // The coordinator states this in Rechart's combined line (DYD-1195 b46e8343: reconciling contracts is the Wayfinding captain's).
-    public static readonly Claim Reconcile = new("When the spec changes, the map holder reconciles the open contracts.", [Actor.Coordinator], [])
+    public static readonly Claim Reconcile = new("When the spec changes, the map holder reconciles the open contracts.", [Actor.Coordinator, Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "When the spec changes, reconcile the open contracts with it.", new(TicketCaptainSlot.Wayfinding, 3112))])
     { Spec = ["S15"] };
 
     // The coordinator states this in Rechart's combined line: writing a contract is cutting, a Wayfinding captain's (DYD-1082 1b6b6a5d Q16).
-    public static readonly Claim Uncontracted = new("An uncontracted Backlog ticket is contracted to Todo by a captain on a Wayfinding ticket (DYD-1082 1b6b6a5d Q16).", [Actor.Coordinator], [])
-    { Spec = ["N12 DR 063 §4", "H5"] };
+    public static readonly Claim Uncontracted = new("An uncontracted Backlog ticket is contracted to Todo by a captain on a Wayfinding ticket (DYD-1082 1b6b6a5d Q16).", [Actor.Coordinator, Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Contract each `uncontracted` Backlog ticket, so it moves to Todo.", new(TicketCaptainSlot.Wayfinding, 3114))])
+    { Spec = ["N12 DR 063 §4", "H5", "S5"] };
 
     public static readonly Claim FeatureBranchYours = new("The feature branch is the coordinator's, to merge into as it wishes.", [Actor.Coordinator],
     [
@@ -128,13 +132,16 @@ public static class Project
         [Actor.Coordinator, Actor.TicketCaptain, Actor.ChiefOfStaff],
     [
         new(Skill.Coordinator, "Keep the work going through any usage limit, and never bring one to him.", new(ProjectState.Watching, 229, MoveKind.Nominal)),
-        new(Skill.TicketCaptain, "Keep the work going through any usage limit, and never bring one to him.", new(Routine.Dispatching, 229)),
+        new(Skill.TicketCaptain, "Keep the work going through any usage limit, and never bring one to him.", new(Routine.Dispatching, 13)),
         new(Skill.ChiefOfStaff, "Keep the work going through any usage limit, and never bring one to him.", new(StaffState.Day, 1012, MoveKind.Nominal))
     ])
     { Spec = ["H21"] };
 
-    public static readonly Claim Rechart = new("Re-charting, cutting and every other map call go to a fresh captain on a Wayfinding ticket; the coordinator sequences what it files (DYD-1082 1b6b6a5d Q16, DYD-1195 b46e8343).", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.",
-            new(CoordinatorSlot.Routing, 230), () => [SpecDoc, Reconcile, Uncontracted, Harvest])])
-    { Spec = ["H5", "N12 DR 045 §5"] };
+    public static readonly Claim Rechart = new("Re-charting, cutting and every other map call go to a fresh captain on a Wayfinding ticket; the coordinator sequences what it files (DYD-1082 1b6b6a5d Q16, DYD-1195 b46e8343).", [Actor.Coordinator, Actor.TicketCaptain],
+    [
+        new(Skill.Coordinator, "Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.",
+            new(CoordinatorSlot.Routing, 230), () => [SpecDoc, Reconcile, Uncontracted, Harvest]),
+        new(Skill.TicketCaptain, "Re-chart as fog clears and cut the tickets the map needs, deciding each cut the coordinator would otherwise face; file what you cut and return, and the coordinator only sequences it.", new(TicketCaptainSlot.Wayfinding, 3113))
+    ])
+    { Spec = ["H5", "H2", "H14", "N12 DR 045 §5"] };
 }

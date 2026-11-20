@@ -7,16 +7,18 @@
     "DrSettled",
     "DecidedOvernight",
     "Ratified",
+    "Declined",
     "Scored",
     "Investigated"
   ],
   "states": [
     {
       "id": "HardCall",
-      "title": "A hard call",
+      "title": "A Question's call, after its research",
       "spec": [
         "L18",
-        "H5"
+        "H16",
+        "H23"
       ]
     },
     {
@@ -28,9 +30,11 @@
     },
     {
       "id": "CaseFile",
-      "title": "Clerk holds the case file",
+      "title": "A council child: its chair holds the case file",
       "spec": [
-        "L18"
+        "L18",
+        "L23",
+        "H23"
       ]
     },
     {
@@ -49,7 +53,7 @@
     },
     {
       "id": "DecidedOvernight",
-      "title": "Decided overnight",
+      "title": "Decided, provisionally",
       "spec": [
         "L18",
         "L19",
@@ -58,10 +62,11 @@
     },
     {
       "id": "Prepared",
-      "title": "Prepared for him",
+      "title": "Prepared for him: a his-call child",
       "spec": [
         "L18",
-        "L20"
+        "L20",
+        "H23"
       ]
     },
     {
@@ -74,6 +79,13 @@
     {
       "id": "Ratified",
       "title": "Proposed DR ratified",
+      "spec": [
+        "L21"
+      ]
+    },
+    {
+      "id": "Declined",
+      "title": "Proposed DR declined: deleted, his words on the raising ticket",
       "spec": [
         "L21"
       ]
@@ -130,17 +142,32 @@
       "claim": "claim:Tribunal.DecideNight",
       "from": "Exchange",
       "to": "DecidedOvernight",
-      "arrow": "overnight, the judges agree on a two-way hard call",
+      "arrow": "the judges agree on a two-way hard call",
       "spec": [
         "L18",
         "L19",
         "L20"
       ],
-      "guard": "night /\\ agree /\\ twoWay /\\ ~drGrade",
+      "guard": "agree /\\ twoWay /\\ ~drGrade",
       "effect": null,
       "fair": false,
       "skills": [
-        "coordinator"
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Tribunal.Decline",
+      "from": "ProposedDr",
+      "to": "Declined",
+      "arrow": "he declines it: deleted, his words on the raising ticket",
+      "spec": [
+        "L21"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
       ]
     },
     {
@@ -160,15 +187,34 @@
       "claim": "claim:Tribunal.File",
       "from": "HardCall",
       "to": "CaseFile",
-      "arrow": "hard: a fresh clerk takes the Question",
+      "arrow": "a hard call not worth his time: a council child, by day or night",
       "spec": [
-        "L18"
+        "L18",
+        "L20",
+        "H23"
       ],
       "guard": null,
       "effect": "night' \\in BOOLEAN /\\ twoWay' \\in BOOLEAN /\\ drGrade' \\in BOOLEAN /\\ blocking' \\in BOOLEAN",
       "fair": false,
       "skills": [
-        "coordinator"
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Tribunal.HisCall",
+      "from": "HardCall",
+      "to": "Prepared",
+      "arrow": "worth his time to understand: a his-call child",
+      "spec": [
+        "L18",
+        "H23",
+        "H16"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
       ]
     },
     {
@@ -177,30 +223,33 @@
       "to": "Sealed",
       "arrow": "one family out: the judges sit on the remaining family",
       "spec": [
-        "L22"
+        "L22",
+        "L18",
+        "L20"
       ],
       "guard": null,
       "effect": "oneFamily' = TRUE",
       "fair": false,
       "skills": [
-        "coordinator"
+        "ticket-captain"
       ]
     },
     {
       "claim": "claim:Tribunal.Prepare",
       "from": "Exchange",
       "to": "Prepared",
-      "arrow": "by day, or they disagree, or it is one-way or DR-grade",
+      "arrow": "they disagree, or it is one-way or DR-grade",
       "spec": [
         "L18",
         "L20",
-        "L21"
+        "L21",
+        "H23"
       ],
-      "guard": "~(night /\\ agree /\\ twoWay) \\/ (drGrade /\\ ~blocking)",
+      "guard": "~agree \\/ ~twoWay \\/ (drGrade /\\ ~(night /\\ blocking))",
       "effect": null,
       "fair": false,
       "skills": [
-        "coordinator"
+        "ticket-captain"
       ]
     },
     {
@@ -215,7 +264,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "coordinator"
+        "ticket-captain"
       ]
     },
     {
@@ -235,7 +284,7 @@
       "claim": "claim:Tribunal.Score",
       "from": "Prepared",
       "to": "Scored",
-      "arrow": "he answers; scored against the prediction",
+      "arrow": "he answers; any council prediction is scored, as evidence only",
       "spec": [
         "L20"
       ],
@@ -257,7 +306,9 @@
       "guard": null,
       "effect": "oneFamily' = FALSE",
       "fair": false,
-      "skills": []
+      "skills": [
+        "ticket-captain"
+      ]
     },
     {
       "claim": "claim:Tribunal.Settled",
@@ -271,7 +322,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "coordinator"
+        "ticket-captain"
       ]
     },
     {
@@ -288,12 +339,5 @@
       "skills": []
     }
   ],
-  "gaps": [
-    {
-      "action": "Gap1",
-      "from": "ProposedDr",
-      "to": null,
-      "note": "L21 has him ratify a proposed DR but gives no route when he declines it"
-    }
-  ]
+  "gaps": []
 }

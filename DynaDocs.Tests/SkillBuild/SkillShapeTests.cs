@@ -22,9 +22,10 @@ public class SkillShapeTests
     {
         var tree = CommittedTree.BuiltText();
 
-        // Never vacuous: the real tree holds the seven role spines, a scenario and a template (DYD-1082, DYD-1284).
+        // Never vacuous: the real tree holds the seven role spines, a scenario, a template, and a resource another
+        // resource links, the council chair's members' briefs (DYD-1082, DYD-1284, DYD-1286).
         Assert.Equal(7, tree.Keys.Count(path => path.StartsWith("skills/roles/", StringComparison.Ordinal) && path.EndsWith("/SKILL.md", StringComparison.Ordinal)));
-        Assert.Contains("skills/roles/crew/reviewer/resources/council.md", tree.Keys);
+        Assert.Contains("skills/roles/officers/ticket-captain/resources/council-members.md", tree.Keys);
         Assert.Contains("skills/roles/officers/ticket-captain/resources/fix-rounds.md", tree.Keys);
         Assert.Contains("skills/roles/officers/ticket-captain/resources/implementer-brief.md", tree.Keys);
         var violations = SkillShape.Violations(tree).Concat(SkillShape.RoleSpineViolations(tree)).ToArray();

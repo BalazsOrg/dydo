@@ -1,43 +1,53 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>The landing (M2): inquisition rounds from zero through their phases, held by the coordinator, the landing prerequisites, the merge review, his walkthrough, the merge and the tag.</summary>
+/// <summary>
+/// The landing (M2): inquisition rounds from zero, each held by its root inquisition captain through the
+/// slices' Read, Break and Drive lenses; the landing prerequisites, the merge review, his walkthrough and
+/// its route when he does not accept, the merge and the tag.
+/// </summary>
 public static class Landing
 {
     private const string Areas = "areas' \\in 1..2";
 
-    public static readonly Claim Staff = new("The coordinator staffs each inquisition round from the roster and dydo usage.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Staff each inquisition round from the model roster and `dydo usage`, and tell him in your next envoy bundle.", new(LandingState.Integrated, 301, MoveKind.Exit))])
-    { Spec = ["N5", "R13", "R14"], Transition = new(LandingState.Integrated, LandingState.Mapped, "the coordinator staffs a round; a fresh area map") { Effect = Areas } };
+    public static readonly Claim Staff = new(
+        "The coordinator opens the Inquisition ticket; its root captain staffs the round from the roster and the quotas and tells him as an FYI on the HITL queue (DYD-1195 6deea8c0).",
+        [Actor.Coordinator, Actor.TicketCaptain],
+    [
+        new(Skill.Coordinator, "Once every delivery ticket is merged, open the Inquisition ticket for a fresh root inquisition captain.", new(LandingState.Integrated, 301, MoveKind.Exit)),
+        new(Skill.TicketCaptain, "As the root, staff the round yourself: the provider, the models and the swarm width, from the model roster and `dydo usage`; post the staffing on the coordinator's HITL queue as an FYI for him.", new(LandingState.Mapped, 301, MoveKind.Arrival))
+    ])
+    { Spec = ["N5", "H5", "R13", "R14"], Transition = new(LandingState.Integrated, LandingState.Mapped, "the Inquisition ticket opens; its root captain staffs a round and draws a fresh feature map") { Effect = Areas } };
 
-    public static readonly Claim MapDrawn = new("Each area's phases start with Read.", [Actor.Reviewer], [])
-    { Spec = ["N5"], Transition = new(LandingState.Mapped, LandingState.ReadPhase, "an area's Read phase starts") };
+    public static readonly Claim MapDrawn = new("Each slice's lenses start with Read, its own sub-agent.", [Actor.Reviewer], [])
+    { Spec = ["N5", "R34"], Transition = new(LandingState.Mapped, LandingState.ReadPhase, "a slice's Read lens starts") };
 
-    public static readonly Claim ReadDone = new("Read is followed by Break, by default.", [Actor.Reviewer], [])
-    { Spec = ["N5"], Transition = new(LandingState.ReadPhase, LandingState.BreakPhase, "Read done; Break, the default next phase") };
+    public static readonly Claim ReadDone = new("Read is followed by Break, run by a separate sub-agent (DYD-1082 8239d5b6).", [Actor.Reviewer], [])
+    { Spec = ["N5", "R34"], Transition = new(LandingState.ReadPhase, LandingState.BreakPhase, "Read done; Break, a separate sub-agent") };
 
-    public static readonly Claim BreakDone = new("Break is followed by Drive, by default.", [Actor.Reviewer], [])
-    { Spec = ["N5"], Transition = new(LandingState.BreakPhase, LandingState.DrivePhase, "Break done; Drive, the default next phase") };
+    public static readonly Claim BreakDone = new("Break is followed by Drive, run by a separate sub-agent (DYD-1082 8239d5b6).", [Actor.Reviewer], [])
+    { Spec = ["N5", "R34"], Transition = new(LandingState.BreakPhase, LandingState.DrivePhase, "Break done; Drive, a separate sub-agent") };
 
-    public static readonly Claim NextArea = new("Every area runs its phases.", [Actor.Reviewer], [])
+    public static readonly Claim NextSlice = new("Every slice runs its lenses.", [Actor.Reviewer], [])
     {
         Spec = ["N5"],
-        Transition = new(LandingState.DrivePhase, LandingState.ReadPhase, "Drive done; the next area's Read phase") { Guard = "areas > 1", Effect = "areas' = areas - 1" }
+        Transition = new(LandingState.DrivePhase, LandingState.ReadPhase, "Drive done; the next slice's Read lens") { Guard = "areas > 1", Effect = "areas' = areas - 1" }
     };
 
-    public static readonly Claim AllAreas = new("Once every area has run its phases, the round has its verdict.", [Actor.Coordinator], [])
-    { Spec = ["N5", "S8"], Transition = new(LandingState.DrivePhase, LandingState.Inquisition, "every area through its phases: the round's verdict") { Guard = "areas = 1" } };
+    public static readonly Claim AllSlices = new("Once every slice has run its lenses, the round has its verdict.", [Actor.TicketCaptain], [])
+    { Spec = ["N5", "S8"], Transition = new(LandingState.DrivePhase, LandingState.Inquisition, "every slice through its lenses: the round's verdict") { Guard = "areas = 1" } };
 
-    public static readonly Claim RoundFound = new("The coordinator holds the round it staffs: one verdict, blockers into Fix rN, shoulds registered.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Hold each round you staff: post one verdict naming each seat and its findings, turn its blockers into Fix rN and register its shoulds.", new(LandingState.Inquisition, 302, MoveKind.Exit))])
+    public static readonly Claim RoundFound = new("The root inquisition captain holds the round: one verdict stitched from the groups, blockers into Fix rN, shoulds registered, nits on the round's nit ticket.",
+        [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "Hold the round: post one verdict, stitched from the groups' results, naming each seat and its findings; turn its blockers into Fix rN, register its shoulds and put its nits on the round's nit ticket.", new(LandingState.Inquisition, 302, MoveKind.Exit))])
     {
-        Spec = ["N5", "S8", "S9", "S17"],
+        Spec = ["N5", "S8", "S9", "S11", "S17"],
         Transition = new(LandingState.Inquisition, LandingState.RoundFixes, "the round finds a blocker or a should") { Effect = "fixFrom' = \"inquisition\"" }
     };
 
     public static readonly Claim NextRound = new("After the fixes, the next round starts from zero.", [Actor.Coordinator], [])
     {
         Spec = ["N5"],
-        Transition = new(LandingState.RoundFixes, LandingState.Mapped, "the fixes are merged; the next round from zero, a fresh area map")
+        Transition = new(LandingState.RoundFixes, LandingState.Mapped, "the fixes are merged; the next round from zero, a fresh feature map")
             { Guard = "fixFrom = \"inquisition\"", Effect = "round' = round + 1 /\\ " + Areas }
     };
 
@@ -96,6 +106,16 @@ public static class Landing
         [new(Skill.Coordinator, "When he accepts the landing candidate, it merges: AFK when two-way, on his click when one-way.", new(LandingState.Walkthrough, 308, MoveKind.Exit))])
     { Spec = ["N6"], Transition = new(LandingState.Walkthrough, LandingState.Merging, "Balazs accepts the landing candidate") };
 
+    public static readonly Claim NotAccepted = new("A landing walkthrough he does not accept files its findings as tickets in the same Project (DYD-1082 555a8300 gap 5).",
+        [Actor.Balazs, Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "When he does not accept the landing walkthrough, file each of his findings as a ticket in the same Project.", new(LandingState.Walkthrough, 309, MoveKind.Exit))])
+    { Spec = ["N6"], Transition = new(LandingState.Walkthrough, LandingState.NotAccepted, "he does not accept: his findings become tickets in the same Project") };
+
+    public static readonly Claim ReCut = new("After a landing walkthrough not accepted, a fix captain re-cuts the branch and another landing follows (DYD-1082 555a8300 gap 5).",
+        [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "As its fix captain, re-cut the landing branch once the findings' tickets are merged; another landing follows.", new(LandingState.NotAccepted, 310, MoveKind.Exit))])
+    { Spec = ["N6"], Transition = new(LandingState.NotAccepted, LandingState.Integrated, "a fix captain re-cuts the branch; another landing follows") };
+
     public static readonly Claim Merged = new("The landing PR merges into master.", [Actor.DydoMerge, Actor.Balazs], [])
     { Spec = ["N6", "R26"], Transition = new(LandingState.Merging, LandingState.Landed, "the landing PR is in master") };
 
@@ -105,9 +125,13 @@ public static class Landing
     public static readonly Claim Tag = new("He pushes the release tag once guard hardening has landed and mutation is clean.", [Actor.Balazs], [])
     { Spec = ["R28", "N2", "N15"], Transition = new(LandingState.Landed, LandingState.Tagged, "Balazs pushes the release tag") { Guard = "hardened" } };
 
-    public static readonly Claim SpecGone = new("At acceptance, the spec's lasting parts move and the spec and plan files are deleted.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Once he accepts, move the spec's lasting parts to DRs, the glossary, docs and the verification map, then delete the spec and the plan files.", new(LandingState.Merging, 311, MoveKind.Nominal))])
-    { Spec = ["S14", "D11", "N7"] };
+    public static readonly Claim SpecGone = new("At acceptance, the Wayfinding captain moves the spec's lasting parts and deletes the spec and plan files; the coordinator only opens its ticket.",
+        [Actor.Coordinator, Actor.TicketCaptain],
+    [
+        new(Skill.Coordinator, "Once he accepts, open a Wayfinding ticket to move the spec's lasting parts and delete the spec and the plan files.", new(LandingState.Merging, 311, MoveKind.Nominal)),
+        new(Skill.TicketCaptain, "At the landing, once he accepts, move the spec's lasting parts to DRs, the glossary, docs and the verification map, then delete the spec and the plan files.", new(TicketCaptainSlot.Wayfinding, 3120))
+    ])
+    { Spec = ["S14", "D11", "N7", "H4", "H5"] };
 
     public static readonly Claim TagIsHis = new("Release tags are his.", [Actor.Coordinator],
         [new(Skill.Coordinator, "The release tag is his to push.", new(LandingState.Landed, 312, MoveKind.Nominal))])

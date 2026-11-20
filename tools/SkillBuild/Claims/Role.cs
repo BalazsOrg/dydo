@@ -12,7 +12,7 @@ public static class Role
     { Spec = ["H7", "K11"] };
 
     public static readonly Claim TicketCaptain = new("A ticket captain holds one ticket to its end; a sub-captain is one a level down.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "You are a ticket captain: you hold one ticket to its end; a sub-captain is a ticket captain one level down.", new(SpinePart.Job, 103))])
+        [new(Skill.TicketCaptain, "You are a ticket captain: you hold one ticket to its end, and a sub-captain is a ticket captain one level down.", new(SpinePart.Job, 103))])
     { Spec = ["H1", "H13", "H23"] };
 
     public static readonly Claim Implementer = new("The implementer is the one crew kind that creates, writes and modifies files, mostly code (DYD-1082 a1b21b59 Q10, 1b6b6a5d Q14).", [Actor.Implementer],
@@ -54,7 +54,7 @@ public static class Role
     { Spec = ["H7"] };
 
     public static readonly Claim CaptainAccounts = new("The ticket captain answers for its ticket's outcome.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "The ticket's outcome: its contract, hops, review rounds, merge and record.", new(Routine.Accountable, 111))])
+        [new(Skill.TicketCaptain, "You answer for the ticket's outcome, its contract, hops, review rounds, merge and record, while crew do the work: you cut it, staff fresh seats, rule on what they return and merge.", new(SpinePart.Job, 111))])
     { Spec = ["S6", "S15", "R8", "R21"] };
 
     public static readonly Claim ImplementerAccounts = new("The implementer answers for its hop's commit and receipts.", [Actor.Implementer],
@@ -78,7 +78,7 @@ public static class Role
     { Spec = ["H7", "S22"] };
 
     public static readonly Claim CaptainTools = new("The ticket captain's tools and surfaces.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.", new(Routine.ToolsAndSurfaces, 117))])
+        [new(Skill.TicketCaptain, "Your tools: Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.", new(TicketCaptainSlot.Take, 117))])
     { Spec = ["H3", "R14", "R21", "R31", "N10", "S22"] };
 
     public static readonly Claim ImplementerTools = new("The implementer's tools and surfaces.", [Actor.Implementer],

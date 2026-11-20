@@ -68,6 +68,10 @@ Transition in A Project and its coordinator (`claims/statechart/project/Project.
 
 Spec: S14
 
+**ticket-captain** (Wayfinding):
+
+> Write and refine `Spec: <Project>`, the Project's main Linear document with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks; a sub-feature that needs defining well gets its own spec, linked from it.
+
 **linear-workspace-standard** (LinearSpec):
 
 > The spec is a main Linear document on the Project, `Spec: <Project>`, with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks. A sub-feature that needs defining well gets its own spec, linked from it. The map holder writes and refines it; at acceptance it is deleted after its lasting parts move to DRs, the glossary, docs and the verification map.
@@ -95,6 +99,10 @@ Spec: N12 DR 045 §8
 `claim:Project.Harvest`: A release's map holder harvests adopters' friction queues and local patches.
 
 Spec: H9
+
+**ticket-captain** (Wayfinding):
+
+> When a release is planned, harvest the adopters' Agent friction queues and local patches.
 
 **coordinator** (Routing, on claim:Project.Rechart):
 
@@ -216,6 +224,10 @@ Spec: S15
 
 Spec: S15
 
+**ticket-captain** (Wayfinding):
+
+> When the spec changes, reconcile the open contracts with it.
+
 **coordinator** (Routing, on claim:Project.Rechart):
 
 > Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.
@@ -224,7 +236,11 @@ Spec: S15
 
 `claim:Project.Uncontracted`: An uncontracted Backlog ticket is contracted to Todo by a captain on a Wayfinding ticket (DYD-1082 1b6b6a5d Q16).
 
-Spec: N12 DR 063 §4, H5
+Spec: N12 DR 063 §4, H5, S5
+
+**ticket-captain** (Wayfinding):
+
+> Contract each `uncontracted` Backlog ticket, so it moves to Todo.
 
 **coordinator** (Routing, on claim:Project.Rechart):
 
@@ -306,8 +322,12 @@ Spec: H21
 
 `claim:Project.Rechart`: Re-charting, cutting and every other map call go to a fresh captain on a Wayfinding ticket; the coordinator sequences what it files (DYD-1082 1b6b6a5d Q16, DYD-1195 b46e8343).
 
-Spec: H5, N12 DR 045 §5
+Spec: H5, H2, H14, N12 DR 045 §5
 
 **coordinator** (Routing):
 
 > Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.
+
+**ticket-captain** (Wayfinding):
+
+> Re-chart as fog clears and cut the tickets the map needs, deciding each cut the coordinator would otherwise face; file what you cut and return, and the coordinator only sequences it.

@@ -14,13 +14,37 @@ Spec: S3
 
 Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): New → Todo, "opened in Todo, ahead of its turn if a hop". A system transition: no skill carries it.
 
+## Future
+
+`claim:TicketStatus.Future`: An unscheduled strategic possibility enters as a FutureFeature (DYD-1082 555a8300 gap 3).
+
+Spec: S5
+
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): New → FutureFeature, "an unscheduled strategic possibility". A system transition: no skill carries it.
+
+## Promote
+
+`claim:TicketStatus.Promote`: Only he promotes a FutureFeature out; uncontracted, it waits in Backlog (DYD-1082 555a8300 gaps 3–4).
+
+Spec: S5
+
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): FutureFeature → Backlog, "he promotes it; it waits in Backlog until contracted". A system transition: no skill carries it.
+
+## Filed
+
+`claim:TicketStatus.Filed`: A ticket filed without a contract is Backlog (DYD-1082 555a8300 gap 4).
+
+Spec: S5
+
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): New → Backlog, "filed without a contract". A system transition: no skill carries it.
+
 ## Contract
 
-`claim:TicketStatus.Contract`: The coordinator contracts an uncontracted Backlog ticket to Todo.
+`claim:TicketStatus.Contract`: A captain on a Wayfinding ticket contracts an uncontracted Backlog ticket to Todo (DYD-1082 1b6b6a5d Q16).
 
-Spec: N12 DR 063 §4
+Spec: N12 DR 063 §4, S5, H5
 
-Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): Backlog → Todo, "the coordinator contracts an uncontracted ticket". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): Backlog → Todo, "a Wayfinding captain contracts it". A system transition: no skill carries it.
 
 ## Start
 

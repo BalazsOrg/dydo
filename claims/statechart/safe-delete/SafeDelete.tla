@@ -25,8 +25,8 @@ SafeDelete_Purge ==
     /\ state = "Archived"
     /\ state' = "Purged"
 
-\* GAP: N10 names no restore from the archive; the built command has one
-Gap1 ==
+\* claim:SafeDelete.Restore
+SafeDelete_Restore ==
     /\ state = "Archived"
     /\ state' = "Live"
 
@@ -36,7 +36,7 @@ Next ==
     \/ SafeDelete_Archive
     \/ SafeDelete_ArchiveT3
     \/ SafeDelete_Purge
-    \/ Gap1
+    \/ SafeDelete_Restore
     \/ Done
 
 Fairness == TRUE

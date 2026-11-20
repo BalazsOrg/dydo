@@ -3,8 +3,8 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// The coordinator (K22, H5), explicit-only (K27, N12 DR 045 §9), and its dispatch template (K14), which the
 /// chief of staff dispatches from. Its five job phases are the walkthrough's (DYD-1082 round 5, Q21), holding
-/// its machine states in the order it meets them (K9); its failure paths are scenarios. Phase 4 still declares
-/// the tribunal's states because DYD-1286 owns the coordinator's lines there (Claims/Tribunal.cs).
+/// its machine states in the order it meets them (K9); its failure paths are scenarios. The tribunal is the
+/// council chair's Judge procedure on the ticket captain (L23), so no tribunal state is the coordinator's.
 /// </summary>
 public static class CoordinatorCarrier
 {
@@ -25,8 +25,7 @@ public static class CoordinatorCarrier
             new("Route out every judgement",
             [
                 new(CoordinatorSlot.Routing),
-                .. HierarchyMachines.Envoy.Slots(EnvoyState.Queued, EnvoyState.Active, EnvoyState.Reported),
-                .. LawMachines.Tribunal.Slots(TribunalState.HardCall, TribunalState.CaseFile, TribunalState.DecidedOvernight, TribunalState.Prepared, TribunalState.ProposedDr)
+                .. HierarchyMachines.Envoy.Slots(EnvoyState.Queued, EnvoyState.Active, EnvoyState.Reported)
             ])
             {
                 Resources = [new(ResourceName.EnvoyBrief, "Envoy brief", new(Section.EnvoySlots, "Slots"), new(Section.EnvoySession, "Session"), new(Section.EnvoySkills, "Skills"))]

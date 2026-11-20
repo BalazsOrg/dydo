@@ -1,25 +1,24 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>A need for Balazs (M10): homework first, decided where it can be, up the chain, and out by one envoy at a time; the envoy brief's slots.</summary>
+/// <summary>A need for Balazs (M10): decided where it can be, up the chain, and out by one envoy at a time; the envoy brief's slots and the job skill table (H23).</summary>
 public static class Envoy
 {
-    public static readonly Claim Take = new("The officer above takes a need for Balazs and does the homework first.", [Actor.TicketCaptain],
-    [
-        new(Skill.TicketCaptain, "A need for Balazs from below: do the homework first in docs, code, Linear, DRs and the spec.", new(EnvoyState.Homework, 901, MoveKind.Arrival))
-    ])
+    // DYD-1286 took the captain's line off: no officer does a need's homework now; it opens a research Question
+    // (JobTickets.OpenQuestion, DYD-1195 3a854e37). The move waits for the Envoy machine to follow the Question stages.
+    public static readonly Claim Take = new("The officer above takes a need for Balazs and does the homework first.", [], [])
     {
         Spec = ["H16"],
         Transition = new(EnvoyState.Need, EnvoyState.Homework, "the officer above takes the need") { Effect = "level' \\in {\"captain\", \"coordinator\"}" }
     };
 
-    public static readonly Claim Decide = new("An obvious, reversible call, or one the homework or a DR settles, is decided by the officer.", [Actor.TicketCaptain],
+    public static readonly Claim Decide = new("An obvious, reversible call is decided where it arises and never becomes a ticket (DYD-1195 3a854e37).", [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "Decide it yourself when the homework answers it, a DR clearly settles it, or the call is obvious and reversible.", new(EnvoyState.Homework, 902, MoveKind.Exit))
+        new(Skill.TicketCaptain, "Decide an obvious, reversible call yourself, where it arises; it never becomes a ticket.", new(EnvoyState.Homework, 902, MoveKind.Exit))
     ])
     { Spec = ["H16", "L18"], Transition = new(EnvoyState.Homework, EnvoyState.Decided, "the homework answers it, or the call is obvious and reversible") };
 
     public static readonly Claim PassUp = new("Captains pass their needs up the chain; only the coordinator sends envoys.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "Pass what remains up the chain to your officer; only the coordinator sends envoys.", new(EnvoyState.Homework, 903, MoveKind.Exit))])
+        [new(Skill.TicketCaptain, "Pass any other need up to your officer, who opens a `research` Question for it; only the coordinator dispatches envoys.", new(EnvoyState.Homework, 903, MoveKind.Exit))])
     { Spec = ["H16", "H12"], Transition = new(EnvoyState.Homework, EnvoyState.PassedUp, "a captain passes what remains up the chain") { Guard = "level = \"captain\"" } };
 
     public static readonly Claim NextLevel = new("The officer above takes the need passed up.", [Actor.Coordinator], [])
@@ -84,8 +83,11 @@ public static class Envoy
     public static readonly Claim SlotReturn = Slot(6, "Return and closing summary.");
     public static readonly Claim SlotOpening = Slot(7, "The opening rule: a fresh 2–3-line picture, then the first question with its recommendation.");
 
-    public static readonly Claim Updates = new("Changes during a session reach the envoy as dispatcher updates; it never asks him to repeat them.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Changes during the session reach you as dispatcher updates; never ask him to repeat them.", new(Section.EnvoySession, 922))])
+    public static readonly Claim Updates = new("Changes during a session reach the envoy as dispatcher updates; it never asks him to repeat them.", [Actor.Coordinator, Actor.TicketCaptain],
+    [
+        new(Skill.Coordinator, "Changes during the session reach you as dispatcher updates; never ask him to repeat them.", new(Section.EnvoySession, 922)),
+        new(Skill.TicketCaptain, "Changes during a session with him reach you as dispatcher updates; never ask him to repeat them.", new(TicketCaptainSlot.Hitl, 922))
+    ])
     { Spec = ["H19"] };
 
     public static readonly Claim NameDrs = new("A question put to him names what each DR says, never only its number.", [Actor.Coordinator, Actor.TicketCaptain, Actor.ChiefOfStaff],
@@ -96,22 +98,30 @@ public static class Envoy
     ])
     { Spec = ["H24"] };
 
-    public static readonly Claim CloseSignal = new("After a shared understanding, and once it has reported back, the envoy tells him the thread can be closed.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "After a shared understanding, and once you have reported back, tell him the thread can be closed.", new(Section.EnvoySession, 924))])
+    public static readonly Claim CloseSignal = new("After a shared understanding, and once it has reported back, the envoy tells him the thread can be closed.", [Actor.Coordinator, Actor.TicketCaptain],
+    [
+        new(Skill.Coordinator, "After a shared understanding, and once you have reported back, tell him the thread can be closed.", new(Section.EnvoySession, 924)),
+        new(Skill.TicketCaptain, "After a shared understanding, and once you have reported back, tell him the thread can be closed.", new(TicketCaptainSlot.Hitl, 924))
+    ])
     { Spec = ["H19", "H23"] };
 
-    /// <summary>The envoy skill table, model data the builder checks against H23.</summary>
+    /// <summary>The job skill table, model data the builder checks against H23: a Question's row is its stage's.</summary>
     public static readonly IReadOnlyList<EnvoyJobSkill> Jobs =
     [
         new(EnvoyJob.Grilling, "grilling"),
         new(EnvoyJob.Walkthrough, "walkthrough"),
         new(EnvoyJob.Wayfinding, "wayfinder"),
-        new(EnvoyJob.Question, "co-thinker"),
+        new(EnvoyJob.Question, "ticket-captain", "it dispatches `research` crew") { Stage = QuestionStage.Research },
+        new(EnvoyJob.Question, "ticket-captain") { Stage = QuestionStage.Council, Resource = TicketCaptainResource.CouncilChair },
+        new(EnvoyJob.Question, "co-thinker") { Stage = QuestionStage.HisCall },
         new(EnvoyJob.Enablement, "wizard", "when it is not a setup procedure he runs (credentials, cutover), just ask")
     ];
 
-    public static readonly Claim SkillTable = new("Each envoy job loads a fixed skill.", [Actor.Coordinator],
-        [new(Skill.Coordinator, EnvoyTable.Render(Jobs), new(Section.EnvoySkills, 925))])
+    public static readonly Claim SkillTable = new("Each job ticket loads a fixed skill; a Question's stage label picks its row.", [Actor.Coordinator, Actor.TicketCaptain],
+    [
+        new(Skill.Coordinator, EnvoyTable.Render(Jobs), new(Section.EnvoySkills, 925)),
+        new(Skill.TicketCaptain, EnvoyTable.Render(Jobs), new(Section.TicketCaptainBrief, 3005))
+    ])
     { Spec = ["H23"] };
 
     private static Claim Slot(int slot, string text) => new($"The envoy brief's slot {slot}.", [Actor.Coordinator],

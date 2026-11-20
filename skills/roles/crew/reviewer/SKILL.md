@@ -57,7 +57,6 @@ Exits:
 Resources:
 
 - [Toolset](resources/toolset.md)
-- [Council](resources/council.md)
 
 ## 3. Return
 

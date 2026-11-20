@@ -18,16 +18,7 @@ Spec: R13
 
 **ticket-captain** (Dispatching):
 
-> Pick each seat's model from this roster; it is his to edit, and he fills or approves the strengths, fits and not-for columns.
->
-> | Model | Vendor | Tier (B7) | Strengths | Fits | Not for |
-> |---|---|---|---|---|---|
-> | Sonnet | Anthropic | check: evidence and behaviour checks | | | |
-> | Luna | OpenAI | check: evidence and behaviour checks | | | |
-> | Opus 5.5 | Anthropic | normal: ordinary reviews at lower and middle levels | | | |
-> | GPT 6.2 Sol | OpenAI | normal: ordinary reviews at lower and middle levels | | | |
-> | Fable | Anthropic | strong: non-obvious discovery, and the late whole-system "simplify" review | | | |
-> | Astra | OpenAI | strong: non-obvious discovery, and the late whole-system "simplify" review | | | |
+> The model roster is his to write; his text goes here.
 
 ## Usage
 

@@ -2,27 +2,28 @@
 title: "The tribunal"
 ---
 stateDiagram-v2
-  s0: A hard call #183; L18, H5
-  s1: Clerk holds the case file #183; L18
+  s0: A Question's call, after its research #183; L18, H16, H23
+  s1: A council child: its chair holds the case file #183; L18, L23, H23
   s2: Settled by a DR #183; L18
-  s3: Two judges, sealed #183; L18
-  s4: One exchange #183; L18
-  s5: Decided overnight #183; L18, L19, L20
-  s6: Prepared for him #183; L18, L20
-  s7: Proposed DR awaiting his ratification #183; L21
-  s8: GAP: unknown state
-  s9: Ruling found wrong, investigated #183; L19
-  s10: Proposed DR ratified #183; L21
-  s11: His answer scored #183; L20
+  s3: Prepared for him: a his-call child #183; L18, L20, H23
+  s4: His answer scored #183; L20
+  s5: Two judges, sealed #183; L18
+  s6: One exchange #183; L18
+  s7: Decided, provisionally #183; L18, L19, L20
+  s8: Proposed DR awaiting his ratification #183; L21
+  s9: Proposed DR declined: deleted, his words on the raising ticket #183; L21
+  s10: Ruling found wrong, investigated #183; L19
+  s11: Proposed DR ratified #183; L21
   [*] --> s0
-  s0 --> s1: hard: a fresh clerk takes the Question #183; L18
+  s0 --> s1: a hard call not worth his time: a council child, by day or night #183; L18, L20, H23
   s0 --> s2: a DR clearly settles it #183; L18
-  s1 --> s3: two judges from different families take sealed positions #183; L18, R13, R15 or one family out: the judges sit on the remaining family #183; L22
-  s3 --> s4: both positions in#59; one exchange #183; L18
-  s4 --> s6: by day, or they disagree, or it is one-way or DR-grade #183; L18, L20, L21
-  s4 --> s5: overnight, the judges agree on a two-way hard call #183; L18, L19, L20
-  s4 --> s7: overnight, both agree on a two-way, seriously blocking DR-grade call #183; L21
-  s5 --> s9: the ruling is found wrong #183; L19
-  s6 --> s11: he answers#59; scored against the prediction #183; L20
-  s7 --> s8: GAP: L21 has him ratify a proposed DR but gives no route when he declines it
-  s7 --> s10: he ratifies it #183; L21
+  s0 --> s3: worth his time to understand: a his-call child #183; L18, H23, H16
+  s1 --> s5: two judges from different families take sealed positions #183; L18, R13, R15 or one family out: the judges sit on the remaining family #183; L22, L18, L20
+  s3 --> s4: he answers#59; any council prediction is scored, as evidence only #183; L20
+  s5 --> s6: both positions in#59; one exchange #183; L18
+  s6 --> s3: they disagree, or it is one-way or DR-grade #183; L18, L20, L21, H23
+  s6 --> s7: the judges agree on a two-way hard call #183; L18, L19, L20
+  s6 --> s8: overnight, both agree on a two-way, seriously blocking DR-grade call #183; L21
+  s7 --> s10: the ruling is found wrong #183; L19
+  s8 --> s9: he declines it: deleted, his words on the raising ticket #183; L21
+  s8 --> s11: he ratifies it #183; L21

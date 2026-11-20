@@ -27,6 +27,8 @@ public static class Build
         "the model PR is read through its built-skill diff", "K16");
     public static readonly Claim Approve = Move(ClaimBuildState.InReview, ClaimBuildState.Approved, Actor.Balazs,
         "he approves: in the 4.0.0 push once, at the final candidate; after it, each model PR", "K16", "K20", "K22");
+    public static readonly Claim Rejected = Move(ClaimBuildState.InReview, ClaimBuildState.Edited, Actor.Balazs,
+        "he rejects a change at his walkthrough: new captains on new tickets edit the model, and the candidate is rebuilt (DYD-1195 8661b8f4)", "K16", "K22");
     public static readonly Claim Ship = Move(ClaimBuildState.Approved, ClaimBuildState.Released, Actor.SkillBuild,
         "downstream gets the built files in one ordinary update", "K18");
 

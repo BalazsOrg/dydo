@@ -18,36 +18,39 @@
     },
     {
       "id": "Mapped",
-      "title": "A round from zero: a fresh area map",
+      "title": "A round from zero: a fresh feature map",
       "spec": [
         "N5"
       ]
     },
     {
       "id": "ReadPhase",
-      "title": "Read phase on an area",
+      "title": "Read lens on a slice",
       "spec": [
-        "N5"
+        "N5",
+        "R34"
       ]
     },
     {
       "id": "BreakPhase",
-      "title": "Break phase on the area",
+      "title": "Break lens on the slice",
       "spec": [
-        "N5"
+        "N5",
+        "R34"
       ]
     },
     {
       "id": "DrivePhase",
-      "title": "Drive phase on the area",
+      "title": "Drive lens on the slice",
       "spec": [
         "N5",
+        "R34",
         "R3"
       ]
     },
     {
       "id": "Inquisition",
-      "title": "The round's verdict, held by the coordinator",
+      "title": "The round's verdict, held by its root inquisition captain",
       "spec": [
         "N5",
         "S8"
@@ -110,6 +113,13 @@
         "N6",
         "N4",
         "N3"
+      ]
+    },
+    {
+      "id": "NotAccepted",
+      "title": "Not accepted: his findings are tickets in the Project",
+      "spec": [
+        "N6"
       ]
     },
     {
@@ -189,10 +199,10 @@
       ]
     },
     {
-      "claim": "claim:Landing.AllAreas",
+      "claim": "claim:Landing.AllSlices",
       "from": "DrivePhase",
       "to": "Inquisition",
-      "arrow": "every area through its phases: the round's verdict",
+      "arrow": "every slice through its lenses: the round's verdict",
       "spec": [
         "N5",
         "S8"
@@ -206,9 +216,10 @@
       "claim": "claim:Landing.BreakDone",
       "from": "BreakPhase",
       "to": "DrivePhase",
-      "arrow": "Break done; Drive, the default next phase",
+      "arrow": "Break done; Drive, a separate sub-agent",
       "spec": [
-        "N5"
+        "N5",
+        "R34"
       ],
       "guard": null,
       "effect": null,
@@ -265,9 +276,10 @@
       "claim": "claim:Landing.MapDrawn",
       "from": "Mapped",
       "to": "ReadPhase",
-      "arrow": "an area's Read phase starts",
+      "arrow": "a slice's Read lens starts",
       "spec": [
-        "N5"
+        "N5",
+        "R34"
       ],
       "guard": null,
       "effect": null,
@@ -289,19 +301,6 @@
       "skills": []
     },
     {
-      "claim": "claim:Landing.NextArea",
-      "from": "DrivePhase",
-      "to": "ReadPhase",
-      "arrow": "Drive done; the next area's Read phase",
-      "spec": [
-        "N5"
-      ],
-      "guard": "areas > 1",
-      "effect": "areas' = areas - 1",
-      "fair": false,
-      "skills": []
-    },
-    {
       "claim": "claim:Landing.NextMergeRound",
       "from": "RoundFixes",
       "to": "MergeReview",
@@ -319,7 +318,7 @@
       "claim": "claim:Landing.NextRound",
       "from": "RoundFixes",
       "to": "Mapped",
-      "arrow": "the fixes are merged; the next round from zero, a fresh area map",
+      "arrow": "the fixes are merged; the next round from zero, a fresh feature map",
       "spec": [
         "N5"
       ],
@@ -327,6 +326,34 @@
       "effect": "round' = round + 1 /\\ areas' \\in 1..2",
       "fair": false,
       "skills": []
+    },
+    {
+      "claim": "claim:Landing.NextSlice",
+      "from": "DrivePhase",
+      "to": "ReadPhase",
+      "arrow": "Drive done; the next slice's Read lens",
+      "spec": [
+        "N5"
+      ],
+      "guard": "areas > 1",
+      "effect": "areas' = areas - 1",
+      "fair": false,
+      "skills": []
+    },
+    {
+      "claim": "claim:Landing.NotAccepted",
+      "from": "Walkthrough",
+      "to": "NotAccepted",
+      "arrow": "he does not accept: his findings become tickets in the same Project",
+      "spec": [
+        "N6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
     },
     {
       "claim": "claim:Landing.PrerequisiteMet",
@@ -353,12 +380,28 @@
       "skills": []
     },
     {
+      "claim": "claim:Landing.ReCut",
+      "from": "NotAccepted",
+      "to": "Integrated",
+      "arrow": "a fix captain re-cuts the branch; another landing follows",
+      "spec": [
+        "N6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:Landing.ReadDone",
       "from": "ReadPhase",
       "to": "BreakPhase",
-      "arrow": "Read done; Break, the default next phase",
+      "arrow": "Read done; Break, a separate sub-agent",
       "spec": [
-        "N5"
+        "N5",
+        "R34"
       ],
       "guard": null,
       "effect": null,
@@ -453,22 +496,24 @@
         "N5",
         "S8",
         "S9",
+        "S11",
         "S17"
       ],
       "guard": null,
       "effect": "fixFrom' = \"inquisition\"",
       "fair": false,
       "skills": [
-        "coordinator"
+        "ticket-captain"
       ]
     },
     {
       "claim": "claim:Landing.Staff",
       "from": "Integrated",
       "to": "Mapped",
-      "arrow": "the coordinator staffs a round; a fresh area map",
+      "arrow": "the Inquisition ticket opens; its root captain staffs a round and draws a fresh feature map",
       "spec": [
         "N5",
+        "H5",
         "R13",
         "R14"
       ],
@@ -476,7 +521,8 @@
       "effect": "areas' \\in 1..2",
       "fair": false,
       "skills": [
-        "coordinator"
+        "coordinator",
+        "ticket-captain"
       ]
     },
     {
@@ -495,12 +541,5 @@
       "skills": []
     }
   ],
-  "gaps": [
-    {
-      "action": "Gap1",
-      "from": "Walkthrough",
-      "to": null,
-      "note": "N6 gives only his acceptance; the route when he does not accept is unstated"
-    }
-  ]
+  "gaps": []
 }

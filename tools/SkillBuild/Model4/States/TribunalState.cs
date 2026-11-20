@@ -12,6 +12,7 @@ public enum TribunalState
     Prepared,
     ProposedDr,
     Ratified,
+    Declined,
     Scored,
     Investigated
 }

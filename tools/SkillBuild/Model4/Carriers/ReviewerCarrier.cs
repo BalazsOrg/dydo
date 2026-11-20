@@ -26,13 +26,7 @@ public static class ReviewerCarrier
             new("Take the brief", HierarchyMachines.Dispatch.Slots(DispatchState.Briefed)),
             new("Work your level's row", [.. DeliveryMachines.Review.Slots(ReviewState.Round), .. HierarchyMachines.Should.Slots(ShouldState.Found)])
             {
-                Resources =
-                [
-                    Toolset,
-                    new(ResourceName.Council, "Council",
-                        new(Section.CouncilUses, "Uses"), new(Section.CouncilMember, "Member"), new(Section.CouncilSynthesis, "Synthesis"),
-                        new(Section.CouncilOneFamily, "One family out"), new(Section.CouncilJudge, "Judge: the tribunal"))
-                ]
+                Resources = [Toolset]
             },
             new("Return", HierarchyMachines.Dispatch.Slots(DispatchState.Returned))
         ],

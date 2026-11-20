@@ -217,6 +217,20 @@
       "skills": []
     },
     {
+      "claim": "claim:Build.Rejected",
+      "from": "InReview",
+      "to": "Edited",
+      "arrow": "he rejects a change at his walkthrough: new captains on new tickets edit the model, and the candidate is rebuilt (DYD-1195 8661b8f4)",
+      "spec": [
+        "K16",
+        "K22"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
+    },
+    {
       "claim": "claim:Build.Remodel",
       "from": "TlcFailed",
       "to": "Edited",

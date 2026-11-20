@@ -15,21 +15,23 @@ public static class LawMachines
         new(CouncilState.Synthesised, "Synthesised by a non-member", "L14")
     ], CouncilState.Convened, [CouncilState.Synthesised]);
 
+    // DecidedOvernight keeps its id: since DYD-1195 87c1e2e6 (L18, L20) a council also decides by day a call not worth his time.
     public static readonly Machine Tribunal = new(MachineId.Tribunal, "The tribunal",
     [
-        new(TribunalState.HardCall, "A hard call", "L18", "H5"),
+        new(TribunalState.HardCall, "A Question's call, after its research", "L18", "H16", "H23"),
         new(TribunalState.DrSettled, "Settled by a DR", "L18"),
-        new(TribunalState.CaseFile, "Clerk holds the case file", "L18"),
+        new(TribunalState.CaseFile, "A council child: its chair holds the case file", "L18", "L23", "H23"),
         new(TribunalState.Sealed, "Two judges, sealed", "L18"),
         new(TribunalState.Exchange, "One exchange", "L18"),
-        new(TribunalState.DecidedOvernight, "Decided overnight", "L18", "L19", "L20"),
-        new(TribunalState.Prepared, "Prepared for him", "L18", "L20"),
+        new(TribunalState.DecidedOvernight, "Decided, provisionally", "L18", "L19", "L20"),
+        new(TribunalState.Prepared, "Prepared for him: a his-call child", "L18", "L20", "H23"),
         new(TribunalState.ProposedDr, "Proposed DR awaiting his ratification", "L21"),
         new(TribunalState.Ratified, "Proposed DR ratified", "L21"),
+        new(TribunalState.Declined, "Proposed DR declined: deleted, his words on the raising ticket", "L21"),
         new(TribunalState.Scored, "His answer scored", "L20"),
         new(TribunalState.Investigated, "Ruling found wrong, investigated", "L19")
     ], TribunalState.HardCall,
-    [TribunalState.DrSettled, TribunalState.DecidedOvernight, TribunalState.Ratified, TribunalState.Scored, TribunalState.Investigated])
+    [TribunalState.DrSettled, TribunalState.DecidedOvernight, TribunalState.Ratified, TribunalState.Declined, TribunalState.Scored, TribunalState.Investigated])
     {
         Variables =
         [
@@ -39,8 +41,7 @@ public static class LawMachines
             new("blocking", "FALSE", "blocking \\in BOOLEAN"),
             new("agree", "FALSE", "agree \\in BOOLEAN"),
             new("oneFamily", "FALSE", "oneFamily \\in BOOLEAN")
-        ],
-        Gaps = [new(TribunalState.ProposedDr, null, "L21 has him ratify a proposed DR but gives no route when he declines it")]
+        ]
     };
 
     public static readonly Machine Law = new(MachineId.Law, "How the law grows",
@@ -92,10 +93,7 @@ public static class LawMachines
         new(SafeDeleteState.Live, "Branch or worktree in use, a T3 worktree included", "N10"),
         new(SafeDeleteState.Archived, "Archived for 30 days", "N10"),
         new(SafeDeleteState.Purged, "Purged", "N10")
-    ], SafeDeleteState.Live, [SafeDeleteState.Purged])
-    {
-        Gaps = [new(SafeDeleteState.Archived, SafeDeleteState.Live, "N10 names no restore from the archive; the built command has one")]
-    };
+    ], SafeDeleteState.Live, [SafeDeleteState.Purged]);
 
     public static readonly Machine IgnoreEntry = new(MachineId.IgnoreEntry, "A file over the token limit",
     [
