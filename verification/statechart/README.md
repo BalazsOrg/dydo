@@ -6,12 +6,14 @@ explains: ["verification/statechart/**"]
 
 # Hand-written 4.0.0 properties
 
-These modules are independent test inputs for DYD-1225 (K3, K20, DR 064 §1).
-The checked model is PR 376 at `0feabe79f2f6f3c748ccac693219034b9d5add4f`.
+These modules are independent test inputs for DYD-1225 (K3, K20, DR 064 §1),
+adapted to the rebuilt roles and the closed GAPs at DYD-1289.
+The checked model is the claim model at `65c35075535b13d60e57b2a134fb1f4fb59b3895`
+(DYD-1317 on `DYD-1317-integration`); the property run records its own clean source HEAD.
 Authority: [Spec: dydo 4.0.0](https://linear.app/bodnar-balazs/document/spec-dydo-400-08326afbb349),
-updated 2026-11-18T22:00:15Z. Each property has a rule ID and a plain-language
-obligation beside its definition. [obligations.md](obligations.md) records the
-spec-first requirements, including requirements the current model cannot test.
+approved at updatedAt 2026-11-20T01:58:55.576Z, and his rulings above it. Each property has a rule ID
+and a plain-language obligation beside its definition. [obligations.md](obligations.md) records the
+spec-first requirements, including requirements the current model cannot test, and every adaptation.
 
 ## Inputs and convention
 
@@ -39,9 +41,9 @@ TLA+'s `[][A]_v` form; the two S24 progress obligations use leads-to (`~>`).
 
 History properties check phase order only. A phase called `Approved` does not
 prove who approved it. Seeing `Gating` does not prove a green receipt exists.
-The ten marked gaps (thirteen arrows) are preserved, with no oracle for their
-entry/exit decision. Properties are local to each machine; none establishes
-cross-machine synchronization.
+All ten GAPs are closed (DYD-1082 555a8300); each closed arrow has a property
+written from his ruling, listed in [obligations.md](obligations.md). Properties are
+local to each machine; none establishes cross-machine synchronization.
 
 Nine checks prefixed `Structural_` guard this fixture's terminal phases or
 forbidden phase names. They are deliberately labeled structural checks, not
@@ -57,15 +59,15 @@ output directory each time. The runner does not acquire a second lock: the host
 wrapper holds its existing gate slot for the whole serial run.
 
 ```text
-mkdir -p /tmp/dyd1225-chartroot
-dydo statechart install-skill --root /tmp/dyd1225-chartroot
-/var/tmp/dydo-gate-lock.sh python3 REPO/verification/statechart/run.py --baseline --skill /tmp/dyd1225-chartroot/skills/engineering/statechart --out /tmp/dyd1225-baseline-new
-/var/tmp/dydo-gate-lock.sh python3 REPO/verification/statechart/run.py --skill /tmp/dyd1225-chartroot/skills/engineering/statechart --out /tmp/dyd1225-properties-new
-/var/tmp/dydo-gate-lock.sh python3 REPO/verification/statechart/run.py --controls --skill /tmp/dyd1225-chartroot/skills/engineering/statechart --out /tmp/dyd1225-controls-new
+mkdir -p /tmp/dyd1289-chartroot
+dydo statechart install-skill --root /tmp/dyd1289-chartroot
+/var/tmp/dydo-gate-lock.sh python3 REPO/verification/statechart/run.py --baseline --skill /tmp/dyd1289-chartroot/skills/engineering/statechart --out /tmp/dyd1289-baseline
+/var/tmp/dydo-gate-lock.sh python3 REPO/verification/statechart/run.py --skill /tmp/dyd1289-chartroot/skills/engineering/statechart --out /tmp/dyd1289-properties
+/var/tmp/dydo-gate-lock.sh python3 REPO/verification/statechart/run.py --controls --skill /tmp/dyd1289-chartroot/skills/engineering/statechart --out /tmp/dyd1289-controls
 ```
 
-On this systemd host, the recorded commands also wrap Python with
-`systemd-run --user --scope --slice=app-t3code-agents-cbc6c2286251.slice -p MemoryMax=2G -p MemorySwapMax=0 -p OOMPolicy=continue`.
+On this systemd host, the recorded commands also wrap Python, inside the lock, with
+`systemd-run --user --scope --slice=app-t3code-agents-cbc6c2286251.slice -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600`.
 That slice is session-specific. The runner sets `JAVA_TOOL_OPTIONS` to
 `-Xmx512m -XX:+UseParallelGC`. dydo selects and verifies its managed Java and TLC;
 there is no direct TLC fallback. Follow the installed statechart skill if dydo
@@ -91,9 +93,9 @@ run; the acceptance run includes all 31 machines.
 ## Model observability owed to the candidate captain
 
 The following are unresolved model coverage defects, separate from the ten
-marked spec gaps. Passing the phase checks cannot close these obligations.
-The property author cannot repair them without changing the model, which this
-task expressly forbids.
+spec gaps, which are now closed. Passing the phase checks cannot close these
+obligations. A property author cannot repair them without changing the model,
+which a properties-only task does not do.
 
 | Required rule | Missing state or distinction |
 |---|---|
@@ -107,12 +109,12 @@ task expressly forbids.
 | K3, K16, K20, K22 | Claim-build and role-evaluation phases carry no candidate SHA, property-run result, approver identity, nine-role coverage or prerequisite completion. They cannot bind acceptance to this candidate's actual TLC result. |
 | T1–T5, Y4 | Proof has no separate lint stage, job-tag data, receipt SHA/tree or selected-test outcomes. Red and receipt phase order is checked for newly written and conformance tests, including rewritten Old tests. T8's direct Keep is measurement of a retained test, not graduation; no old receipt is used as proof. |
 | K20, N5, N6, S14, D11 | Overview has areas rather than skill-build/candidate acceptance or knowledge-migration/spec-deletion states. Its nominal review/merge and landing/master order is checked, but skills-before-final-candidate and closeout cleanup are not observable. |
-| S14–S16, H5 | Project has no spec-exists/contract quotation/lasting-knowledge fields or cleanup states. Its watch/replan/landing phase order is checked; spec-before-delivery and migrate-before-delete cannot be checked. The two H4 gap arrows remain unconstrained. |
+| S14–S16, H5 | Project has no spec-exists/contract quotation/lasting-knowledge fields or cleanup states. Its watch/replan/landing phase order is checked; spec-before-delivery and migrate-before-delete cannot be checked. Gap 1's idle causes, Paused status and running agents, are absent; only the unheld exits are checked. |
 | K14, H1–H3, R13–R16, R32 | Dispatch lacks agent role/family, context, roster/usage, native/delegated distinction, owned checkout, child authorization, loaded skill, committed SHA and return recipient. |
 | S5–S18 | Ticket/should phases lack Type/Mode labels, holder identity, cancellation reason, duplicate lookup, batch/origin links and his move authorization. |
 | D2–D7 | Docs phases lack actual content, invitation, admission predicates, `explains:` paths, code changes and linked reasons. |
 | S19–S26, Y9, R30 | Map/findings lack fetched tickets, ordering/cache flags, read/write effects, age/count thresholds and prevention measures. |
-| H15–H19, H22–H24, L14–L22 | Envoy/council/tribunal phases lack seat identity, freshness, family availability, sealed/read-only effects, non-member synthesis, job skill, actual agreement inputs, evidence, or result recording. Tribunal booleans permit testing the exit predicates only. |
+| H15–H19, H22–H24, L14–L22 | Envoy/council/tribunal phases lack seat identity, freshness, family availability, sealed/read-only effects, non-member synthesis, job skill, actual agreement inputs, evidence, or result recording. Tribunal booleans permit testing the exit predicates only. The envoy machine follows one need with a holder level and an active-envoy counter: it has no Question identity, stage label data, `dr-grade` flag, bundle membership, waiting-ticket counts or estimates for H18's ranking, and its council child ends where the tribunal's route begins. |
 | L3, L8–L13 | Law/slug/backfill lack slug sets, wording, quoted DR text, citation validity, authority and row approval. Phase order cannot validate the content. |
 | H7, L19, L21 | Staff has only phases; its list content, envoy prohibition, ratification distinctions and escalation routes are absent. |
 | N10 | Safe-delete has no elapsed days, archive retention data, T3 state or purge safety. Only archive-before-purge can be checked. |

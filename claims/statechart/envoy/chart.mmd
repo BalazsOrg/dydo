@@ -2,24 +2,23 @@
 title: "A need for Balazs"
 ---
 stateDiagram-v2
-  s0: A need for Balazs #183; H16
-  s1: Homework first #183; H16
-  s2: Asked in one line, in his thread #183; H22, H6
-  s3: Decided by the officer #183; H16, L18
-  s4: Passed up the chain #183; H16, H12
-  s5: Queued behind the active envoy #183; H15, H18
-  s6: Sent to the tribunal #183; H5, L18
-  s7: Envoy out #183; H15, H19, H23
+  s0: A need, where it arises #183; H16, H22
+  s1: Asked in one line, in his thread #183; H22, H6
+  s2: Decided where it arises: obvious and reversible #183; H16, H5
+  s3: A research Question, held by a fresh captain #183; H16, H23, L18, L21
+  s4: Answered by its research #183; H16, L18
+  s5: A council child, AFK #183; H23, L18, L23
+  s6: On his HITL queue, behind the active envoy #183; H16, H18, H23
+  s7: Envoy out #183; H15, H18, H19, H23
   s8: Envoy reported back #183; H15, H19
   s9: Envoy thread closed #183; H18, H19
   [*] --> s0
-  s0 --> s1: the officer above takes the need #183; H16
-  s1 --> s2: he is already in this officer's thread #183; H22, H6
-  s1 --> s3: the homework answers it, or the call is obvious and reversible #183; H16, L18
-  s1 --> s4: a captain passes what remains up the chain #183; H16, H12
-  s1 --> s5: only he can settle it #183; H15, H17, S10
-  s1 --> s6: a hard call: competing answers, each good through some lens #183; H5, L18
-  s4 --> s1: the officer above takes it #183; H12
-  s5 --> s7: the last envoy reported and he closed its thread #183; H18, H19, H23
+  s0 --> s1: he is already in this officer's thread #183; H22, H6
+  s0 --> s2: the call is obvious and reversible: decided where it arises #183; H16, H5
+  s0 --> s3: passed up: its officer opens a research Question and waits on it #183; H16, H12, H23
+  s3 --> s4: its research resolves the call #183; H23, H16, L18, K30
+  s3 --> s5: a hard call not worth his time: a council child, AFK #183; L23, H23, L18
+  s3 --> s6: worth his time: its his-call child joins his HITL queue #183; H23, H16, H15, H17, S10
+  s6 --> s7: the last envoy reported and he closed its thread: the next goes onto the head of the queue #183; H18, H19, H23
   s7 --> s8: the envoy records the result and reports back #183; H15, H19
   s8 --> s9: he closes the envoy's thread #183; H19, H18

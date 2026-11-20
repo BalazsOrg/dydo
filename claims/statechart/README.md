@@ -43,7 +43,7 @@ machine's own states, not the `GAP` end a chart adds.
 | Survey, board and CI findings | `findings` | 14 | 18 | 0 | 14 states, 21 steps |
 | Liveness | `liveness` | 3 | 5 | 0 | 3 states, 5 steps |
 | dydo map | `map` | 5 | 6 | 0 | 5 states, 8 steps |
-| A need for Balazs (envoys) | `envoy` | 10 | 9 | 0 | 13 states, 19 steps |
+| A need for Balazs (envoys) | `envoy` | 10 | 9 | 0 | 13 states, 20 steps |
 | A council | `council` | 4 | 4 | 0 | 4 states, 5 steps |
 | The tribunal | `tribunal` | 12 | 13 | 0 | 244 states, 319 steps |
 | How the law grows | `law` | 8 | 7 | 0 | 8 states, 11 steps |
@@ -91,7 +91,7 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 
 ## Omissions
 
-- **Properties.** No invariant or liveness property is generated: K3 has them written by hand, in `verification/statechart/` (DYD-1225), and its `run.py` checks them (K20). At DYD-1286, 30 of the 31 machines pass; `envoy` fails `H16_OnlyAdmiralSends`, which still names the level `admiral` that DYD-1284 renamed `coordinator`. The one progress assumption is model data: weak fairness on `liveness`'s four healing moves (S24), so that machine's config is `SPECIFICATION Spec`.
+- **Properties.** No invariant or liveness property is generated: K3 has them written by hand, in `verification/statechart/` (DYD-1225, adapted to the rebuilt roles at DYD-1289), and its `run.py` checks them (K20). Each closed GAP has its own property there, written from his ruling. The one progress assumption is model data: weak fairness on `liveness`'s four healing moves (S24), so that machine's config is `SPECIFICATION Spec`.
 - **Cross-machine synchronisation is not modelled.** Each machine runs alone. The overview links the areas, and a state shared in prose (a Merge hop that is both a `hops` final and the start of `feature-merge`) is two states in two machines.
 - **Bounds.** Counters are bounded for TLC only (review rounds ≤ 4, landing rounds ≤ 3, areas per round ≤ 2, re-syncs ≤ 3, landing prerequisites = 10). The spec sets no stop on review rounds (R10).
 - **Two-valued choices are nondeterministic.** The tribunal's night, two-way, DR-grade, blocking and agreement flags, a blocker's kind, a master PR's door, and the cloud route's cost are free choices, not modelled causes.
@@ -104,8 +104,8 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 | 2.1 Claims-built skills (K1–K29) | `claim-build` (K20: TLC passed or failed), `role-evaluation` (K22), `adopter` (K18), `dispatch` (K14), `overview` |
 | 2.2 Review and merge (R1–R33) | `review`, `hops`, `merge-command`, `feature-merge`, `master-route` (R26–R31), `dispatch` (R12–R16), `landing` (R9, R20, R28), `findings` (R30) |
 | 2.3 Statuses and board (S1–S26) | `ticket-status`, `hops` (S3), `review` (S8–S11), `should` (S17, S18), `liveness` (S24), `findings` (S22, S23, S25, S26), `map` (S19–S21, S26), `project` (S14–S16) |
-| 2.4 Hierarchy and envoys (H1–H24) | `dispatch`, `envoy` (H23, checked at build), `staff`, `liveness` (H12), `project` (H4, H5, H8–H11), `findings` (H8, H11), `map` (H6), `adopter` (H9) |
-| 2.5 Law, councils and tribunal (L1–L23) | `law`, `slug-check` (L8), `backfill`, `council`, `tribunal` (L18–L22), `staff` (L19, L21), `mutation` (L14) |
+| 2.4 Hierarchy and envoys (H1–H24) | `dispatch`, `envoy` (H15, H16, H18, H19, H22, H23: the Question stages; H23's table checked at build), `staff`, `liveness` (H12), `project` (H4, H5, H8–H11), `findings` (H8, H11), `map` (H6), `adopter` (H9) |
+| 2.5 Law, councils and tribunal (L1–L23) | `law`, `slug-check` (L8), `backfill`, `council`, `tribunal` (L18–L22), `envoy` (L18, L21, L23: research before a council child), `staff` (L19, L21), `mutation` (L14) |
 | 2.6 Tests, gates and the token limit (T1–T23) | `proof`, `ignore-entry`, `mutation` (T12), `landing` (T8, T12) |
 | 2.7 Descriptive docs (D1–D11) | `docs`, `landing` (D11), `adopter` (D1, D9) |
 | 2.8 DYTEST (Y1–Y9) | `proof` (Y4, Y6, Y7), `findings` (Y1, Y3, Y8, Y9), `feature-merge` (Y4, Y9), `landing` (Y2, Y6), `adopter` (Y5) |
@@ -117,7 +117,7 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 |---|---|
 | 1. The model builds every file; golden and shape tests; TLC against properties | `claim-build` (TLC passed or failed) |
 | 2. Nine roles evaluated; survivors rewritten; his approval | `role-evaluation` |
-| 3. Seven statuses, auto-close off, the Type labels | `ticket-status`, `hops`, `landing` (N9), `adopter` |
+| 3. Seven statuses, auto-close off, the Type labels, the stage and `dr-grade` labels | `ticket-status`, `hops`, `landing` (N9), `adopter`, `envoy` (H23's stages), `tribunal` (L21's `dr-grade`) |
 | 4. `dydo merge` enforces R19, R23, R24; the AFK route into master | `merge-command`, `feature-merge`, `master-route` |
 | 5. `dydo survey board`, the new findings, `liveness` and its healing; `dydo map` | `findings`, `liveness`, `map` |
 | 6. The law layout, slug validation, L3 shipping | `law`, `slug-check` (L8: slug validation), `adopter`, `landing` (N8) |
@@ -127,7 +127,7 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 | 10. `explains:`, flagged by `dydo check` and `pr-ready` | `docs` |
 | 11. The four L1 rules in `writing-docs.md` and the working-tree standard | `claim-build` (K29); the working-tree standard is built, `writing-docs.md` is not (see Omissions) |
 | 12. DYTEST wired in behind DYD-1071 | `landing` (Y2, Y6) |
-| 13. A clean inquisition round; every should closed | `landing` (Read → Break → Drive per area), `should` |
+| 13. A clean inquisition round; every should closed | `landing` (Read → Break → Drive per slice), `should` |
 | 14. The committed evidence gone from history | `landing` (N14) |
 | 15. Guard hardening before the tag | `landing` (N2) |
 | 16. Safe delete, T3 worktrees included | `safe-delete` |
@@ -135,4 +135,5 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 | 18. The Upgrade note and the re-measure | `adopter`, `landing` (N8) |
 | 19. The roster, `dydo usage`, the envoy skill table, the council resource | `dispatch` (R13, R14), `envoy` (H23; the builder's table check), `council` (L23) |
 | 20. The upstream glossary shape, the plan files gone, the ledger retired | `adopter` (D9), `landing` (D11), `findings` (S25) |
-| 21. His acceptance at the landing walkthrough; the spec deleted | `landing`, `findings` |
+| 21. The rebuilt skills carry the walkthrough changes: the coordinator, the crew kinds and the implementer, skill-naming dispatch, the spine shape, the inquisition-captain and council-chair resources, the reviewer toolset | `role-evaluation` (K22's folds), `dispatch` (K14), `claim-build` (K9), `project` (H5), `landing` (N5, R34), `council` and `tribunal` (L23), `envoy` (H5, H15, H16) |
+| 22. His acceptance at the landing walkthrough; the spec deleted | `landing`, `findings` |

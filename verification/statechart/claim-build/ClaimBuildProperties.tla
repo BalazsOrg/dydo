@@ -19,4 +19,8 @@ K20_FailureDoesNotFinish == [][((state = "TlcFailed" /\ state' # state) => state
 \* K7, K10, K24: The checked build precedes the final property check.
 K7_ChecksBeforeTlc == state = "TlcPassed" => "Checked" \in seen
 
+\* K16, K22 (DYD-1082 555a8300 gap 9): his review of the candidate ends in his approval or a rejection,
+\* and a rejected candidate is rebuilt from an edit; it is never released or checked as it stood.
+K16_RejectedRebuilt == [][((state = "InReview" /\ state' # state) => state' \in {"Approved", "Edited"})]_<<vars, seen>>
+
 ====

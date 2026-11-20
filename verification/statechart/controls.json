@@ -36,7 +36,7 @@
       "level": "\"captain\"",
       "envoys": "0"
     },
-    "property": "H16_OnlyAdmiralSends"
+    "property": "H16_OnlyCoordinatorSends"
   },
   "feature-merge": {
     "from": "MergeTodo",
