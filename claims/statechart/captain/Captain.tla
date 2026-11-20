@@ -13,8 +13,8 @@ Init ==
     /\ round = 1
     /\ extra = FALSE
 
-\* claim:Captain.Filler
-Captain_Filler ==
+\* claim:Captain.FillerBack
+Captain_FillerBack ==
     /\ state = "Taken"
     /\ state' = "Returned"
     /\ UNCHANGED <<round, extra>>
@@ -180,10 +180,16 @@ CaptainTrouble_Third ==
     /\ state' = "Checkpoint"
     /\ UNCHANGED <<round, extra>>
 
+\* claim:CaptainTrouble.Up
+CaptainTrouble_Up ==
+    /\ state = "Question"
+    /\ state' = "Returned"
+    /\ UNCHANGED <<round, extra>>
+
 Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
-    \/ Captain_Filler
+    \/ Captain_FillerBack
     \/ CaptainDispatch_Send
     \/ CaptainFinish_Close
     \/ CaptainFinish_HandOver
@@ -210,6 +216,7 @@ Next ==
     \/ CaptainTrouble_ReCut
     \/ CaptainTrouble_SplitRest
     \/ CaptainTrouble_Third
+    \/ CaptainTrouble_Up
     \/ Done
 
 Bounds == round <= 4 /\ extra \in BOOLEAN

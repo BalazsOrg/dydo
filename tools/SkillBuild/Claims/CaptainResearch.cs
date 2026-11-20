@@ -13,7 +13,7 @@ public static class CaptainResearch
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
     public static readonly Claim Asked = new("A Research-kind ticket is one question a choice waits on, answered with every claim cited to an opened passage.", Me,
-        [At(CaptainSlot.ResearchLead, 1, "Your ticket is one question a choice waits on. Answer it with every claim cited to a passage you opened.")])
+        [At(Actor.TicketCaptain, CaptainSlot.ResearchLead, 1, "Your ticket is one question a choice waits on. Answer it with every claim cited to a passage you opened.")])
     {
         Spec = ["K30"],
         Truth = new(Evidence.Code(Legacy),
@@ -22,7 +22,7 @@ public static class CaptainResearch
     };
 
     public static readonly Claim Restate = new("Research restates its question and says what would count as an answer.", Me,
-        [At(CaptainSlot.ResearchSteps, 1, "Restate the question in one sentence, and say what would count as an answer.")])
+        [At(Actor.TicketCaptain, CaptainSlot.ResearchSteps, 1, "Restate the question in one sentence, and say what would count as an answer.")])
     {
         Spec = ["K30"],
         Truth = new(Evidence.Code(Legacy),
@@ -32,7 +32,7 @@ public static class CaptainResearch
 
     public static readonly Claim Families = new("Research marks each source family in or out, with a reason, and reads governing docs on the default branch too.", Me,
     [
-        At(CaptainSlot.ResearchSteps, 2,
+        At(Actor.TicketCaptain, CaptainSlot.ResearchSteps, 2,
             "Mark each source family in or out, with a reason: decision records, the spec and plans, other docs, code and tests, git history, Linear, outside sources. Read governing docs on the default branch too; a branch can lag.")
     ])
     {
@@ -43,7 +43,7 @@ public static class CaptainResearch
     };
 
     public static readonly Claim Scouts = new("Research sends one scout per source family in play, as native helpers in parallel, and reads a lone family itself.", Me,
-        [At(CaptainSlot.ResearchSteps, 3, "Send one scout per family in play, as native helpers in parallel, each with the question and its one family; read a lone family yourself.")])
+        [At(Actor.TicketCaptain, CaptainSlot.ResearchSteps, 3, "Send one scout per family in play, as native helpers in parallel, each with the question and its one family; read a lone family yourself.")])
     {
         Spec = ["K30", "S1"],
         Truth = new(Evidence.Tool(Helper),
@@ -52,7 +52,7 @@ public static class CaptainResearch
     };
 
     public static readonly Claim Open = new("Research opens the passage behind every load-bearing claim and confirms it.", Me,
-        [At(CaptainSlot.ResearchSteps, 4, "Open the passage behind every load-bearing claim, and confirm it says what the scout said.")])
+        [At(Actor.TicketCaptain, CaptainSlot.ResearchSteps, 4, "Open the passage behind every load-bearing claim, and confirm it says what the scout said.")])
     {
         Spec = ["K30", "K22"],
         Truth = new(Evidence.Tool(Helper),
@@ -62,7 +62,7 @@ public static class CaptainResearch
 
     public static readonly Claim Conflicts = new("Where sources conflict, research names the conflict and the governing source; where they are silent, the point is unsettled.", Me,
     [
-        At(CaptainSlot.ResearchSteps, 5,
+        At(Actor.TicketCaptain, CaptainSlot.ResearchSteps, 5,
             "Where sources conflict, name the conflict and the source that governs; where they are silent, mark the point unsettled rather than reason your way to a fact.")
     ])
     {
@@ -74,7 +74,7 @@ public static class CaptainResearch
 
     public static readonly Claim Answer = new("Research writes the answer first, then each claim with its citation and passage, what stayed unsettled, and every family searched.", Me,
     [
-        At(CaptainSlot.ResearchSteps, 6,
+        At(Actor.TicketCaptain, CaptainSlot.ResearchSteps, 6,
             "Write the answer first, then each claim with its citation (a path at its commit, or a URL) and its exact passage, what stayed unsettled, and every family searched, the empty ones included.")
     ])
     {
@@ -86,7 +86,7 @@ public static class CaptainResearch
 
     public static readonly Claim Question = new("A Question's captain researches first, answers what the facts settle, and returns the rest to its officer as unsettled, with the call laid out.", Me,
     [
-        At(CaptainSlot.ResearchQuestion, 1,
+        At(Actor.TicketCaptain, CaptainSlot.ResearchQuestion, 1,
             "Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, " +
             "and return it to your officer as unsettled.")
     ])
@@ -97,6 +97,6 @@ public static class CaptainResearch
             Reason: "Options left unranked let whoever decides weigh them without the researcher's leaning.")
     };
 
-    private static Line At(Enum slot, int order, string text) =>
-        new(CaptainSkill.TicketCaptain, Actor.TicketCaptain, text, new(slot, order));
+    private static Line At(Actor reader, Enum slot, int order, string text) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order));
 }

@@ -1,9 +1,10 @@
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// The ticket-captain prototype's "Get it reviewed" (DYD-1372). The captain dispatches reviews and
-/// never reviews (DYD-1295 2119cd65); the severities are defined here, where they are used, in the
-/// user's words (41a553f1).
+/// The ticket-captain prototype's "Get it reviewed" and the route of each finding a round returns
+/// (DYD-1372). The captain dispatches reviews and never reviews (DYD-1295 2119cd65); the severities
+/// are defined here, where they are used, in the user's words (41a553f1); and a captain makes no call
+/// on a finding about a change it wrote itself (spec R33).
 /// </summary>
 public static class CaptainReview
 {
@@ -21,7 +22,7 @@ public static class CaptainReview
 
     public static readonly Claim Other = new("Every change is reviewed by an agent other than its writer, unless it is too small to need it.", Me,
     [
-        At(CaptainSlot.Reviewed, 1,
+        At(Actor.TicketCaptain, CaptainSlot.Reviewed, 1,
             "Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.",
             () => [Risk])
     ])
@@ -36,14 +37,14 @@ public static class CaptainReview
     public static readonly Claim Pr = new("The captain that merges its work opens the PR for it, from a clean and pushed tree, before its review.", Me, [])
     {
         Spec = ["R17", "R21"],
-        Truth = new(Evidence.Command("dydo pr-ready --body <file>"),
+        Truth = new(Evidence.Command("dydo pr-ready"),
             Layer: "The guard refuses a `gh` PR call from a dirty or unpushed tree and reads no other way of opening one; nothing opens the PR for a captain.",
             Reason: "The verdict's PASS line and `dydo merge` both need a PR that shows exactly the reviewed commit.")
     };
 
     public static readonly Claim Whose = new("Whoever merges a piece of work has it reviewed first; a part is reviewed with the parent it joins.", Me,
     [
-        At(CaptainSlot.Reviewed, 2,
+        At(Actor.TicketCaptain, CaptainSlot.Reviewed, 2,
             "If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.",
             () => [Pr])
     ])
@@ -55,7 +56,7 @@ public static class CaptainReview
     };
 
     public static readonly Claim NoLoop = new("A plan, spec or contract gets no review loop; a spec gets at most one Questions pass by a native helper, chosen by risk.", Me,
-        [At(CaptainSlot.BriefNone, 1, "Write no review brief for a plan, spec or contract: it gets no review rounds, and a risky spec at most one pass by a native helper, which returns questions.")])
+        [At(Actor.TicketCaptain, CaptainSlot.BriefNone, 1, "Write no review brief for a plan, spec or contract: it gets no review rounds, and a risky spec at most one pass by a native helper, which returns questions.")])
     {
         Spec = ["R4"],
         Truth = new(Evidence.Tool("Agent: a native sub-agent, awaited within the turn, returns its report to its caller alone."),
@@ -65,7 +66,7 @@ public static class CaptainReview
 
     public static readonly Claim Severity = new("A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.", Me,
     [
-        At(CaptainSlot.Reviewed, 3,
+        At(Actor.TicketCaptain, CaptainSlot.Reviewed, 3,
             "A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.")
     ])
     {
@@ -86,7 +87,7 @@ public static class CaptainReview
 
     public static readonly Claim Whole = new("Once its parts are wired, a parent is reviewed once: each part, the parts together, their harmony.", Me,
     [
-        At(CaptainSlot.Rounds, 1,
+        At(Actor.TicketCaptain, CaptainSlot.Rounds, 1,
             "Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.",
             () => [Groups])
     ])
@@ -100,7 +101,7 @@ public static class CaptainReview
 
     public static readonly Claim Record = new("A lone reviewer records its own round; a round of several seats is recorded by the officer that holds it.", Me,
     [
-        At(CaptainSlot.Rounds, 2,
+        At(Actor.TicketCaptain, CaptainSlot.Rounds, 2,
             "A lone reviewer records its own round; a round of several seats is yours to record, by [A round's record](resources/round.md).")
     ])
     {
@@ -110,19 +111,19 @@ public static class CaptainReview
             Reason: "One verdict per round, however many seats looked.")
     };
 
-    public static readonly Claim Route = new("The officer running the rounds routes each blocker by its kind.", Me,
-        [At(CaptainSlot.Rounds, 3, "Route each blocker, as below.")])
+    public static readonly Claim Route = new("The officer running the rounds routes each blocker and each should by what it shows.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.Rounds, 3, "Route each blocker and each should, by [A finding's route](resources/findings.md).")])
     {
-        Spec = ["R9"],
+        Spec = ["R9", "S17"],
         Truth = new(Evidence.Run(Rounds),
-            Layer: "A FAIL stops `dydo merge` and sends the finding nowhere.",
+            Layer: "A FAIL stops `dydo merge` and sends the finding nowhere; a should stops nothing at all.",
             Reason: "Each kind has one place that can act on it, and the wrong place sits on it.")
     };
 
     public static readonly Claim Fix = new("A blocker on work that is broken, against the spec or a security hole goes to a Fix ticket holding one sub-ticket per blocker.", Me,
     [
-        At(CaptainSlot.Routes, 1,
-            "Work that is broken, against the spec or a security hole: a Fix ticket, one sub-ticket per blocker inside it. (open: his call)")
+        At(Actor.TicketCaptain, CaptainSlot.BlockerRoutes, 1,
+            "Work that is broken, against the spec or a security hole: a Fix ticket by [Fix rounds](fix-rounds.md), one sub-ticket per blocker inside it. (open: his call)")
     ])
     {
         Spec = ["R9", "S9"],
@@ -133,7 +134,7 @@ public static class CaptainReview
     };
 
     public static readonly Claim Replan = new("A fundamental blocker or a new requirement goes to the officer above for a re-plan.", Me,
-        [At(CaptainSlot.Routes, 2, "A fundamental fault, or a new requirement: your officer, for a re-plan.")])
+        [At(Actor.TicketCaptain, CaptainSlot.BlockerRoutes, 2, "A fundamental fault, or a new requirement: your officer, for a re-plan.")])
     {
         Spec = ["R9"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
@@ -168,7 +169,7 @@ public static class CaptainReview
     };
 
     public static readonly Claim Clean = new("The first round with no new blocker ends the review rounds.", Me,
-        [At(CaptainSlot.Rounds, 4, "Repeat until a round finds no new blocker; you may order one more.", () => [OneMore, Cleared])])
+        [At(Actor.TicketCaptain, CaptainSlot.Rounds, 4, "Repeat until a round finds no new blocker; you may order one more.", () => [OneMore, Cleared])])
     {
         Spec = ["R8"],
         Truth = new(Evidence.Run(Rounds),
@@ -177,8 +178,7 @@ public static class CaptainReview
         Transition = new(CaptainState.Clear, CaptainState.Finishing, "no further round is ordered: the review rounds end")
     };
 
-    public static readonly Claim Mine = new("A blocker found in a change a captain wrote goes to a fresh writer.", Me,
-        [At(CaptainSlot.Mine, 1, "A blocker found in a change you wrote goes to a fresh writer.")])
+    public static readonly Claim Mine = new("A blocker found in a change a captain wrote goes to a fresh writer.", Me, [])
     {
         Spec = ["R16", "R33"],
         Truth = new(Evidence.Tool("delegate_task: \"Start one child agent with only `task`. No parent history.\""),
@@ -186,6 +186,20 @@ public static class CaptainReview
             Reason: "Whoever wrote the fault tends to defend the thinking that produced it.")
     };
 
-    private static Line At(Enum slot, int order, string text, Func<Claim[]>? also = null) =>
-        new(CaptainSkill.TicketCaptain, Actor.TicketCaptain, text, new(slot, order), also);
+    public static readonly Claim OwnFinding = new("A captain makes no call on a finding about a change it wrote: the finding stands as the reviewer wrote it, and a doubt about it is a Question.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.OwnChange, 1,
+            "Take a finding on a change you wrote as the reviewer wrote it: a fresh writer fixes it, and if you doubt it, the doubt is a Question sub-ticket, never your call.",
+            () => [Mine])
+    ])
+    {
+        Spec = ["R33", "H16"],
+        Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, \"An open question that blocks planning or implementation and is too big to settle inline.\" " +
+                                 "So a doubt has a ticket that a fresh captain can hold."),
+            Layer: "A round's findings all come back to the captain running it, and nothing marks the ones that fall on its own change.",
+            Reason: "Once its own change is under review, the captain is no longer impartial about that review.")
+    };
+
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

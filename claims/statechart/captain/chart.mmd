@@ -17,7 +17,7 @@ stateDiagram-v2
   s12: At the checkpoint after a third blocked round #183; R10, S10
   [*] --> s0
   s0 --> s1: the ticket fits one agent #183; S2, S7
-  s0 --> s2: a filler ticket fails its check and goes back #183; H11
+  s0 --> s2: a filler ticket fails its check: it goes back unstarted and unassigned #183; H11
   s0 --> s3: the ticket is bigger than one agent: it is cut #183; H13, H14
   s1 --> s2: #96;too big, re-cut#96;: neither the work nor its split fits #183; H2
   s1 --> s3: the leaf proves too big: what is left is cut #183; H13, H14
@@ -31,6 +31,7 @@ stateDiagram-v2
   s5 --> s8: the round finds no new blocker #183; R8, R11
   s5 --> s10: a round other than the third returns a blocker: a Fix ticket #183; R9, S9
   s6 --> s1: the answer is on the Question ticket #183; H16
+  s6 --> s2: the Question comes back unsettled: it goes to the officer, still open #183; H16, H12
   s7 --> s4: the children are back and the ticket only groups parts: no review of its own #183; R6
   s7 --> s5: the parts are wired: a Review of the whole is dispatched #183; R2, R1
   s8 --> s4: no further round is ordered: the review rounds end #183; R8

@@ -1,10 +1,11 @@
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// The ticket-captain prototype (DYD-1372): its job paragraph and "Take the ticket". Every claim of the
-/// prototype answers the four truth questions in its fields (DYD-1295 1ffbc4c8): each line's reader is
-/// the captain, the evidence names what was checked against the running system, the layer says why
-/// nothing below the skill covers it, and the reason says what it prevents or enables.
+/// The ticket-captain prototype (DYD-1372): its job paragraph, "Take the ticket", and the one rule on
+/// a problem outside the ticket. Every claim of the prototype answers the four truth questions in its
+/// fields (DYD-1295 1ffbc4c8): each line names its reader where it is written, the actor who acts on
+/// it; the evidence names what was checked against the running system; the layer says why nothing
+/// below the skill covers it; and the reason says what it prevents or enables.
 /// </summary>
 public static class Captain
 {
@@ -13,7 +14,7 @@ public static class Captain
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
     public static readonly Claim Owns = new("A captain holds one ticket to its end and answers for its outcome.", Me,
-        [At(SpinePart.Job, 1, "You hold one ticket to its end, and you are responsible for its outcome.")])
+        [At(Actor.TicketCaptain, SpinePart.Job, 1, "You hold one ticket to its end, and you are responsible for its outcome.")])
     {
         Spec = ["S7", "H1"],
         Truth = new(Evidence.Code("AGENTS.md"),
@@ -22,7 +23,7 @@ public static class Captain
     };
 
     public static readonly Claim Kind = new("A ticket's kind names the work, and the captain skill is how any kind is held.", Me,
-        [At(SpinePart.Job, 2, "Its kind says what the work is; this skill says how to hold it.")])
+        [At(Actor.TicketCaptain, SpinePart.Job, 2, "Its kind says what the work is; this skill says how to hold it.")])
     {
         Spec = ["K30"],
         Truth = new(Evidence.Code(Carrier),
@@ -31,7 +32,7 @@ public static class Captain
     };
 
     public static readonly Claim Officer = new("A captain's officer is its dispatcher, and it is the officer of the captains it dispatches.", Me,
-        [At(SpinePart.Job, 3, "Whoever dispatched you is your officer, and you are the officer of every captain you dispatch.")])
+        [At(Actor.TicketCaptain, SpinePart.Job, 3, "Whoever dispatched you is your officer, and you are the officer of every captain you dispatch.")])
     {
         Spec = ["H12"],
         Truth = new(Evidence.Run("This skill's writer was a `delegate_task` child whose brief said: \"Your captain is the thread that dispatched you; return to it\" (DYD-1372 hop 2)."),
@@ -40,7 +41,10 @@ public static class Captain
     };
 
     public static readonly Claim Calls = new("A captain decides only obvious, reversible calls; any other call is a Question sub-ticket a fresh captain answers.", Me,
-        [At(SpinePart.Job, 4, "Decide only obvious, reversible calls; any other call becomes a Question sub-ticket for a fresh captain, and you wait on its answer.")])
+    [
+        At(Actor.TicketCaptain, SpinePart.Job, 4,
+            "Decide only obvious, reversible calls; any other call becomes a Question sub-ticket for a fresh captain, and you wait on its answer.")
+    ])
     {
         Spec = ["H16"],
         Truth = new(Evidence.Run("Linear, team Dydo, read 2026-11-20: the Type label Question exists, and a ticket takes sub-tickets (DYD-1281 holds twenty)."),
@@ -49,12 +53,37 @@ public static class Captain
     };
 
     public static readonly Claim Read = new("A captain reads its contract, how it fits the ticket above, and the spec sections it serves; the spec governs.", Me,
-        [At(CaptainSlot.Take, 1, "Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.")])
+    [
+        At(Actor.TicketCaptain, CaptainSlot.Take, 1,
+            "Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.")
+    ])
     {
         Spec = ["S15", "S16"],
         Truth = new(Evidence.Run("DYD-1372's contract, read 2026-11-20, holds all three: its outcome, a paragraph \"How this fits above\", and the spec rules it serves."),
             Layer: "Linear only stores the description; weighing it against the spec is the holder's.",
             Reason: "A holder that works from its contract alone drifts from the intent a little at every hop.")
+    };
+
+    public static readonly Claim FillerBack = new("A filler ticket that fails its captain's check goes back unstarted and unassigned, with a one-line reason.", Me, [])
+    {
+        Spec = ["H11"],
+        Truth = new(Evidence.Code("Services/Survey/SurveyRules.cs"),
+            Layer: "`dydo survey <project>` offers a ticket as pickable only while it is unstarted and unassigned, and nothing puts a rejected one back in that state.",
+            Reason: "A rejected ticket left In Progress looks held, and no officer is ever offered it again."),
+        Transition = new(CaptainState.Taken, CaptainState.Returned, "a filler ticket fails its check: it goes back unstarted and unassigned")
+    };
+
+    public static readonly Claim Filler = new("A captain on a filler ticket checks, before it starts it, that the ticket is small, reversible and free of design calls.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.Take, 2,
+            "If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.",
+            () => [FillerBack])
+    ])
+    {
+        Spec = ["H11"],
+        Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: the groups are Mode, Severity and Type, with nothing for small, reversible or free of design calls, so nobody upstream can have checked them."),
+            Layer: "Whoever pulls filler sorts by labels alone; these three need someone who has opened the ticket.",
+            Reason: "Work that hides a design call is caught before anyone builds it.")
     };
 
     public static readonly Claim Load = new("A captain loads its kind's resource and every skill its brief names.", Me, [])
@@ -66,16 +95,18 @@ public static class Captain
     };
 
     public static readonly Claim Start = new("Whoever starts a ticket sets it In Progress.", Me,
-        [At(CaptainSlot.Take, 2, "Set the ticket In Progress, then load your kind's resource and every skill your brief names.", () => [Load])])
+    [
+        At(Actor.TicketCaptain, CaptainSlot.Take, 3, "Set the ticket In Progress, then load your kind's resource and every skill your brief names.", () => [Load])
+    ])
     {
         Spec = ["S6"],
-        Truth = new(Evidence.Run("Linear, team Dydo, statuses read 2026-11-20: In Progress, Todo, Done, Canceled and Duplicate exist, and DYD-1372 was In Progress while this was written."),
+        Truth = new(Evidence.Run("Linear, team Dydo, statuses read 2026-11-20: In Progress is a started status and Todo the unstarted one, beside Done, Canceled and Duplicate; DYD-1372 was In Progress while this was written."),
             Layer: "T3's `link_issue` only shows the ticket beside its thread; it changes no status in Linear.",
             Reason: "The status is how every other agent sees that someone already has the ticket.")
     };
 
     public static readonly Claim Thread = new("Whoever sets a ticket In Progress attaches the holder's T3 thread link.", Me,
-        [At(CaptainSlot.Take, 3, "Attach your thread's link to the ticket, titled `T3 · ticket-captain · <kind> · <model>`.")])
+        [At(Actor.TicketCaptain, CaptainSlot.Take, 4, "Attach your thread's link to the ticket, titled `T3 · ticket-captain · <kind> · <model>`.")])
     {
         Spec = ["S13"],
         Truth = new(Evidence.Open("Spec S13 leaves it to verify whether Linear takes a T3 thread link as an attachment, and nobody has: " +
@@ -86,7 +117,7 @@ public static class Captain
 
     public static readonly Claim Kinds = new("Implement, Review and Research are the captain's kind resources.", Me,
     [
-        At(CaptainSlot.Kinds, 1,
+        At(Actor.TicketCaptain, CaptainSlot.Kinds, 1,
             "| Your ticket is | Load |\n| -- | -- |\n" +
             "| a change: an Implement, a Fix, a merge conflict | [Implement](resources/implement.md) |\n" +
             "| a Review | [Review](resources/review.md) |\n" +
@@ -101,7 +132,7 @@ public static class Captain
 
     public static readonly Claim Jobs = new("A Grilling, Walkthrough, Wayfinding or Enablement ticket is held as any other, with its job's skill; its Mode says whether the user takes part.", Me,
     [
-        At(CaptainSlot.Hold, 1,
+        At(Actor.TicketCaptain, CaptainSlot.Hold, 1,
             "A Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.")
     ])
     {
@@ -111,21 +142,8 @@ public static class Captain
             Reason: "One way of holding every kind keeps a job ticket from growing a process of its own.")
     };
 
-    public static readonly Claim Filler = new("A captain on a filler ticket checks it is small, reversible and free of design calls, and returns one that is not.", Me,
-    [
-        At(CaptainSlot.Hold, 2,
-            "If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer with a one-line reason.")
-    ])
-    {
-        Spec = ["H11"],
-        Truth = new(Evidence.Run("Linear's labels, read 2026-11-20, carry Mode and Severity and nothing for small, reversible or free of design calls, so nobody upstream can have checked them."),
-            Layer: "Whoever pulls filler sorts by labels alone; these three need someone who has opened the ticket.",
-            Reason: "Work that hides a design call is caught before anyone builds it."),
-        Transition = new(CaptainState.Taken, CaptainState.Returned, "a filler ticket fails its check and goes back")
-    };
-
     public static readonly Claim ReportUp = new("A captain reports a problem outside its ticket to its officer.", Me,
-        [At(CaptainSlot.Hold, 3, "Report a problem outside your ticket to your officer.")])
+        [At(Actor.TicketCaptain, SpinePart.WhenThingsGoWrong, 2, "Report a problem outside your ticket to your officer.")])
     {
         Spec = ["R5"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it, which reads it with `task_status`."),
@@ -133,6 +151,6 @@ public static class Captain
             Reason: "What matters is that it surfaces, even when the finder cannot tell whose it is.")
     };
 
-    private static Line At(Enum slot, int order, string text, Func<Claim[]>? also = null) =>
-        new(CaptainSkill.TicketCaptain, Actor.TicketCaptain, text, new(slot, order), also);
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

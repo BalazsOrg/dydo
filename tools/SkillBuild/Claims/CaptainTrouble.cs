@@ -13,7 +13,7 @@ public static class CaptainTrouble
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
     public static readonly Claim Save = new("A captain whose leaf proves too big first commits what is whole and posts its SHA.", Me,
-        [At(CaptainSlot.TooBigSteps, 1, "Commit what is whole, and post its SHA on your ticket.")])
+        [At(Actor.TicketCaptain, CaptainSlot.TooBigSteps, 1, "Commit what is whole, and post its SHA on your ticket.")])
     {
         Spec = ["K9", "H3"],
         Truth = new(Evidence.Run(OwnBrief + "\"commit each part when it is whole and green\"."),
@@ -22,7 +22,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim SplitRest = new("A leaf that proves too big is split: what is left becomes sub-tickets.", Me,
-        [At(CaptainSlot.TooBigSteps, 2, "Cut what is left into sub-tickets that start from that SHA, and dispatch them.")])
+        [At(Actor.TicketCaptain, CaptainSlot.TooBigSteps, 2, "Cut what is left into sub-tickets that start from that SHA, and dispatch them.")])
     {
         Spec = ["H13", "H14"],
         Truth = new(Evidence.Code("AGENTS.md"),
@@ -32,7 +32,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim ReCut = new("A captain that cannot hold even the split returns too big, re-cut, naming what is done and what is left.", Me,
-        [At(CaptainSlot.TooBigSteps, 3, "If you cannot hold the split either, return `too big, re-cut` to your officer, naming what is done and what is left.")])
+        [At(Actor.TicketCaptain, CaptainSlot.TooBigSteps, 3, "If you cannot hold the split either, return `too big, re-cut` to your officer, naming what is done and what is left.")])
     {
         Spec = ["H2"],
         Truth = new(Evidence.Run(OwnBrief + "\"return `too big, re-cut` naming what is done and what is left\"."),
@@ -42,7 +42,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim ChildReCut = new("An officer whose child returns too big, re-cut cuts what the child left.", Me,
-        [At(CaptainSlot.TooBigChild, 1, "When a child returns `too big, re-cut`, the cut is yours: open sub-tickets for what it left, starting from the SHA it returned.")])
+        [At(Actor.TicketCaptain, CaptainSlot.TooBigChild, 1, "When a child returns `too big, re-cut`, the cut is yours: open sub-tickets for what it left, starting from the SHA it returned.")])
     {
         Spec = ["H2", "H14"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
@@ -52,7 +52,7 @@ public static class CaptainTrouble
 
     public static readonly Claim FixOwner = new("A Fix goes to its writer's thread while that thread has room, and to a fresh agent otherwise.", Me,
     [
-        At(CaptainSlot.FixRules, 1,
+        At(Actor.TicketCaptain, CaptainSlot.FixRules, 1,
             "Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong.")
     ])
     {
@@ -63,7 +63,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim Parallel = new("A Fix is split only between parallel writers.", Me,
-        [At(CaptainSlot.FixRules, 2, "Split a Fix only between writers who work in parallel.")])
+        [At(Actor.TicketCaptain, CaptainSlot.FixRules, 2, "Split a Fix only between writers who work in parallel.")])
     {
         Spec = ["S9"],
         Truth = new(Evidence.Run(Rounds + " Each Fix is one ticket."),
@@ -81,7 +81,7 @@ public static class CaptainTrouble
 
     public static readonly Claim NextRound = new("The next round starts once every blocker of the Fix is Done and its proof ran on the head: a fresh look through every lens.", Me,
     [
-        At(CaptainSlot.FixRules, 3,
+        At(Actor.TicketCaptain, CaptainSlot.FixRules, 4,
             "Dispatch the next round once every blocker of the Fix is Done and its proof ran on the head: a fresh reviewer, every lens, and after a security hole the security lens first.",
             () => [Security])
     ])
@@ -94,7 +94,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim Dead = new("On a re-plan, dead sub-tickets go Canceled with a one-line reason.", Me,
-        [At(CaptainSlot.FixRules, 4, "When your officer re-plans, cancel each sub-ticket the new plan drops, with a one-line reason.")])
+        [At(Actor.TicketCaptain, CaptainSlot.FixRules, 5, "When your officer re-plans, cancel each sub-ticket the new plan drops, with a one-line reason.")])
     {
         Spec = ["S10"],
         Truth = new(Evidence.Run("Linear, team Dydo, statuses read 2026-11-20: Canceled exists."),
@@ -113,7 +113,7 @@ public static class CaptainTrouble
 
     public static readonly Claim Checkpoint = new("At the checkpoint the default is one more round, noted on the Review ticket.", Me,
     [
-        At(CaptainSlot.FixCheckpoint, 1,
+        At(Actor.TicketCaptain, CaptainSlot.FixCheckpoint, 1,
             "After a third round that still has a blocker, write `checkpoint: one more round, because …` on the Review ticket; its blockers then go to a Fix, as in any round.",
             () => [Third])
     ])
@@ -127,7 +127,7 @@ public static class CaptainTrouble
 
     public static readonly Claim Escalate = new("At the checkpoint a captain escalates only for a fundamental break, a new requirement or a need for the user.", Me,
     [
-        At(CaptainSlot.FixCheckpoint, 2,
+        At(Actor.TicketCaptain, CaptainSlot.FixCheckpoint, 2,
             "Write `escalated: …` instead, and take it to your officer, only for a fundamental break, a new requirement or a need for the user.")
     ])
     {
@@ -139,7 +139,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim Sources = new("What research can answer never reaches the user.", Me,
-        [At(CaptainSlot.NeedLead, 1, "Most calls never reach the user: whatever the sources can answer is a Question sub-ticket.")])
+        [At(Actor.TicketCaptain, CaptainSlot.NeedLead, 1, "Most calls never reach the user: whatever the sources can answer is a Question sub-ticket.")])
     {
         Spec = ["H16"],
         Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: the Type group holds Question."),
@@ -148,7 +148,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim Ask = new("A call that is not obvious and reversible becomes a Question sub-ticket that blocks only what waits on it.", Me,
-        [At(CaptainSlot.NeedRules, 1, "Open the Question sub-ticket, block only what waits on it, and go on with the rest.")])
+        [At(Actor.TicketCaptain, CaptainSlot.NeedRules, 1, "Open the Question sub-ticket, block only what waits on it, and go on with the rest.")])
     {
         Spec = ["H16", "S10"],
         Truth = new(Evidence.Run("Linear, DYD-1372 read 2026-11-20: a ticket carries `blocks` and `blockedBy` relations beside its children."),
@@ -158,7 +158,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim Answered = new("The blocked work resumes when the answer is on the Question ticket.", Me,
-        [At(CaptainSlot.NeedRules, 2, "Resume what waited once the answer is on the Question ticket.")])
+        [At(Actor.TicketCaptain, CaptainSlot.NeedRules, 2, "Resume what waited once the answer is on the Question ticket.")])
     {
         Spec = ["H16"],
         Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: Question is described \"Resolution: the answer, posted on close\"."),
@@ -168,17 +168,18 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim Up = new("A Question that comes back unsettled is passed up to the officer, with what was found.", Me,
-        [At(CaptainSlot.NeedRules, 3, "When a Question comes back unsettled, pass it to your officer with what was found, and leave it open.")])
+        [At(Actor.TicketCaptain, CaptainSlot.NeedRules, 3, "When a Question comes back unsettled, pass it to your officer with what was found, and leave it open.")])
     {
         Spec = ["H16", "H12"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
             Layer: "A captain has no tool that opens a thread with the user, and its officer is the only one above it.",
-            Reason: "Whether a call is worth the user's time is weighed once, above, instead of by every captain that meets one.")
+            Reason: "Whether a call is worth the user's time is weighed once, above, instead of by every captain that meets one."),
+        Transition = new(CaptainState.Question, CaptainState.Returned, "the Question comes back unsettled: it goes to the officer, still open")
     };
 
     public static readonly Claim InThread = new("When the user is already in an officer's thread, it may ask a one-line question there.", Me,
     [
-        At(CaptainSlot.NeedRules, 4,
+        At(Actor.TicketCaptain, CaptainSlot.NeedRules, 4,
             "When the user is already in your thread, you may ask one line there, with the host's question tool: never what the sources can answer, and never a call that only wants the user's approval.")
     ])
     {
@@ -189,7 +190,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim Cite = new("A question put to the user names what each decision record says, never only its number.", Me,
-        [At(CaptainSlot.NeedRules, 5, "Say what a decision record decides whenever you cite one to the user, never only its number.")])
+        [At(Actor.TicketCaptain, CaptainSlot.NeedRules, 5, "Say what a decision record decides whenever you cite one to the user, never only its number.")])
     {
         Spec = ["H24"],
         Truth = new(Evidence.Code("dydo/project/decisions"),
@@ -197,6 +198,6 @@ public static class CaptainTrouble
             Reason: "The user answers the question in front of him without looking anything up.")
     };
 
-    private static Line At(Enum slot, int order, string text, Func<Claim[]>? also = null) =>
-        new(CaptainSkill.TicketCaptain, Actor.TicketCaptain, text, new(slot, order), also);
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

@@ -123,10 +123,10 @@
   ],
   "transitions": [
     {
-      "claim": "claim:Captain.Filler",
+      "claim": "claim:Captain.FillerBack",
       "from": "Taken",
       "to": "Returned",
-      "arrow": "a filler ticket fails its check and goes back",
+      "arrow": "a filler ticket fails its check: it goes back unstarted and unassigned",
       "spec": [
         "H11"
       ],
@@ -534,6 +534,22 @@
         "R10"
       ],
       "guard": "round = 3",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.Up",
+      "from": "Question",
+      "to": "Returned",
+      "arrow": "the Question comes back unsettled: it goes to the officer, still open",
+      "spec": [
+        "H16",
+        "H12"
+      ],
+      "guard": null,
       "effect": null,
       "fair": false,
       "skills": [

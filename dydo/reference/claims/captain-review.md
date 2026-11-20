@@ -46,7 +46,7 @@ Reason: A writer's own context hides from it what a fresh one sees at once.
 
 Spec: R17, R21
 
-Evidence (command): `dydo pr-ready --body <file>`
+Evidence (command): `dydo pr-ready`
 
 Layer: The guard refuses a `gh` PR call from a dirty or unpushed tree and reads no other way of opening one; nothing opens the PR for a captain.
 
@@ -158,19 +158,19 @@ Reason: One verdict per round, however many seats looked.
 
 ## Route
 
-`claim:CaptainReview.Route`: The officer running the rounds routes each blocker by its kind.
+`claim:CaptainReview.Route`: The officer running the rounds routes each blocker and each should by what it shows.
 
-Spec: R9
+Spec: R9, S17
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 
-Layer: A FAIL stops `dydo merge` and sends the finding nowhere.
+Layer: A FAIL stops `dydo merge` and sends the finding nowhere; a should stops nothing at all.
 
 Reason: Each kind has one place that can act on it, and the wrong place sits on it.
 
 **ticket-captain** (Rounds; read by TicketCaptain):
 
-> Route each blocker, as below.
+> Route each blocker and each should, by A finding's route (`resources/findings.md`).
 
 ## Fix
 
@@ -186,9 +186,9 @@ Layer: A FAIL stops `dydo merge`; it opens no ticket for the fix.
 
 Reason: Each blocker can be closed, and seen closed, on its own.
 
-**ticket-captain** (Routes; read by TicketCaptain):
+**ticket-captain** (BlockerRoutes; read by TicketCaptain):
 
-> Work that is broken, against the spec or a security hole: a Fix ticket, one sub-ticket per blocker inside it. (open: his call)
+> Work that is broken, against the spec or a security hole: a Fix ticket by Fix rounds (`fix-rounds.md`), one sub-ticket per blocker inside it. (open: his call)
 
 ## Replan
 
@@ -204,7 +204,7 @@ Layer: A Fix can only repair what the plan asked for; nothing below the officer 
 
 Reason: Fixing toward a plan that is itself wrong builds more of the wrong thing.
 
-**ticket-captain** (Routes; read by TicketCaptain):
+**ticket-captain** (BlockerRoutes; read by TicketCaptain):
 
 > A fundamental fault, or a new requirement: your officer, for a re-plan.
 
@@ -274,6 +274,22 @@ Layer: Nothing keeps an agent from repairing its own work and calling it fixed.
 
 Reason: Whoever wrote the fault tends to defend the thinking that produced it.
 
-**ticket-captain** (Mine; read by TicketCaptain):
+**ticket-captain** (OwnChange; read by TicketCaptain, on claim:CaptainReview.OwnFinding):
 
-> A blocker found in a change you wrote goes to a fresh writer.
+> Take a finding on a change you wrote as the reviewer wrote it: a fresh writer fixes it, and if you doubt it, the doubt is a Question sub-ticket, never your call.
+
+## OwnFinding
+
+`claim:CaptainReview.OwnFinding`: A captain makes no call on a finding about a change it wrote: the finding stands as the reviewer wrote it, and a doubt about it is a Question.
+
+Spec: R33, H16
+
+Evidence (run): Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, "An open question that blocks planning or implementation and is too big to settle inline." So a doubt has a ticket that a fresh captain can hold.
+
+Layer: A round's findings all come back to the captain running it, and nothing marks the ones that fall on its own change.
+
+Reason: Once its own change is under review, the captain is no longer impartial about that review.
+
+**ticket-captain** (OwnChange; read by TicketCaptain):
+
+> Take a finding on a change you wrote as the reviewer wrote it: a fresh writer fixes it, and if you doubt it, the doubt is a Question sub-ticket, never your call.

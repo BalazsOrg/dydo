@@ -136,19 +136,19 @@ Reason: A review held only to the contract passes a wrong rule the contract inhe
 
 ## LeafCheck
 
-`claim:CaptainBriefs.LeafCheck`: A leaf gets no full review, only an optional evidence check by a fresh seat.
+`claim:CaptainBriefs.LeafCheck`: A leaf gets no full review, only an optional evidence check: a Review ticket of its own beside the leaf's, for a fresh seat.
 
 Spec: S4, R6
 
-Evidence (code): `skills/roles/crew/reviewer/resources/toolset.md`
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4 are each a ticket of their own, children of DYD-1281 beside the Fix and part tickets they judge, and none sits under one of those. `skills/roles/crew/reviewer/resources/toolset.md` holds the leaf's row: "a lane or hop, optional seat".
 
-Layer: The level table has a row for a leaf, and nothing keeps a dispatcher from asking more of one.
+Layer: The level table has a row for a leaf, and nothing keeps a dispatcher from asking more of one or from leaving the check without a ticket.
 
 Reason: The review of the whole covers each part, so a full review of one part is paid for twice.
 
 **ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Level):
 
-> The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. A leaf gets at most the check, never a full review.
+> The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. A leaf gets at most the check, never a full review: open the check as a Review ticket of its own beside the leaf's, for a fresh seat.
 
 ## Level
 
@@ -164,7 +164,7 @@ Reason: The level sets how much review the candidate gets, and review is expensi
 
 **ticket-captain** (BriefReview; read by TicketCaptain):
 
-> The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. A leaf gets at most the check, never a full review.
+> The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. A leaf gets at most the check, never a full review: open the check as a Review ticket of its own beside the leaf's, for a fresh seat.
 
 ## Lenses
 

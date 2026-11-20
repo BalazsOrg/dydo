@@ -20,7 +20,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Holding an Inquisition ticket or one of its sub-tickets, conduct it by the inquisition captain (`resources/inquisition-captain.md`).
 
-`claim:Coordination.FillerBack`, kept in `claim:Captain.Filler`
+`claim:Coordination.FillerBack`, kept in `claim:Captain.Filler`, `claim:Captain.FillerBack`
 
 > Dispatched onto a filler ticket, check it is small, two-way and needs no design call; if not, send it back unassigned with a one-line reason.
 

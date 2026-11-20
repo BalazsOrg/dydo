@@ -14,6 +14,7 @@ Decide only obvious, reversible calls; any other call becomes a Question sub-tic
 ## 1. Take the ticket
 
 Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.
+If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
 Set the ticket In Progress, then load your kind's resource and every skill your brief names.
 
 | Your ticket is | Load |
@@ -23,8 +24,6 @@ Set the ticket In Progress, then load your kind's resource and every skill your 
 | a question a choice waits on | [Research](resources/research.md) |
 
 A Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
-If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer with a one-line reason.
-Report a problem outside your ticket to your officer.
 
 ## 2. Do it or split it
 
@@ -65,15 +64,8 @@ A reviewer gives each finding a severity. A blocker is fixed now; a should needs
 
 1. Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.
 2. A lone reviewer records its own round; a round of several seats is yours to record, by [A round's record](resources/round.md).
-3. Route each blocker, as below.
+3. Route each blocker and each should, by [A finding's route](resources/findings.md).
 4. Repeat until a round finds no new blocker; you may order one more.
-
-**A blocker's route, by what it shows:**
-
-- Work that is broken, against the spec or a security hole: a Fix ticket, one sub-ticket per blocker inside it. (open: his call)
-- A fundamental fault, or a new requirement: your officer, for a re-plan.
-
-A blocker found in a change you wrote goes to a fresh writer.
 
 ## 5. Finish
 
@@ -88,6 +80,7 @@ Close the ticket Done before you return.
 ## When things go wrong
 
 - On a rate-limit or capacity error, wait, then retry; don't hammer it, and never take a limit to the user.
+- Report a problem outside your ticket to your officer.
 - [Too big to hold](resources/too-big.md)
 - [Fix rounds](resources/fix-rounds.md)
 - [A merge conflict](resources/merge-conflict.md)

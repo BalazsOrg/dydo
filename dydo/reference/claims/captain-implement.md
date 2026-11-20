@@ -8,7 +8,7 @@ type: reference
 
 ## Change
 
-`claim:CaptainImplement.Change`: An Implement-kind ticket is a change: a contract implemented, a review's blockers fixed, or a merge conflict resolved.
+`claim:CaptainImplement.Change`: An Implement-kind ticket is a change: a contract implemented, a review's findings fixed, or a merge conflict resolved.
 
 Spec: K31
 
@@ -20,7 +20,7 @@ Reason: A writer sees at once that the rest of the page is its whole recipe.
 
 **ticket-captain** (ImplementLead; read by TicketCaptain):
 
-> Your ticket is a change: implement a contract, fix a review's blockers, or resolve a merge conflict.
+> Your ticket is a change: implement a contract, fix a review's findings, or resolve a merge conflict.
 
 ## Verify
 
@@ -152,7 +152,7 @@ Reason: The candidate's lists numbered `1. 1. 1.` reached the user once; the bui
 
 ## Source
 
-`claim:CaptainImplement.Source`: On a Fix, each blocker's severity is checked against the source, not its label.
+`claim:CaptainImplement.Source`: On a Fix, each finding's severity is checked against the source, not its label.
 
 Spec: S9, R11
 
@@ -164,15 +164,15 @@ Reason: A mislabelled finding is otherwise fixed as the wrong thing.
 
 **ticket-captain** (ImplementFix; read by TicketCaptain):
 
-> Check each blocker's severity against the source, not its label.
+> Check each finding's severity against the source, not its label.
 
 ## Only
 
-`claim:CaptainImplement.Only`: A Fix closes only the blockers, preferring the change that deletes or narrows code.
+`claim:CaptainImplement.Only`: A Fix closes only the findings its brief names, its blockers and any cheap should beside them, preferring the change that deletes or narrows code.
 
-Spec: S9
+Spec: S9, S17
 
-Evidence (code): `skills/roles/crew/implementer/SKILL.md`
+Evidence (run): This Fix came so (DYD-1372 fix r1b): its brief listed five blockers and four shoulds by name, "Shoulds, fix them all", and closed with "Report anything you find beyond this list."
 
 Layer: Nothing bounds what a fixer changes while it is in the file.
 
@@ -180,7 +180,7 @@ Reason: Review never grows the change, so the next round has less to read, not m
 
 **ticket-captain** (ImplementFix; read by TicketCaptain):
 
-> Fix only the blockers, preferring the change that deletes or narrows code.
+> Close only the findings your brief names, preferring the change that deletes or narrows code.
 
 ## Dispute
 

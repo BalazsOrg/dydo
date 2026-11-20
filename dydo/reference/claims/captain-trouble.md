@@ -268,6 +268,8 @@ Reason: The answer outlives both threads, for whoever meets the same call next.
 
 Spec: H16, H12
 
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Question → Returned, "the Question comes back unsettled: it goes to the officer, still open".
+
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
 Layer: A captain has no tool that opens a thread with the user, and its officer is the only one above it.

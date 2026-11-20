@@ -36,7 +36,7 @@ Reason: A line in any other shape is a refusal at the merge, long after the revi
 
 **ticket-captain** (RoundSteps; read by TicketCaptain):
 
-> On a PASS, in the same step, add its line to the PR body's `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then the Review ticket's key.
+> On a PASS, add its line at once to the PR body's `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then the Review ticket's key.
 
 ## Nits
 
@@ -86,6 +86,22 @@ Reason: Five small fixes one agent makes in a pass need no five tickets, and a l
 
 > Group shoulds by judgement: minor ones may share a ticket, ones on the same code may stay together, and one that needs a lot of work gets its own.
 
+## Cheap
+
+`claim:CaptainRound.Cheap`: A cheap should is fixed in place before its parent merges, in the round's Fix or by a writer of its own; the rest wait.
+
+Spec: S17, R8
+
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, DYD-1327, closed "7 blockers, 12 shoulds and 9 nits" and Fix r2, DYD-1333, "2 blockers and 5 shoulds", each as one ticket. `Services/Merge/PullRequestMerge.cs` refuses a head whose PR "holds no PASS for candidate" it, so a fix made after a round with no blocker needs a round of its own.
+
+Layer: Nothing weighs a should's cost, and a filed should sits on its ticket until somebody dispatches it.
+
+Reason: A fix made while the code is open costs less than a ticket that remembers it.
+
+**ticket-captain** (ShouldRoutes; read by TicketCaptain):
+
+> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, and order one more round on the new head.
+
 ## ParentDone
 
 `claim:CaptainRound.ParentDone`: A parent may close Done while its shoulds stay open.
@@ -98,25 +114,9 @@ Layer: Linear ties a parent's status to none of its children, so nothing settles
 
 Reason: A should can wait, so it never holds back the work it was found in.
 
-**ticket-captain** (RoundRules; read by TicketCaptain, on claim:CaptainRound.Cheap):
+**ticket-captain** (ShouldRoutes; read by TicketCaptain):
 
-> A cheap should goes into the current Fix; the rest wait, and their parent may close Done meanwhile.
-
-## Cheap
-
-`claim:CaptainRound.Cheap`: A cheap should is fixed in place before its parent merges; the rest wait.
-
-Spec: S17
-
-Evidence (run): Linear, DYD-1327 read 2026-11-20: Fix r1 closed "7 blockers, 12 shoulds and 9 nits" in one ticket.
-
-Layer: Nothing weighs a should's cost against the Fix already open.
-
-Reason: A fix made while the code is open costs less than a ticket that remembers it.
-
-**ticket-captain** (RoundRules; read by TicketCaptain):
-
-> A cheap should goes into the current Fix; the rest wait, and their parent may close Done meanwhile.
+> Anything more: it waits on its ticket, and its parent may close Done meanwhile.
 
 ## Changed
 
@@ -130,6 +130,6 @@ Layer: The fixer returns its dispute to its dispatcher only; the Review ticket s
 
 Reason: The next reviewer sees why a blocker was not fixed as one.
 
-**ticket-captain** (RoundRules; read by TicketCaptain):
+**ticket-captain** (FixRules; read by TicketCaptain):
 
-> If a fixer changed a finding's severity, record the change and its reason.
+> If the Fix's writer changed a finding's severity, record the change and its reason on the Review ticket.

@@ -3,7 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// The ticket-captain prototype's round record (DYD-1372): what whoever holds a review round writes
 /// down when it returns, a lone reviewer or the captain of a round of several seats. The verdict is
-/// what the seats found; recording it judges nothing (DYD-1295 2119cd65).
+/// what the seats found; recording it judges nothing (DYD-1295 2119cd65). What then becomes of a
+/// should and of a severity a fixer changed is the act of the captain running the rounds, whoever
+/// recorded the round, so those lines sit where that captain reads: a finding's route and fix rounds.
 /// </summary>
 public static class CaptainRound
 {
@@ -13,7 +15,7 @@ public static class CaptainRound
 
     public static readonly Claim Verdict = new("The verdict lives on the Review ticket: PASS or FAIL, lenses, seats and shoulds; FAIL means at least one blocker.", Me,
     [
-        At(CaptainSlot.RoundSteps, 1,
+        At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 1,
             "Post one verdict on the Review ticket: PASS or FAIL, the lenses, each seat's model and provider with its blockers, and the shoulds. FAIL means at least one blocker.")
     ])
     {
@@ -25,8 +27,8 @@ public static class CaptainRound
 
     public static readonly Claim PrLine = new("A PASS is written, with its verdict, as one line in the PR body's Independent review section.", Me,
     [
-        At(CaptainSlot.RoundSteps, 2,
-            "On a PASS, in the same step, add its line to the PR body's `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then the Review ticket's key.")
+        At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 2,
+            "On a PASS, add its line at once to the PR body's `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then the Review ticket's key.")
     ])
     {
         Spec = ["R17"],
@@ -36,7 +38,7 @@ public static class CaptainRound
     };
 
     public static readonly Claim Nits = new("A nit is one line on its record.", Me,
-        [At(CaptainSlot.RoundSteps, 3, "Record each nit as one line on the Review ticket.")])
+        [At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 3, "Record each nit as one line on the Review ticket.")])
     {
         Spec = ["S11"],
         Truth = new(Evidence.Run(Labels + " The nit label is described as only for an inquisition's nit ticket: \"a review nit stays one line on its ticket's record\"."),
@@ -46,7 +48,7 @@ public static class CaptainRound
 
     public static readonly Claim Shoulds = new("A should is filed as a child of the ticket where it was found, after a check for a duplicate under that ticket and its ancestors.", Me,
     [
-        At(CaptainSlot.RoundSteps, 4,
+        At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 4,
             "File each should as a child of the ticket where it was found, after checking the open shoulds there and above for a duplicate.")
     ])
     {
@@ -58,7 +60,7 @@ public static class CaptainRound
 
     public static readonly Claim Group = new("Grouping shoulds is a judgement: minor ones may share a ticket, ones on the same code may stay together, one that needs a lot of work gets its own.", Me,
     [
-        At(CaptainSlot.RoundRules, 1,
+        At(Actor.TicketCaptain, CaptainSlot.RoundRules, 1,
             "Group shoulds by judgement: minor ones may share a ticket, ones on the same code may stay together, and one that needs a lot of work gets its own.")
     ])
     {
@@ -68,7 +70,21 @@ public static class CaptainRound
             Reason: "Five small fixes one agent makes in a pass need no five tickets, and a large one needs room of its own.")
     };
 
-    public static readonly Claim ParentDone = new("A parent may close Done while its shoulds stay open.", Me, [])
+    public static readonly Claim Cheap = new("A cheap should is fixed in place before its parent merges, in the round's Fix or by a writer of its own; the rest wait.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.ShouldRoutes, 1,
+            "Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, and order one more round on the new head.")
+    ])
+    {
+        Spec = ["S17", "R8"],
+        Truth = new(Evidence.Run("Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, DYD-1327, closed \"7 blockers, 12 shoulds and 9 nits\" and Fix r2, DYD-1333, \"2 blockers and 5 shoulds\", " +
+                                 "each as one ticket. `Services/Merge/PullRequestMerge.cs` refuses a head whose PR \"holds no PASS for candidate\" it, so a fix made after a round with no blocker needs a round of its own."),
+            Layer: "Nothing weighs a should's cost, and a filed should sits on its ticket until somebody dispatches it.",
+            Reason: "A fix made while the code is open costs less than a ticket that remembers it.")
+    };
+
+    public static readonly Claim ParentDone = new("A parent may close Done while its shoulds stay open.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ShouldRoutes, 2, "Anything more: it waits on its ticket, and its parent may close Done meanwhile.")])
     {
         Spec = ["S17"],
         Truth = new(Evidence.Run("Linear, DYD-1281 read 2026-11-20: the parent is Ready to Merge while its child DYD-1295 is Todo."),
@@ -76,17 +92,8 @@ public static class CaptainRound
             Reason: "A should can wait, so it never holds back the work it was found in.")
     };
 
-    public static readonly Claim Cheap = new("A cheap should is fixed in place before its parent merges; the rest wait.", Me,
-        [At(CaptainSlot.RoundRules, 2, "A cheap should goes into the current Fix; the rest wait, and their parent may close Done meanwhile.", () => [ParentDone])])
-    {
-        Spec = ["S17"],
-        Truth = new(Evidence.Run("Linear, DYD-1327 read 2026-11-20: Fix r1 closed \"7 blockers, 12 shoulds and 9 nits\" in one ticket."),
-            Layer: "Nothing weighs a should's cost against the Fix already open.",
-            Reason: "A fix made while the code is open costs less than a ticket that remembers it.")
-    };
-
     public static readonly Claim Changed = new("A severity a fixer changed is recorded, with its reason.", Me,
-        [At(CaptainSlot.RoundRules, 3, "If a fixer changed a finding's severity, record the change and its reason.")])
+        [At(Actor.TicketCaptain, CaptainSlot.FixRules, 3, "If the Fix's writer changed a finding's severity, record the change and its reason on the Review ticket.")])
     {
         Spec = ["R11"],
         Truth = new(Evidence.Code("skills/roles/crew/implementer/SKILL.md"),
@@ -94,6 +101,6 @@ public static class CaptainRound
             Reason: "The next reviewer sees why a blocker was not fixed as one.")
     };
 
-    private static Line At(Enum slot, int order, string text, Func<Claim[]>? also = null) =>
-        new(CaptainSkill.TicketCaptain, Actor.TicketCaptain, text, new(slot, order), also);
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

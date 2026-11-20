@@ -6,6 +6,8 @@ namespace DynaDocs.SkillBuild;
 /// whose lines stay in the model, unbuilt, and are accounted for in <see cref="CaptainLedger"/>. One
 /// captain base (option A, DYD-1295 0f340abd): five phases in their real order, three kind resources
 /// its first phase links, the resources a later phase's line links, and one scenario per failure.
+/// A block only some captains reach sits in the resource its line links, which is how the spine
+/// stays within half the legacy spine's size without dropping a fact.
 /// </summary>
 public static class CaptainCarrier
 {
@@ -27,7 +29,11 @@ public static class CaptainCarrier
 
     private static readonly Resource Filler = new(CaptainResource.Filler, "Filler", Slot.Paragraph(CaptainSlot.FillerLead), Slot.Bullets(CaptainSlot.FillerRules));
 
-    private static readonly Resource Round = new(CaptainResource.Round, "A round's record", Slot.Steps(CaptainSlot.RoundSteps), Slot.Bullets(CaptainSlot.RoundRules));
+    private static readonly Resource Round = new(CaptainResource.Round, "A round's record", Slot.Steps(CaptainSlot.RoundSteps), Slot.Paragraph(CaptainSlot.RoundRules));
+
+    private static readonly Resource Findings = new(CaptainResource.Findings, "A finding's route",
+        Slot.Bullets(CaptainSlot.BlockerRoutes, "A blocker, by what it shows:"), Slot.Bullets(CaptainSlot.ShouldRoutes, "A should, by what its fix costs:"),
+        Slot.Paragraph(CaptainSlot.OwnChange));
 
     private static readonly Resource Merging = new(CaptainResource.Merging, "Merging", Slot.Steps(CaptainSlot.MergeSteps), Slot.Bullets(CaptainSlot.MergeRules));
 
@@ -53,11 +59,10 @@ public static class CaptainCarrier
                 States = [CaptainState.Split, CaptainState.Waiting],
                 Resources = [Briefs, Filler]
             },
-            new("Get it reviewed", Slot.Paragraph(CaptainSlot.Reviewed), Slot.Steps(CaptainSlot.Rounds),
-                Slot.Bullets(CaptainSlot.Routes, "A blocker's route, by what it shows:"), Slot.Paragraph(CaptainSlot.Mine))
+            new("Get it reviewed", Slot.Paragraph(CaptainSlot.Reviewed), Slot.Steps(CaptainSlot.Rounds))
             {
                 States = [CaptainState.Leaf, CaptainState.Waiting, CaptainState.InReview, CaptainState.Clear, CaptainState.Fixing],
-                Resources = [Round]
+                Resources = [Round, Findings]
             },
             new("Finish", Slot.Paragraph(CaptainSlot.Who), Slot.Bullets(CaptainSlot.Cases), Slot.Paragraph(CaptainSlot.Close))
             {

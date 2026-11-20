@@ -12,7 +12,7 @@ public static class CaptainMerging
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
     public static readonly Claim Gates = new("The captain runs the project's gates on the combined tree before it merges.", Me,
-        [At(CaptainSlot.MergeSteps, 1, "Run the project's gates, as your brief names them, on the combined tree: your branch merged with the target's current tip.")])
+        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 1, "Run the project's gates, as your brief names them, on the combined tree: your branch merged with the target's current tip.")])
     {
         Spec = ["R21", "R18"],
         Truth = new(Evidence.Code(".github/workflows/ci.yml"),
@@ -30,7 +30,7 @@ public static class CaptainMerging
 
     public static readonly Claim Merge = new("A captain merges into a feature branch with dydo merge, naming the reviewed head and the target tip it gated against.", Me,
     [
-        At(CaptainSlot.MergeSteps, 2,
+        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 2,
             "Merge with `dydo merge <pr-number> --match-head-commit <sha> --match-base-commit <sha>`: the reviewed head, and the tip you ran the gates against. When it refuses, its message says why.",
             () => [Refusal])
     ])
@@ -42,7 +42,7 @@ public static class CaptainMerging
     };
 
     public static readonly Claim Ci = new("A merge is done once hosted CI is green on the merge commit.", Me,
-        [At(CaptainSlot.MergeSteps, 3, "Close the Merge sub-ticket once hosted CI is green on the merge commit.")])
+        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 3, "Close the Merge sub-ticket once hosted CI is green on the merge commit.")])
     {
         Spec = ["R20", "R18"],
         Truth = new(Evidence.Code(".github/workflows/ci.yml"),
@@ -52,7 +52,7 @@ public static class CaptainMerging
 
     public static readonly Claim Archive = new("After a merge the captain archives the branches and worktrees its dispatches created.", Me,
     [
-        At(CaptainSlot.MergeSteps, 4,
+        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 4,
             "Archive each branch and worktree your dispatches created, with `dydo archive branch <target>` and `dydo archive worktree <target>`; the archive keeps them 30 days.")
     ])
     {
@@ -65,7 +65,7 @@ public static class CaptainMerging
     };
 
     public static readonly Claim Clean = new("A conflict-free merge into the feature branch gets no merge review.", Me,
-        [At(CaptainSlot.MergeRules, 1, "A clean merge gets no review.")])
+        [At(Actor.TicketCaptain, CaptainSlot.MergeRules, 1, "A clean merge gets no review.")])
     {
         Spec = ["R18"],
         Truth = new(Evidence.Code(MergeCode),
@@ -74,7 +74,7 @@ public static class CaptainMerging
     };
 
     public static readonly Claim Broken = new("A conflict or a real red gate before the merge goes to an Implement ticket on the ticket's branch.", Me,
-        [At(CaptainSlot.MergeRules, 2, "A conflict, or a gate that is really red, goes to an Implement ticket on your branch.")])
+        [At(Actor.TicketCaptain, CaptainSlot.MergeRules, 2, "A conflict, or a gate that is really red, goes to an Implement ticket on your branch.")])
     {
         Spec = ["R21", "R19"],
         Truth = new(Evidence.Code(MergeCode),
@@ -84,7 +84,7 @@ public static class CaptainMerging
     };
 
     public static readonly Claim Mutation = new("No ticket or merge waits on mutation testing.", Me,
-        [At(CaptainSlot.MergeRules, 3, "Nothing waits on mutation testing.")])
+        [At(Actor.TicketCaptain, CaptainSlot.MergeRules, 3, "Nothing waits on mutation testing.")])
     {
         Spec = ["T12"],
         Truth = new(Evidence.Open("`dydo/guides/testing-strategy.md` still lists `gate mutation --since BASE` among the project's gates, and DYTEST Mutation, which T12 moves it to, is not built."),
@@ -92,6 +92,6 @@ public static class CaptainMerging
             Reason: "Mutation runs take hours, and a merge that waits on them holds a lane the whole time.")
     };
 
-    private static Line At(Enum slot, int order, string text, Func<Claim[]>? also = null) =>
-        new(CaptainSkill.TicketCaptain, Actor.TicketCaptain, text, new(slot, order), also);
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

@@ -12,7 +12,7 @@ public static class CaptainDispatch
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
     public static readonly Claim Brief = new("A child knows only its brief, which its dispatcher writes from the briefs resource.", Me,
-        [At(CaptainSlot.Briefs, 1, "A child knows only what your brief says: write it by [Briefs](resources/briefs.md).")])
+        [At(Actor.TicketCaptain, CaptainSlot.Briefs, 1, "A child knows only what your brief says: write it by [Briefs](resources/briefs.md).")])
     {
         Spec = ["K14"],
         Truth = new(Evidence.Tool(Task),
@@ -30,7 +30,7 @@ public static class CaptainDispatch
 
     public static readonly Claim Scale = new("A round's seats scale with the breadth and depth of the work; there is no constant pair.", Me,
     [
-        At(CaptainSlot.Seats, 1,
+        At(Actor.TicketCaptain, CaptainSlot.Seats, 1,
             "Scale each round's seats to the breadth and depth of the work, with no fixed pair, and seat reviewers from a model family other than the author's when you can, single seats included.",
             () => [Family])
     ])
@@ -42,7 +42,7 @@ public static class CaptainDispatch
     };
 
     public static readonly Claim Roster = new("Each seat's model comes from the user's roster.", Me,
-        [At(CaptainSlot.Seats, 2, "Pick each seat's model from the roster below.")])
+        [At(Actor.TicketCaptain, CaptainSlot.Seats, 2, "Pick each seat's model from the roster below.")])
     {
         Spec = ["R13"],
         Truth = new(Evidence.Open("The roster is the user's to write (R13), and it is not written: there is no text to state yet."),
@@ -51,7 +51,7 @@ public static class CaptainDispatch
     };
 
     public static readonly Claim Usage = new("A dispatcher balances vendors by their remaining usage for every seat it fills.", Me,
-        [At(CaptainSlot.Seats, 3, "Read `dydo usage` and balance vendors across every seat you fill.")])
+        [At(Actor.TicketCaptain, CaptainSlot.Seats, 3, "Read `dydo usage` and balance vendors across every seat you fill.")])
     {
         Spec = ["R14"],
         Truth = new(Evidence.Open("`dydo usage` is no command of the CLI: `Commands/DydoRootCommand.cs` registers none, and R14 calls the name provisional."),
@@ -60,7 +60,7 @@ public static class CaptainDispatch
     };
 
     public static readonly Claim Send = new("A sub-ticket is dispatched with delegate_task.", Me,
-        [At(CaptainSlot.Sending, 1, "Dispatch each sub-ticket with `delegate_task`.")])
+        [At(Actor.TicketCaptain, CaptainSlot.Sending, 1, "Dispatch each sub-ticket with `delegate_task`.")])
     {
         Spec = ["H3"],
         Truth = new(Evidence.Tool(Task),
@@ -71,7 +71,7 @@ public static class CaptainDispatch
 
     public static readonly Claim OwnWorktree = new("A child that writes in parallel or opens its own PR gets its own worktree; serial work shares the dispatcher's.", Me,
     [
-        At(CaptainSlot.Sending, 2,
+        At(Actor.TicketCaptain, CaptainSlot.Sending, 2,
             "Give a child its own worktree (`isolation: \"worktree\"`) when it writes in parallel with others or will open its own PR; serial work shares yours.")
     ])
     {
@@ -82,7 +82,7 @@ public static class CaptainDispatch
     };
 
     public static readonly Claim Lanes = new("An officer keeps its lanes full toward a soft target of four, its own sub-tickets first, then filler.", Me,
-        [At(CaptainSlot.Lanes, 1, "Keep about four lanes full: your sub-tickets first, then filler, by [Filler](resources/filler.md).")])
+        [At(Actor.TicketCaptain, CaptainSlot.Lanes, 1, "Keep about four lanes full: your sub-tickets first, then filler, by [Filler](resources/filler.md).")])
     {
         Spec = ["H10"],
         Truth = new(Evidence.Tool("delegate_task: `mode`, default 'async', so a dispatcher runs several children at once and is woken as each returns."),
@@ -92,7 +92,7 @@ public static class CaptainDispatch
 
     public static readonly Claim Order = new("Filler is an officer's pickable side tickets first, then continuous tickets.", Me,
     [
-        At(CaptainSlot.FillerLead, 1,
+        At(Actor.TicketCaptain, CaptainSlot.FillerLead, 1,
             "Filler fills a lane your own sub-tickets cannot: first the side tickets `dydo survey <project>` lists as pickable, then the team's continuous tickets, CI findings and Agent friction.")
     ])
     {
@@ -104,7 +104,7 @@ public static class CaptainDispatch
 
     public static readonly Claim Pull = new("Filler is pulled unasked only when AFK, reversible and free of design calls, oldest first: a Bug or small Feature at should or lower, or an unrated CI finding.", Me,
     [
-        At(CaptainSlot.FillerRules, 1,
+        At(Actor.TicketCaptain, CaptainSlot.FillerRules, 1,
             "Pull unasked only a ticket that is AFK, reversible and free of design calls, oldest first: a Bug or small Feature at should or lower, or an unrated CI finding.")
     ])
     {
@@ -115,7 +115,7 @@ public static class CaptainDispatch
     };
 
     public static readonly Claim Pulled = new("A continuous ticket an officer pulls follows that officer's chain.", Me,
-        [At(CaptainSlot.FillerRules, 2, "A ticket you pull follows your chain from then on.")])
+        [At(Actor.TicketCaptain, CaptainSlot.FillerRules, 2, "A ticket you pull follows your chain from then on.")])
     {
         Spec = ["H8"],
         Truth = new(Evidence.Run("Linear, team Dydo, projects read 2026-11-20: \"CI findings\" and \"Agent friction\" exist as Projects that nobody holds."),
@@ -124,7 +124,7 @@ public static class CaptainDispatch
     };
 
     public static readonly Claim Flag = new("A filler ticket's brief says so, and its captain checks what the labels cannot show.", Me,
-        [At(CaptainSlot.FillerRules, 3, "Say in its brief that the ticket is filler, so its captain checks what no label shows.")])
+        [At(Actor.TicketCaptain, CaptainSlot.FillerRules, 3, "Say in its brief that the ticket is filler, so its captain checks what no label shows.")])
     {
         Spec = ["H11"],
         Truth = new(Evidence.Run("Linear's labels, read 2026-11-20, carry Mode and Severity and nothing for small, reversible or free of design calls."),
@@ -142,7 +142,7 @@ public static class CaptainDispatch
 
     public static readonly Claim Resume = new("A child's returned SHA is posted on its ticket as the point to resume from.", Me,
     [
-        At(CaptainSlot.Returns, 1,
+        At(Actor.TicketCaptain, CaptainSlot.Returns, 1,
             "Post the SHA a child returns on its ticket, to resume from, and send what it reports outside its scope to the owner's ticket or a new Bug.",
             () => [Route])
     ])
@@ -153,6 +153,6 @@ public static class CaptainDispatch
             Reason: "A fresh agent can pick the work up from the ticket alone.")
     };
 
-    private static Line At(Enum slot, int order, string text, Func<Claim[]>? also = null) =>
-        new(CaptainSkill.TicketCaptain, Actor.TicketCaptain, text, new(slot, order), also);
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

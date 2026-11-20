@@ -36,7 +36,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Record every severity a fix-hop author changed, with its reason.
 
-`claim:Tree.NoSelfReview`, kept in `claim:CaptainReview.Other`, `claim:CaptainReview.Mine`
+`claim:Tree.NoSelfReview`, kept in `claim:CaptainReview.OwnFinding`
 
 > Never rule on findings about work you authored.
 

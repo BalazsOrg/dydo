@@ -16,7 +16,7 @@ Brief without loading the child's kind resource: the child loads its own.
 
 - The candidate, by its SHA.
 - The governing spec, or that there is none.
-- The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. A leaf gets at most the check, never a full review.
+- The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. A leaf gets at most the check, never a full review: open the check as a Review ticket of its own beside the leaf's, for a fresh seat.
 - The lenses, which rise up the tree: it works, with a security baseline; then it integrates; then it is optimal, secure, performant and in harmony. A first version never gets a final one's lenses.
 
 Write no review brief for a plan, spec or contract: it gets no review rounds, and a risky spec at most one pass by a native helper, which returns questions.

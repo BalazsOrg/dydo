@@ -18,7 +18,7 @@ Legend: **due** every time; **if** when warranted; **–** not at this level.
 >
 > How it's used: the officer's brief names the level; the reviewer works its row.
 
-- Drive and Formal are due only where the tool is built and the subject is settled; report a tool the project lacks to your officer as a finding, instead of building it.
+- A cell is due only as far as the project has what it names: Drive and Formal where the tool is built and the subject is settled, any other cell where its tools, selectors and results exist. Report what is missing to your officer as a finding, instead of building it. (open: his call)
 - Judge the change, and the behaviour it inherits unchanged, against the spec's problem statement and goals, not only the contract.
 - Give every finding one severity: a blocker, the intended case is wrong; a should, a real bug callers will hit, inside the intent; a nit, everything else.
 - Report every visible blocker in one pass.

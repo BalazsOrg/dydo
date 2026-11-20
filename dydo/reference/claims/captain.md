@@ -86,6 +86,40 @@ Reason: A holder that works from its contract alone drifts from the intent a lit
 
 > Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.
 
+## FillerBack
+
+`claim:Captain.FillerBack`: A filler ticket that fails its captain's check goes back unstarted and unassigned, with a one-line reason.
+
+Spec: H11
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Returned, "a filler ticket fails its check: it goes back unstarted and unassigned".
+
+Evidence (code): `Services/Survey/SurveyRules.cs`
+
+Layer: `dydo survey <project>` offers a ticket as pickable only while it is unstarted and unassigned, and nothing puts a rejected one back in that state.
+
+Reason: A rejected ticket left In Progress looks held, and no officer is ever offered it again.
+
+**ticket-captain** (Take; read by TicketCaptain, on claim:Captain.Filler):
+
+> If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
+
+## Filler
+
+`claim:Captain.Filler`: A captain on a filler ticket checks, before it starts it, that the ticket is small, reversible and free of design calls.
+
+Spec: H11
+
+Evidence (run): Linear, team Dydo, labels read 2026-11-20: the groups are Mode, Severity and Type, with nothing for small, reversible or free of design calls, so nobody upstream can have checked them.
+
+Layer: Whoever pulls filler sorts by labels alone; these three need someone who has opened the ticket.
+
+Reason: Work that hides a design call is caught before anyone builds it.
+
+**ticket-captain** (Take; read by TicketCaptain):
+
+> If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
+
 ## Load
 
 `claim:Captain.Load`: A captain loads its kind's resource and every skill its brief names.
@@ -108,7 +142,7 @@ Reason: Naming them in the brief keeps the process from resting on an agent's gu
 
 Spec: S6
 
-Evidence (run): Linear, team Dydo, statuses read 2026-11-20: In Progress, Todo, Done, Canceled and Duplicate exist, and DYD-1372 was In Progress while this was written.
+Evidence (run): Linear, team Dydo, statuses read 2026-11-20: In Progress is a started status and Todo the unstarted one, beside Done, Canceled and Duplicate; DYD-1372 was In Progress while this was written.
 
 Layer: T3's `link_issue` only shows the ticket beside its thread; it changes no status in Linear.
 
@@ -170,24 +204,6 @@ Reason: One way of holding every kind keeps a job ticket from growing a process 
 
 > A Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
 
-## Filler
-
-`claim:Captain.Filler`: A captain on a filler ticket checks it is small, reversible and free of design calls, and returns one that is not.
-
-Spec: H11
-
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Returned, "a filler ticket fails its check and goes back".
-
-Evidence (run): Linear's labels, read 2026-11-20, carry Mode and Severity and nothing for small, reversible or free of design calls, so nobody upstream can have checked them.
-
-Layer: Whoever pulls filler sorts by labels alone; these three need someone who has opened the ticket.
-
-Reason: Work that hides a design call is caught before anyone builds it.
-
-**ticket-captain** (Hold; read by TicketCaptain):
-
-> If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer with a one-line reason.
-
 ## ReportUp
 
 `claim:Captain.ReportUp`: A captain reports a problem outside its ticket to its officer.
@@ -200,6 +216,6 @@ Layer: No tool routes a finding to its owner; the one address a captain surely h
 
 Reason: What matters is that it surfaces, even when the finder cannot tell whose it is.
 
-**ticket-captain** (Hold; read by TicketCaptain):
+**ticket-captain** (WhenThingsGoWrong; read by TicketCaptain):
 
 > Report a problem outside your ticket to your officer.

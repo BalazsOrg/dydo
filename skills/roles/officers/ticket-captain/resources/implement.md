@@ -2,7 +2,7 @@
 
 # Implement
 
-Your ticket is a change: implement a contract, fix a review's blockers, or resolve a merge conflict.
+Your ticket is a change: implement a contract, fix a review's findings, or resolve a merge conflict.
 Verify your work while you build it, each file the way it is used: run the code and drive the app, render an image and look at it, hold a doc against its source.
 
 - Leave what you touched no worse than you found it.
@@ -15,8 +15,8 @@ Verify your work while you build it, each file the way it is used: run the code 
 
 **On a Fix:**
 
-- Check each blocker's severity against the source, not its label.
-- Fix only the blockers, preferring the change that deletes or narrows code.
+- Check each finding's severity against the source, not its label.
+- Close only the findings your brief names, preferring the change that deletes or narrows code.
 - Put a label you dispute in your return, with its evidence: file:line, test or output.
 
 **On a merge conflict:**

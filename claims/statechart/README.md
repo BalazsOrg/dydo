@@ -152,11 +152,15 @@ rounds and is bounded at 4 only so TLC ends; the skill sets no cap.
 - A repaired conflict or red gate goes on only through a review round, or back to the officer when it
   cannot be finished (R19, R21).
 - A splitting captain's Question is one more child it waits on, so only a leaf has a Question state.
+  A leaf's Question leaves two ways: answered, back to the leaf, or unsettled, to the officer with
+  the Question still open (H16).
+- A filler ticket that fails its captain's check goes back from Taken, before it is set In Progress:
+  unstarted and unassigned, the only state in which the survey offers it again (H11).
 
-The chart draws 26 of the 27 arrows: a repair's two ways back to the officer share one. TLC line from
-the run on the claim model of DYD-1372 fix r0b; it holds `NoDeadlock`. Its properties are written by
+The chart draws 27 of the 28 arrows: a repair's two ways back to the officer share one. TLC line from
+the run on the claim model of DYD-1372 fix r1b; it holds `NoDeadlock`. Its properties are written by
 hand under `verification/statechart/`, from his rulings and never from this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 13 | 27 | 0 | 56 states, 99 steps |
+| A captain and its ticket | `captain` | 13 | 28 | 0 | 56 states, 100 steps |

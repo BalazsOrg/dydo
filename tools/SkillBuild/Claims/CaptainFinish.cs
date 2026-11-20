@@ -11,7 +11,7 @@ public static class CaptainFinish
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
     public static readonly Claim Who = new("A captain's brief says who merges its work.", Me,
-        [At(CaptainSlot.Who, 1, "Your brief says who merges your work.")])
+        [At(Actor.TicketCaptain, CaptainSlot.Who, 1, "Your brief says who merges your work.")])
     {
         Spec = ["K14", "R21"],
         Truth = new(Evidence.Run(OwnBrief + "\"Do not push; no PR; no merge.\""),
@@ -20,7 +20,7 @@ public static class CaptainFinish
     };
 
     public static readonly Claim HandOver = new("Work the officer merges ends on a commit and returns its SHA with the receipts that prove it.", Me,
-        [At(CaptainSlot.Cases, 1, "**Your officer:** end on a commit, and return its SHA with the receipts that prove it.")])
+        [At(Actor.TicketCaptain, CaptainSlot.Cases, 1, "**Your officer:** end on a commit, and return its SHA with the receipts that prove it.")])
     {
         Spec = ["R32", "R5"],
         Truth = new(Evidence.Run(OwnBrief + "\"IMPLEMENTED DYD-1372 hop 2 at <SHA>\", then \"the gate commands with their exits\"."),
@@ -31,7 +31,7 @@ public static class CaptainFinish
     };
 
     public static readonly Claim Merged = new("A captain that merges its work returns one line, done and merged.", Me,
-        [At(CaptainSlot.Cases, 2, "**You:** merge by [Merging](resources/merging.md), and return `done <KEY>: merged`.")])
+        [At(Actor.TicketCaptain, CaptainSlot.Cases, 2, "**You:** merge by [Merging](resources/merging.md), and return `done <KEY>: merged`.")])
     {
         Spec = ["R21", "H23"],
         Truth = new(Evidence.Command("dydo merge <pr-number> --match-head-commit <sha> --match-base-commit <sha> --dry-run"),
@@ -40,7 +40,7 @@ public static class CaptainFinish
     };
 
     public static readonly Claim Nothing = new("A ticket that merges nothing puts its result on the ticket and returns one line.", Me,
-        [At(CaptainSlot.Cases, 3, "**Nobody:** put the result on the ticket, and return `done <KEY>`.")])
+        [At(Actor.TicketCaptain, CaptainSlot.Cases, 3, "**Nobody:** put the result on the ticket, and return `done <KEY>`.")])
     {
         Spec = ["S6", "H23"],
         Truth = new(Evidence.Run("DYD-1295's comments, read from their snapshot 2026-11-20: a walkthrough's rulings sit on its ticket, and no branch holds them."),
@@ -58,7 +58,7 @@ public static class CaptainFinish
     };
 
     public static readonly Claim Close = new("The captain that started its ticket closes it Done once its contract is met.", Me,
-        [At(CaptainSlot.Close, 1, "Close the ticket Done before you return.", () => [Return])])
+        [At(Actor.TicketCaptain, CaptainSlot.Close, 1, "Close the ticket Done before you return.", () => [Return])])
     {
         Spec = ["S6"],
         Truth = new(Evidence.Run("Linear, team Dydo, statuses read 2026-11-20: Done exists, and DYD-1281's finished sub-tickets are Done."),
@@ -68,7 +68,7 @@ public static class CaptainFinish
     };
 
     public static readonly Claim Limits = new("On a rate-limit or capacity error an agent waits, then retries, and never takes a limit to the user.", Me,
-        [At(SpinePart.WhenThingsGoWrong, 1, "On a rate-limit or capacity error, wait, then retry; don't hammer it, and never take a limit to the user.")])
+        [At(Actor.TicketCaptain, SpinePart.WhenThingsGoWrong, 1, "On a rate-limit or capacity error, wait, then retry; don't hammer it, and never take a limit to the user.")])
     {
         Spec = ["H21"],
         Truth = new(Evidence.Run("This skill's writer ran behind CLIProxy: its session's files sit under `~/.claude-cliproxy`."),
@@ -76,6 +76,6 @@ public static class CaptainFinish
             Reason: "A swarm that retries at once turns one limit into a storm.")
     };
 
-    private static Line At(Enum slot, int order, string text, Func<Claim[]>? also = null) =>
-        new(CaptainSkill.TicketCaptain, Actor.TicketCaptain, text, new(slot, order), also);
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

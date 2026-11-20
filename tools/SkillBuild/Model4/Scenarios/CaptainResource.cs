@@ -13,6 +13,7 @@ public enum CaptainResource
     Briefs,
     Filler,
     Round,
+    Findings,
     Merging,
     TooBig,
     FixRounds,

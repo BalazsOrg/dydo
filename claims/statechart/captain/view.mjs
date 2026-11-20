@@ -15,7 +15,7 @@ const states = {
   "Returned": "Returned to its officer · H23"
 };
 const steps = {
-  "Captain_Filler": "a filler ticket fails its check and goes back · H11",
+  "Captain_FillerBack": "a filler ticket fails its check: it goes back unstarted and unassigned · H11",
   "CaptainDispatch_Send": "each sub-ticket is dispatched · H3",
   "CaptainFinish_Close": "the contract is met: the ticket closes Done · S6",
   "CaptainFinish_HandOver": "the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer · R32, R5",
@@ -41,7 +41,8 @@ const steps = {
   "CaptainTrouble_NextRound": "the Fix is Done: a fresh round · R8, S9",
   "CaptainTrouble_ReCut": "`too big, re-cut`: neither the work nor its split fits · H2",
   "CaptainTrouble_SplitRest": "the leaf proves too big: what is left is cut · H13, H14",
-  "CaptainTrouble_Third": "a third round still has a blocker: the checkpoint · R10"
+  "CaptainTrouble_Third": "a third round still has a blocker: the checkpoint · R10",
+  "CaptainTrouble_Up": "the Question comes back unsettled: it goes to the officer, still open · H16, H12"
 };
 export const title = "A captain and its ticket";
 export const state = (v) => states[v.state];

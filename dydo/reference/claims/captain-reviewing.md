@@ -44,7 +44,7 @@ Reason: Its own context hides from a writer exactly what a fresh reader would ca
 
 Spec: R34, R5
 
-Evidence (run): The user's table, verbatim from spec R34 with its legend and two footer rules, as `skills/roles/crew/reviewer/resources/toolset.md` holds it today. Read against `dydo/guides/testing-strategy.md`, 2026-11-20: this repository's test facade has no `--feature` and no `--heavy`, and DYTEST, whose results "mutation on changed" reads, is not built, so the cells "tagged + feature", "suite + --heavy + mutation" and "mutation on changed" cannot be run as written here yet.
+Evidence (run): The user's table, verbatim from spec R34 with its legend and two footer rules, as `skills/roles/crew/reviewer/resources/toolset.md` holds it today. Three of its cells name what this repository cannot run yet; claim CaptainReviewing.Built names them and says what a reviewer does with such a cell.
 
 Layer: Every tool in the row is there for the taking at every level; nothing meters review.
 
@@ -67,19 +67,19 @@ Reason: Review is expensive, so each level spends only what it can find somethin
 
 ## Built
 
-`claim:CaptainReviewing.Built`: Drive and Formal are due only where the tool is built and the subject settled; a missing tool is reported, never built.
+`claim:CaptainReviewing.Built`: A cell is due only as far as the project has what it names; what is missing is reported to the officer as a finding, never built.
 
 Spec: R34, R7
 
-Evidence (code): `skills/roles/crew/reviewer/resources/toolset.md`
+Evidence (run): Read 2026-11-20: `dydo/guides/testing-strategy.md` says this repository's test facade "has no `--feature`, `--plan`, `--heavy` or Ripple support" and that mutation is "unavailable on every stack"; no file under `DynaDocs.Tests/coverage` takes either flag, and no command of the CLI is DYTEST. So the cells "tagged + feature", "mutation on changed" and "suite + --heavy + mutation" cannot run here as written. The table is the user's, approved verbatim, so the cells stay: whether to cut them or to keep them under this line is his call.
 
-Layer: The table's bare "due" cannot tell whether a project has the driving skill or the model it calls for.
+Layer: The table's bare "due" cannot tell whether a project has the tool, the selector or the result a cell calls for.
 
-Reason: A reviewer that builds its own tooling has turned a review into a second project.
+Reason: Without it a reviewer stalls on a cell nothing can run, or builds the tooling and turns its review into a second project.
 
 **ticket-captain** (ReviewRules; read by TicketCaptain):
 
-> Drive and Formal are due only where the tool is built and the subject is settled; report a tool the project lacks to your officer as a finding, instead of building it.
+> A cell is due only as far as the project has what it names: Drive and Formal where the tool is built and the subject is settled, any other cell where its tools, selectors and results exist. Report what is missing to your officer as a finding, instead of building it. (open: his call)
 
 ## Anchor
 
