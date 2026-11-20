@@ -41,11 +41,7 @@ public partial class TruthRenderingTests
 
             | Kind | Resource |
             | -- | -- |
-            | Change | Guide |
-
-            Resources:
-
-            - [Guide](resources/guide.md)
+            | Change | [Guide](resources/guide.md) |
 
             ## 2. Send it
 
@@ -71,6 +67,13 @@ public partial class TruthRenderingTests
 
             """.ReplaceLineEndings("\n"),
             Built.Files[Folder + "SKILL.md"]);
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 hop 2 a truth-checked phase has no Resources list: a phase resource no line of the spine links fails the build")]
+    public void PhaseResourceNoLineLinks_FailsTheBuild() =>
+        AssertRejected(
+            TruthModel.Of(TruthModel.Keeper with { Phases = [TruthModel.Phases[0], TruthModel.Phases[1] with { Resources = [new(OldSlot.Manual, "Manual", Slot.Paragraph(OldSlot.ManualLead))] }] }),
+            "keeper: no line of the spine links resources/manual.md; a truth-checked skill links a phase's resource from the line that uses it");
 
     [Fact]
     [Trait("Job", "contract: DYD-1372 A5 a truth-checked resource reads like a phase: its slots in their shapes, no section heading")]

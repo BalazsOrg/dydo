@@ -18,7 +18,7 @@ public static class KeeperMoves
         [Line("Then load your kind's resource.", KeeperSlot.Take, 2)]) { Truth = Verified.ByRun };
 
     public static readonly Claim Kinds = new("Each kind has a resource.", [KeeperActor.Keeper],
-        [Line("| Kind | Resource |\n| -- | -- |\n| Change | Guide |", KeeperSlot.Kinds, 1)]) { Truth = Verified.ByRun };
+        [Line("| Kind | Resource |\n| -- | -- |\n| Change | [Guide](resources/guide.md) |", KeeperSlot.Kinds, 1)]) { Truth = Verified.ByRun };
 
     public static readonly Claim Send = new("A held thing is sent with a brief.", [KeeperActor.Keeper],
         [Line("Brief from the template.", KeeperSlot.Briefs, 1)])

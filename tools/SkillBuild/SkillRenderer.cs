@@ -7,7 +7,8 @@ namespace DynaDocs.SkillBuild;
 /// <c>agents/openai.yaml</c> when the skill is explicit-only or sets its Codex metadata. A standard is
 /// one file of sections. A truth-checked skill keeps the same spine and files, and inside each phase and
 /// resource renders every slot in its declared shape (DYD-1295 519126ab): a paragraph, bullets, or steps
-/// numbered 1, 2, 3, its title a bold lead-in.
+/// numbered 1, 2, 3, its title a bold lead-in. Its phases list no resources: the line that uses a
+/// resource links it, and a phase resource no line of the spine links fails the build.
 /// </summary>
 internal static class SkillRenderer
 {
@@ -42,6 +43,8 @@ internal static class SkillRenderer
             // no move label, only the slots in order, a state's arrivals, then its nominal path, then its exits.
             if (skill.TruthChecked) Shaped(page, phase.Slots, layout);
             else foreach (var line in phase.Slots.SelectMany(slot => layout.In(slot.Id))) page.Step(line);
+            // A truth-checked phase has no list of its resources: the line that uses one links it (DYD-1372 hop 2).
+            if (skill.TruthChecked) continue;
             if (phase.Resources.Count > 0) page.Heading("Resources:");
             foreach (var resource in phase.Resources) page.Link(resource.Title, FileOf(resource.Id));
         }
@@ -49,7 +52,18 @@ internal static class SkillRenderer
         if (opening.Count + skill.Scenarios.Count > 0) page.Heading("## " + WhenThingsGoWrong);
         foreach (var line in opening) page.State(line);
         foreach (var scenario in skill.Scenarios) page.Link(scenario.Title, FileOf(scenario.Id));
-        return page.Done(skill.MainFile);
+        var spine = page.Done(skill.MainFile);
+        if (skill.TruthChecked) LinksEachPhaseResource(skill, spine);
+        return spine;
+    }
+
+    // A resource no line links would be a file nothing in the spine leads to.
+    private static void LinksEachPhaseResource(SkillSpec skill, RenderedFile spine)
+    {
+        foreach (var file in skill.Phases.SelectMany(phase => phase.Resources).Select(resource => FileOf(resource.Id)))
+            if (!spine.Stated.Any(line => line.Text.Contains($"]({file})", StringComparison.Ordinal)))
+                throw new InvalidDataException(
+                    $"{skill.Name}: no line of the spine links {file}; a truth-checked skill links a phase's resource from the line that uses it");
     }
 
     private static RenderedFile Resource(Resource resource, SkillLayout layout)
