@@ -124,9 +124,13 @@ public static class Project
         [new(Skill.Coordinator, "Run a walkthrough on master whenever possible.", new(CoordinatorSlot.Merges, 227))])
     { Spec = ["N4"] };
 
-    public static readonly Claim Weeds = new("Every weed becomes a rule.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Give each mistake found after landing a lint, test or rule as well as its fix.", new(CoordinatorSlot.Merges, 228))])
-    { Spec = ["R30"] };
+    // H5: the coordinator only opens the ticket; picking the fix and its lint, test or rule is its captain's judgement.
+    public static readonly Claim Weeds = new("Every weed becomes a rule: a mistake found after landing gets a ticket, whose captain picks its fix and a lint, test or rule.", [Actor.Coordinator, Actor.TicketCaptain],
+    [
+        new(Skill.Coordinator, "Open a ticket for each mistake found after landing and put a captain on it.", new(CoordinatorSlot.Merges, 228)),
+        new(Skill.TicketCaptain, "Holding a ticket for a mistake found after landing, pick its fix and the lint, test or rule that keeps it from recurring.", new(TicketCaptainSlot.Take, 124))
+    ])
+    { Spec = ["R30", "H5"] };
 
     public static readonly Claim Usage = new("The work never stops for usage, and no officer brings a usage limit to him.",
         [Actor.Coordinator, Actor.TicketCaptain, Actor.ChiefOfStaff],

@@ -13,3 +13,7 @@ Exits:
 Exits:
 
 - As its fix captain, re-cut the landing branch once the findings' tickets are merged; another landing follows.
+
+## Save, resume and end
+
+- Save the landing branch's SHA on its ticket and resume the re-cut from it; end resolved once another landing follows, or escalated to your officer with what you can't resolve.

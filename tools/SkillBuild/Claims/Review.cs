@@ -45,7 +45,7 @@ public static class Review
     { Spec = ["R9"], Transition = new(ReviewState.Verdict, ReviewState.Escalated, "a blocker needs Balazs") { Guard = "kind = \"balazs\"" } };
 
     public static readonly Claim Clean = new("By default the first round with no new blocker ends the phase.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "By default, the first round with no new blocker ends the phase.", new(ReviewState.Verdict, 508, MoveKind.Exit))])
+        [new(Skill.TicketCaptain, "By default, the first round with no new blocker ends the review rounds.", new(ReviewState.Verdict, 508, MoveKind.Exit))])
     { Spec = ["R8"], Transition = new(ReviewState.Verdict, ReviewState.Ended, "no new blocker this round") { Guard = "kind = \"none\"" } };
 
     public static readonly Claim OneMore = new("The officer running the rounds may order one more round.", [Actor.TicketCaptain],

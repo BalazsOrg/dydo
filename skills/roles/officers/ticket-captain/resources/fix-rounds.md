@@ -18,3 +18,7 @@ Exits:
 
 - By default, write `checkpoint: one more round, because …` on the Review and go on.
 - Escalate only for a fundamental break, a new requirement or a need for Balazs, writing `escalated: …` on the Review.
+
+## Save, resume and end
+
+- Save the verdict's head SHA on the Review hop and resume Fix rN from it; end resolved when a round finds no new blocker, or escalated only from the checkpoint, written `escalated: …` on the Review.

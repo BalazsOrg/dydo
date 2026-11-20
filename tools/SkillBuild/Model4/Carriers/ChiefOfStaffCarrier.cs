@@ -25,10 +25,27 @@ public static class ChiefOfStaffCarrier
                 Resources = [CoordinatorCarrier.Brief]
             },
             new("Investigate for him", HierarchyMachines.Staff.Slots(StaffState.Investigating)),
-            new("Hold the muster", HierarchyMachines.Staff.Slots(StaffState.Muster)),
-            new("Keep the night watch", HierarchyMachines.Staff.Slots(StaffState.NightWatch)),
+            new("Hold the muster", HierarchyMachines.Staff.Slots(StaffState.Muster))
+            {
+                Resources =
+                [
+                    new(ChiefOfStaffResource.Muster, "Muster", new Slot(ChiefOfStaffResource.Muster),
+                        new(ChiefOfStaffSlot.MusterRequest, "Request to each coordinator"), new(ChiefOfStaffSlot.MusterPresent, "Present to him"))
+                ]
+            },
+            new("Keep the night watch", HierarchyMachines.Staff.Slots(StaffState.NightWatch))
+            {
+                Resources = [new(ChiefOfStaffResource.NightSurvey, "Night survey", new Slot(ChiefOfStaffResource.NightSurvey))]
+            },
             new("Give the morning brief", HierarchyMachines.Staff.Slots(StaffState.MorningBrief))
+            {
+                Resources = [new(ChiefOfStaffResource.MorningBrief, "Morning brief", new Slot(ChiefOfStaffResource.MorningBrief))]
+            }
         ],
-        Scenarios = [new(ChiefOfStaffScenario.Liveness, "Liveness", HierarchyMachines.Liveness.Slots(LivenessState.Quiet))]
+        Scenarios =
+        [
+            new(ChiefOfStaffScenario.Liveness, "Liveness",
+                [.. HierarchyMachines.Liveness.Slots(LivenessState.Quiet), ScenarioSlots.Close(ScenarioClose.Liveness)])
+        ]
     };
 }

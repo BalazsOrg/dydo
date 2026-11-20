@@ -118,6 +118,195 @@ Spec: H7
 
 > Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its coordinator's own envoy.
 
+## MusterReady
+
+`claim:Staff.MusterReady`: The muster is a checklist held with him present, after overnight-mode's transition preflight; the night starts once it is done.
+
+Spec: K11, H7, K22
+
+**chief-of-staff** (Muster):
+
+> Hold this checklist with him present, after `overnight-mode`'s transition preflight; the night starts only once every line is done.
+
+## MusterAsk
+
+`claim:Staff.MusterAsk`: Each live coordinator returns a muster report to a fixed request.
+
+Spec: K11, H7, K22
+
+**chief-of-staff** (Muster):
+
+> Ask each live coordinator for its muster report, with the request below.
+
+## MusterShow
+
+`claim:Staff.MusterShow`: He sees each report, its intent read-back apart from the work, and his corrections go back to its coordinator.
+
+Spec: K11, H7, K22
+
+**chief-of-staff** (Muster):
+
+> Show him each report verbatim in the form below, the intent read-back apart from the work, and send each coordinator his corrections to its read-back.
+
+## MusterUnblock
+
+`claim:Staff.MusterUnblock`: Operational blockers are resolved while he is present, each fix verified with evidence.
+
+Spec: K11, K22
+
+**chief-of-staff** (Muster):
+
+> Resolve each operational blocker while he is present, verifying each fix with evidence.
+
+## MusterPermissions
+
+`claim:Staff.MusterPermissions`: Each permission the night needs is exercised safely and its real result recorded; no dummy merge.
+
+Spec: K11, K22
+
+**chief-of-staff** (Muster):
+
+> Exercise each permission the night's work needs through a safe, authorised operation where one exists, such as contacting the coordinator, each session's Linear writes and feature-branch merges, and record the real result; an unprotected branch proves no merge permission, and a dummy merge is never run.
+
+## MusterGaps
+
+`claim:Staff.MusterGaps`: An exercise that can't run or an item left unresolved is a gap with his explicit disposition.
+
+Spec: K11, K22
+
+**chief-of-staff** (Muster):
+
+> Keep an exercise you can't run, or an item left unresolved, as a gap, and get his explicit disposition for the work that depends on it.
+
+## MusterStopLine
+
+`claim:Staff.MusterStopLine`: A stop line he wants goes in the Project plan the coordinator reads; there are no night orders (DYD-1195 33520d6c).
+
+Spec: K11
+
+**chief-of-staff** (Muster):
+
+> A stop line he wants goes in the Project plan, which its coordinator reads; there are no night orders.
+
+## MusterRunnable
+
+`claim:Staff.MusterRunnable`: Each coordinator confirms its next work is runnable before the night starts.
+
+Spec: K11, K22
+
+**chief-of-staff** (Muster):
+
+> Get each coordinator's confirmation that its next work is runnable; then the muster is ready.
+
+## MusterRequest
+
+`claim:Staff.MusterRequest`: The muster request a coordinator answers.
+
+Spec: K11, K22, H5
+
+**chief-of-staff** (MusterRequest):
+
+> ```text
+> His muster request for <date>, <Project>. Return:
+> Intent: his goals and purpose for the Project in your own words, by /in-your-own-words, apart from the work.
+> Work: your next tickets in fill order, the first runnable one, and the plan's stop line, or none.
+> Blockers: each operational obstacle, and the evidence that would show it fixed.
+> Permissions: each action the night's work needs, with a safe exercise for it, or the gap.
+> ```
+
+## MusterForm
+
+`claim:Staff.MusterForm`: The form each Project's report is shown to him in.
+
+Spec: K11, K22
+
+**chief-of-staff** (MusterPresent):
+
+> ```text
+> <Project> — <coordinator thread link>
+> Intent, as the coordinator reads it: <verbatim read-back>
+> Work: <next tickets, the first runnable one>
+> Stop line: <the plan's, or none>
+> Unblock now: <obstacle; fix; evidence it holds>
+> Permissions: <action; safe exercise; result, or the gap>
+> ```
+
+## SurveyRead
+
+`claim:Staff.SurveyRead`: Each watch tick reads the board across the Projects against the last observation, keeping no shadow board.
+
+Spec: H7, K22, S26
+
+**chief-of-staff** (NightSurvey):
+
+> Each watch tick, read `dydo survey board` across the Projects and compare it with your last observation; keep no shadow board.
+
+## SurveyThreads
+
+`claim:Staff.SurveyThreads`: Where progress is unclear, the coordinator's thread is read, a captain's only as needed.
+
+Spec: H7, K22
+
+**chief-of-staff** (NightSurvey):
+
+> Where progress is unclear, read the coordinator's thread, and a captain's only as needed, and check every nudge still unanswered.
+
+## SurveyFinds
+
+`claim:Staff.SurveyFinds`: The survey looks for idle officers with runnable work, unanswered nudges, blockers and colliding work.
+
+Spec: H7, H12, K22
+
+**chief-of-staff** (NightSurvey):
+
+> Look for an idle officer with runnable work, an unanswered nudge, a blocker that needs intervention and colliding work; an unchanged board or a quiet running task alone is no stall.
+
+## SurveyComplete
+
+`claim:Staff.SurveyComplete`: A tick is quiet only once every Project and nudge is checked; an unreadable source leaves it incomplete.
+
+Spec: H7, K22
+
+**chief-of-staff** (NightSurvey):
+
+> A tick ends quiet only once every Project and every outstanding nudge is checked; a source you could not read leaves it incomplete, to resolve, never quiet.
+
+## MorningFill
+
+`claim:Staff.MorningFill`: The morning brief is filled in the conversation after the verified shutdown, writing nothing to the repo.
+
+Spec: H7, K11, K22
+
+**chief-of-staff** (MorningBrief):
+
+> Fill this in the conversation once `overnight-mode` has verified the shutdown, writing nothing to the repo.
+
+## MorningTemplate
+
+`claim:Staff.MorningTemplate`: The morning brief's form: the night, PRs awaiting his click, proposed DRs to ratify, what waits on him, and next.
+
+Spec: H7, L19, L21, K22
+
+**chief-of-staff** (MorningBrief):
+
+> ```text
+> ## The night
+> <one real visual of the work touched>
+> - <result; at most three result lines>
+>
+> ## PRs into master awaiting your click
+> - <title> (<PR link>): <result>. Review <verdict>; CI <state on the current head>.
+>
+> ## Proposed DRs to ratify
+> - <title> (<thread link>): <what it decides>. Ratify or decline.
+>
+> ## Waiting on you
+> - <each HITL thread waiting on him, as a thread link>
+>
+> ## Next
+> 1. <next action and its owner>
+> ```
+
 ## DoubleCheck
 
 `claim:Staff.DoubleCheck`: Overnight, its 12-hour check on a quiet Project is a cheap double check only.

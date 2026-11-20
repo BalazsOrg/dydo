@@ -3,3 +3,5 @@
 # Research brief
 
 Skills: /research
+
+- The question, and the choice it waits on · model and effort · return to.

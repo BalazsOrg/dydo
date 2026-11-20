@@ -47,7 +47,7 @@ public static class Envoy
     };
 
     public static readonly Claim Report = new("The envoy records the result on its ticket and reports back.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Read the envoy's result from its ticket.", new(EnvoyState.Reported, 909, MoveKind.Arrival))])
+        [new(Skill.Coordinator, "When an envoy reports back, read its result from its ticket.", new(EnvoyState.Reported, 909, MoveKind.Arrival))])
     { Spec = ["H15", "H19"], Transition = new(EnvoyState.Active, EnvoyState.Reported, "the envoy records the result and reports back") };
 
     public static readonly Claim Close = new("He closes the envoy's thread once it has reported, after a shared understanding; no moved-on exit frees the queue (DYD-1195 893e1f5b).", [Actor.Balazs], [])

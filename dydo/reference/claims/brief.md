@@ -52,7 +52,17 @@ Spec: K14, H23
 
 **coordinator** (TicketCaptainBrief):
 
-> Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain is briefed from this template too.
+> Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to.
+
+## ResearchBrief
+
+`claim:Brief.ResearchBrief`: The research dispatch template's slots.
+
+Spec: K14, K30
+
+**ticket-captain** (ResearchBrief):
+
+> The question, and the choice it waits on · model and effort · return to.
 
 ## Lenses
 

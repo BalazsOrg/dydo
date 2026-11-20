@@ -76,7 +76,7 @@ Transition in A Project and its coordinator (`claims/statechart/project/Project.
 
 **coordinator** (Unheld, exit):
 
-> He or the chief of staff starts or wakes you: wake up stateless, then keep the lanes full.
+> He or the chief of staff starts or wakes you, and you wake up stateless.
 
 **chief-of-staff** (Unheld, exit):
 
@@ -152,7 +152,7 @@ Spec: H19
 
 **coordinator** (Active, nominal):
 
-> Write none of the envoy brief's seven slots, which come from its ticket; on a wrapper you fill only its Type, stage, Mode and the members you parent.
+> Write none of the envoy brief's seven slots: the envoy writes them from its ticket; on a wrapper you fill only its Type, stage, Mode and the members you parent.
 
 ## FillerBack
 
@@ -180,10 +180,10 @@ Spec: H11
 
 ## Brief
 
-`claim:Coordination.Brief`: The coordinator dispatch template's slots (DYD-1195 e0eadc20).
+`claim:Coordination.Brief`: The coordinator dispatch template carries K14's slots; the authoring slots don't apply, since a coordinator never authors (DYD-1195 e0eadc20).
 
-Spec: K14
+Spec: K14, R16
 
 **chief-of-staff** (CoordinatorBrief):
 
-> The Project · model and effort.
+> The Project and its plan, in place of ticket and contract · model and effort · return to. Branch, worktree and base, owned paths, gates, proof recipe and findings don't apply: a coordinator never authors.

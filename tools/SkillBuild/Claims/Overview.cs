@@ -6,12 +6,13 @@ public static class Overview
     public static readonly Claim Build = Step(OverviewState.ClaimArea, OverviewState.HostArea,
         "the model builds the skills; a project's init turns memory off and commits the guard", "K6", "N12 DR 055 §1", "N12 DR 056 §1");
     public static readonly Claim Hold = Step(OverviewState.HostArea, OverviewState.ProjectArea, "a coordinator holds a live Project", "H4");
-    public static readonly Claim Cut = Step(OverviewState.ProjectArea, OverviewState.TicketArea, "the coordinator cuts a ticket and dispatches its captain", "H5", "H3");
+    public static readonly Claim Cut = Step(OverviewState.ProjectArea, OverviewState.TicketArea,
+        "a Wayfinding captain cuts the ticket; the coordinator opens, sequences and dispatches its captain", "H2", "H4", "H5", "H3");
     public static readonly Claim Prove = Step(OverviewState.TicketArea, OverviewState.ProofArea, "the Implement hop proves its work with red tests and receipts", "R5", "T3");
     public static readonly Claim Review = Step(OverviewState.ProofArea, OverviewState.ReviewArea, "the parts are wired; the review opens", "R2");
     public static readonly Claim Merge = Step(OverviewState.ReviewArea, OverviewState.MergeArea,
         "the first round with no new blocker: the Merge hop runs dydo merge", "R8", "R17", "R23");
-    public static readonly Claim Next = Step(OverviewState.MergeArea, OverviewState.ProjectArea, "merged: the coordinator cuts the next ticket", "R20", "H5");
+    public static readonly Claim Next = Step(OverviewState.MergeArea, OverviewState.ProjectArea, "merged: the coordinator dispatches the next ticket in sequence", "R20", "H5");
     public static readonly Claim Land = Step(OverviewState.ProjectArea, OverviewState.LandingArea, "every delivery ticket merged: the landing runs", "N5");
     public static readonly Claim Accept = Step(OverviewState.LandingArea, OverviewState.MasterArea, "his acceptance: the landing PR goes to master", "N6");
     public static readonly Claim Tag = Step(OverviewState.MasterArea, OverviewState.Tagged, "Balazs pushes the release tag", "R28", "N2");

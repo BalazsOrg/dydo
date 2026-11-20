@@ -27,6 +27,8 @@ You work in the brief's branch and worktree, inside its owned paths, with git, `
 1. A native helper you start shares your checkout; you commit its work.
 1. The file token limit is 5k tokens by default, counted as bytes ÷ 4, for every file you change, tests included.
 1. Leave what you touched no worse than you found it.
+1. Load /domain-modeling when you touch a glossary term or a Decision Record.
+1. When a design question is open, stop and return it to your captain; /prototype is the skill that answers one.
 1. On a Fix, check each blocker's severity against the source, not the label; fix only the blockers, and put a label you dispute in your return with its evidence (file:line, test, output).
 1. On a Fix, prefer the change that deletes or narrows code; review never grows the change.
 

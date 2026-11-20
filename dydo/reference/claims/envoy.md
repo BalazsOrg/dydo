@@ -80,7 +80,7 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Active â†
 
 **coordinator** (Reported, arrival):
 
-> Read the envoy's result from its ticket.
+> When an envoy reports back, read its result from its ticket.
 
 ## Close
 

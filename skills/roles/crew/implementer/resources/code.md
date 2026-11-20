@@ -13,4 +13,6 @@
 - Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.
 - Property tests for edges and differential tests for rewrites are guidance, never a gate.
 - A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.
+- Write each acceptance line the contract marks for Gherkin as a feature-file scenario at the product's boundary, in glossary words, with an example table only where values vary and every column changes an outcome, wired through step definitions; add or remove a scenario only when asked, and never weaken one.
+- Prove platform-specific code, such as processes, paths and signals, on CI's platform too, not only on yours.
 - Run tests through `dydo test`, and the static gates through `dydo code-check`, which checks changed files only.

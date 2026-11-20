@@ -11,7 +11,7 @@ public static class FeatureMerge
     { Spec = ["Y4", "R23"], Transition = new(FeatureMergeState.PreGate, FeatureMergeState.Running, "a green receipt for the combined tree") };
 
     public static readonly Claim PreRed = new("A real red gate goes to an implementer.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "On a real red gate, send an implementer to fix it on the ticket branch.", new(FeatureMergeState.PreGate, 620, MoveKind.Exit))])
+        [new(Skill.TicketCaptain, "On a real red gate before the merge, send an implementer to fix it on the ticket branch.", new(FeatureMergeState.PreGate, 620, MoveKind.Exit))])
     { Spec = ["R21"], Transition = new(FeatureMergeState.PreGate, FeatureMergeState.PreFix, "a real red gate before the merge") };
 
     public static readonly Claim PreFixed = new("A fix moves the head, so a fresh round must pass the new head.", [Actor.TicketCaptain], [])

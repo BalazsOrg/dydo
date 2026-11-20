@@ -31,6 +31,22 @@ public static class Implementer
         [new(Skill.Implementer, "Leave what you touched no worse than you found it.", new(ImplementerPart.Build, 2303))])
     { Spec = ["T13", "K22"] };
 
+    public static readonly Claim Glossary = new("A glossary term or a Decision Record is touched with domain-modeling, as the pre-candidate code-writer did.", [Actor.Implementer],
+        [new(Skill.Implementer, "Load /domain-modeling when you touch a glossary term or a Decision Record.", new(ImplementerPart.Build, 2304))])
+    { Spec = ["K14", "K22"] };
+
+    public static readonly Claim OpenDesign = new("An open design question stops the build and goes back to the captain, as the pre-candidate code-writer's prototype trigger did.", [Actor.Implementer],
+        [new(Skill.Implementer, "When a design question is open, stop and return it to your captain; /prototype is the skill that answers one.", new(ImplementerPart.Build, 2305))])
+    { Spec = ["K22", "K31"] };
+
+    public static readonly Claim Gherkin = new("The implementer writes and wires each acceptance line the contract marks for Gherkin as a feature-file scenario, never weakening it.", [Actor.Implementer],
+        [new(Skill.Implementer, "Write each acceptance line the contract marks for Gherkin as a feature-file scenario at the product's boundary, in glossary words, with an example table only where values vary and every column changes an outcome, wired through step definitions; add or remove a scenario only when asked, and never weaken one.", new(ImplementerPart.Code, 2214))])
+    { Spec = ["K22", "K31"] };
+
+    public static readonly Claim Platforms = new("Platform-specific code is proved on CI's platform too, as the pre-candidate code-writer did.", [Actor.Implementer],
+        [new(Skill.Implementer, "Prove platform-specific code, such as processes, paths and signals, on CI's platform too, not only on yours.", new(ImplementerPart.Code, 2215))])
+    { Spec = ["K22", "R5"] };
+
     public static readonly Claim Design = new("A seam or interface is designed with codebase-design.", [Actor.Implementer],
         [new(Skill.Implementer, "Load /codebase-design when you design a seam or an interface.", new(ImplementerPart.Code, 2190))])
     { Spec = ["K14", "K22"] };

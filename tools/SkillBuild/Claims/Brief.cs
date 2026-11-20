@@ -23,9 +23,13 @@ public static class Brief
     public static readonly Claim CaptainBrief = new("The ticket-captain dispatch template's slots; a sub-captain is briefed from it too.", [Actor.TicketCaptain, Actor.Coordinator],
     [
         new(Skill.TicketCaptain, "Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain or a job ticket's captain is briefed from this template too, adding its job's skill from the table below.", new(Section.TicketCaptainBrief, 3004)),
-        new(Skill.Coordinator, "Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain is briefed from this template too.", new(Section.TicketCaptainBrief, 3004))
+        new(Skill.Coordinator, "Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to.", new(Section.TicketCaptainBrief, 3004))
     ])
     { Spec = ["K14", "H23"] };
+
+    public static readonly Claim ResearchBrief = new("The research dispatch template's slots.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "The question, and the choice it waits on · model and effort · return to.", new(Section.ResearchBrief, 3006))])
+    { Spec = ["K14", "K30"] };
 
     public static readonly Claim Lenses = new("The officer names the lenses in the brief; lenses shift up the tree.", [Actor.TicketCaptain],
     [

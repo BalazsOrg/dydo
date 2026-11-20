@@ -20,7 +20,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated 
 
 **ticket-captain** (Mapped, arrival):
 
-> As the root, staff the round yourself: the provider, the models and the swarm width, from the model roster and `dydo usage`; post the staffing on the coordinator's HITL queue as an FYI for him.
+> As the root, staff the round yourself: the provider, the models and the swarm width, from the model roster and `dydo usage`; post the staffing on the coordinator's HITL queue as an FYI for him, riding in the next envoy.
 
 ## MapDrawn
 
@@ -132,7 +132,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview
 
 **coordinator** (MergeReview, exit):
 
-> On the council's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.
+> On the landing merge review's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.
 
 ## ReviewFail
 
@@ -250,7 +250,7 @@ Spec: S14, D11, N7, H4, H5
 
 **coordinator** (Merging, nominal):
 
-> Once he accepts, open a Wayfinding ticket to move the spec's lasting parts and delete the spec and the plan files.
+> Once he accepts the landing candidate, open a Wayfinding ticket to move the spec's lasting parts and delete the spec and the plan files.
 
 **ticket-captain** (Wayfinding):
 

@@ -219,8 +219,10 @@
       "claim": "claim:Overview.Cut",
       "from": "ProjectArea",
       "to": "TicketArea",
-      "arrow": "the coordinator cuts a ticket and dispatches its captain",
+      "arrow": "a Wayfinding captain cuts the ticket; the coordinator opens, sequences and dispatches its captain",
       "spec": [
+        "H2",
+        "H4",
         "H5",
         "H3"
       ],
@@ -354,7 +356,7 @@
       "claim": "claim:Overview.Next",
       "from": "MergeArea",
       "to": "ProjectArea",
-      "arrow": "merged: the coordinator cuts the next ticket",
+      "arrow": "merged: the coordinator dispatches the next ticket in sequence",
       "spec": [
         "R20",
         "H5"

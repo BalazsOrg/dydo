@@ -22,8 +22,9 @@ public static class TicketCaptainCarrier
 
     private static readonly Resource InquisitionRecipe = new(TicketCaptainResource.InquisitionCaptain, "Inquisition captain",
     [
-        new Slot(TicketCaptainSlot.Inquisition), .. DeliveryMachines.Landing.Slots(LandingState.Mapped, LandingState.Inquisition),
-        new(TicketCaptainSlot.SliceBrief, "Slice reviewer brief")
+        new Slot(TicketCaptainSlot.Inquisition), .. DeliveryMachines.Landing.Slots(LandingState.Mapped),
+        new(TicketCaptainSlot.InquisitionRound, "Conducting the round"), .. DeliveryMachines.Landing.Slots(LandingState.Inquisition),
+        new(TicketCaptainSlot.InquisitionRecord, "The record"), new(TicketCaptainSlot.SliceBrief, "Slice reviewer brief")
     ]);
 
     private static readonly Resource CouncilChairRecipe = new(TicketCaptainResource.CouncilChair, "Council chair",
@@ -57,10 +58,11 @@ public static class TicketCaptainCarrier
                 .. DeliveryMachines.Review.Slots(ReviewState.Wired, ReviewState.Round, ReviewState.Verdict),
                 .. HierarchyMachines.Should.Slots(ShouldState.Found, ShouldState.Open)
             ]),
-            new("Merge and clean up",
+            new("Merge, clean up and close",
             [
                 .. MergeMachines.FeatureMerge.Slots(FeatureMergeState.PreGate, FeatureMergeState.Running, FeatureMergeState.Gating),
-                .. LawMachines.SafeDelete.Slots(SafeDeleteState.Live)
+                .. LawMachines.SafeDelete.Slots(SafeDeleteState.Live),
+                new(TicketCaptainSlot.Close, "Close and return")
             ])
             {
                 Resources = [MasterRouteRecipe]
@@ -68,19 +70,27 @@ public static class TicketCaptainCarrier
         ],
         Scenarios =
         [
-            new(TicketCaptainScenario.ReCut, "Too big for one agent", HierarchyMachines.Dispatch.Slots(DispatchState.ReCut)),
-            new(TicketCaptainScenario.FixRounds, "Fix rounds", DeliveryMachines.Review.Slots(ReviewState.Fixing, ReviewState.Checkpoint)),
-            new(TicketCaptainScenario.MergeConflict, "A merge conflict", MergeMachines.FeatureMerge.Slots(FeatureMergeState.Resolving)),
+            new(TicketCaptainScenario.ReCut, "Too big for one agent", [.. HierarchyMachines.Dispatch.Slots(DispatchState.ReCut), ScenarioSlots.Close(ScenarioClose.ReCut)]),
+            new(TicketCaptainScenario.FixRounds, "Fix rounds",
+                [.. DeliveryMachines.Review.Slots(ReviewState.Fixing, ReviewState.Checkpoint), ScenarioSlots.Close(ScenarioClose.FixRounds)]),
+            new(TicketCaptainScenario.MergeConflict, "A merge conflict",
+                [.. MergeMachines.FeatureMerge.Slots(FeatureMergeState.Resolving), ScenarioSlots.Close(ScenarioClose.MergeConflict)]),
             new(TicketCaptainScenario.RedGate, "A red gate after the merge",
-                MergeMachines.FeatureMerge.Slots(FeatureMergeState.Rerun, FeatureMergeState.Reverted, FeatureMergeState.FixRound)),
-            new(TicketCaptainScenario.ForcedResync, "A third forced re-sync", MergeMachines.MasterRoute.Slots(MasterRouteState.Held)),
-            new(TicketCaptainScenario.MasterRevert, "A master merge reverted", MergeMachines.MasterRoute.Slots(MasterRouteState.Reverted)),
+            [
+                .. MergeMachines.FeatureMerge.Slots(FeatureMergeState.Rerun, FeatureMergeState.Reverted, FeatureMergeState.FixRound),
+                ScenarioSlots.Close(ScenarioClose.RedGate)
+            ]),
+            new(TicketCaptainScenario.ForcedResync, "A third forced re-sync",
+                [.. MergeMachines.MasterRoute.Slots(MasterRouteState.Held), ScenarioSlots.Close(ScenarioClose.ForcedResync)]),
+            new(TicketCaptainScenario.MasterRevert, "A master merge reverted",
+                [.. MergeMachines.MasterRoute.Slots(MasterRouteState.Reverted), ScenarioSlots.Close(ScenarioClose.MasterRevert)]),
             new(TicketCaptainScenario.NeedForBalazs, "A need for Balazs",
-                [new Slot(TicketCaptainSlot.NeedPassedUp), .. HierarchyMachines.Envoy.Slots(EnvoyState.Need)]),
-            new(TicketCaptainScenario.Liveness, "Liveness", HierarchyMachines.Liveness.Slots(LivenessState.Quiet)),
-            new(TicketCaptainScenario.OverLimit, "A file over the token limit", LawMachines.IgnoreEntry.Slots(IgnoreEntryState.OverLimit)),
+                [new Slot(TicketCaptainSlot.NeedPassedUp), .. HierarchyMachines.Envoy.Slots(EnvoyState.Need), ScenarioSlots.Close(ScenarioClose.NeedForBalazs)]),
+            new(TicketCaptainScenario.Liveness, "Liveness", [.. HierarchyMachines.Liveness.Slots(LivenessState.Quiet), ScenarioSlots.Close(ScenarioClose.Liveness)]),
+            new(TicketCaptainScenario.OverLimit, "A file over the token limit",
+                [.. LawMachines.IgnoreEntry.Slots(IgnoreEntryState.OverLimit), ScenarioSlots.Close(ScenarioClose.OverLimit)]),
             new(TicketCaptainScenario.LandingNotAccepted, "A landing walkthrough not accepted",
-                DeliveryMachines.Landing.Slots(LandingState.Walkthrough, LandingState.NotAccepted))
+                [.. DeliveryMachines.Landing.Slots(LandingState.Walkthrough, LandingState.NotAccepted), ScenarioSlots.Close(ScenarioClose.LandingNotAccepted)])
         ]
     };
 }

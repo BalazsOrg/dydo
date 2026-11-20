@@ -17,6 +17,7 @@ A Question, Grilling, Walkthrough, Wayfinding or Enablement ticket is held the s
 1. Holding a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket, work it by [Job tickets](resources/job-tickets.md).
 1. Holding an Inquisition ticket or one of its sub-tickets, conduct it by [the inquisition captain](resources/inquisition-captain.md).
 1. Dispatched onto a filler ticket, check it is small, two-way and needs no design call; if not, send it back unassigned with a one-line reason.
+1. Holding a ticket for a mistake found after landing, pick its fix and the lint, test or rule that keeps it from recurring.
 1. Holding a Question at stage `council`, chair it by [the council chair](resources/council-chair.md).
 1. Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
 1. Create the ticket's branch, open its PR and merge it yourself; ordinary crew never do.
@@ -53,14 +54,15 @@ Resources:
 1. A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 1. Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.
 1. Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
-1. A native child can't `delegate_task`: on `parent_not_active`, ask your officer to dispatch it.
+1. A native child can't `delegate_task`: when it hits `parent_not_active`, ask your officer to make that dispatch.
 1. A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
 1. Keep the work going through any usage limit, and never bring one to him.
 1. Keep your level's lanes full, toward a soft target of four; when the mainline can't fill one, pull your own pickable side tickets first, then continuous tickets.
 1. Pull without asking only a ticket that is Mode AFK; a Bug or small Feature at Severity should or lower, or an unrated CI finding; two-way; no design call; oldest first.
 1. A continuous ticket you pull follows your chain from then on.
 1. Seat any reviewer from a family other than the author's when possible, single seats included.
-1. Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.
+1. Convene a council only for a heavy PR, one that meets the stakes or value test: stakes is the last check before main or a mistake expensive to undo, and value is a call between good options where what he would choose is the question.
+1. A high-stakes Review is guard or security work, a base other tickets build on, or the late whole-system simplify review.
 1. Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
 1. Every crew return comes back to you: post its hop's SHA on the hop as the resume point.
 1. Route an out-of-scope report from your crew to the owner's ticket or a new Bug.
@@ -87,7 +89,7 @@ Resources:
 1. A security hole is fixed, and the next round runs with the security lens first.
 1. Send a fundamental blocker or a new requirement to the officer above to re-plan.
 1. Pass a blocker that needs Balazs up the chain at once.
-1. By default, the first round with no new blocker ends the phase.
+1. By default, the first round with no new blocker ends the review rounds.
 1. You may still order one more round after a round with no new blocker.
 1. After round 3 with a blocker, stop at the checkpoint and decide on purpose.
 1. Holding the round, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where it was found.
@@ -95,11 +97,12 @@ Resources:
 1. A parent may close Done while its shoulds stay open.
 1. Fix a cheap should in place before its parent merges; the rest wait for a shoulds batch.
 1. In a shoulds batch, mark each duplicate Duplicate.
+1. In a shoulds batch, cancel a should only with a one-line reason.
 
-## 5. Merge and clean up
+## 5. Merge, clean up and close
 
 1. Run `dydo test gate` on the combined tree yourself, then `dydo merge`.
-1. On a real red gate, send an implementer to fix it on the ticket branch.
+1. On a real red gate before the merge, send an implementer to fix it on the ticket branch.
 1. Merge only through `dydo merge`; when it refuses, its stated reason says why.
 1. A conflict-free merge into the feature branch gets no merge review.
 1. No ticket or merge waits on mutation; it is checked at the landing.
@@ -107,6 +110,8 @@ Resources:
 1. Close the Merge hop Done once DYTEST holds a green receipt on the merge tree and hosted CI is green on the merge SHA.
 1. A gate red after the merge reruns once through DYTEST.
 1. After a merge, safe-delete the branches and worktrees you made with `dydo archive`; it keeps them 30 days, then purges them.
+1. Close your ticket Done once its work is merged, or, on a ticket that merges nothing, once its result is on the ticket.
+1. Then return one line to your brief's return-to, `done <KEY>: merged`, or `done <KEY>` for a ticket that merges nothing; a sub-captain returns the same, and everything else is on the ticket.
 
 Resources:
 

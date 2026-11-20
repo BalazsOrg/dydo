@@ -11,3 +11,7 @@ Arrivals:
 Exits:
 
 - Release the held PR once the colliding work is sequenced.
+
+## Save, resume and end
+
+- Save the hold on the held PR's ticket and resume pacing once the colliding work is sequenced; end resolved once the PR merges, or escalated as a `research` Question when its captain passes a need up.

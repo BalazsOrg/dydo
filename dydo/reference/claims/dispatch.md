@@ -44,7 +44,17 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **ticket-captain** (Staffing, exit):
 
-> Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.
+> Convene a council only for a heavy PR, one that meets the stakes or value test: stakes is the last check before main or a mistake expensive to undo, and value is a call between good options where what he would choose is the question.
+
+## HighStakes
+
+`claim:Dispatch.HighStakes`: A high-stakes Review is guard or security work, a base other tickets build on, or the late whole-system simplify review.
+
+Spec: L16
+
+**ticket-captain** (Staffing, exit):
+
+> A high-stakes Review is guard or security work, a base other tickets build on, or the late whole-system simplify review.
 
 ## SelfAuthor
 
@@ -100,7 +110,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 **ticket-captain** (ReCut, arrival):
 
-> On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children; a ticket too big for you goes back to your officer the same way, and you never promote yourself.
+> On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children, and never promote yourself.
 
 **coordinator** (ReCut, arrival):
 
@@ -157,6 +167,26 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 **linear-workspace-standard** (LinearStatuses):
 
 > Whoever started a step closes it; a parent's In Progress means its officer holds it.
+
+## CloseTicket
+
+`claim:Dispatch.CloseTicket`: The captain that started its ticket closes it Done once the work is merged, or its result recorded for a ticket that merges nothing.
+
+Spec: S6, N12 DR 047 §7
+
+**ticket-captain** (Close):
+
+> Close your ticket Done once its work is merged, or, on a ticket that merges nothing, once its result is on the ticket.
+
+## CaptainReturn
+
+`claim:Dispatch.CaptainReturn`: A ticket captain, a sub-captain included, returns one line to its brief's return-to; everything else is on the record.
+
+Spec: H23, K14, S6
+
+**ticket-captain** (Close):
+
+> Then return one line to your brief's return-to, `done <KEY>: merged`, or `done <KEY>` for a ticket that merges nothing; a sub-captain returns the same, and everything else is on the ticket.
 
 ## Template
 
@@ -246,11 +276,11 @@ Spec: N12 DR 057 §2
 
 **ticket-captain** (Dispatching):
 
-> A native child can't `delegate_task`: on `parent_not_active`, ask your officer to dispatch it.
+> A native child can't `delegate_task`: when it hits `parent_not_active`, ask your officer to make that dispatch.
 
 **chief-of-staff** (Dispatching):
 
-> On `parent_not_active`, ask him to dispatch it.
+> A native child can't `delegate_task`: when it hits `parent_not_active`, ask him to make that dispatch.
 
 **working-tree-standard** (TreeDelegation):
 

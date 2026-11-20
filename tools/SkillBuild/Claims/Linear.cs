@@ -28,8 +28,8 @@ public static class Linear
 
     public static readonly Claim Priority = new("Priority marks which of his tickets he takes next.", [Actor.Coordinator],
     [
-        new(Skill.Coordinator, "Set Priority on every ticket waiting on him, a Question or a HITL ticket, and re-set it as blockers change: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; Urgent only in an emergency; AFK tickets carry none.", new(EnvoyState.Queued, 2007, MoveKind.Nominal)),
+        new(Skill.Coordinator, "Set Priority on every ticket waiting on him, a Question or a HITL ticket, and re-set it as blockers change: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; never set Urgent, since an emergency is a judgement call; AFK tickets carry none.", new(EnvoyState.Queued, 2007, MoveKind.Nominal)),
         new(Skill.LinearWorkspaceStandard, "Priority marks which of his tickets he takes next, so the one unlocking the most AFK work goes first: High when clearing it lets a top-level ticket or the Project's next step run AFK, Medium when it frees a lane, Low when nothing runs AFK after it; Urgent is an emergency, never a default; AFK tickets carry none.", new(Section.LinearPriority, 1))
     ])
-    { Spec = ["N12 DR 047 §11"] };
+    { Spec = ["N12 DR 047 §11", "H5"] };
 }

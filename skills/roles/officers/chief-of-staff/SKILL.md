@@ -23,7 +23,7 @@ You are the top of the officer-above chain, above the coordinators.
 1. Start or wake a Project's coordinator from the coordinator brief.
 1. Brief a coordinator from the coordinator dispatch template and name every skill its role requires with a slash; the template carries the default set.
 1. Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
-1. On `parent_not_active`, ask him to dispatch it.
+1. A native child can't `delegate_task`: when it hits `parent_not_active`, ask him to make that dispatch.
 
 Resources:
 
@@ -39,14 +39,26 @@ Resources:
 1. His muster starts the night: load `overnight-mode` and hold the muster with him; overnight mode is yours alone, and the coordinators run as they do by day.
 1. At muster, list for him every open ticket labelled `dr-grade` as a thread link, then start the overnight watch.
 
+Resources:
+
+- [Muster](resources/muster.md)
+
 ## 4. Keep the night watch
 
 1. Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the coordinators' own scheduled surveys.
 1. When he returns, the night ends: give him the morning brief.
 
+Resources:
+
+- [Night survey](resources/night-survey.md)
+
 ## 5. Give the morning brief
 
 1. List each overnight `proposed` DR for his ratification; a decided Question is never listed for approval.
+
+Resources:
+
+- [Morning brief](resources/morning-brief.md)
 
 ## When things go wrong
 

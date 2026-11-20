@@ -25,9 +25,14 @@ public static class Should
     ])
     { Spec = ["S17"], Transition = new(ShouldState.Open, ShouldState.Duplicate, "the batch captain finds it a duplicate") };
 
-    public static readonly Claim Cancel = new("At the landing a should is canceled only with a reason.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "At the landing, cancel a should only with a reason.", new(ShouldState.Open, 1205, MoveKind.Exit))])
-    { Spec = ["S18"], Transition = new(ShouldState.Open, ShouldState.Canceled, "at the landing: canceled with a reason") };
+    // H5: canceling is a judgement, so it is the batch captain's, never the coordinator's; the coordinator only checks the state (Check).
+    public static readonly Claim Cancel = new("A should is canceled only with a reason, by the captain of the Shoulds batch holding it.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "In a shoulds batch, cancel a should only with a one-line reason.", new(ShouldState.Open, 1205, MoveKind.Exit))])
+    { Spec = ["S18", "S17", "H5"], Transition = new(ShouldState.Open, ShouldState.Canceled, "canceled with a reason by its batch captain") };
+
+    public static readonly Claim Check = new("At the landing the coordinator checks each should's state mechanically and routes any still open into a Shoulds batch.", [Actor.Coordinator],
+        [new(Skill.Coordinator, "At the landing, check each should's state: Done, Canceled with a reason, or moved out on his call; put any still open in a Shoulds batch.", new(ShouldState.Open, 1210, MoveKind.Nominal))])
+    { Spec = ["S18", "S17", "H5"] };
 
     public static readonly Claim Move = new("At the landing a should moves out only by his call.", [Actor.Balazs, Actor.Coordinator],
         [new(Skill.Coordinator, "At the landing, move a should out of the Project only on his call.", new(ShouldState.Open, 1206, MoveKind.Exit))])

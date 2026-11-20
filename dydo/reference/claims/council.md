@@ -130,6 +130,26 @@ Spec: L22
 
 > With one family out, Merge confidence at the landing waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.
 
+## MemberSlots
+
+`claim:Council.MemberSlots`: A member's brief names every skill the seat needs with a slash, like any dispatch.
+
+Spec: K14, L14
+
+**ticket-captain** (Member):
+
+> Skills: every skill the seat needs, each with a slash · the one question · model and effort · return to.
+
+## SynthesiserSlots
+
+`claim:Council.SynthesiserSlots`: The synthesiser's brief names every skill the seat needs with a slash, like any dispatch.
+
+Spec: K14, L14
+
+**ticket-captain** (Synthesiser):
+
+> Skills: every skill the seat needs, each with a slash · the members' sealed answers · model and effort · return to.
+
 ## Member
 
 `claim:Council.Member`: A member answers alone, sealed and read-only, on the same thing as every other member.

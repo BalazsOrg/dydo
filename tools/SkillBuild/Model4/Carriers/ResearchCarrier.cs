@@ -7,7 +7,7 @@ namespace DynaDocs.SkillBuild;
 /// </summary>
 public static class ResearchCarrier
 {
-    public static readonly Resource Brief = new(ResourceName.ResearchBrief, "Research brief") { Skills = ["research"] };
+    public static readonly Resource Brief = new(ResourceName.ResearchBrief, "Research brief", new Slot(Section.ResearchBrief)) { Skills = ["research"] };
 
     public static readonly SkillSpec Spec = SkillSpec.Crew(Skill.Research, "Research",
         "A question a choice waits on - pool evidence from every source family that could own the answer, verify each claim at its source, and cite it.") with

@@ -19,10 +19,10 @@ public static class Scout
     { Spec = ["K30", "K22"] };
 
     public static readonly Claim Pass = new("A spec's scout pass returns Questions, never PASS or FAIL.", [Actor.Scout],
-        [new(Skill.Scout, "On a spec's Questions pass, return Questions only, never PASS or FAIL.", new(DispatchState.Working, 2806, MoveKind.Nominal))])
+        [new(Skill.Scout, "Return only Questions from that pass, never PASS or FAIL.", new(DispatchState.Working, 2806, MoveKind.Nominal))])
     { Spec = ["R4"] };
 
     public static readonly Claim PassHow = new("The Questions pass reads the spec as its implementer and turns each open choice into a Question.", [Actor.Scout],
-        [new(Skill.Scout, "Read the spec as the implementer who must build it, and turn each choice it leaves open into a Question.", new(DispatchState.Working, 2805, MoveKind.Nominal))])
+        [new(Skill.Scout, "On a spec's Questions pass, read the spec as the implementer who must build it, and turn each choice it leaves open into a Question.", new(DispatchState.Working, 2805, MoveKind.Nominal))])
     { Spec = ["R4", "K30"] };
 }

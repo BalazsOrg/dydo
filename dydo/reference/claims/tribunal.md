@@ -114,7 +114,7 @@ Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange
 
 **ticket-captain** (DecidedOvernight, arrival):
 
-> When both judges agree on a two-way hard call, it is decided: record it citing its law and precedent; it is acted on, provisional, and never ratified.
+> When both judges agree on a two-way hard call that is not DR-grade, it is decided: record it citing its law and precedent; it is acted on, provisional, and never ratified.
 
 ## Prepare
 
@@ -126,7 +126,7 @@ Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange
 
 **ticket-captain** (Prepared, arrival):
 
-> When they disagree, the precedent points both ways, or the call is one-way or DR-grade, return it prepared, with both positions, to the Question that opened the council, which sends it to him as a `his-call` child.
+> When they disagree, the precedent points both ways, or the call is one-way, return it prepared, with both positions, to the Question that opened the council, which sends it to him as a `his-call` child; a DR-grade call too, except the overnight one below.
 
 ## ProposeDr
 
@@ -175,6 +175,16 @@ Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Prepared
 Spec: L19
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): DecidedOvernight → Investigated, "the ruling is found wrong". A system transition: no skill carries it.
+
+## JudgeSlots
+
+`claim:Tribunal.JudgeSlots`: A judge's brief names every skill the seat needs with a slash, like any dispatch.
+
+Spec: K14, L18
+
+**ticket-captain** (Judge):
+
+> Skills: every skill the seat needs, each with a slash · the case file · model and effort · return to.
 
 ## Judge
 

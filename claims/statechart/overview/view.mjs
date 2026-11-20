@@ -19,7 +19,7 @@ const states = {
 const steps = {
   "Overview_Accept": "his acceptance: the landing PR goes to master · N6",
   "Overview_Build": "the model builds the skills; a project's init turns memory off and commits the guard · K6, N12 DR 055 §1, N12 DR 056 §1",
-  "Overview_Cut": "the coordinator cuts a ticket and dispatches its captain · H5, H3",
+  "Overview_Cut": "a Wayfinding captain cuts the ticket; the coordinator opens, sequences and dispatches its captain · H2, H4, H5, H3",
   "Overview_Decided": "a Question decided, by him by day or provisionally overnight, is acted on and never ratified · L19, L20",
   "Overview_Explain": "a change to declared paths flags its doc · D5",
   "Overview_Explained": "the writer updates the doc or states it holds · D5",
@@ -29,7 +29,7 @@ const steps = {
   "Overview_List": "the chief of staff reads the board across Projects into his short list · H7",
   "Overview_Merge": "the first round with no new blocker: the Merge hop runs dydo merge · R8, R17, R23",
   "Overview_Need": "a need only he can settle goes up the chain, or a hard call to the tribunal · H16, L18",
-  "Overview_Next": "merged: the coordinator cuts the next ticket · R20, H5",
+  "Overview_Next": "merged: the coordinator dispatches the next ticket in sequence · R20, H5",
   "Overview_Proposed": "overnight, both judges agree on a two-way, seriously blocking DR-grade call: a proposed DR · L21",
   "Overview_Prove": "the Implement hop proves its work with red tests and receipts · R5, T3",
   "Overview_Ratify": "he ratifies the proposed DR · L21",

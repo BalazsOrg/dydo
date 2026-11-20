@@ -3,9 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>Liveness (M12): a hop quiet for 2 hours, checked and healed by the officer above.</summary>
 public static class Liveness
 {
-    private const string Alive = "Alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.";
-    private const string Behind = "Record behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).";
-    private const string Stopped = "Stopped: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.";
+    private const string Alive = "A liveness finding on a hop that is alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.";
+    private const string Behind = "A liveness finding on a hop whose record is behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).";
+    private const string Stopped = "A liveness finding on a stopped hop: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.";
 
     public static readonly Claim Quiet = new("liveness fires on a hop In Progress quiet for 2 hours, or a ticket In Progress with no open hop for 2 hours.", [Actor.Survey],
         [new(Skill.LinearWorkspaceStandard, "`liveness` fires on a hop In Progress and quiet for 2 hours, or a ticket In Progress with no open hop for 2 hours, counted from the later of its last change and its latest `liveness <UTC time>: <outcome>` comment.", new(Section.LinearStatuses, 3))])
@@ -16,7 +16,7 @@ public static class Liveness
     public static readonly Claim FoundBehind = Heal(1103, "A record behind is brought up to date.", Behind, LivenessState.Live, "the record is behind: brought up to date");
 
     // S24: the coordinator resumes the same thread once, and a second stop of the same hop gets a fresh agent.
-    private const string CoordinatorStopped = "Stopped: comment `liveness <UTC time>: stopped` and set the hop back to Todo; resume the same agent's thread the first time, and dispatch a fresh agent when the same hop stops again; the old thread link stays as history.";
+    private const string CoordinatorStopped = "A liveness finding on a stopped hop: comment `liveness <UTC time>: stopped` and set the hop back to Todo; resume the same agent's thread the first time, and dispatch a fresh agent when the same hop stops again; the old thread link stays as history.";
 
     public static readonly Claim FoundStopped = Heal(1104, "A stopped hop goes back to Todo and is resumed or restarted.", Stopped, LivenessState.Restarted, "stopped: the hop back to Todo", CoordinatorStopped);
 

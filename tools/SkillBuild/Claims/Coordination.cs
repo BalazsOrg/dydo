@@ -33,7 +33,7 @@ public static class Coordination
 
     public static readonly Claim Wake = new("He starts or wakes a Project's coordinator, or the chief of staff does (DYD-1082 555a8300 gap 2).", [Actor.Balazs, Actor.ChiefOfStaff, Actor.Coordinator],
     [
-        new(Skill.Coordinator, "He or the chief of staff starts or wakes you: wake up stateless, then keep the lanes full.", new(ProjectState.Unheld, 1303, MoveKind.Exit)),
+        new(Skill.Coordinator, "He or the chief of staff starts or wakes you, and you wake up stateless.", new(ProjectState.Unheld, 1303, MoveKind.Exit)),
         new(Skill.ChiefOfStaff, "Start or wake a Project's coordinator from the coordinator brief.", new(ProjectState.Unheld, 1303, MoveKind.Exit))
     ])
     { Spec = ["H4", "H7"], Transition = new(ProjectState.Unheld, ProjectState.Watching, "he or the chief of staff starts or wakes its coordinator") };
@@ -65,7 +65,7 @@ public static class Coordination
     { Spec = ["H18"] };
 
     public static readonly Claim NoSlots = new("The coordinator writes no envoy brief slot; on a wrapper it opens it fills only Type, stage, Mode and the members.", [Actor.Coordinator],
-        [new(Skill.Coordinator, "Write none of the envoy brief's seven slots, which come from its ticket; on a wrapper you fill only its Type, stage, Mode and the members you parent.", new(EnvoyState.Active, 1309, MoveKind.Nominal))])
+        [new(Skill.Coordinator, "Write none of the envoy brief's seven slots: the envoy writes them from its ticket; on a wrapper you fill only its Type, stage, Mode and the members you parent.", new(EnvoyState.Active, 1309, MoveKind.Nominal))])
     { Spec = ["H19"] };
 
     public static readonly Claim FillerBack = new("A filler that fails the pull rule's checks is blocked on the open Wayfinding ticket, opened if none is, until one records its release or he assigns it.", [Actor.Coordinator, Actor.TicketCaptain],
@@ -79,7 +79,7 @@ public static class Coordination
         [new(Skill.Coordinator, "When that Wayfinding ticket closes without recording the release, move the block to the next open Wayfinding ticket, opening one if none is open.", new(CoordinatorSlot.Filler, 1311))])
     { Spec = ["H11"] };
 
-    public static readonly Claim Brief = new("The coordinator dispatch template's slots (DYD-1195 e0eadc20).", [Actor.ChiefOfStaff],
-        [new(Skill.ChiefOfStaff, "The Project · model and effort.", new(ChiefOfStaffSlot.CoordinatorBrief, 1306))])
-    { Spec = ["K14"] };
+    public static readonly Claim Brief = new("The coordinator dispatch template carries K14's slots; the authoring slots don't apply, since a coordinator never authors (DYD-1195 e0eadc20).", [Actor.ChiefOfStaff],
+        [new(Skill.ChiefOfStaff, "The Project and its plan, in place of ticket and contract · model and effort · return to. Branch, worktree and base, owned paths, gates, proof recipe and findings don't apply: a coordinator never authors.", new(ChiefOfStaffSlot.CoordinatorBrief, 1306))])
+    { Spec = ["K14", "R16"] };
 }

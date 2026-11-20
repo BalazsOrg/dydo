@@ -11,3 +11,7 @@ Arrivals:
 Exits:
 
 - Once its captain files the children, sequence them and put a captain on each ready one.
+
+## Save, resume and end
+
+- Save the `too big, re-cut` on the captain's ticket and resume from the children its Wayfinding captain files; end resolved once they are staffed, or escalated as a `research` Question when its captain passes a need up.

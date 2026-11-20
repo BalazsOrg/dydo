@@ -16,7 +16,7 @@ public static class CoordinatorCarrier
         ExplicitOnly = true,
         Phases =
         [
-            new("Wake up stateless", [new(CoordinatorSlot.WakeUp), .. DeliveryMachines.Project.Slots(ProjectState.Unheld)]),
+            new("Wake up stateless", [.. DeliveryMachines.Project.Slots(ProjectState.Unheld), new(CoordinatorSlot.WakeUp, "Waking up")]),
             new("Keep the lanes full", [new(CoordinatorSlot.Lanes), new(Routine.Dispatching, "Dispatching captains")])
             {
                 Resources = [TicketCaptainCarrier.Brief]
@@ -41,11 +41,16 @@ public static class CoordinatorCarrier
         ],
         Scenarios =
         [
-            new(CoordinatorScenario.ReCut, "Too big for one agent", HierarchyMachines.Dispatch.Slots(DispatchState.ReCut)),
-            new(CoordinatorScenario.Replanning, "A fundamental blocker or a new requirement", DeliveryMachines.Project.Slots(ProjectState.Replanning)),
-            new(CoordinatorScenario.RejectedFiller, "A filler sent back", new Slot(CoordinatorSlot.Filler)),
-            new(CoordinatorScenario.ForcedResync, "A third forced re-sync", MergeMachines.MasterRoute.Slots(MasterRouteState.Held)),
-            new(CoordinatorScenario.Survivors, "Surviving mutants", LawMachines.Mutation.Slots(MutationState.Survivors))
+            new(CoordinatorScenario.ReCut, "Too big for one agent",
+                [.. HierarchyMachines.Dispatch.Slots(DispatchState.ReCut), ScenarioSlots.Close(ScenarioClose.ReCut)]),
+            new(CoordinatorScenario.Replanning, "A fundamental blocker or a new requirement",
+                [.. DeliveryMachines.Project.Slots(ProjectState.Replanning), ScenarioSlots.Close(ScenarioClose.Replanning)]),
+            new(CoordinatorScenario.RejectedFiller, "A filler sent back",
+                new Slot(CoordinatorSlot.Filler), ScenarioSlots.Close(ScenarioClose.RejectedFiller)),
+            new(CoordinatorScenario.ForcedResync, "A third forced re-sync",
+                [.. MergeMachines.MasterRoute.Slots(MasterRouteState.Held), ScenarioSlots.Close(ScenarioClose.ForcedResync)]),
+            new(CoordinatorScenario.Survivors, "Surviving mutants",
+                [.. LawMachines.Mutation.Slots(MutationState.Survivors), ScenarioSlots.Close(ScenarioClose.Survivors)])
         ]
     };
 }

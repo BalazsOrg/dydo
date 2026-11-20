@@ -66,6 +66,46 @@ Spec: T13, K22
 
 > Leave what you touched no worse than you found it.
 
+## Glossary
+
+`claim:Implementer.Glossary`: A glossary term or a Decision Record is touched with domain-modeling, as the pre-candidate code-writer did.
+
+Spec: K14, K22
+
+**implementer** (Build):
+
+> Load /domain-modeling when you touch a glossary term or a Decision Record.
+
+## OpenDesign
+
+`claim:Implementer.OpenDesign`: An open design question stops the build and goes back to the captain, as the pre-candidate code-writer's prototype trigger did.
+
+Spec: K22, K31
+
+**implementer** (Build):
+
+> When a design question is open, stop and return it to your captain; /prototype is the skill that answers one.
+
+## Gherkin
+
+`claim:Implementer.Gherkin`: The implementer writes and wires each acceptance line the contract marks for Gherkin as a feature-file scenario, never weakening it.
+
+Spec: K22, K31
+
+**implementer** (Code):
+
+> Write each acceptance line the contract marks for Gherkin as a feature-file scenario at the product's boundary, in glossary words, with an example table only where values vary and every column changes an outcome, wired through step definitions; add or remove a scenario only when asked, and never weaken one.
+
+## Platforms
+
+`claim:Implementer.Platforms`: Platform-specific code is proved on CI's platform too, as the pre-candidate code-writer did.
+
+Spec: K22, R5
+
+**implementer** (Code):
+
+> Prove platform-specific code, such as processes, paths and signals, on CI's platform too, not only on yours.
+
 ## Design
 
 `claim:Implementer.Design`: A seam or interface is designed with codebase-design.
