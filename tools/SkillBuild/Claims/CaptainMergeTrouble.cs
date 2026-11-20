@@ -67,6 +67,15 @@ public static class CaptainMergeTrouble
             Reason: "One rerun tells a flake from a break at the cost of a few minutes.")
     };
 
+    public static readonly Claim Dytest = new("A gate red after the merge is rerun through DYTEST, which counts a flake as a result.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.RedLead, 3, "Run the rerun through DYTEST, so that a flake is counted.")])
+    {
+        Spec = ["R22"],
+        Truth = new(Evidence.Open("DYTEST is not built: no command of the CLI is DYTEST (`Commands/DydoRootCommand.cs` registers none), so the rerun is hosted CI's, started by hand."),
+            Layer: "Hosted CI reruns a job and forgets that it failed the first time.",
+            Reason: "A wobble that leaves a trace becomes a ticket once it repeats; an untracked one fails merges for ever.")
+    };
+
     public static readonly Claim Flake = new("Green on the rerun is a flake, and the merge is done.", Me,
         [At(Actor.TicketCaptain, CaptainSlot.RedLead, 2, "Green on the rerun is a flake: the merge is done.")])
     {

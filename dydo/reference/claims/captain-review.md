@@ -208,6 +208,22 @@ Reason: Fixing toward a plan that is itself wrong builds more of the wrong thing
 
 > A fundamental fault, or a new requirement: your officer, for a re-plan.
 
+## NeedsUser
+
+`claim:CaptainReview.NeedsUser`: A blocker that waits on something only the user can give goes to the officer at once, never to the user.
+
+Spec: R9
+
+Evidence (tool): t3_thread_send: "Send a message to any thread"; its `mode:'auto'` "starts an idle thread, steers a running turn, or queues".
+
+Layer: A FAIL stops `dydo merge` and tells nobody above the captain; the officer hears of the blocker only when the captain sends it.
+
+Reason: The user's answer is the slowest route of the three, so each hour before it is asked for lengthens the wait.
+
+**ticket-captain** (BlockerRoutes; read by TicketCaptain):
+
+> A need only the user can meet: your officer, at once, by A need for the user (`need-for-the-user.md`).
+
 ## OneMore
 
 `claim:CaptainReview.OneMore`: The officer running the rounds may order one more after a round with no new blocker.

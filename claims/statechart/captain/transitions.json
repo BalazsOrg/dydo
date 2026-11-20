@@ -543,11 +543,12 @@
     {
       "claim": "claim:CaptainTrouble.Up",
       "from": "Question",
-      "to": "Returned",
-      "arrow": "the Question comes back unsettled: it goes to the officer, still open",
+      "to": "Question",
+      "arrow": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer",
       "spec": [
         "H16",
-        "H12"
+        "H12",
+        "S10"
       ],
       "guard": null,
       "effect": null,

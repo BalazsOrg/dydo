@@ -106,6 +106,22 @@ Reason: One rerun tells a flake from a break at the cost of a few minutes.
 
 > Rerun the red run once.
 
+## Dytest
+
+`claim:CaptainMergeTrouble.Dytest`: A gate red after the merge is rerun through DYTEST, which counts a flake as a result.
+
+Spec: R22
+
+Evidence: open, so no skill states this claim yet. DYTEST is not built: no command of the CLI is DYTEST (`Commands/DydoRootCommand.cs` registers none), so the rerun is hosted CI's, started by hand.
+
+Layer: Hosted CI reruns a job and forgets that it failed the first time.
+
+Reason: A wobble that leaves a trace becomes a ticket once it repeats; an untracked one fails merges for ever.
+
+**ticket-captain** (withheld; RedLead; read by TicketCaptain):
+
+> Run the rerun through DYTEST, so that a flake is counted.
+
 ## Flake
 
 `claim:CaptainMergeTrouble.Flake`: Green on the rerun is a flake, and the merge is done.

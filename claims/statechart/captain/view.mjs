@@ -42,7 +42,7 @@ const steps = {
   "CaptainTrouble_ReCut": "`too big, re-cut`: neither the work nor its split fits · H2",
   "CaptainTrouble_SplitRest": "the leaf proves too big: what is left is cut · H13, H14",
   "CaptainTrouble_Third": "a third round still has a blocker: the checkpoint · R10",
-  "CaptainTrouble_Up": "the Question comes back unsettled: it goes to the officer, still open · H16, H12"
+  "CaptainTrouble_Up": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer · H16, H12, S10"
 };
 export const title = "A captain and its ticket";
 export const state = (v) => states[v.state];

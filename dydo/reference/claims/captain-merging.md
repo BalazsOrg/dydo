@@ -70,6 +70,22 @@ Reason: The merge commit is the first time the combined tree runs on the host ev
 
 > Close the Merge sub-ticket once hosted CI is green on the merge commit.
 
+## Receipt
+
+`claim:CaptainMerging.Receipt`: A merge is done only once DYTEST also holds a green receipt on the merge tree.
+
+Spec: R20
+
+Evidence: open, so no skill states this claim yet. DYTEST is not built: no command of the CLI is DYTEST (`Commands/DydoRootCommand.cs` registers none), so nothing issues a receipt to wait for.
+
+Layer: Hosted CI runs its own jobs on the merge commit and keeps no record of the gates the captain ran on the combined tree.
+
+Reason: A proof keyed by the tree shows the gates passed on exactly what was merged, with nobody's word taken for it.
+
+**ticket-captain** (withheld; MergeSteps; read by TicketCaptain):
+
+> Before you close it, wait for DYTEST's green receipt on the merge tree as well.
+
 ## Archive
 
 `claim:CaptainMerging.Archive`: After a merge the captain archives the branches and worktrees its dispatches created.

@@ -93,7 +93,7 @@ public static class CaptainRound
     };
 
     public static readonly Claim Changed = new("A severity a fixer changed is recorded, with its reason.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.FixRules, 3, "If the Fix's writer changed a finding's severity, record the change and its reason on the Review ticket.")])
+        [At(Actor.TicketCaptain, CaptainSlot.FixRules, 4, "If the Fix's writer changed a finding's severity, record the change and its reason on the Review ticket.")])
     {
         Spec = ["R11"],
         Truth = new(Evidence.Code("skills/roles/crew/implementer/SKILL.md"),

@@ -183,7 +183,7 @@ CaptainTrouble_Third ==
 \* claim:CaptainTrouble.Up
 CaptainTrouble_Up ==
     /\ state = "Question"
-    /\ state' = "Returned"
+    /\ state' = "Question"
     /\ UNCHANGED <<round, extra>>
 
 Done == state \in Finals /\ UNCHANGED vars

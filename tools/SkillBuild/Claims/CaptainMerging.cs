@@ -50,9 +50,18 @@ public static class CaptainMerging
             Reason: "The merge commit is the first time the combined tree runs on the host everyone trusts.")
     };
 
+    public static readonly Claim Receipt = new("A merge is done only once DYTEST also holds a green receipt on the merge tree.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 4, "Before you close it, wait for DYTEST's green receipt on the merge tree as well.")])
+    {
+        Spec = ["R20"],
+        Truth = new(Evidence.Open("DYTEST is not built: no command of the CLI is DYTEST (`Commands/DydoRootCommand.cs` registers none), so nothing issues a receipt to wait for."),
+            Layer: "Hosted CI runs its own jobs on the merge commit and keeps no record of the gates the captain ran on the combined tree.",
+            Reason: "A proof keyed by the tree shows the gates passed on exactly what was merged, with nobody's word taken for it.")
+    };
+
     public static readonly Claim Archive = new("After a merge the captain archives the branches and worktrees its dispatches created.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 4,
+        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 5,
             "Archive each branch and worktree your dispatches created, with `dydo archive branch <target>` and `dydo archive worktree <target>`; the archive keeps them 30 days.")
     ])
     {

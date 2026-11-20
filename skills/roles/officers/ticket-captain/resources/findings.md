@@ -6,6 +6,7 @@
 
 - Work that is broken, against the spec or a security hole: a Fix ticket by [Fix rounds](fix-rounds.md), one sub-ticket per blocker inside it. (open: his call)
 - A fundamental fault, or a new requirement: your officer, for a re-plan.
+- A need only the user can meet: your officer, at once, by [A need for the user](need-for-the-user.md).
 
 **A should, by what its fix costs:**
 

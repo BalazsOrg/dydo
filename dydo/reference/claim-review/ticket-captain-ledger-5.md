@@ -8,7 +8,7 @@ type: reference
 
 What became of each line of the legacy `ticket-captain` spine in this section, and of each resource it links.
 
-`claim:Review.Open`, kept in `claim:CaptainReview.Whole`
+`claim:Review.Open`, kept in `claim:CaptainReview.Whole`, `claim:CaptainReview.Whose`
 
 > Once the parts are wired and before the Merge hop, review the parent once: each part, the parts together, and their harmony.
 
@@ -20,7 +20,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Holding a round with several seats, post one verdict naming each seat's model and provider and its blockers, and write the PR line at the same moment.
 
-`claim:Review.FixTicket`, kept in `claim:CaptainReview.Fix`, `claim:CaptainTrouble.Parallel`
+`claim:Review.FixTicket`, kept in `claim:CaptainReview.Fix`, `claim:CaptainTrouble.FixName`, `claim:CaptainTrouble.Parallel`
 
 > At verdict time, turn the blockers into Fix rN with one Blocker ticket per blocker inside it; for parallel writers, split it into Fix rNb.
 
@@ -52,7 +52,11 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Send a fundamental blocker or a new requirement to the officer above to re-plan; when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans.
 
-`claim:Review.NeedsBalazs`, kept in `claim:CaptainTrouble.Ask`, `claim:CaptainTrouble.Up`
+A clause of it, dropped, it fails Need: Its reader is the coordinator: what an officer does with a re-plan belongs in that officer's skill (41a553f1).
+
+> when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans
+
+`claim:Review.NeedsBalazs`, kept in `claim:CaptainReview.NeedsUser`, `claim:CaptainTrouble.Known`
 
 > Pass a blocker that needs Balazs up the chain at once.
 
@@ -64,7 +68,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > You may still order one more round after a round with no new blocker.
 
-`claim:Review.ToCheckpoint`, kept in `claim:CaptainTrouble.Checkpoint`
+`claim:Review.ToCheckpoint`, kept in `claim:CaptainTrouble.Third`, `claim:CaptainTrouble.Checkpoint`, `claim:CaptainTrouble.Escalate`
 
 > After round 3 with a blocker, stop at the checkpoint and decide on purpose.
 
@@ -80,9 +84,13 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > A parent may close Done while its shoulds stay open.
 
-`claim:Should.Fixed`, kept in `claim:CaptainRound.Cheap`
+`claim:Should.Fixed`, kept in `claim:CaptainRound.Cheap`, `claim:CaptainRound.ParentDone`
 
 > Fix a cheap should in place before its parent merges; the rest wait for a shoulds batch.
+
+A clause of it, dropped, it fails Need: Cutting a Shoulds batch is the coordinator's act (S17); a captain acts only on this, that the fix can wait (41a553f1). Team Dydo's Linear holds no batch yet, read 2026-11-21.
+
+> for a shoulds batch
 
 `claim:Should.Dup`, kept in `claim:CaptainImplement.Duplicate`
 

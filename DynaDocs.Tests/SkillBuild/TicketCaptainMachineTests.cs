@@ -72,18 +72,20 @@ public class TicketCaptainMachineTests
     public void CaptainMachine_ReturnsAFailedFillerFromTaken()
     {
         Assert.Contains(Arrow("Captain.FillerBack", "Taken", "Returned"), Arrows);
-        Assert.Equal(1, Arrows.Split("\"from\": \"Taken\",\n      \"to\": \"Returned\"").Length - 1);
+        Assert.Equal(1, Between("Taken", "Returned"));
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 r1b P6 r0 3 H16 a leaf's Question leaves two ways: answered, back to the leaf, or unsettled, to the officer; the research resource never routes one to the user")]
-    public void CaptainMachine_LetsAQuestionLeaveAnsweredOrUnsettled()
+    [Trait("Job", "contract: DYD-1372 r2b B3 H16 S10 a leaf's Question is left only to resume the leaf: passed up unsettled, it stays a wait; the research resource never routes one to the user")]
+    public void CaptainMachine_LeavesAQuestionOnlyToResumeTheLeaf()
     {
         Assert.Contains(Arrow("CaptainTrouble.Answered", "Question", "Leaf"), Arrows);
-        Assert.Contains(Arrow("CaptainTrouble.Up", "Question", "Returned"), Arrows);
-        Assert.Equal(2, Leaving("Question"));
+        Assert.Contains(Arrow("CaptainTrouble.Up", "Question", "Question"), Arrows);
+        Assert.Equal(Leaving("Question"), Between("Question", "Leaf") + Between("Question", "Question"));
         Assert.DoesNotContain("user", Built.Value.Files["skills/roles/officers/ticket-captain/resources/research.md"]);
     }
+
+    private static int Between(string from, string to) => Arrows.Split($"\"from\": \"{from}\",\n      \"to\": \"{to}\"").Length - 1;
 
     private static int Leaving(string state) => Arrows.Split($"\"from\": \"{state}\"").Length - 1;
 

@@ -42,7 +42,7 @@ Reason: A helper's edits are part of the holder's change, so they land under the
 
 ## OffRecord
 
-`claim:CaptainSplit.OffRecord`: A helper, a lookup, a command and one seat among several stay off the record.
+`claim:CaptainSplit.OffRecord`: Work gets a ticket only when someone other than its asker uses what it leaves; a helper, a lookup, a command and one seat among several stay off the record.
 
 Spec: S1
 
@@ -54,7 +54,7 @@ Reason: A record nobody else reads is bookkeeping that slows the work it describ
 
 **ticket-captain** (Split; read by TicketCaptain, on claim:CaptainSplit.Cut):
 
-> Cut a bigger ticket into sub-tickets, one per part another captain will hold; a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
+> Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
 
 ## OneTicket
 
@@ -70,7 +70,7 @@ Reason: An agent that understands something once uses it across every step it wa
 
 **ticket-captain** (Split; read by TicketCaptain, on claim:CaptainSplit.Cut):
 
-> Cut a bigger ticket into sub-tickets, one per part another captain will hold; a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
+> Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
 
 ## Cut
 
@@ -88,7 +88,7 @@ Reason: Each part then has a single owner who answers for it.
 
 **ticket-captain** (Split; read by TicketCaptain):
 
-> Cut a bigger ticket into sub-tickets, one per part another captain will hold; a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
+> Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
 
 ## Contract
 

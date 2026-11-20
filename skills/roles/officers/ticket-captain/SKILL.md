@@ -32,7 +32,7 @@ A ticket that fits you is a leaf: do it as your kind's resource says, with nativ
 You commit what a helper changes.
 
 **A split.**
-Cut a bigger ticket into sub-tickets, one per part another captain will hold; a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
+Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
 Write each sub-ticket's contract in its description: its outcome, how it fits your ticket, and the spec sections it serves, quoted and linked.
 Label its Mode: AFK, or HITL when the user must take part.
 Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; a small leaf is one ticket. (open: his call)

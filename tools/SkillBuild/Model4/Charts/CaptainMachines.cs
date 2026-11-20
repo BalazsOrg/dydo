@@ -8,9 +8,10 @@ namespace DynaDocs.SkillBuild;
 /// leaves only from it, once (<c>extra</c>), so a round with a blocker reaches the next only through a
 /// Fix (R8). A third round that still has a blocker leaves only through the checkpoint (R10), and a
 /// repaired conflict or red gate goes on only through a review round, or back to the officer when it
-/// cannot be finished (R19). A splitting captain's Question is one more child it waits on; a leaf's
-/// Question leaves answered, back to the leaf, or unsettled, to the officer with the Question still
-/// open (H16). A filler ticket that fails its check goes back from Taken, before it is started (H11).
+/// cannot be finished (R19). A splitting captain's Question is one more child it waits on. A leaf's
+/// Question is left only to resume the leaf: one that comes back unsettled goes to the officer and
+/// stays open, and its holder goes on waiting, a step that leaves the state unchanged (H16, S10).
+/// A filler ticket that fails its check goes back from Taken, before it is started (H11).
 /// </summary>
 public static class CaptainMachines
 {

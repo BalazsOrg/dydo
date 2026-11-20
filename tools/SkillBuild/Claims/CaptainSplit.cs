@@ -29,7 +29,7 @@ public static class CaptainSplit
             Reason: "A helper's edits are part of the holder's change, so they land under the holder's commit and its review.")
     };
 
-    public static readonly Claim OffRecord = new("A helper, a lookup, a command and one seat among several stay off the record.", Me, [])
+    public static readonly Claim OffRecord = new("Work gets a ticket only when someone other than its asker uses what it leaves; a helper, a lookup, a command and one seat among several stay off the record.", Me, [])
     {
         Spec = ["S1"],
         Truth = new(Evidence.Run(Children),
@@ -48,7 +48,8 @@ public static class CaptainSplit
     public static readonly Claim Cut = new("A ticket bigger than one agent is cut into sub-tickets, one per part another captain holds.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Split, 1,
-            "Cut a bigger ticket into sub-tickets, one per part another captain will hold; a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.",
+            "Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: " +
+            "a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.",
             () => [OffRecord, OneTicket])
     ])
     {

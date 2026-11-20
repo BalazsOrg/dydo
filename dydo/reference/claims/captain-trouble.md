@@ -90,13 +90,29 @@ Reason: The writer already understands the code, until its context is what stand
 
 > Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong.
 
-## Parallel
+## FixName
 
-`claim:CaptainTrouble.Parallel`: A Fix is split only between parallel writers.
+`claim:CaptainTrouble.FixName`: A Fix ticket is opened at verdict time and titled after its round: Fix rN.
 
 Spec: S9
 
-Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, r2 and r3, each followed by a Review titled a fresh review; r4 is titled the checkpoint round. Each Fix is one ticket.
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-21: Fix r1, Fix r2 and Fix r3, each after the Review of its number, such as "Fix r2: close review r2's 2 blockers and 5 shoulds". Fix r1, DYD-1327, was created at 04:06 on 2026-11-20, a minute before Review r1, DYD-1294, closed with its verdict.
+
+Layer: Linear has no Type label for a Fix, so only its title says which round it closes.
+
+Reason: Anyone reading the board finds the round a Fix belongs to without opening it.
+
+**ticket-captain** (FixRules; read by TicketCaptain):
+
+> Open a Fix when its round's verdict is posted, titled after the round: Fix rN.
+
+## Parallel
+
+`claim:CaptainTrouble.Parallel`: A Fix is split only between parallel writers, as Fix rNa and Fix rNb.
+
+Spec: S9
+
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, r2 and r3, each followed by a Review titled a fresh review; r4 is titled the checkpoint round. Each Fix is one ticket. This skill's own round 1 was split between two writers in parallel, Fix r1a on the generator and Fix r1b on the skill: T3 thread titles and `git log`, read 2026-11-21.
 
 Layer: Nothing stops a captain from opening a Fix ticket for every finding.
 
@@ -104,7 +120,7 @@ Reason: One writer closing all of a round's blockers understands the code once.
 
 **ticket-captain** (FixRules; read by TicketCaptain):
 
-> Split a Fix only between writers who work in parallel.
+> Split a Fix only between writers who work in parallel, as Fix rNa and Fix rNb.
 
 ## Security
 
@@ -264,13 +280,13 @@ Reason: The answer outlives both threads, for whoever meets the same call next.
 
 ## Up
 
-`claim:CaptainTrouble.Up`: A Question that comes back unsettled is passed up to the officer, with what was found.
+`claim:CaptainTrouble.Up`: A Question that comes back unsettled goes to the officer's thread with what was found and stays open: its holder still waits on the answer.
 
-Spec: H16, H12
+Spec: H16, H12, S10
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Question → Returned, "the Question comes back unsettled: it goes to the officer, still open".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Question → Question, "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer".
 
-Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
+Evidence (run): T3, read 2026-11-21 from the thread of this skill's fixer: `t3_thread_list` gives its `parentThreadId`, the thread of the captain that dispatched it, and the header of its brief names the same thread. t3_thread_send: "Send a message to any thread"; its `mode:'auto'` "starts an idle thread, steers a running turn, or queues". So a holder reaches its officer's thread without ending its own run.
 
 Layer: A captain has no tool that opens a thread with the user, and its officer is the only one above it.
 
@@ -278,7 +294,23 @@ Reason: Whether a call is worth the user's time is weighed once, above, instead 
 
 **ticket-captain** (NeedRules; read by TicketCaptain):
 
-> When a Question comes back unsettled, pass it to your officer with what was found, and leave it open.
+> When a Question comes back unsettled, send it and what was found to your officer's thread with `t3_thread_send`, and leave it open: what waited still waits on its answer.
+
+## Known
+
+`claim:CaptainTrouble.Known`: A need already known to be one only the user can meet gets no research: its Question sub-ticket goes to the officer at once and blocks only what waits on it.
+
+Spec: R9, S10, L18
+
+Evidence (run): T3, read 2026-11-21 from the thread of this skill's fixer: `t3_thread_list` gives its `parentThreadId`, the thread of the captain that dispatched it, and the header of its brief names the same thread. t3_thread_send: "Send a message to any thread"; its `mode:'auto'` "starts an idle thread, steers a running turn, or queues". So a holder reaches its officer's thread without ending its own run.
+
+Layer: Nothing above a captain learns of a need until the captain sends it, and no tool of its own reaches the user's queue.
+
+Reason: A captain set to study what no source holds costs a day, and the user's answer is the slowest of all to arrive.
+
+**ticket-captain** (NeedRules; read by TicketCaptain):
+
+> When you already know that only the user can meet a need, skip the research: open its Question sub-ticket, block only what waits on it, and send it to your officer's thread at once with `t3_thread_send`. A call that only wants the user's approval is no such need.
 
 ## InThread
 

@@ -38,6 +38,16 @@ Withheld from Seats:
 
 > Read `dydo usage` and balance vendors across every seat you fill.
 
+## CaptainMerging.Receipt
+
+`claim:CaptainMerging.Receipt`: A merge is done only once DYTEST also holds a green receipt on the merge tree.
+
+Open: DYTEST is not built: no command of the CLI is DYTEST (`Commands/DydoRootCommand.cs` registers none), so nothing issues a receipt to wait for.
+
+Withheld from MergeSteps:
+
+> Before you close it, wait for DYTEST's green receipt on the merge tree as well.
+
 ## CaptainMerging.Archive
 
 `claim:CaptainMerging.Archive`: After a merge the captain archives the branches and worktrees its dispatches created.
@@ -57,3 +67,13 @@ Open: `dydo/guides/testing-strategy.md` still lists `gate mutation --since BASE`
 Withheld from MergeRules:
 
 > Nothing waits on mutation testing.
+
+## CaptainMergeTrouble.Dytest
+
+`claim:CaptainMergeTrouble.Dytest`: A gate red after the merge is rerun through DYTEST, which counts a flake as a result.
+
+Open: DYTEST is not built: no command of the CLI is DYTEST (`Commands/DydoRootCommand.cs` registers none), so the rerun is hosted CI's, started by hand.
+
+Withheld from RedLead:
+
+> Run the rerun through DYTEST, so that a flake is counted.

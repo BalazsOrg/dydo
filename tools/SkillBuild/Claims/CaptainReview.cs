@@ -146,6 +146,15 @@ public static class CaptainReview
         }
     };
 
+    public static readonly Claim NeedsUser = new("A blocker that waits on something only the user can give goes to the officer at once, never to the user.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.BlockerRoutes, 3, "A need only the user can meet: your officer, at once, by [A need for the user](need-for-the-user.md).")])
+    {
+        Spec = ["R9"],
+        Truth = new(Evidence.Tool("t3_thread_send: \"Send a message to any thread\"; its `mode:'auto'` \"starts an idle thread, steers a running turn, or queues\"."),
+            Layer: "A FAIL stops `dydo merge` and tells nobody above the captain; the officer hears of the blocker only when the captain sends it.",
+            Reason: "The user's answer is the slowest route of the three, so each hour before it is asked for lengthens the wait.")
+    };
+
     public static readonly Claim OneMore = new("The officer running the rounds may order one more after a round with no new blocker.", Me, [])
     {
         Spec = ["R8"],

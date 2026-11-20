@@ -36,13 +36,21 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
 
-`claim:Dispatch.Channel`, kept in `claim:CaptainDispatch.Send`, `claim:CaptainSplit.Helpers`
+`claim:Dispatch.Channel`, kept in `claim:CaptainDispatch.Send`, `claim:CaptainSplit.OffRecord`, `claim:CaptainSplit.Helpers`
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
+
+A clause of it, dropped, it fails Handled: The host runs a native sub-agent in its caller's session and checkout unless the caller asks otherwise; the captain arranges nothing.
+
+> shares your checkout
 
 `claim:Dispatch.Worktrees`, kept in `claim:CaptainDispatch.OwnWorktree`
 
 > Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.
+
+A clause of it, dropped, it fails Verify: The sentence he accepted (1ffbc4c8) sets the condition anew: a child gets its own worktree when it "will open its own PR", whether or not it has children.
+
+> and sub-tickets with children
 
 `claim:Dispatch.Foreground`, dropped, it fails Handled: T3's own instructions to every agent already say it: a native child is awaited in the turn, and a background agent goes through `delegate_task`.
 
@@ -88,9 +96,17 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
 
+A clause of it, dropped, it fails Verify: It contradicts the small-change rule beside it, since a sub-captain is a ticket captain (2119cd65); a leaf's holder writes its own work, so the limit binds a captain once it has split (df6a785e).
+
+> and a sub-captain authors nothing
+
 `claim:Dispatch.Return`, kept in `claim:CaptainDispatch.Resume`
 
 > Every crew return comes back to you: post its hop's SHA on the hop as the resume point.
+
+A clause of it, dropped, it fails Handled: T3 returns each child's result to the thread that started it; the captain has only to act on it.
+
+> Every crew return comes back to you
 
 `claim:Report.Route`, kept in `claim:CaptainDispatch.Route`
 

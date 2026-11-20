@@ -8,7 +8,7 @@ type: reference
 
 What became of each line of the legacy `ticket-captain` spine in this section, and of each resource it links.
 
-`claim:Project.OneTicket`, kept in `claim:CaptainSplit.OneTicket`
+`claim:Project.OneTicket`, kept in `claim:Captain.Owns`, `claim:CaptainSplit.OneTicket`
 
 > One agent holds one ticket; wrap several steps for one agent in one ticket.
 
@@ -16,17 +16,29 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Write each sub-ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
 
-`claim:Linear.CutRule`, kept in `claim:CaptainSplit.Cut`, `claim:CaptainSplit.OffRecord`
+`claim:Linear.CutRule`, kept in `claim:CaptainSplit.Cut`, `claim:CaptainSplit.OffRecord`, `claim:CaptainResearch.Scouts`
 
 > Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
+
+A clause of it, dropped, it fails Need: No captain acts on it: the criterion the line gives decides it, as it decides any case the list leaves out.
+
+> or a file
 
 `claim:Hops.Single`, kept in `claim:CaptainSplit.Steps`
 
 > A leaf lane or a batched should stays one ticket, with no hops.
 
+A clause of it, dropped, it fails Handled: AGENTS.md says it to every agent: "A leaf may still carry children, such as three shoulds fixed under one implementer's ticket" (df6a785e).
+
+> or a batched should
+
 `claim:Hops.Chain`, kept in `claim:CaptainSplit.Steps`
 
 > A step with its own review loop gets hop sub-tickets typed Implement, Review (one per round), Fix and Merge, blocked in step order; you may open them ahead in Todo.
+
+A clause of it, deferred: Linear has no Type label for Implement, Review or Fix: S3 leaves setting them up to the user's Enablement. Until then the title names the step.
+
+> typed
 
 `claim:Hops.AddCheck`, kept in `claim:CaptainBriefs.LeafCheck`
 
@@ -35,6 +47,10 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 `claim:Hops.AfkType`, kept in `claim:CaptainSplit.Mode`
 
 > Type the Merge hop AFK Merge for a feature-branch merge or a two-way main merge.
+
+A clause of it, deferred: `dydo merge` refuses the default branch as the user's click, so the route into it is not rebuilt in DYD-1372.
+
+> or a two-way main merge
 
 `claim:Hops.HitlType`, deferred: `dydo merge` refuses the default branch as the user's click, so the route into it is not rebuilt in DYD-1372. The Mode rule itself is claim CaptainSplit.Mode.
 
