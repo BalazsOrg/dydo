@@ -16,7 +16,7 @@
       "round": "1",
       "extra": "FALSE"
     },
-    "property": "H16_AnswerOrPassUpBeforeContinuing"
+    "property": "H16_ResumeLeafAfterQuestion"
   },
   "claim-build": {
     "from": "Edited",

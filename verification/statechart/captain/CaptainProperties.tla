@@ -18,12 +18,11 @@ WorkPhaseBeforeDone ==
 H3_WaitAfterSplit ==
     [][(state = "Split" /\ state' # state => state' = "Waiting")]_<<vars, seen>>
 
-\* H16, DYD-1295 519126ab: The officer waits while the Question captain
-\* investigates. An answer resumes the leaf; an unsettled Question goes up.
-\* These phases check the exits from the wait. The answer and open ticket are unobservable.
-H16_AnswerOrPassUpBeforeContinuing ==
-    [][(state = "Question" /\ state' # state =>
-        state' \in {"Leaf", "Returned"})]_<<vars, seen>>
+\* H16, S10, DYD-1295 519126ab. The leaf waits on an answer and resumes
+\* in Leaf. Passing up an unsettled Question leaves the leaf waiting.
+\* The property checks phase order. The answer itself is unobservable.
+H16_ResumeLeafAfterQuestion ==
+    [][(state = "Question" /\ state' # state => state' = "Leaf")]_<<vars, seen>>
 
 \* R8: Once review has started, every entry to finishing
 \* follows a clear round. Only a review round can produce that result.
@@ -74,9 +73,9 @@ R10_EnterCheckpointFromThirdRound ==
     [][(state # "Checkpoint" /\ state' = "Checkpoint" =>
         state = "InReview" /\ round = 3 /\ round' = round)]_<<vars, seen>>
 
-\* R8, R19, R21, R22: A successful repair needs a fresh review and a clear
-\* verdict before retry. The merge-conflict and red-gate resources allow
-\* return to the officer for an unresolved repair.
+\* R19 requires fresh review of conflict hunks. R21 and R22 route a real
+\* red gate through a Fix and fix-scoped review before re-landing. R8
+\* requires a clear verdict. K9 and H12 route escalation to the officer.
 R19_ReviewAfterMergeRepair ==
     [][ /\ (state = "Repairing" /\ state' # "Repairing" =>
             state' \in {"InReview", "Returned"})
@@ -84,9 +83,9 @@ R19_ReviewAfterMergeRepair ==
             state = "Clear" /\ "InReview" \in seen)
     ]_<<vars, seen>>
 
-\* H1 and AGENTS.md (Sort yourself): Crew does its one job and returns.
-\* Ticket Captain (Finish): "end on a commit, and return its SHA".
-\* Returning ends the current holder's run, including a handoff to its officer.
+\* H1 and AGENTS.md (Sort yourself) put return at the end of the job.
+\* H23 pairs the sub-captain's return line with a closed-thread signal.
+\* H12 routes escalations to the officer above.
 H1_ReturnedIsTerminal ==
     [][(state = "Returned" => UNCHANGED vars)]_<<vars, seen>>
 

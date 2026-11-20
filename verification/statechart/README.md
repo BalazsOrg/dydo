@@ -88,7 +88,7 @@ points to inject a forbidden shortcut (or permanent stopped-hop stuttering).
 It must catch the named property on every machine. These are oracle sensitivity
 checks, not claims that the generated model actually takes those steps, and
 not a substitute for the ordinary run. `--machine NAME` restricts a diagnostic
-run; the acceptance run includes all 31 machines.
+run; the acceptance run includes all 32 machines.
 
 The DYD-1372 captain prototype adds a separate diagnostic scope. Run the
 ordinary check with `--machine captain` and run the registered control with
