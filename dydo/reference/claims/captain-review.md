@@ -20,7 +20,7 @@ Reason: A mistake here is costly or impossible to undo once it has run.
 
 **ticket-captain** (Reviewed; read by TicketCaptain, on claim:CaptainReview.Other):
 
-> Every change is reviewed by an agent other than its writer, unless it is too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
+> Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
 
 ## Other
 
@@ -38,7 +38,7 @@ Reason: A writer's own context hides from it what a fresh one sees at once.
 
 **ticket-captain** (Reviewed; read by TicketCaptain):
 
-> Every change is reviewed by an agent other than its writer, unless it is too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
+> Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
 
 ## Whose
 
@@ -70,7 +70,7 @@ Reason: First make it work, then make it good: rounds on a plan polish what buil
 
 **ticket-captain** (Reviewed; read by TicketCaptain):
 
-> A plan, spec or contract gets no review rounds; a risky spec gets at most one Questions pass by a native helper.
+> A plan, spec or contract gets no review rounds; a risky spec gets at most one pass by a native helper, which returns questions.
 
 ## Severity
 

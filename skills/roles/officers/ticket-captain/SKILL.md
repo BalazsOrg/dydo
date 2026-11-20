@@ -36,8 +36,8 @@ You commit what a helper changes.
 Cut a bigger ticket into sub-tickets, one per part another captain will hold; a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
 Write each sub-ticket's contract in its description: its outcome, how it fits your ticket, and the spec sections it serves, quoted and linked.
 Label its Mode: AFK, or HITL when the user must take part.
-Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order and opened ahead in Todo if you like; a small leaf stays one ticket. (open: his call)
-Once you split, write a change yourself only when that is cheaper than briefing it and it is too small to need review.
+Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; a small leaf stays one ticket. (open: his call)
+Once you split, write a change yourself only when that is cheaper than briefing it and too small to need review.
 
 ## 3. Dispatch
 
@@ -59,9 +59,9 @@ Post the SHA a child returns on its ticket, to resume from, and send what it rep
 
 ## 4. Get it reviewed
 
-Every change is reviewed by an agent other than its writer, unless it is too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
+Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
 What you merge, you get reviewed first; a part your officer merges is reviewed with its whole.
-A plan, spec or contract gets no review rounds; a risky spec gets at most one Questions pass by a native helper.
+A plan, spec or contract gets no review rounds; a risky spec gets at most one pass by a native helper, which returns questions.
 A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.
 
 1. Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.

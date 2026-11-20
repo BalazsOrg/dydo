@@ -83,7 +83,7 @@ public static class CaptainSplit
     public static readonly Claim Steps = new("Work with its own review rounds is cut into Implement, Review, Fix and Merge sub-tickets blocked in order; a small leaf is one ticket.", Me,
     [
         At(CaptainSlot.Split, 4,
-            "Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order and opened ahead in Todo if you like; " +
+            "Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; " +
             "a small leaf stays one ticket. (open: his call)")
     ])
     {
@@ -94,7 +94,7 @@ public static class CaptainSplit
     };
 
     public static readonly Claim Small = new("A captain that has split writes only a change cheaper to do than to brief and too small to need review.", Me,
-        [At(CaptainSlot.Split, 5, "Once you split, write a change yourself only when that is cheaper than briefing it and it is too small to need review.")])
+        [At(CaptainSlot.Split, 5, "Once you split, write a change yourself only when that is cheaper than briefing it and too small to need review.")])
     {
         Spec = ["R16"],
         Truth = new(Evidence.Code("AGENTS.md"),

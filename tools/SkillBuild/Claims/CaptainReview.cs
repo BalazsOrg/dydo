@@ -22,7 +22,7 @@ public static class CaptainReview
     public static readonly Claim Other = new("Every change is reviewed by an agent other than its writer, unless it is too small to need it.", Me,
     [
         At(CaptainSlot.Reviewed, 1,
-            "Every change is reviewed by an agent other than its writer, unless it is too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.",
+            "Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.",
             () => [Risk])
     ])
     {
@@ -43,7 +43,7 @@ public static class CaptainReview
     };
 
     public static readonly Claim NoLoop = new("A plan, spec or contract gets no review loop; a spec gets at most one Questions pass by a native helper, chosen by risk.", Me,
-        [At(CaptainSlot.Reviewed, 3, "A plan, spec or contract gets no review rounds; a risky spec gets at most one Questions pass by a native helper.")])
+        [At(CaptainSlot.Reviewed, 3, "A plan, spec or contract gets no review rounds; a risky spec gets at most one pass by a native helper, which returns questions.")])
     {
         Spec = ["R4"],
         Truth = new(Evidence.Tool("Agent: a native sub-agent, awaited within the turn, returns its report to its caller alone."),
