@@ -85,7 +85,7 @@ public class StatechartRulesTests
     [InlineData("D5", true)]
     [InlineData("Y2", true)]
     [InlineData("N14", true)]
-    [InlineData("CA19", true)]
+    [InlineData("CA20", true)]
     [InlineData("N12 DR 055", true)]
     [InlineData("N12 DR 049 §2", true)]
     [InlineData("N12 DR 049 §2–4", true)]
@@ -113,17 +113,17 @@ public class StatechartRulesTests
             $"claim:{nameof(LeaseUnknownDr)}.{nameof(LeaseUnknownDr.Uncarried)} cites \"N12 DR 999\", which is not a spec rule id");
 
     [Theory]
-    [Trait("Job", "contract: universal rule 1 each area's ids run from 1 to the spec's last rule (updatedAt 2026-11-18T22:00:15Z), and no further")]
-    [InlineData("K29", "K30")]
-    [InlineData("R33", "R34")]
+    [Trait("Job", "contract: universal rule 1 each area's ids run from 1 to the spec's last rule (updatedAt 2026-11-20T01:58:55.576Z), and no further")]
+    [InlineData("K31", "K32")]
+    [InlineData("R34", "R35")]
     [InlineData("S26", "S27")]
     [InlineData("H24", "H25")]
     [InlineData("L23", "L24")]
     [InlineData("T23", "T24")]
-    [InlineData("D11", "D12")]
+    [InlineData("D12", "D13")]
     [InlineData("Y9", "Y10")]
     [InlineData("N15", "N16")]
-    [InlineData("CA19", "CA20")]
+    [InlineData("CA20", "CA21")]
     public void SpecCitation_StopsAtEachAreasLastRule(string last, string past)
     {
         Assert.True(SpecCitation.IsValid(last), last);

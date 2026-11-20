@@ -4,16 +4,16 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// A spec rule id the approved spec defines: an area letter and number (<c>K4</c>, <c>R23</c>), a
-/// conformance-audit row (<c>CA19</c>), or <c>N12</c> with a DR the spec names and its section
+/// conformance-audit row (<c>CA20</c>), or <c>N12</c> with a DR the spec names and its section
 /// (<c>N12 DR 049 §2–4</c>).
 /// </summary>
 public static partial class SpecCitation
 {
-    // "Spec: dydo 4.0.0", updatedAt 2026-11-18T22:00:15Z: each area's rules run without a gap from 1
-    // to these, and CA1–CA19 are §5b's conformance-audit rows.
+    // "Spec: dydo 4.0.0", approved at updatedAt 2026-11-20T01:58:55.576Z: each area's rules run without a gap
+    // from 1 to these, and CA1–CA20 are the conformance-audit rows.
     private static readonly Dictionary<string, int> LastRule = new(StringComparer.Ordinal)
     {
-        ["K"] = 29, ["R"] = 33, ["S"] = 26, ["H"] = 24, ["L"] = 23, ["T"] = 23, ["D"] = 11, ["Y"] = 9, ["N"] = 15, ["CA"] = 19
+        ["K"] = 31, ["R"] = 34, ["S"] = 26, ["H"] = 24, ["L"] = 23, ["T"] = 23, ["D"] = 12, ["Y"] = 9, ["N"] = 15, ["CA"] = 20
     };
 
     // The same spec's DRs: N12's carried-forward list (045–047, 049, 052, 055–058, 060–063) and every DR a
