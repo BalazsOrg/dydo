@@ -1,8 +1,8 @@
 # Catch-up example
 
-Illustrative, frozen on 30 October 2026. The facts are not current, and its questions need no answer. It shows one Project at two scopes: the admiral's catch-up, then one captain's.
+Illustrative, frozen on 30 October 2026. The facts are not current, and its questions need no answer. It shows one Project at two scopes: the coordinator's catch-up, then one captain's.
 
-## Admiral scope
+## Coordinator scope
 
 - **Covers:** the dydo 3.6.0 Project, three deliverables.
 - **State:** One deliverable has landed, one is being rewritten, and the shell-command guard fix is held.
@@ -56,7 +56,7 @@ Eight review rounds failed. The rounds found both misses by feeding inert string
 
 ➡️ **Design first.** It is the only option that keeps the behavior you approved, and it costs one design step before any code changes.
 
-🤖 **After your answer, the admiral starts the chosen step.** Without one, the fix stays held. (DYD-437)
+🤖 **After your answer, the coordinator starts the chosen step.** Without one, the fix stays held. (DYD-437)
 
 ### Catch-up skill: rewrite running
 
@@ -80,11 +80,11 @@ Eight review rounds failed. The rounds found both misses by feeding inert string
 
 #### Purpose
 
-🎯 **Stop finished work waiting for someone to nudge the admiral.** Overnight, returned work sat idle until a watch fired.
+🎯 **Stop finished work waiting for someone to nudge the coordinator.** Overnight, returned work sat idle until a watch fired.
 
 #### Recently completed
 
-✅ **Merged: when work returns, the admiral takes the next step or records why it holds.** (PR 217)
+✅ **Merged: when work returns, the coordinator takes the next step or records why it holds.** (PR 217)
 
 #### In flight
 
@@ -92,7 +92,7 @@ Eight review rounds failed. The rounds found both misses by feeding inert string
 
 #### Next
 
-🤖 **The admiral applies it at the next real return, which shows whether it works.**
+🤖 **The coordinator applies it at the next real return, which shows whether it works.**
 
 ## Captain scope
 
@@ -123,7 +123,7 @@ A TeasePlayer catch-up asked you to approve "option B" for "creator-code admissi
 
 #### Next
 
-🤖 **A fresh reviewer judges the rewrite against your shape; the captain then returns it to the admiral.**
+🤖 **A fresh reviewer judges the rewrite against your shape; the captain then returns it to the coordinator.**
 
 ❗ **The merge waits on a CI fix that the release captain owns.**
 

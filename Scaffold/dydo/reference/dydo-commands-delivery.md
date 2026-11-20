@@ -100,7 +100,7 @@ pin, refuses with nothing merged. A base still at the pin is a tool error with G
 is no squash or rebase. The commit message is `Merge pull request #<n> from <owner>/<head-ref>`, the
 PR title, and the trailers `Dydo-Merge: dydo <version>`, `Reviewed-Candidate: <sha>`,
 `Target-Tip: <pin>` and `Review: <the PASS line, first 200 characters>`. A conflict (`409`) is
-refused for a Merge code-writer to resolve locally.
+refused for a Merge implementer to resolve locally.
 
 Output on stdout, the captain's merge receipt:
 `merged PR #<n> (<sha12>) into <base> at <pin12> as <merge12>; PR marked merged: yes|pending|unverified`,
@@ -120,7 +120,7 @@ parents need merge review. A merge that succeeded exits `0` even when the PR cou
 about four seconds, and never prints `no` after a successful merge).
 
 `dydo init` and `--join` write narrow allow rules for both hosts (see [dydo init](./dydo-commands-core.md#dydo-init)),
-and the guard lets a sub-agent run it: a Merge Sub-ticket's code-writer runs it. The guard hard blocks
+and the guard lets a sub-agent run it: a Merge Sub-ticket's implementer runs it. The guard hard blocks
 the other merge routes for every caller: raw `gh pr merge`, `gh api` and GraphQL merge calls, a
 `git push` to the default branch and default-branch changes
 ([dydo guard](./dydo-commands-core.md#dydo-guard)); each refusal names `dydo merge`.

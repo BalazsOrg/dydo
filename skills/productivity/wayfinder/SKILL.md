@@ -11,10 +11,10 @@ The destination is known, but the route is wrapped in **fog**. Wayfinding finds 
 not charge at the destination. The map holds the low-resolution view, and its **Wayfinding Tickets**
 clear one part of the route at a time.
 
-The **map holder** charts and grills. A Project's map holder is the user, driving the map in his
-own session, or an admiral the user invoked, until the user takes the map back; the Project
-description names the current holder. A Ticket Captain may chart local fog inside one approved
-delivery outcome.
+The **map holder** charts and grills. A Project's map holder is two agents: its coordinator, which
+keeps the work on track mechanically, and a ticket captain on a Wayfinding ticket, which loads this
+skill and does the deciding (S14, S15). The coordinator only sequences what the Wayfinding captain
+files. A Ticket Captain may chart local fog inside one approved delivery outcome.
 
 For a communication protocol, from the repository root read only the Communication and evidence section in `dydo/reference/linear-workspace-standard.md`, not the whole workspace standard.
 
@@ -38,7 +38,7 @@ Wayfinding Ticket stores its own context and resolution. Link shared feature anc
 Open tickets are found through Linear queries.
 
 ```markdown
-**Map holder:** <the user, or the admiral the user invoked; rewritten when the map changes hands>
+**Map holder:** <the coordinator, and the captain on the current Wayfinding ticket; rewritten when either changes>
 
 ## Destination
 
@@ -180,8 +180,7 @@ walked; a scope boundary isn't a step on it.
 ## Invocation
 
 Two modes. Either way, a session the user drives never resolves more than one Wayfinding Ticket,
-with the exception of Research Tickets: one ticket is sized to one session. An invoked admiral is
-exempt. Tasks may run concurrently under separate Ticket Captains.
+with the exception of Research Tickets: one ticket is sized to one session. Tasks may run concurrently under separate Ticket Captains.
 
 ### Chart the map
 
@@ -195,7 +194,7 @@ Charting starts from a Linear Project and a loose destination.
    **If this surfaces no fog** (the way to the destination is already clear, the whole journey small
    enough for one session), no map is needed.
 3. **Write the map:** Destination and Notes filled in, Resolutions so far empty, the fog sketched into
-   **Not yet specified**. In a Project an admiral scaffolds, its scaffold recipe commits the Project's spec; this step covers feature specs inside it. For shared behavior or decisions needing one current anchor, choose an
+   **Not yet specified**. A Project's own spec is its `Spec: <Project>` Linear document (S14); this step covers feature specs inside it. For shared behavior or decisions needing one current anchor, choose an
    applicable reviewed architecture plan or feature spec, creating a spec where needed under
    `dydo/reference/feature-spec-convention.md`. Commit a new spec under the map holder's custody and
    make that commit reachable to recipients before relying on its Project-map link; otherwise record

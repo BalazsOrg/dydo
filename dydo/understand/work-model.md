@@ -19,13 +19,13 @@ officer never becomes another officer ([Decision 050](../project/decisions/050-o
 | Stage | Who | Output | Gate |
 |---|---|---|---|
 | Think | any session, loading co-thinker | ripe intent, and a Decision Record when the choice earns one | - |
-| Chart and plan a Project | the map holder, the user or an invoked admiral, with wayfinder | the map in the Linear Project, first tickets, Questions | user approval of the charted route |
+| Chart and plan a Project | the user creates it; the map holder, the coordinator with a captain on a Wayfinding ticket, charts it with wayfinder (S14; DYD-1195 b46e8343) | the map in the Linear Project, first tickets, Questions | user approval of the charted route |
 | Make a ticket exact | ticket-captain, through its compact acceptance contract | a just-in-time contract with no hidden implementation decisions; the route stays the writer's | optional spec review |
 | Implement | ticket-captain | a ticket branch, a PR into the feature branch, or into main for an atomic ticket, evidence on the ticket | reviewer PASS |
-| Coordinate | the map holder, the user or an invoked admiral | captains in flight, wired Merge Sub-tickets, plan amendments | each captain directs its own merge review |
+| Coordinate | the coordinator, mechanically (H5) | captains in flight, dead lanes restarted, merges paced; each judgement routed to a fresh agent's ticket | each captain directs its own merge review |
 | Inquisition | ticket-captain | an area map, each area read, broken with proof tests and driven through the app; Bugs, a nit ticket and its own inquisition record; rounds from zero until clean | the user confirms Backlog → Todo and sets the commission; it files rather than gates |
 | Land | the user | the feature branch merged into main | the user's own hands |
-| Walkthrough | an invoked admiral with the user, or the user alone, at each Milestone and after the landing | the product inspected as it stands, his verdict or skip, findings as tickets in the same Project | the walking skeleton's verdict holds back the work built on it, except overnight; an empty landing walkthrough closes the Project |
+| Walkthrough | a ticket captain on the Walkthrough ticket, with the user, at each Milestone and after the landing (H15, H23) | the product inspected as it stands, his verdict or skip, findings as tickets in the same Project | the walking skeleton's verdict holds back the work built on it, except overnight; an empty landing walkthrough closes the Project |
 
 Some work has no stage of its own: chief-of-staff triages the user's attention and never delivers,
 and any session may reach for retro, writing-for-agents and diagnosing-bugs; bro is the user's
@@ -33,25 +33,29 @@ corrective for agent-speak, at any stage.
 
 ## Officers, crew, and skills
 
-- **Officers** hold something and never switch: the admiral holds a Project, the ticket-captain a
-  ticket, the chief-of-staff the board. A session or agent has at most one officer role; the user
+- **Officers** hold something and never switch: the coordinator holds a Project, the ticket-captain a
+  ticket, the chief-of-staff the board (H1, H4). A session or agent has at most one officer role; the user
   holds a row on the map but no role.
-- **Crew** are spawned for one bounded job, hold nothing, and return their result to whoever sent them. Research delegates to non-authoring scouts; other crew do their own bounded work.
+- **Envoys** are ticket captains on HITL Question, Grilling, Walkthrough, Wayfinding and Enablement
+  tickets, each loading that job's skill (H15, H23; DYD-1082 1bc04dce change 10).
+- **Crew** are spawned for one bounded job, hold nothing, and return their result to whoever sent
+  them. The kinds are implementer, reviewer, research and scout (DYD-1082 1bc04dce change 3).
+  Research pools and verifies, delegating single lookups to non-authoring scouts; other crew do their own bounded work.
 - **Methods** are plain skills - reference and procedure a session applies inside its own thread, never a separate
   session.
 - Some methods load only when the user asks for them; `handoff` also when an officer briefs an
-  agent it dispatches. For each Milestone's tour and the landing's, the map holder - an invoked
-  admiral, or the user itself - opens the Walkthrough Ticket and loads `walkthrough` itself before
-  facilitating it ([DR 060](../project/decisions/060-milestone-walkthroughs-and-the-walking-skeleton.md)).
+  agent it dispatches. For each Milestone's tour and the landing's, the coordinator opens the
+  Walkthrough Ticket and the ticket captain holding it loads `walkthrough` (H15, H16, H23;
+  [DR 060](../project/decisions/060-milestone-walkthroughs-and-the-walking-skeleton.md)).
 - **User commands** are invoked by the user typing their name, and by nothing else.
 
 The [dydo glossary](../reference/dydo-glossary.md) names every member of each category. Every one of them is a native skill folder - see
 [Scaffold and Customization](./scaffold-and-customization.md).
 
 A captain's ticket is a Project one level down: the same Types, statuses and chain, with a different
-map holder. The [control-flow map](./control-flow.md) carries every contact, including captain
-two-step returns, release/takeover, review FAIL, merge FAIL and blocker-cleared resume. The board is
-the inbox; an admiral wakes on a captain's return, the user's word or its scheduled check-in.
+map holder. The statechart, `claims/statechart/README.md` from the repository root, draws every
+state and arrow (K1). The board is the inbox; the coordinator wakes on a captain's return, on the
+word of the user or the chief of staff, or on its survey loop (DYD-1082 555a8300).
 
 ## Canonical ownership
 
@@ -75,7 +79,7 @@ its official MCP, UI, API, and integrations.
 
 No implementation begins without a contract another agent can review independently.
 
-- One atomic ticket can be its own reviewed contract. Shared multi-ticket behavior may use a [feature spec](../reference/feature-spec-convention.md); a Project the admiral scaffolds always has one ([DR 053](../project/decisions/053-temporary-feature-specs.md)).
+- One atomic ticket can be its own reviewed contract. Shared multi-ticket behavior may use a [feature spec](../reference/feature-spec-convention.md) ([DR 053](../project/decisions/053-temporary-feature-specs.md)); a Project's own spec is its `Spec: <Project>` Linear document, which the map holder writes and refines (S14).
 - An implementation ticket records governing Decisions and applicable feature-spec commit and
   sections before execution; a review pins the ticket's
   contract as its description as of a Linear `updatedAt`.
@@ -95,9 +99,10 @@ to a ticket. They are not extra levels in the work graph.
    scaled to what landed, which at the final feature merge also proves Project and feature-spec acceptance criteria.
    An atomic ticket's merge into main has none; its ticket review PASS, green CI and the user's
    click stand in its place.
-3. **Inquisition** - user-confirmed and captain-conducted: the captain maps the landed work into
-   small areas, and `inquisitor` crew run Read, Break and Drive on each, Break proving with its own
-   tests and Drive through the project's verification skill. Each finding is triaged by severity:
+3. **Inquisition** - user-confirmed and captain-conducted, with the ticket captain's
+   inquisition-captain resource: the captain maps the landed work into small areas, and reviewers
+   run Read, Break and Drive on each as lenses, Break proving with its own tests and Drive through
+   the project's verification skill (N5; DYD-1082 1bc04dce change 5). Each finding is triaged by severity:
    blockers and shoulds become Bugs, nits go on one nit ticket per round, judgment calls become
    Questions. The Inquisition then delivers its own record through the normal docs chain and
    closes once; see the
@@ -114,8 +119,8 @@ a blocker FAILs; a should becomes its own ticket the Project's landing waits on,
 on the record. Fixes are deferred, never dropped
 ([DR 058](../project/decisions/058-review-severities-blocker-should-nit.md)).
 
-Reviewer, inquisitor and scout are non-authoring roles: their commissions and methods produce
-verdicts, findings or source passages, never candidate edits. An inquisitor's Break phase commits
+Reviewer and scout are non-authoring roles: their commissions and methods produce
+verdicts, findings or source passages, never candidate edits. A reviewer on the Break lens commits
 only proof tests, to a proof branch that never merges. This is a methodological boundary, not
 a claim that every host enforces a read-only filesystem. The portable floor is a fresh commission,
 an isolated pinned candidate and an independent review; a native sandbox request strengthens that
@@ -139,7 +144,6 @@ promotion paths.
 
 ## Related
 
-- [Control Flow](./control-flow.md) - every handoff drawn: roster, happy path, states, edge contracts, exceptions
 - [Linear Ticket Lifecycle](./task-lifecycle.md) - what a ticket carries, and how it is claimed and merged
 - [Working-Tree Standard](../guides/working-tree-standard.md) - branches, worktrees, claims, cleanup
 - [Decision 045 - Flow Map, Hats and Workers, Review Tiers, and the Working-Tree Contract](../project/decisions/045-flow-map-hats-review-tiers-and-working-tree-contract.md)
