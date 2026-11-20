@@ -59,6 +59,50 @@ public class DispatchTemplateTests
         Assert.Contains(Message, error);
     }
 
+    // Review r1 S7: a skill named with a slash anywhere in built prose is checked, not only the declared sets.
+    [Theory]
+    [Trait("Job", "contract: K14 S7 a skill named with a slash in built prose that is no skill fails the run, which writes nothing")]
+    [InlineData("reviewr")]
+    [InlineData("diagnosing-bugz")]
+    public void ProseSkillUnderNoSkillFolder_FailsTheRun(string name)
+    {
+        using var root = new TempRoot();
+        root.Write("skills/roles/crew/reviewer/SKILL.md", "# Reviewer\n");
+        root.Write("skills/engineering/diagnosing-bugs/SKILL.md", "# Diagnosing bugs\n");
+
+        var (exit, _, error) = root.Run(Prose(typeof(DemoMisnamedSkills)));
+
+        Assert.Equal(1, exit);
+        Assert.Matches($@"K14: .*skills/roles/crew/demo/SKILL\.md:[0-9]+ /{name}(;|\r?$)", error);
+        Assert.Equal(2, root.Files().Count);
+    }
+
+    [Fact]
+    [Trait("Job", "edge: K14 S7 prose naming a built or a hand-written skill with a slash lets the run go on; paths, files, URLs and and/or name none")]
+    public void ProseSkillsHandWrittenOrBuilt_TheRunGoesOn()
+    {
+        using var root = new TempRoot();
+        root.Write("skills/engineering/codebase-design/SKILL.md", "# Codebase design\n");
+
+        var (exit, _, error) = root.Run(Prose(typeof(DemoProseSkills)));
+
+        Assert.True(exit == 0, error);
+    }
+
+    [Fact]
+    [Trait("Job", "trap: K14 S7 a hand-written skill prose names fails the run when it is missing, and nothing else in that prose is read as a skill")]
+    public void ProseSkillMissing_FailsTheRunNamingOnlyIt()
+    {
+        using var root = new TempRoot();
+
+        var (exit, _, error) = root.Run(Prose(typeof(DemoProseSkills)));
+
+        Assert.Equal(1, exit);
+        var named = error[(error.LastIndexOf(": ", StringComparison.Ordinal) + 2)..].TrimEnd().Split("; ");
+        Assert.NotEmpty(named);
+        Assert.All(named, reference => Assert.EndsWith(" /codebase-design", reference));
+    }
+
     [Fact]
     [Trait("Job", "contract: K14/K30 each of the six kinds has one template, its default skill set opening with the kind's own skill")]
     public void ProductionTemplates_OnePerKindOpeningWithItsOwnSkill()
@@ -89,4 +133,6 @@ public class DispatchTemplateTests
         Assert.Equal(0, Program.Run(ProductionModel.Model, CommittedTree.Root, ["map"], TextWriter.Null, error));
         Assert.Equal("", error.ToString());
     }
+
+    private static Model Prose(Type kind) => new([typeof(DemoMoves), kind], [DemoModel.Skill()]);
 }

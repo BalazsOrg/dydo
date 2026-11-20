@@ -1,10 +1,11 @@
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// Lays one carrier out (K9): a spine of its job paragraph, its numbered job phases, each with its
-/// slots and resource links, then "When things go wrong" linking its scenarios; each resource by its
-/// slots, a dispatch template opening with its skills (K14); and <c>agents/openai.yaml</c> when the
-/// skill is explicit-only or sets its Codex metadata. A standard is one file of sections.
+/// Lays one carrier out (K9): a spine of its job paragraph, its numbered job phases, each one numbered
+/// checklist of its slots' lines followed by its resource links, then "When things go wrong" linking its
+/// scenarios; each resource by its slots, a dispatch template opening with its skills (K14); and
+/// <c>agents/openai.yaml</c> when the skill is explicit-only or sets its Codex metadata. A standard is
+/// one file of sections.
 /// </summary>
 internal static class SkillRenderer
 {
@@ -35,7 +36,9 @@ internal static class SkillRenderer
         foreach (var (phase, index) in skill.Phases.Select((phase, index) => (phase, index)))
         {
             page.Heading($"## {index + 1}. {phase.Title}");
-            Slots(page, phase.Slots, "###", layout);
+            // K9 supersedes DR 064 §7's state outline as the spine's grouping (review r1 S5): no slot heading and
+            // no move label, only the slots in order, a state's arrivals, then its nominal path, then its exits.
+            foreach (var line in phase.Slots.SelectMany(slot => layout.In(slot.Id))) page.Step(line);
             if (phase.Resources.Count > 0) page.Heading("Resources:");
             foreach (var resource in phase.Resources) page.Link(resource.Title, FileOf(resource.Id));
         }

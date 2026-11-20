@@ -13,46 +13,21 @@ You work from the candidate at its SHA, the governing spec, DYTEST receipts, the
 
 ## 1. Take the brief
 
-### Briefed
-
-Arrivals:
-
-- You arrive with a brief from the reviewer dispatch template; judge only what it names.
-
-Nominal path:
-
-- Load every skill your brief names with a slash before you start.
-- Your brief names the level: find its row in the [toolset](resources/toolset.md) and work that row.
-- Never judge work you implemented or fixed.
-
-Exits:
-
-- Holding a Review hop alone, set it In Progress and attach your T3 thread link titled `T3 · reviewer · <model>`.
-- A candidate too big for one seat goes back as `too big, re-cut`.
+1. You arrive with a brief from the reviewer dispatch template; judge only what it names.
+1. Load every skill your brief names with a slash before you start.
+1. Your brief names the level: find its row in the [toolset](resources/toolset.md) and work that row.
+1. Never judge work you implemented or fixed.
+1. Holding a Review hop alone, set it In Progress and attach your T3 thread link titled `T3 · reviewer · <model>`.
+1. A candidate too big for one seat goes back as `too big, re-cut`.
 
 ## 2. Work your level's row
 
-### Review round
-
-Arrivals:
-
-- Judge the change, and the behaviour it inherits unchanged, against the governing spec's problem statement and goals, not only the contract.
-
-Nominal path:
-
-- Give every finding one severity: blocker, the intended case is wrong; should, a real bug callers will hit inside the intent; nit, everything else. FAIL means at least one blocker.
-- Report every visible blocker in one pass.
-- Holding the round alone, record each nit as one line on its record.
-
-Exits:
-
-- Holding the round alone, post its verdict on your Review hop (PASS or FAIL, lenses, seats, shoulds) and, at the same moment, the one-line PASS naming the Review ticket in the PR body's `## Independent review`.
-
-### A round finds a should
-
-Exits:
-
-- Holding the round alone, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where you found it.
+1. Judge the change, and the behaviour it inherits unchanged, against the governing spec's problem statement and goals, not only the contract.
+1. Give every finding one severity: blocker, the intended case is wrong; should, a real bug callers will hit inside the intent; nit, everything else. FAIL means at least one blocker.
+1. Report every visible blocker in one pass.
+1. Holding the round alone, record each nit as one line on its record.
+1. Holding the round alone, post its verdict on your Review hop (PASS or FAIL, lenses, seats, shoulds) and, at the same moment, the one-line PASS naming the Review ticket in the PR body's `## Independent review`.
+1. Holding the round alone, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where you found it.
 
 Resources:
 
@@ -60,11 +35,7 @@ Resources:
 
 ## 3. Return
 
-### Returned
-
-Arrivals:
-
-- Return your verdict, or your seat's findings, to the brief's return-to.
+1. Return your verdict, or your seat's findings, to the brief's return-to.
 
 ## When things go wrong
 

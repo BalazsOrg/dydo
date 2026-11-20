@@ -22,10 +22,10 @@
 
 | Job | Skill |
 |---|---|
-| Grilling | `grilling` |
-| Walkthrough | `walkthrough` |
-| Wayfinding | `wayfinder` |
-| Question at stage `research` | `ticket-captain`; it dispatches `research` crew |
-| Question at stage `council` | `ticket-captain`, with its `council-chair` resource |
-| Question at stage `his-call` | `co-thinker` |
-| Enablement | `wizard`; when it is not a setup procedure he runs (credentials, cutover), just ask |
+| Grilling | `/grilling` |
+| Walkthrough | `/walkthrough` |
+| Wayfinding | `/wayfinder` |
+| Question at stage `research` | `/ticket-captain`; it dispatches `research` crew |
+| Question at stage `council` | `/ticket-captain`, with its `council-chair` resource |
+| Question at stage `his-call` | `/co-thinker` |
+| Enablement | `/wizard`; when it is not a setup procedure he runs (credentials, cutover), just ask |

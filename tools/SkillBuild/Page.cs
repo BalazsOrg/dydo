@@ -34,13 +34,22 @@ internal sealed class Page
         _stated.Add((_lines.Count, placed.Line.Text, placed));
     }
 
-    public void State(Placed placed, string suffix = "")
+    /// <summary>A claim line as a bullet.</summary>
+    public void State(Placed placed) => Item("- ", placed);
+
+    /// <summary>
+    /// A claim line as a numbered checklist item. Every item is numbered 1, which Markdown numbers in
+    /// order, so a line added or dropped renumbers no other (K18).
+    /// </summary>
+    public void Step(Placed placed) => Item("1. ", placed);
+
+    private void Item(string marker, Placed placed)
     {
         var block = placed.Line.Text.Split('\n');
         var fence = MarkdownFence.Unclosed(block);
         if (block.Length == 1 && fence is null)
         {
-            _lines.Add("- " + placed.Line.Text + suffix);
+            _lines.Add(marker + placed.Line.Text);
             _stated.Add((_lines.Count, placed.Line.Text, placed));
             return;
         }
