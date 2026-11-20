@@ -69,7 +69,7 @@ public static class Dispatch
     [
         new(Skill.Coordinator, "Brief each captain from the ticket-captain dispatch template and name every skill its role requires with a slash: the template carries the default set, and you add the ticket's own skills.", new(Routine.Dispatching, 808)),
         new(Skill.ChiefOfStaff, "Brief a coordinator from the coordinator dispatch template and name every skill its role requires with a slash; the template carries the default set.", new(Routine.Dispatching, 808)),
-        new(Skill.TicketCaptain, "Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.", new(Routine.Dispatching, 808))
+        new(Skill.TicketCaptain, "Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.", new(Routine.Dispatching, 1))
     ])
     { Spec = ["K14", "K29"] };
 
@@ -77,7 +77,7 @@ public static class Dispatch
         [Actor.Coordinator, Actor.TicketCaptain, Actor.Implementer],
     [
         new(Skill.Coordinator, "A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.", new(Routine.Dispatching, 809)),
-        new(Skill.TicketCaptain, "A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.", new(Routine.Dispatching, 809)),
+        new(Skill.TicketCaptain, "A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.", new(Routine.Dispatching, 8)),
         new(Skill.Implementer, "A native helper you start shares your checkout; you commit its work.", new(ImplementerPart.Build, 809)),
         new(Skill.WorkingTreeStandard, "A Linear unit goes out by `delegate_task`. A native sub-agent never gets one: it shares its holder's checkout, and the holder commits.", new(Section.TreeDelegation, 1))
     ])
@@ -86,7 +86,7 @@ public static class Dispatch
     public static readonly Claim Worktrees = new("Parallel lanes and sub-tickets with children get their own worktree; serial hops share their ticket's.",
         [Actor.TicketCaptain],
     [
-        new(Skill.TicketCaptain, "Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.", new(Routine.Dispatching, 810)),
+        new(Skill.TicketCaptain, "Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.", new(Routine.Dispatching, 9)),
         new(Skill.WorkingTreeStandard, "Each parallel lane, and each sub-ticket with children, works in its own worktree; serial hops reuse their ticket's.", new(Section.TreeDelegation, 2))
     ])
     { Spec = ["H3"] };
@@ -95,7 +95,7 @@ public static class Dispatch
         [Actor.Coordinator, Actor.TicketCaptain, Actor.ChiefOfStaff],
     [
         new(Skill.Coordinator, "Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.", new(Routine.Dispatching, 811)),
-        new(Skill.TicketCaptain, "Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.", new(Routine.Dispatching, 811)),
+        new(Skill.TicketCaptain, "Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.", new(Routine.Dispatching, 10)),
         new(Skill.ChiefOfStaff, "Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.", new(Routine.Dispatching, 811)),
         new(Skill.WorkingTreeStandard, "Under T3, a native foreground sub-agent only when its dispatcher waits for it within its own turn, and no native background sub-agents; a dispatcher waiting on a native child, or a child awaiting a result it owns, stays in its turn until the result arrives.", new(Section.TreeDelegation, 3))
     ])
@@ -105,7 +105,7 @@ public static class Dispatch
         [Actor.Coordinator, Actor.TicketCaptain, Actor.ChiefOfStaff],
     [
         new(Skill.Coordinator, "On a captain's `parent_not_active`, dispatch its crew for it.", new(Routine.Dispatching, 812)),
-        new(Skill.TicketCaptain, "A native child can't `delegate_task`: on `parent_not_active`, ask your officer to dispatch it.", new(Routine.Dispatching, 812)),
+        new(Skill.TicketCaptain, "A native child can't `delegate_task`: on `parent_not_active`, ask your officer to dispatch it.", new(Routine.Dispatching, 11)),
         new(Skill.ChiefOfStaff, "On `parent_not_active`, ask him to dispatch it.", new(Routine.Dispatching, 812)),
         new(Skill.WorkingTreeStandard, "A native child lives only inside its dispatcher's turn and cannot call `delegate_task`: on `parent_not_active`, a captain asks its officer, the chief of staff asks the user, and the coordinator dispatches a captain's crew for it.", new(Section.TreeDelegation, 4))
     ])
@@ -114,7 +114,7 @@ public static class Dispatch
     public static readonly Claim CodexCap = new("A brief that sends out Codex agents names a concurrency cap.", [Actor.Coordinator, Actor.TicketCaptain],
     [
         new(Skill.Coordinator, "A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.", new(Routine.Dispatching, 813)),
-        new(Skill.TicketCaptain, "A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.", new(Routine.Dispatching, 813)),
+        new(Skill.TicketCaptain, "A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.", new(Routine.Dispatching, 12)),
         new(Skill.WorkingTreeStandard, "A brief that sends out Codex agents names a cap: start around 8, go toward 16 only while runs stay clean, and back off on `429 turn_rate_limit_exceeded`; a capacity 429 means retry after a few minutes, never a blocker.", new(Section.TreeDelegation, 5))
     ])
     { Spec = ["N12 DR 057 §4"] };

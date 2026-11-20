@@ -11,5 +11,6 @@ public enum TicketCaptainScenario
     MasterRevert,
     NeedForBalazs,
     Liveness,
-    OverLimit
+    OverLimit,
+    LandingNotAccepted
 }

@@ -20,11 +20,11 @@ Spec: K14
 
 `claim:Brief.ReviewerBrief`: The reviewer dispatch template's slots.
 
-Spec: K14, R3, R6
+Spec: K14, R3, R6, R34
 
 **ticket-captain** (ReviewerBrief):
 
-> Ticket and contract · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
+> Ticket and contract · the level: a leaf's evidence check, a ticket review, a feature or Milestone review, or an inquisition slice · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
 
 ## ScoutBrief
 
@@ -48,7 +48,7 @@ Spec: K14, H23
 
 **ticket-captain** (TicketCaptainBrief):
 
-> Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain is briefed from this template too.
+> Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain or a job ticket's captain is briefed from this template too, adding its job's skill from the table below.
 
 **coordinator** (TicketCaptainBrief):
 

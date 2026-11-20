@@ -67,8 +67,12 @@ public static class Implementer
         [new(Skill.Implementer, "Reproduce it red: a test at the product's boundary when the defect shows there, else at that seam; an existing red test is the reproduction.", new(ImplementerPart.Bug, 3121))])
     { Spec = ["T3", "T4"] };
 
-    public static readonly Claim BugDiagnose = new("A Bug with no red reproduction yet loads diagnosing-bugs, as the pre-candidate code-writer did (DYD-1287 contract).", [Actor.Implementer],
-        [new(Skill.Implementer, "With no red reproduction yet, load /diagnosing-bugs.", new(ImplementerPart.Bug, 3122))])
+    public static readonly Claim BugDiagnose = new("A Bug with no red reproduction yet loads diagnosing-bugs, as the pre-candidate code-writer did (DYD-1287 contract); its dispatcher names the skill.",
+        [Actor.Implementer, Actor.TicketCaptain],
+    [
+        new(Skill.Implementer, "With no red reproduction yet, load /diagnosing-bugs.", new(ImplementerPart.Bug, 3122)),
+        new(Skill.TicketCaptain, "On a Bug, add /diagnosing-bugs to the skills this brief names.", new(Section.ImplementerBrief, 3122))
+    ])
     { Spec = ["T3", "K14"] };
 
     public static readonly Claim BugUnused = new("An unused member's reproduction is its definition and a reference search; the fix deletes it with its test-only callers.", [Actor.Implementer],

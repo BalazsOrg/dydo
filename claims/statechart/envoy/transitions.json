@@ -262,9 +262,7 @@
       "guard": null,
       "effect": "level' \\in {\"captain\", \"coordinator\"}",
       "fair": false,
-      "skills": [
-        "ticket-captain"
-      ]
+      "skills": []
     }
   ],
   "gaps": []

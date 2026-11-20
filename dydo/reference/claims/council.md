@@ -6,6 +6,26 @@ type: reference
 
 # Claims: Council
 
+## Hold
+
+`claim:Council.Hold`: A ticket captain chairs a council with the council-chair resource (DYD-1082 99774812).
+
+Spec: L23, H23
+
+**ticket-captain** (Take):
+
+> Holding a Question at stage `council`, chair it by the council chair (`resources/council-chair.md`).
+
+## Ticket
+
+`claim:Council.Ticket`: A council is a Question ticket at stage council, Mode AFK, with no Council Type; its chair is no member (DYD-1195 ea16ea28).
+
+Spec: L23, L18, H23
+
+**ticket-captain** (Council):
+
+> A council is a Question ticket at stage `council` and Mode AFK, with no Council Type; you chair it mechanically and sit on it as no member.
+
 ## FamilyOut
 
 `claim:Council.FamilyOut`: Merge confidence waits for both families only while nothing blocks on it.
@@ -44,9 +64,19 @@ Transition in A council (`claims/statechart/council/Council.tla`): Answered → 
 
 Spec: L16, L23
 
-**reviewer** (CouncilUses):
+**ticket-captain** (Council):
 
-> A council has four uses: Review (high stakes), Merge confidence (the landing into main), Evaluate (hill-climbs, scored out of 10) and Judge (the tribunal).
+> It has four uses: Review (high stakes), Merge confidence (the landing into main), Evaluate (hill-climbs, scored out of 10) and Judge (the tribunal, below).
+
+## Seating
+
+`claim:Council.Seating`: The chair seats fresh members from different families from the roster, and a non-member synthesiser.
+
+Spec: L14, L15, R13, R15
+
+**ticket-captain** (Council):
+
+> Seat fresh members from different families, picked from the roster, and a synthesiser who is no member, each briefed from the council members' briefs (`council-members.md`).
 
 ## Once
 
@@ -54,29 +84,19 @@ Spec: L16, L23
 
 Spec: L16
 
-**reviewer** (CouncilUses):
+**ticket-captain** (Council):
 
-> Deterministic work runs once for the whole council, never per member.
+> Run deterministic work once for the whole council, never per member.
 
-## Member
+## Record
 
-`claim:Council.Member`: A member answers alone, sealed and read-only, on the same thing as every other member.
+`claim:Council.Record`: The council's deliberation is recorded on its ticket next to the answer, merge confidence and scores included (DYD-1195 ea16ea28).
 
-Spec: L14, L16
+Spec: L23
 
-**reviewer** (CouncilMember):
+**ticket-captain** (Council):
 
-> As a member, answer the one question alone, sealed and read-only; every member looks at the same thing.
-
-## Synthesis
-
-`claim:Council.Synthesis`: The synthesiser is a non-member and gives answer, confidence and disagreements.
-
-Spec: L14
-
-**reviewer** (CouncilSynthesis):
-
-> As the synthesiser, a non-member, give the answer, its confidence (agreed, split or contested) and the disagreements.
+> Record the deliberation on the council ticket next to its answer; merge confidence and a score are answers too.
 
 ## Seats
 
@@ -84,19 +104,19 @@ Spec: L14
 
 Spec: S8, L22
 
-**reviewer** (CouncilSynthesis):
+**ticket-captain** (Council):
 
-> The verdict names each seat's model and provider.
+> The answer names each seat's model and provider.
 
 ## OneFamily
 
-`claim:Council.OneFamily`: With one family out, work goes on and the council runs on what is left.
+`claim:Council.OneFamily`: With one family out, work goes on: Review and Evaluate run on two models of the remaining family.
 
 Spec: L22, L15
 
-**reviewer** (CouncilOneFamily):
+**ticket-captain** (Council):
 
-> With one family out, Review and Evaluate run on two different models of the remaining family, and Judge runs on one family.
+> With one family out, work goes on: Review and Evaluate run on two different models of the remaining family.
 
 ## MergeOneFamily
 
@@ -104,6 +124,26 @@ Spec: L22, L15
 
 Spec: L22
 
-**coordinator** (MergeReview, nominal):
+**ticket-captain** (Council):
 
-> With one family out, Merge confidence waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.
+> With one family out, Merge confidence at the landing waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.
+
+## Member
+
+`claim:Council.Member`: A member answers alone, sealed and read-only, on the same thing as every other member.
+
+Spec: L14, L16
+
+**ticket-captain** (Member):
+
+> Answer the one question alone, sealed and read-only; every member looks at the same thing.
+
+## Synthesis
+
+`claim:Council.Synthesis`: The synthesiser is a non-member and gives answer, confidence and disagreements.
+
+Spec: L14
+
+**ticket-captain** (Synthesiser):
+
+> As a non-member, give the answer, its confidence (agreed, split or contested) and the disagreements.

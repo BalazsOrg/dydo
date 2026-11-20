@@ -7,8 +7,6 @@ vars == <<state>>
 
 Finals == {"Approved"}
 
-Open == {"GAP 1", "GAP 2", "GAP 3"}
-
 Init ==
     /\ state = "Questioned"
 
@@ -37,6 +35,26 @@ Evaluation_Keep ==
     /\ state = "Questioned"
     /\ state' = "Kept"
 
+\* claim:Evaluation.Rebuild
+Evaluation_Rebuild ==
+    /\ state = "Changed"
+    /\ state' = "Questioned"
+
+\* claim:Evaluation.RejectFold
+Evaluation_RejectFold ==
+    /\ state = "Folded"
+    /\ state' = "Changed"
+
+\* claim:Evaluation.RejectRemoval
+Evaluation_RejectRemoval ==
+    /\ state = "Removed"
+    /\ state' = "Changed"
+
+\* claim:Evaluation.RejectRewrite
+Evaluation_RejectRewrite ==
+    /\ state = "WrittenFresh"
+    /\ state' = "Changed"
+
 \* claim:Evaluation.Remove
 Evaluation_Remove ==
     /\ state = "Questioned"
@@ -47,22 +65,7 @@ Evaluation_Rewrite ==
     /\ state = "Kept"
     /\ state' = "WrittenFresh"
 
-\* GAP: K16 and K22 give his approval of a rewrite at the final candidate, not the route when he rejects it
-Gap1 ==
-    /\ state = "WrittenFresh"
-    /\ state' = "GAP 1"
-
-\* GAP: K16 and K22 give his approval of a fold at the final candidate, not the route when he rejects it
-Gap2 ==
-    /\ state = "Folded"
-    /\ state' = "GAP 2"
-
-\* GAP: K16 and K22 give his approval of a removal at the final candidate, not the route when he rejects it
-Gap3 ==
-    /\ state = "Removed"
-    /\ state' = "GAP 3"
-
-Done == state \in Finals \cup Open /\ UNCHANGED vars
+Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
     \/ Evaluation_Approve
@@ -70,11 +73,12 @@ Next ==
     \/ Evaluation_ApproveRemoval
     \/ Evaluation_Fold
     \/ Evaluation_Keep
+    \/ Evaluation_Rebuild
+    \/ Evaluation_RejectFold
+    \/ Evaluation_RejectRemoval
+    \/ Evaluation_RejectRewrite
     \/ Evaluation_Remove
     \/ Evaluation_Rewrite
-    \/ Gap1
-    \/ Gap2
-    \/ Gap3
     \/ Done
 
 Fairness == TRUE

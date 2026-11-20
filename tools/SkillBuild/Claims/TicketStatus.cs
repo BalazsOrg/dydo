@@ -9,8 +9,17 @@ public static class TicketStatus
     public static readonly Claim Open = new("A hop may be opened ahead in Todo.", [Actor.Linear], [])
     { Spec = ["S3"], Transition = new(TicketStatusState.New, TicketStatusState.Todo, "opened in Todo, ahead of its turn if a hop") };
 
-    public static readonly Claim Contract = new("The coordinator contracts an uncontracted Backlog ticket to Todo.", [Actor.Coordinator], [])
-    { Spec = ["N12 DR 063 §4"], Transition = new(TicketStatusState.Backlog, TicketStatusState.Todo, "the coordinator contracts an uncontracted ticket") };
+    public static readonly Claim Future = new("An unscheduled strategic possibility enters as a FutureFeature (DYD-1082 555a8300 gap 3).", [Actor.Linear], [])
+    { Spec = ["S5"], Transition = new(TicketStatusState.New, TicketStatusState.FutureFeature, "an unscheduled strategic possibility") };
+
+    public static readonly Claim Promote = new("Only he promotes a FutureFeature out; uncontracted, it waits in Backlog (DYD-1082 555a8300 gaps 3–4).", [Actor.Balazs], [])
+    { Spec = ["S5"], Transition = new(TicketStatusState.FutureFeature, TicketStatusState.Backlog, "he promotes it; it waits in Backlog until contracted") };
+
+    public static readonly Claim Filed = new("A ticket filed without a contract is Backlog (DYD-1082 555a8300 gap 4).", [Actor.Linear], [])
+    { Spec = ["S5"], Transition = new(TicketStatusState.New, TicketStatusState.Backlog, "filed without a contract") };
+
+    public static readonly Claim Contract = new("A captain on a Wayfinding ticket contracts an uncontracted Backlog ticket to Todo (DYD-1082 1b6b6a5d Q16).", [Actor.TicketCaptain], [])
+    { Spec = ["N12 DR 063 §4", "S5", "H5"], Transition = new(TicketStatusState.Backlog, TicketStatusState.Todo, "a Wayfinding captain contracts it") };
 
     public static readonly Claim Start = new("Whoever starts a step sets it In Progress with the holder's thread link.", [Actor.Linear], [])
     { Spec = ["S6", "S13", "S3"], Transition = new(TicketStatusState.Todo, TicketStatusState.InProgress, "whoever starts the step sets it In Progress") };

@@ -13,6 +13,9 @@ public static class SafeDelete
     public static readonly Claim ArchiveT3 = new("Safe delete covers T3 worktrees without breaking T3.", [Actor.TicketCaptain], [])
     { Spec = ["N10"], Transition = new(SafeDeleteState.Live, SafeDeleteState.Archived, "a T3 worktree is archived without breaking T3") };
 
+    public static readonly Claim Restore = new("dydo archive restore brings an archived branch or worktree back (DYD-1082 555a8300 gap 10, DYD-1195 70df9ff8).", [Actor.DydoArchive], [])
+    { Spec = ["N10"], Transition = new(SafeDeleteState.Archived, SafeDeleteState.Live, "`dydo archive restore` brings it back") };
+
     public static readonly Claim Purge = new("An archive is purged after 30 days.", [Actor.DydoArchive], [])
     { Spec = ["N10"], Transition = new(SafeDeleteState.Archived, SafeDeleteState.Purged, "30 days pass") };
 }

@@ -73,14 +73,20 @@
       "effect": null,
       "fair": false,
       "skills": []
-    }
-  ],
-  "gaps": [
+    },
     {
-      "action": "Gap1",
+      "claim": "claim:SafeDelete.Restore",
       "from": "Archived",
       "to": "Live",
-      "note": "N10 names no restore from the archive; the built command has one"
+      "arrow": "`dydo archive restore` brings it back",
+      "spec": [
+        "N10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": []
     }
-  ]
+  ],
+  "gaps": []
 }

@@ -30,6 +30,14 @@ Spec: N10
 
 Transition in Safe delete (`claims/statechart/safe-delete/SafeDelete.tla`): Live → Archived, "a T3 worktree is archived without breaking T3". A system transition: no skill carries it.
 
+## Restore
+
+`claim:SafeDelete.Restore`: dydo archive restore brings an archived branch or worktree back (DYD-1082 555a8300 gap 10, DYD-1195 70df9ff8).
+
+Spec: N10
+
+Transition in Safe delete (`claims/statechart/safe-delete/SafeDelete.tla`): Archived → Live, "`dydo archive restore` brings it back". A system transition: no skill carries it.
+
 ## Purge
 
 `claim:SafeDelete.Purge`: An archive is purged after 30 days.

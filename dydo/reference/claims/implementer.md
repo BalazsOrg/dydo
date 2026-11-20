@@ -158,13 +158,17 @@ Spec: T3, T4
 
 ## BugDiagnose
 
-`claim:Implementer.BugDiagnose`: A Bug with no red reproduction yet loads diagnosing-bugs, as the pre-candidate code-writer did (DYD-1287 contract).
+`claim:Implementer.BugDiagnose`: A Bug with no red reproduction yet loads diagnosing-bugs, as the pre-candidate code-writer did (DYD-1287 contract); its dispatcher names the skill.
 
 Spec: T3, K14
 
 **implementer** (Bug):
 
 > With no red reproduction yet, load /diagnosing-bugs.
+
+**ticket-captain** (ImplementerBrief):
+
+> On a Bug, add /diagnosing-bugs to the skills this brief names.
 
 ## BugUnused
 

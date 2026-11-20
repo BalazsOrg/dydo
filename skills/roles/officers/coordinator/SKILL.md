@@ -112,37 +112,6 @@ Arrivals:
 
 - Read the envoy's result from its ticket.
 
-### A hard call
-
-Exits:
-
-- A call a DR clearly settles is not hard: decide it and cite the DR.
-- Give a fresh clerk the Question with only the call, the options unranked, the constraints and the primary facts with sources; you sit on no tribunal.
-
-### Clerk holds the case file
-
-Exits:
-
-- With one family out, the tribunal still runs, on the remaining family: overnight it decides, by day it prepares and he decides.
-
-### Decided overnight
-
-Arrivals:
-
-- Act on an overnight decision, citing its law and precedent; it stays provisional and is never ratified.
-
-### Prepared for him
-
-Arrivals:
-
-- Send a prepared call to him through an envoy, with both positions; he decides.
-
-### Proposed DR awaiting his ratification
-
-Arrivals:
-
-- Write the overnight ruling as a `proposed` DR for his ratification; an irreversible call is never decided.
-
 Resources:
 
 - [Envoy brief](resources/envoy-brief.md)
@@ -176,13 +145,12 @@ Exits:
 
 Exits:
 
-- Staff each inquisition round from the model roster and `dydo usage`, and tell him in your next envoy bundle.
+- Once every delivery ticket is merged, open the Inquisition ticket for a fresh root inquisition captain.
 
-### The round's verdict, held by the coordinator
+### The round's verdict, held by its root inquisition captain
 
 Exits:
 
-- Hold each round you staff: post one verdict naming each seat and its findings, turn its blockers into Fix rN and register its shoulds.
 - The Project lands only after an inquisition round that finds no blocker and no should.
 
 ### Landing prerequisites
@@ -196,10 +164,6 @@ Exits:
 - Open the landing merge review only once every should is closed and the mutation check on the Project's diff is clean.
 
 ### Landing merge review: a Merge-confidence council
-
-Nominal path:
-
-- With one family out, Merge confidence waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.
 
 Exits:
 
@@ -216,7 +180,7 @@ Exits:
 
 Nominal path:
 
-- Once he accepts, move the spec's lasting parts to DRs, the glossary, docs and the verification map, then delete the spec and the plan files.
+- Once he accepts, open a Wayfinding ticket to move the spec's lasting parts and delete the spec and the plan files.
 
 ### Landed on master
 

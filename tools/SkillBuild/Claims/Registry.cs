@@ -60,6 +60,7 @@ public static class Registry
         typeof(Staff),
         typeof(Landing),
         typeof(Inquisition),
+        typeof(JobTickets),
         typeof(Mutation),
         typeof(MasterRoute),
         typeof(SafeDelete),

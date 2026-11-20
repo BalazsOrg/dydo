@@ -7,8 +7,6 @@ vars == <<state>>
 
 Finals == {"Done", "Canceled", "Duplicate"}
 
-Open == {"GAP 2"}
-
 Init ==
     /\ state = "New"
 
@@ -32,6 +30,16 @@ TicketStatus_Contract ==
     /\ state = "Backlog"
     /\ state' = "Todo"
 
+\* claim:TicketStatus.Filed
+TicketStatus_Filed ==
+    /\ state = "New"
+    /\ state' = "Backlog"
+
+\* claim:TicketStatus.Future
+TicketStatus_Future ==
+    /\ state = "New"
+    /\ state' = "FutureFeature"
+
 \* claim:TicketStatus.MarkDuplicate
 TicketStatus_MarkDuplicate ==
     /\ state = "Todo"
@@ -41,6 +49,11 @@ TicketStatus_MarkDuplicate ==
 TicketStatus_Open ==
     /\ state = "New"
     /\ state' = "Todo"
+
+\* claim:TicketStatus.Promote
+TicketStatus_Promote ==
+    /\ state = "FutureFeature"
+    /\ state' = "Backlog"
 
 \* claim:TicketStatus.Start
 TicketStatus_Start ==
@@ -52,35 +65,20 @@ TicketStatus_Stopped ==
     /\ state = "InProgress"
     /\ state' = "Todo"
 
-\* GAP: S5 lists FutureFeature, but no rule says what enters it
-Gap1 ==
-    /\ state = "New"
-    /\ state' = "FutureFeature"
-
-\* GAP: S5 lists FutureFeature, but no rule says how a ticket leaves it
-Gap2 ==
-    /\ state = "FutureFeature"
-    /\ state' = "GAP 2"
-
-\* GAP: S5 lists Backlog, but no rule says when a ticket is filed there
-Gap3 ==
-    /\ state = "New"
-    /\ state' = "Backlog"
-
-Done == state \in Finals \cup Open /\ UNCHANGED vars
+Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
     \/ TicketStatus_CancelDead
     \/ TicketStatus_CancelRunning
     \/ TicketStatus_Close
     \/ TicketStatus_Contract
+    \/ TicketStatus_Filed
+    \/ TicketStatus_Future
     \/ TicketStatus_MarkDuplicate
     \/ TicketStatus_Open
+    \/ TicketStatus_Promote
     \/ TicketStatus_Start
     \/ TicketStatus_Stopped
-    \/ Gap1
-    \/ Gap2
-    \/ Gap3
     \/ Done
 
 Fairness == TRUE

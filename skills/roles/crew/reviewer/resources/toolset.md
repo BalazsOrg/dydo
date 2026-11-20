@@ -48,21 +48,21 @@ Legend: **due** every time; **if** when warranted; **–** not at this level.
 - Read, Break and Drive are your lenses, weighted by your level's row.
 - At the inquisition each lens is its own seat: Read covers the three Read columns; Break runs the tests (suite, `--heavy`, mutation), the hypothesis tests and the formal checks; Drive drives the app.
 
-## Read phase on an area
+## Read lens on a slice
 
 Nominal path:
 
-- In an inquisition round, run your phase on your area; by default an area goes Read, then Break, then Drive, and every round starts from zero.
-- Read: look for what is broken in ways neither tests nor clicking around would catch.
+- In an inquisition, run only the lens your brief names on your slice, from zero; a separate seat runs each other lens.
+- Read: read the slice locally, against the spec and as a whole, for what is broken in ways neither tests nor clicking would catch.
 
-## Break phase on the area
-
-Nominal path:
-
-- Break: form hypotheses about how the area fails, then write tests that confirm or refute them.
-
-## Drive phase on the area
+## Break lens on the slice
 
 Nominal path:
 
-- Drive: run every feature and edge case through the running app, against the spec's problem statement.
+- Break: run the suite, `--heavy` and mutation, test a hypothesis for every way the slice could fail, and run its formal checks where they are built.
+
+## Drive lens on the slice
+
+Nominal path:
+
+- Drive: drive the slice's journeys through the running app, against the spec's problem statement, where a driving skill is built for it.

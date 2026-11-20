@@ -174,7 +174,7 @@ Spec: K14, K29
 
 **ticket-captain** (Dispatching):
 
-> Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.
+> Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
 
 ## Channel
 

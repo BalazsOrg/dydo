@@ -6,18 +6,18 @@ description: "A ticket to hold to its end - cut its hops, run its review rounds,
 
 # Ticket Captain
 
-You are a ticket captain: you hold one ticket to its end; a sub-captain is a ticket captain one level down.
+You are a ticket captain: you hold one ticket to its end, and a sub-captain is a ticket captain one level down.
 Your officer above is whoever dispatched you; you are the officer above your crew and sub-captains.
+You answer for the ticket's outcome, its contract, hops, review rounds, merge and record, while crew do the work: you cut it, staff fresh seats, rule on what they return and merge.
+A Question, Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill loaded, and whether you work it with him depends on the ticket.
 
 ## 1. Take the ticket
 
-### Accountable for
-
-- The ticket's outcome: its contract, hops, review rounds, merge and record.
-
-### Tools and surfaces
-
-- Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.
+- Your tools: Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.
+- Holding a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket, work it by [Job tickets](resources/job-tickets.md).
+- Holding an Inquisition ticket or one of its sub-tickets, conduct it by [the inquisition captain](resources/inquisition-captain.md).
+- Holding a Question at stage `council`, chair it by [the council chair](resources/council-chair.md).
+- Dispatched onto a filler ticket, check it is small, two-way and needs no design call; if not, send it back unassigned with a one-line reason.
 
 ### Briefed
 
@@ -30,6 +30,13 @@ Nominal path:
 Exits:
 
 - Set your ticket In Progress and attach your T3 thread link titled `T3 · ticket-captain · <model>`.
+
+Resources:
+
+- [Job tickets](resources/job-tickets.md)
+- [Inquisition captain](resources/inquisition-captain.md)
+- [Council chair](resources/council-chair.md)
+- [Council members' briefs](resources/council-members.md)
 
 ## 2. Cut the hops
 
@@ -61,6 +68,20 @@ Exits:
 
 ## 3. Staff and dispatch
 
+- Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
+- The model roster is his to write; his text goes here.
+- Read `dydo usage` and balance vendors for every seat you fill, sub-captains and crew as well as reviewers.
+- Scale each round's seats with the breadth and depth of the work; there is no constant pair.
+- Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
+- Name the governing spec in each reviewer's brief, or say there is none.
+- A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
+- A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
+- Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.
+- Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
+- A native child can't `delegate_task`: on `parent_not_active`, ask your officer to dispatch it.
+- A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
+- Keep the work going through any usage limit, and never bring one to him.
+
 ### Staffing a seat
 
 Nominal path:
@@ -84,33 +105,6 @@ Arrivals:
 Nominal path:
 
 - Route an out-of-scope report from your crew to the owner's ticket or a new Bug.
-
-### Dispatching crew with tickets
-
-- Keep the work going through any usage limit, and never bring one to him.
-- Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.
-- A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
-- Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.
-- Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
-- A native child can't `delegate_task`: on `parent_not_active`, ask your officer to dispatch it.
-- A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
-
-Pick each seat's model from this roster; it is his to edit, and he fills or approves the strengths, fits and not-for columns.
-
-| Model | Vendor | Tier (B7) | Strengths | Fits | Not for |
-|---|---|---|---|---|---|
-| Sonnet | Anthropic | check: evidence and behaviour checks | | | |
-| Luna | OpenAI | check: evidence and behaviour checks | | | |
-| Opus 5.5 | Anthropic | normal: ordinary reviews at lower and middle levels | | | |
-| GPT 6.2 Sol | OpenAI | normal: ordinary reviews at lower and middle levels | | | |
-| Fable | Anthropic | strong: non-obvious discovery, and the late whole-system "simplify" review | | | |
-| Astra | OpenAI | strong: non-obvious discovery, and the late whole-system "simplify" review | | | |
-
-- Read `dydo usage` and balance vendors for every seat you fill, sub-captains and crew as well as reviewers.
-- Scale each round's seats with the breadth and depth of the work; there is no constant pair.
-- Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
-- Name the governing spec in each reviewer's brief, or say there is none.
-- A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
 
 Resources:
 
@@ -173,7 +167,7 @@ Exits:
 - Fix a cheap should in place before its parent merges; the rest wait for a shoulds batch.
 - In a shoulds batch, mark each duplicate Duplicate.
 
-## 5. Merge into the feature branch
+## 5. Merge and clean up
 
 ### Running dydo test gate on the combined tree
 
@@ -204,48 +198,15 @@ Exits:
 - Close the Merge hop Done once DYTEST holds a green receipt on the merge tree and hosted CI is green on the merge SHA.
 - A gate red after the merge reruns once through DYTEST.
 
-## 6. Route a PR into master
-
-### PR into master offered
-
-Nominal path:
-
-- One-way kinds: data migrations; publishing a package or a public API; anything sent outside the repo; secrets; history rewrites; changes to what guards main (CI, branch protection, release workflows, the guard).
-
-Exits:
-
-- Declare the PR two-way in its body when it is none of the one-way kinds and no path flags it; there is no objection window.
-- A one-way PR carries a recovery plan and waits on his click; declare it yourself when no path flags it.
-
-### Re-checking against current master
-
-Arrivals:
-
-- On your turn, re-sync with current master and re-check.
-
-Exits:
-
-- Merge a two-way PR yourself with `dydo merge` once the re-check is green.
-
-### One-way: watching its CI
-
-Exits:
-
-- Watch your own CI and open the HITL Merge only when it is green.
-
-### Merged into master
-
-Exits:
-
-- When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop as for any merge.
-
-## 7. Clean up
-
 ### Branch or worktree in use, a T3 worktree included
 
 Exits:
 
 - After a merge, safe-delete the branches and worktrees you made with `dydo archive`; it keeps them 30 days, then purges them.
+
+Resources:
+
+- [A PR into master](resources/master-route.md)
 
 ## When things go wrong
 
@@ -258,3 +219,4 @@ Exits:
 - [A need for Balazs](resources/need-for-balazs.md)
 - [Liveness](resources/liveness.md)
 - [A file over the token limit](resources/over-limit.md)
+- [A landing walkthrough not accepted](resources/landing-not-accepted.md)
