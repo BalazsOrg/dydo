@@ -52,7 +52,9 @@ Spec: H23, S3
 
 Spec: H23, H16, L18, K30
 
-**ticket-captain** (Question):
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Research → Answered, "its research resolves the call".
+
+**ticket-captain** (Research, exit):
 
 > At stage `research`, research the call first with `research` crew; open a `council` or `his-call` child only when the research does not resolve it.
 

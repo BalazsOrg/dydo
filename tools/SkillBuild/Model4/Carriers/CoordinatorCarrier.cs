@@ -25,7 +25,7 @@ public static class CoordinatorCarrier
             new("Route out every judgement",
             [
                 new(CoordinatorSlot.Routing),
-                .. HierarchyMachines.Envoy.Slots(EnvoyState.Queued, EnvoyState.Active, EnvoyState.Reported)
+                .. HierarchyMachines.Envoy.Slots(EnvoyState.Research, EnvoyState.Queued, EnvoyState.Active, EnvoyState.Reported)
             ])
             {
                 Resources = [new(ResourceName.EnvoyBrief, "Envoy brief", new(Section.EnvoySlots, "Slots"), new(Section.EnvoySession, "Session"), new(Section.EnvoySkills, "Skills"))]

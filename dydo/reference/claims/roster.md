@@ -8,7 +8,7 @@ type: reference
 
 ## Models
 
-`claim:Roster.Models`: One model roster, his, as one easy-to-edit table in every dispatching officer's spine.
+`claim:Roster.Models`: One model roster, which he writes himself and not as a table, semi-hard-coded in every dispatching officer's spine and updated by him whenever a model ships or changes (DYD-1082 71e30c21).
 
 Spec: R13
 

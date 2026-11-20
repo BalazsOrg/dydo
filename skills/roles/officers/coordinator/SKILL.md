@@ -79,9 +79,14 @@ Exits:
 ## 4. Route out every judgement
 
 - Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.
+
+### A research Question, held by a fresh captain
+
+Arrivals:
+
 - A need passed up to you becomes a Question ticket at stage `research`: open it, put a fresh captain on it, and wait; that captain answers the need, sends it to a council, or puts a `his-call` Question on your HITL queue.
 
-### Queued behind the active envoy
+### On his HITL queue, behind the active envoy
 
 Arrivals:
 
@@ -168,7 +173,7 @@ Exits:
 Exits:
 
 - On the council's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.
-- Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+- Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ### Balazs walks the landing candidate
 

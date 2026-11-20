@@ -43,7 +43,7 @@ machine's own states, not the `GAP` end a chart adds.
 | Survey, board and CI findings | `findings` | 14 | 18 | 0 | 14 states, 21 steps |
 | Liveness | `liveness` | 3 | 5 | 0 | 3 states, 5 steps |
 | dydo map | `map` | 5 | 6 | 0 | 5 states, 8 steps |
-| A need for Balazs (envoys) | `envoy` | 11 | 10 | 0 | 13 states, 19 steps |
+| A need for Balazs (envoys) | `envoy` | 10 | 9 | 0 | 13 states, 19 steps |
 | A council | `council` | 4 | 4 | 0 | 4 states, 5 steps |
 | The tribunal | `tribunal` | 12 | 13 | 0 | 244 states, 319 steps |
 | How the law grows | `law` | 8 | 7 | 0 | 8 states, 11 steps |
@@ -56,7 +56,7 @@ machine's own states, not the `GAP` end a chart adds.
 | Safe delete | `safe-delete` | 3 | 4 | 0 | 3 states, 5 steps |
 | A file over the token limit | `ignore-entry` | 7 | 7 | 0 | 7 states, 10 steps |
 | The adopter update | `adopter` | 7 | 8 | 0 | 7 states, 10 steps |
-| **31 machines** | | **251** | **327** | **0** | |
+| **31 machines** | | **250** | **326** | **0** | |
 
 ## GAPs: all 10 closed
 
@@ -76,11 +76,12 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 
 ## Notes
 
-- **Decided rules with no named signal or performer are arrows, not GAPs.** R29's `MasterRoute.Turn` lands main-bound merges one at a time, both doors through the same pacing and re-check; the spec does not say what signals a PR's turn. L20's `Tribunal.Score` scores his daytime answers and L19's `Tribunal.Wrong` investigates a ruling found wrong; neither rule names who does it, so both arrows carry no actor. K22 does not name who questions a role skill, so `Evaluation.Keep`, `Fold`, `Remove` and `Rewrite` carry none either, and L8 names no one who corrects a failed slug (`Slugs.Corrected`).
+- **Decided rules with no named signal or performer are arrows, not GAPs.** R29's `MasterRoute.Turn` lands main-bound merges one at a time, both doors through the same pacing and re-check; the spec does not say what signals a PR's turn. L20's `Tribunal.Score` scores his daytime answers and L19's `Tribunal.Wrong` investigates a ruling found wrong; neither rule names who does it, so both arrows carry no actor. K22 does not name who questions a role skill, so `Evaluation.Keep`, `Fold`, `Remove` and `Rewrite` carry none either, and L8 names no one who corrects a failed slug (`Slugs.Corrected`). The law's growth names only "agents" (L9, L13) or no one (L7, L11), so `Law.Departs`, `Mechanical`, `Propose` and `Precedential` carry no line.
+- **A need follows the Question stages (H16, H23).** In `envoy`, a need is decided where it arises when obvious and reversible, asked in one line when he is already in the thread, or passed up: its officer, a captain or the coordinator, opens a `research` Question for a fresh captain and waits on it (DYD-1195 317eb49f, 3a854e37). No officer does its homework. The research answers it, opens a `council` child, or opens a `his-call` child that joins the coordinator's HITL queue, onto which the coordinator dispatches one envoy at a time; the next goes only once he has closed the last one's thread, and no "moved on" exit remains (893e1f5b). The council child ends this machine: its route, a call it prepares for him included, is the tribunal's.
 - **Host settings' two return arrows are modelling details.** `Host.Pass` (Guarded → Initialised) and `Host.Refused` (Memory denied → Initialised) exist only to keep the guard's per-call loop live; DR 055 and DR 056 decide what the guard does with a call, not a loop.
-- **Blockers are routed by kind wherever a review runs (R9).** In `review` and in the landing merge review alike: broken or against the spec to Fix, a security hole to Fix with the security lens first on the next round, fundamental or a new requirement to the officer above, and a need for him up the chain at once.
+- **Blockers are routed by kind wherever a review runs (R9).** In `review` and in the landing merge review alike: broken or against the spec to Fix, a security hole to Fix with the security lens first on the next round, fundamental or a new requirement to the officer above (above a top-level captain, a fresh Wayfinding captain re-plans and the coordinator only opens its ticket, H5), and a need for him up the chain at once.
 - **The root inquisition captain holds each round.** The coordinator opens the Inquisition ticket; its root captain staffs the round from the roster and the quotas (DYD-1195 6deea8c0), draws a fresh feature map, and holds the round's verdict (N5, S8), which turns blockers into Fix rN (S9) and registers shoulds (S17). Each slice runs Read → Break → Drive, each lens a separate reviewer. Groups over about 10 slices, their sub-captains and the root's seam slices are skill prose, not states: the chart's `areas` counter stands for slices.
-- **A Question's call routes after its research.** The tribunal starts at a Question's call after its research (L18, H23): a DR settles it, it goes to him as a `his-call` child, or it goes to a `council` child by day or night. A council decides an agreed two-way call by day too when it is not worth his time (DYD-1195 87c1e2e6), so `DecidedOvernight` keeps its id and is titled "Decided, provisionally".
+- **A Question's call routes after its research.** The tribunal starts at a Question's call after its research (L18, H23): a DR settles it, it goes to him as a `his-call` child, or it goes to a `council` child by day or night. That routing is the research captain's prose (`Tribunal.Settled`, `HisCall`, `File`); the same children are arrivals in `envoy`, carried by the chair (`Council.Hold`) and the coordinator's queue (`Envoy.Open`), so no rule is stated twice (K4). A council decides an agreed two-way call by day too when it is not worth his time (DYD-1195 87c1e2e6), so `DecidedOvernight` keeps its id and is titled "Decided, provisionally".
 - **A decided Question and a proposed DR are different routes.** In the overview a Question decided by him by day, or provisionally overnight, is acted on and never ratified (L19, L20); only an overnight DR-grade call becomes a `proposed` DR, which waits for his ratification (L21, `tribunal`'s Proposed DR → Ratified).
 - **CA19, built vs decided.** N10 decides that safe delete covers `~/.t3/worktrees` without breaking T3, and the chart archives a T3 worktree like any other. The built `dydo archive` still refuses every T3-managed target (`T3_RELEASE_UNPROVEN`), owned by DYD-1216.
 - **Ticket statuses are system arrows.** The `TicketStatus` machine carries no prose. Each status rule's prose sits on the role claim that makes the move (`Dispatch.Start`, `Project.Replanned`, `FeatureMerge.RealRed`, `Should.Dup`), so no rule is stated twice.

@@ -53,7 +53,7 @@ public static class Coordination
     { Spec = ["R14", "R13", "H2"] };
 
     public static readonly Claim Question = new("A need passed up to the coordinator becomes a research Question it opens and waits on, held by a fresh captain (DYD-1195 317eb49f, 3a854e37).", [Actor.Coordinator],
-        [new(Skill.Coordinator, "A need passed up to you becomes a Question ticket at stage `research`: open it, put a fresh captain on it, and wait; that captain answers the need, sends it to a council, or puts a `his-call` Question on your HITL queue.", new(CoordinatorSlot.Routing, 1305))])
+        [new(Skill.Coordinator, "A need passed up to you becomes a Question ticket at stage `research`: open it, put a fresh captain on it, and wait; that captain answers the need, sends it to a council, or puts a `his-call` Question on your HITL queue.", new(EnvoyState.Research, 1305, MoveKind.Arrival))])
     { Spec = ["H16", "H23", "H5", "L18"] };
 
     public static readonly Claim Rank = new("The HITL queue is triaged mechanically: the tickets waiting on a need over his estimated minutes, highest first, the oldest on a tie (DYD-1195 893e1f5b).", [Actor.Coordinator],

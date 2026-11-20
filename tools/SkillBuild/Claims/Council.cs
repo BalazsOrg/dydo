@@ -10,9 +10,10 @@ public static class Council
     private const string Chair = "[the council chair](resources/council-chair.md)";
     private const string Briefs = "[the council members' briefs](council-members.md)";
 
+    // The research captain's exit to this child is its call's routing in the tribunal (Tribunal.File); the chair's arrival is the envoy machine's move.
     public static readonly Claim Hold = new("A ticket captain chairs a council with the council-chair resource (DYD-1082 99774812).", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, $"Holding a Question at stage `council`, chair it by {Chair}.", new(TicketCaptainSlot.Take, 122))])
-    { Spec = ["L23", "H23"] };
+        [new(Skill.TicketCaptain, $"Holding a Question at stage `council`, chair it by {Chair}.", new(EnvoyState.Council, 122, MoveKind.Arrival))])
+    { Spec = ["L23", "H23", "L18"], Transition = new(EnvoyState.Research, EnvoyState.Council, "a hard call not worth his time: a council child, AFK") };
 
     public static readonly Claim Ticket = new("A council is a Question ticket at stage council, Mode AFK, with no Council Type; its chair is no member (DYD-1195 ea16ea28).", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "A council is a Question ticket at stage `council` and Mode AFK, with no Council Type; you chair it mechanically and sit on it as no member.", new(TicketCaptainSlot.Council, 1301))])

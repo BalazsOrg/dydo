@@ -3,7 +3,7 @@ namespace DynaDocs.SkillBuild;
 /// <summary>The model roster and seat staffing (R12–R14): his roster, which he writes (DYD-1082 71e30c21), dydo usage, and seats scaled to the work.</summary>
 public static class Roster
 {
-    public static readonly Claim Models = new("One model roster, his, as one easy-to-edit table in every dispatching officer's spine.", [Actor.Coordinator, Actor.TicketCaptain],
+    public static readonly Claim Models = new("One model roster, which he writes himself and not as a table, semi-hard-coded in every dispatching officer's spine and updated by him whenever a model ships or changes (DYD-1082 71e30c21).", [Actor.Coordinator, Actor.TicketCaptain],
     [
         new(Skill.Coordinator, "The model roster is his to write; his text goes here.", new(Routine.Dispatching, 2101)),
         new(Skill.TicketCaptain, "The model roster is his to write; his text goes here.", new(Routine.Dispatching, 2))

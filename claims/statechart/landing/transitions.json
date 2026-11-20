@@ -448,7 +448,8 @@
       "to": "Replanned",
       "arrow": "a blocker is fundamental, or a new requirement",
       "spec": [
-        "R9"
+        "R9",
+        "H5"
       ],
       "guard": null,
       "effect": null,

@@ -27,10 +27,12 @@ public static class JobTickets
         [new(Skill.TicketCaptain, "Every Question carries a stage label, set by whoever opens it: `research` and `council` are Mode AFK, `his-call` Mode HITL, and the stage, not the parent's Type, picks how it is held.", new(TicketCaptainSlot.Question, 3104))])
     { Spec = ["H23", "S3"] };
 
+    // The research Question's other exits, to a council child or a his-call child, are its call's routing in the tribunal
+    // (Tribunal.File, Tribunal.HisCall); in the envoy machine they are that child's arrival (Council.Hold, Envoy.Open).
     public static readonly Claim Research = new("A research Question's captain researches first with research crew, and opens a council or his-call child only when the research does not resolve the call.",
         [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "At stage `research`, research the call first with `research` crew; open a `council` or `his-call` child only when the research does not resolve it.", new(TicketCaptainSlot.Question, 3105))])
-    { Spec = ["H23", "H16", "L18", "K30"] };
+        [new(Skill.TicketCaptain, "At stage `research`, research the call first with `research` crew; open a `council` or `his-call` child only when the research does not resolve it.", new(EnvoyState.Research, 3105, MoveKind.Exit))])
+    { Spec = ["H23", "H16", "L18", "K30"], Transition = new(EnvoyState.Research, EnvoyState.Answered, "its research resolves the call") };
 
     public static readonly Claim StaysResearch = new("A research Question opened under another Question, at any depth, stays at stage research.", [Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "A research Question you open under another Question stays at stage `research`.", new(TicketCaptainSlot.Question, 3106))])

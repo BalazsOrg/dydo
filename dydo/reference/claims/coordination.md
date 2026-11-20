@@ -120,7 +120,7 @@ Spec: R14, R13, H2
 
 Spec: H16, H23, H5, L18
 
-**coordinator** (Routing):
+**coordinator** (Research, arrival):
 
 > A need passed up to you becomes a Question ticket at stage `research`: open it, put a fresh captain on it, and wait; that captain answers the need, sends it to a council, or puts a `his-call` Question on your HITL queue.
 

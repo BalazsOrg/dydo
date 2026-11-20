@@ -35,7 +35,7 @@ const steps = {
   "Landing_ReadDone": "Read done; Break, a separate sub-agent · N5, R34",
   "Landing_Ready": "every landing prerequisite met · N7, S18, T12, N15",
   "Landing_ReviewFail": "a blocker is broken or against the spec · R9, R11",
-  "Landing_ReviewFundamental": "a blocker is fundamental, or a new requirement · R9",
+  "Landing_ReviewFundamental": "a blocker is fundamental, or a new requirement · R9, H5",
   "Landing_ReviewNeedsHim": "a blocker needs Balazs · R9",
   "Landing_ReviewSecurity": "a blocker is a security hole · R9",
   "Landing_RoundFound": "the round finds a blocker or a should · N5, S8, S9, S11, S17",

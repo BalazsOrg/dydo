@@ -9,7 +9,7 @@ public static class Project
     public static readonly Claim Charted = new("Charting ends once the spec exists and the first tickets are contracted; the Project then waits for its coordinator (DYD-1082 555a8300 Q21).", [Actor.Balazs], [])
     { Spec = ["S14", "S15", "H4"], Transition = new(ProjectState.Charting, ProjectState.Unheld, "the Project is up: the spec exists and the first tickets are contracted") };
 
-    public static readonly Claim Replan = new("A fundamental blocker or a new requirement goes to the officer above to re-plan.", [Actor.TicketCaptain, Actor.Coordinator],
+    public static readonly Claim Replan = new("A fundamental blocker or a new requirement goes to the officer above to re-plan; above a top-level captain a fresh Wayfinding captain re-plans, and the coordinator only opens its ticket.", [Actor.TicketCaptain, Actor.Coordinator],
         [new(Skill.Coordinator, "A fundamental blocker or a new requirement from below: open a Wayfinding ticket to re-plan the affected part of the map, and put a fresh captain on it.", new(ProjectState.Replanning, 203, MoveKind.Arrival))])
     { Spec = ["R9", "H5"], Transition = new(ProjectState.Watching, ProjectState.Replanning, "a blocker is fundamental, or a new requirement") };
 
@@ -25,12 +25,12 @@ public static class Project
     { Spec = ["N5"], Transition = new(ProjectState.Watching, ProjectState.Landing, "every delivery ticket is merged into the feature branch") };
 
     // The coordinator states this in Rechart's combined line: its half of the map holder wakes the Wayfinding captain (DYD-1195 b46e8343).
-    public static readonly Claim SpecDoc = new("The spec is a main Linear document on the Project, written and refined by the map holder.", [Actor.Coordinator, Actor.TicketCaptain],
+    public static readonly Claim SpecDoc = new("The spec is a main Linear document on the Project, written and refined by the map holder, whose Wayfinding captain does the work (DYD-1195 b46e8343).", [Actor.Coordinator, Actor.TicketCaptain],
     [
         new(Skill.TicketCaptain, "Write and refine `Spec: <Project>`, the Project's main Linear document with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks; a sub-feature that needs defining well gets its own spec, linked from it.", new(TicketCaptainSlot.Wayfinding, 3110)),
         new(Skill.LinearWorkspaceStandard, "The spec is a main Linear document on the Project, `Spec: <Project>`, with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks. A sub-feature that needs defining well gets its own spec, linked from it. The map holder writes and refines it; at acceptance it is deleted after its lasting parts move to DRs, the glossary, docs and the verification map.", new(Section.LinearSpec, 1))
     ])
-    { Spec = ["S14"] };
+    { Spec = ["S14", "H4"] };
 
     public static readonly Claim FeatureBranch = new("The feature branch is cut from main before the first ticket branch.", [Actor.Coordinator],
     [
@@ -40,9 +40,9 @@ public static class Project
     { Spec = ["N12 DR 045 §8"] };
 
     // The coordinator states this in Rechart's combined line (DYD-1195 b46e8343: the release harvest is the Wayfinding captain's).
-    public static readonly Claim Harvest = new("A release's map holder harvests adopters' friction queues and local patches.", [Actor.Coordinator, Actor.TicketCaptain],
+    public static readonly Claim Harvest = new("When a release is planned, its map holder's Wayfinding captain harvests adopters' friction queues and local patches (DYD-1195 b46e8343).", [Actor.Coordinator, Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "When a release is planned, harvest the adopters' Agent friction queues and local patches.", new(TicketCaptainSlot.Wayfinding, 3119))])
-    { Spec = ["H9"] };
+    { Spec = ["H9", "H4"] };
 
     public static readonly Claim Tick = new("The coordinator's watch is a deterministic loop over the survey, the board and liveness.", [Actor.Coordinator],
         [new(Skill.Coordinator, "Each tick, read `dydo survey board <project>`, the board and the liveness findings, and act on every finding.", new(ProjectState.Watching, 212, MoveKind.Nominal))])
@@ -96,9 +96,9 @@ public static class Project
     { Spec = ["S15"] };
 
     // The coordinator states this in Rechart's combined line (DYD-1195 b46e8343: reconciling contracts is the Wayfinding captain's).
-    public static readonly Claim Reconcile = new("When the spec changes, the map holder reconciles the open contracts.", [Actor.Coordinator, Actor.TicketCaptain],
+    public static readonly Claim Reconcile = new("When the spec changes, the map holder's Wayfinding captain reconciles the open contracts (DYD-1195 b46e8343).", [Actor.Coordinator, Actor.TicketCaptain],
         [new(Skill.TicketCaptain, "When the spec changes, reconcile the open contracts with it.", new(TicketCaptainSlot.Wayfinding, 3112))])
-    { Spec = ["S15"] };
+    { Spec = ["S15", "H4"] };
 
     // The coordinator states this in Rechart's combined line: writing a contract is cutting, a Wayfinding captain's (DYD-1082 1b6b6a5d Q16).
     public static readonly Claim Uncontracted = new("An uncontracted Backlog ticket is contracted to Todo by a captain on a Wayfinding ticket (DYD-1082 1b6b6a5d Q16).", [Actor.Coordinator, Actor.TicketCaptain],

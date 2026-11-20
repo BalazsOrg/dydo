@@ -5,9 +5,14 @@
 ## Question
 
 - Every Question carries a stage label, set by whoever opens it: `research` and `council` are Mode AFK, `his-call` Mode HITL, and the stage, not the parent's Type, picks how it is held.
-- At stage `research`, research the call first with `research` crew; open a `council` or `his-call` child only when the research does not resolve it.
 - A research Question you open under another Question stays at stage `research`.
 - On a `his-call` child you open, write the envoy brief's seven slots: the ticket and why it needs him · what's settled · sources to read first · the stop line · where to record, in his words · return and closing summary · the opening rule, a fresh 2–3-line picture, then the first question with its recommendation.
+
+## A research Question, held by a fresh captain
+
+Exits:
+
+- At stage `research`, research the call first with `research` crew; open a `council` or `his-call` child only when the research does not resolve it.
 
 ## A Question's call, after its research
 

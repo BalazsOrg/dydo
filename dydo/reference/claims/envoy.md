@@ -6,45 +6,29 @@ type: reference
 
 # Claims: Envoy
 
-## Take
-
-`claim:Envoy.Take`: The officer above takes a need for Balazs and does the homework first.
-
-Spec: H16
-
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → Homework, "the officer above takes the need". A system transition: no skill carries it.
-
 ## Decide
 
-`claim:Envoy.Decide`: An obvious, reversible call is decided where it arises and never becomes a ticket (DYD-1195 3a854e37).
+`claim:Envoy.Decide`: An obvious, reversible call is decided where it arises and never becomes a ticket; the coordinator makes none (DYD-1195 3a854e37).
 
-Spec: H16, L18
+Spec: H16, H5
 
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → Decided, "the homework answers it, or the call is obvious and reversible".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → Decided, "the call is obvious and reversible: decided where it arises".
 
-**ticket-captain** (Homework, exit):
+**ticket-captain** (Need, exit):
 
 > Decide an obvious, reversible call yourself, where it arises; it never becomes a ticket.
 
 ## PassUp
 
-`claim:Envoy.PassUp`: Captains pass their needs up the chain; only the coordinator sends envoys.
+`claim:Envoy.PassUp`: Any other need is passed up, at every level: its officer, a captain or the coordinator, opens a research Question for it, held by a fresh captain, and waits on it; only the coordinator dispatches envoys (DYD-1195 317eb49f, 3a854e37).
 
-Spec: H16, H12
+Spec: H16, H12, H23
 
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → PassedUp, "a captain passes what remains up the chain".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → Research, "passed up: its officer opens a research Question and waits on it".
 
-**ticket-captain** (Homework, exit):
+**ticket-captain** (Need, exit):
 
 > Pass any other need up to your officer, who opens a `research` Question for it; only the coordinator dispatches envoys.
-
-## NextLevel
-
-`claim:Envoy.NextLevel`: The officer above takes the need passed up.
-
-Spec: H12
-
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): PassedUp → Homework, "the officer above takes it". A system transition: no skill carries it.
 
 ## InThread
 
@@ -52,27 +36,19 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): PassedUp 
 
 Spec: H22, H6
 
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → AskedInThread, "he is already in this officer's thread".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → AskedInThread, "he is already in this officer's thread".
 
-**ticket-captain** (Homework, exit):
+**ticket-captain** (Need, exit):
 
 > When he is already in your thread, ask the one line there with the host question tool.
 
-## Hard
-
-`claim:Envoy.Hard`: Hard calls go to the council: the tribunal.
-
-Spec: H5, L18
-
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → ToTribunal, "a hard call: competing answers, each good through some lens". A system transition: no skill carries it.
-
 ## Open
 
-`claim:Envoy.Open`: What only he can settle becomes an envoy job's ticket; a Question blocks only what waits on it.
+`claim:Envoy.Open`: What only he can settle reaches the coordinator's HITL queue as its own HITL ticket, blocking only what waits on it: the his-call child a research Question opens when the call is worth his time, a Grilling, Walkthrough or Wayfinding, or an Enablement (DYD-1195 317eb49f).
 
-Spec: H15, H17, S10
+Spec: H23, H16, H15, H17, S10
 
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework → Queued, "only he can settle it".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Research → Queued, "worth his time: its his-call child joins his HITL queue".
 
 **coordinator** (Queued, arrival):
 
@@ -84,11 +60,11 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Homework 
 
 ## Send
 
-`claim:Envoy.Send`: One active envoy per coordinator; the next goes once the last reported and he closed its thread.
+`claim:Envoy.Send`: One active envoy per coordinator: the next goes onto the head of the queue only once the last has reported and he has closed its thread (DYD-1195 893e1f5b).
 
 Spec: H18, H19, H23
 
-Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Queued → Active, "the last envoy reported and he closed its thread".
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Queued → Active, "the last envoy reported and he closed its thread: the next goes onto the head of the queue".
 
 **coordinator** (Queued, exit):
 
@@ -108,7 +84,7 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Active �
 
 ## Close
 
-`claim:Envoy.Close`: After a shared understanding he closes the envoy's thread.
+`claim:Envoy.Close`: He closes the envoy's thread once it has reported, after a shared understanding; no moved-on exit frees the queue (DYD-1195 893e1f5b).
 
 Spec: H19, H18
 
@@ -150,7 +126,7 @@ Spec: H18, L13
 
 ## Template
 
-`claim:Envoy.Template`: An envoy is a fresh ticket captain dispatched onto the queued ticket itself, loading every job skill it needs (DYD-1082 1b6b6a5d Q17).
+`claim:Envoy.Template`: An envoy is a fresh ticket captain the coordinator dispatches onto the queued ticket itself, the his-call Question or a bundle's wrapper, opening no other and loading every job skill it needs (DYD-1082 1b6b6a5d Q17, DYD-1195 317eb49f).
 
 Spec: H15, H16, H18, H23, K14
 
@@ -252,7 +228,7 @@ Spec: H24
 
 > Name what each DR says whenever you cite one to him, never only its number.
 
-**ticket-captain** (Homework, nominal):
+**ticket-captain** (Need, nominal):
 
 > Name what each DR says whenever you cite one to him, never only its number.
 

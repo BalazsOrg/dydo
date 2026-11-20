@@ -1,17 +1,16 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>M10: a need for Balazs, up the chain and out by envoy.</summary>
+/// <summary>M10: a need for Balazs, by the Question stages (H16, H23), out by one envoy at a time (H18).</summary>
 public enum EnvoyState
 {
     Need,
-    Homework,
-    PassedUp,
     Decided,
     AskedInThread,
-    ToTribunal,
+    Research,
+    Answered,
+    Council,
     Queued,
     Active,
     Reported,
-    MovedOn,
     Closed
 }

@@ -24,7 +24,7 @@ Transition in A Project and its coordinator (`claims/statechart/project/Project.
 
 ## Replan
 
-`claim:Project.Replan`: A fundamental blocker or a new requirement goes to the officer above to re-plan.
+`claim:Project.Replan`: A fundamental blocker or a new requirement goes to the officer above to re-plan; above a top-level captain a fresh Wayfinding captain re-plans, and the coordinator only opens its ticket.
 
 Spec: R9, H5
 
@@ -64,9 +64,9 @@ Transition in A Project and its coordinator (`claims/statechart/project/Project.
 
 ## SpecDoc
 
-`claim:Project.SpecDoc`: The spec is a main Linear document on the Project, written and refined by the map holder.
+`claim:Project.SpecDoc`: The spec is a main Linear document on the Project, written and refined by the map holder, whose Wayfinding captain does the work (DYD-1195 b46e8343).
 
-Spec: S14
+Spec: S14, H4
 
 **ticket-captain** (Wayfinding):
 
@@ -96,9 +96,9 @@ Spec: N12 DR 045 §8
 
 ## Harvest
 
-`claim:Project.Harvest`: A release's map holder harvests adopters' friction queues and local patches.
+`claim:Project.Harvest`: When a release is planned, its map holder's Wayfinding captain harvests adopters' friction queues and local patches (DYD-1195 b46e8343).
 
-Spec: H9
+Spec: H9, H4
 
 **ticket-captain** (Wayfinding):
 
@@ -220,9 +220,9 @@ Spec: S15
 
 ## Reconcile
 
-`claim:Project.Reconcile`: When the spec changes, the map holder reconciles the open contracts.
+`claim:Project.Reconcile`: When the spec changes, the map holder's Wayfinding captain reconciles the open contracts (DYD-1195 b46e8343).
 
-Spec: S15
+Spec: S15, H4
 
 **ticket-captain** (Wayfinding):
 

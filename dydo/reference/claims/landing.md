@@ -144,7 +144,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview
 
 **coordinator** (MergeReview, exit):
 
-> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ## ReviewSecurity
 
@@ -156,19 +156,19 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview
 
 **coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
-> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ## ReviewFundamental
 
-`claim:Landing.ReviewFundamental`: A fundamental landing merge-review blocker, or a new requirement, goes to the officer above to re-plan.
+`claim:Landing.ReviewFundamental`: A fundamental landing merge-review blocker, or a new requirement, goes to a fresh captain on a Wayfinding ticket to re-plan; the coordinator only opens its ticket.
 
-Spec: R9
+Spec: R9, H5
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Replanned, "a blocker is fundamental, or a new requirement".
 
 **coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
-> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ## ReviewNeedsHim
 
@@ -180,7 +180,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview
 
 **coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
-> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
+> Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.
 
 ## Accepted
 

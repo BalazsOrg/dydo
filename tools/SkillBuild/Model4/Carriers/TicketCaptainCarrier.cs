@@ -15,7 +15,7 @@ public static class TicketCaptainCarrier
 
     private static readonly Resource JobTicketRecipe = new(TicketCaptainResource.JobTickets, "Job tickets",
     [
-        new Slot(TicketCaptainSlot.Question, "Question"), .. LawMachines.Tribunal.Slots(TribunalState.HardCall),
+        new Slot(TicketCaptainSlot.Question, "Question"), .. HierarchyMachines.Envoy.Slots(EnvoyState.Research), .. LawMachines.Tribunal.Slots(TribunalState.HardCall),
         new(TicketCaptainSlot.Wayfinding, "Wayfinding"),
         new(TicketCaptainSlot.Hitl, "With him: Grilling, Walkthrough, Enablement and his-call")
     ]);
@@ -43,7 +43,7 @@ public static class TicketCaptainCarrier
     {
         Phases =
         [
-            new("Take the ticket", [new(TicketCaptainSlot.Take), .. HierarchyMachines.Dispatch.Slots(DispatchState.Briefed)])
+            new("Take the ticket", [new(TicketCaptainSlot.Take), .. HierarchyMachines.Envoy.Slots(EnvoyState.Council), .. HierarchyMachines.Dispatch.Slots(DispatchState.Briefed)])
             {
                 Resources = [JobTicketRecipe, InquisitionRecipe, CouncilChairRecipe, CouncilMemberBriefs]
             },
@@ -76,7 +76,7 @@ public static class TicketCaptainCarrier
             new(TicketCaptainScenario.ForcedResync, "A third forced re-sync", MergeMachines.MasterRoute.Slots(MasterRouteState.Held)),
             new(TicketCaptainScenario.MasterRevert, "A master merge reverted", MergeMachines.MasterRoute.Slots(MasterRouteState.Reverted)),
             new(TicketCaptainScenario.NeedForBalazs, "A need for Balazs",
-                [new Slot(TicketCaptainSlot.NeedPassedUp), .. HierarchyMachines.Envoy.Slots(EnvoyState.Homework)]),
+                [new Slot(TicketCaptainSlot.NeedPassedUp), .. HierarchyMachines.Envoy.Slots(EnvoyState.Need)]),
             new(TicketCaptainScenario.Liveness, "Liveness", HierarchyMachines.Liveness.Slots(LivenessState.Quiet)),
             new(TicketCaptainScenario.OverLimit, "A file over the token limit", LawMachines.IgnoreEntry.Slots(IgnoreEntryState.OverLimit)),
             new(TicketCaptainScenario.LandingNotAccepted, "A landing walkthrough not accepted",

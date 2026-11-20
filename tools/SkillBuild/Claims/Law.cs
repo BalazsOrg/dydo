@@ -3,7 +3,8 @@ namespace DynaDocs.SkillBuild;
 /// <summary>How the law grows (M16): evidence, amendment candidates, F11's test, his principles, retirement, and case studies.</summary>
 public static class Law
 {
-    // DYD-1285 took the coordinator's law lines off (H5): evidence and candidates need judgement, so these moves have no carrier yet.
+    // No skill carries Departs, Mechanical, Propose or Precedential: DYD-1285 took the coordinator's lines off (H5), and
+    // L7, L9, L11 and L13 name no owner role, only "agents" (L9, L13) or none (L7, L11). They are omissions (DYD-1317).
     public static readonly Claim Departs = new("An answer of his that departs from his precedent or his law is an amendment candidate.", [], [])
     { Spec = ["L7", "L11"], Transition = new(LawState.Evidence, LawState.Candidate, "his answer departs from his precedent or his law, or other evidence arrives") };
 

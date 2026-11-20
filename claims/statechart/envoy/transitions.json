@@ -6,39 +6,25 @@
   "finals": [
     "Decided",
     "AskedInThread",
-    "ToTribunal",
-    "Closed",
-    "MovedOn"
+    "Answered",
+    "Council",
+    "Closed"
   ],
   "states": [
     {
       "id": "Need",
-      "title": "A need for Balazs",
-      "spec": [
-        "H16"
-      ]
-    },
-    {
-      "id": "Homework",
-      "title": "Homework first",
-      "spec": [
-        "H16"
-      ]
-    },
-    {
-      "id": "PassedUp",
-      "title": "Passed up the chain",
+      "title": "A need, where it arises",
       "spec": [
         "H16",
-        "H12"
+        "H22"
       ]
     },
     {
       "id": "Decided",
-      "title": "Decided by the officer",
+      "title": "Decided where it arises: obvious and reversible",
       "spec": [
         "H16",
-        "L18"
+        "H5"
       ]
     },
     {
@@ -50,19 +36,39 @@
       ]
     },
     {
-      "id": "ToTribunal",
-      "title": "Sent to the tribunal",
+      "id": "Research",
+      "title": "A research Question, held by a fresh captain",
       "spec": [
-        "H5",
+        "H16",
+        "H23",
+        "L18",
+        "L21"
+      ]
+    },
+    {
+      "id": "Answered",
+      "title": "Answered by its research",
+      "spec": [
+        "H16",
         "L18"
       ]
     },
     {
-      "id": "Queued",
-      "title": "Queued behind the active envoy",
+      "id": "Council",
+      "title": "A council child, AFK",
       "spec": [
-        "H15",
-        "H18"
+        "H23",
+        "L18",
+        "L23"
+      ]
+    },
+    {
+      "id": "Queued",
+      "title": "On his HITL queue, behind the active envoy",
+      "spec": [
+        "H16",
+        "H18",
+        "H23"
       ]
     },
     {
@@ -70,6 +76,7 @@
       "title": "Envoy out",
       "spec": [
         "H15",
+        "H18",
         "H19",
         "H23"
       ]
@@ -89,13 +96,6 @@
         "H18",
         "H19"
       ]
-    },
-    {
-      "id": "MovedOn",
-      "title": "He has moved on, the thread left open",
-      "spec": [
-        "H18"
-      ]
     }
   ],
   "variables": [
@@ -112,6 +112,23 @@
   ],
   "transitions": [
     {
+      "claim": "claim:Council.Hold",
+      "from": "Research",
+      "to": "Council",
+      "arrow": "a hard call not worth his time: a council child, AFK",
+      "spec": [
+        "L23",
+        "H23",
+        "L18"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:Envoy.Close",
       "from": "Reported",
       "to": "Closed",
@@ -127,12 +144,12 @@
     },
     {
       "claim": "claim:Envoy.Decide",
-      "from": "Homework",
+      "from": "Need",
       "to": "Decided",
-      "arrow": "the homework answers it, or the call is obvious and reversible",
+      "arrow": "the call is obvious and reversible: decided where it arises",
       "spec": [
         "H16",
-        "L18"
+        "H5"
       ],
       "guard": null,
       "effect": null,
@@ -142,22 +159,8 @@
       ]
     },
     {
-      "claim": "claim:Envoy.Hard",
-      "from": "Homework",
-      "to": "ToTribunal",
-      "arrow": "a hard call: competing answers, each good through some lens",
-      "spec": [
-        "H5",
-        "L18"
-      ],
-      "guard": "level = \"coordinator\"",
-      "effect": null,
-      "fair": false,
-      "skills": []
-    },
-    {
       "claim": "claim:Envoy.InThread",
-      "from": "Homework",
+      "from": "Need",
       "to": "AskedInThread",
       "arrow": "he is already in this officer's thread",
       "spec": [
@@ -172,30 +175,19 @@
       ]
     },
     {
-      "claim": "claim:Envoy.NextLevel",
-      "from": "PassedUp",
-      "to": "Homework",
-      "arrow": "the officer above takes it",
-      "spec": [
-        "H12"
-      ],
-      "guard": null,
-      "effect": "level' = \"coordinator\"",
-      "fair": false,
-      "skills": []
-    },
-    {
       "claim": "claim:Envoy.Open",
-      "from": "Homework",
+      "from": "Research",
       "to": "Queued",
-      "arrow": "only he can settle it",
+      "arrow": "worth his time: its his-call child joins his HITL queue",
       "spec": [
+        "H23",
+        "H16",
         "H15",
         "H17",
         "S10"
       ],
-      "guard": "level = \"coordinator\"",
-      "effect": null,
+      "guard": null,
+      "effect": "level' = \"coordinator\"",
       "fair": false,
       "skills": [
         "coordinator",
@@ -204,15 +196,16 @@
     },
     {
       "claim": "claim:Envoy.PassUp",
-      "from": "Homework",
-      "to": "PassedUp",
-      "arrow": "a captain passes what remains up the chain",
+      "from": "Need",
+      "to": "Research",
+      "arrow": "passed up: its officer opens a research Question and waits on it",
       "spec": [
         "H16",
-        "H12"
+        "H12",
+        "H23"
       ],
-      "guard": "level = \"captain\"",
-      "effect": null,
+      "guard": null,
+      "effect": "level' \\in {\"captain\", \"coordinator\"}",
       "fair": false,
       "skills": [
         "ticket-captain"
@@ -238,7 +231,7 @@
       "claim": "claim:Envoy.Send",
       "from": "Queued",
       "to": "Active",
-      "arrow": "the last envoy reported and he closed its thread",
+      "arrow": "the last envoy reported and he closed its thread: the next goes onto the head of the queue",
       "spec": [
         "H18",
         "H19",
@@ -252,17 +245,22 @@
       ]
     },
     {
-      "claim": "claim:Envoy.Take",
-      "from": "Need",
-      "to": "Homework",
-      "arrow": "the officer above takes the need",
+      "claim": "claim:JobTickets.Research",
+      "from": "Research",
+      "to": "Answered",
+      "arrow": "its research resolves the call",
       "spec": [
-        "H16"
+        "H23",
+        "H16",
+        "L18",
+        "K30"
       ],
       "guard": null,
-      "effect": "level' \\in {\"captain\", \"coordinator\"}",
+      "effect": null,
       "fair": false,
-      "skills": []
+      "skills": [
+        "ticket-captain"
+      ]
     }
   ],
   "gaps": []

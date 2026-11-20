@@ -160,7 +160,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 ## Template
 
-`claim:Dispatch.Template`: An officer briefs crew from the crew kind's dispatch template and never reads a crew skill to brief it.
+`claim:Dispatch.Template`: Dispatching any agent names every skill its role requires with a slash: its kind's dispatch template carries the default set and the dispatcher adds the ticket's own; an officer never reads a crew skill to brief it (DYD-1082 01266a65, c1c52e25).
 
 Spec: K14, K29
 

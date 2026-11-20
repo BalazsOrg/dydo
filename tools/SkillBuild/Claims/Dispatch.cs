@@ -64,7 +64,7 @@ public static class Dispatch
     ])
     { Spec = ["K14", "R5", "S6", "N12 DR 047 §7"], Transition = new(DispatchState.Working, DispatchState.Returned, "the crew returns to its dispatcher") };
 
-    public static readonly Claim Template = new("An officer briefs crew from the crew kind's dispatch template and never reads a crew skill to brief it.",
+    public static readonly Claim Template = new("Dispatching any agent names every skill its role requires with a slash: its kind's dispatch template carries the default set and the dispatcher adds the ticket's own; an officer never reads a crew skill to brief it (DYD-1082 01266a65, c1c52e25).",
         [Actor.Coordinator, Actor.TicketCaptain, Actor.ChiefOfStaff],
     [
         new(Skill.Coordinator, "Brief each captain from the ticket-captain dispatch template and name every skill its role requires with a slash: the template carries the default set, and you add the ticket's own skills.", new(Routine.Dispatching, 808)),

@@ -5,7 +5,7 @@
 - Flag a DR-grade call on your ticket with the `dr-grade` label, then pass it up like any other need.
 - A need passed up to you from below: open a Question sub-ticket at stage `research` for a fresh captain, and wait on it; never research it yourself.
 
-## Homework first
+## A need, where it arises
 
 Nominal path:
 

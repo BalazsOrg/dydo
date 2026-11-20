@@ -5,12 +5,18 @@ VARIABLES state, level, envoys
 
 vars == <<state, level, envoys>>
 
-Finals == {"Decided", "AskedInThread", "ToTribunal", "Closed", "MovedOn"}
+Finals == {"Decided", "AskedInThread", "Answered", "Council", "Closed"}
 
 Init ==
     /\ state = "Need"
     /\ level = "captain"
     /\ envoys = 0
+
+\* claim:Council.Hold
+Council_Hold ==
+    /\ state = "Research"
+    /\ state' = "Council"
+    /\ UNCHANGED <<level, envoys>>
 
 \* claim:Envoy.Close
 Envoy_Close ==
@@ -21,43 +27,29 @@ Envoy_Close ==
 
 \* claim:Envoy.Decide
 Envoy_Decide ==
-    /\ state = "Homework"
+    /\ state = "Need"
     /\ state' = "Decided"
-    /\ UNCHANGED <<level, envoys>>
-
-\* claim:Envoy.Hard
-Envoy_Hard ==
-    /\ state = "Homework"
-    /\ level = "coordinator"
-    /\ state' = "ToTribunal"
     /\ UNCHANGED <<level, envoys>>
 
 \* claim:Envoy.InThread
 Envoy_InThread ==
-    /\ state = "Homework"
+    /\ state = "Need"
     /\ state' = "AskedInThread"
     /\ UNCHANGED <<level, envoys>>
 
-\* claim:Envoy.NextLevel
-Envoy_NextLevel ==
-    /\ state = "PassedUp"
-    /\ state' = "Homework"
+\* claim:Envoy.Open
+Envoy_Open ==
+    /\ state = "Research"
+    /\ state' = "Queued"
     /\ level' = "coordinator"
     /\ UNCHANGED <<envoys>>
 
-\* claim:Envoy.Open
-Envoy_Open ==
-    /\ state = "Homework"
-    /\ level = "coordinator"
-    /\ state' = "Queued"
-    /\ UNCHANGED <<level, envoys>>
-
 \* claim:Envoy.PassUp
 Envoy_PassUp ==
-    /\ state = "Homework"
-    /\ level = "captain"
-    /\ state' = "PassedUp"
-    /\ UNCHANGED <<level, envoys>>
+    /\ state = "Need"
+    /\ state' = "Research"
+    /\ level' \in {"captain", "coordinator"}
+    /\ UNCHANGED <<envoys>>
 
 \* claim:Envoy.Report
 Envoy_Report ==
@@ -73,26 +65,24 @@ Envoy_Send ==
     /\ envoys' = 1
     /\ UNCHANGED <<level>>
 
-\* claim:Envoy.Take
-Envoy_Take ==
-    /\ state = "Need"
-    /\ state' = "Homework"
-    /\ level' \in {"captain", "coordinator"}
-    /\ UNCHANGED <<envoys>>
+\* claim:JobTickets.Research
+JobTickets_Research ==
+    /\ state = "Research"
+    /\ state' = "Answered"
+    /\ UNCHANGED <<level, envoys>>
 
 Done == state \in Finals /\ UNCHANGED vars
 
 Next ==
+    \/ Council_Hold
     \/ Envoy_Close
     \/ Envoy_Decide
-    \/ Envoy_Hard
     \/ Envoy_InThread
-    \/ Envoy_NextLevel
     \/ Envoy_Open
     \/ Envoy_PassUp
     \/ Envoy_Report
     \/ Envoy_Send
-    \/ Envoy_Take
+    \/ JobTickets_Research
     \/ Done
 
 Bounds == level \in {"captain", "coordinator"} /\ envoys \in {0, 1}

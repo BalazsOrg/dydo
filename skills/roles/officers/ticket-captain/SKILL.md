@@ -16,8 +16,13 @@ A Question, Grilling, Walkthrough, Wayfinding or Enablement ticket is held the s
 - Your tools: Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.
 - Holding a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket, work it by [Job tickets](resources/job-tickets.md).
 - Holding an Inquisition ticket or one of its sub-tickets, conduct it by [the inquisition captain](resources/inquisition-captain.md).
-- Holding a Question at stage `council`, chair it by [the council chair](resources/council-chair.md).
 - Dispatched onto a filler ticket, check it is small, two-way and needs no design call; if not, send it back unassigned with a one-line reason.
+
+### A council child, AFK
+
+Arrivals:
+
+- Holding a Question at stage `council`, chair it by [the council chair](resources/council-chair.md).
 
 ### Briefed
 

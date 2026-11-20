@@ -82,7 +82,7 @@ public static class Landing
 
     public static readonly Claim ReviewFail = new("A broken or against-spec blocker from the landing merge review goes to Fix, then the next round.", [Actor.Coordinator],
     [
-        new(Skill.Coordinator, "Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.",
+        new(Skill.Coordinator, "Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to a Wayfinding ticket you open for a fresh captain to re-plan; one that needs him up the chain at once.",
             new(LandingState.MergeReview, 307, MoveKind.Exit), () => [ReviewSecurity!, ReviewFundamental!, ReviewNeedsHim!])
     ])
     {
@@ -96,8 +96,8 @@ public static class Landing
         Transition = new(LandingState.MergeReview, LandingState.RoundFixes, "a blocker is a security hole") { Effect = "fixFrom' = \"merge\" /\\ securityFirst' = TRUE" }
     };
 
-    public static readonly Claim ReviewFundamental = new("A fundamental landing merge-review blocker, or a new requirement, goes to the officer above to re-plan.", [Actor.Coordinator], [])
-    { Spec = ["R9"], Transition = new(LandingState.MergeReview, LandingState.Replanned, "a blocker is fundamental, or a new requirement") };
+    public static readonly Claim ReviewFundamental = new("A fundamental landing merge-review blocker, or a new requirement, goes to a fresh captain on a Wayfinding ticket to re-plan; the coordinator only opens its ticket.", [Actor.Coordinator], [])
+    { Spec = ["R9", "H5"], Transition = new(LandingState.MergeReview, LandingState.Replanned, "a blocker is fundamental, or a new requirement") };
 
     public static readonly Claim ReviewNeedsHim = new("A landing merge-review blocker that needs Balazs goes up the chain at once.", [Actor.Coordinator], [])
     { Spec = ["R9"], Transition = new(LandingState.MergeReview, LandingState.Escalated, "a blocker needs Balazs") };

@@ -10,9 +10,11 @@ type: reference
 
 `claim:Council.Hold`: A ticket captain chairs a council with the council-chair resource (DYD-1082 99774812).
 
-Spec: L23, H23
+Spec: L23, H23, L18
 
-**ticket-captain** (Take):
+Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Research → Council, "a hard call not worth his time: a council child, AFK".
+
+**ticket-captain** (Council, arrival):
 
 > Holding a Question at stage `council`, chair it by the council chair (`resources/council-chair.md`).
 
