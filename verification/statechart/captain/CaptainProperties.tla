@@ -29,29 +29,42 @@ R8_ClearBeforeFirstFinish ==
     [][(state' = "Finishing" /\ "InReview" \in seen /\ "Finishing" \notin seen =>
         state = "InReview")]_<<vars, seen>>
 
-\* R8, R9, S9, DYD-1295 41a553f1: The next numbered round follows a fix.
-\* Continuing from a fix must go to the fresh round before finishing.
+\* R8, R9, S9, DYD-1295 41a553f1: A blocked round requires a fix before
+\* the next round. R8 permits one extra after a clear round. The model
+\* has no verdict to certify that exception on a direct advance.
 R8_FixBeforeNextRound ==
     [][((round' > round \/ (state = "Fixing" /\ state' \in {"InReview", "Finishing", "Done"})) =>
         state = "Fixing" /\ state' = "InReview" /\ round' = round + 1)]_<<vars, seen>>
 
 \* R10, S10: A blocked third round requires a checkpoint before round four.
-\* Checkpoint is the required observation. The generated model has no such phase.
+\* Check both entry to the third-round fix and the advance to round four.
+\* The model has no verdict to distinguish a clear round on a direct advance.
 R10_CheckpointBeforeFourthRound ==
-    [][(state' = "InReview" /\ round = 3 /\ round' = 4 =>
-        "Checkpoint" \in seen)]_<<vars, seen>>
+    [][ /\ (state # "Fixing" /\ state' = "Fixing" /\ round' = 3 =>
+            state = "Checkpoint")
+        /\ (state' = "InReview" /\ round = 3 /\ round' = 4 =>
+            "Checkpoint" \in seen)
+    ]_<<vars, seen>>
 
 \* R10, S10: A third-round escalation also records the checkpoint.
 S10_CheckpointBeforeThirdRoundEscalation ==
-    [][(state = "InReview" /\ round = 3 /\ state' = "Returned" =>
-        "Checkpoint" \in seen)]_<<vars, seen>>
+    [][(state \in {"InReview", "Fixing", "Checkpoint"} /\ round = 3 /\ state' = "Returned" =>
+        state = "Checkpoint")]_<<vars, seen>>
 
-\* R19, R21: A conflict repair needs fresh review before finishing. The
-\* chart puts conflicts and real red gates on the same Finishing -> Waiting
-\* edge. That repair wait cannot use the grouping-only shortcut.
+\* R10, S10: The checkpoint belongs to a blocked third review round.
+\* This checks the source phase and number. The model has no blocker verdict.
+R10_EnterCheckpointFromThirdRound ==
+    [][(state # "Checkpoint" /\ state' = "Checkpoint" =>
+        state = "InReview" /\ round = 3 /\ round' = round)]_<<vars, seen>>
+
+\* R19, R21, R22: Continuing after a repair requires fresh review. The
+\* merge-conflict and red-gate resources allow return for an unresolved repair.
 R19_ReviewAfterMergeRepair ==
-    [][(state = "Waiting" /\ "Finishing" \in seen =>
-        state' \notin {"Finishing", "Done"})]_<<vars, seen>>
+    [][ /\ (state = "Repairing" /\ state' # "Repairing" =>
+            state' \in {"InReview", "Returned"})
+        /\ ("Repairing" \in seen /\ state # "Finishing" /\ state' = "Finishing" =>
+            state = "InReview")
+    ]_<<vars, seen>>
 
 \* H2, DYD-1295 7b3d2e3e: Returning ends this holder's run.
 H2_ReturnedIsTerminal ==

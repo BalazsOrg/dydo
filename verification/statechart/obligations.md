@@ -106,6 +106,35 @@ Two bad-trace controls use the same observer entry-point injection. Taken → Do
 must break `S6_WorkBeforeDone`; Question → Finishing must break
 `H16_ResumeLeafAfterQuestion`. Both use round 1.
 
+### Recheck with checkpoint and repair phases (DYD-1372 hop 3b)
+
+The table above records hop 3 on the original machine. This recheck uses the
+machine with `Checkpoint` and `Repairing` and retains `round <= 4`.
+
+| Source | Obligation and current result |
+|---|---|
+| S6, 7b3d2e3e | **Holds at phase level** (`S6_WorkBeforeDone`). Done follows work and Finishing. Taken → Leaf → Finishing → Done cannot show that the contract was met. |
+| H3, df6a785e | **Holds at phase level** (`H3_WaitAfterSplit`). Split → Waiting still carries no child completion or receipts. |
+| H16, S10, 519126ab | **Holds at phase level** (`H16_ResumeLeafAfterQuestion`). Leaf → Question → Leaf carries no answer or blocked scope. A split captain's Question still has no separate route. |
+| R2, R8, R12, R16 | **Holds at phase level** (`R8_ClearBeforeFirstFinish`). InReview → Finishing represents a clear result. Taken → Split → Waiting → Finishing → Done still cannot show if that ticket required review. |
+| R8, R9, R11, S9, 41a553f1 | **Fails** (`R8_FixBeforeNextRound`). Taken → Leaf → InReview(1) → InReview(2) advances without a fix. R8 permits one extra round after a clear verdict. The self-loop tests only the review phase, so the same advance is available without evidence of a clear verdict. It can repeat immediately from InReview(2) to InReview(3). InReview → Fixing → InReview still carries no proof, reviewer, lenses or blocker data. |
+| R10, S10 | **Fails** (`R10_CheckpointBeforeFourthRound`). Taken → Leaf → InReview(1) → InReview(2) → InReview(3) → InReview(4) starts round four with no checkpoint or clear verdict. The explicit blocked-round route InReview(3) → Checkpoint(3) → Fixing(3) → InReview(4) records the checkpoint before the fix and advance. Continuation after a blocked fourth round remains outside the explored bound. |
+| R10, S10 | **Holds at phase level** (`S10_CheckpointBeforeThirdRoundEscalation`, `R10_EnterCheckpointFromThirdRound`). InReview(3) → Checkpoint(3) → Returned(3) takes the checkpoint before escalation. Entry to the checkpoint comes only from InReview(3) and preserves the round. This trace cannot show the blocker, the written note or the reason for escalation. |
+| R19, R21, R22 | **Holds at phase level** (`R19_ReviewAfterMergeRepair`). Taken → Leaf → Finishing → Repairing → InReview → Finishing requires review before a retry. The trace cannot distinguish a conflict from a real red gate, show the repair branch or SHA, verify its hunks and reviewer, or show that a real red was rerun, recorded and reverted. The skill's return to the officer for a repair that cannot be resolved has no transition out of Repairing. |
+| H2, 7b3d2e3e | **Holds** (`H2_ReturnedIsTerminal`). Returned only stutters. |
+
+The original R8 numbered-round test stays in place. The model needs an
+observable basis for the R8 clear-round exception before the check can
+distinguish it from a bypass. The R10 checks now attach the checkpoint to
+the third-round fix and escalation. The R19 check now uses the dedicated repair
+phase and requires a clear review before each retry. An unresolved repair may
+return to the officer under the merge-conflict and red-gate resources.
+The other observability findings in the original table still apply.
+
+The hop 3b controls use Repairing(1) → Finishing(1) for
+`R19_ReviewAfterMergeRepair` and InReview(3) → Returned(3) for
+`S10_CheckpointBeforeThirdRoundEscalation`. TLC rejects both shortcuts.
+
 ## Related
 
 - [Property modules, execution and limits](README.md)

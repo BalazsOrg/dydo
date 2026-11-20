@@ -10,19 +10,19 @@
     "property": "L12_PageBeforeMerge"
   },
   "captain": {
-    "from": "Taken",
-    "to": "Done",
+    "from": "Repairing",
+    "to": "Finishing",
     "variables": {
       "round": "1"
     },
-    "property": "S6_WorkBeforeDone",
+    "property": "R19_ReviewAfterMergeRepair",
     "additional": {
-      "from": "Question",
-      "to": "Finishing",
+      "from": "InReview",
+      "to": "Returned",
       "variables": {
-        "round": "1"
+        "round": "3"
       },
-      "property": "H16_ResumeLeafAfterQuestion"
+      "property": "S10_CheckpointBeforeThirdRoundEscalation"
     }
   },
   "claim-build": {
