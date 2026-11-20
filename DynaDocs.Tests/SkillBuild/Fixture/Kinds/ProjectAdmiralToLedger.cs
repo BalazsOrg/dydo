@@ -117,7 +117,7 @@ public static class ProjectAdmiralToLedger
         [A.Admiral, A.MapHolder],
         [
             new(S.LinearWorkspaceStandard, "| `Completed` | The destination landed and the landing's walkthrough found nothing more; commission [spec retirement](./feature-spec-convention.md#retirement). |", new(F.LinearWorkspaceStandardProjectStatuses, 5), () => [ProjectMapToWatch.MapHolderCommissionsSpecRetirement]),
-            new(S.Walkthrough, "An empty landing walkthrough lets the Project close; the map holder commissions spec retirement following `dydo/reference/feature-spec-convention.md`, read from the repository root.", new(HeaderPart.Role, 19), () => [ProjectMapToWatch.MapHolderCommissionsSpecRetirement])
+            new(S.Walkthrough, "An empty landing walkthrough lets the Project close; the map holder commissions spec retirement following `dydo/reference/feature-spec-convention.md`, read from the repository root.", new(SpinePart.Job, 19), () => [ProjectMapToWatch.MapHolderCommissionsSpecRetirement])
         ]);
 
     public static readonly Claim FirstCaptainOpensFeatureBranch = new(

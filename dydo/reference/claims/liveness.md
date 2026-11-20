@@ -30,7 +30,7 @@ Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Li
 
 > Alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
 
-**admiral** (Quiet, exit):
+**coordinator** (Quiet, exit):
 
 > Alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
 
@@ -50,7 +50,7 @@ Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Li
 
 > Record behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
 
-**admiral** (Quiet, exit):
+**coordinator** (Quiet, exit):
 
 > Record behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
 
@@ -70,7 +70,7 @@ Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Re
 
 > Stopped: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
 
-**admiral** (Quiet, exit):
+**coordinator** (Quiet, exit):
 
 > Stopped: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
 

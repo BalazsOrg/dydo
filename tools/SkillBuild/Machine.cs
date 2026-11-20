@@ -16,5 +16,5 @@ public sealed record Machine(Enum Id, string Title, State[] States, Enum Initial
 
     /// <summary>A skill's state slots for these states, titled as the machine titles them.</summary>
     public Slot[] Slots(params Enum[] states) =>
-        [.. states.Select(id => new Slot(id, States.FirstOrDefault(state => Equals(state.Id, id))?.Title))];
+        [.. states.Select(id => Slot.State(id, States.FirstOrDefault(state => Equals(state.Id, id))?.Title))];
 }

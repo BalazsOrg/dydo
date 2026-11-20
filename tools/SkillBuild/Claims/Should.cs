@@ -25,18 +25,18 @@ public static class Should
     ])
     { Spec = ["S17"], Transition = new(ShouldState.Open, ShouldState.Duplicate, "the batch captain finds it a duplicate") };
 
-    public static readonly Claim Cancel = new("At the landing a should is canceled only with a reason.", [Actor.Admiral],
-        [new(Skill.Admiral, "At the landing, cancel a should only with a reason.", new(ShouldState.Open, 1205, MoveKind.Exit))])
+    public static readonly Claim Cancel = new("At the landing a should is canceled only with a reason.", [Actor.Coordinator],
+        [new(Skill.Coordinator, "At the landing, cancel a should only with a reason.", new(ShouldState.Open, 1205, MoveKind.Exit))])
     { Spec = ["S18"], Transition = new(ShouldState.Open, ShouldState.Canceled, "at the landing: canceled with a reason") };
 
-    public static readonly Claim Move = new("At the landing a should moves out only by his call.", [Actor.Balazs, Actor.Admiral],
-        [new(Skill.Admiral, "At the landing, move a should out of the Project only on his call.", new(ShouldState.Open, 1206, MoveKind.Exit))])
+    public static readonly Claim Move = new("At the landing a should moves out only by his call.", [Actor.Balazs, Actor.Coordinator],
+        [new(Skill.Coordinator, "At the landing, move a should out of the Project only on his call.", new(ShouldState.Open, 1206, MoveKind.Exit))])
     { Spec = ["S18"], Transition = new(ShouldState.Open, ShouldState.Moved, "at the landing: moved out by his call") };
 
-    public static readonly Claim Batch = new("The admiral cuts a Shoulds batch N root ticket for one captain at the set moments.", [Actor.Admiral],
+    public static readonly Claim Batch = new("The coordinator cuts a Shoulds batch N root ticket for one captain at the set moments.", [Actor.Coordinator],
     [
-        new(Skill.Admiral, "Collect shoulds into a `Shoulds batch N` root ticket (Type `Feature` by default) cut for one captain when a lane is free, before an inquisition round, or at the landing.", new(ShouldState.Open, 1207, MoveKind.Nominal)),
-        new(Skill.LinearWorkspaceStandard, "Shoulds are collected into a `Shoulds batch N` root ticket the admiral cuts for one captain (Type `Feature` by default); there is no standing collection ticket.", new(Section.LinearShoulds, 3))
+        new(Skill.Coordinator, "Collect shoulds into a `Shoulds batch N` root ticket (Type `Feature` by default) cut for one captain when a lane is free, before an inquisition round, or at the landing.", new(ShouldState.Open, 1207, MoveKind.Nominal)),
+        new(Skill.LinearWorkspaceStandard, "Shoulds are collected into a `Shoulds batch N` root ticket the coordinator cuts for one captain (Type `Feature` by default); there is no standing collection ticket.", new(Section.LinearShoulds, 3))
     ])
     { Spec = ["S17"] };
 

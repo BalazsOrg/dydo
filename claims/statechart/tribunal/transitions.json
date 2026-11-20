@@ -140,7 +140,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -168,7 +168,7 @@
       "effect": "night' \\in BOOLEAN /\\ twoWay' \\in BOOLEAN /\\ drGrade' \\in BOOLEAN /\\ blocking' \\in BOOLEAN",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -183,7 +183,7 @@
       "effect": "oneFamily' = TRUE",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -200,7 +200,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -215,7 +215,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -271,7 +271,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {

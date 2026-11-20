@@ -2,4 +2,6 @@
 
 # Scout brief
 
+Skills: /scout
+
 - The question, or the spec for a scout pass · model and effort · return to.

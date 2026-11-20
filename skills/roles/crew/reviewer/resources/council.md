@@ -26,4 +26,4 @@
 - As a judge, alone: map each option to the axioms it serves, find precedent through `weighed:`, name what Balazs would choose and why, and answer both duties: should this be done at all, and is the frame too narrow?
 - Take the axioms as given; never question them.
 - Then one exchange: answer the other judge's strongest point, or concede.
-- The clerk returns both positions and the exchange to the admiral.
+- The clerk returns both positions and the exchange to the coordinator.

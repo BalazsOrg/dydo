@@ -102,7 +102,7 @@
     {
       "name": "level",
       "initial": "\"captain\"",
-      "bound": "level \\in {\"captain\", \"admiral\"}"
+      "bound": "level \\in {\"captain\", \"coordinator\"}"
     },
     {
       "name": "envoys",
@@ -138,7 +138,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "ticket-captain"
       ]
     },
@@ -151,11 +151,11 @@
         "H5",
         "L18"
       ],
-      "guard": "level = \"admiral\"",
+      "guard": "level = \"coordinator\"",
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -171,7 +171,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "ticket-captain"
       ]
     },
@@ -179,7 +179,7 @@
       "claim": "claim:Envoy.MovedOn",
       "from": "Reported",
       "to": "MovedOn",
-      "arrow": "he has plainly moved on, the thread still open: the next envoy may go, at the admiral's discretion",
+      "arrow": "he has plainly moved on, the thread still open: the next envoy may go, at the coordinator's discretion",
       "spec": [
         "H18"
       ],
@@ -187,7 +187,7 @@
       "effect": "envoys' = 0",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -199,7 +199,7 @@
         "H12"
       ],
       "guard": null,
-      "effect": "level' = \"admiral\"",
+      "effect": "level' = \"coordinator\"",
       "fair": false,
       "skills": []
     },
@@ -213,11 +213,11 @@
         "H17",
         "S10"
       ],
-      "guard": "level = \"admiral\"",
+      "guard": "level = \"coordinator\"",
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "linear-workspace-standard"
       ]
     },
@@ -250,7 +250,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -267,7 +267,7 @@
       "effect": "envoys' = 1",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -279,10 +279,10 @@
         "H16"
       ],
       "guard": null,
-      "effect": "level' \\in {\"captain\", \"admiral\"}",
+      "effect": "level' \\in {\"captain\", \"coordinator\"}",
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "ticket-captain"
       ]
     }

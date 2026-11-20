@@ -16,11 +16,11 @@ Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.t
 
 ## Contract
 
-`claim:TicketStatus.Contract`: The admiral contracts an uncontracted Backlog ticket to Todo.
+`claim:TicketStatus.Contract`: The coordinator contracts an uncontracted Backlog ticket to Todo.
 
 Spec: N12 DR 063 §4
 
-Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): Backlog → Todo, "the admiral contracts an uncontracted ticket". A system transition: no skill carries it.
+Transition in A ticket's status (`claims/statechart/ticket-status/TicketStatus.tla`): Backlog → Todo, "the coordinator contracts an uncontracted ticket". A system transition: no skill carries it.
 
 ## Start
 

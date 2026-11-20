@@ -6,5 +6,5 @@ using DynaDocs.SkillBuild;
 public static class LeaseOutOfSpec
 {
     public static readonly Claim Unnumbered = new("Cite a rule the spec numbers.", [ChartSkill.Holder],
-        [new(ChartSkill.Holder, "Cite a rule the spec numbers.", new(HeaderPart.Role, 2))]) { Spec = ["K999"] };
+        [new(ChartSkill.Holder, "Cite a rule the spec numbers.", new(SpinePart.Job, 2))]) { Spec = ["K999"] };
 }

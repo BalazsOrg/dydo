@@ -14,19 +14,19 @@ Spec: L18
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): HardCall → DrSettled, "a DR clearly settles it".
 
-**admiral** (HardCall, exit):
+**coordinator** (HardCall, exit):
 
 > A call a DR clearly settles is not hard: decide it and cite the DR.
 
 ## File
 
-`claim:Tribunal.File`: A hard call goes to a fresh clerk with a neutral case file; the admiral is no member.
+`claim:Tribunal.File`: A hard call goes to a fresh clerk with a neutral case file; the coordinator is no member.
 
 Spec: L18
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): HardCall → CaseFile, "hard: a fresh clerk takes the Question".
 
-**admiral** (HardCall, exit):
+**coordinator** (HardCall, exit):
 
 > Give a fresh clerk the Question with only the call, the options unranked, the constraints and the primary facts with sources; you sit on no tribunal.
 
@@ -46,7 +46,7 @@ Spec: L22
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): CaseFile → Sealed, "one family out: the judges sit on the remaining family".
 
-**admiral** (CaseFile, exit):
+**coordinator** (CaseFile, exit):
 
 > With one family out, the tribunal still runs, on the remaining family: overnight it decides, by day it prepares and he decides.
 
@@ -66,7 +66,7 @@ Spec: L18, L19, L20
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → DecidedOvernight, "overnight, the judges agree on a two-way hard call".
 
-**admiral** (DecidedOvernight, arrival):
+**coordinator** (DecidedOvernight, arrival):
 
 > Act on an overnight decision, citing its law and precedent; it stays provisional and is never ratified.
 
@@ -78,7 +78,7 @@ Spec: L18, L20, L21
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → Prepared, "by day, or they disagree, or it is one-way or DR-grade".
 
-**admiral** (Prepared, arrival):
+**coordinator** (Prepared, arrival):
 
 > Send a prepared call to him through an envoy, with both positions; he decides.
 
@@ -90,7 +90,7 @@ Spec: L21
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → ProposedDr, "overnight, both agree on a two-way, seriously blocking DR-grade call".
 
-**admiral** (ProposedDr, arrival):
+**coordinator** (ProposedDr, arrival):
 
 > Write the overnight ruling as a `proposed` DR for his ratification; an irreversible call is never decided.
 
@@ -160,10 +160,10 @@ Spec: L18
 
 ## ClerkReturn
 
-`claim:Tribunal.ClerkReturn`: The clerk returns both positions and the exchange to the admiral.
+`claim:Tribunal.ClerkReturn`: The clerk returns both positions and the exchange to the coordinator.
 
 Spec: L18
 
 **reviewer** (CouncilJudge):
 
-> The clerk returns both positions and the exchange to the admiral.
+> The clerk returns both positions and the exchange to the coordinator.

@@ -5,7 +5,7 @@ const states = {
   "ReadPhase": "Read phase on an area · N5",
   "BreakPhase": "Break phase on the area · N5",
   "DrivePhase": "Drive phase on the area · N5, R3",
-  "Inquisition": "The round's verdict, held by the admiral · N5, S8",
+  "Inquisition": "The round's verdict, held by the coordinator · N5, S8",
   "RoundFixes": "Fixing the round's blockers and shoulds · N5, S9, S17",
   "Prerequisites": "Landing prerequisites · N7, S18, T12, T8, N14, N15, Y2, Y6, L6, L12, N8, N9",
   "MergeReview": "Landing merge review: a Merge-confidence council · N6, R20, L16",
@@ -37,7 +37,7 @@ const steps = {
   "Landing_ReviewNeedsHim": "a blocker needs Balazs · R9",
   "Landing_ReviewSecurity": "a blocker is a security hole · R9",
   "Landing_RoundFound": "the round finds a blocker or a should · N5, S8, S9, S17",
-  "Landing_Staff": "the admiral staffs a round; a fresh area map · N5, R13, R14",
+  "Landing_Staff": "the coordinator staffs a round; a fresh area map · N5, R13, R14",
   "Landing_Tag": "Balazs pushes the release tag · R28, N2, N15",
   "Gap1": "GAP: N6 gives only his acceptance; the route when he does not accept is unstated"
 };

@@ -16,7 +16,7 @@ const states = {
   "Acted": "Its owner acts · H5"
 };
 const steps = {
-  "Findings_BatchShoulds": "the admiral cuts a shoulds batch · S17",
+  "Findings_BatchShoulds": "the coordinator cuts a shoulds batch · S17",
   "Findings_Count": "it stays a DYTEST result with a count · Y9",
   "Findings_DeleteSpec": "the map holder moves its lasting parts and deletes it · S14, D11",
   "Findings_FileIt": "filed and built in a DYTEST Project, never patched from dydo · Y3, Y1",
@@ -28,7 +28,7 @@ const steps = {
   "Findings_ReadBoard": "dydo survey board, read-only and on demand · S22, S26",
   "Findings_RealRed": "a real CI red becomes a CI-findings ticket · Y9, R22",
   "Findings_Repeat": "it repeats · Y9",
-  "Findings_Route": "to the open ticket's officer, or the admiral for a long-closed ticket · H11",
+  "Findings_Route": "to the open ticket's officer, or the coordinator for a long-closed ticket · H11",
   "Findings_Rule": "it gets a lint, test or rule as well as its fix · R30",
   "Findings_SharedLink": "one thread link on two non-nested open tickets · S23",
   "Findings_StaleShoulds": "open shoulds under Done parents past the threshold, 7 days by default · S23, T14",

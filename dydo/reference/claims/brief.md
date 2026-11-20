@@ -6,13 +6,13 @@ type: reference
 
 # Claims: Brief
 
-## CodeWriterBrief
+## ImplementerBrief
 
-`claim:Brief.CodeWriterBrief`: The code-writer dispatch template's slots.
+`claim:Brief.ImplementerBrief`: The implementer dispatch template's slots.
 
 Spec: K14
 
-**ticket-captain** (CodeWriterBrief):
+**ticket-captain** (ImplementerBrief):
 
 > Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · findings (Fix only) · model and effort · return to.
 
@@ -26,7 +26,7 @@ Spec: K14, R3, R6
 
 > Ticket and contract · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
 
-**admiral** (ReviewerBrief):
+**coordinator** (ReviewerBrief):
 
 > Ticket and contract · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
 
@@ -40,7 +40,7 @@ Spec: K14, R4
 
 > The question, or the spec for a scout pass · model and effort · return to.
 
-**admiral** (ScoutBrief):
+**coordinator** (ScoutBrief):
 
 > The question, or the spec for a scout pass · model and effort · return to.
 
@@ -54,7 +54,7 @@ Spec: K14, H23
 
 > Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain is briefed from this template too.
 
-**admiral** (TicketCaptainBrief):
+**coordinator** (TicketCaptainBrief):
 
 > Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain is briefed from this template too.
 
@@ -64,7 +64,7 @@ Spec: K14, H23
 
 Spec: R6
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
 
@@ -78,7 +78,7 @@ Spec: R6
 
 Spec: R3
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > Name the governing spec in each reviewer's brief, or say there is none.
 
@@ -92,7 +92,7 @@ Spec: R3
 
 Spec: R4
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
 

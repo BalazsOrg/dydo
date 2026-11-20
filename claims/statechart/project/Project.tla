@@ -40,7 +40,7 @@ Gap1 ==
     /\ state = "Watching"
     /\ state' = "Unheld"
 
-\* GAP: H4 says who holds a live Project, not who starts or wakes its admiral
+\* GAP: H4 says who holds a live Project, not who starts or wakes its coordinator
 Gap2 ==
     /\ state = "Unheld"
     /\ state' = "Watching"

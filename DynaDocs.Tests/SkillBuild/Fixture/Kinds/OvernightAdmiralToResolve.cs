@@ -69,7 +69,7 @@ public static class OvernightAdmiralToResolve
         "Between muster and morning brief each admiral keeps the conn of its Project and the chief of staff keeps only the night watch.",
         [A.Admiral, A.ChiefOfStaff],
         [
-            new(S.OvernightMode, "In between, **each admiral keeps the conn** of its Project and the chief of staff keeps only the **night watch**.", new(HeaderPart.Role, 3))
+            new(S.OvernightMode, "In between, **each admiral keeps the conn** of its Project and the chief of staff keeps only the **night watch**.", new(SpinePart.Job, 3))
         ]);
 
     public static readonly Claim CrossProjectContact = new(
@@ -163,8 +163,8 @@ public static class OvernightAdmiralToResolve
         [A.Admiral, A.ChiefOfStaff, A.AnyAgent],
         [
             new(S.Admiral, "**Overnight mode:** starts only when the chief of staff announces it at muster and ends at its morning-brief announcement; in between, load `overnight-mode` and obey standing plus night orders.", new(F.AdmiralBoundary, 29), () => [OvernightAdmiralToResolve.ObeyStandingAndNightOrders!]),
-            new(S.ChiefOfStaff, "When the user calls overnight mode, load `overnight-mode`.", new(HeaderPart.Role, 2)),
-            new(S.OvernightMode, "Load only on the chief of staff's muster or morning-brief announcement, or when the user calls overnight mode.", new(HeaderPart.Role, 1))
+            new(S.ChiefOfStaff, "When the user calls overnight mode, load `overnight-mode`.", new(SpinePart.Job, 2)),
+            new(S.OvernightMode, "Load only on the chief of staff's muster or morning-brief announcement, or when the user calls overnight mode.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim MediateCrossProject = new(
@@ -200,7 +200,7 @@ public static class OvernightAdmiralToResolve
         "Night orders expire at the morning brief and win over standing orders where the two conflict.",
         [A.Admiral],
         [
-            new(S.OvernightMode, "Night orders expire at the morning brief and win where the two conflict.", new(HeaderPart.Role, 6))
+            new(S.OvernightMode, "Night orders expire at the morning brief and win where the two conflict.", new(SpinePart.Job, 6))
         ]);
 
     public static readonly Claim NightOrdersPostedInForm = new(
@@ -232,14 +232,14 @@ public static class OvernightAdmiralToResolve
         "Admirals obey the standing orders plus the night orders: one Project update per Project, set at muster.",
         [A.Admiral],
         [
-            new(S.OvernightMode, "Admirals obey the **standing orders** below plus the **night orders**: one Project update per Project, set at muster.", new(HeaderPart.Role, 5))
+            new(S.OvernightMode, "Admirals obey the **standing orders** below plus the **night orders**: one Project update per Project, set at muster.", new(SpinePart.Job, 5))
         ]);
 
     public static readonly Claim OnlyReadbackProvesMode = new(
         "Intent, a watch schedule, message delivery, a warning, a retry, a successful setter exit or a deleted schedule establishes no mode transition; only the verified `dydo mode show` value does.",
         [A.AnyAgent, A.ChiefOfStaff],
         [
-            new(S.OvernightMode, "Intent, a watch schedule and message delivery do not establish a mode transition.", new(HeaderPart.Role, 4))
+            new(S.OvernightMode, "Intent, a watch schedule and message delivery do not establish a mode transition.", new(SpinePart.Job, 4))
         ]);
 
     public static readonly Claim PresentQuestions = new(

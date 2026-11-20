@@ -70,7 +70,7 @@ Spec: S18
 
 Transition in A should (`claims/statechart/should/Should.tla`): Open → Canceled, "at the landing: canceled with a reason".
 
-**admiral** (Open, exit):
+**coordinator** (Open, exit):
 
 > At the landing, cancel a should only with a reason.
 
@@ -82,23 +82,23 @@ Spec: S18
 
 Transition in A should (`claims/statechart/should/Should.tla`): Open → Moved, "at the landing: moved out by his call".
 
-**admiral** (Open, exit):
+**coordinator** (Open, exit):
 
 > At the landing, move a should out of the Project only on his call.
 
 ## Batch
 
-`claim:Should.Batch`: The admiral cuts a Shoulds batch N root ticket for one captain at the set moments.
+`claim:Should.Batch`: The coordinator cuts a Shoulds batch N root ticket for one captain at the set moments.
 
 Spec: S17
 
-**admiral** (Open, nominal):
+**coordinator** (Open, nominal):
 
 > Collect shoulds into a `Shoulds batch N` root ticket (Type `Feature` by default) cut for one captain when a lane is free, before an inquisition round, or at the landing.
 
 **linear-workspace-standard** (LinearShoulds):
 
-> Shoulds are collected into a `Shoulds batch N` root ticket the admiral cuts for one captain (Type `Feature` by default); there is no standing collection ticket.
+> Shoulds are collected into a `Shoulds batch N` root ticket the coordinator cuts for one captain (Type `Feature` by default); there is no standing collection ticket.
 
 ## Reparent
 

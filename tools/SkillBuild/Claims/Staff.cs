@@ -11,7 +11,7 @@ public static class Staff
         [new(Skill.ChiefOfStaff, "Give him what you found, then go back to the short list.", new(StaffState.Investigating, 1002, MoveKind.Exit))])
     { Spec = ["H7"], Transition = new(StaffState.Investigating, StaffState.Day, "findings given to him") };
 
-    public static readonly Claim Muster = new("Overnight mode, the chief of staff's and the admiral's, starts at muster.", [Actor.ChiefOfStaff],
+    public static readonly Claim Muster = new("Overnight mode, the chief of staff's and the coordinator's, starts at muster.", [Actor.ChiefOfStaff],
         [new(Skill.ChiefOfStaff, "Overnight mode starts at muster, which you hold.", new(StaffState.Muster, 1003, MoveKind.Arrival))])
     { Spec = ["K11", "L21"], Transition = new(StaffState.Day, StaffState.Muster, "overnight mode starts") };
 
@@ -40,11 +40,11 @@ public static class Staff
     { Spec = ["H7"] };
 
     public static readonly Claim LinksOnly = new("It never relays content and sends no envoys.", [Actor.ChiefOfStaff],
-        [new(Skill.ChiefOfStaff, "Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its admiral's own envoy.",
+        [new(Skill.ChiefOfStaff, "Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its coordinator's own envoy.",
             new(StaffState.Day, 1010, MoveKind.Nominal), () => [Envoy.OwnEnvoy])])
     { Spec = ["H7"] };
 
     public static readonly Claim DoubleCheck = new("Overnight, its 12-hour check on a quiet Project is a cheap double check only.", [Actor.ChiefOfStaff],
-        [new(Skill.ChiefOfStaff, "Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the admirals' own scheduled surveys.", new(StaffState.NightWatch, 1011, MoveKind.Nominal))])
+        [new(Skill.ChiefOfStaff, "Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the coordinators' own scheduled surveys.", new(StaffState.NightWatch, 1011, MoveKind.Nominal))])
     { Spec = ["H7", "H12"] };
 }

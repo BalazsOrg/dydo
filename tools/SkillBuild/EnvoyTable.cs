@@ -3,7 +3,7 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// The envoy skill table the builder checks (H23): each job's fixed skill, and the closed-thread-signal
 /// claim the envoy brief resource must state. <see cref="Check"/> and <see cref="CheckBuilt"/> run in
-/// every build; <see cref="CheckSkillsExist"/> runs against the repository root the tool builds into.
+/// every build; <see cref="CheckSkillsExist"/> runs in <see cref="SkillNames"/>, against the repository root.
 /// </summary>
 public sealed record EnvoyTable(IReadOnlyList<EnvoyJobSkill> Jobs, Claim CloseSignal, Enum Brief)
 {
@@ -56,13 +56,10 @@ public sealed record EnvoyTable(IReadOnlyList<EnvoyJobSkill> Jobs, Claim CloseSi
             throw new InvalidDataException("H23: the envoy brief does not state the checked skill table");
     }
 
-    internal void CheckSkillsExist(string root)
+    /// <summary>Each job's skill is one of <paramref name="known"/>, the skills under <c>skills/</c> (<see cref="SkillNames"/>).</summary>
+    internal void CheckSkillsExist(IReadOnlySet<string> known)
     {
-        var skills = Path.Combine(root, "skills");
-        var present = Directory.Exists(skills)
-            ? Directory.EnumerateFiles(skills, "SKILL.md", SearchOption.AllDirectories).Select(file => Path.GetFileName(Path.GetDirectoryName(file))).ToHashSet()
-            : [];
-        foreach (var row in Jobs.Where(row => !present.Contains(row.Skill)))
+        foreach (var row in Jobs.Where(row => !known.Contains(row.Skill)))
             throw new InvalidDataException($"H23: the envoy skill table gives {row.Job} `{row.Skill}`, which is not a skill under skills/");
     }
 }

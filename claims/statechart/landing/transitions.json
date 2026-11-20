@@ -47,7 +47,7 @@
     },
     {
       "id": "Inquisition",
-      "title": "The round's verdict, held by the admiral",
+      "title": "The round's verdict, held by the coordinator",
       "spec": [
         "N5",
         "S8"
@@ -185,7 +185,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -227,7 +227,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -245,7 +245,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -380,7 +380,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -396,7 +396,7 @@
       "effect": "fixFrom' = \"merge\"",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -411,7 +411,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -426,7 +426,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -441,7 +441,7 @@
       "effect": "fixFrom' = \"merge\" /\\ securityFirst' = TRUE",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -459,14 +459,14 @@
       "effect": "fixFrom' = \"inquisition\"",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
       "claim": "claim:Landing.Staff",
       "from": "Integrated",
       "to": "Mapped",
-      "arrow": "the admiral staffs a round; a fresh area map",
+      "arrow": "the coordinator staffs a round; a fresh area map",
       "spec": [
         "N5",
         "R13",
@@ -476,7 +476,7 @@
       "effect": "areas' \\in 1..2",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {

@@ -11,7 +11,7 @@ public static class DeliveryMachines
     [
         new(OverviewState.ClaimArea, "The claim build and the role evaluation", "K1", "K4", "K6", "K7", "K16", "K22", "K24"),
         new(OverviewState.HostArea, "Host settings, the guard and the statechart tool", "N12 DR 055 §1", "N12 DR 056 §1", "N12 DR 062 §1", "H20"),
-        new(OverviewState.ProjectArea, "A Project and its admiral", "H4", "H5", "H10", "S14", "S15", "R25", "N13"),
+        new(OverviewState.ProjectArea, "A Project and its coordinator", "H4", "H5", "H10", "S14", "S15", "R25", "N13"),
         new(OverviewState.TicketArea, "A ticket: dispatch, status and hops", "H1", "H2", "H3", "K14", "S3", "S5", "S6", "S12"),
         new(OverviewState.ProofArea, "Proof tests and gates", "T1", "T3", "T5", "T13", "T21", "T23", "Y4"),
         new(OverviewState.DocsArea, "Descriptive docs", "D1", "D2", "D3", "D4", "D5", "D6", "D7"),
@@ -26,9 +26,9 @@ public static class DeliveryMachines
         new(OverviewState.AdopterArea, "The adopter update", "K18", "N1", "N8", "N11")
     ], OverviewState.ClaimArea, [OverviewState.AdopterArea]);
 
-    public static readonly Machine Project = new(MachineId.Project, "A Project and its admiral",
+    public static readonly Machine Project = new(MachineId.Project, "A Project and its coordinator",
     [
-        new(ProjectState.Unheld, "No live admiral: not started, idle or closed", "H4"),
+        new(ProjectState.Unheld, "No live coordinator: not started, idle or closed", "H4"),
         new(ProjectState.Charting, "Charting the spec and the map", "S14", "S15", "S16", "N12 DR 060 §1"),
         new(ProjectState.Watching, "Watching the survey, the board and liveness", "H5", "H10", "H11", "R25"),
         new(ProjectState.Replanning, "Re-planning after a fundamental blocker or a new requirement", "R9", "S10"),
@@ -38,7 +38,7 @@ public static class DeliveryMachines
         Gaps =
         [
             new(ProjectState.Watching, ProjectState.Unheld, "H4 names idle Projects but never defines when a Project goes idle"),
-            new(ProjectState.Unheld, ProjectState.Watching, "H4 says who holds a live Project, not who starts or wakes its admiral")
+            new(ProjectState.Unheld, ProjectState.Watching, "H4 says who holds a live Project, not who starts or wakes its coordinator")
         ]
     };
 
@@ -49,7 +49,7 @@ public static class DeliveryMachines
         new(LandingState.ReadPhase, "Read phase on an area", "N5"),
         new(LandingState.BreakPhase, "Break phase on the area", "N5"),
         new(LandingState.DrivePhase, "Drive phase on the area", "N5", "R3"),
-        new(LandingState.Inquisition, "The round's verdict, held by the admiral", "N5", "S8"),
+        new(LandingState.Inquisition, "The round's verdict, held by the coordinator", "N5", "S8"),
         new(LandingState.RoundFixes, "Fixing the round's blockers and shoulds", "N5", "S9", "S17"),
         new(LandingState.Prerequisites, "Landing prerequisites", "N7", "S18", "T12", "T8", "N14", "N15", "Y2", "Y6", "L6", "L12", "N8", "N9"),
         new(LandingState.MergeReview, "Landing merge review: a Merge-confidence council", "N6", "R20", "L16"),

@@ -25,7 +25,7 @@ stateDiagram-v2
   s1 --> s9: a landed Project still has a spec document #183; S23
   s1 --> s12: one thread link on two non-nested open tickets #183; S23
   s1 --> s13: open shoulds under Done parents past the threshold, 7 days by default #183; S23, T14
-  s2 --> s11: to the open ticket's officer, or the admiral for a long-closed ticket #183; H11
+  s2 --> s11: to the open ticket's officer, or the coordinator for a long-closed ticket #183; H11
   s3 --> s8: filed and built in a DYTEST Project, never patched from dydo #183; Y3, Y1
   s4 --> s7: it stays a DYTEST result with a count #183; Y9
   s4 --> s10: it repeats #183; Y9
@@ -34,4 +34,4 @@ stateDiagram-v2
   s10 --> s2: a repeating flake becomes a CI-findings ticket #183; Y9
   s11 --> s6: its officer takes it, or an officer with an open lane pulls it #183; H8, H10, H11
   s12 --> s6: its officer fixes the record: one agent holds one ticket #183; S7, S13, H5
-  s13 --> s6: the admiral cuts a shoulds batch #183; S17
+  s13 --> s6: the coordinator cuts a shoulds batch #183; S17

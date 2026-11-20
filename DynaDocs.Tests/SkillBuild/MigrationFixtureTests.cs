@@ -1,6 +1,7 @@
 namespace DynaDocs.Tests.SkillBuild;
 
 using System.Reflection;
+using System.Text.RegularExpressions;
 using DynaDocs.SkillBuild;
 using DynaDocs.Tests.SkillBuild.Fixture;
 
@@ -8,10 +9,14 @@ using DynaDocs.Tests.SkillBuild.Fixture;
 /// AR1: the inventory's 1,025 claims, translated once into a C# fixture, build into a root that mirrors
 /// the real layout, with every built path one the repository holds today (DYD-1196 C16, C17, D19).
 /// </summary>
-public class MigrationFixtureTests
+public partial class MigrationFixtureTests
 {
     // claims/inventory/README.md "Counts": 1025 claims across 15 carriers.
     private const int InventoryClaims = 1025;
+
+    // A resource or contents link the builder lays out, which states no claim.
+    [GeneratedRegex(@"^- \[[^\]]+\]\([^)\s]+\)$")]
+    private static partial Regex LinkOnly();
 
     private static readonly IReadOnlySet<string> ModelIds = FixtureModel.Model.Kinds
         .SelectMany(kind => kind.GetFields(BindingFlags.Public | BindingFlags.Static)
@@ -71,14 +76,10 @@ public class MigrationFixtureTests
         var mapped = Migration.Tree.Map.Select(line => (line.Path, line.Line)).ToHashSet();
         foreach (var (path, text) in Migration.Tree.Files.Where(file => file.Key.EndsWith(".md", StringComparison.Ordinal)))
         {
-            var heading = "";
             var lines = text.Split('\n');
             for (var index = 0; index < lines.Length; index++)
-            {
-                if (lines[index].StartsWith('#')) heading = lines[index];
-                else if (lines[index].StartsWith("- ", StringComparison.Ordinal) && heading is not ("## Resources" or "## Contents"))
+                if (lines[index].StartsWith("- ", StringComparison.Ordinal) && !LinkOnly().IsMatch(lines[index]))
                     Assert.True(mapped.Contains((path, index + 1)), $"{path}:{index + 1} states no claim: {lines[index]}");
-            }
         }
     }
 }

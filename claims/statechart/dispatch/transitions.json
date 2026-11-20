@@ -82,7 +82,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "ticket-captain"
       ]
     },
@@ -99,7 +99,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "ticket-captain"
       ]
     },
@@ -118,7 +118,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "code-writer",
+        "implementer",
         "linear-workspace-standard",
         "reviewer",
         "scout",
@@ -155,8 +155,8 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
-        "code-writer",
+        "coordinator",
+        "implementer",
         "reviewer",
         "scout",
         "ticket-captain"
@@ -175,7 +175,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "code-writer",
+        "implementer",
         "linear-workspace-standard",
         "reviewer",
         "ticket-captain"
@@ -193,8 +193,8 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
-        "code-writer",
+        "coordinator",
+        "implementer",
         "reviewer",
         "ticket-captain",
         "working-tree-standard"

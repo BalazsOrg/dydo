@@ -14,7 +14,7 @@ stateDiagram-v2
   s9: Held after a third forced re-sync #183; R29
   [*] --> s0
   s0 --> s1: declared two-way in the PR body#59; it waits for its turn #183; R26, R27, R29 or one-way, flagged or declared#59; it waits for its turn #183; R27, R29
-  s1 --> s2: the admiral gives it its turn #183; R29
+  s1 --> s2: the coordinator gives it its turn #183; R29
   s2 --> s3: two-way, re-check green: PASS, gates green with current master, CI green #183; R26, R29
   s2 --> s1: master moved: re-sync again #183; R29
   s2 --> s4: one-way, re-check green: on to his click #183; R27, R29, R31

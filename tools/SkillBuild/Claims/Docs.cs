@@ -18,20 +18,20 @@ public static class Docs
     public static readonly Claim FixDrifted = Move(DocsState.Grandfathered, DocsState.Declared, "found drifted or with an unlinked reason: fixed", "D7");
     public static readonly Claim CutDrifted = Move(DocsState.Grandfathered, DocsState.CutDoc, "found drifted or with an unlinked reason: cut", "D7");
 
-    public static readonly Claim Explain = new("A descriptive doc explains and never authorizes; a reason counts only when it links a DR or principle.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "A descriptive doc explains and never authorizes: on what the code does, the code wins; a reason counts only when it links a DR or a principle.", new(DispatchState.Working, 2401, MoveKind.Nominal))])
+    public static readonly Claim Explain = new("A descriptive doc explains and never authorizes; a reason counts only when it links a DR or principle.", [Actor.Implementer],
+        [new(Skill.Implementer, "A descriptive doc explains and never authorizes: on what the code does, the code wins; a reason counts only when it links a DR or a principle.", new(DispatchState.Working, 2401, MoveKind.Nominal))])
     { Spec = ["D2"] };
 
-    public static readonly Claim InviteOnly = new("Descriptive docs are invite-only and pass the admission test.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "Write a new descriptive doc only when invited, and only if its subject is solid, important and expensive to rebuild from code.", new(DispatchState.Working, 2402, MoveKind.Nominal))])
+    public static readonly Claim InviteOnly = new("Descriptive docs are invite-only and pass the admission test.", [Actor.Implementer],
+        [new(Skill.Implementer, "Write a new descriptive doc only when invited, and only if its subject is solid, important and expensive to rebuild from code.", new(DispatchState.Working, 2402, MoveKind.Nominal))])
     { Spec = ["D4", "D3"] };
 
-    public static readonly Claim Explains = new("A change to a doc's declared paths: the writer updates the doc or states it holds.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "When your change touches the paths a doc's `explains:` declares, update the doc or state that it holds.", new(DispatchState.Working, 2403, MoveKind.Nominal))])
+    public static readonly Claim Explains = new("A change to a doc's declared paths: the writer updates the doc or states it holds.", [Actor.Implementer],
+        [new(Skill.Implementer, "When your change touches the paths a doc's `explains:` declares, update the doc or state that it holds.", new(DispatchState.Working, 2403, MoveKind.Nominal))])
     { Spec = ["D5"] };
 
-    public static readonly Claim DrFields = new("Every new DR carries applies: or new-ground, and weighed: per tension it resolved.", [Actor.CodeWriter],
-        [new(Skill.CodeWriter, "A new DR you write carries `applies:` (or `new-ground`) and one `weighed: <slug> over <slug>, because <reason>` for each tension it resolved.", new(DispatchState.Working, 2404, MoveKind.Nominal))])
+    public static readonly Claim DrFields = new("Every new DR carries applies: or new-ground, and weighed: per tension it resolved.", [Actor.Implementer],
+        [new(Skill.Implementer, "A new DR you write carries `applies:` (or `new-ground`) and one `weighed: <slug> over <slug>, because <reason>` for each tension it resolved.", new(DispatchState.Working, 2404, MoveKind.Nominal))])
     { Spec = ["L8"] };
 
     public static readonly Claim Rubric = new("Review gains two lines: an unlinked why is a finding; a change to declared paths means checking that doc.", [Actor.Reviewer],

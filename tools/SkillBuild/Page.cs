@@ -2,7 +2,7 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// A Markdown file as it is built: frontmatter, the header, the H1, then headings and lines. A
-/// one-line claim line is one bullet, so a rebuild's diff touches only the lines that changed (K18);
+/// one-line claim line is one bullet, or one sentence line of a paragraph, so a rebuild's diff touches only the lines that changed (K18);
 /// a multi-line one is emitted verbatim, with any fence it leaves open closed.
 /// </summary>
 internal sealed class Page
@@ -26,6 +26,13 @@ internal sealed class Page
     }
 
     public void Link(string title, string target) => _lines.Add($"- [{title}]({target})");
+
+    /// <summary>A one-line claim line as plain text: consecutive sentences read as one paragraph.</summary>
+    public void Sentence(Placed placed)
+    {
+        _lines.Add(placed.Line.Text);
+        _stated.Add((_lines.Count, placed.Line.Text, placed));
+    }
 
     public void State(Placed placed, string suffix = "")
     {

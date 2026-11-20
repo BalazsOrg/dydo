@@ -14,7 +14,7 @@ Spec: L7, L11
 
 Transition in How the law grows (`claims/statechart/law/Law.tla`): Evidence → Candidate, "his answer departs from his precedent or his law, or other evidence arrives".
 
-**admiral** (Evidence, exit):
+**coordinator** (Evidence, exit):
 
 > Treat an answer of his that departs from his precedent or his law as an amendment candidate, never noise.
 
@@ -26,7 +26,7 @@ Spec: L7, L13
 
 Transition in How the law grows (`claims/statechart/law/Law.tla`): Candidate → Mechanical, "no reasonable person would choose otherwise".
 
-**admiral** (Candidate, exit):
+**coordinator** (Candidate, exit):
 
 > If no reasonable person could choose otherwise, make it a test, lint or gate; those are the agents'.
 
@@ -38,7 +38,7 @@ Spec: L7, L13
 
 Transition in How the law grows (`claims/statechart/law/Law.tla`): Candidate → Proposed, "a reasonable person could choose otherwise and still be right".
 
-**admiral** (Candidate, exit):
+**coordinator** (Candidate, exit):
 
 > If a reasonable person could choose otherwise and still be right, propose a principle; batch proposals per Project into a Milestone walkthrough or one envoy bundle.
 
@@ -66,7 +66,7 @@ Spec: L9, L8
 
 Transition in How the law grows (`claims/statechart/law/Law.tla`): Evidence → CaseStudy, "a call looks precedential".
 
-**admiral** (Evidence, exit):
+**coordinator** (Evidence, exit):
 
 > When a call looks precedential, prepare a case study in git under `cases/` linking its Linear origin, for his approval.
 

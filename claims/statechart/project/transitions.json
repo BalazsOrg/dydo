@@ -1,7 +1,7 @@
 {
   "$comment": "built from the model; edit there: tools/SkillBuild",
   "id": "Project",
-  "title": "A Project and its admiral",
+  "title": "A Project and its coordinator",
   "initial": "Unheld",
   "finals": [
     "Landing"
@@ -9,7 +9,7 @@
   "states": [
     {
       "id": "Unheld",
-      "title": "No live admiral: not started, idle or closed",
+      "title": "No live coordinator: not started, idle or closed",
       "spec": [
         "H4"
       ]
@@ -65,7 +65,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -80,7 +80,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
@@ -95,7 +95,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "linear-workspace-standard"
       ]
     },
@@ -111,14 +111,14 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
       "claim": "claim:Project.Take",
       "from": "Unheld",
       "to": "Charting",
-      "arrow": "the Project opens; it has a live admiral",
+      "arrow": "the Project opens; it has a live coordinator",
       "spec": [
         "H4"
       ],
@@ -139,7 +139,7 @@
       "action": "Gap2",
       "from": "Unheld",
       "to": "Watching",
-      "note": "H4 says who holds a live Project, not who starts or wakes its admiral"
+      "note": "H4 says who holds a live Project, not who starts or wakes its coordinator"
     }
   ]
 }

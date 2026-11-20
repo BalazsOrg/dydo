@@ -48,13 +48,13 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 ## CutFix
 
-`claim:Mutation.CutFix`: The admiral holds the landing and cuts each survivor's fix ticket for a captain.
+`claim:Mutation.CutFix`: The coordinator holds the landing and cuts each survivor's fix ticket for a captain.
 
 Spec: N6, H5, T12
 
-Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Survivors → Ticketed, "the admiral cuts the survivor's fix ticket".
+Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Survivors → Ticketed, "the coordinator cuts the survivor's fix ticket".
 
-**admiral** (Survivors, exit):
+**coordinator** (Survivors, exit):
 
 > Cut each landing survivor into a fix ticket for a captain.
 
@@ -66,7 +66,7 @@ Spec: T12
 
 Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Ticketed → Queued, "fixed; the changed tree's work is queued again".
 
-**code-writer** (Ticketed, exit):
+**implementer** (Ticketed, exit):
 
 > Fix a surviving mutant.
 
@@ -78,7 +78,7 @@ Spec: T12
 
 Transition in The landing's mutation check (`claims/statechart/mutation/Mutation.tla`): Ticketed → Claimed, "claimed equivalent, with a reason".
 
-**code-writer** (Ticketed, exit):
+**implementer** (Ticketed, exit):
 
 > Or claim it equivalent, with a reason; a fresh reviewer decides the claim, never you.
 
@@ -144,6 +144,6 @@ Transition in The landing's mutation check (`claims/statechart/mutation/Mutation
 
 Spec: T12
 
-**admiral** (Prerequisites, nominal):
+**coordinator** (Prerequisites, nominal):
 
 > Show him the per-feature totals of approved equivalent mutants.

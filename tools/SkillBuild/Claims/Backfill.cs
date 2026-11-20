@@ -3,13 +3,13 @@ namespace DynaDocs.SkillBuild;
 /// <summary>The one-time DR backfill (M17): drafted by cheap-tier crew, checked by a reviewer, approved row by row on his page.</summary>
 public static class Backfill
 {
-    public static readonly Claim Draft = new("After he approves the sorted principles, cheap-tier crew drafts applies: and quoted weighed: tags.", [Actor.CodeWriter], [])
+    public static readonly Claim Draft = new("After he approves the sorted principles, cheap-tier crew drafts applies: and quoted weighed: tags.", [Actor.Implementer], [])
     { Spec = ["L12"], Transition = new(BackfillState.Untagged, BackfillState.Drafted, "cheap-tier crew drafts the tags") };
 
     public static readonly Claim Check = new("A reviewer checks every citation as a doc claim.", [Actor.Reviewer], [])
     { Spec = ["L12"], Transition = new(BackfillState.Drafted, BackfillState.Checked, "a reviewer checks every citation") };
 
-    public static readonly Claim Page = new("He reviews one page per batch, doubted and new-ground rows first.", [Actor.Admiral], [])
+    public static readonly Claim Page = new("He reviews one page per batch, doubted and new-ground rows first.", [Actor.Coordinator], [])
     { Spec = ["L12"], Transition = new(BackfillState.Checked, BackfillState.OnPage, "batched onto one review page") };
 
     public static readonly Claim Approve = new("Only rows he approves merge.", [Actor.Balazs], [])

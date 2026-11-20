@@ -6,7 +6,7 @@ public enum Section
     EnvoySlots,
     EnvoySession,
     EnvoySkills,
-    CodeWriterBrief,
+    ImplementerBrief,
     ReviewerBrief,
     ScoutBrief,
     TicketCaptainBrief,

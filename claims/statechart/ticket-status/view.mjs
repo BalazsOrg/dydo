@@ -14,7 +14,7 @@ const steps = {
   "TicketStatus_CancelDead": "a re-plan cancels a dead hop · S10",
   "TicketStatus_CancelRunning": "a re-plan, or a reverted Merge · S10, S12",
   "TicketStatus_Close": "whoever started it closes it · S6",
-  "TicketStatus_Contract": "the admiral contracts an uncontracted ticket · N12 DR 063 §4",
+  "TicketStatus_Contract": "the coordinator contracts an uncontracted ticket · N12 DR 063 §4",
   "TicketStatus_MarkDuplicate": "a duplicate should · S17",
   "TicketStatus_Open": "opened in Todo, ahead of its turn if a hop · S3",
   "TicketStatus_Start": "whoever starts the step sets it In Progress · S6, S13, S3",

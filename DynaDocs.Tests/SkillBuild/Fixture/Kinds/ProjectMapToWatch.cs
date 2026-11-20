@@ -64,7 +64,7 @@ public static class ProjectMapToWatch
         "The admiral reads the Project at whatever stage it reaches the admiral, then acts from that state.",
         [A.Admiral],
         [
-            new(S.Admiral, "Read the Project at whatever stage it reaches you.", new(HeaderPart.Role, 1))
+            new(S.Admiral, "Read the Project at whatever stage it reaches you.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim ReconcileDone = new(
@@ -185,7 +185,7 @@ public static class ProjectMapToWatch
         "Triage everything that reaches the user, whose attention is the scarcest resource in the project.",
         [A.ChiefOfStaff],
         [
-            new(S.ChiefOfStaff, "The user's attention is the scarcest resource in this project: triage everything that reaches him.", new(HeaderPart.Role, 1))
+            new(S.ChiefOfStaff, "The user's attention is the scarcest resource in this project: triage everything that reaches him.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim UserTellsAdmiral = new(

@@ -1,6 +1,6 @@
 namespace DynaDocs.SkillBuild;
 
-/// <summary>M1: an admiral holds a Project.</summary>
+/// <summary>M1: a coordinator holds a Project.</summary>
 public enum ProjectState
 {
     Unheld,

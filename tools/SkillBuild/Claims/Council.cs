@@ -3,10 +3,10 @@ namespace DynaDocs.SkillBuild;
 /// <summary>The council (M14): one question to sealed, read-only, cross-family seats, synthesised by a non-member; the reviewer's council resource.</summary>
 public static class Council
 {
-    public static readonly Claim FamilyOut = new("Merge confidence waits for both families only while nothing blocks on it.", [Actor.Admiral], [])
+    public static readonly Claim FamilyOut = new("Merge confidence waits for both families only while nothing blocks on it.", [Actor.Coordinator], [])
     { Spec = ["L22"], Transition = new(CouncilState.Convened, CouncilState.Waiting, "Merge confidence with one family out") };
 
-    public static readonly Claim Proceed = new("Once something blocks on it, Merge confidence runs single-family, never escalated to him.", [Actor.Admiral], [])
+    public static readonly Claim Proceed = new("Once something blocks on it, Merge confidence runs single-family, never escalated to him.", [Actor.Coordinator], [])
     { Spec = ["L22"], Transition = new(CouncilState.Waiting, CouncilState.Answered, "something blocks: it runs on one family") };
 
     public static readonly Claim Answer = new("Every member answers the same question alone, sealed and read-only.", [Actor.Reviewer], [])
@@ -39,7 +39,7 @@ public static class Council
         [new(Skill.Reviewer, "With one family out, Review and Evaluate run on two different models of the remaining family, and Judge runs on one family.", new(Section.CouncilOneFamily, 1306))])
     { Spec = ["L22", "L15"] };
 
-    public static readonly Claim MergeOneFamily = new("Merge confidence waits for both families only while nothing blocks, then runs on one, never escalated.", [Actor.Admiral],
-        [new(Skill.Admiral, "With one family out, Merge confidence waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.", new(LandingState.MergeReview, 1307, MoveKind.Nominal))])
+    public static readonly Claim MergeOneFamily = new("Merge confidence waits for both families only while nothing blocks, then runs on one, never escalated.", [Actor.Coordinator],
+        [new(Skill.Coordinator, "With one family out, Merge confidence waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.", new(LandingState.MergeReview, 1307, MoveKind.Nominal))])
     { Spec = ["L22"] };
 }

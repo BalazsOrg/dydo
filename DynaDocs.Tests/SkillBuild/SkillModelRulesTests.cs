@@ -5,7 +5,8 @@ using DynaDocs.Tests.SkillBuild.Slots;
 
 /// <summary>
 /// The rules the build enforces on a model, each red through <see cref="SkillBuilder.Build"/>: K4's one
-/// line per claim per skill, and K9's placements (DYD-1196 A4, A5).
+/// line per claim per skill, and K9's spine of a job paragraph, phases and scenarios and its placements
+/// (DYD-1196 A4, A5).
 /// </summary>
 public class SkillModelRulesTests
 {
@@ -43,25 +44,14 @@ public class SkillModelRulesTests
     [Fact]
     [Trait("Job", "contract: K9 a placement in an undeclared slot fails the build (A5)")]
     public void PlacementInAnUndeclaredSlot_FailsTheBuild() =>
-        AssertRejected(Model(DemoModel.Skill(states: [new(DemoSlot.Intake, "Intake")])),
+        AssertRejected(Model(DemoModel.Skill(phases: [DemoModel.Phases[0]])),
             $"demo: claim:{Id(nameof(DemoMoves), nameof(DemoMoves.StartAfterIntake))} is placed in DemoSlot.Work, which the skill does not declare");
 
     [Fact]
-    [Trait("Job", "contract: K9 an appendix no move links fails the build (A5)")]
-    public void AppendixNoMoveLinks_FailsTheBuild() =>
-        AssertRejected(Model(DemoModel.Skill(appendices: [.. DemoModel.Appendices, new(DemoSlot.Guide, "Orphan")])),
-            "demo: appendix DemoSlot.Guide is linked from no move");
-
-    [Fact]
-    [Trait("Job", "contract: K9 a move links only a declared appendix (A5)")]
-    public void MoveLinkingAnUndeclaredAppendix_FailsTheBuild() =>
-        AssertRejected(Model(DemoModel.Skill(appendices: [])), "links DemoSlot.StaleLease, which the skill does not declare as an appendix");
-
-    [Fact]
-    [Trait("Job", "contract: K9/DR 064 §9 an appendix of 100 lines fails the build, contents list or not")]
-    public void AppendixOfOneHundredLines_FailsTheBuild() =>
-        AssertRejected(DemoModel.With(typeof(DemoLongAppendix)),
-            "demo: appendix DemoSlot.StaleLease is 100 lines; an appendix stays under 100 lines");
+    [Trait("Job", "contract: K9 a scenario of 100 lines fails the build, contents list or not")]
+    public void ScenarioOfOneHundredLines_FailsTheBuild() =>
+        AssertRejected(DemoModel.With(typeof(DemoLongScenario)),
+            "demo: scenario DemoSlot.StaleLease is 100 lines; a scenario stays under 100 lines");
 
     [Theory]
     [Trait("Job", "contract: K9 a state holds moves, and only a state does (A5)")]
@@ -70,11 +60,16 @@ public class SkillModelRulesTests
     public void MoveOutsideAState_OrAStateLineWithoutAMove_FailsTheBuild(bool routineAsState)
     {
         var skill = routineAsState
-            ? DemoModel.Skill(states: [.. DemoModel.States, new(DemoSlot.Dispatch, "Dispatch")], routines: [])
-            : DemoModel.Skill(states: [new(DemoSlot.Work, "Work")], routines: [.. DemoModel.Routines, new(DemoSlot.Intake, "Intake")]);
+            ? DemoModel.Skill(phases: [DemoModel.Phases[0], Work(Slot.State(DemoSlot.Work, "Work"), Slot.State(DemoSlot.Dispatch, "Dispatch"))])
+            : DemoModel.Skill(phases: [new("Take the ticket", new Slot(DemoSlot.Accountable), new(DemoSlot.Tools, "Tools"), new(DemoSlot.Intake, "Intake")), DemoModel.Phases[1]]);
 
         AssertRejected(Model(skill), "a line in a state is a one-line move with its step");
     }
+
+    [Fact]
+    [Trait("Job", "trap: K9 a job line of two lines splits the job paragraph")]
+    public void JobLineOfTwoLines_FailsTheBuild() =>
+        AssertRejected(DemoModel.With(typeof(DemoJobBlock)), "a job line is one line");
 
     [Fact]
     [Trait("Job", "contract: K9 a line takes an explicit order in its slot that no other line holds (A5)")]
@@ -84,17 +79,38 @@ public class SkillModelRulesTests
     [Fact]
     [Trait("Job", "trap: a slot declared twice renders its lines twice, past K4's count of distinct lines")]
     public void SlotDeclaredTwice_FailsTheBuild() =>
-        AssertRejected(Model(DemoModel.Skill(routines: [.. DemoModel.Routines, new(DemoSlot.Work, "Again")])), "demo: DemoSlot.Work is declared twice");
+        AssertRejected(Model(DemoModel.Skill(phases: [DemoModel.Phases[0], Work(Slot.State(DemoSlot.Work, "Work"), new(DemoSlot.Dispatch, "Dispatch crew"), new(DemoSlot.Work, "Again"))])),
+            "demo: DemoSlot.Work is declared twice");
 
     [Fact]
-    [Trait("Job", "trap: an untitled routine renders an empty heading")]
-    public void UntitledSlotThatDoesNotOpenItsFile_FailsTheBuild() =>
-        AssertRejected(Model(DemoModel.Skill(routines: [new(DemoSlot.Dispatch)])), "DemoSlot.Dispatch needs a title");
+    [Trait("Job", "trap: two resources with one id build one file twice")]
+    public void ResourceDeclaredTwice_FailsTheBuild() =>
+        AssertRejected(Model(DemoModel.Skill(scenarios: [.. DemoModel.Scenarios, new(DemoSlot.Guide, "Again")])), "demo: resource DemoSlot.Guide is declared twice");
+
+    [Theory]
+    [Trait("Job", "trap: an untitled slot past a phase's first, or an untitled state, renders an empty heading")]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void UntitledSlotThatDoesNotOpenItsPhase_FailsTheBuild(bool state) =>
+        AssertRejected(Model(DemoModel.Skill(phases: state
+                ? [new("Take the ticket", Slot.State(DemoSlot.Intake, null), new(DemoSlot.Accountable, "Accountable"), new(DemoSlot.Tools, "Tools")), DemoModel.Phases[1]]
+                : [DemoModel.Phases[0], Work(Slot.State(DemoSlot.Work, "Work"), new(DemoSlot.Dispatch))])),
+            state ? "DemoSlot.Intake needs a title" : "DemoSlot.Dispatch needs a title");
 
     [Fact]
-    [Trait("Job", "trap: a standard renders only its sections, so a declared state would vanish without a word")]
+    [Trait("Job", "contract: K9 a job phase is numbered by its title, so it needs one")]
+    public void UntitledPhase_FailsTheBuild() =>
+        AssertRejected(Model(DemoModel.Skill(phases: [DemoModel.Phases[0], DemoModel.Phases[1] with { Title = " " }])), "demo: a job phase needs a title");
+
+    [Fact]
+    [Trait("Job", "contract: K9 a spine is its job paragraph, phases and scenarios, never a standard's sections")]
+    public void SkillWithSections_FailsTheBuild() =>
+        AssertRejected(Model(DemoModel.Skill() with { Sections = [new(DemoSlot.GuideLead)] }), "demo: a skill's spine is its job paragraph, phases and scenarios");
+
+    [Fact]
+    [Trait("Job", "trap: a standard renders only its sections, so a declared phase would vanish without a word")]
     public void StandardWithMoreThanSections_FailsTheBuild() =>
-        AssertRejected(new([], [SkillSpec.Standard(DemoSkill.Demo, "guides", "Demo") with { States = DemoModel.States }]),
+        AssertRejected(new([], [SkillSpec.Standard(DemoSkill.Demo, "guides", "Demo") with { Phases = DemoModel.Phases }]),
             "demo: a standard holds sections only");
 
     [Fact]
@@ -123,6 +139,8 @@ public class SkillModelRulesTests
         AssertRejected(Model(DemoModel.Skill(), typeof(DemoStray)), "has a combined line naming a claim outside the model's kinds");
 
     private static Model Model(SkillSpec skill, params Type[] kinds) => new([typeof(DemoMoves), .. kinds], [skill]);
+
+    private static Phase Work(params Slot[] slots) => DemoModel.Phases[1] with { Slots = slots };
 
     private static string Id(string kind, string member) => $"{kind}.{member}";
 

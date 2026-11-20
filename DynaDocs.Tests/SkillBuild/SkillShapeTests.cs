@@ -12,6 +12,8 @@ public class SkillShapeTests
     private const string Resource = "skills/x/demo/resources/a.md";
     private const string Frontmatter = "---\nname: demo\ndescription: d\n---\n";
     private const string LinksA = "- [A](resources/a.md)\n";
+    private const string RoleSpine = "skills/roles/crew/demo/SKILL.md";
+    private const string RoleScenario = "skills/roles/crew/demo/resources/stuck.md";
 
     // The committed built files are checked as they stand on disk, so a hand edit that breaks a limit fails here.
     [Fact]
@@ -20,12 +22,60 @@ public class SkillShapeTests
     {
         var tree = CommittedTree.BuiltText();
 
-        // Never vacuous: the real tree holds the six role spines and their resources (DYD-1082).
-        Assert.Equal(6, tree.Keys.Count(path => path.StartsWith("skills/roles/", StringComparison.Ordinal) && path.EndsWith("/SKILL.md", StringComparison.Ordinal)));
+        // Never vacuous: the real tree holds the seven role spines, a scenario and a template (DYD-1082, DYD-1284).
+        Assert.Equal(7, tree.Keys.Count(path => path.StartsWith("skills/roles/", StringComparison.Ordinal) && path.EndsWith("/SKILL.md", StringComparison.Ordinal)));
         Assert.Contains("skills/roles/crew/reviewer/resources/council.md", tree.Keys);
-        var violations = SkillShape.Violations(tree);
-        Assert.True(violations.Count == 0, string.Join('\n', violations));
+        Assert.Contains("skills/roles/officers/ticket-captain/resources/fix-rounds.md", tree.Keys);
+        Assert.Contains("skills/roles/officers/ticket-captain/resources/implementer-brief.md", tree.Keys);
+        var violations = SkillShape.Violations(tree).Concat(SkillShape.RoleSpineViolations(tree)).ToArray();
+        Assert.True(violations.Length == 0, string.Join('\n', violations));
     }
+
+    [Fact]
+    [Trait("Job", "edge: K9 a job paragraph, numbered phases and When things go wrong, each link resolving, is a role spine")]
+    public void RoleSpine_InOrder_Passes() =>
+        Assert.Empty(SkillShape.RoleSpineViolations(Tree((RoleSpine, Role()), (RoleScenario, "# A\n"))));
+
+    [Fact]
+    [Trait("Job", "edge: K9 research's spine is its one job line, with no phase or scenario")]
+    public void RoleSpine_OfOnlyAJobParagraph_Passes() =>
+        Assert.Empty(SkillShape.RoleSpineViolations(Tree((RoleSpine, Frontmatter + DynaDocs.SkillBuild.BuiltHeader.Markdown + "\n\n# Demo\n\nYou pool and verify.\n"))));
+
+    [Theory]
+    [Trait("Job", "contract: K9 a role spine without its opening job paragraph, or with two, fails")]
+    [InlineData("", "no opening job paragraph")]
+    [InlineData("You do the job.\n\nAnd a second paragraph.\n", "the opening is not one job paragraph")]
+    [InlineData("- A bullet, not a paragraph.\n", "the opening is not one job paragraph")]
+    [InlineData("### A heading, not a paragraph\n", "the opening is not one job paragraph")]
+    public void RoleSpine_WithoutOneJobParagraph_Fails(string job, string reason) =>
+        Assert.Contains(SkillShape.RoleSpineViolations(Tree((RoleSpine, Role(job: job)), (RoleScenario, "# A\n"))),
+            violation => violation.Contains(reason, StringComparison.Ordinal));
+
+    [Theory]
+    [Trait("Job", "contract: K9 an unnumbered, out-of-order or missing phase, or When things go wrong out of place, fails")]
+    [InlineData("## Steps\n", "\"## Steps\" is neither a numbered job phase")]
+    [InlineData("## 1. Start\n\n## 3. Finish\n", "\"## 3. Finish\" where phase 2 belongs")]
+    [InlineData("## 2. Finish\n\n## 1. Start\n", "\"## 2. Finish\" where phase 1 belongs")]
+    [InlineData("## 1 Start\n", "\"## 1 Start\" is neither a numbered job phase")]
+    [InlineData("## When things go wrong\n\n## 1. Start\n", "\"## 1. Start\" comes after \"## When things go wrong\"")]
+    [InlineData("## 1. Start\n\n## When things go wrong\n", "\"## When things go wrong\" twice")]
+    public void RoleSpine_WithAPhaseOutOfShape_Fails(string phases, string reason) =>
+        Assert.Contains(SkillShape.RoleSpineViolations(Tree((RoleSpine, Role(phases: phases)), (RoleScenario, "# A\n"))),
+            violation => violation.Contains(reason, StringComparison.Ordinal));
+
+    [Fact]
+    [Trait("Job", "contract: K9 a scenario link that resolves to no file fails")]
+    public void RoleSpine_WithADanglingScenarioLink_Fails() =>
+        Assert.Equal(new[] { $"{RoleSpine}: links {RoleScenario}, which the tree does not hold" },
+            SkillShape.RoleSpineViolations(Tree((RoleSpine, Role()))));
+
+    [Theory]
+    [Trait("Job", "contract: K9 a role resource of 100 lines or more fails")]
+    [InlineData(SkillShape.RoleResourceLimit - 1, false)]
+    [InlineData(SkillShape.RoleResourceLimit, true)]
+    public void RoleResource_OfOneHundredLines_Fails(int lines, bool fails) =>
+        Assert.Equal(fails, SkillShape.RoleSpineViolations(Tree((RoleSpine, Role()), (RoleScenario, Lines(lines))))
+            .Contains($"{RoleScenario}: {lines} lines; a role resource stays under {SkillShape.RoleResourceLimit} lines (K9)"));
 
     [Fact]
     [Trait("Job", "contract: K10 shape tests over the fixture build (B15, C17)")]
@@ -147,6 +197,12 @@ public class SkillShapeTests
         Assert.Contains($"{path}: unbalanced fenced block", SkillShape.Violations(Tree((path, "```text\nopen\n"))));
 
     private static string Lines(int count) => string.Concat(Enumerable.Repeat("- line\n", count));
+
+    // A role spine as the builder lays it out, each part swappable.
+    private static string Role(string job = "You do the job.\nYou return to your officer.\n",
+        string phases = "## 1. Start\n\n- Begin.\n\n## 2. Finish\n\n### Done\n\nExits:\n\n- Return.\n") =>
+        Frontmatter + DynaDocs.SkillBuild.BuiltHeader.Markdown + "\n\n# Demo\n\n" + job + "\n" + phases
+        + "\n" + SkillShape.WhenThingsGoWrong + "\n\n- [Stuck](resources/stuck.md)\n";
 
     private static Dictionary<string, string> Tree(params (string Path, string Text)[] files) =>
         files.ToDictionary(file => file.Path, file => file.Text, StringComparer.Ordinal);

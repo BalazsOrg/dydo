@@ -12,7 +12,7 @@ type: reference
 
 Spec: R5
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Report a problem outside your scope to your officer.
 
@@ -34,7 +34,7 @@ Spec: R5
 
 Spec: R5
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Route an out-of-scope report to the owner's ticket or a new Bug.
 

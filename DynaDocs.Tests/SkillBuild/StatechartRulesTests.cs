@@ -141,7 +141,7 @@ public class StatechartRulesTests
     public void SpecCitation_AcceptsOnlyDrsTheSpecNames(string id, bool valid) => Assert.Equal(valid, SpecCitation.IsValid(id));
 
     [Fact]
-    [Trait("Job", "contract: universal rule 1 and K22 the production model cites the spec and builds the six role skills and both standards")]
+    [Trait("Job", "contract: universal rule 1 and K22 the production model cites the spec and builds the three officer skills, the four crew kinds and both standards")]
     public void ProductionModel_CitesTheSpecAndBuilds()
     {
         Assert.True(ProductionModel.Model.CitesSpec);
@@ -150,8 +150,8 @@ public class StatechartRulesTests
 
         Assert.Equal(
         [
-            "skills/roles/crew/code-writer/SKILL.md", "skills/roles/crew/reviewer/SKILL.md", "skills/roles/crew/scout/SKILL.md",
-            "skills/roles/officers/admiral/SKILL.md", "skills/roles/officers/chief-of-staff/SKILL.md", "skills/roles/officers/ticket-captain/SKILL.md"
+            "skills/roles/crew/implementer/SKILL.md", "skills/roles/crew/research/SKILL.md", "skills/roles/crew/reviewer/SKILL.md", "skills/roles/crew/scout/SKILL.md",
+            "skills/roles/officers/chief-of-staff/SKILL.md", "skills/roles/officers/coordinator/SKILL.md", "skills/roles/officers/ticket-captain/SKILL.md"
         ], files.Where(path => path.EndsWith("/SKILL.md", StringComparison.Ordinal)).Order(StringComparer.Ordinal));
         Assert.Contains("dydo/guides/working-tree-standard.md", files);
         Assert.Contains("Scaffold/dydo/reference/linear-workspace-standard.md", files);
@@ -166,12 +166,15 @@ public class StatechartRulesTests
     {
         var holder = ChartModel.Holder with
         {
-            States = state switch
-            {
-                "retitled" => [new(LeaseState.Held, "Holding")],
-                "no machine's" => [new(OtherState.Idle, "Idle")],
-                _ => ChartModel.Other.Slots(LeaseState.Held)
-            }
+            Phases =
+            [
+                new("Hold", state switch
+                {
+                    "retitled" => [Slot.State(LeaseState.Held, "Holding")],
+                    "no machine's" => [Slot.State(OtherState.Idle, "Idle")],
+                    _ => ChartModel.Other.Slots(LeaseState.Held)
+                })
+            ]
         };
 
         AssertRejected(ChartModel.Of([ChartModel.Lease], [holder, ChartModel.Warden]),

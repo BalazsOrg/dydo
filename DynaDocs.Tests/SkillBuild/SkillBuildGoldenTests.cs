@@ -19,7 +19,7 @@ public class SkillBuildGoldenTests
         var built = SkillBuilder.Build(ProductionModel.Model).Bytes();
         var committed = BuiltHeader.Committed(CommittedTree.Root);
 
-        // Never vacuous: the real build holds the six role spines and both standards (DYD-1082).
+        // Never vacuous: the real build holds the seven role spines and both standards (DYD-1082, DYD-1284).
         Assert.Contains("skills/roles/officers/ticket-captain/SKILL.md", committed.Keys);
         Assert.Contains("dydo/guides/working-tree-standard.md", committed.Keys);
         var diff = GoldenDiff.Describe(built, committed);

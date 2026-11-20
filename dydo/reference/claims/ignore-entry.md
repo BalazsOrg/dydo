@@ -14,7 +14,7 @@ Spec: T15, T16
 
 Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): OverLimit → Split, "the writer splits the file".
 
-**code-writer** (OverLimit, exit):
+**implementer** (OverLimit, exit):
 
 > Split a file you change that passes the token limit.
 
@@ -26,7 +26,7 @@ Spec: T17, T14
 
 Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): OverLimit → PathA, "nobody writes it by hand".
 
-**code-writer** (OverLimit, exit):
+**implementer** (OverLimit, exit):
 
 > For a file nobody writes by hand, add its exact path or generated-directory glob to the ignore file in your PR, with a reason.
 

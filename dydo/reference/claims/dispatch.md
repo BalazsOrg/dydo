@@ -18,13 +18,13 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Seat any reviewer from a family other than the author's when possible, single seats included.
 
-**admiral** (Staffing, exit):
+**coordinator** (Staffing, exit):
 
 > Seat any reviewer or judge from a family other than the author's when possible, single seats included.
 
-**code-writer** (Briefed, arrival):
+**implementer** (Briefed, arrival):
 
-> You arrive with a brief from the code-writer dispatch template; work only within it.
+> You arrive with a brief from the implementer dispatch template; work only within it.
 
 **reviewer** (Briefed, arrival):
 
@@ -46,7 +46,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Convene a council only for a heavy PR, one that meets the stakes or value test: guard or security work, a base other tickets build on, or the late simplify review.
 
-**admiral** (Staffing, exit):
+**coordinator** (Staffing, exit):
 
 > Convene a council only for stakes (the last check before main, or a mistake expensive to undo) or value (a call between good options).
 
@@ -70,9 +70,9 @@ Spec: S6, S13
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Briefed → Working, "the holder starts its hop".
 
-**code-writer** (Briefed, exit):
+**implementer** (Briefed, exit):
 
-> Start your hop: set it In Progress and attach your T3 thread link titled `T3 · code-writer · <model>`.
+> Start your hop: set it In Progress and attach your T3 thread link titled `T3 · implementer · <model>`.
 
 **reviewer** (Briefed, exit):
 
@@ -94,7 +94,7 @@ Spec: H2
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Briefed → ReCut, "too big for one agent".
 
-**code-writer** (Briefed, exit):
+**implementer** (Briefed, exit):
 
 > A job too big for one agent goes back as `too big, re-cut`.
 
@@ -106,7 +106,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children; a ticket too big for you goes back to your officer the same way, and you never promote yourself.
 
-**admiral** (ReCut, arrival):
+**coordinator** (ReCut, arrival):
 
 > On `too big, re-cut`, you are the cutter: decide whether the unit gets children.
 
@@ -126,7 +126,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.
 
-**admiral** (ReCut, exit):
+**coordinator** (ReCut, exit):
 
 > Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.
 
@@ -138,7 +138,7 @@ Spec: K14, R5, S6, N12 DR 047 §7
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Working → Returned, "the crew returns to its dispatcher".
 
-**code-writer** (Working, exit):
+**implementer** (Working, exit):
 
 > Close your hop Done and return its commit SHA and receipts to the brief's return-to.
 
@@ -164,7 +164,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 Spec: K14, K29
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > Brief from the crew kind's dispatch template; the crew loads its own skill, so never read a crew skill to brief it.
 
@@ -178,7 +178,7 @@ Spec: K14, K29
 
 Spec: H3
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 
@@ -186,7 +186,7 @@ Spec: H3
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > A native helper you start shares your checkout; you commit its work.
 
@@ -214,7 +214,7 @@ Spec: H3
 
 Spec: N12 DR 057 §1, N12 DR 057 §3, H3
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
 
@@ -236,7 +236,7 @@ Spec: N12 DR 057 §1, N12 DR 057 §3, H3
 
 Spec: N12 DR 057 §2
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > On a captain's `parent_not_active`, dispatch its crew for it.
 
@@ -250,7 +250,7 @@ Spec: N12 DR 057 §2
 
 **working-tree-standard** (TreeDelegation):
 
-> A native child lives only inside its dispatcher's turn and cannot call `delegate_task`: on `parent_not_active`, a captain asks its officer, the chief of staff asks the user, and the admiral dispatches a captain's crew for it.
+> A native child lives only inside its dispatcher's turn and cannot call `delegate_task`: on `parent_not_active`, a captain asks its officer, the chief of staff asks the user, and the coordinator dispatches a captain's crew for it.
 
 ## CodexCap
 
@@ -258,7 +258,7 @@ Spec: N12 DR 057 §2
 
 Spec: N12 DR 057 §4
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
 
@@ -276,7 +276,7 @@ Spec: N12 DR 057 §4
 
 Spec: N12 DR 057 §6
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Hand a question up to your captain, never to Balazs.
 

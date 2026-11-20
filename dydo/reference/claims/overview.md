@@ -16,19 +16,19 @@ Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ClaimArea 
 
 ## Hold
 
-`claim:Overview.Hold`: In the overview, an admiral holds a live Project.
+`claim:Overview.Hold`: In the overview, a coordinator holds a live Project.
 
 Spec: H4
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): HostArea → ProjectArea, "an admiral holds a live Project". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): HostArea → ProjectArea, "a coordinator holds a live Project". A system transition: no skill carries it.
 
 ## Cut
 
-`claim:Overview.Cut`: In the overview, the admiral cuts a ticket and dispatches its captain.
+`claim:Overview.Cut`: In the overview, the coordinator cuts a ticket and dispatches its captain.
 
 Spec: H5, H3
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → TicketArea, "the admiral cuts a ticket and dispatches its captain". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ProjectArea → TicketArea, "the coordinator cuts a ticket and dispatches its captain". A system transition: no skill carries it.
 
 ## Prove
 
@@ -56,11 +56,11 @@ Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): ReviewArea
 
 ## Next
 
-`claim:Overview.Next`: In the overview, merged: the admiral cuts the next ticket.
+`claim:Overview.Next`: In the overview, merged: the coordinator cuts the next ticket.
 
 Spec: R20, H5
 
-Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MergeArea → ProjectArea, "merged: the admiral cuts the next ticket". A system transition: no skill carries it.
+Transition in dydo 4.0.0 (`claims/statechart/overview/Overview.tla`): MergeArea → ProjectArea, "merged: the coordinator cuts the next ticket". A system transition: no skill carries it.
 
 ## Land
 

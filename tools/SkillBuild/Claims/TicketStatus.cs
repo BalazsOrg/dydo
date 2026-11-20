@@ -9,8 +9,8 @@ public static class TicketStatus
     public static readonly Claim Open = new("A hop may be opened ahead in Todo.", [Actor.Linear], [])
     { Spec = ["S3"], Transition = new(TicketStatusState.New, TicketStatusState.Todo, "opened in Todo, ahead of its turn if a hop") };
 
-    public static readonly Claim Contract = new("The admiral contracts an uncontracted Backlog ticket to Todo.", [Actor.Admiral], [])
-    { Spec = ["N12 DR 063 §4"], Transition = new(TicketStatusState.Backlog, TicketStatusState.Todo, "the admiral contracts an uncontracted ticket") };
+    public static readonly Claim Contract = new("The coordinator contracts an uncontracted Backlog ticket to Todo.", [Actor.Coordinator], [])
+    { Spec = ["N12 DR 063 §4"], Transition = new(TicketStatusState.Backlog, TicketStatusState.Todo, "the coordinator contracts an uncontracted ticket") };
 
     public static readonly Claim Start = new("Whoever starts a step sets it In Progress with the holder's thread link.", [Actor.Linear], [])
     { Spec = ["S6", "S13", "S3"], Transition = new(TicketStatusState.Todo, TicketStatusState.InProgress, "whoever starts the step sets it In Progress") };

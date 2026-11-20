@@ -154,7 +154,7 @@ public static class OvernightSettleToWatch
         [A.ChiefOfStaff],
         [
             new(S.ChiefOfStaff, "That skill owns transition and readback; announce activation only after its completion criteria pass.", new(F.ChiefOfStaffOvernightDuties, 2)),
-            new(S.OvernightMode, "At **muster**, the chief of staff verifies `overnight: on` with `dydo mode show` before announcing the start; at the **morning brief**, it verifies `overnight: off` before announcing the end.", new(HeaderPart.Role, 2))
+            new(S.OvernightMode, "At **muster**, the chief of staff verifies `overnight: on` with `dydo mode show` before announcing the start; at the **morning brief**, it verifies `overnight: off` before announcing the end.", new(SpinePart.Job, 2))
         ]);
 
     public static readonly Claim WatchScheduleCreated = new(

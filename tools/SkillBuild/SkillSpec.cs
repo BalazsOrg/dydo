@@ -3,7 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// A carrier the model builds: a role or workflow skill, or one of the two standards. Its name is
 /// the kebab-case of its id, and <see cref="PathsOf"/> holds every destination rule (K6, K12).
-/// A factory names its home; <c>with { … }</c> declares its slots.
+/// A factory names its home; <c>with { … }</c> declares its slots. A skill's spine is its job
+/// paragraph, its numbered <see cref="Phases"/>, then "When things go wrong" linking its
+/// <see cref="Scenarios"/> (K9); a standard holds <see cref="Sections"/> only.
 /// </summary>
 public sealed record SkillSpec
 {
@@ -41,15 +43,12 @@ public sealed record SkillSpec
 
     public OpenAiYaml? OpenAi { get; init; }
 
-    public IReadOnlyList<Slot> States { get; init; } = [];
+    public IReadOnlyList<Phase> Phases { get; init; } = [];
 
-    public IReadOnlyList<Slot> Routines { get; init; } = [];
+    /// <summary>One resource per scenario, each under 100 lines, linked from "When things go wrong" (K9).</summary>
+    public IReadOnlyList<Resource> Scenarios { get; init; } = [];
 
     public IReadOnlyList<Slot> Sections { get; init; } = [];
-
-    public IReadOnlyList<Resource> Resources { get; init; } = [];
-
-    public IReadOnlyList<Slot> Appendices { get; init; } = [];
 
     internal string Name => Names.Kebab(Id);
 
@@ -58,6 +57,12 @@ public sealed record SkillSpec
     internal string MainFile => IsStandard ? Name + ".md" : "SKILL.md";
 
     internal IReadOnlyList<string> Frontmatter => IsStandard ? _frontmatter : SkillFrontmatter();
+
+    /// <summary>Every resource the skill builds: each phase's, then each scenario.</summary>
+    internal IEnumerable<Resource> Resources => Phases.SelectMany(phase => phase.Resources).Concat(Scenarios);
+
+    internal IEnumerable<Slot> StateSlots => Phases.SelectMany(phase => phase.Slots).Concat(Resources.SelectMany(resource => resource.Slots))
+        .Where(slot => slot.IsState);
 
     private List<string> SkillFrontmatter()
     {

@@ -8,13 +8,13 @@ type: reference
 
 ## Staff
 
-`claim:Landing.Staff`: The admiral staffs each inquisition round from the roster and dydo usage.
+`claim:Landing.Staff`: The coordinator staffs each inquisition round from the roster and dydo usage.
 
 Spec: N5, R13, R14
 
-Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated → Mapped, "the admiral staffs a round; a fresh area map".
+Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated → Mapped, "the coordinator staffs a round; a fresh area map".
 
-**admiral** (Integrated, exit):
+**coordinator** (Integrated, exit):
 
 > Staff each inquisition round from the model roster and `dydo usage`, and tell him in your next envoy bundle.
 
@@ -60,13 +60,13 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): DrivePhase 
 
 ## RoundFound
 
-`claim:Landing.RoundFound`: The admiral holds the round it staffs: one verdict, blockers into Fix rN, shoulds registered.
+`claim:Landing.RoundFound`: The coordinator holds the round it staffs: one verdict, blockers into Fix rN, shoulds registered.
 
 Spec: N5, S8, S9, S17
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition → RoundFixes, "the round finds a blocker or a should".
 
-**admiral** (Inquisition, exit):
+**coordinator** (Inquisition, exit):
 
 > Hold each round you staff: post one verdict naming each seat and its findings, turn its blockers into Fix rN and register its shoulds.
 
@@ -94,7 +94,7 @@ Spec: N5
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition → Prerequisites, "a round finds no blocker and no should".
 
-**admiral** (Inquisition, exit):
+**coordinator** (Inquisition, exit):
 
 > The Project lands only after an inquisition round that finds no blocker and no should.
 
@@ -114,7 +114,7 @@ Spec: N7, S18, T12, N15
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Prerequisites → MergeReview, "every landing prerequisite met".
 
-**admiral** (Prerequisites, exit):
+**coordinator** (Prerequisites, exit):
 
 > Open the landing merge review only once every should is closed and the mutation check on the Project's diff is clean.
 
@@ -126,7 +126,7 @@ Spec: N6, L16, R20, H22
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Walkthrough, "the Merge-confidence council passes the landing candidate".
 
-**admiral** (MergeReview, exit):
+**coordinator** (MergeReview, exit):
 
 > On the council's PASS, send the walkthrough of the landing candidate, the feature branch with master merged in, to a fresh envoy.
 
@@ -138,7 +138,7 @@ Spec: R9, R11
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → RoundFixes, "a blocker is broken or against the spec".
 
-**admiral** (MergeReview, exit):
+**coordinator** (MergeReview, exit):
 
 > Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
 
@@ -150,7 +150,7 @@ Spec: R9
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → RoundFixes, "a blocker is a security hole".
 
-**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+**coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
 > Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
 
@@ -162,7 +162,7 @@ Spec: R9
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Replanned, "a blocker is fundamental, or a new requirement".
 
-**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+**coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
 > Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
 
@@ -174,7 +174,7 @@ Spec: R9
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): MergeReview → Escalated, "a blocker needs Balazs".
 
-**admiral** (MergeReview, exit, on claim:Landing.ReviewFail):
+**coordinator** (MergeReview, exit, on claim:Landing.ReviewFail):
 
 > Route a landing merge-review blocker by kind: broken or against the spec to Fix, then the next round; a security hole to Fix, then the next round with the security lens first; fundamental or a new requirement to the officer above to re-plan; one that needs him up the chain at once.
 
@@ -186,7 +186,7 @@ Spec: N6
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Walkthrough → Merging, "Balazs accepts the landing candidate".
 
-**admiral** (Walkthrough, exit):
+**coordinator** (Walkthrough, exit):
 
 > When he accepts the landing candidate, it merges: AFK when two-way, on his click when one-way.
 
@@ -220,7 +220,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): Landed → 
 
 Spec: S14, D11, N7
 
-**admiral** (Merging, nominal):
+**coordinator** (Merging, nominal):
 
 > Once he accepts, move the spec's lasting parts to DRs, the glossary, docs and the verification map, then delete the spec and the plan files.
 
@@ -230,6 +230,6 @@ Spec: S14, D11, N7
 
 Spec: R28, N2
 
-**admiral** (Landed, nominal):
+**coordinator** (Landed, nominal):
 
 > The release tag is his to push.

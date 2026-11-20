@@ -12,7 +12,7 @@ type: reference
 
 Spec: R13
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > Pick each seat's model from this roster; it is his to edit, and he fills or approves the strengths, fits and not-for columns.
 >
@@ -44,7 +44,7 @@ Spec: R13
 
 Spec: R14
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > Read `dydo usage` and balance vendors for every seat you fill, captains and crew as well as reviewers.
 
@@ -58,7 +58,7 @@ Spec: R14
 
 Spec: R12
 
-**admiral** (Dispatching):
+**coordinator** (Dispatching):
 
 > Scale each round's seats with the breadth and depth of the work; there is no constant pair.
 

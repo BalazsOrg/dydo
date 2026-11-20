@@ -32,7 +32,7 @@
     },
     {
       "id": "ProjectArea",
-      "title": "A Project and its admiral",
+      "title": "A Project and its coordinator",
       "spec": [
         "H4",
         "H5",
@@ -219,7 +219,7 @@
       "claim": "claim:Overview.Cut",
       "from": "ProjectArea",
       "to": "TicketArea",
-      "arrow": "the admiral cuts a ticket and dispatches its captain",
+      "arrow": "the coordinator cuts a ticket and dispatches its captain",
       "spec": [
         "H5",
         "H3"
@@ -286,7 +286,7 @@
       "claim": "claim:Overview.Hold",
       "from": "HostArea",
       "to": "ProjectArea",
-      "arrow": "an admiral holds a live Project",
+      "arrow": "a coordinator holds a live Project",
       "spec": [
         "H4"
       ],
@@ -354,7 +354,7 @@
       "claim": "claim:Overview.Next",
       "from": "MergeArea",
       "to": "ProjectArea",
-      "arrow": "merged: the admiral cuts the next ticket",
+      "arrow": "merged: the coordinator cuts the next ticket",
       "spec": [
         "R20",
         "H5"

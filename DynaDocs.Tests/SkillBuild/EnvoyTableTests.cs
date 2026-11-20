@@ -69,7 +69,7 @@ public class EnvoyTableTests
     {
         Assert.Equal((Envoy.Jobs, Envoy.CloseSignal), (ProductionModel.Model.Envoys?.Jobs, ProductionModel.Model.Envoys?.CloseSignal));
         var tree = SkillBuilder.Build(ProductionModel.Model);
-        const string brief = "skills/roles/officers/admiral/resources/envoy-brief.md";
+        const string brief = "skills/roles/officers/coordinator/resources/envoy-brief.md";
 
         Assert.Contains(tree.Map, line => line.Path == brief && line.Claims.Contains($"{nameof(Envoy)}.{nameof(Envoy.CloseSignal)}"));
         Assert.Contains(EnvoyTable.Render(Envoy.Jobs), tree.Files[brief]);

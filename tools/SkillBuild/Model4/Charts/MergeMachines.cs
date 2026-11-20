@@ -19,7 +19,7 @@ public static class MergeMachines
     [
         new(FeatureMergeState.MergeTodo, "Merge hop in Todo", "S3", "S12"),
         new(FeatureMergeState.PreGate, "Running dydo test gate on the combined tree", "R21", "Y4"),
-        new(FeatureMergeState.PreFix, "A code-writer fixing a red gate", "R21"),
+        new(FeatureMergeState.PreFix, "An implementer fixing a red gate", "R21"),
         new(FeatureMergeState.Rereview, "A fresh round on the new head", "R8", "R17", "R23", "R24"),
         new(FeatureMergeState.Running, "Running dydo merge", "R21", "R23"),
         new(FeatureMergeState.Resolving, "Resolving a CONFLICT on the ticket branch", "R19", "R21"),

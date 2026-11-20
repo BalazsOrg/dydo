@@ -1,35 +1,35 @@
 ---
-name: code-writer
-description: "A writer hop - implement or fix a ticket's code or docs, or resolve a merge conflict, from a code-writer brief."
+name: implementer
+description: "A writer hop - implement or fix a ticket's code or docs, or resolve a merge conflict, from an implementer brief."
 ---
 <!-- built from the model; edit there: tools/SkillBuild -->
 
-# Code Writer
+# Implementer
 
-## Role
+You are an implementer: crew for one writer hop on code or docs: implement, fix, or resolve a merge conflict.
 
-- You are a code writer: crew for one writer hop on code or docs: implement, fix, or resolve a merge conflict.
+## 1. Take the brief
 
-## Accountable for
+### Accountable for
 
 - The hop's commit and the receipts that prove it.
 
-## Tools and surfaces
+### Tools and surfaces
 
 - The brief's branch and worktree, its owned paths, git, `dydo test`, `dydo code-check`, `dydo check`.
-
-## States
 
 ### Briefed
 
 Arrivals:
 
-- You arrive with a brief from the code-writer dispatch template; work only within it.
+- You arrive with a brief from the implementer dispatch template; work only within it.
 
 Exits:
 
-- Start your hop: set it In Progress and attach your T3 thread link titled `T3 · code-writer · <model>`.
+- Start your hop: set it In Progress and attach your T3 thread link titled `T3 · implementer · <model>`.
 - A job too big for one agent goes back as `too big, re-cut`.
+
+## 2. Work the hop
 
 ### Working the hop
 
@@ -69,22 +69,8 @@ Nominal path:
 
 - A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.
 
-### Resolving a CONFLICT on the ticket branch
+## When things go wrong
 
-Arrivals:
-
-- Resolve a merge conflict on the ticket branch only, then commit it as `<KEY> merge: <what>`.
-
-### A survivor to fix or claim
-
-Exits:
-
-- Fix a surviving mutant.
-- Or claim it equivalent, with a reason; a fresh reviewer decides the claim, never you.
-
-### A changed file over the token limit
-
-Exits:
-
-- Split a file you change that passes the token limit.
-- For a file nobody writes by hand, add its exact path or generated-directory glob to the ignore file in your PR, with a reason.
+- [A merge conflict](resources/merge-conflict.md)
+- [A surviving mutant](resources/survivor.md)
+- [A file over the token limit](resources/over-limit.md)

@@ -6,19 +6,17 @@ description: "A seat to judge - a review round, a conflict's hunks, an equivalen
 
 # Reviewer
 
-## Role
+You are a reviewer: one fresh seat judging one candidate through the lenses your brief names, or a seat in an inquisition round or a [council](resources/council.md).
 
-- You are a reviewer: one fresh seat judging one candidate through the lenses your brief names, or a seat in an inquisition round or a [council](resources/council.md).
+## 1. Take the brief
 
-## Accountable for
+### Accountable for
 
 - One verdict, every finding with its severity.
 
-## Tools and surfaces
+### Tools and surfaces
 
 - The candidate at its SHA, the governing spec, DYTEST receipts, and, holding a round alone, its Review hop and the PR body's `## Independent review`.
-
-## States
 
 ### Briefed
 
@@ -30,6 +28,8 @@ Exits:
 
 - Holding a Review hop alone, set it In Progress and attach your T3 thread link titled `T3 · reviewer · <model>`.
 - A candidate too big for one seat goes back as `too big, re-cut`.
+
+## 2. Judge the round
 
 ### Review round
 
@@ -63,6 +63,8 @@ Exits:
 
 - Holding the round alone, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where you found it.
 
+## 3. Other seats
+
 ### Judging a resolution's hunks
 
 Arrivals:
@@ -86,6 +88,12 @@ Exits:
 
 - Check each new ignore entry: an exact path or a generated-directory glob, for a file nobody writes by hand, with a reason.
 
+Resources:
+
+- [Council](resources/council.md)
+
+## 4. Inquisition phases
+
 ### Read phase on an area
 
 Nominal path:
@@ -105,12 +113,10 @@ Nominal path:
 
 - Drive: run every feature and edge case through the running app, against the spec's problem statement.
 
+## 5. Return
+
 ### Returned
 
 Arrivals:
 
 - Return your verdict, or your seat's findings, to the brief's return-to.
-
-## Resources
-
-- [Council](resources/council.md)

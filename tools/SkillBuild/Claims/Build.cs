@@ -11,17 +11,17 @@ public static class Build
         "the golden test finds a byte difference, or the stray-claim lint finds pasted claim text", "K7", "K24");
     public static readonly Claim Pass = Move(ClaimBuildState.Built, ClaimBuildState.Checked, Actor.SkillBuild,
         "golden, shape and stray-claim checks pass, in the suite and in CI", "K7", "K10", "K24");
-    public static readonly Claim Mend = Move(ClaimBuildState.Rejected, ClaimBuildState.Edited, Actor.CodeWriter,
+    public static readonly Claim Mend = Move(ClaimBuildState.Rejected, ClaimBuildState.Edited, Actor.Implementer,
         "the model is fixed", "K6");
     public static readonly Claim HandEdit = Move(ClaimBuildState.Built, ClaimBuildState.Nudged, Actor.Guard,
         "an Edit or Write to a built path", "K6");
-    public static readonly Claim EditThere = Move(ClaimBuildState.Nudged, ClaimBuildState.Edited, Actor.CodeWriter,
+    public static readonly Claim EditThere = Move(ClaimBuildState.Nudged, ClaimBuildState.Edited, Actor.Implementer,
         "the edit goes into the model instead", "K6");
     public static readonly Claim Tlc = Move(ClaimBuildState.Checked, ClaimBuildState.TlcPassed, Actor.SkillBuild,
         "TLC passes the generated moves against the hand-written properties; the result is recorded with the candidate", "K3", "K20", "N14");
     public static readonly Claim TlcFail = Move(ClaimBuildState.Checked, ClaimBuildState.TlcFailed, Actor.SkillBuild,
         "TLC fails a property: the push is not done and nothing goes to his approval", "K3", "K20");
-    public static readonly Claim Remodel = Move(ClaimBuildState.TlcFailed, ClaimBuildState.Edited, Actor.CodeWriter,
+    public static readonly Claim Remodel = Move(ClaimBuildState.TlcFailed, ClaimBuildState.Edited, Actor.Implementer,
         "the push is not done: the model is fixed and built again", "K20", "K6");
     public static readonly Claim Read = Move(ClaimBuildState.TlcPassed, ClaimBuildState.InReview, Actor.Balazs,
         "the model PR is read through its built-skill diff", "K16");

@@ -34,7 +34,7 @@ public static class HierarchyMachines
     {
         Variables =
         [
-            new("level", "\"captain\"", "level \\in {\"captain\", \"admiral\"}"),
+            new("level", "\"captain\"", "level \\in {\"captain\", \"coordinator\"}"),
             new("envoys", "0", "envoys \\in {0, 1}")
         ]
     };

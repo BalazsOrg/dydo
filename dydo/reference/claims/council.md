@@ -104,6 +104,6 @@ Spec: L22, L15
 
 Spec: L22
 
-**admiral** (MergeReview, nominal):
+**coordinator** (MergeReview, nominal):
 
 > With one family out, Merge confidence waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.

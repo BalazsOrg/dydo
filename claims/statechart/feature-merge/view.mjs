@@ -2,7 +2,7 @@
 const states = {
   "MergeTodo": "Merge hop in Todo · S3, S12",
   "PreGate": "Running dydo test gate on the combined tree · R21, Y4",
-  "PreFix": "A code-writer fixing a red gate · R21",
+  "PreFix": "An implementer fixing a red gate · R21",
   "Rereview": "A fresh round on the new head · R8, R17, R23, R24",
   "Running": "Running dydo merge · R21, R23",
   "Resolving": "Resolving a CONFLICT on the ticket branch · R19, R21",

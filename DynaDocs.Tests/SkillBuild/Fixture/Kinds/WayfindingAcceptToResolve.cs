@@ -48,7 +48,7 @@ public static class WayfindingAcceptToResolve
         [A.TicketCaptain],
         [
             new(S.TicketCaptain, "If delivery exposes new fog, load `wayfinder` and use its Wayfinding Tickets to course-correct.", new(F.TicketCaptainBoundary, 33)),
-            new(S.Wayfinder, "A Ticket Captain may chart local fog inside one approved delivery outcome.", new(HeaderPart.Role, 4))
+            new(S.Wayfinder, "A Ticket Captain may chart local fog inside one approved delivery outcome.", new(SpinePart.Job, 4))
         ]);
 
     public static readonly Claim CaptainRoutesHandRaise = new(
@@ -186,7 +186,7 @@ public static class WayfindingAcceptToResolve
         "The map holder charts with wayfinder (and grills) before dividing the work.",
         [A.MapHolder],
         [
-            new(S.Wayfinder, "The **map holder** charts and grills.", new(HeaderPart.Role, 2))
+            new(S.Wayfinder, "The **map holder** charts and grills.", new(SpinePart.Job, 2))
         ]);
 
     public static readonly Claim MapHolderPreClearsFog = new(

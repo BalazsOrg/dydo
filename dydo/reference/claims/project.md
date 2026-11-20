@@ -8,11 +8,11 @@ type: reference
 
 ## Take
 
-`claim:Project.Take`: Every open Project has a live admiral holding its outcome.
+`claim:Project.Take`: Every open Project has a live coordinator holding its outcome.
 
 Spec: H4
 
-Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Unheld → Charting, "the Project opens; it has a live admiral". A system transition: no skill carries it.
+Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Unheld → Charting, "the Project opens; it has a live coordinator". A system transition: no skill carries it.
 
 ## Charted
 
@@ -20,9 +20,9 @@ Transition in A Project and its admiral (`claims/statechart/project/Project.tla`
 
 Spec: S14, S15
 
-Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Charting → Watching, "the spec exists and the first tickets are contracted".
+Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Charting → Watching, "the spec exists and the first tickets are contracted".
 
-**admiral** (Charting, exit):
+**coordinator** (Charting, exit):
 
 > Leave charting once `Spec: <Project>` exists and the first tickets carry contracts that quote and link it.
 
@@ -32,9 +32,9 @@ Transition in A Project and its admiral (`claims/statechart/project/Project.tla`
 
 Spec: R9
 
-Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Watching → Replanning, "a blocker is fundamental, or a new requirement".
+Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Watching → Replanning, "a blocker is fundamental, or a new requirement".
 
-**admiral** (Replanning, arrival):
+**coordinator** (Replanning, arrival):
 
 > A fundamental blocker or a new requirement from below: re-plan the affected part of the map.
 
@@ -44,9 +44,9 @@ Transition in A Project and its admiral (`claims/statechart/project/Project.tla`
 
 Spec: S10
 
-Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Replanning → Watching, "dead hops Canceled with a reason".
+Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Replanning → Watching, "dead hops Canceled with a reason".
 
-**admiral** (Replanning, exit):
+**coordinator** (Replanning, exit):
 
 > Cancel each dead hop with a one-line reason, then go back to watching.
 
@@ -60,9 +60,9 @@ Transition in A Project and its admiral (`claims/statechart/project/Project.tla`
 
 Spec: N5
 
-Transition in A Project and its admiral (`claims/statechart/project/Project.tla`): Watching → Landing, "every delivery ticket is merged into the feature branch".
+Transition in A Project and its coordinator (`claims/statechart/project/Project.tla`): Watching → Landing, "every delivery ticket is merged into the feature branch".
 
-**admiral** (Watching, exit):
+**coordinator** (Watching, exit):
 
 > When every delivery ticket is merged into the feature branch, start the landing.
 
@@ -72,7 +72,7 @@ Transition in A Project and its admiral (`claims/statechart/project/Project.tla`
 
 Spec: S14
 
-**admiral** (Charting, nominal):
+**coordinator** (Charting, nominal):
 
 > Write and refine `Spec: <Project>`, a main Linear document on the Project with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks; a sub-feature that needs defining well gets its own spec, linked from it.
 
@@ -86,7 +86,7 @@ Spec: S14
 
 Spec: S16
 
-**admiral** (Charting, nominal):
+**coordinator** (Charting, nominal):
 
 > Give every feature a spec, whether or not a DR backs it.
 
@@ -96,7 +96,7 @@ Spec: S16
 
 Spec: N12 DR 045 §8
 
-**admiral** (Charting, nominal):
+**coordinator** (Charting, nominal):
 
 > Open `feature/<project-slug>` from main before the first ticket branch.
 
@@ -110,7 +110,7 @@ Spec: N12 DR 045 §8
 
 Spec: N12 DR 060 §1
 
-**admiral** (Charting, nominal):
+**coordinator** (Charting, nominal):
 
 > Place the Project's Milestones in Linear while charting: few, each a chunk where drift from his intent would show, the walking skeleton first and the landing last; every delivery ticket belongs to one.
 
@@ -120,7 +120,7 @@ Spec: N12 DR 060 §1
 
 Spec: N12 DR 060 §3
 
-**admiral** (Charting, nominal):
+**coordinator** (Charting, nominal):
 
 > File the walking skeleton's Walkthrough with the map, as a native blocker of the next Milestone's tickets until his verdict or skip; later Milestones' Walkthroughs block nothing.
 
@@ -130,17 +130,17 @@ Spec: N12 DR 060 §3
 
 Spec: H9
 
-**admiral** (Charting, nominal):
+**coordinator** (Charting, nominal):
 
 > Charting a release, first harvest the adopters' Agent friction queues and local patches.
 
 ## Tick
 
-`claim:Project.Tick`: The admiral's watch is a deterministic loop over the survey, the board and liveness.
+`claim:Project.Tick`: The coordinator's watch is a deterministic loop over the survey, the board and liveness.
 
 Spec: H5, S22, S23
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Each tick, read `dydo survey board <project>`, the board and the liveness findings, and act on every finding.
 
@@ -150,17 +150,17 @@ Spec: H5, S22, S23
 
 Spec: R31
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > An empty tick ends in one line.
 
 ## CheckIn
 
-`claim:Project.CheckIn`: The admiral keeps a 20-minute scheduled check-in while work is in flight or pickable.
+`claim:Project.CheckIn`: The coordinator keeps a 20-minute scheduled check-in while work is in flight or pickable.
 
 Spec: N12 DR 047, H5
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Keep a T3 `schedule_task` check-in every 20 minutes on your own thread while work is in flight or pickable; delete it when only his word is awaited.
 
@@ -170,7 +170,7 @@ Spec: N12 DR 047, H5
 
 Spec: H10
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Keep your level's lanes full, toward a soft target of four; when the mainline can't fill one, pull your own pickable side tickets first, then continuous tickets.
 
@@ -184,7 +184,7 @@ Spec: H10
 
 Spec: H11
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Pull without asking only a ticket that is Mode AFK; a Bug or small Feature at Severity should or lower, or an unrated CI finding; two-way; no design call; oldest first.
 
@@ -198,7 +198,7 @@ Spec: H11
 
 Spec: H8
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > A continuous ticket you pull follows your chain from then on.
 
@@ -208,11 +208,11 @@ Spec: H8
 
 ## CiFinding
 
-`claim:Project.CiFinding`: A CI finding goes to its open ticket's officer, or to the admiral for a long-closed one.
+`claim:Project.CiFinding`: A CI finding goes to its open ticket's officer, or to the coordinator for a long-closed one.
 
 Spec: H11
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Send a CI finding for an open ticket to that ticket's officer; one for a long-closed ticket is yours.
 
@@ -222,7 +222,7 @@ Spec: H11
 
 Spec: S7
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > One agent holds one ticket; wrap several steps for one agent in one ticket.
 
@@ -240,7 +240,7 @@ Spec: S7
 
 Spec: S15
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Write each ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
 
@@ -258,41 +258,41 @@ Spec: S15
 
 Spec: S15
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > When the spec changes, reconcile the open contracts.
 
 ## Uncontracted
 
-`claim:Project.Uncontracted`: The admiral contracts an uncontracted Backlog ticket to Todo.
+`claim:Project.Uncontracted`: The coordinator contracts an uncontracted Backlog ticket to Todo.
 
 Spec: N12 DR 063 §4
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Contract an `uncontracted` ticket (Backlog, unassigned, no open blocker) to Todo.
 
 ## FeatureBranchYours
 
-`claim:Project.FeatureBranchYours`: The feature branch is the admiral's, to merge into as it wishes.
+`claim:Project.FeatureBranchYours`: The feature branch is the coordinator's, to merge into as it wishes.
 
 Spec: R25
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Merges into your feature branch need no approval but yours.
 
 **working-tree-standard** (TreeBranches):
 
-> The feature branch is the admiral's: it merges into it as it wishes.
+> The feature branch is the coordinator's: it merges into it as it wishes.
 
 ## OneWayPaths
 
-`claim:Project.OneWayPaths`: The admiral keeps the one-way path list in dydo.json.
+`claim:Project.OneWayPaths`: The coordinator keeps the one-way path list in dydo.json.
 
 Spec: R27
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Keep the one-way path list in `dydo.json`.
 
@@ -302,7 +302,7 @@ Spec: R27
 
 Spec: N12 DR 060 §2, H22
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > When a Milestone's last ticket merges into the feature branch, offer its walkthrough through a fresh envoy; a skip is a verdict to go on.
 
@@ -312,7 +312,7 @@ Spec: N12 DR 060 §2, H22
 
 Spec: N12 DR 060 §4
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Overnight, the skeleton's Walkthrough blocks nothing: post `DECIDED` on it, carry on, and treat a wrong direction as a revert.
 
@@ -322,7 +322,7 @@ Spec: N12 DR 060 §4
 
 Spec: N4
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Run a walkthrough on master whenever possible.
 
@@ -332,7 +332,7 @@ Spec: N4
 
 Spec: R30
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Give each mistake found after landing a lint, test or rule as well as its fix.
 
@@ -342,7 +342,7 @@ Spec: R30
 
 Spec: H21
 
-**admiral** (Watching, nominal):
+**coordinator** (Watching, nominal):
 
 > Keep the work going through any usage limit, and never bring one to him.
 
@@ -356,10 +356,10 @@ Spec: H21
 
 ## Rechart
 
-`claim:Project.Rechart`: The admiral re-charts as fog clears.
+`claim:Project.Rechart`: The coordinator re-charts as fog clears.
 
 Spec: H5, N12 DR 045 §5
 
-**admiral** (Wayfinding):
+**coordinator** (Wayfinding):
 
 > Re-chart as fog clears: create, split, drop or resequence tickets.

@@ -95,7 +95,7 @@ internal sealed class Statechart
 
     private void StatesAreMachineStates(SkillSpec skill)
     {
-        foreach (var slot in skill.States)
+        foreach (var slot in skill.StateSlots)
             if (!_machineOf.TryGetValue(slot.Id, out var machine) || machine.States.First(state => Equals(state.Id, slot.Id)).Title != slot.Title)
                 throw new InvalidDataException(
                     $"{skill.Name}: state {Names.Of(slot.Id)} is not a machine state as its machine titles it; declare it with Machine.Slots");

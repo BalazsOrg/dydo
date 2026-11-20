@@ -12,7 +12,7 @@ type: reference
 
 Spec: Y6, T21, T13
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Run tests through `dydo test`, and the static gates through `dydo code-check`, which checks changed files only.
 
@@ -22,7 +22,7 @@ Spec: Y6, T21, T13
 
 Spec: T15, T14
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > The file token limit is 5k tokens by default, counted as bytes ÷ 4, for every file you change, tests included.
 

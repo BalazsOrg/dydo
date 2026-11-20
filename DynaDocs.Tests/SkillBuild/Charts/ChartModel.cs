@@ -24,10 +24,10 @@ internal static class ChartModel
     public static readonly Machine Other = new(ChartMachine.Other, "Other", [new(OtherState.Idle, "Idle", "K1")], OtherState.Idle, []);
 
     public static readonly SkillSpec Holder =
-        SkillSpec.Crew(ChartSkill.Holder, "Holder", "Holds a lease.") with { States = Lease.Slots(LeaseState.Held) };
+        SkillSpec.Crew(ChartSkill.Holder, "Holder", "Holds a lease.") with { Phases = [new("Hold", Lease.Slots(LeaseState.Held))] };
 
     public static readonly SkillSpec Warden =
-        SkillSpec.Officer(ChartSkill.Warden, "Warden", "Reviews a lease.") with { States = Lease.Slots(LeaseState.Review) };
+        SkillSpec.Officer(ChartSkill.Warden, "Warden", "Reviews a lease.") with { Phases = [new("Review", Lease.Slots(LeaseState.Review))] };
 
     public static Model With(params Type[] kinds) => Of([Lease], [Holder, Warden], kinds);
 

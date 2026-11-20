@@ -155,7 +155,7 @@ public static class DecisionPreparedToWork
         [
             new(S.Admiral, "A call above your say goes through `what-would-balazs-do` when it is DR-grade or irreversible, or when the user is away; it sets the Question's wiring.", new(F.AdmiralMethod, 49)),
             new(S.TicketCaptain, "A call above your say goes through `what-would-balazs-do` when it is DR-grade or irreversible, or when the user is away; it sets the Question's wiring.", new(F.TicketCaptainRelease, 1)),
-            new(S.WhatWouldBalazsDo, "Use when an officer must decide one while he is away, prepare a DR-grade or irreversible one for him, or when he asks for it on any call.", new(HeaderPart.Role, 1))
+            new(S.WhatWouldBalazsDo, "Use when an officer must decide one while he is away, prepare a DR-grade or irreversible one for him, or when he asks for it on any call.", new(SpinePart.Job, 1))
         ]);
 
     public static readonly Claim VoteNeverWidensRemit = new(

@@ -10,8 +10,8 @@ public static class FeatureMerge
     public static readonly Claim PreGreen = new("dydo test gate leaves a green receipt for the combined tree; the merge runs.", [Actor.Dytest], [])
     { Spec = ["Y4", "R23"], Transition = new(FeatureMergeState.PreGate, FeatureMergeState.Running, "a green receipt for the combined tree") };
 
-    public static readonly Claim PreRed = new("A real red gate goes to a code-writer.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "On a real red gate, send a code-writer to fix it on the ticket branch.", new(FeatureMergeState.PreGate, 620, MoveKind.Exit))])
+    public static readonly Claim PreRed = new("A real red gate goes to an implementer.", [Actor.TicketCaptain],
+        [new(Skill.TicketCaptain, "On a real red gate, send an implementer to fix it on the ticket branch.", new(FeatureMergeState.PreGate, 620, MoveKind.Exit))])
     { Spec = ["R21"], Transition = new(FeatureMergeState.PreGate, FeatureMergeState.PreFix, "a real red gate before the merge") };
 
     public static readonly Claim PreFixed = new("A fix moves the head, so a fresh round must pass the new head.", [Actor.TicketCaptain], [])
@@ -29,10 +29,10 @@ public static class FeatureMerge
     public static readonly Claim HandShaped = new("dydo merge refuses a hand-shaped tree; it is resolved on the ticket branch with a hunk review.", [Actor.DydoMerge], [])
     { Spec = ["R19"], Transition = new(FeatureMergeState.Running, FeatureMergeState.Resolving, "refused: a hand-shaped tree") };
 
-    public static readonly Claim Conflict = new("A CONFLICT goes to a code-writer, resolved only on the ticket branch.", [Actor.TicketCaptain, Actor.CodeWriter],
+    public static readonly Claim Conflict = new("A CONFLICT goes to an implementer, resolved only on the ticket branch.", [Actor.TicketCaptain, Actor.Implementer],
     [
-        new(Skill.TicketCaptain, "On `CONFLICT`, send a code-writer to resolve it on the ticket branch.", new(FeatureMergeState.Running, 602, MoveKind.Exit)),
-        new(Skill.CodeWriter, "Resolve a merge conflict on the ticket branch only, then commit it as `<KEY> merge: <what>`.", new(FeatureMergeState.Resolving, 602, MoveKind.Arrival)),
+        new(Skill.TicketCaptain, "On `CONFLICT`, send an implementer to resolve it on the ticket branch.", new(FeatureMergeState.Running, 602, MoveKind.Exit)),
+        new(Skill.Implementer, "Resolve a merge conflict on the ticket branch only, then commit it as `<KEY> merge: <what>`.", new(FeatureMergeState.Resolving, 602, MoveKind.Arrival)),
         new(Skill.WorkingTreeStandard, "A conflict is resolved only on the ticket branch, under a fresh review of its hunks.", new(Section.TreeMerging, 3))
     ])
     { Spec = ["R21", "R19"], Transition = new(FeatureMergeState.Running, FeatureMergeState.Resolving, "dydo merge reports CONFLICT") };
@@ -76,7 +76,7 @@ public static class FeatureMerge
     { Spec = ["R22", "Y9", "S12"], Transition = new(FeatureMergeState.Rerun, FeatureMergeState.Reverted, "red again: a real red") };
 
     public static readonly Claim FixAfterRevert = new("After a revert, a Fix on the ticket branch and a fix-scoped round.", [Actor.TicketCaptain],
-        [new(Skill.TicketCaptain, "Send a code-writer to fix it on the ticket branch, then hold a fix-scoped round.", new(FeatureMergeState.Reverted, 610, MoveKind.Exit))])
+        [new(Skill.TicketCaptain, "Send an implementer to fix it on the ticket branch, then hold a fix-scoped round.", new(FeatureMergeState.Reverted, 610, MoveKind.Exit))])
     { Spec = ["R22", "R21"], Transition = new(FeatureMergeState.Reverted, FeatureMergeState.FixRound, "a Fix follows on the ticket branch") };
 
     public static readonly Claim Reland = new("The re-land runs dydo merge, which reverts the revert.", [Actor.TicketCaptain],

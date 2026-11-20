@@ -17,7 +17,7 @@ const steps = {
   "Envoy_Decide": "the homework answers it, or the call is obvious and reversible · H16, L18",
   "Envoy_Hard": "a hard call: competing answers, each good through some lens · H5, L18",
   "Envoy_InThread": "he is already in this officer's thread · H22, H6",
-  "Envoy_MovedOn": "he has plainly moved on, the thread still open: the next envoy may go, at the admiral's discretion · H18",
+  "Envoy_MovedOn": "he has plainly moved on, the thread still open: the next envoy may go, at the coordinator's discretion · H18",
   "Envoy_NextLevel": "the officer above takes it · H12",
   "Envoy_Open": "only he can settle it · H15, H17, S10",
   "Envoy_PassUp": "a captain passes what remains up the chain · H16, H12",

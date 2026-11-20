@@ -12,7 +12,7 @@ public static class Research
         "Every claim is followed back to the source that owns it; a doc account of the code is a lead to the code, not a finding.",
         [A.Research, A.Scout],
         [
-            new(S.Research, "Follow every claim back to the source that owns it, and search wide enough to know what you missed.", new(HeaderPart.Role, 1)),
+            new(S.Research, "Follow every claim back to the source that owns it, and search wide enough to know what you missed.", new(SpinePart.Job, 1)),
             new(S.Scout, "Take the passage from the source that owns the claim: a doc's account of the code is a lead to the code, not a finding.", new(F.ScoutMethod, 3))
         ]);
 

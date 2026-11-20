@@ -140,7 +140,7 @@ Transition in Proof tests and gates (`claims/statechart/proof/Proof.tla`): Confo
 
 Spec: T1, R3
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Write a suite test only to guard a trap, pin a traced contract (spec or DR), or reach an edge driving can't.
 
@@ -154,7 +154,7 @@ Spec: T1, R3
 
 Spec: T3
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Show every graduating test failing without the code; a Bug still starts from a red reproduction.
 
@@ -164,7 +164,7 @@ Spec: T3
 
 Spec: T4
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Test at the deepest module boundary, or the product boundary, that can observe the behaviour; a unit test graduates only for an edge or trap that test can't reach cheaply.
 
@@ -174,7 +174,7 @@ Spec: T4
 
 Spec: T5
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Tag each graduating test with its job: trap (naming the bug or pitfall), contract (citing the spec or DR) or edge.
 
@@ -188,7 +188,7 @@ Spec: T5
 
 Spec: T5
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Keep proof tests in the ticket's commits, and record their SHA in the receipt and in `proof:`.
 
@@ -198,7 +198,7 @@ Spec: T5
 
 Spec: T5
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Make nothing depend on old evidence: a squash or a fresh start must break nothing.
 
@@ -208,7 +208,7 @@ Spec: T5
 
 Spec: T6
 
-**code-writer** (Conformance, nominal):
+**implementer** (Conformance, nominal):
 
 > A rewrite or wide refactor gets a conformance suite, apart from its graduating tests and never instead of them: its traced assertions graduate like any graduating test, red first, and its 'matches old implementation' assertions go at the rewrite's landing.
 
@@ -218,7 +218,7 @@ Spec: T6
 
 Spec: T22
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.
 
@@ -232,7 +232,7 @@ Spec: T22
 
 Spec: T7
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Property tests for edges and differential tests for rewrites are guidance, never a gate.
 
@@ -242,7 +242,7 @@ Spec: T7
 
 Spec: R5
 
-**code-writer** (Working, nominal):
+**implementer** (Working, nominal):
 
 > Prove the hop with receipts; a DYTEST result for the same tree counts unless later changes put it in doubt.
 

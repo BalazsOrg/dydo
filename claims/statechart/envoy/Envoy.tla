@@ -28,7 +28,7 @@ Envoy_Decide ==
 \* claim:Envoy.Hard
 Envoy_Hard ==
     /\ state = "Homework"
-    /\ level = "admiral"
+    /\ level = "coordinator"
     /\ state' = "ToTribunal"
     /\ UNCHANGED <<level, envoys>>
 
@@ -49,13 +49,13 @@ Envoy_MovedOn ==
 Envoy_NextLevel ==
     /\ state = "PassedUp"
     /\ state' = "Homework"
-    /\ level' = "admiral"
+    /\ level' = "coordinator"
     /\ UNCHANGED <<envoys>>
 
 \* claim:Envoy.Open
 Envoy_Open ==
     /\ state = "Homework"
-    /\ level = "admiral"
+    /\ level = "coordinator"
     /\ state' = "Queued"
     /\ UNCHANGED <<level, envoys>>
 
@@ -84,7 +84,7 @@ Envoy_Send ==
 Envoy_Take ==
     /\ state = "Need"
     /\ state' = "Homework"
-    /\ level' \in {"captain", "admiral"}
+    /\ level' \in {"captain", "coordinator"}
     /\ UNCHANGED <<envoys>>
 
 Done == state \in Finals /\ UNCHANGED vars
@@ -103,7 +103,7 @@ Next ==
     \/ Envoy_Take
     \/ Done
 
-Bounds == level \in {"captain", "admiral"} /\ envoys \in {0, 1}
+Bounds == level \in {"captain", "coordinator"} /\ envoys \in {0, 1}
 
 Fairness == TRUE
 

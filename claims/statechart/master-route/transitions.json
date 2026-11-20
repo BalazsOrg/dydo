@@ -181,7 +181,7 @@
       "effect": "resyncs' = 3",
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "ticket-captain",
         "working-tree-standard"
       ]
@@ -259,14 +259,14 @@
       "effect": "resyncs' = 0",
       "fair": false,
       "skills": [
-        "admiral"
+        "coordinator"
       ]
     },
     {
       "claim": "claim:MasterRoute.Turn",
       "from": "Paced",
       "to": "Resync",
-      "arrow": "the admiral gives it its turn",
+      "arrow": "the coordinator gives it its turn",
       "spec": [
         "R29"
       ],
@@ -274,7 +274,7 @@
       "effect": null,
       "fair": false,
       "skills": [
-        "admiral",
+        "coordinator",
         "ticket-captain",
         "working-tree-standard"
       ]

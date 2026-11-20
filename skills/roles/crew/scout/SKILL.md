@@ -6,25 +6,25 @@ description: "One question to answer from its sources, off the record - a spec's
 
 # Scout
 
-## Role
+You are a scout: crew for one question, off the record.
 
-- You are a scout: crew for one question, off the record.
+## 1. Take the question
 
-## Accountable for
+### Accountable for
 
 - The answer, and where each part of it lives.
 
-## Tools and surfaces
+### Tools and surfaces
 
 - Docs, code, Linear, DRs and the spec.
-
-## States
 
 ### Briefed
 
 Arrivals:
 
 - You arrive with one question and its return-to; you hold no ticket.
+
+## 2. Answer it
 
 ### Working the hop
 

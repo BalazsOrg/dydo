@@ -32,7 +32,7 @@ Transition in The chief of staff (`claims/statechart/staff/Staff.tla`): Investig
 
 ## Muster
 
-`claim:Staff.Muster`: Overnight mode, the chief of staff's and the admiral's, starts at muster.
+`claim:Staff.Muster`: Overnight mode, the chief of staff's and the coordinator's, starts at muster.
 
 Spec: K11, L21
 
@@ -116,7 +116,7 @@ Spec: H7
 
 **chief-of-staff** (Day, nominal):
 
-> Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its admiral's own envoy.
+> Pass on thread links, never their content, and send no envoys: an escalation that needs him goes through its coordinator's own envoy.
 
 ## DoubleCheck
 
@@ -126,4 +126,4 @@ Spec: H7, H12
 
 **chief-of-staff** (NightWatch, nominal):
 
-> Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the admirals' own scheduled surveys.
+> Overnight, your 12-hour check on a quiet Project is only a cheap double check behind the coordinators' own scheduled surveys.

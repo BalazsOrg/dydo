@@ -5,8 +5,8 @@ using DynaDocs.SkillBuild;
 using DynaDocs.Tests.SkillBuild.Slots;
 
 /// <summary>
-/// K9's spine and appendices, K26's Codex metadata and K6's header and destinations, as the slot
-/// fixture builds them (DYD-1196 A5, B9, B10, B11, C18).
+/// K9's spine and scenarios, K14's dispatch template, K26's Codex metadata and K6's header and
+/// destinations, as the slot fixture builds them (DYD-1196 A5, B9, B10, B11, C18).
 /// </summary>
 public class SpineLayoutTests
 {
@@ -15,8 +15,8 @@ public class SpineLayoutTests
     private static readonly IReadOnlyDictionary<string, string> Built = SkillBuilder.Build(DemoModel.With()).Files;
 
     [Fact]
-    [Trait("Job", "contract: K9 the spine renders header parts, states by move, routines, then its resource list (A5, C18)")]
-    public void Spine_RendersHeaderStatesRoutinesAndResourcesInOrder() =>
+    [Trait("Job", "contract: K9 the spine renders its job paragraph, numbered phases with their slots and links, then When things go wrong")]
+    public void Spine_RendersJobPhasesAndWhenThingsGoWrongInOrder() =>
         Assert.Equal(
             """
             ---
@@ -28,19 +28,16 @@ public class SpineLayoutTests
 
             # Demo
 
-            ## Role
+            You own one ticket from intake to return.
+            You return to the officer who sent you.
 
-            - You own one ticket from intake to return.
-
-            ## Accountable for
+            ## 1. Take the ticket
 
             - You answer for the proof of your change.
 
-            ## Tools and surfaces
+            ### Tools and surfaces
 
             - Your worktree and its branch.
-
-            ## States
 
             ### Intake
 
@@ -55,7 +52,9 @@ public class SpineLayoutTests
 
             Exits:
 
-            - Stop when the lease goes stale. ([Stale lease](resources/stale-lease.md))
+            - Stop when the lease goes stale.
+
+            ## 2. Do the work
 
             ### Work
 
@@ -63,22 +62,26 @@ public class SpineLayoutTests
 
             - Start work once intake is done.
 
-            ## Routines
-
             ### Dispatch crew
 
             - Dispatch crew with a ticket.
 
-            ## Resources
+            Resources:
 
             - [Guide](resources/guide.md)
+            - [Crew brief](resources/brief.md)
+
+            ## When things go wrong
+
+            - Each scenario ends resolved or escalated.
+            - [Stale lease](resources/stale-lease.md)
 
             """.ReplaceLineEndings("\n"),
             Built[Folder + "SKILL.md"]);
 
     [Fact]
-    [Trait("Job", "contract: K9 an appendix is its own file, linked from the move that raises it (A5, C18)")]
-    public void Appendix_IsAResourceFileWithItsLinesInOrder() =>
+    [Trait("Job", "contract: K9 a scenario is its own resource file, linked from When things go wrong")]
+    public void Scenario_IsAResourceFileWithItsLinesInOrder() =>
         Assert.Equal(
             """
             <!-- built from the model; edit there: tools/SkillBuild -->
@@ -90,6 +93,20 @@ public class SpineLayoutTests
 
             """.ReplaceLineEndings("\n"),
             Built[Folder + "resources/stale-lease.md"]);
+
+    [Fact]
+    [Trait("Job", "contract: K14 a dispatch template opens with its default skill set, each skill named with a slash")]
+    public void Template_OpensWithItsSkillsEachWithASlash() =>
+        Assert.Equal(
+            """
+            <!-- built from the model; edit there: tools/SkillBuild -->
+
+            # Crew brief
+
+            Skills: /demo
+
+            """.ReplaceLineEndings("\n"),
+            Built[Folder + "resources/brief.md"]);
 
     [Fact]
     [Trait("Job", "trap: a fenced block bulleted line by line breaks, so a multi-line line is emitted verbatim")]

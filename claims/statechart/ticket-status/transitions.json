@@ -118,7 +118,7 @@
       "claim": "claim:TicketStatus.Contract",
       "from": "Backlog",
       "to": "Todo",
-      "arrow": "the admiral contracts an uncontracted ticket",
+      "arrow": "the coordinator contracts an uncontracted ticket",
       "spec": [
         "N12 DR 063 §4"
       ],
