@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-08
 participants: [balazs, Henry]
+applies: [dydo-effort-right-agent]
 ---
 
 # 037 - Cross-Vendor Dispatch: Same-Vendor Default, Explicit Override at the Dispatch Boundary, No New Abstraction

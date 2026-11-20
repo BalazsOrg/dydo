@@ -5,6 +5,7 @@ status: accepted
 date: 2026-09-24
 accepted: 2026-09-24
 participants: [balazs, Claude admiral]
+applies: [dydo-effort-right-sized-bureaucracy]
 ---
 
 # 051 - Captains by Default, the Admiral on Invocation

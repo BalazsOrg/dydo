@@ -3,6 +3,7 @@ area: project
 type: decision
 status: accepted
 date: 2026-04-29
+applies: [new-ground]
 ---
 
 # 022 - Auto-Resume Crashed Agents

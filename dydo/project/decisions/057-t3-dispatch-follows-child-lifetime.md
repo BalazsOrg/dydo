@@ -3,6 +3,7 @@ area: general
 type: decision
 status: accepted
 date: 2026-10-28
+applies: [dydo-attention-human-decisions]
 ---
 
 # 057 - T3 Dispatch Follows the Child's Lifetime

@@ -3,6 +3,7 @@ area: general
 type: decision
 status: accepted
 date: 2026-10-30
+applies: [dydo-easy-path]
 ---
 
 # 062 - Statechart Invocation Owns Prerequisites and Continuation

@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-08
 participants: [balazs, Leo]
+applies: [new-ground]
 ---
 
 # 038 - Auto-Memory Policy: dydo-First Routing, Memory as Buffer, Chief-of-Staff Sweep

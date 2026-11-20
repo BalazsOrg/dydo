@@ -5,6 +5,7 @@ status: accepted
 date: 2026-09-02
 accepted: 2026-09-04
 participants: [balazs, Claude (Fable)]
+applies: [dydo-context-keep-related-work]
 ---
 
 # 046 - Executable Specifications, the Specifier, and Commit-Addressed Hops

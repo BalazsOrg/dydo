@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-09
 area: project
+applies: [dydo-efficiency]
 ---
 
 # 005 - Fresh Agent Over Wait-for-Feedback

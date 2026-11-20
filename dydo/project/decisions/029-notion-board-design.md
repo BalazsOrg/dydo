@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-03
 participants: [balazs, Charlie]
+applies: [dydo-attention-human-decisions]
 ---
 
 # 029 - Notion Board Design: Visual Schema, PM Semantics, and Schema-Shape Ownership

@@ -3,6 +3,7 @@ area: general
 type: decision
 status: accepted
 date: 2026-10-28
+applies: [dydo-scarce-attention]
 ---
 
 # 060 - Milestone Walkthroughs and the Walking Skeleton

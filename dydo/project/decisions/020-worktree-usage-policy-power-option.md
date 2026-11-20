@@ -3,6 +3,7 @@ area: project
 type: decision
 status: accepted
 date: 2026-04-29
+applies: [dydo-effort-right-sized-bureaucracy]
 ---
 
 # 020 - Worktree Usage Policy: Power Option, Not Default

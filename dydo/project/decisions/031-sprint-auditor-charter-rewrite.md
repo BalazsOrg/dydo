@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-03
 participants: [balazs, Adele]
+applies: [dydo-context-keep-related-work]
 ---
 
 # 031 - Sprint-Auditor Charter Rewrite: One Identity, One Invariant, a Budget Instead of a Prohibition

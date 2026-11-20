@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-11
 area: project
+applies: [new-ground]
 ---
 
 # 009 - CRAP Uses Per-Method Cyclomatic Complexity
