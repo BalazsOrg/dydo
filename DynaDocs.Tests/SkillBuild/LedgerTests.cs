@@ -72,6 +72,20 @@ public class LedgerTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1372 A7 r1 N1 a legacy line kept in an open claim, which no built file states, reads withheld (open), never kept")]
+    public void LineKeptInAnOpenClaim_ReadsWithheld()
+    {
+        var files = SkillBuilder.Build(TruthModel.Replacing(
+            [.. TruthModel.Entries.Where(fate => fate.Line != OldMoves.Owns && fate.Line != OldMoves.Cap),
+                Fate.Kept(OldMoves.Owns, KeeperMoves.Owns, KeeperOpen.Unseen), Fate.Kept(OldMoves.Cap, KeeperOpen.Unseen)],
+            typeof(KeeperOpen))).Files;
+
+        Assert.EndsWith("`claim:OldMoves.Owns`, kept in `claim:KeeperMoves.Owns`; withheld (open) in `claim:KeeperOpen.Unseen`\n\n> You keep one thing.\n",
+            files[Review + "keeper-ledger-1.md"]);
+        Assert.Contains("`claim:OldMoves.Cap`, withheld (open) in `claim:KeeperOpen.Unseen`\n\n> Cap the runs at eight.\n", files[Review + "keeper-ledger-2.md"]);
+    }
+
+    [Fact]
     [Trait("Job", "contract: DYD-1372 A7 a legacy spine line or resource with no ledger entry fails the build, naming each one")]
     public void LedgerMissingAnEntry_FailsTheBuildNamingIt()
     {

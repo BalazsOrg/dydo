@@ -12,11 +12,11 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
 
-`claim:Roster.Models`, kept in `claim:CaptainDispatch.Roster` (open, not rendered)
+`claim:Roster.Models`, withheld (open) in `claim:CaptainDispatch.Roster`
 
 > The model roster is his to write; his text goes here.
 
-`claim:Roster.Usage`, kept in `claim:CaptainDispatch.Usage` (open, not rendered)
+`claim:Roster.Usage`, withheld (open) in `claim:CaptainDispatch.Usage`
 
 > Read `dydo usage` and balance vendors for every seat you fill, sub-captains and crew as well as reviewers.
 

@@ -23,8 +23,8 @@ public sealed class Claim(string rule, Enum[] actors, Line[] lines)
     public Transition? Transition { get; init; }
 
     /// <summary>
-    /// Its evidence, layer and reason. Required once a truth-checked skill states the claim; a claim
-    /// only legacy skills state has none.
+    /// Its evidence, layer and reason. Required once a truth-checked skill states the claim, and checked
+    /// wherever the claim's lines sit; a claim only legacy skills state needs none.
     /// </summary>
     public Truth? Truth { get; init; }
 }

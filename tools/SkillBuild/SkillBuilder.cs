@@ -22,6 +22,7 @@ public static class SkillBuilder
         var claims = new ClaimIndex(ModelIndex.ClaimIds(model.Kinds));
         var chart = new Statechart(model, claims);
         var replaced = LedgerDocs.Replaced(model);
+        TruthCheck.Answers(claims, model.Skills.Where(skill => skill.TruthChecked).Select(skill => skill.Id).ToHashSet());
         foreach (var (skill, lines) in bySkill)
         {
             open[skill] = skill.TruthChecked ? TruthCheck.Check(skill, lines, claims.ById) : [];
@@ -43,7 +44,7 @@ public static class SkillBuilder
 
     private static void Emit(SkillSpec skill, string path, RenderedFile file, SortedDictionary<string, string> files, List<MapLine> map)
     {
-        if (skill.TruthChecked) TruthCheck.Numbered(path, file.Text);
+        if (skill.TruthChecked && TruthCheck.Misnumbered(path, file.Text) is { } misnumbered) throw new InvalidDataException(misnumbered);
         if (!files.TryAdd(path, file.Text))
             throw new InvalidDataException($"{path} is built twice; two skills share a folder only when one replaces the other through its ledger");
         map.AddRange(file.Stated.Select(line => new MapLine(path, line.Line, line.Text, line.Placed.Claims)));

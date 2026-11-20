@@ -82,7 +82,7 @@ Layer: T3 makes a child's worktree and leaves it standing: `git worktree list` o
 
 Reason: Merged checkouts pile up on the host, and an archive can be undone where a delete cannot.
 
-**ticket-captain** (MergeSteps; read by TicketCaptain):
+**ticket-captain** (withheld; MergeSteps; read by TicketCaptain):
 
 > Archive each branch and worktree your dispatches created, with `dydo archive branch <target>` and `dydo archive worktree <target>`; the archive keeps them 30 days.
 
@@ -132,6 +132,6 @@ Layer: Which gates a merge waits on is whatever the brief names, and the brief m
 
 Reason: Mutation runs take hours, and a merge that waits on them holds a lane the whole time.
 
-**ticket-captain** (MergeRules; read by TicketCaptain):
+**ticket-captain** (withheld; MergeRules; read by TicketCaptain):
 
 > Nothing waits on mutation testing.

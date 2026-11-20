@@ -169,18 +169,8 @@ internal static partial class SkillShape
                 yield return $"{spine}: \"{heading}\" holds \"{line}\"; a phase is one numbered checklist, then its resource links (K9)";
     }
 
-    // DYD-1295 519126ab: "this obvious enumeration error (1. 1. 1. 1...)". Items that follow one another count up from 1.
-    private static IEnumerable<string> LazyNumbers(string path, string text)
-    {
-        var previous = 0;
-        foreach (var line in text.Split('\n').Where(line => line.Length > 0))
-        {
-            var number = ChecklistItem().IsMatch(line) ? int.Parse(line[..line.IndexOf('.')]) : 0;
-            if (number != 0 && number != previous + 1)
-                yield return $"{path}: a list item is numbered {number} after {previous}; a truth-checked file numbers a list 1, 2, 3 (DYD-1295 519126ab)";
-            previous = number;
-        }
-    }
+    // DYD-1295 519126ab: "this obvious enumeration error (1. 1. 1. 1...)". The build's own reading of a list, over the files as committed.
+    private static IEnumerable<string> LazyNumbers(string path, string text) => TruthCheck.Misnumbered(path, text) is { } misnumbered ? [misnumbered] : [];
 
     private static bool IsChecklistLine(string line) =>
         line.Length == 0 || line == "Resources:" || ChecklistItem().IsMatch(line) || LinkItem().IsMatch(line);

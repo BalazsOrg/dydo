@@ -130,7 +130,7 @@ Layer: T3 links ticket and thread on its own side only; from Linear, nobody can 
 
 Reason: A dead thread can be found and resumed from the ticket it was working.
 
-**ticket-captain** (Take; read by TicketCaptain):
+**ticket-captain** (withheld; Take; read by TicketCaptain):
 
 > Attach your thread's link to the ticket, titled `T3 · ticket-captain · <kind> · <model>`.
 

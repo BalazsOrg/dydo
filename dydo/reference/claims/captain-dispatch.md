@@ -66,7 +66,7 @@ Layer: `orchestrator_capabilities` lists the models a child can run on, and says
 
 Reason: The strongest models are kept for the seats that have something non-obvious to find.
 
-**ticket-captain** (Seats; read by TicketCaptain):
+**ticket-captain** (withheld; Seats; read by TicketCaptain):
 
 > Pick each seat's model from the roster below.
 
@@ -82,7 +82,7 @@ Layer: No command or tool an agent has reports how much of a vendor account is l
 
 Reason: Quota that resets unused is lost, and a seat on a spent account stalls.
 
-**ticket-captain** (Seats; read by TicketCaptain):
+**ticket-captain** (withheld; Seats; read by TicketCaptain):
 
 > Read `dydo usage` and balance vendors across every seat you fill.
 

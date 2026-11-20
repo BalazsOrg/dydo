@@ -72,8 +72,17 @@ public class RealSkillShapeTests
         var tree = Tree((RoleSpine, Role(phases: ShapedPhases)), (RoleScenario, "# A\n"));
         tree[lazy] += "\n1. First.\n1. Second.\n";
 
-        Assert.Equal(new[] { $"{lazy}: a list item is numbered 1 after 1; a truth-checked file numbers a list 1, 2, 3 (DYD-1295 519126ab)" },
+        Assert.Equal(new[] { $"{lazy}:{tree[lazy].Count(character => character == '\n')} numbers a list item 1 after 1; a list is numbered 1, 2, 3" },
             SkillShape.RoleSpineViolations(tree, Scenario, Shaped));
+    }
+
+    [Fact]
+    [Trait("Job", "edge: DYD-1372 A5 r1 N8 the shape check reads a list as the build does: an example in a fenced block is no list")]
+    public void TruthCheckedFile_WithNumbersInAFencedBlock_Passes()
+    {
+        var tree = Tree((RoleSpine, Role(phases: ShapedPhases)), (RoleScenario, "# A\n\n```text\n1. First.\n1. Second.\n```\n"));
+
+        Assert.Empty(SkillShape.RoleSpineViolations(tree, Scenario, Shaped));
     }
 
     [Fact]

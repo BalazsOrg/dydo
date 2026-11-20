@@ -6,8 +6,8 @@ namespace DynaDocs.SkillBuild;
 /// One why doc per claim kind, <c>dydo/reference/claims/&lt;kind&gt;.md</c> (K13): each claim's rule, its
 /// spec ids, its machine move with the machine named, and every line that states it, by skill and
 /// place. A truth-checked claim also shows its evidence, layer and reason, and each such line its
-/// reader, so the claim can be reviewed alone (DYD-1295 317be5f7). It lives under <c>dydo/</c> only,
-/// which never ships.
+/// reader, so the claim can be reviewed alone (DYD-1295 317be5f7). A line no built file holds says so:
+/// legacy and not built, or withheld. It lives under <c>dydo/</c> only, which never ships.
 /// </summary>
 internal static partial class WhyDocs
 {
@@ -37,12 +37,19 @@ internal static partial class WhyDocs
             if (claim.Truth is { } truth) Answers(page, truth);
             foreach (var (line, owner) in claims.LinesOf(claim))
             {
-                var place = (unbuilt.Contains(line.Skill) ? "legacy, not built; " : "") + Place(line.Place) + (line.Reader is null ? "" : $"; read by {line.Reader}");
+                var place = Unstated(claim, line, unbuilt) + Place(line.Place) + (line.Reader is null ? "" : $"; read by {line.Reader}");
                 page.Block($"**{Names.Kebab(line.Skill)}** ({place}{(owner == id ? "" : $", on claim:{owner}")}):");
                 page.Block(Quote(line.Text));
             }
         }
         return page.Done("").Text;
+    }
+
+    // Why no built file holds the line: its legacy skill is replaced, or its claim is open, alone on its line (TruthCheck).
+    private static string Unstated(Claim claim, Line line, IReadOnlySet<Enum> unbuilt)
+    {
+        if (unbuilt.Contains(line.Skill)) return "legacy, not built; ";
+        return claim.Truth?.Evidence.Kind == EvidenceKind.Open ? "withheld; " : "";
     }
 
     private static void Answers(Page page, Truth truth)

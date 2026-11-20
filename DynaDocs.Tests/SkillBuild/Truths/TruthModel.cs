@@ -58,4 +58,7 @@ internal static class TruthModel
     /// <summary>The keeper replacing the legacy keeper through a ledger of <paramref name="entries"/>, the clerk beside them.</summary>
     public static Model Replacing(params Fate[] entries) =>
         new([typeof(KeeperMoves), typeof(OldMoves)], [OldKeeper, Keeper with { Ledger = new(OldSkill.Keeper, entries) }, Clerk]) { Machines = [Watch] };
+
+    /// <summary><see cref="Replacing"/> with more <paramref name="kinds"/> beside the two it holds.</summary>
+    public static Model Replacing(Fate[] entries, params Type[] kinds) => Replacing(entries) with { Kinds = [typeof(KeeperMoves), typeof(OldMoves), .. kinds] };
 }

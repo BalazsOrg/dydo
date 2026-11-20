@@ -39,10 +39,17 @@ public class TruthFieldTests
 
     [Theory]
     [Trait("Job", "contract: DYD-1372 A3d a reason that only restates its rule or its spec citation fails the build")]
-    [InlineData(typeof(KeeperRestated), nameof(KeeperRestated.Echo))]
-    [InlineData(typeof(KeeperSpecOnly), nameof(KeeperSpecOnly.Cited))]
-    public void ReasonThatOnlyRestates_FailsTheBuild(Type kind, string member) =>
-        AssertRejected(kind, $"claim:{kind.Name}.{member}: its reason only restates its rule or its spec citation");
+    [InlineData(typeof(KeeperRestated), nameof(KeeperRestated.Echo), "0 of 6")]
+    [InlineData(typeof(KeeperSpecOnly), nameof(KeeperSpecOnly.Cited), "0 of 0")]
+    public void ReasonThatOnlyRestates_FailsTheBuild(Type kind, string member, string own) =>
+        AssertRejected(kind, $"claim:{kind.Name}.{member}: its reason restates its rule or its spec citation, with {own} words its own");
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A3d r1 G4 a reason that restates its rule but for one word fails the build: at least half of its words are its own")]
+    public void ReasonWithOneWordOfItsOwn_FailsTheBuild() =>
+        AssertRejected(typeof(KeeperMostlyRestated),
+            "claim:KeeperMostlyRestated.Bell: its reason restates its rule or its spec citation, with 1 of 5 words its own; at least half must be, " +
+            "and a reason says what the claim prevents or enables");
 
     [Theory]
     [Trait("Job", "contract: DYD-1372 A3b a command the CLI's command tree does not hold, a literal word where it takes an argument, or an option it lacks fails the build (DYD-1295 71e649c0)")]
@@ -107,6 +114,35 @@ public class TruthFieldTests
         AssertRejected(typeof(KeeperOpenCombined), "the line of claim:KeeperOpenCombined.Unseen also states claim:KeeperOpenCombined.Seen, and one of them is open");
 
     [Fact]
+    [Trait("Job", "edge: DYD-1372 A3d r1 G4 a reason with exactly half of its words its own builds")]
+    public void ReasonWithHalfItsWordsItsOwn_Builds() =>
+        Assert.Contains("- Ring the bell at noon.\n", SkillBuilder.Build(TruthModel.With(typeof(KeeperHalfOwnReason))).Files[Spine]);
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A3c r1 G3 an open claim whose line sits in a legacy skill, which withholds nothing, fails the build")]
+    public void OpenClaimInALegacySkill_FailsTheBuild() =>
+        AssertRejected(TruthModel.Replacing(TruthModel.Entries, typeof(ClerkOpen)),
+            "claim:ClerkOpen.Unseen is open, and its line in clerk would state it; only a truth-checked skill withholds an open claim's line");
+
+    [Theory]
+    [Trait("Job", "trap: DYD-1372 A3c r1 G3 an open claim that is a machine's move, with a line or with none, fails the build: its arrow would be built")]
+    [InlineData(typeof(KeeperOpenMove))]
+    [InlineData(typeof(KeeperOpenLinedMove))]
+    public void OpenTransition_FailsTheBuild(Type kind) =>
+        AssertRejected(kind, $"claim:{kind.Name}.Tide is open, and it moves KeeperState.Held to KeeperState.Sent; a machine's arrow is built, so an open claim is no move");
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A3d r1 G3 a claim with a Truth that no skill line states, a system transition, still answers every field")]
+    public void SystemTransitionWithAnEmptyLayer_FailsTheBuild() =>
+        AssertRejected(typeof(KeeperBlankMove), "claim:KeeperBlankMove.Tide has an empty layer");
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A3b r1 G3 a claim with a Truth that only a legacy skill states still has its command evidence checked")]
+    public void ClaimOnlyALegacySkillStates_HasItsEvidenceChecked() =>
+        AssertRejected(TruthModel.Replacing(TruthModel.Entries, typeof(ClerkBadEvidence)),
+            "claim:ClerkBadEvidence.Gate: its command evidence names `dydo test gate`: `test` is no subcommand of `dydo`");
+
+    [Fact]
     [Trait("Job", "contract: DYD-1372 A4 a kind's why doc shows each truth-checked claim's evidence, layer and reason, and each line's reader")]
     public void WhyDoc_ShowsEachClaimsAnswersAndItsLinesReader()
     {
@@ -121,6 +157,12 @@ public class TruthFieldTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1372 A4 r1 N10 a why doc says an open claim's line is withheld, where it shows the line's place")]
+    public void WhyDoc_SaysAnOpenClaimsLineIsWithheld() =>
+        Assert.Contains("**keeper** (withheld; Extra; read by Keeper):\n\n> Ring the bell at noon.\n",
+            SkillBuilder.Build(TruthModel.With(typeof(KeeperOpen))).Files["dydo/reference/claims/keeper-open.md"]);
+
+    [Fact]
     [Trait("Job", "contract: DYD-1372 A3e a code evidence naming a path the repository does not hold fails the run, which writes nothing")]
     public void CodeEvidenceNamingNoPath_FailsTheRun()
     {
@@ -130,6 +172,19 @@ public class TruthFieldTests
 
         Assert.Equal(1, exit);
         Assert.Equal("SkillBuild failed: claim:KeeperCodePath.Filed: its code evidence, docs/keeper.md, is no path in the repository\n", error.ReplaceLineEndings("\n"));
+        Assert.Empty(root.Files());
+    }
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A3e r1 G3 a code evidence no skill line reaches, a system transition's, is checked against the repository too")]
+    public void CodeEvidenceOfASystemTransition_FailsTheRun()
+    {
+        using var root = new TempRoot();
+
+        var (exit, _, error) = root.Run(TruthModel.With(typeof(KeeperPathMove)));
+
+        Assert.Equal(1, exit);
+        Assert.Equal("SkillBuild failed: claim:KeeperPathMove.Tide: its code evidence, docs/tide.md, is no path in the repository\n", error.ReplaceLineEndings("\n"));
         Assert.Empty(root.Files());
     }
 
@@ -146,6 +201,8 @@ public class TruthFieldTests
         Assert.Contains("File your notes in the docs.", root.Files()[Spine]);
     }
 
-    private static void AssertRejected(Type kind, string message) =>
-        Assert.Contains(message, Assert.Throws<InvalidDataException>(() => SkillBuilder.Build(TruthModel.With(kind))).Message);
+    private static void AssertRejected(Type kind, string message) => AssertRejected(TruthModel.With(kind), message);
+
+    private static void AssertRejected(Model model, string message) =>
+        Assert.Contains(message, Assert.Throws<InvalidDataException>(() => SkillBuilder.Build(model)).Message);
 }

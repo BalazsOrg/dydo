@@ -3,7 +3,8 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// A <see cref="Ledger"/>, checked complete and built for review (DYD-1295 2119cd65): one file per
 /// section of the legacy spine under <c>dydo/reference/claim-review/</c>, each claim line and each
-/// linked resource with what became of it. Sections keep every file under the token limit.
+/// linked resource with what became of it: kept, withheld with the open claim that holds it, dropped
+/// or deferred. Sections keep every file under the token limit.
 /// </summary>
 internal static class LedgerDocs
 {
@@ -104,6 +105,11 @@ internal static class LedgerDocs
         FateKind.Dropped => $"dropped, it fails {fate.Fails}: {fate.Why}",
         FateKind.Deferred => $"deferred: {fate.Why}",
         _ when fate.ByResource is { } resource => $"kept as `{SkillRenderer.FileOf(resource)}`",
-        _ => "kept in " + string.Join(", ", fate.By.Select(by => claims.IdOf(by)!).Select(id => $"`claim:{id}`{(carried[id] ? " (open, not rendered)" : "")}"))
+        _ => Stated(fate.By.Select(by => claims.IdOf(by)!).ToLookup(id => carried[id]))
     };
+
+    // Kept means a built file states it. An open claim's line is withheld, so what the ledger keeps there no file states yet.
+    private static string Stated(ILookup<bool, string> byOpen) => string.Join("; ",
+        new[] { (Open: false, Outcome: "kept in "), (Open: true, Outcome: "withheld (open) in ") }.Where(part => byOpen.Contains(part.Open))
+            .Select(part => part.Outcome + string.Join(", ", byOpen[part.Open].Select(id => $"`claim:{id}`"))));
 }

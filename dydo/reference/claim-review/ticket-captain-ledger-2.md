@@ -44,7 +44,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Report a problem outside your ticket to your officer.
 
-`claim:Dispatch.Start`, kept in `claim:Captain.Start`, `claim:Captain.Thread` (open, not rendered)
+`claim:Dispatch.Start`, kept in `claim:Captain.Start`; withheld (open) in `claim:Captain.Thread`
 
 > Set your ticket In Progress and attach your T3 thread link titled `T3 · ticket-captain · <model>`.
 
