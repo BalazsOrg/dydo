@@ -50,7 +50,7 @@ Everything in Dydo follows from seven axioms, and every change is judged against
 ## Overview
 So how does dydo work in practice?
 
-I break the work with a software product into many Linear projects. Each project is a map, where the tickets are the nodes, they are marked with statuses and labels. By default I hold the map myself and chart it with wayfinder in my own session; when I want throughput (AFK work overnight) I invoke an Admiral to hold it for me. Whoever holds the map charts it, manages the PM surface and coordinates the Ticket Captains who oversee the completion of the tickets with their crew of (code-writers, docs-writers, reviewers, inquisitors, researchers and scouts).
+I break the work with a software product into many Linear projects. Each project is a map, where the tickets are the nodes, they are marked with statuses and labels. Every open project has a coordinator: a mechanical agent that keeps the Ticket Captains moving, watches that they're alive and paces the merges. Anything needing judgement goes to a fresh agent on its own ticket: re-charting the map goes to a captain on a Wayfinding ticket, hard calls to a council, and only what's worth my time comes to me. The Ticket Captains oversee the completion of the tickets with their crew of implementers, reviewers, researchers and scouts.
 
 Each ticket is either AFK or HITL
 - AFK is completed without me if everything goes according to plan
@@ -92,9 +92,9 @@ flowchart TD
 
   H0([user: an idea]):::human --> CT[co-thinker]:::session
   CT -->|ripe| TP([user: to-project, Project in Backlog]):::human
-  TP --> AD[map holder: me, or an admiral I invoke, reads the Project and acts]:::officer
-  AD -->|Project Planning| PP[map holder charts with wayfinder: the map, first tickets]:::session
-  PP -->|route charted| H1([user approves, in the admiral's session when one holds the map, Project Planned]):::human
+  TP --> AD[map holder: the coordinator, with a captain on a Wayfinding ticket]:::officer
+  AD -->|Project Planning| PP[the Wayfinding captain charts with wayfinder: the map, first tickets]:::officer
+  PP -->|route charted| H1([user approves, Project Planned]):::human
   H1 --> OP[map holder commissions first captain to open feature; wires merge order]:::officer
   OP <-->|"one captain per pickable AFK ticket: commission · done &lt;key&gt;: PR ready · merge, when its turn comes · done &lt;key&gt;: merged"| IC[ticket-captain]:::officer
   OP -->|all landed: Inquisition Ticket in Backlog, scope and cost| H2([user moves it to Todo and tells the map holder, or cancels]):::human
@@ -102,7 +102,7 @@ flowchart TD
   IQ --> OP
   OP -->|landing Merge Ticket: main into the feature, gates, merge review| LM[ticket-captain of the landing]:::officer
   LM -->|PR into main with its PASS, Ready to Merge| H3([user clicks the merge, one Project at a time, and tells the map holder]):::human
-  H3 -->|map holder commissions landing captain cleanup; the map holder loads walkthrough| WT[Walkthrough Ticket: the user, with the admiral when one holds the map]:::officer
+  H3 -->|map holder commissions landing captain cleanup; the coordinator opens the walkthrough| WT[Walkthrough Ticket: the user, with its ticket captain]:::officer
   WT -->|findings: tickets, a second lap on the re-cut feature| OP
   WT -->|nothing: Project Completed| END([done]):::human
 ```
@@ -121,14 +121,14 @@ flowchart TD
   IC <-->|"2 review · In Review"| RC
   IC <-->|"3 merge · source parent stays Ready to Merge; Sub-ticket runs its chain"| MG
   subgraph CREW [the crew]
-    CW[1 code-writer<br>builds and proves the contract<br>returns implement SHA, red proof, gates]:::crew
+    CW[1 implementer<br>builds and proves the contract<br>returns implement SHA, red proof, gates]:::crew
     RS{{1b reviewer: spec<br>reads the contract text on the ticket<br>returns review block}}:::reviewer
     RC{{2 reviewer: code or docs<br>returns review block}}:::reviewer
-    MG[3 Merge Sub-ticket<br>a code-writer maps conflicts and gates and merges, reviewer: merge judges]:::crew
+    MG[3 Merge Sub-ticket<br>an implementer maps conflicts and gates and merges, reviewer: merge judges]:::crew
   end
 ```
 
-here's the further workflow documented: [Control Flow](https://github.com/bodnarbalazs/dydo/blob/master/dydo/understand/control-flow.md)
+here's the whole flow as statecharts, every state and arrow citing the spec: [the dydo statechart](https://github.com/bodnarbalazs/dydo/blob/master/claims/statechart/README.md)
 and here's the Linear setup dydo and the agents expect: [Linear Workspace Standard](https://github.com/bodnarbalazs/dydo/blob/master/dydo/reference/linear-workspace-standard.md)
 
 ## Installation

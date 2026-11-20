@@ -6,8 +6,8 @@ type: guide
 # Orchestration Pitfalls
 
 Failure modes seen when several agents deliver one Project in parallel. They are stated against the
-model that governs delivery here: one captain owns one ticket end to end, an admiral coordinates and
-implements nothing, a fresh reviewer gates every candidate, and Git isolation keeps concurrent work
+model that governs delivery here: one captain owns one ticket end to end, a coordinator coordinates and
+implements nothing (H5), a fresh reviewer gates every candidate, and Git isolation keeps concurrent work
 apart - one writer per worktree, commits touching owned paths only.
 
 ## 1. The coordinator picks up a file
@@ -18,7 +18,7 @@ contains a change nobody reviewed independently.
 **Mechanism:** coordination and authorship collapse into the same context. If the coordinating session also judges what it writes, independence is lost, and its checkout becomes a
 second writer in a tree someone else owns.
 
-**Rule:** an admiral sequences captains and wires their Merge Tickets. Every edit inside a ticket's
+**Rule:** the coordinator sequences captains and paces their merges (H5). Every edit inside a ticket's
 owned paths belongs to its crew; its captain directs, and a fresh reviewer judges. The map holder
 updates the map in Linear and reconciles affected ticket contracts and feature specs.
 
@@ -98,7 +98,7 @@ code - and only when it comes up empty file a Question Ticket listing what you s
 blocker, then release with branch pushed, resume SHA posted, the worktrees the captain or its crew
 made (lanes, merge checkouts, temp checkouts) cleaned with `dydo clean --dry-run <worktree>`, then
 `dydo clean <worktree>`, run from outside that tree, parent Todo and unassigned. The worktree the
-captain's thread runs in belongs to T3: leave it. The admiral resumes blocker-cleared work on the next captain return or user word. Settle operational conflicts by
+captain's thread runs in belongs to T3: leave it. The coordinator resumes blocker-cleared work on its next wake (H5). Settle operational conflicts by
 precedence: the user's live instruction, then the Decision Record, the pinned feature spec, the ticket contract, coding standards, existing code. The ladder is crew → its Ticket Captain → commissioning officers → user, and the user is
 reached for a conflict with a Decision Record, live external state no agent can coordinate, or authority
 the contract cannot supply.

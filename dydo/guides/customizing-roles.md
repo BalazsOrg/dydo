@@ -67,7 +67,7 @@ Project-specific guidance lives in the skill body, or in a project document link
 
 Nothing in a skill or in `dydo.json` binds a role to a model or an effort. Every role is left
 unbound on purpose, so whoever delegates picks the capability the task in front of them deserves;
-the shipped `admiral` and `ticket-captain` methods carry that judgment.
+the shipped `coordinator` and `ticket-captain` skills choose per dispatch, from the model tiers (R13).
 
 Select at the call, not in a file:
 
@@ -83,8 +83,8 @@ order and the limits worth knowing before a claim rests on one.
 - The template pipeline: `dydo sync`, `dydo template update`, the `dydo.json.skills` switchboard,
   `frameworkHashes`, include tags and their re-anchoring, and compiler-owned output cleanup.
 - Generated agent definitions (`.claude/agents/*.md`, `.codex/agents/*.toml`). A role is a skill.
-  Reviewer, inquisitor and scout are non-authoring by commission and method; an inquisitor's Break
-  phase commits only proof tests, to a proof branch that never merges. Native agent
+  Reviewer and scout are non-authoring by commission and method; a reviewer on an inquisition's
+  Break lens commits only proof tests, to a proof branch that never merges (N5). Native agent
   configuration may request a restrictive sandbox, but its presence is not proof that the host
   enforces the restriction.
 

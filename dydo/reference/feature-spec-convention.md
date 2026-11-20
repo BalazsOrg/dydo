@@ -8,8 +8,8 @@ type: reference
 Use a temporary feature spec when several tickets share behavior or decisions that need one current
 anchor. Keep an atomic outcome in its ticket. The spec governs the change under delivery; the maintained
 `verify-<app>` feature map gives the user a route and proof. Executable scenarios own expected values
-when available; link them instead of copying their values. A Project the admiral scaffolds always gets
-a spec, by the admiral's scaffold recipe (`skills/roles/officers/admiral/resources/scaffold-project.md`).
+when available; link them instead of copying their values. A Project's own spec
+is its `Spec: <Project>` Linear document, which the map holder writes and refines (S14).
 
 ## Location and content
 
@@ -49,8 +49,8 @@ bounded outcomes and exact gates. Linear owns status, assignment, blockers and d
 
 ## Changes and evidence
 
-The Project's map holder—the user or an explicitly invoked admiral—maintains current intent in
-place. When it shifts, hold affected work until open ticket contracts are reconciled; existing user
+The Project's map holder—its coordinator with a captain on a Wayfinding ticket, which does the
+deciding (S15; DYD-1195 b46e8343)—maintains current intent in place. When it shifts, hold affected work until open ticket contracts are reconciled; existing user
 approval rules for scope, acceptance and architecture still apply. Git
 supplies history; the body states today's intent.
 
