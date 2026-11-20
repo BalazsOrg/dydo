@@ -9,6 +9,22 @@
     "to": "Merged",
     "property": "L12_PageBeforeMerge"
   },
+  "captain": {
+    "from": "Taken",
+    "to": "Done",
+    "variables": {
+      "round": "1"
+    },
+    "property": "S6_WorkBeforeDone",
+    "additional": {
+      "from": "Question",
+      "to": "Finishing",
+      "variables": {
+        "round": "1"
+      },
+      "property": "H16_ResumeLeafAfterQuestion"
+    }
+  },
   "claim-build": {
     "from": "Edited",
     "to": "Approved",

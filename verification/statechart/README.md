@@ -90,6 +90,14 @@ checks, not claims that the generated model actually takes those steps, and
 not a substitute for the ordinary run. `--machine NAME` restricts a diagnostic
 run; the acceptance run includes all 31 machines.
 
+The DYD-1372 captain prototype adds a separate diagnostic scope. Run the
+ordinary check with `--machine captain` and run the registered control with
+`--controls --machine captain`. The runner accepts one control per machine.
+For the second trace, pass `controls["captain"]["additional"]` to the runner's
+`check_machine` in a fresh scratch run. This uses the same entry-point injection
+and checks that the named property breaks. See [the captain obligations](obligations.md#captain-prototype-dyd-1372)
+for the expected findings and the limits of the phase model.
+
 ## Model observability owed to the candidate captain
 
 The following are unresolved model coverage defects, separate from the ten

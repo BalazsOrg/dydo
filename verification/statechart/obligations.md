@@ -81,6 +81,31 @@ mutation's `CutFix` are relabelled (H2, H4, H5). No generated `.tla` changed, an
 an actor. The should, overview and mutation properties still state their spec obligations, unchanged.
 Who cancels a should stays unobservable.
 
+## Captain prototype (DYD-1372)
+
+These obligations were written from the DYD-1295 walkthrough rulings, the approved
+4.0.0 spec and the accepted `AGENTS.md` before reading the generated captain
+machine at `278b89da`. The observer runs over the generated `Init`, `Next` and
+`round <= 4` bound. The model declares no fairness, so these checks are safety
+properties.
+
+| Source | Obligation and result |
+|---|---|
+| S6, 7b3d2e3e | A holder closes Done only after meeting the contract. **Phase order holds** (`S6_WorkBeforeDone`). The contract, evidence and acceptance predicate are unobservable. The trace Taken → Leaf → Finishing → Done looks identical whether or not the contract was met. |
+| R2, R8, R12, R16 | A change that needs review clears it before finish or merge; review the integrated whole after wiring. Group-only parents and sufficiently small, low-risk leaves can skip. **First finish after entering review holds** (`R8_ClearBeforeFirstFinish`); InReview → Finishing stands for a clear round. Review eligibility, wiring, own vs. parent merge and proof tied to a revision are unobservable. Taken → Split → Waiting → Finishing → Done cannot distinguish a grouping ticket from a review-required feature. |
+| R4 | A plan, spec or contract has no review loop. A spec may get one risk-based scout pass that returns Questions. **Untestable.** Taken → Leaf → InReview carries neither ticket kind nor a separate spec pass or its answers. |
+| R8, R9, R11, S9, 41a553f1 | A fixable blocker requires a fix before the next full-lens round. **Numbered round order holds** (`R8_FixBeforeNextRound`). InReview → Fixing → InReview gives no evidence of blocker severity, completeness, repair proof or a fresh reviewer and lenses. InReview → Returned cannot distinguish a fundamental issue, a new requirement and a human need. Shoulds that may wait have no status. The optional extra round after a clear round has no explicit route. |
+| R10, S10 | Record the third-round checkpoint before starting round four or escalating. **Both checks fail.** `R10_CheckpointBeforeFourthRound` — Taken → Leaf → InReview(1) → Fixing(1) → InReview(2) → Fixing(2) → InReview(3) → Fixing(3) → InReview(4). `S10_CheckpointBeforeThirdRoundEscalation` — the same prefix through InReview(3), then Returned(3). The chart has no checkpoint observation, note or escalation criterion. Its round bound also prevents TLC from testing continuation beyond a blocked fourth round. |
+| R19, R21 | A merge-conflict repair gets a fresh review before retrying. **Fails** (`R19_ReviewAfterMergeRepair`), Taken → Leaf → Finishing → Waiting → Finishing. The single edge into Waiting covers both a conflict and a real red gate, and the grouping-only exit bypasses review in either case. |
+| 2119cd65, df6a785e, 32cc5599, R16, R33, S8 | An orchestrating captain dispatches or records reviews; the reviewer judges and never authored or fixed the work. **Chart inspection only.** No arrow assigns judging to the orchestrating captain. Taken → Leaf → InReview → Finishing carries no writer, reviewer or fixer identity, lone or multiple seats, verdict origin or authorship, so TLC cannot verify independence or fresh-writer routing. The later ruling allows a sub-captain to author a small leaf. |
+| 519126ab, H16, S10 | Only obvious, reversible calls are decided locally. A non-obvious call goes to a fresh Question captain; the dependent work resumes after the answer. **Leaf wait/resume order holds** (`H16_ResumeLeafAfterQuestion`). Leaf → Question → Leaf carries no call classification, answer, Question holder or blocked scope. This path exists only from Leaf, leaving the split captain's non-obvious calls, re-plan questions and passed-up human needs unrepresented. |
+| df6a785e, 0f340abd, 3fb363e3, AGENTS.md, S7, H2, H3 | A split dispatches its children and waits for their required returns. **Wait phase holds** (`H3_WaitAfterSplit`). Taken → Split → Waiting → InReview carries no child identities, completion or receipt evidence, context size, cohesion, native/delegated distinction or cut authority. Leaf → Finishing is always enabled, so TLC cannot establish that oversized work is cut or returned instead of finished. |
+| H2, 7b3d2e3e | A return ends this holder's run. **Holds** (`H2_ReturnedIsTerminal`); Returned only stutters. |
+
+Two bad-trace controls use the same observer entry-point injection. Taken → Done
+must break `S6_WorkBeforeDone`; Question → Finishing must break
+`H16_ResumeLeafAfterQuestion`. Both use round 1.
+
 ## Related
 
 - [Property modules, execution and limits](README.md)
