@@ -60,6 +60,8 @@ changed, with its old and new wording and why:
 | `H5_WatchBeforeReplan` (comment) | "the admiral's watch". | "the coordinator's watch". | Role rename (H5). Formula unchanged. |
 | `N5_ReadBeforeBreak`, `N5_BreakBeforeDrive`, `N5_FreshMapAfterFix` (comments) | "An area's" phases; "a fresh area map". | "A slice's" lenses; "a fresh feature map". | N5 now cuts the inquisition into slices of a feature map, with Read, Break and Drive as reviewer lenses (DYD-1082 1bc04dce change 5). Formulas unchanged. |
 | `controls.json` envoy control | Named `H16_OnlyAdmiralSends`. | Names `H16_OnlyCoordinatorSends`; the same bad trace, a need sent straight to an envoy at captain level. | Follows the rename above. |
+| `L18_ExchangeBeforeRuling` | Every tribunal result follows the exchange: `state \in {"DecidedOvernight", "Prepared", "ProposedDr"} => "Exchange" \in seen`. Commit 9f545e02 dropped `"Prepared"` without a record, so a council could reach Prepared with no exchange (review r1 B2). | Every council exit follows the exchange; only the his-call route to Prepared, with no case file, is exempt: `(state \in {"DecidedOvernight", "ProposedDr"} \/ (state = "Prepared" /\ "CaseFile" \in seen)) => "Exchange" \in seen`. | The model changed shape: a his-call child reaches Prepared straight from the Question's research, and no council sits (`Tribunal.HisCall`; H23, DYD-1195 87c1e2e6). L18's exits, "prepared for him with both positions" included, still follow the one exchange, so the council path keeps the requirement. DYD-1327 restored it: red on Codex's CaseFile → Prepared shortcut, green on the model. |
+| `L20_NightOnlyProvisional` → `L18_AgreedTwoWayProvisional` | Only night, agreement and a two-way call permit a provisional decision: `state = "DecidedOvernight" => night /\ twoWay /\ agree /\ ~drGrade`. | Only agreement on a two-way call that is not DR-grade permits it, by night or by day: `state = "DecidedOvernight" => twoWay /\ agree /\ ~drGrade`. | The promise changed on purpose: the amended L20 and L18's first exit let a council decide by day too when the call is not worth his time, "during the night (or day for that matter so I can be unburdened)" (DYD-1195 87c1e2e6). Only the `night` conjunct is dropped. Made at 9f545e02; recorded at DYD-1327. |
 
 Added, each from the rule it cites: `H23_ChildAfterResearch`, `H16_ObviousNeverTicketed`,
 `H5_CoordinatorDecidesNone` and `H18_OnlyHisCloseFrees` (envoy; the last replaces the struck "moved
@@ -67,7 +69,17 @@ on" discretion, DYD-1195 893e1f5b); for the closed GAPs, `H4_UnheldOnlyChartedOr
 `S5_FutureLeavesOnlyByPromotion` (gap 3), `S5_BacklogNeverWorked` (gap 4), `N6_NotAcceptedLandsAgain`
 (gap 5), `H7_NightStartsAtMuster` (gap 6), `H7_NightEndsInMorningBrief` (gap 7),
 `K22_RejectedQuestionedAgain` and `K16_RejectedRebuilt` (gap 9), and `N10_RestoreOnlyArchived` (gap 10).
-Gap 8 already had `L21_DeclineOnlyProposed` (DYD-1286). No property was dropped or weakened.
+Gap 8 already had `L21_DeclineOnlyProposed` (DYD-1286). No property was dropped. One was weakened
+without a record: `L18_ExchangeBeforeRuling` lost its council Prepared exit at 9f545e02, and DYD-1327
+restored it. `L18_AgreedTwoWayProvisional` allows a day decision only because the promise changed.
+
+## Checked at DYD-1327
+
+Fix r1's claims change three machines' arrows: a should's cancellation moves from the coordinator
+to its batch captain (`Should.Cancel`; S17, S18, H5), and the overview's `Cut` and `Next` and
+mutation's `CutFix` are relabelled (H2, H4, H5). No generated `.tla` changed, and no machine carries
+an actor. The should, overview and mutation properties still state their spec obligations, unchanged.
+Who cancels a should stays unobservable.
 
 ## Related
 

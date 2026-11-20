@@ -7,9 +7,9 @@ explains: ["verification/statechart/**"]
 # Hand-written 4.0.0 properties
 
 These modules are independent test inputs for DYD-1225 (K3, K20, DR 064 §1),
-adapted to the rebuilt roles and the closed GAPs at DYD-1289.
-The checked model is the claim model at `65c35075535b13d60e57b2a134fb1f4fb59b3895`
-(DYD-1317 on `DYD-1317-integration`); the property run records its own clean source HEAD.
+adapted to the rebuilt roles and the closed GAPs at DYD-1289, and re-checked after Fix r1 at DYD-1327.
+The checked model is the claim model at `81ea4f84ecec92fc69a9d74792e26fc4d6f45fe9`
+(Fix r1 merged, DYD-1327 on `DYD-1281-fix-r1-integrate`); the property run records its own clean source HEAD.
 Authority: [Spec: dydo 4.0.0](https://linear.app/bodnar-balazs/document/spec-dydo-400-08326afbb349),
 approved at updatedAt 2026-11-20T01:58:55.576Z, and his rulings above it. Each property has a rule ID
 and a plain-language obligation beside its definition. [obligations.md](obligations.md) records the

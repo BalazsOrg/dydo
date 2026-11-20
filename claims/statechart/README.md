@@ -18,8 +18,9 @@ files.
 
 ## Charts, in the overview's order
 
-TLC line from the run at commit time; every machine holds `NoDeadlock`. A chart draws fewer
-arrows than its transitions where several share both ends: their labels are joined with "or"
+TLC line from the run at commit time, last on the claim model at
+`81ea4f84ecec92fc69a9d74792e26fc4d6f45fe9` (DYD-1327); every machine holds `NoDeadlock`.
+A chart draws fewer arrows than its transitions where several share both ends: their labels are joined with "or"
 on one arrow, and a self-loop (a counter step) is not drawn. The states column counts the
 machine's own states, not the `GAP` end a chart adds.
 

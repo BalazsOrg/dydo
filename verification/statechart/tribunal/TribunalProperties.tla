@@ -7,9 +7,13 @@ VARIABLE seen
 PropertyInit == Init /\ seen = {state}
 PropertyNext == Next /\ seen' = seen \cup {state'}
 
-\* L18: A council's ruling follows the sealed positions and exchange. A his-call child reaches
-\* Prepared straight from the Question's research (H23, DYD-1195 87c1e2e6), so Prepared is not one.
-L18_ExchangeBeforeRuling == state \in {"DecidedOvernight", "ProposedDr"} => "Exchange" \in seen
+\* L18: Every exit of a council follows the sealed positions and the one exchange: decided, a
+\* proposed DR, or prepared for him with both positions. A his-call child reaches Prepared straight
+\* from the Question's research, with no case file and no council (H23, DYD-1195 87c1e2e6), so only
+\* that route to Prepared is exempt.
+L18_ExchangeBeforeRuling ==
+    (state \in {"DecidedOvernight", "ProposedDr"} \/ (state = "Prepared" /\ "CaseFile" \in seen))
+        => "Exchange" \in seen
 
 \* L18, L20: Only agreement on a two-way call that is not DR-grade permits a provisional decision,
 \* overnight or by day for a call not worth his time (DYD-1195 87c1e2e6).

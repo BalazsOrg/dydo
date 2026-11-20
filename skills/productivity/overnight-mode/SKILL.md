@@ -22,8 +22,8 @@ resource.
 1. While the user is present, complete the [transition preflight](resources/transition-preflight.md)
    for both startup and shutdown. Record the current mode and prepare the warning/retry and
    independent readback steps before proceeding.
-2. Hold the muster as the `/chief-of-staff` skill directs. Use `grilling` for
-   decisions and `wizard` for terminal steps only. Proceed once every included coordinator confirms
+2. Hold the muster by the chief of staff's checklist, `chief-of-staff/resources/muster.md`. Use
+   `grilling` for decisions and `wizard` for terminal steps only. Proceed once every included coordinator confirms
    its agreed work is runnable and every gap has the user's explicit disposition.
 3. Follow the preflight's warning/retry for `dydo mode set overnight on`. Wait for the setter to
    return its result, then run `dydo mode show` in a separate later tool call, never in parallel,
@@ -40,8 +40,8 @@ coordinator has the announcement.
 
 ## Night watch
 
-The chief of staff runs its overnight watch every 30 minutes, as the `/chief-of-staff` skill
-directs, and acts on what the watch finds:
+The chief of staff runs its overnight watch every 30 minutes, surveying by
+`chief-of-staff/resources/night-survey.md`, and acts on what the watch finds:
 
 1. Idle, or waiting with nothing in flight and runnable work: send one specific nudge naming the evidence.
 2. Nudge unanswered: inspect the relevant captain threads and intervene with the owner.
@@ -65,8 +65,8 @@ When the user says he's back, in the chief of staff's conversation:
    On refusal, failure or missing readback, report shutdown incomplete with the
    observed state (unknown if unreadable) and exact recovery action. A deleted schedule does not
    prove mode is off.
-5. Write the morning brief in the conversation as the `/chief-of-staff` skill directs, writing
-   nothing to the repo. Use `wizard` for terminal unblockers only.
+5. Write the morning brief in the conversation from the template in
+   `chief-of-staff/resources/morning-brief.md`, writing nothing to the repo. Use `wizard` for terminal unblockers only.
 
 Done when the schedule is confirmed absent, pending surveys are settled, mode is off, coordinators
 have the announcement and the user has the brief.
