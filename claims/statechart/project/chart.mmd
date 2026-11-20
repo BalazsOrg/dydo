@@ -3,15 +3,15 @@ title: "A Project and its coordinator"
 ---
 stateDiagram-v2
   s0: No live coordinator: not started, idle or closed #183; H4
-  s1: Charting the spec and the map #183; S14, S15, S16, N12 DR 060 #167;1
+  s1: Charting the spec and the map #183; S14, S15, S16, N12 DR 060 #167;1, H5
   s2: Watching the survey, the board and liveness #183; H5, H10, H11, R25
   s3: All delivery merged: the landing runs #183; N5
   s4: Re-planning after a fundamental blocker or a new requirement #183; R9, S10
   [*] --> s0
-  s0 --> s1: the Project opens#59; it has a live coordinator #183; H4
-  s0 --> s2: GAP: H4 says who holds a live Project, not who starts or wakes its coordinator
-  s1 --> s2: the spec exists and the first tickets are contracted #183; S14, S15
-  s2 --> s0: GAP: H4 names idle Projects but never defines when a Project goes idle
+  s0 --> s1: he opens the Project and charts it, HITL #183; H5, S14
+  s0 --> s2: he or the chief of staff starts or wakes its coordinator #183; H4, H7
+  s1 --> s0: the Project is up: the spec exists and the first tickets are contracted #183; S14, S15, H4
+  s2 --> s0: Paused in Linear, or no coordinator or agent running in it: idle #183; H4
   s2 --> s3: every delivery ticket is merged into the feature branch #183; N5
-  s2 --> s4: a blocker is fundamental, or a new requirement #183; R9
+  s2 --> s4: a blocker is fundamental, or a new requirement #183; R9, H5
   s4 --> s2: dead hops Canceled with a reason #183; S10

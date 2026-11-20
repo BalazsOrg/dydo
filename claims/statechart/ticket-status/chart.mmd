@@ -8,18 +8,17 @@ stateDiagram-v2
   s3: Todo #183; S3, S5
   s4: Canceled, with its reason #183; S5, S10, S12
   s5: Duplicate #183; S5, S17
-  s6: GAP: unknown state
-  s7: In Progress #183; S5, S6
-  s8: Done #183; S5, S6
+  s6: In Progress #183; S5, S6
+  s7: Done #183; S5, S6
   [*] --> s0
-  s0 --> s1: GAP: S5 lists Backlog, but no rule says when a ticket is filed there
-  s0 --> s2: GAP: S5 lists FutureFeature, but no rule says what enters it
+  s0 --> s1: filed without a contract #183; S5
+  s0 --> s2: an unscheduled strategic possibility #183; S5
   s0 --> s3: opened in Todo, ahead of its turn if a hop #183; S3
-  s1 --> s3: the coordinator contracts an uncontracted ticket #183; N12 DR 063 #167;4
-  s2 --> s6: GAP: S5 lists FutureFeature, but no rule says how a ticket leaves it
+  s1 --> s3: a Wayfinding captain contracts it #183; N12 DR 063 #167;4, S5, H5
+  s2 --> s1: he promotes it#59; it waits in Backlog until contracted #183; S5
   s3 --> s4: a re-plan cancels a dead hop #183; S10
   s3 --> s5: a duplicate should #183; S17
-  s3 --> s7: whoever starts the step sets it In Progress #183; S6, S13, S3
-  s7 --> s3: liveness finds it stopped #183; S24
-  s7 --> s4: a re-plan, or a reverted Merge #183; S10, S12
-  s7 --> s8: whoever started it closes it #183; S6
+  s3 --> s6: whoever starts the step sets it In Progress #183; S6, S13, S3
+  s6 --> s3: liveness finds it stopped #183; S24
+  s6 --> s4: a re-plan, or a reverted Merge #183; S10, S12
+  s6 --> s7: whoever started it closes it #183; S6
