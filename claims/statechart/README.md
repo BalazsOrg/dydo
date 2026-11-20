@@ -138,3 +138,15 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 | 20. The upstream glossary shape, the plan files gone, the ledger retired | `adopter` (D9), `landing` (D11), `findings` (S25) |
 | 21. The rebuilt skills carry the walkthrough changes: the coordinator, the crew kinds and the implementer, skill-naming dispatch, the spine shape, the inquisition-captain and council-chair resources, the reviewer toolset | `role-evaluation` (K22's folds), `dispatch` (K14), `claim-build` (K9), `project` (H5), `landing` (N5, R34), `council` and `tribunal` (L23), `envoy` (H5, H15, H16) |
 | 22. His acceptance at the landing walkthrough; the spec deleted | `landing`, `findings` |
+
+## The ticket-captain prototype (DYD-1372)
+
+One more machine, outside the overview and its 31: the states of a captain holding one ticket, built
+from the truth-checked ticket-captain prototype's own claims (DYD-1295 519126ab). `round` counts review
+rounds and is bounded at 4 only so TLC ends; the skill sets no cap. TLC line from the run on the claim
+model of DYD-1372 hop 2; it holds `NoDeadlock`. Its properties are written by hand under
+`verification/statechart/`, from his rulings and never from this model (K3).
+
+| Machine | Folder | States | Transitions | GAPs | TLC |
+|---|---|---|---|---|---|
+| A captain and its ticket | `captain` | 10 | 19 | 0 | 28 states, 49 steps |
