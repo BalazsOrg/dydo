@@ -80,7 +80,12 @@ internal static partial class SkillShape
     /// every link it makes resolves in the tree; and every role resource is under 100 lines.
     /// </summary>
     /// <param name="scenarios">Each scenario resource's path as the model declares it (<see cref="Scenarios"/>): the text alone cannot tell a scenario from a phase's resource.</param>
-    public static IReadOnlyList<string> RoleSpineViolations(IReadOnlyDictionary<string, string> tree, IReadOnlySet<string> scenarios)
+    /// <param name="truthChecked">
+    /// Each truth-checked spine's path (<see cref="TruthChecked"/>). Its phases hold their slots in their shapes
+    /// (DYD-1372 A5), so the checklist rule gives way to one on every file of its folder: a list is numbered 1, 2, 3.
+    /// </param>
+    public static IReadOnlyList<string> RoleSpineViolations(IReadOnlyDictionary<string, string> tree, IReadOnlySet<string> scenarios,
+        IReadOnlySet<string>? truthChecked = null)
     {
         var violations = new List<string>();
         foreach (var spine in tree.Keys.Where(path => path.StartsWith(Roles, StringComparison.Ordinal) && IsSpine(path)))
@@ -88,7 +93,10 @@ internal static partial class SkillShape
             var folder = spine[..^"SKILL.md".Length];
             var sections = SpineSections(tree[spine].Split('\n'));
             violations.AddRange(SpineOrder(spine, sections));
-            violations.AddRange(PhaseShape(spine, sections));
+            violations.AddRange(truthChecked?.Contains(spine) == true
+                ? tree.Where(file => file.Key.StartsWith(folder, StringComparison.Ordinal) && file.Key.EndsWith(".md", StringComparison.Ordinal)).SelectMany(file => LazyNumbers(file.Key, file.Value))
+                    .Concat(PhaseShape(spine, sections, shaped: true))
+                : PhaseShape(spine, sections, shaped: false));
             violations.AddRange(ScenarioLinks(spine, sections, [.. scenarios.Where(path => path.StartsWith(folder, StringComparison.Ordinal)).Order(StringComparer.Ordinal)]));
             violations.AddRange(Links(spine, tree[spine]).Where(target => !tree.ContainsKey(target))
                 .Select(target => $"{spine}: links {target}, which the tree does not hold"));
@@ -99,8 +107,12 @@ internal static partial class SkillShape
         return violations;
     }
 
-    /// <summary>Each scenario resource's path, as the model declares its skills' scenarios (K9).</summary>
+    /// <summary>
+    /// Each scenario resource's path, as the model declares its built skills' scenarios (K9). A legacy skill a
+    /// ledger replaces builds none (DYD-1372 A6).
+    /// </summary>
     public static IReadOnlySet<string> Scenarios(Model model) => model.Skills
+        .Where(skill => !model.Skills.Any(other => Equals(other.Ledger?.Legacy, skill.Id)))
         .SelectMany(skill => skill.Scenarios.SelectMany(scenario => skill.PathsOf(SkillRenderer.FileOf(scenario.Id))))
         .ToHashSet(StringComparer.Ordinal);
 
@@ -141,16 +153,33 @@ internal static partial class SkillShape
         }
     }
 
-    // K9: at least one job phase. As review r1 S5 reads K9, each is its numbered checklist, then
-    // "Resources:" and a link per resource; no state heading, no move label.
-    private static IEnumerable<string> PhaseShape(string spine, List<(string Heading, string[] Lines)> sections)
+    /// <summary>Each truth-checked spine's path, as the model declares its readers (DYD-1372 A2).</summary>
+    public static IReadOnlySet<string> TruthChecked(Model model) => model.Skills
+        .Where(skill => skill.Readers.Count > 0).SelectMany(skill => skill.PathsOf("SKILL.md")).ToHashSet(StringComparer.Ordinal);
+
+    // K9: at least one job phase. As review r1 S5 reads K9, a legacy phase is its numbered checklist, then
+    // "Resources:" and a link per resource; no state heading, no move label. A shaped phase holds paragraphs and lists.
+    private static IEnumerable<string> PhaseShape(string spine, List<(string Heading, string[] Lines)> sections, bool shaped)
     {
         var phases = sections.Where(section => PhaseHeading().IsMatch(section.Heading)).ToArray();
         if (phases.Length == 0)
             yield return $"{spine}: no numbered job phase (K9)";
-        foreach (var (heading, lines) in phases)
+        foreach (var (heading, lines) in phases.Where(_ => !shaped))
             foreach (var line in lines.Where(line => !IsChecklistLine(line)))
                 yield return $"{spine}: \"{heading}\" holds \"{line}\"; a phase is one numbered checklist, then its resource links (K9)";
+    }
+
+    // DYD-1295 519126ab: "this obvious enumeration error (1. 1. 1. 1...)". Items that follow one another count up from 1.
+    private static IEnumerable<string> LazyNumbers(string path, string text)
+    {
+        var previous = 0;
+        foreach (var line in text.Split('\n').Where(line => line.Length > 0))
+        {
+            var number = ChecklistItem().IsMatch(line) ? int.Parse(line[..line.IndexOf('.')]) : 0;
+            if (number != 0 && number != previous + 1)
+                yield return $"{path}: a list item is numbered {number} after {previous}; a truth-checked file numbers a list 1, 2, 3 (DYD-1295 519126ab)";
+            previous = number;
+        }
     }
 
     private static bool IsChecklistLine(string line) =>

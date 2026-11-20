@@ -10,9 +10,13 @@ internal sealed class Statechart
     private readonly Dictionary<Enum, Machine> _machineOf = [];
     private readonly Dictionary<Machine, List<(string Id, Claim Claim)>> _transitions = [];
 
+    // A truth-checked skill's slots, each with the states its phase or scenario covers (DYD-1372 A8).
+    private readonly Dictionary<(Enum Skill, Enum Slot), IReadOnlyList<Enum>> _covered = [];
+
     public Statechart(Model model, ClaimIndex claims)
     {
         foreach (var machine in model.Machines) Declare(machine, model.CitesSpec);
+        foreach (var skill in model.Skills.Where(skill => skill.TruthChecked)) Cover(skill);
         var standards = model.Skills.Where(skill => skill.IsStandard).Select(skill => skill.Id).ToHashSet();
         foreach (var (id, claim) in claims.Claims)
         {
@@ -79,11 +83,37 @@ internal sealed class Statechart
             throw new InvalidDataException(
                 $"claim:{id} moves to {Names.Of(transition.To)}, which is not a state of {Names.Of(machine.Id)}; a transition stays inside its machine");
         foreach (var (line, _) in lines.Where(stated => !standards.Contains(stated.Line.Skill)))
-            if (!IsMove(line.Place, transition))
+            if (Misplaced(line, transition) is { } rule)
                 throw new InvalidDataException(
-                    $"claim:{id} moves {Names.Of(transition.From)} to {Names.Of(transition.To)}; its line in {Names.Kebab(line.Skill)} " +
-                    $"must be an exit in {Names.Of(transition.From)} or an arrival in {Names.Of(transition.To)}");
+                    $"claim:{id} moves {Names.Of(transition.From)} to {Names.Of(transition.To)}; its line in {Names.Kebab(line.Skill)} {rule}");
         _transitions[machine].Add((id, claim));
+    }
+
+    // A legacy line is its move, in the state it leaves or enters; a truth-checked line may sit in any slot of a phase that covers either.
+    private string? Misplaced(Line line, Transition transition)
+    {
+        if (line.Place is not { } place || !_covered.TryGetValue((line.Skill, place.Slot), out var states))
+            return IsMove(line.Place, transition) ? null : $"must be an exit in {Names.Of(transition.From)} or an arrival in {Names.Of(transition.To)}";
+        return states.Contains(transition.From) || states.Contains(transition.To) ? null : "must sit in a phase or scenario that covers one of them";
+    }
+
+    // A phase covers its own slots and its resources'; a resource adds the states it names itself.
+    private void Cover(SkillSpec skill)
+    {
+        foreach (var phase in skill.Phases)
+        {
+            Cover(skill, $"phase \"{phase.Title}\"", phase.Slots, phase.States);
+            foreach (var resource in phase.Resources) Cover(skill, $"resource {Names.Of(resource.Id)}", resource.Slots, [.. phase.States, .. resource.States]);
+        }
+        foreach (var scenario in skill.Scenarios) Cover(skill, $"scenario {Names.Of(scenario.Id)}", scenario.Slots, scenario.States);
+        foreach (var part in Enum.GetValues<SpinePart>()) _covered[(skill.Id, part)] = [];
+    }
+
+    private void Cover(SkillSpec skill, string what, IEnumerable<Slot> slots, IReadOnlyList<Enum> states)
+    {
+        foreach (var state in states.Where(state => !_machineOf.ContainsKey(state)))
+            throw new InvalidDataException($"{skill.Name}: {what} covers {Names.Of(state)}, which is no machine's state");
+        foreach (var slot in slots) _covered[(skill.Id, slot.Id)] = states;
     }
 
     private static bool IsMove(Place? place, Transition transition) => place?.Step switch

@@ -10,78 +10,15 @@ public class SkillShapeTests
 {
     private const string Spine = "skills/x/demo/SKILL.md";
     private const string Resource = "skills/x/demo/resources/a.md";
-    private const string Frontmatter = "---\nname: demo\ndescription: d\n---\n";
+    internal const string Frontmatter = "---\nname: demo\ndescription: d\n---\n";
     private const string LinksA = "- [A](resources/a.md)\n";
-    private const string RoleSpine = "skills/roles/crew/demo/SKILL.md";
-    private const string RoleScenario = "skills/roles/crew/demo/resources/stuck.md";
+    internal const string RoleSpine = "skills/roles/crew/demo/SKILL.md";
+    internal const string RoleScenario = "skills/roles/crew/demo/resources/stuck.md";
     private const string RoleTemplate = "skills/roles/crew/demo/resources/brief.md";
-    private const string Wrong = "\"" + SkillShape.WhenThingsGoWrong + "\"";
-    private const string RealCaptain = "skills/roles/officers/ticket-captain/SKILL.md";
+    internal const string Wrong = "\"" + SkillShape.WhenThingsGoWrong + "\"";
 
     // The synthetic role's scenario, as its model would declare it.
-    private static readonly HashSet<string> Scenario = new([RoleScenario], StringComparer.Ordinal);
-
-    private static readonly IReadOnlySet<string> RealScenarios = SkillShape.Scenarios(DynaDocs.SkillBuild.ProductionModel.Model);
-
-    // The committed built files are checked as they stand on disk, so a hand edit that breaks a limit fails here.
-    [Fact]
-    [Trait("Job", "contract: K10 shape tests over the real committed role skills and their resources (B15)")]
-    public void RealBuiltFiles_MeetEveryShapeLimit()
-    {
-        var tree = CommittedTree.BuiltText();
-
-        // Never vacuous: the real tree holds the seven role spines, a scenario, a template, and a resource another
-        // resource links, the council chair's members' briefs (DYD-1082, DYD-1284, DYD-1286).
-        Assert.Equal(7, RoleSpines(tree).Count());
-        Assert.Contains("skills/roles/officers/ticket-captain/resources/council-members.md", tree.Keys);
-        Assert.Contains("skills/roles/officers/ticket-captain/resources/fix-rounds.md", RealScenarios);
-        Assert.Contains("skills/roles/officers/ticket-captain/resources/implementer-brief.md", tree.Keys);
-        var violations = SkillShape.Violations(tree).Concat(SkillShape.RoleSpineViolations(tree, RealScenarios)).ToArray();
-        Assert.True(violations.Length == 0, string.Join('\n', violations));
-    }
-
-    // Codex's probe (DYD-1294, review r1 B7): the heading deleted, the real ticket captain's scenario links fall under its last phase.
-    [Fact]
-    [Trait("Job", "trap: K9 B7 the real ticket-captain spine without its When things go wrong heading fails, though its scenario links remain")]
-    public void RealSpine_WithoutItsWhenThingsGoWrongHeading_Fails()
-    {
-        var tree = CommittedTree.BuiltText().ToDictionary(StringComparer.Ordinal);
-        tree[RealCaptain] = tree[RealCaptain].Replace(SkillShape.WhenThingsGoWrong + "\n", "", StringComparison.Ordinal);
-
-        var violations = SkillShape.RoleSpineViolations(tree, RealScenarios);
-
-        Assert.Contains($"{RealCaptain}: no {Wrong} (K9)", violations);
-        Assert.Contains($"{RealCaptain}: links the scenario skills/roles/officers/ticket-captain/resources/fix-rounds.md outside {Wrong} (K9)", violations);
-    }
-
-    // Codex's probe (DYD-1294, review r1 B7): every role spine cut down to one job sentence, its resources left in place.
-    [Fact]
-    [Trait("Job", "trap: K9 B7 every real role spine cut to its job paragraph fails: no phase, and no When things go wrong")]
-    public void EveryRealSpine_CutToItsJobParagraph_Fails()
-    {
-        var tree = CommittedTree.BuiltText().ToDictionary(StringComparer.Ordinal);
-        var spines = RoleSpines(tree).ToArray();
-        foreach (var spine in spines) tree[spine] = Frontmatter + DynaDocs.SkillBuild.BuiltHeader.Markdown + "\n\n# Demo\n\nYou do your job.\n";
-
-        var violations = SkillShape.RoleSpineViolations(tree, RealScenarios);
-
-        Assert.All(spines, spine => Assert.Contains($"{spine}: no numbered job phase (K9)", violations));
-        Assert.All(spines, spine => Assert.Contains($"{spine}: no {Wrong} (K9)", violations));
-    }
-
-    // Review r2 B7: K9 requires the section on every role spine; research and scout declare no scenario.
-    [Theory]
-    [Trait("Job", "trap: K9 B7 the real research or scout spine without its When things go wrong section fails")]
-    [InlineData("skills/roles/crew/research/SKILL.md")]
-    [InlineData("skills/roles/crew/scout/SKILL.md")]
-    public void RealSpineWithoutScenarios_WithoutItsWhenThingsGoWrongSection_Fails(string spine)
-    {
-        var tree = CommittedTree.BuiltText().ToDictionary(StringComparer.Ordinal);
-        Assert.DoesNotContain(RealScenarios, path => path.StartsWith(spine[..^"SKILL.md".Length], StringComparison.Ordinal));
-        tree[spine] = tree[spine][..tree[spine].IndexOf(SkillShape.WhenThingsGoWrong, StringComparison.Ordinal)];
-
-        Assert.Equal(new[] { $"{spine}: no {Wrong} (K9)" }, SkillShape.RoleSpineViolations(tree, RealScenarios));
-    }
+    internal static readonly HashSet<string> Scenario = new([RoleScenario], StringComparer.Ordinal);
 
     [Fact]
     [Trait("Job", "edge: K9 a job paragraph, numbered phases and When things go wrong, each link resolving, is a role spine")]
@@ -306,14 +243,14 @@ public class SkillShapeTests
     private static string Lines(int count) => string.Concat(Enumerable.Repeat("- line\n", count));
 
     // A role spine as the builder lays it out, each part swappable.
-    private static string Role(string job = "You do the job.\nYou return to your officer.\n",
+    internal static string Role(string job = "You do the job.\nYou return to your officer.\n",
         string phases = "## 1. Start\n\n1. Begin.\n\n## 2. Finish\n\n1. Return.\n",
         string wrong = SkillShape.WhenThingsGoWrong + "\n\n- [Stuck](resources/stuck.md)\n") =>
         Frontmatter + DynaDocs.SkillBuild.BuiltHeader.Markdown + "\n\n# Demo\n\n" + job + "\n" + phases + "\n" + wrong;
 
-    private static IEnumerable<string> RoleSpines(IReadOnlyDictionary<string, string> tree) =>
+    internal static IEnumerable<string> RoleSpines(IReadOnlyDictionary<string, string> tree) =>
         tree.Keys.Where(path => path.StartsWith("skills/roles/", StringComparison.Ordinal) && path.EndsWith("/SKILL.md", StringComparison.Ordinal));
 
-    private static Dictionary<string, string> Tree(params (string Path, string Text)[] files) =>
+    internal static Dictionary<string, string> Tree(params (string Path, string Text)[] files) =>
         files.ToDictionary(file => file.Path, file => file.Text, StringComparer.Ordinal);
 }

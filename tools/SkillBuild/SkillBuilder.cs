@@ -2,44 +2,74 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// The build: a model in, every built file out, keyed by its path under the repository root, with
-/// the map of each claim-stating skill line: the skills, the machines' chart files and one why doc per
-/// kind. A model the rules reject throws <see cref="InvalidDataException"/>; the build never emits a
-/// partial tree.
+/// the map of each claim-stating skill line: the skills, the machines' chart files, one why doc per
+/// kind and the review lists. A model the rules reject throws <see cref="InvalidDataException"/>; the
+/// build never emits a partial tree.
 /// </summary>
 public static class SkillBuilder
 {
     public static BuiltTree Build(Model model)
     {
         var files = new SortedDictionary<string, string>(StringComparer.Ordinal);
+        var unbuilt = new SortedDictionary<string, string>(StringComparer.Ordinal);
         var map = new List<MapLine>();
+        // Every claim id a line states, built or not: a legacy line a ledger replaces and a withheld open line still state theirs.
+        var stated = new HashSet<string>(StringComparer.Ordinal);
+        var layouts = new Dictionary<SkillSpec, SkillLayout>();
+        var open = new Dictionary<SkillSpec, HashSet<Placed>>();
         model.Envoys?.Check(model);
         var (bySkill, _) = ModelIndex.Read(model);
         var claims = new ClaimIndex(ModelIndex.ClaimIds(model.Kinds));
         var chart = new Statechart(model, claims);
+        var replaced = LedgerDocs.Replaced(model);
         foreach (var (skill, lines) in bySkill)
         {
-            var rendered = SkillRenderer.Render(skill, new SkillLayout(skill, lines)).ToArray();
-            StatesEachClaimOnce(skill, lines, rendered);
-            foreach (var file in rendered)
-                foreach (var path in skill.PathsOf(file.Local))
-                {
-                    files.Add(path, file.Text);
-                    map.AddRange(file.Stated.Select(stated => new MapLine(path, stated.Line, stated.Text, stated.Placed.Claims)));
-                }
+            open[skill] = skill.TruthChecked ? TruthCheck.Check(skill, lines, claims.ById) : [];
+            layouts[skill] = new SkillLayout(skill, lines, open[skill]);
+            var rendered = SkillRenderer.Render(skill, layouts[skill]).ToArray();
+            StatesEachClaimOnce(skill, lines.Where(placed => !open[skill].Contains(placed)), rendered);
+            stated.UnionWith(lines.SelectMany(placed => placed.Claims));
+            foreach (var (path, file) in rendered.SelectMany(file => skill.PathsOf(file.Local).Select(path => (path, file))))
+                if (replaced.Contains(skill.Id)) unbuilt.Add(path, file.Text);
+                else Emit(skill, path, file, files, map);
         }
         // A system transition, a move a command or Linear makes, is carried by no role (AR4).
-        StatesEveryClaim(claims.Claims.Where(c => c.Claim is not { Transition: not null, Lines.Count: 0 }).Select(c => c.Id), map);
+        StatesEveryClaim(claims.Claims.Where(c => c.Claim is not { Transition: not null, Lines.Count: 0 }).Select(c => c.Id), stated);
         model.Envoys?.CheckBuilt(model, claims, files, map);
-        foreach (var (path, text) in chart.Files(claims).Concat(WhyDocs.Render(model.Kinds, claims, chart)))
+        foreach (var (path, text) in chart.Files(claims).Concat(WhyDocs.Render(model.Kinds, claims, chart, replaced)).Concat(Review(bySkill, replaced, layouts, open, claims)))
             files.Add(path, text);
-        return new BuiltTree(files, map);
+        return new BuiltTree(files, map, unbuilt);
     }
 
-    // K4 and DYD-1196 A4's "zero": a declared claim that no line of any built skill states, neither
-    // its own line nor a combined line naming it, would vanish from the prose and the map.
-    private static void StatesEveryClaim(IEnumerable<string> claims, IEnumerable<MapLine> map)
+    private static void Emit(SkillSpec skill, string path, RenderedFile file, SortedDictionary<string, string> files, List<MapLine> map)
     {
-        var stated = map.SelectMany(line => line.Claims).ToHashSet(StringComparer.Ordinal);
+        if (skill.TruthChecked) TruthCheck.Numbered(path, file.Text);
+        if (!files.TryAdd(path, file.Text))
+            throw new InvalidDataException($"{path} is built twice; two skills share a folder only when one replaces the other through its ledger");
+        map.AddRange(file.Stated.Select(line => new MapLine(path, line.Line, line.Text, line.Placed.Claims)));
+    }
+
+    // DYD-1372 A4, A7: each truth-checked skill's open claims and its ledger, then the legacy lines that name a missing command.
+    private static IEnumerable<(string Path, string Text)> Review(Dictionary<SkillSpec, List<Placed>> bySkill, HashSet<Enum> replaced,
+        Dictionary<SkillSpec, SkillLayout> layouts, Dictionary<SkillSpec, HashSet<Placed>> open, ClaimIndex claims)
+    {
+        foreach (var (skill, lines) in bySkill.Where(pair => pair.Key.TruthChecked))
+        {
+            yield return ReviewDocs.Open(skill, lines.Where(open[skill].Contains), claims);
+            if (skill.Ledger is null) continue;
+            var legacy = bySkill.Keys.First(other => Equals(other.Id, skill.Ledger.Legacy));
+            var carried = lines.SelectMany(placed => placed.Claims.Select(id => (id, Open: open[skill].Contains(placed)))).ToDictionary(pair => pair.id, pair => pair.Open);
+            foreach (var file in LedgerDocs.Render(skill, legacy, layouts[legacy], carried, claims)) yield return file;
+        }
+        foreach (var file in ReviewDocs.Commands(bySkill.Where(pair => !pair.Key.TruthChecked)
+                     .Select(pair => (pair.Key, !replaced.Contains(pair.Key.Id), (IReadOnlyList<Placed>)pair.Value))))
+            yield return file;
+    }
+
+    // K4 and DYD-1196 A4's "zero": a declared claim that no line of any skill states, neither its own
+    // line nor a combined line naming it, would vanish from the prose and the map.
+    private static void StatesEveryClaim(IEnumerable<string> claims, HashSet<string> stated)
+    {
         foreach (var id in claims)
             if (!stated.Contains(id))
                 throw new InvalidDataException($"claim:{id} is stated by no line; a claim is stated in every skill that carries it");

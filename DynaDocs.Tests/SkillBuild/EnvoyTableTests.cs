@@ -95,11 +95,12 @@ public class EnvoyTableTests
         Assert.Contains("Question at stage `council` the `council-chair` resource, which `ticket-captain` does not declare", failure.Message);
     }
 
+    // DYD-1372 A6: the legacy ticket captain's lines stay in the model, unbuilt, so its brief is read as it still renders.
     [Fact]
-    [Trait("Job", "contract: H23 K14 the ticket-captain brief states the stage-keyed job table its dispatchers add a job skill from")]
+    [Trait("Job", "contract: H23 K14 the legacy ticket-captain brief, unbuilt since DYD-1372, still states the stage-keyed job table its dispatchers add a job skill from")]
     public void ProductionTicketCaptainBrief_StatesTheStageTable()
     {
-        var brief = SkillBuilder.Build(ProductionModel.Model).Files["skills/roles/officers/ticket-captain/resources/ticket-captain-brief.md"];
+        var brief = SkillBuilder.Build(ProductionModel.Model).Unbuilt["skills/roles/officers/ticket-captain/resources/ticket-captain-brief.md"];
 
         Assert.Contains(EnvoyTable.Render(Envoy.Jobs), brief);
         Assert.Contains("| Question at stage `research` | `/ticket-captain`; it dispatches `research` crew |", brief);
@@ -180,6 +181,8 @@ public class EnvoyTableTests
     {
         // The other skills the production prose names (review r1 S7) are the checkout's own, so only the table's decide.
         using var root = Skills(["grilling", "walkthrough", "wayfinder", "co-thinker", "deep/wizard", .. HandWrittenOutsideTheTable()]);
+        // DYD-1372 A3e: the run also wants each code path a truth-checked claim gives as evidence, which the checkout holds.
+        foreach (var path in CodeEvidence()) root.Write(path, "");
 
         var (exit, _, error) = root.Run(ProductionModel.Model, "map");
 
@@ -193,6 +196,11 @@ public class EnvoyTableTests
         .Where(file => !BuiltHeader.Carries(file))
         .Select(file => Path.GetFileName(Path.GetDirectoryName(file))!)
         .Except(Table.Jobs.Select(row => row.Skill), StringComparer.Ordinal);
+
+    private static IEnumerable<string> CodeEvidence() => ProductionModel.Model.Kinds
+        .SelectMany(kind => kind.GetFields().Select(field => field.GetValue(null)).OfType<Claim>())
+        .Where(claim => claim.Truth?.Evidence.Kind == EvidenceKind.Code)
+        .Select(claim => claim.Truth!.Evidence.Text).Distinct();
 
     private static TempRoot Skills(params string[] names)
     {

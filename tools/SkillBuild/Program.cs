@@ -5,7 +5,8 @@ namespace DynaDocs.SkillBuild;
 /// model's built files; <c>-- map</c> prints the line-to-claim map instead (K23) and writes nothing.
 /// Either way, before it writes or prints anything, it checks that each envoy table skill (H23), each
 /// dispatch template skill and each skill the built prose names with a slash (K14) is a skill under
-/// <c>skills/</c>, hand-written or built.
+/// <c>skills/</c>, hand-written or built, and that each code path a truth-checked claim gives as its
+/// evidence exists.
 /// </summary>
 public static class Program
 {
@@ -23,6 +24,7 @@ public static class Program
         {
             var tree = SkillBuilder.Build(model);
             SkillNames.Check(model, tree, root);
+            TruthCheck.CheckPaths(model, root);
             if (args.Length == 0) tree.Write(root);
             else foreach (var line in tree.Map) output.WriteLine(line);
             return 0;

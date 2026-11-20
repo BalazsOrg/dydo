@@ -7,6 +7,37 @@
         "requested": "[10.33.0.1635, )",
         "resolved": "10.33.0.1635",
         "contentHash": "nOwgvMh7p64z62GTy2n4Ki51DVy4Q2ejxxfuclW6Y5u6Htk1i2RNRqxuONiZ/4aaBi8V6RwzuCcGTOFcoVoQOg=="
+      },
+      "CsToml": {
+        "type": "Transitive",
+        "resolved": "1.8.4",
+        "contentHash": "WT0mSY7Hs/yRKK0NvYWYuycO/BEu4MRKo6JQLECJEN2DR6Xqv+6YnMJLOJYYrCys1UnPAST5hLTEt86E6DLOiA==",
+        "dependencies": {
+          "System.IO.Hashing": "10.0.9"
+        }
+      },
+      "Markdig": {
+        "type": "Transitive",
+        "resolved": "0.44.0",
+        "contentHash": "X+CYMjcUnh/yO24wOSQxVFLiGqWrrtXJ5M7toHiM1Zk4Fg9UMLN5fkaq6FSOWH+mIprsHHgDMlq3MJhmrXalhg=="
+      },
+      "System.CommandLine": {
+        "type": "Transitive",
+        "resolved": "2.0.2",
+        "contentHash": "zqn6I1IULEJaLEFKejeSFlZrf8HzIUU4qEjuYtEVRx5AsxKMLqLP+t0dQ4fk51A5CzT9Uv8wBLdMHSIYIrCKBw=="
+      },
+      "System.IO.Hashing": {
+        "type": "Transitive",
+        "resolved": "10.0.9",
+        "contentHash": "vixglGnKEexAJDeIRhyayZYzxyrgK1K9GU3K/zRZVwDbaDcMkSqj4WDHoVmQMNfsdUtLALfNSJw6mBIpdxie4A=="
+      },
+      "dydo": {
+        "type": "Project",
+        "dependencies": {
+          "CsToml": "[1.8.4, )",
+          "Markdig": "[0.44.0, )",
+          "System.CommandLine": "[2.0.2, )"
+        }
       }
     }
   }

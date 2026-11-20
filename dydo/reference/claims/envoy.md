@@ -14,7 +14,7 @@ Spec: H16, H5
 
 Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → Decided, "the call is obvious and reversible: decided where it arises".
 
-**ticket-captain** (Need, exit):
+**ticket-captain** (legacy, not built; Need, exit):
 
 > Decide an obvious, reversible call yourself, where it arises; it never becomes a ticket.
 
@@ -26,7 +26,7 @@ Spec: H16, H12, H23
 
 Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → Research, "passed up: its officer opens a research Question and waits on it".
 
-**ticket-captain** (Need, exit):
+**ticket-captain** (legacy, not built; Need, exit):
 
 > Pass any other need up to your officer, who opens a `research` Question for it; only the coordinator dispatches envoys.
 
@@ -38,7 +38,7 @@ Spec: H22, H6
 
 Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Need → AskedInThread, "he is already in this officer's thread".
 
-**ticket-captain** (Need, exit):
+**ticket-captain** (legacy, not built; Need, exit):
 
 > When he is already in your thread, ask the one line there with the host question tool.
 
@@ -214,7 +214,7 @@ Spec: H19
 
 > Changes during the session reach you as dispatcher updates; never ask him to repeat them.
 
-**ticket-captain** (Hitl):
+**ticket-captain** (legacy, not built; Hitl):
 
 > Changes during a session with him reach you as dispatcher updates; never ask him to repeat them.
 
@@ -228,7 +228,7 @@ Spec: H24
 
 > Name what each DR says whenever you cite one to him, never only its number.
 
-**ticket-captain** (Need, nominal):
+**ticket-captain** (legacy, not built; Need, nominal):
 
 > Name what each DR says whenever you cite one to him, never only its number.
 
@@ -246,7 +246,7 @@ Spec: H19, H23
 
 > After a shared understanding, and once you have reported back, tell him the thread can be closed.
 
-**ticket-captain** (Hitl):
+**ticket-captain** (legacy, not built; Hitl):
 
 > After a shared understanding, and once you have reported back, tell him the thread can be closed.
 
@@ -268,7 +268,7 @@ Spec: H23
 > | Question at stage `his-call` | `/co-thinker` |
 > | Enablement | `/wizard`; when it is not a setup procedure he runs (credentials, cutover), just ask |
 
-**ticket-captain** (TicketCaptainBrief):
+**ticket-captain** (legacy, not built; TicketCaptainBrief):
 
 > | Job | Skill |
 > |---|---|

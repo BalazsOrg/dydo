@@ -14,7 +14,7 @@ Spec: H3, K14, R15, S1
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Staffing → Briefed, "one seat, cross-family where possible, sent from its kind's template".
 
-**ticket-captain** (Staffing, exit):
+**ticket-captain** (legacy, not built; Staffing, exit):
 
 > Seat any reviewer from a family other than the author's when possible, single seats included.
 
@@ -42,7 +42,7 @@ Spec: L16, L17
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Staffing → CouncilCalled, "stakes or value: a council".
 
-**ticket-captain** (Staffing, exit):
+**ticket-captain** (legacy, not built; Staffing, exit):
 
 > Convene a council only for a heavy PR, one that meets the stakes or value test: stakes is the last check before main or a mistake expensive to undo, and value is a call between good options where what he would choose is the question.
 
@@ -52,7 +52,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 Spec: L16
 
-**ticket-captain** (Staffing, exit):
+**ticket-captain** (legacy, not built; Staffing, exit):
 
 > A high-stakes Review is guard or security work, a base other tickets build on, or the late whole-system simplify review.
 
@@ -64,7 +64,7 @@ Spec: R16
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): Staffing → SelfAuthored, "cheaper to do than to brief, too small to need its own review".
 
-**ticket-captain** (Staffing, exit):
+**ticket-captain** (legacy, not built; Staffing, exit):
 
 > Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
 
@@ -84,7 +84,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Holding a Review hop alone, set it In Progress and attach your T3 thread link titled `T3 · reviewer · <model>`.
 
-**ticket-captain** (Briefed, exit):
+**ticket-captain** (legacy, not built; Briefed, exit):
 
 > Set your ticket In Progress and attach your T3 thread link titled `T3 · ticket-captain · <model>`.
 
@@ -108,7 +108,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > A candidate too big for one seat goes back as `too big, re-cut`.
 
-**ticket-captain** (ReCut, arrival):
+**ticket-captain** (legacy, not built; ReCut, arrival):
 
 > On `too big, re-cut` from your crew, you are the cutter: decide whether the unit gets children, and never promote yourself.
 
@@ -128,7 +128,7 @@ Spec: H2, H14
 
 Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla`): ReCut → Staffing, "the cutter cuts coherent children".
 
-**ticket-captain** (ReCut, exit):
+**ticket-captain** (legacy, not built; ReCut, exit):
 
 > Cut only coherent units too big for one agent or able to run in parallel, never to pass work down.
 
@@ -160,7 +160,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 > Return your passages, or your Questions, with their sources to the brief's return-to.
 
-**ticket-captain** (Returned, arrival):
+**ticket-captain** (legacy, not built; Returned, arrival):
 
 > Every crew return comes back to you: post its hop's SHA on the hop as the resume point.
 
@@ -174,7 +174,7 @@ Transition in Crew dispatch and return (`claims/statechart/dispatch/Dispatch.tla
 
 Spec: S6, N12 DR 047 §7
 
-**ticket-captain** (Close):
+**ticket-captain** (legacy, not built; Close):
 
 > Close your ticket Done once its work is merged, or, on a ticket that merges nothing, once its result is on the ticket.
 
@@ -184,7 +184,7 @@ Spec: S6, N12 DR 047 §7
 
 Spec: H23, K14, S6
 
-**ticket-captain** (Close):
+**ticket-captain** (legacy, not built; Close):
 
 > Then return one line to your brief's return-to, `done <KEY>: merged`, or `done <KEY>` for a ticket that merges nothing; a sub-captain returns the same, and everything else is on the ticket.
 
@@ -202,7 +202,7 @@ Spec: K14, K29
 
 > Brief a coordinator from the coordinator dispatch template and name every skill its role requires with a slash; the template carries the default set.
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
 
@@ -216,7 +216,7 @@ Spec: H3
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
 
@@ -234,7 +234,7 @@ Spec: H3
 
 Spec: H3
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.
 
@@ -252,7 +252,7 @@ Spec: N12 DR 057 §1, N12 DR 057 §3, H3
 
 > Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
 
@@ -274,7 +274,7 @@ Spec: N12 DR 057 §2
 
 > On a captain's `parent_not_active`, dispatch its crew for it.
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > A native child can't `delegate_task`: when it hits `parent_not_active`, ask your officer to make that dispatch.
 
@@ -296,7 +296,7 @@ Spec: N12 DR 057 §4
 
 > A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
 

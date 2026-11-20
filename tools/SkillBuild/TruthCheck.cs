@@ -1,0 +1,123 @@
+using System.Text.RegularExpressions;
+
+namespace DynaDocs.SkillBuild;
+
+/// <summary>
+/// The four truth questions as build checks on a truth-checked skill (DYD-1295 317be5f7): each line is
+/// read by an actor the skill belongs to; each claim it states carries its evidence, layer and reason,
+/// none empty, the reason in words of its own; every <c>dydo …</c> it names in code exists; and a
+/// claim still open is withheld, alone on its line. <see cref="CheckPaths"/> runs against the
+/// repository root, where a code-path evidence must exist.
+/// </summary>
+internal static partial class TruthCheck
+{
+    // Words that carry no reason: the ones a sentence leans on to point at its rule or its citation.
+    private static readonly HashSet<string> Filler = new(StringComparer.Ordinal)
+    {
+        "a", "an", "the", "it", "is", "as", "so", "that", "this", "because", "since", "per", "see", "by", "of", "to", "and", "or",
+        "says", "said", "spec", "rule", "rules", "claim", "dr", "decision", "record", "section", "required", "requires"
+    };
+
+    [GeneratedRegex("[a-z0-9]+")]
+    private static partial Regex Words();
+
+    [GeneratedRegex("^(?:[a-z]{1,2})?[0-9]+$")]
+    private static partial Regex CitationWord();
+
+    [GeneratedRegex(@"^([0-9]{1,9})\. ")]
+    private static partial Regex ListItem();
+
+    [GeneratedRegex(@"^ {0,3}(?:`{3,}|~{3,})")]
+    private static partial Regex Fence();
+
+    /// <summary>The lines of <paramref name="skill"/> an open claim withholds from its files.</summary>
+    public static HashSet<Placed> Check(SkillSpec skill, IReadOnlyList<Placed> lines, IReadOnlyDictionary<string, Claim> claims)
+    {
+        var withheld = new HashSet<Placed>();
+        foreach (var placed in lines)
+        {
+            ReadBy(skill, placed);
+            foreach (var id in placed.Claims) Answered(skill, id, claims[id]);
+            if (!placed.Claims.Any(id => claims[id].Truth!.Evidence.Kind == EvidenceKind.Open)) continue;
+            if (placed.Claims.Count > 1)
+                throw new InvalidDataException(
+                    $"{skill.Name}: the line of claim:{placed.Owner} also states {string.Join(", ", placed.Claims.Skip(1).Select(id => "claim:" + id))}, " +
+                    "and one of them is open; an open claim is stated alone, so its line can be withheld alone");
+            withheld.Add(placed);
+        }
+        foreach (var placed in lines.Where(placed => !withheld.Contains(placed)))
+            if (CommandNames.Missing(placed.Line.Text).FirstOrDefault() is { } missing)
+                throw new InvalidDataException($"{skill.Name}: the line of claim:{placed.Owner} names {missing}");
+        return withheld;
+    }
+
+    /// <summary>Each code-path evidence of a claim a truth-checked skill states names a path that exists under <paramref name="root"/>.</summary>
+    public static void CheckPaths(Model model, string root)
+    {
+        var (bySkill, _) = ModelIndex.Read(model);
+        var claims = ModelIndex.ClaimIds(model.Kinds).ToDictionary(pair => pair.Value, pair => pair.Key, StringComparer.Ordinal);
+        foreach (var id in bySkill.Where(pair => pair.Key.TruthChecked).SelectMany(pair => pair.Value).SelectMany(placed => placed.Claims).Distinct())
+            if (claims[id].Truth is { Evidence: { Kind: EvidenceKind.Code, Text: var path } } && !Exists(root, path))
+                throw new InvalidDataException($"claim:{id}: its code evidence, {path}, is no path in the repository");
+    }
+
+    /// <summary>
+    /// A built file numbers each list 1, 2, 3 (DYD-1295 519126ab): an item that repeats or skips a
+    /// number fails, whether a steps slot or a verbatim line wrote it. A fenced block is not read.
+    /// </summary>
+    public static void Numbered(string path, string text)
+    {
+        var (previous, fenced, lines) = (0, false, text.Split('\n'));
+        for (var index = 0; index < lines.Length; index++)
+        {
+            if (Fence().IsMatch(lines[index])) fenced = !fenced;
+            if (fenced || lines[index].Length == 0 || lines[index][0] == ' ') continue;
+            var item = ListItem().Match(lines[index]);
+            var number = item.Success ? int.Parse(item.Groups[1].Value) : 0;
+            if (item.Success && number != previous + 1)
+                throw new InvalidDataException($"{path}:{index + 1} numbers a list item {number} after {previous}; a list is numbered 1, 2, 3");
+            previous = number;
+        }
+    }
+
+    // A path names a file or a folder; an anchor after `#` or a line after `:` is not part of it.
+    private static bool Exists(string root, string path)
+    {
+        var file = Path.Combine(root, path.Split('#', ':')[0]);
+        return File.Exists(file) || Directory.Exists(file);
+    }
+
+    private static void ReadBy(SkillSpec skill, Placed placed)
+    {
+        if (placed.Line.Reader is not { } reader)
+            throw new InvalidDataException($"{skill.Name}: the line of claim:{placed.Owner} names no reader; a truth-checked line names the actor who acts on it");
+        if (!skill.Readers.Contains(reader))
+            throw new InvalidDataException(
+                $"{skill.Name}: the line of claim:{placed.Owner} is read by {Names.Of(reader)}, and this skill belongs to " +
+                $"{string.Join(", ", skill.Readers.Select(Names.Of))}; a line belongs in the skill of the reader who acts on it");
+    }
+
+    private static void Answered(SkillSpec skill, string id, Claim claim)
+    {
+        if (claim.Truth is not { } truth)
+            throw new InvalidDataException($"claim:{id} is stated by {skill.Name}, a truth-checked skill, and carries no Truth: its evidence, layer and reason");
+        foreach (var (name, text) in new[] { ("evidence", truth.Evidence.Text), ("layer", truth.Layer), ("reason", truth.Reason) })
+            if (string.IsNullOrWhiteSpace(text))
+                throw new InvalidDataException($"claim:{id} has an empty {name}");
+        if (truth.Evidence.Kind == EvidenceKind.Command && CommandNames.MissingIn(truth.Evidence.Text).FirstOrDefault() is { } missing)
+            throw new InvalidDataException($"claim:{id}: its command evidence names {missing}");
+        if (OwnWords(truth.Reason, claim).Count == 0)
+            throw new InvalidDataException(
+                $"claim:{id}: its reason only restates its rule or its spec citation; a reason says what the claim prevents or enables, in words of its own");
+    }
+
+    // The reason's words that its rule, its lines and its citations do not already hold.
+    private static List<string> OwnWords(string reason, Claim claim)
+    {
+        var said = WordsOf(string.Join(' ', [claim.Rule, .. claim.Lines.Select(line => line.Text), .. claim.Spec]));
+        return [.. WordsOf(reason).Where(word => !said.Contains(word) && !Filler.Contains(word) && !CitationWord().IsMatch(word))];
+    }
+
+    private static HashSet<string> WordsOf(string text) =>
+        Words().Matches(text.ToLowerInvariant()).Select(word => word.Value).ToHashSet(StringComparer.Ordinal);
+}

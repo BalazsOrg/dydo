@@ -69,7 +69,8 @@ public static class Registry
         typeof(Tree),
         typeof(Linear),
         typeof(Scout),
-        typeof(Recovery)
+        typeof(Recovery),
+        typeof(Captain)
     ];
 
     public static IReadOnlyList<SkillSpec> Skills { get; } =
@@ -77,6 +78,7 @@ public static class Registry
         CoordinatorCarrier.Spec,
         ChiefOfStaffCarrier.Spec,
         TicketCaptainCarrier.Spec,
+        CaptainCarrier.Spec,
         ImplementerCarrier.Spec,
         ReviewerCarrier.Spec,
         ResearchCarrier.Spec,

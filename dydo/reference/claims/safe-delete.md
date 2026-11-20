@@ -14,7 +14,7 @@ Spec: N10, N12 DR 045 §8
 
 Transition in Safe delete (`claims/statechart/safe-delete/SafeDelete.tla`): Live → Archived, "after its merge, its captain safe-deletes it".
 
-**ticket-captain** (Live, exit):
+**ticket-captain** (legacy, not built; Live, exit):
 
 > After a merge, safe-delete the branches and worktrees you made with `dydo archive`; it keeps them 30 days, then purges them.
 

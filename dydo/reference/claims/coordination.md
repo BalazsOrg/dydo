@@ -164,7 +164,7 @@ Spec: H11, H4
 
 > A filler its captain sends back unassigned, with a one-line reason: block it on the open Wayfinding ticket, opening one if none is open, and pull it again only once a Wayfinding ticket records its release or he assigns it.
 
-**ticket-captain** (Take):
+**ticket-captain** (legacy, not built; Take):
 
 > Dispatched onto a filler ticket, check it is small, two-way and needs no design call; if not, send it back unassigned with a one-line reason.
 

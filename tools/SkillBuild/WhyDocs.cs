@@ -5,20 +5,27 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// One why doc per claim kind, <c>dydo/reference/claims/&lt;kind&gt;.md</c> (K13): each claim's rule, its
 /// spec ids, its machine move with the machine named, and every line that states it, by skill and
-/// place. It lives under <c>dydo/</c> only, which never ships.
+/// place. A truth-checked claim also shows its evidence, layer and reason, and each such line its
+/// reader, so the claim can be reviewed alone (DYD-1295 317be5f7). It lives under <c>dydo/</c> only,
+/// which never ships.
 /// </summary>
 internal static partial class WhyDocs
 {
-    private static readonly string[] Frontmatter = ["area: reference", "type: reference"];
+    internal static readonly string[] Frontmatter = ["area: reference", "type: reference"];
 
     // A skill line's link is relative to its skill folder, so in a why doc it names its target instead.
     [GeneratedRegex(@"\[([^\]]+)\]\(([^)\s]+)\)")]
     private static partial Regex Link();
 
-    public static IEnumerable<(string Path, string Text)> Render(IEnumerable<Type> kinds, ClaimIndex claims, Statechart chart) =>
-        kinds.Distinct().Select(kind => ($"dydo/reference/claims/{Names.Kebab(kind.Name)}.md", Doc(kind.Name, claims, chart)));
+    /// <param name="unbuilt">The legacy skills a ledger replaces: their lines stand in the model, and no file states them.</param>
+    public static IEnumerable<(string Path, string Text)> Render(IEnumerable<Type> kinds, ClaimIndex claims, Statechart chart, IReadOnlySet<Enum> unbuilt) =>
+        kinds.Distinct().Select(kind => ($"dydo/reference/claims/{Names.Kebab(kind.Name)}.md", Doc(kind.Name, claims, chart, unbuilt)));
 
-    private static string Doc(string kind, ClaimIndex claims, Statechart chart)
+    /// <summary>A line's text as a block quote, each link named rather than made.</summary>
+    internal static string[] Quote(string text) =>
+        [.. Link().Replace(text, "$1 (`$2`)").Split('\n').Select(line => line.Length == 0 ? ">" : "> " + line)];
+
+    private static string Doc(string kind, ClaimIndex claims, Statechart chart, IReadOnlySet<Enum> unbuilt)
     {
         var page = new Page(Frontmatter, "Claims: " + kind);
         foreach (var (id, claim) in claims.Claims.Where(claim => claim.Id.StartsWith(kind + ".", StringComparison.Ordinal)))
@@ -27,13 +34,25 @@ internal static partial class WhyDocs
             page.Block($"`claim:{id}`: {claim.Rule}");
             if (claim.Spec.Count > 0) page.Block("Spec: " + string.Join(", ", claim.Spec));
             if (claim.Transition is { } move) page.Block(Move(move, chart, claims.LinesOf(claim).Count == 0));
+            if (claim.Truth is { } truth) Answers(page, truth);
             foreach (var (line, owner) in claims.LinesOf(claim))
             {
-                page.Block($"**{Names.Kebab(line.Skill)}** ({Place(line.Place)}{(owner == id ? "" : $", on claim:{owner}")}):");
-                page.Block([.. Link().Replace(line.Text, "$1 (`$2`)").Split('\n').Select(text => text.Length == 0 ? ">" : "> " + text)]);
+                var place = (unbuilt.Contains(line.Skill) ? "legacy, not built; " : "") + Place(line.Place) + (line.Reader is null ? "" : $"; read by {line.Reader}");
+                page.Block($"**{Names.Kebab(line.Skill)}** ({place}{(owner == id ? "" : $", on claim:{owner}")}):");
+                page.Block(Quote(line.Text));
             }
         }
         return page.Done("").Text;
+    }
+
+    private static void Answers(Page page, Truth truth)
+    {
+        var text = truth.Evidence.Kind is EvidenceKind.Command or EvidenceKind.Code ? $"`{truth.Evidence.Text}`" : truth.Evidence.Text;
+        page.Block(truth.Evidence.Kind == EvidenceKind.Open
+            ? $"Evidence: open, so no skill states this claim yet. {text}"
+            : $"Evidence ({truth.Evidence.Kind.ToString().ToLowerInvariant()}): {text}");
+        page.Block("Layer: " + truth.Layer);
+        page.Block("Reason: " + truth.Reason);
     }
 
     // dydo check resolves links only inside dydo/, so the chart is named by its module path, not linked.

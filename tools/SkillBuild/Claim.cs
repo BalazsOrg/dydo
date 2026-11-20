@@ -21,4 +21,10 @@ public sealed class Claim(string rule, Enum[] actors, Line[] lines)
     /// in its to-state. With no lines it is a system transition, run by a command or by Linear.
     /// </summary>
     public Transition? Transition { get; init; }
+
+    /// <summary>
+    /// Its evidence, layer and reason. Required once a truth-checked skill states the claim; a claim
+    /// only legacy skills state has none.
+    /// </summary>
+    public Truth? Truth { get; init; }
 }

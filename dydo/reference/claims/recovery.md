@@ -12,7 +12,7 @@ type: reference
 
 Spec: K9, H2, H16
 
-**ticket-captain** (ReCut):
+**ticket-captain** (legacy, not built; ReCut):
 
 > Save the returned hop's SHA on it and resume each child from there; end resolved once the children are staffed, or escalated by sending a ticket too big for you to your officer as `too big, re-cut`.
 
@@ -26,7 +26,7 @@ Spec: K9, H2, H16
 
 Spec: K9, R8, R9, R10
 
-**ticket-captain** (FixRounds):
+**ticket-captain** (legacy, not built; FixRounds):
 
 > Save the verdict's head SHA on the Review hop and resume Fix rN from it; end resolved when a round finds no new blocker, or escalated in any round as soon as a blocker is fundamental, a new requirement or needs Balazs, and at round 3 by the checkpoint's `escalated: …` on the Review.
 
@@ -36,7 +36,7 @@ Spec: K9, R8, R9, R10
 
 Spec: K9, R19
 
-**ticket-captain** (MergeConflict):
+**ticket-captain** (legacy, not built; MergeConflict):
 
 > Save the resolution's commit SHA on the Merge hop and resume the merge from it; end resolved once the hunks pass and the merge runs green, or escalated to your officer with what you can't resolve.
 
@@ -46,7 +46,7 @@ Spec: K9, R19
 
 Spec: K9, R22
 
-**ticket-captain** (RedGate):
+**ticket-captain** (legacy, not built; RedGate):
 
 > Save the merge SHA and the red gate on the Merge hop and resume from them; end resolved once the rerun is green or the re-land merges green, or escalated to your officer with what you can't resolve.
 
@@ -56,7 +56,7 @@ Spec: K9, R22
 
 Spec: K9, R29, H16
 
-**ticket-captain** (ForcedResync):
+**ticket-captain** (legacy, not built; ForcedResync):
 
 > Save the held PR's head SHA on the Merge hop and resume from it on your next turn; end resolved once the PR merges, or escalated to your officer with what you can't resolve.
 
@@ -70,7 +70,7 @@ Spec: K9, R29, H16
 
 Spec: K9, R22
 
-**ticket-captain** (MasterRevert):
+**ticket-captain** (legacy, not built; MasterRevert):
 
 > Save the reverted merge's SHA and its red gate on the Merge hop and resume the fix from them; end resolved once the PR, offered again, merges green, or escalated to your officer with what you can't resolve.
 
@@ -80,7 +80,7 @@ Spec: K9, R22
 
 Spec: K9, H16, H18
 
-**ticket-captain** (NeedForBalazs):
+**ticket-captain** (legacy, not built; NeedForBalazs):
 
 > Save your branch's head SHA and the need on your ticket and resume from them once it is answered; end resolved when the call is decided where it arose or answered on its Question, or escalated with the need passed up and your ticket blocked on its Question.
 
@@ -90,7 +90,7 @@ Spec: K9, H16, H18
 
 Spec: K9, S24, H12
 
-**ticket-captain** (Liveness):
+**ticket-captain** (legacy, not built; Liveness):
 
 > Save each finding as its `liveness <UTC time>: <outcome>` comment and resume the hop from its last posted SHA; end resolved once the hop is alive, up to date or restarted, or escalated to your officer with a hop you can't restart.
 
@@ -104,7 +104,7 @@ Spec: K9, S24, H12
 
 Spec: K9, T16, T17, T18
 
-**ticket-captain** (OverLimit):
+**ticket-captain** (legacy, not built; OverLimit):
 
 > Save the head SHA on the ticket and resume from it once the file's path is settled; end resolved once the file is split or its entry checked, or escalated by path (b), which ends in his blessing.
 
@@ -118,7 +118,7 @@ Spec: K9, T16, T17, T18
 
 Spec: K9, N6
 
-**ticket-captain** (LandingNotAccepted):
+**ticket-captain** (legacy, not built; LandingNotAccepted):
 
 > Save the landing branch's SHA on its ticket and resume the re-cut from it; end resolved once another landing follows, or escalated to your officer with what you can't resolve.
 

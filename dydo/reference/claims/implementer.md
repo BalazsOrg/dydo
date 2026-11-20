@@ -206,7 +206,7 @@ Spec: T3, K14
 
 > With no red reproduction yet, load /diagnosing-bugs.
 
-**ticket-captain** (ImplementerBrief):
+**ticket-captain** (legacy, not built; ImplementerBrief):
 
 > On a Bug, add /diagnosing-bugs to the skills this brief names.
 

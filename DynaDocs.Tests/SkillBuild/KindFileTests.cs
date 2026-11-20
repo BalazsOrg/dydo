@@ -4,6 +4,7 @@ using System.Text.RegularExpressions;
 using DynaDocs.SkillBuild;
 using DynaDocs.Tests.SkillBuild.Charts;
 using DynaDocs.Tests.SkillBuild.Fixture;
+using DynaDocs.Tests.SkillBuild.Truths;
 
 /// <summary>
 /// K4 and AR2: one C# file per claim kind, holding exactly one kind class, and every kind file under the
@@ -19,7 +20,8 @@ public partial class KindFileTests
         "tools/SkillBuild/Claims",
         "DynaDocs.Tests/SkillBuild/Fixture/Kinds",
         "DynaDocs.Tests/SkillBuild/Slots/Kinds",
-        "DynaDocs.Tests/SkillBuild/Charts/Kinds"
+        "DynaDocs.Tests/SkillBuild/Charts/Kinds",
+        "DynaDocs.Tests/SkillBuild/Truths/Kinds"
     ];
 
     [GeneratedRegex(@"^\s*(?:(?:public|internal|private|protected|file|static|sealed|abstract|partial|readonly|ref)\s+)*(?:class|struct|record|interface|enum)\s+(?<name>\w+)", RegexOptions.Multiline)]
@@ -43,7 +45,8 @@ public partial class KindFileTests
     {
         var files = KindFiles().Select(Path.GetFileNameWithoutExtension).ToHashSet(StringComparer.Ordinal);
 
-        Assert.All(FixtureModel.Model.Kinds.Concat(ProductionModel.Model.Kinds).Concat(ChartModel.With().Kinds), kind => Assert.Contains(kind.Name, files));
+        Assert.All(FixtureModel.Model.Kinds.Concat(ProductionModel.Model.Kinds).Concat(ChartModel.With().Kinds).Concat(TruthModel.Replacing().Kinds),
+            kind => Assert.Contains(kind.Name, files));
     }
 
     [Theory]

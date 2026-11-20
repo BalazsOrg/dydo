@@ -50,7 +50,7 @@ Spec: T18, T19
 
 Transition in A file over the token limit (`claims/statechart/ignore-entry/IgnoreEntry.tla`): OverLimit → OwnTicket, "authored code that must stay whole".
 
-**ticket-captain** (OverLimit, exit):
+**ticket-captain** (legacy, not built; OverLimit, exit):
 
 > An authored file that must pass the limit takes path (b): its own ticket, a council, then his blessing; its PR never adds its own entry.
 

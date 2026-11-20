@@ -26,7 +26,7 @@ Spec: R33, K29
 
 > No self-review. An agent never reviews its own work or rules on findings about it: its own context biases it, and a fresh context catches what it can't. A leaf's evidence check is a fresh seat the officer sends. Each level checks for itself, never taking a lower level's verdict as its proof. A captain authors only a change too small to need its own review; the review above covers it.
 
-**ticket-captain** (Verdict, nominal):
+**ticket-captain** (legacy, not built; Verdict, nominal):
 
 > Never rule on findings about work you authored.
 
@@ -68,7 +68,7 @@ Spec: R32
 
 Spec: N12 DR 045 §8
 
-**ticket-captain** (Briefed, nominal):
+**ticket-captain** (legacy, not built; Briefed, nominal):
 
 > Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
 
@@ -106,7 +106,7 @@ Spec: K29
 
 > Ordinary crew do not create its branch, open its PR or merge it.
 
-**ticket-captain** (Briefed, nominal):
+**ticket-captain** (legacy, not built; Briefed, nominal):
 
 > Create the ticket's branch, open its PR and merge it yourself; ordinary crew never do.
 

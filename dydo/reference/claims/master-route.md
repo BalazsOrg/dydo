@@ -14,7 +14,7 @@ Spec: R26, R27, R29
 
 Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Offered → Paced, "declared two-way in the PR body; it waits for its turn".
 
-**ticket-captain** (Offered, exit):
+**ticket-captain** (legacy, not built; Offered, exit):
 
 > Declare the PR two-way in its body when it is none of the one-way kinds and no path flags it; there is no objection window.
 
@@ -30,7 +30,7 @@ Spec: R27, R29
 
 Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Offered → Paced, "one-way, flagged or declared; it waits for its turn".
 
-**ticket-captain** (Offered, exit):
+**ticket-captain** (legacy, not built; Offered, exit):
 
 > A one-way PR carries a recovery plan and waits on his click; declare it yourself when no path flags it.
 
@@ -46,7 +46,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 > Give main-bound merges their turn one at a time, by blocking relations, then the oldest ready PR first; its captain re-checks against current master just before landing and merges.
 
-**ticket-captain** (Resync, arrival):
+**ticket-captain** (legacy, not built; Resync, arrival):
 
 > On your turn, re-sync with current master and re-check.
 
@@ -62,7 +62,7 @@ Spec: R26, R29
 
 Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Resync → AfkMerge, "two-way, re-check green: PASS, gates green with current master, CI green".
 
-**ticket-captain** (Resync, exit):
+**ticket-captain** (legacy, not built; Resync, exit):
 
 > Merge a two-way PR yourself with `dydo merge` once the re-check is green.
 
@@ -98,7 +98,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 > Hold a PR forced to re-sync a third time and sequence the colliding work, lower ticket number first.
 
-**ticket-captain** (Held, arrival):
+**ticket-captain** (legacy, not built; Held, arrival):
 
 > A third forced re-sync holds your PR until the coordinator sequences the colliding work.
 
@@ -130,7 +130,7 @@ Spec: R31, S12
 
 Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): CiWatch → HitlMerge, "its CI is green".
 
-**ticket-captain** (CiWatch, exit):
+**ticket-captain** (legacy, not built; CiWatch, exit):
 
 > Watch your own CI and open the HITL Merge only when it is green.
 
@@ -150,7 +150,7 @@ Spec: R20, R31
 
 Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Merged → Closed, "receipt and CI green on the merge".
 
-**ticket-captain** (Merged, exit):
+**ticket-captain** (legacy, not built; Merged, exit):
 
 > When the survey wakes you on `PR merged, HITL Merge open`, or your AFK merge lands, close the Merge hop as for any merge.
 
@@ -170,7 +170,7 @@ Spec: R22
 
 Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`): Reverted → Offered, "fixed, fix-scoped round passed, offered again".
 
-**ticket-captain** (Reverted, exit):
+**ticket-captain** (legacy, not built; Reverted, exit):
 
 > A reverted master merge re-lands by offering its PR again, paced like the first time.
 
@@ -180,7 +180,7 @@ Transition in A PR into master (`claims/statechart/master-route/MasterRoute.tla`
 
 Spec: R27
 
-**ticket-captain** (Offered, nominal):
+**ticket-captain** (legacy, not built; Offered, nominal):
 
 > One-way kinds: data migrations; publishing a package or a public API; anything sent outside the repo; secrets; history rewrites; changes to what guards main (CI, branch protection, release workflows, the guard).
 

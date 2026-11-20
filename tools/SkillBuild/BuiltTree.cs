@@ -7,13 +7,20 @@ public sealed class BuiltTree
 {
     private static readonly UTF8Encoding Utf8 = new(encoderShouldEmitUTF8Identifier: false);
 
-    internal BuiltTree(IReadOnlyDictionary<string, string> files, IReadOnlyList<MapLine> map)
+    internal BuiltTree(IReadOnlyDictionary<string, string> files, IReadOnlyList<MapLine> map, IReadOnlyDictionary<string, string> unbuilt)
     {
         Files = files;
         Map = map;
+        Unbuilt = unbuilt;
     }
 
     public IReadOnlyDictionary<string, string> Files { get; }
+
+    /// <summary>
+    /// The files of each legacy skill a ledger replaces, as its lines still render: checked like any
+    /// other, never written, and outside the map.
+    /// </summary>
+    public IReadOnlyDictionary<string, string> Unbuilt { get; }
 
     public IReadOnlyList<MapLine> Map { get; }
 

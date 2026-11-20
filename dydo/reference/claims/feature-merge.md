@@ -30,7 +30,7 @@ Spec: R21
 
 Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): PreGate → PreFix, "a real red gate before the merge".
 
-**ticket-captain** (PreGate, exit):
+**ticket-captain** (legacy, not built; PreGate, exit):
 
 > On a real red gate before the merge, send an implementer to fix it on the ticket branch.
 
@@ -82,7 +82,7 @@ Spec: R21, R19
 
 Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Running → Resolving, "dydo merge reports CONFLICT".
 
-**ticket-captain** (Running, exit):
+**ticket-captain** (legacy, not built; Running, exit):
 
 > On `CONFLICT`, send an implementer to resolve it on the ticket branch.
 
@@ -102,7 +102,7 @@ Spec: R19
 
 Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Resolving → HunkReview, "the resolution is committed".
 
-**ticket-captain** (Resolving, exit):
+**ticket-captain** (legacy, not built; Resolving, exit):
 
 > Send the resolution's hunks to a fresh reviewer.
 
@@ -138,7 +138,7 @@ Spec: R18, R20
 
 Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Gating → MergeDone, "DYTEST green on the merge tree, CI green on the merge SHA".
 
-**ticket-captain** (Gating, exit):
+**ticket-captain** (legacy, not built; Gating, exit):
 
 > Close the Merge hop Done once DYTEST holds a green receipt on the merge tree and hosted CI is green on the merge SHA.
 
@@ -154,7 +154,7 @@ Spec: R22
 
 Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Gating → Rerun, "a gate goes red after the merge".
 
-**ticket-captain** (Gating, exit):
+**ticket-captain** (legacy, not built; Gating, exit):
 
 > A gate red after the merge reruns once through DYTEST.
 
@@ -170,7 +170,7 @@ Spec: R22, Y9
 
 Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Rerun → MergeDone, "green on the rerun: a flake".
 
-**ticket-captain** (Rerun, exit):
+**ticket-captain** (legacy, not built; Rerun, exit):
 
 > Green on the rerun is a flake: the hop is Done, and DYTEST counts the flake; it becomes a ticket only when it repeats.
 
@@ -186,7 +186,7 @@ Spec: R22, Y9, S12
 
 Transition in The Merge hop into the feature branch (`claims/statechart/feature-merge/FeatureMerge.tla`): Rerun → Reverted, "red again: a real red".
 
-**ticket-captain** (Rerun, exit):
+**ticket-captain** (legacy, not built; Rerun, exit):
 
 > Red again, after any merge, is real: revert at once, cancel the Merge hop with `reverted: <gate> red on <merge SHA>`, and file a CI-findings ticket.
 
@@ -210,7 +210,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 > A gate red after a merge reruns once; green is a flake and the hop is Done; red again is real: the captain reverts at once and files a CI-findings ticket, a Fix follows on the ticket branch, then a fix-scoped round, then a re-land where `dydo merge` reverts the revert.
 
-**ticket-captain** (Reverted, exit):
+**ticket-captain** (legacy, not built; Reverted, exit):
 
 > Send an implementer to fix it on the ticket branch, then hold a fix-scoped round.
 
@@ -226,7 +226,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 > A gate red after a merge reruns once; green is a flake and the hop is Done; red again is real: the captain reverts at once and files a CI-findings ticket, a Fix follows on the ticket branch, then a fix-scoped round, then a re-land where `dydo merge` reverts the revert.
 
-**ticket-captain** (FixRound, exit):
+**ticket-captain** (legacy, not built; FixRound, exit):
 
 > Re-land with `dydo merge`, which reverts the revert.
 
@@ -236,7 +236,7 @@ Transition in The Merge hop into the feature branch (`claims/statechart/feature-
 
 Spec: R21, Y4
 
-**ticket-captain** (PreGate, nominal):
+**ticket-captain** (legacy, not built; PreGate, nominal):
 
 > Run `dydo test gate` on the combined tree yourself, then `dydo merge`.
 
@@ -246,7 +246,7 @@ Spec: R21, Y4
 
 Spec: R23
 
-**ticket-captain** (Running, nominal):
+**ticket-captain** (legacy, not built; Running, nominal):
 
 > Merge only through `dydo merge`; when it refuses, its stated reason says why.
 
@@ -256,7 +256,7 @@ Spec: R23
 
 Spec: R18
 
-**ticket-captain** (Running, nominal):
+**ticket-captain** (legacy, not built; Running, nominal):
 
 > A conflict-free merge into the feature branch gets no merge review.
 
@@ -270,6 +270,6 @@ Spec: R18
 
 Spec: T12, T14
 
-**ticket-captain** (Running, nominal):
+**ticket-captain** (legacy, not built; Running, nominal):
 
 > No ticket or merge waits on mutation; it is checked at the landing.

@@ -12,4 +12,7 @@ public sealed record Resource(Enum Id, string Title, params Slot[] Slots)
     /// fails on a name that is no skill under <c>skills/</c>, hand-written or built (<see cref="SkillNames"/>).
     /// </summary>
     public IReadOnlyList<string> Skills { get; init; } = [];
+
+    /// <summary>The machine states a truth-checked skill's scenario covers, as <see cref="Phase.States"/> does for a phase.</summary>
+    public IReadOnlyList<Enum> States { get; init; } = [];
 }
