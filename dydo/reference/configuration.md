@@ -111,7 +111,7 @@ that survives Codex running hooks through PowerShell (see [Guard System](../unde
 
 ## Model and effort at dispatch
 
-`dydo.json` carries no model and no effort, and a skill binds neither. The delegating admiral or
+`dydo.json` carries no model and no effort, and a skill binds neither. The delegating coordinator or
 Ticket Captain chooses the model - and the effort where the host exposes one - for each task it hands
 out. There is no generated agent file carrying a default.
 

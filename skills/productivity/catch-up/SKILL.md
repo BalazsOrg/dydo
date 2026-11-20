@@ -17,7 +17,7 @@ A **deliverable** is something that works differently for Balazs once it is done
 
 The scope follows the speaker:
 
-- **Admiral**: every deliverable in its Project.
+- **Coordinator**: every deliverable in its Project.
 - **Ticket captain**: its own deliverable, placed in its Project in one sentence. Split it into parts only for real parallel lanes. Tell the deliverable's story; the crew's hops, retries and review rounds are evidence for that story.
 - **Any other agent**: the thing it worked on.
 
