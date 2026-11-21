@@ -34,10 +34,10 @@ R8_ClearBeforeFinish ==
 
 \* R8, R9, S9, DYD-1295 41a553f1: A blocked round requires a fix before
 \* the next round if review continues. R10 governs entry to that Fix in
-\* round three. Only a clear verdict permits advancing without a Fix.
+\* round three. S17's cheap mend also requires a new-head round (R23/R24).
 R8_FixBeforeNextRound ==
     [][ /\ (round' > round =>
-            state \in {"Fixing", "Clear"} /\ state' = "InReview" /\ round' = round + 1)
+            state \in {"Fixing", "Clear", "Mending"} /\ state' = "InReview" /\ round' = round + 1)
         /\ (state = "Fixing" /\ state' # "Fixing" =>
             (state' = "InReview" /\ round' = round + 1) \/ state' = "Returned")
     ]_<<vars, seen>>
@@ -49,16 +49,16 @@ R8_ExtraRoundOnlyOnceAfterClear ==
     /\ [][ /\ (extra => extra')
            /\ ((~extra /\ extra') => state = "Clear" /\ state' = "InReview")
            /\ (state = "Clear" /\ state' # "Clear" =>
-                state' = "Finishing" \/ (state' = "InReview" /\ round' = round + 1 /\ ~extra /\ extra'))
+                state' \in {"Finishing", "Mending"} \/ (state' = "InReview" /\ round' = round + 1 /\ ~extra /\ extra'))
        ]_<<vars, seen>>
 
 \* R10, S10: A blocked third round requires a checkpoint before round four.
 \* DR 070 §6 says "Round 3 with a new blocker". R8's extra round after
-\* a clear third verdict is separate from the checkpoint's Fix route.
+\* a clear third verdict, including its cheap mend, is separate from that Fix route.
 R10_CheckpointBeforeFourthRound ==
     [][ /\ (state # "Fixing" /\ state' = "Fixing" /\ (round = 3 \/ round' = 3) =>
             state = "Checkpoint" /\ round' = round)
-        /\ (state' = "InReview" /\ round = 3 /\ round' = 4 /\ state # "Clear" =>
+        /\ (state' = "InReview" /\ round = 3 /\ round' = 4 /\ state \notin {"Clear", "Mending"} =>
             state = "Fixing" /\ "Checkpoint" \in seen)
     ]_<<vars, seen>>
 
@@ -111,7 +111,7 @@ H10_ReturnedPartContinues ==
 \* R34: "A verdict gets no review." A verdict holder has no review/fix/repair loop.
 R34_VerdictNeverReviewed ==
     kind = "verdict" =>
-        state \notin {"InReview", "Clear", "Checkpoint", "Fixing", "Repairing"}
+        state \notin {"InReview", "Clear", "Checkpoint", "Fixing", "Repairing", "Mending"}
 
 \* K30, S6: the kind resource is loaded before the holder does its work.
 K30_KindKnownBeforeWork ==
@@ -126,4 +126,23 @@ K30_KindStaysKnown ==
 S7_UnstartedReturnHasNoWork ==
     kind = "unread" => seen \subseteq {"Dispatched", "Returned"}
 
+
+\* S17 cheap fixes before merge; R8 ends the blocker loop at clear.
+S17_MendAfterClear ==
+    [][(state' = "Mending" /\ state # "Mending" =>
+        state = "Clear" /\ round' = round)]_<<vars, seen>>
+
+\* R23/R24: a content fix is not a clean sync covered by an ancestor PASS.
+\* Safety only: continuing from the changed candidate requires a fresh round.
+R23_ReviewMendedHead ==
+    [][(state = "Mending" /\ state' # state =>
+        state' = "InReview" /\ round' = round + 1 /\ extra' = extra)]_<<vars, seen>>
+
+\* R8 default interpreted by the skill writer, not R8's own word "once".
+R8_MendOnlyOnce ==
+    /\ ~mended
+    /\ [][ /\ (mended => mended')
+           /\ (state' = "Mending" /\ state # "Mending" => ~mended /\ mended')
+           /\ (~mended /\ mended' => state = "Clear" /\ state' = "Mending")
+       ]_<<vars, seen>>
 ====

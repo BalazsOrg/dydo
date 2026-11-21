@@ -166,4 +166,59 @@ Size gate exited 0 (all changed files at or under 20,000 bytes). Build exited
 
 ## Related
 
+## Generation 6: cheap mend and research handoff
+
+Machine 33081889 adds Mending and mended (included in vars and the passive
+observer). The earlier results are historical. All 18 properties remain;
+three are added, without fairness or disabling moves.
+
+Changed R8_FixBeforeNextRound to allow Mending as a predecessor: S17 says
+"fixed in place before the parent merges if cheap" and R23 requires that
+"the PASS names the head", except R24's clean syncs. Changed
+R8_ExtraRoundOnlyOnceAfterClear to allow Mending after Clear: R8 says "By
+default" and S17 allows the cheap fix; its mandatory new-head review is
+separate from the optional "one more". Changed
+R10_CheckpointBeforeFourthRound to exempt Mending from the blocked-third-round
+premise: the approved draft says "After round 3 with a blocker". A clear
+third round followed by a cheap fix has no such blocker. Extended
+R34_VerdictNeverReviewed to Mending: "A verdict gets no review" excludes
+this review/fix loop too. No source forbids reviewing an answer.
+
+Added S17_MendAfterClear (clear provenance, same round),
+R23_ReviewMendedHead (continuation requires the next review round without
+spending extra), and R8_MendOnlyOnce (persistent marker and single entry).
+"Once" is the skill writer's reading of R8's default, not the rule's own
+word or a separate user ruling. These are safety checks, not eventual exit.
+R8_ClearBeforeFinish requires a clear result after new-head review.
+
+WorkPhaseBeforeDone already allows Leaf to finish; H16's Question is the
+dependent holder's wait, a different run from research handoff. That wait
+still exits only to Leaf. K30 and unread-return checks apply unchanged.
+
+The model cannot show whether the handed-on call is really the user's,
+worth his time (L18), or correctly filed as a HITL his-call child with
+blocking relations (H16/H23/S10), or meets the research contract. Leaf to
+Finishing also represents other handovers. It cannot show whether a should
+was cheap, duplicate-checked, filed, fixed by another writer, or in the
+holder's own PR. Head identity, PASS receipt, actual merge and clean-sync
+ancestry are absent: R23/R24 are checked as phase order on the path modeling
+new-head review. Answer exclusion from Mending is reachability, not a
+source-backed prohibition; verdict exclusion is source-backed.
+
+Renewed local registered bad trace: bad-trace.json includes mended and
+retains Question(change) to Finishing, rejected by H16. Shared controls.json
+outside this crew's ownership lacks mended; use this local registration.
+
+Generation 6 receipts: ordinary managed runner at 78683406 exited 0;
+all 21 properties and NoDeadlock hold, 3,695 generated states, 2,296 distinct,
+queue empty, depth 25. Output: /tmp/dyd-1372/tlc-g6-props-1.
+The renewed local control was rejected only by H16_ResumeLeafAfterQuestion
+(checker 1, harness 0; /tmp/dyd-1372/tlc-g6-props-3). No machine violation
+remains. Both runs used the required gate lock, app-t3code-agents.slice,
+8G MemoryMax and zero swap. The first control attempt caught the property
+but its harness exited 2 because importing run.py created bytecode in the
+checkout; that explicit scratch bytecode was removed and the successful
+repeat disabled bytecode. The final TLA edits after these runs change comments
+only. No machine, skill, shared runner or shared control file was changed.
+
 - [Statechart property runner](../README.md)
