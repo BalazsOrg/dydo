@@ -40,7 +40,8 @@ public static class SkillBuilder
         model.Envoys?.CheckBuilt(model, claims, files, map);
         foreach (var (path, text) in chart.Files(claims).Concat(WhyDocs.Render(model.Kinds, claims, chart, replaced)).Concat(Review(bySkill, replaced, layouts, open, claims)))
             files.Add(path, text);
-        return new BuiltTree(files, map, unbuilt);
+        var unwritten = new SortedDictionary<string, string>(chart.Files(claims, handWritten: true).ToDictionary(file => file.Path, file => file.Text), StringComparer.Ordinal);
+        return new BuiltTree(files, map, unbuilt) { Unwritten = unwritten };
     }
 
     private static void Emit(SkillSpec skill, string path, RenderedFile file, SortedDictionary<string, string> files, List<MapLine> map)

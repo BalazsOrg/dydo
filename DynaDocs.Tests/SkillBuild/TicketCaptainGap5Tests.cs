@@ -26,7 +26,7 @@ public partial class TicketCaptainGap5Tests
             move.GetProperty("to").GetString()!, move.GetProperty("guard").GetString(), move.GetProperty("effect").GetString()))
     ]);
 
-    private static JsonElement Machine => JsonDocument.Parse(Built.Value.Files["claims/statechart/captain/transitions.json"]).RootElement;
+    private static JsonElement Machine => JsonDocument.Parse(Built.Value.Unwritten["claims/statechart/captain/transitions.json"]).RootElement;
 
     [GeneratedRegex("\"([a-z]+)\"")]
     private static partial Regex Quoted();

@@ -28,7 +28,7 @@ Reason: A holder that cuts what nobody can state yet hands its children guesses,
 
 Spec: H10, H23
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Wayfinding, "the route to the spec is not all in sight: the way is found before the cut".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Taken → Wayfinding, "the route to the spec is not all in sight: the way is found before the cut".
 
 Evidence (run): `skills/productivity/wayfinder/SKILL.md`, read 2026-11-21: its description is "Fog in a Project map or inside one ticket", and it lets a captain act on it: "A Ticket Captain may chart local fog inside one approved delivery outcome." The build fails when `/wayfinder` names no skill under `skills/`.
 
@@ -62,7 +62,7 @@ Reason: Two procedures for one call leave its holder to pick, and the one it mus
 
 Spec: H10, S2
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Wayfinding → Split, "the parts in sight are cut, and the fog is left uncut".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Wayfinding → Split, "the parts in sight are cut, and the fog is left uncut".
 
 Evidence (run): `skills/productivity/wayfinder/SKILL.md`, read 2026-11-21: "Create the tickets you can specify now", "everything you cannot yet specify stays in the fog", "Don't pre-slice the fog into ticket-sized pieces", a ticket's body "carries one outcome sized to one agent session", and "Wayfinding Tickets clear the fog blocking what comes next".
 
@@ -80,7 +80,7 @@ Reason: Small parts keep the work moving while the rest is still dark (07c86aad:
 
 Spec: H10, S15
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Wayfinding, "a part returns and fog remains: the way is found again from what it showed".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Waiting → Wayfinding, "a part returns and fog remains: the way is found again from what it showed".
 
 Evidence (run): `skills/productivity/wayfinder/SKILL.md`, read 2026-11-21: "Resolving a ticket clears the fog ahead of it, graduating whatever's now specifiable into fresh tickets, one at a time, until the way to the destination is clear"; and "Defer later decisions until delivery reveals the facts they need."
 

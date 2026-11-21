@@ -4,316 +4,116 @@ type: reference
 explains: ["verification/statechart/captain/**"]
 ---
 
-# Captain prototype obligations
+# Captain chart obligations
 
-## Phase 1 properties 4 (DYD-1372)
+Hand-written from the core page (`dydo/core.md`), the approved spec and his rulings, never from the model (K3). The model they judge is the hand-written captain chart in [statechart/captain/](../../../statechart/captain/README.md) (DYD-1437): 11 states, 23 arrows, and the variables `state`, `kind` and `merges`. Where the core page and the spec disagree, the core page wins.
 
-Hand-written from the approved spec, his DYD-1295/DYD-1372 rulings and
-AGENTS.md (K3), never from the built skill. Historical checks remain in Git.
-The machine at 25bf7d11 starts at Dispatched; seen starts there through Init.
-No move is disabled, round <= 4 is preserved and no fairness is added.
+The properties of the generated chart that came before, and their receipts, are in Git up to `7466727a`.
 
-| Property | Source | Observable obligation |
+`seen` is the passive set of states this captain has been in. No step is disabled, the model needs no bound, and no fairness is added.
+
+## Properties
+
+| Property | Source | What it checks |
 |---|---|---|
-| WorkPhaseBeforeDone | 7b3d2e3e; AGENTS.md | Done follows Finishing and Leaf or Waiting. |
-| H3_WaitAfterSplit | H3; df6a785e | Split exits to Waiting. |
-| H16_ResumeLeafAfterQuestion | H16, S10; 519126ab | A dependent leaf's Question exits only to Leaf. |
-| R8_ClearBeforeFinish | R8 | Clear comes from review; finishing after review follows Clear. |
-| R8_FixBeforeNextRound | R8, R9, S9; 41a553f1 | Advance follows Fixing or Clear; Fixing resumes next round or returns. |
-| R8_ExtraRoundOnlyOnceAfterClear | R8 | Clear finishes or consumes the single persistent extra-round marker. |
-| R10_CheckpointBeforeFourthRound | R10, S10, DR 070 §6 | A blocked third-round fix and subsequent fourth round require Checkpoint. |
-| S10_CheckpointBeforeThirdRoundEscalation | R10, S10 | Blocked third-round return passes Checkpoint. |
-| R10_EnterCheckpointFromThirdRound | R10, S10, DR 070 §6 | Checkpoint comes from InReview(3), preserving round. |
-| R19_ReviewAfterMergeRepair | R8, R19, R21, R22, K9, H12 | Repairing exits to review or return; retry requires Clear. |
-| H1_ReturnedIsTerminal | H1, H12, H23; AGENTS.md | Returned only stutters. |
-| H10_WayfindingLeavesByCut | H10; 07c86aad | Wayfinding exits to Split. |
-| H10_PartBeforeFogFinish | H10; 777d396e, 07c86aad | Wayfinding history requires Split and Waiting before finishing. |
-| H10_ReturnedPartContinues | H2, H10, R2 | Waiting exits to Wayfinding, Split, review or finishing; never intake. |
-| R34_VerdictNeverReviewed | R34; 777d396e | A verdict holder never occupies InReview, Clear, Checkpoint, Fixing or Repairing. |
-| K30_KindKnownBeforeWork | K30; 0f340abd, 07c86aad | Every phase except Dispatched and Returned has a known kind. |
-| K30_KindStaysKnown | K30, S7; AGENTS.md | Once set, kind never changes during this ticket's run. |
-| S7_UnstartedReturnHasNoWork | S6, S7; AGENTS.md | An unread-kind run visits only Dispatched and Returned. |
+| WorkPhaseBeforeDone | core "A ticket"; 7b3d2e3e | Done comes after `Leaf` or `Waiting`. |
+| H3_WaitAfterSplit | H3; H2; df6a785e | `Cutting` exits only to `Waiting`, or to `HandedBack` when the cut cannot be made. |
+| H16_ResumeLeafAfterQuestion | core "Who decides what"; H16; 519126ab | `Asking` exits only to `Leaf`. |
+| Core_SplitOnlyOrchestrates | core "A ticket" | After `Cutting`, never `Leaf` or `Asking` again. |
+| H10_ReturnedPartContinues | H2, H10, R2 | `Waiting` exits to `Cutting`, `InReview`, `Done` or `HandedBack`. |
+| R8_PassBeforeMerge | R8, R23 | `Merging` starts only from `InReview`, and a reviewed ticket closes only from `Merging`. |
+| R8_FixBeforeNextRound | core "Review severities"; R8, S9 | A second round starts only from `Fixing`, and `Fixing` exits to `InReview` or `HandedBack`. |
+| R19_ReviewAfterMergeRepair | R19, R21, R22 | `Merging` exits only to `Done` or `Fixing`. |
+| R2_MergingHolderHasReview | core "Who decides what"; R2, R23 | A captain that merges closes only from `Merging`, with `InReview` behind it. |
+| R34_VerdictNeverReviewed | core "Review severities"; R34; 777d396e | A verdict's holder is never in `InReview`, `Fixing` or `Merging`. |
+| Sees_OnlyAMergerSeesReviewFixMerge | `statechart/captain/positions.md` | Only a captain that merges a change is in `InReview`, `Fixing` or `Merging`. |
+| K30_KindKnownBeforeWork | K30, S6 | Every state but `Dispatched` and `HandedBack` has a known kind. |
+| K30_KindStaysKnown | K30, S7; AGENTS.md | Once set, the kind never changes. |
+| S7_UnstartedReturnHasNoWork | S6, S7 | A run that never read its kind visits only `Dispatched` and `HandedBack`. |
+| H1_EndsAreFinal | H12; AGENTS.md | `Done` and `HandedBack` only stand still. A structural check of the two ends: the sources say a captain returns, not what it may do after. |
 
-## New obligations and remaining limits
+`Sees_OnlyAMergerSeesReviewFixMerge` is not a rule of the spec. It checks the states column of the who-sees-what table against the model, so the table cannot say a Question's captain never needs the review, fix and merge text while the model lets it in.
 
-R34: "Reviewing the reviews is probably not a good idea." The invariant now
-covers verdict paths, including leaves and split reviews, replacing
-the narrow R34_VerdictGoesToFinishing arrow check. K30's one captain base and
-kind resources were accepted as "I like A" (0f340abd), kind-specific phases as
-"I like a" (07c86aad). Known-before-work and stable kind are now checkable;
-actually loading the right resource remains unobservable.
+## Changed and dropped at DYD-1437
 
-S7 says "One agent holds one ticket"; AGENTS.md says "one agent holds one
-ticket" and owns its outcome. Dispatched(unread) → Returned(unread) checks
-the no-work footprint and terminal return. It cannot prove exclusive ownership,
-already-held status or authorized takeover: holder/ticket identity and intake
-reason are absent. That trace is identical for filler refusal and held-ticket
-conflict. Dispatched → Taken(change) is enabled without an other-holder premise.
-Full mutual exclusion remains unexpressible.
+The chart was simplified, so each property below changed with the state it named. Old wording is in Git at `7466727a`.
 
-R2 requires review after wiring and before merge; R8 a clear round; R33 forbids
-judging one's own step. Existing review-order properties apply to every run,
-therefore also to change runs, preserving the stronger checks. Non-vacuity
-witness: Dispatched → Taken(change) → Leaf → InReview(1) → Clear(1) → Finishing
-→ Done. Fixes, Checkpoint(3), extra clear rounds and Repairing are reachable
-for changes too. The change-holder shortcut control exercises finishing's
-antecedent. R8 permits an extra round after Clear(3) without Checkpoint;
-DR 070 §6 specifies "Round 3 with a new blocker" for the checkpoint route.
+Changed:
 
-But "a change that needs review" still lacks its needs-review predicate.
-Dispatched → Taken(change) → Leaf → Finishing → Done is enabled. Without risk,
-size, grouping, wiring or parent-review data it cannot be classified as an
-allowed handover or forbidden bypass. R5/R6/R16 permit skips; imposing review
-on every change would contradict the source. Reviewer/author/fixer identity,
-fresh reviewers, revision-bound proof, blocker data, checkpoint notes, reverts
-and repair hunks remain unobservable (R2, R8–R10, R16, R19, R21–R22, R33,
-S8–S10). Continuation beyond a blocked fourth round is outside the bound.
+| Property | What changed | Why |
+|---|---|---|
+| WorkPhaseBeforeDone | No longer requires `Finishing` before Done. | `Finishing` is gone: a ticket closes from `Leaf`, `Waiting` or `Merging`. The work-before-Done order stays. |
+| H3_WaitAfterSplit | `Split` is now `Cutting`, and `HandedBack` is a second way out. | Renamed state. H2 sends a slice that cannot be divided coherently under its own ticket back to the officer above. The old chart had that way out only for a leaf, which left a captain that splits with no way back (review r1). |
+| H16_ResumeLeafAfterQuestion | `Question` is now `Asking`. | Renamed state. |
+| H10_ReturnedPartContinues | Exits are `Cutting`, `InReview`, `Done`, `HandedBack`. `Wayfinding`, `Finishing` and `Leaf` for an answer are gone. | `Wayfinding` merged into `Cutting`. The core page says a captain that splits only orchestrates, so a research holder no longer goes back to `Leaf`. H2 sends a change to its contract, or to a sibling's, through the officer above, so `HandedBack` is added (review r1). |
+| R8_ClearBeforeFinish, now R8_PassBeforeMerge | `Clear` and `Finishing` are now the PASS arrow and `Merging`. The exception for a mended part is gone. | `Clear` and `Mending` are gone. |
+| R8_FixBeforeNextRound | Written on order, not on a round number. `Clear` and `Mending` are no longer ways into a new round. | The model no longer counts rounds, and the extra round and the mend are gone. |
+| R19_ReviewAfterMergeRepair | `Repairing` is now `Fixing`. | A broken merge goes to a Fix like any blocker. With R8_FixBeforeNextRound and R8_PassBeforeMerge, a repair still cannot reach Done without a review. |
+| R2_MergingHolderHasReview | `merger = "holder"` is now `merges`, and the close is from `Merging`. | The model keeps one fact, whether this captain merges. |
+| R34_VerdictNeverReviewed | The states are `InReview`, `Fixing`, `Merging`. | `Clear`, `Checkpoint`, `Repairing` and `Mending` are gone. |
+| K30_KindKnownBeforeWork, S7_UnstartedReturnHasNoWork | `Returned` is now `HandedBack`. | Renamed state. |
+| H1_ReturnedIsTerminal, now H1_EndsAreFinal | Both ends are final. | `Done` no longer steps to `Returned`: Done is an end, and the line back to the officer is part of it. |
 
-H16 says the Question captain "researches first, then answers the need" or
-"passes it up"; the receiving officer "waits on it". These are different runs.
-Dispatched → Taken(answer) → Leaf → Returned is an unsettled research return,
-without Finishing or Done; Returned remains terminal. The dependent holder's
-Leaf → Question → Question → Leaf still waits. Question cannot exit to
-Returned. Neither the Question property nor wayfinding checks forbids the new
-Leaf → Returned move. Question-open status, answers and child identities are
-absent, so the open unsettled return remains only phase-level.
+Dropped:
 
-H10: "Finding the way towards the spec, one manageable part at a time."
-Dispatched → Taken → Split → Waiting → Finishing lacks a route predicate to
-show whether wayfinding was required. Taken → Wayfinding → Split → Waiting
-→ Wayfinding → Split → Waiting → Finishing shows gradual order but no size,
-route visibility, child receipt or well-timed human point. Without fairness,
-waiting may last forever. S1's cut, R34's family preference and S8's one posted
-verdict are unobservable on Taken(verdict) → Split → Waiting → Finishing.
-Contract satisfaction is absent: "It's done when it's contract is met. Period."
-(7b3d2e3e) is checked only as phase order.
+| Property | Why |
+|---|---|
+| R8_ExtraRoundOnlyOnceAfterClear | The arrow "one more round is ordered" is gone. R8 lets an officer order it; the chart leaves it out, because a PASS ends the review and the captain need not decide more. |
+| R10_CheckpointBeforeFourthRound, S10_CheckpointBeforeThirdRoundEscalation, R10_EnterCheckpointFromThirdRound | The `Checkpoint` state is gone. Its two exits are the Fix and the way to the officer, which every FAIL already has. R10's line on the Review is a record on those arrows, and the model no longer counts rounds, so none of the three can be written. |
+| H10_WayfindingLeavesByCut | `Wayfinding` merged into `Cutting`, and H3_WaitAfterSplit already says `Cutting` exits only to `Waiting` or back to the officer. |
+| H10_PartBeforeFogFinish | The same merge. H3_WaitAfterSplit and Core_SplitOnlyOrchestrates cover it: after a cut, the only way on to Done is through `Waiting`. |
+| R23_ReviewMendedHead | The `Mending` state is gone: a should becomes a ticket that waits. |
 
-## What is not checked about answers
+Added: Core_SplitOnlyOrchestrates and Sees_OnlyAMergerSeesReviewFixMerge.
 
-Whether a research answer may be reviewed has no source: no spec rule and no
-word of his speaks of it. R4 covers a plan, spec or contract; R6 gives a leaf
-an optional fresh evidence-check seat. No property is written about reviewing
-an answer either way. Observation, not obligation: today no move guarded on
-`kind = "change"` or `kind = "verdict"` is open to an answer's holder, so the
-machine shows no round on an answer.
+## What the model cannot show
 
-K30_KindKnownBeforeWork excludes unread in work states, without prescribing a
-closed list of known kinds. K30_KindStaysKnown still preserves any set kind;
-S7_UnstartedReturnHasNoWork still restricts only unread runs. All three retain
-their source meaning with change, verdict and answer distinct.
+The properties check order only. The model has no data for any of these, so none is checked:
 
-## Controls and results
+- Whether the contract is met, and whether a ticket really fits one agent.
+- Who an agent is: that the reviewer is not the author, comes from another model family, or is fresh.
+- Which head a PASS names, whether a merge is clean, and whether a gate is green.
+- What a verdict holds: its blockers, shoulds and nits, and that a should was filed or a nit ruled on.
+- Which skill an agent loaded and what its brief said. `positions.md` is checked by reading.
+- That a sub-ticket was settled before the next parts were cut, and how many parts there are.
+- Whether a call was one the captain may decide.
+- R10's checkpoint line after a third FAIL.
+- That anything ends. Without fairness a captain may wait forever; these are safety checks.
 
-H2 says a holder that "cannot divide its slice coherently under its own ticket"
-returns it "to the officer above for a re-cut"; a contract or sibling change
-also goes through that officer. H10's "Finding the way towards the spec, one
-manageable part at a time" (07c86aad) does not forbid cutting again. The old
-Waiting exit set was stricter than these sources. Allowing Split corrects the
-property, not the machine: the waiting officer continues its own ticket, never
-returns to Dispatched or Taken. The child's return is a different run.
+Whether an answer may be reviewed has no source. The model gives an answer's holder no review, because only a change is merged; that is a choice of the model, checked only as part of the who-sees-what table.
 
-H2's re-cut continues through H3's dispatch-and-wait order: H3_WaitAfterSplit
-also applies after Waiting → Split. K30's stable kind and R34's ban on reviewing
-a verdict still apply through repeated cuts. Witness for all three known kinds:
-Dispatched → Taken → Split → Waiting → Split → Waiting → Finishing → Done.
-These are safety checks, not eventual progress: stuttering remains possible.
-The machine cannot show that the child's ticket was settled before new parts
-were cut, or by whom. It has no child ticket, settlement, officer identity,
-coherence or changed-contract data; H2's authority and settlement remain owed.
+## Controls
 
-Registered scratch trace: Question(change) → Finishing, round 1, extra FALSE,
-kind unchanged; H16_ResumeLeafAfterQuestion rejects it. Historical manual controls
-use the same observer injection, each a one-line scratch model change,
-preserving round 1 and extra FALSE:
+The registered control in [controls.json](../controls.json) is the step `Asking` to `Done` for a change that is not merged. H16_ResumeLeafAfterQuestion must reject it.
 
-- Replace observer Init/Next with Waiting(verdict) → InReview(verdict): R34_VerdictNeverReviewed must reject it.
-- Replace observer Init/Next with InReview(change) → Finishing(change): R8_ClearBeforeFinish must reject it.
-- Replace observer Init/Next with Wayfinding(change) → Finishing(change): H10_WayfindingLeavesByCut and H10_PartBeforeFogFinish must reject it.
+Six more controls were run by hand at DYD-1437, each one changed line in a scratch copy of `Captain.tla`, with the committed model untouched:
 
-Phase 3 manual control: in a scratch copy of Captain.tla, change only
-CaptainTrouble_ChildReCut's destination line from `state' = "Split"` to
-`state' = "Taken"`. H10_ReturnedPartContinues rejects it, with trace
-Dispatched → Taken → Split → Waiting → Taken. The managed checker exits 1;
-the control harness exits 0. No committed machine is changed.
+| Changed line | Property that must reject it |
+|---|---|
+| `SendTheWholeToReview` loses its `merges` guard | Sees_OnlyAMergerSeesReviewFixMerge, R34_VerdictNeverReviewed |
+| `CloseLeaf` loses its `~merges` guard | R2_MergingHolderHasReview |
+| `CutTheNextParts` goes to `Leaf` | Core_SplitOnlyOrchestrates, H10_ReturnedPartContinues |
+| `ReviewAgain` goes to `Merging` | R8_FixBeforeNextRound, R8_PassBeforeMerge |
+| `MergeBroke` goes to `InReview` | R19_ReviewAfterMergeRepair, R8_FixBeforeNextRound |
+| `Dispatch` goes to `Done` | H3_WaitAfterSplit, WorkPhaseBeforeDone, R2_MergingHolderHasReview |
 
-Phase 4 manual control: in a scratch copy of the current Captain.tla, change
-only CaptainReview_Whole's guard from `kind = "change"` to `kind = "verdict"`.
-R34_VerdictNeverReviewed rejects Dispatched → Taken(verdict) → Split → Waiting
-→ InReview. This is one model line, not an observer replacement. The managed
-checker exits 1 and the control harness exits 0. The registered Question →
-Finishing control is also rejected by H16_ResumeLeafAfterQuestion (checker 1,
-harness 0). No committed machine or registered control is changed.
+## Receipts
 
-Historical phase 4 receipts are retained in Git; current receipts are below.
+All at `35feddb1e5eef1b7499e9ed45dfe8c699a52f1e7`, each run under the gate lock, with dydo 3.6.0's managed Java and TLC:
+
+- The model alone (`run.py --baseline --machine captain`): exit 0. `TypeOK` and `NoDeadlock` hold; 33 states, 69 steps.
+- `check-chart.mjs` on the chart that run drew: exit 0. `chart.mmd` and the model agree on 11 states and 23 arrows, and no arrow joins two cases with "or".
+- The properties (`run.py --machine captain`): exit 0. All 15 properties, `TypeOK` and `NoDeadlock` hold; 292 states generated, 161 distinct, queue empty, depth 12.
+- The registered control (`run.py --controls --machine captain`): checker 1, harness 0, `control_caught` true. H16_ResumeLeafAfterQuestion rejects `Asking` to `Done`, and so does WorkPhaseBeforeDone.
+- The six hand-run controls: checker 1 on each, and each is rejected by exactly the properties the table above names.
+
+No control was run against K30_KindKnownBeforeWork, K30_KindStaysKnown, S7_UnstartedReturnHasNoWork or H1_EndsAreFinal. Their meaning did not change at DYD-1437; only state names did.
+
+The first run of these checks was at `e5c282d9`, on the chart before review r1: 21 arrows, 137 distinct states, all holding. Review r1 found that a captain that splits had no way back to its officer; `35feddb1` adds the two arrows and the runs above repeat every check.
+
+Output was written to `/tmp/dyd-1437/` and is not kept. Only this page changed after these runs.
 
 ## Related
 
-## Generation 6b: mended part handoff
-
-The machine at 5179c005 adds Mending to Finishing. R2 says "Its parts are
-unreviewed sub-tickets or lanes" and "The parent is reviewed once, after
-wiring and before its Merge hop". S17 permits cheap shoulds to be "fixed in
-place before the parent merges". R23 requires a PASS at the merge entry
-point; R24 permits only clean-sync descendants of an ancestor PASS. Neither
-requires a separate round on each part before handoff. R32's writer commit
-rule supplies no additional review requirement. Therefore this handoff is
-allowed, conditional on review with the whole before merge.
-
-The unchanged-property run at 5179c005 (tlc-g6b-props-1) rejected three
-properties. R8_ClearBeforeFinish and R23_ReviewMendedHead rejected
-Dispatched -> Taken(change) -> Leaf -> InReview -> Clear -> Mending ->
-Finishing. R19_ReviewAfterMergeRepair rejected Dispatched -> Taken(change)
--> Leaf -> Finishing -> Repairing -> InReview -> Clear -> Mending ->
-Finishing. All other 18 properties and NoDeadlock held.
-
-These three properties were stricter than R2's allocation of review to the
-whole. R8_ClearBeforeFinish now permits finishing from Clear or Mending;
-S17_MendAfterClear still requires that Mending came from Clear, and a new
-review round must still clear before it finishes. R23_ReviewMendedHead now
-permits either a next numbered local round or a same-round handoff to
-Finishing, preserving extra in both cases. R19_ReviewAfterMergeRepair keeps
-the immediate fresh-review-or-return obligation after Repairing, but allows
-the later Mending handoff after that review has cleared. A conflict repair
-itself still cannot skip review.
-
-The model has no candidate-in-PR, merge-owner, returned-SHA, revision or whole
-identity. Finishing represents both local landing and returning to an officer.
-It cannot establish that the Mending handoff was in no PR, that the officer
-merges the returned head, or that the whole's review actually judged it before
-merge. Historically, Repairing did not establish merge ownership. In the
-current model it DOES establish persistent holder merge ownership; generation
-6c below supersedes this paragraph. The old trace was not permission to locally
-merge a changed own-PR head under a stale PASS. R23/R24 still prohibit that;
-the missing predicates prevent distinguishing it from the valid handoff.
-The phase abstraction admits both and cannot prove the conditional rule.
-
-## Generation 6: cheap mend and research handoff
-
-Machine 33081889 adds Mending and mended (included in vars and the passive
-observer). The earlier results are historical. All 18 properties remain;
-three are added, without fairness or disabling moves.
-
-Changed R8_FixBeforeNextRound to allow Mending as a predecessor: S17 says
-"fixed in place before the parent merges if cheap" and R23 requires that
-"the PASS names the head", except R24's clean syncs. Changed
-R8_ExtraRoundOnlyOnceAfterClear to allow Mending after Clear: R8 says "By
-default" and S17 allows the cheap fix; its mandatory new-head review is
-separate from the optional "one more". Changed
-R10_CheckpointBeforeFourthRound to exempt Mending from the blocked-third-round
-premise: the approved draft says "After round 3 with a blocker". A clear
-third round followed by a cheap fix has no such blocker. Extended
-R34_VerdictNeverReviewed to Mending: "A verdict gets no review" excludes
-this review/fix loop too. No source forbids reviewing an answer.
-
-Added S17_MendAfterClear (clear provenance, same round),
-R23_ReviewMendedHead (continuation requires the next review round without
-spending extra), and R8_MendOnlyOnce (persistent marker and single entry).
-"Once" is the skill writer's reading of R8's default, not the rule's own
-word or a separate user ruling. These are safety checks, not eventual exit.
-R8_ClearBeforeFinish requires a clear result after new-head review.
-
-WorkPhaseBeforeDone already allows Leaf to finish; H16's Question is the
-dependent holder's wait, a different run from research handoff. That wait
-still exits only to Leaf. K30 and unread-return checks apply unchanged.
-
-The model cannot show whether the handed-on call is really the user's,
-worth his time (L18), or correctly filed as a HITL his-call child with
-blocking relations (H16/H23/S10), or meets the research contract. Leaf to
-Finishing also represents other handovers. It cannot show whether a should
-was cheap, duplicate-checked, filed, fixed by another writer, or in the
-holder's own PR. Head identity, PASS receipt, actual merge and clean-sync
-ancestry are absent: R23/R24 are checked as phase order on the path modeling
-new-head review. Answer exclusion from Mending is reachability, not a
-source-backed prohibition; verdict exclusion is source-backed.
-
-Renewed registered bad trace: Question(change) to Finishing, with mended
-FALSE, rejected by H16. The properties' author kept it in a local
-bad-trace.json; the captain then moved it into the shared controls.json,
-which `run.py --controls` reads, and removed the local copy.
-
-Generation 6 receipts: ordinary managed runner at 78683406 exited 0;
-all 21 properties and NoDeadlock hold, 3,695 generated states, 2,296 distinct,
-queue empty, depth 25. Output: /tmp/dyd-1372/tlc-g6-props-1.
-The renewed local control was rejected only by H16_ResumeLeafAfterQuestion
-(checker 1, harness 0; /tmp/dyd-1372/tlc-g6-props-3). No machine violation
-remains. Both runs used the required gate lock, app-t3code-agents.slice,
-8G MemoryMax and zero swap. The first control attempt caught the property
-but its harness exited 2 because importing run.py created bytecode in the
-checkout; that explicit scratch bytecode was removed and the successful
-repeat disabled bytecode. The final TLA edits after these runs change comments
-only. No machine, skill, shared runner or shared control file was changed.
-
+- [The captain statechart](../../../statechart/captain/README.md)
 - [Statechart property runner](../README.md)
-
-## Generation 6c: independent source corrections (p6)
-
-This section supersedes the historical results and weakened generation 6b
-obligations. Machine eea6fa48 introduces merger: holder merges its own change,
-officer merges the returned part, nobody merges, or unread before intake.
-The role persists throughout this ticket. Repairing therefore DOES identify
-the merging holder for the rest of the run; actual PR existence is absent.
-
-B1: R8_ClearBeforeFinish now requires Clear after review, except a Mending
-handoff with merger=officer. R8 says "the phase ends on the first round with
-no new blocker". R2 permits unreviewed parts and review with the whole.
-R19_ReviewAfterMergeRepair requires review or return immediately after repair,
-and every later finishing entry requires holder ownership and Clear: R19 says
-"under a fresh review of its hunks"; R22 says "then a fix-scoped round, then a
-re-land". R23_ReviewMendedHead forbids Mending -> Finishing for the holder that
-merges: "unless the PASS names the head" (R23); only clean syncs preserve an
-ancestor PASS (R24). Together with R8 this requires a new clear review before
-local finishing, without copying the machine's two permitted exits.
-
-B2: removed R8_MendOnlyOnce and its registration. Neither R8 nor S17 limits
-the number of content mends. The single mend is the model's own finite bound,
-checked by no property. N3: removed S17_MendAfterClear and its registration.
-S17 says "fixed in place before the parent merges if cheap", not only after a
-clear round or without changing its number. Cheapness, registration, duplicate
-checks and actual parent merge are absent; phase provenance was no independent
-S17 obligation.
-
-H10_ReturnedPartContinues now permits Waiting -> Leaf for kind=answer. H16
-says "researches first, then answers the need"; K30/H2 and aa5b445e preserve
-"keeping the escape hatch is probably right" for division of oversized work.
-These sources do not forbid a research holder resuming its own work after
-parts return. The former property was stricter than its source.
-
-Added R2_MergingHolderHasReview: R2 says "after wiring and before its Merge
-hop" and R23 says "the PASS names the head". A change holder that merges must
-enter Finishing from Clear with its own review in history. R2 still allows
-an unreviewed part to return to its officer for review with the whole.
-
-WorkPhaseBeforeDone, H3_WaitAfterSplit and K30_KindStaysKnown retain their
-source meaning: work before completion, dispatch/wait order, and one ticket's
-stable kind. Waiting -> Leaf neither erases work history nor changes kind.
-All remaining registered properties were re-bound without changes. No source
-forbids answer review, or literally prescribes merger=nobody for answers and
-verdicts. That encoding is a model choice, not an independent obligation.
-R34 already forbids verdict review and its repair loop; R2/R23 express the
-source-supported obligations behind the new merge guards.
-
-Remaining limits: no actual head, PASS receipt, clean-sync ancestry, PR,
-merge action, returned SHA, child identity, whole-review receipt, reviewer or
-author identity, blocker data, cheapness or contract-satisfaction predicate.
-Clear represents a PASS on the current candidate only at phase level, and
-Mending represents content change. R23/R24 cannot prove receipt binding to a
-hash or that an officer reviewed a returned head. R19 cannot prove hunk
-coverage or reviewer freshness. R33 identity remains unobservable. The four
-round and single mend bounds and lack of fairness still limit the universe;
-safety does not establish eventual completion. The observer remains passive
-seen only; no moves or fairness assumptions are changed.
-
-The registered Question -> Finishing control explicitly names round, extra,
-mended, kind and merger; from/to supply state. The runner supplies seen.
-Its named rejecting property remains H16_ResumeLeafAfterQuestion.
-
-Generation 6c receipts at 98c73d02803bba6e70c3147b391ee87f211a13c4:
-all 20 hand-written properties plus NoDeadlock hold; 4,817 generated states,
-3,150 distinct, queue empty, depth 27. Ordinary runner exited 0. Output:
-/tmp/dyd-1372/tlc-p6-1. Registered control: checker 1, harness 0,
-control_caught=true; H16_ResumeLeafAfterQuestion rejects Question -> Finishing.
-The same trace also violates R2_MergingHolderHasReview. Output:
-/tmp/dyd-1372/tlc-p6-2. No machine violation remains. Both successful runs
-used the gate lock, app-t3code-agents.slice, MemoryMax=8G, MemorySwapMax=0
-and OOMPolicy=continue.
-Only this documentation changed after those runs.

@@ -71,7 +71,10 @@ internal static partial class WhyDocs
     private static string Move(Transition move, Statechart chart, bool bySystem)
     {
         var machine = chart.MachineOf(move.From);
-        var link = $"{machine.Title} (`{Statechart.FolderOf(machine)}/{machine.Id}.tla`)";
+        // A machine whose chart is written by hand has no built module: the model's move is named beside the hand-written chart's folder.
+        var link = machine.HandWritten is { } folder
+            ? $"{machine.Title} (the model's own machine, not written; the hand-written chart is in `{folder}/`)"
+            : $"{machine.Title} (`{Statechart.FolderOf(machine)}/{machine.Id}.tla`)";
         return $"Transition in {link}: {move.From} → {move.To}, \"{move.Arrow}\"." + (bySystem ? " A system transition: no skill carries it." : "");
     }
 

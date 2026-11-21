@@ -28,7 +28,7 @@ Reason: The three ways of finishing differ, and a captain that picks the wrong o
 
 Spec: R32, R5
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Finishing, "the leaf is whole, its holder does not merge it, and it has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Leaf → Finishing, "the leaf is whole, its holder does not merge it, and it has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer".
 
 Evidence (run): This skill's writer was briefed (DYD-1372 hop 2): "IMPLEMENTED DYD-1372 hop 2 at <SHA>", then "the gate commands with their exits".
 
@@ -78,7 +78,7 @@ Reason: A result left in a thread is gone when the thread is.
 
 Spec: H23, K14
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Done → Returned, "one line goes back to the officer".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Done → Returned, "one line goes back to the officer".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it, which reads it with `task_status`.
 
@@ -96,7 +96,7 @@ Reason: An officer woken by a return can count on the ticket being closed.
 
 Spec: S6
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Finishing → Done, "the contract is met: the ticket closes Done".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Finishing → Done, "the contract is met: the ticket closes Done".
 
 Evidence (run): Linear, team Dydo, read 2026-11-21: Done exists, and DYD-1281's nineteen finished sub-tickets are Done, while DYD-1295, the walkthrough whose envoy returned with no verdict from the user, is still open, in Todo.
 

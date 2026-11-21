@@ -28,7 +28,7 @@ Reason: A mistake here is costly or impossible to undo once it has run.
 
 Spec: R33, R12
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → InReview, "the leaf's change is whole and the merge is its holder's: another agent reviews it".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Leaf → InReview, "the leaf's change is whole and the merge is its holder's: another agent reviews it".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 
@@ -126,7 +126,7 @@ Reason: The three words decide what happens next, so they are defined before the
 
 Spec: R6
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Finishing, "the children are back and the ticket only groups parts: no review of its own".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Waiting → Finishing, "the children are back and the ticket only groups parts: no review of its own".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 
@@ -144,7 +144,7 @@ Reason: A grouping adds no behaviour for a reviewer to find wrong.
 
 Spec: R2, R1
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → InReview, "the parts are wired: a Review of the whole is dispatched".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Waiting → InReview, "the parts are wired: a Review of the whole is dispatched".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 
@@ -194,7 +194,7 @@ Reason: Each kind has one place that can act on it, and the wrong place sits on 
 
 Spec: R9, S9
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Fixing, "a round other than the third returns a blocker: a Fix ticket".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): InReview → Fixing, "a round other than the third returns a blocker: a Fix ticket".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3. Read again 2026-11-21: Fix r1, r2 and r3 (DYD-1327, DYD-1333, DYD-1339) are one ticket each, with no sub-ticket, and Fix r1 closed 7 blockers. The user took one Fix ticket for all of a round's blockers as the walkthrough brief recommended it (DYD-1372 07c86aad, "4. Lgtm").
 
@@ -212,7 +212,7 @@ Reason: A writer that holds all of them understands the code once and repairs it
 
 Spec: R9
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Returned, "in a round other than the third, a blocker is fundamental or a new requirement: back to the officer".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): InReview → Returned, "in a round other than the third, a blocker is fundamental or a new requirement: back to the officer".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
@@ -246,7 +246,7 @@ Reason: The user's answer is the slowest route of the three, so each hour before
 
 Spec: R8
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Clear → InReview, "one more round is ordered, once".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Clear → InReview, "one more round is ordered, once".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 
@@ -264,7 +264,7 @@ Reason: A round that barely passed can be looked at again without anyone inventi
 
 Spec: R8, R11
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Clear, "the round finds no new blocker".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): InReview → Clear, "the round finds no new blocker".
 
 Evidence (run): Linear, team Dydo, Severity labels read 2026-11-20: only the blocker is described as a FAIL, "a review blocker stays a FAIL"; a should is a ticket and a nit a line.
 
@@ -282,7 +282,7 @@ Reason: A should can wait, so it never keeps a round from ending.
 
 Spec: R8
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Clear → Finishing, "no further round is ordered: the review rounds end".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Clear → Finishing, "no further round is ordered: the review rounds end".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 

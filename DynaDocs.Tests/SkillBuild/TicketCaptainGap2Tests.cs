@@ -51,7 +51,7 @@ public class TicketCaptainGap2Tests
         Assert.All(steps, step => Assert.Equal(Resources + "too-big.md", step.Path));
         Assert.Equal(steps.Select(step => step.Line).Order(), steps.Select(step => step.Line));
         Assert.Equal(LineOf("CaptainTrouble.ReCut"), LineOf("CaptainTrouble.Left"));
-        Assert.Contains("\"claim\": \"claim:CaptainTrouble.ChildReCut\",\n      \"from\": \"Waiting\",\n      \"to\": \"Split\"", Built.Value.Files["claims/statechart/captain/transitions.json"]);
+        Assert.Contains("\"claim\": \"claim:CaptainTrouble.ChildReCut\",\n      \"from\": \"Waiting\",\n      \"to\": \"Split\"", Built.Value.Unwritten["claims/statechart/captain/transitions.json"]);
     }
 
     [Theory]

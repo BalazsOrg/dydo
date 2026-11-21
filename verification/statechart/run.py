@@ -41,7 +41,9 @@ def checkout_status(root):
 
 
 def selected_models(root, names, parser):
-    machines = sorted((root / 'claims/statechart').glob('*/*.tla'))
+    # claims/statechart holds the generated machines; statechart holds the hand-written ones.
+    machines = sorted(model for folder in ('claims/statechart', 'statechart')
+                      for model in (root / folder).glob('*/*.tla'))
     if names:
         machines = [p for p in machines if p.parent.name in names]
         if {p.parent.name for p in machines} != set(names):

@@ -126,7 +126,7 @@ Reason: A second agent sent to run one command has to be briefed on the head, th
 
 Spec: H3, H15
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Split → Waiting, "each AFK sub-ticket is dispatched, and a HITL one goes up".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Split → Waiting, "each AFK sub-ticket is dispatched, and a HITL one goes up".
 
 Evidence (tool): delegate_task: "Start one child agent with only `task`. No parent history." Linear, team Dydo, labels read 2026-11-21: Mode AFK is "an agent can produce the work without live human participation", and HITL needs the user, whose side no dispatched agent can give (claim CaptainWay.Reach sends it up).
 

@@ -22,7 +22,7 @@ public class TicketCaptainGap7Tests
 
     private static readonly Lazy<(string Claim, string From, string To, string? Guard, string? Effect)[]> Moves = new(() =>
     [
-        .. JsonDocument.Parse(Built.Value.Files["claims/statechart/captain/transitions.json"]).RootElement.GetProperty("transitions").EnumerateArray()
+        .. JsonDocument.Parse(Built.Value.Unwritten["claims/statechart/captain/transitions.json"]).RootElement.GetProperty("transitions").EnumerateArray()
             .Select(move => (move.GetProperty("claim").GetString()!, move.GetProperty("from").GetString()!, move.GetProperty("to").GetString()!,
                 move.GetProperty("guard").GetString(), move.GetProperty("effect").GetString()))
     ]);

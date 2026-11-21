@@ -92,7 +92,7 @@ Reason: One ticket keeps every block on it in a single place, where whoever rank
 
 Spec: H16, S10
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Question, "a call that is not obvious: a Question sub-ticket".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Leaf → Question, "a call that is not obvious: a Question sub-ticket".
 
 Evidence (run): Linear, DYD-1372 read 2026-11-20: a ticket carries `blocks` and `blockedBy` relations beside its children. The user kept this process: spec section 6, question 1, and project update 9099daa1, quoted in claim CaptainNeed.Never.
 
@@ -174,7 +174,7 @@ Reason: Without the send, a child that ended its turn on a need would wait on an
 
 Spec: H16
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Question → Leaf, "the answer is on the Question ticket".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Question → Leaf, "the answer is on the Question ticket".
 
 Evidence (run): Linear, team Dydo, labels read 2026-11-20: Question is described "Resolution: the answer, posted on close". The user kept this process: spec section 6, question 1, and project update 9099daa1, quoted in claim CaptainNeed.Never.
 
@@ -224,7 +224,7 @@ Reason: With a need and no address, an agent ends its turn on it and stops work 
 
 Spec: H16, H12, S10
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Question → Question, "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Question → Question, "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer".
 
 Evidence (run): T3, 2026-11-21: this skill's fixer sent a note from inside its turn to its captain's thread with `t3_thread_send`, both threads in mode `auto`. The send came back `delivery: started`, and the fixer's turn went on. `t3_thread_list` gives the address, a thread's `parentThreadId`, which the header of its brief names too. The user kept this process: spec section 6, question 1, and project update 9099daa1, quoted in claim CaptainNeed.Never.
 

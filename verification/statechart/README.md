@@ -25,6 +25,10 @@ changes only the entry points to the observer wrapper, and appends this property
 registration. Neither properties nor registrations live under the builder's
 `claims/statechart/` output. No model build produces these files.
 
+One machine is not generated. The captain's chart and model are written by hand
+in `statechart/captain/` (DYD-1437), and the runner finds them there. Its
+properties stay here, in `captain/`, apart from the model they judge.
+
 `seen` is a passive set of visited phases. Initially it holds the initial phase.
 Each step adds its destination; claim-build resets it on a new `Edited` phase,
 feature-merge on `PreGate`, master-route on `Offered`, and mutation on `Queued`.
@@ -90,12 +94,14 @@ checks, not claims that the generated model actually takes those steps, and
 not a substitute for the ordinary run. `--machine NAME` restricts a diagnostic
 run; the acceptance run includes all 32 machines.
 
-The DYD-1372 captain prototype adds a separate diagnostic scope. Run the
+The hand-written captain chart is a separate diagnostic scope. Run the
 ordinary check with `--machine captain` and run the registered control with
 `--controls --machine captain`. The registered trace tries to finish with a
-Question still pending. The repair and escalation shortcuts use the same runner
-entry point in separate scratch runs. Their commands, results and model limits
-are in [the captain obligations](captain/obligations.md).
+Question still pending. Its other controls are one changed line each in a
+scratch copy of the model. The commands are in
+[the captain chart's README](../../statechart/captain/README.md); the properties,
+controls, results and model limits are in
+[the captain obligations](captain/obligations.md).
 
 ## Model observability owed to the candidate captain
 

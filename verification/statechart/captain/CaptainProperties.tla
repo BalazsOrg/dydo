@@ -1,147 +1,95 @@
 ---- MODULE CaptainProperties ----
 EXTENDS Captain
 
-\* Hand-written from the rulings and spec; never generated from the claim model (K3).
-\* seen is passive. Every model step has exactly one observer extension.
+\* Hand-written from the core page (dydo/core.md), the spec and his rulings, never from the model.
+\* A property says what a source requires; when the model breaks one, the model is wrong.
+\* seen is passive: the set of states this captain has been in. Every model step has exactly one
+\* observer extension, no step is disabled and no fairness is added.
 VARIABLE seen
 PropertyInit == Init /\ seen = {state}
 PropertyNext == Next /\ seen' = seen \cup {state'}
 
-\* DYD-1295 7b3d2e3e: "It's done when it's contract is met. Period."
-\* This checks the work and Finishing phases before Done. Contract satisfaction is unobservable.
+\* core "A ticket": "it is done when its contract is met". DYD-1295 7b3d2e3e.
+\* Checked as order only: Done comes after the work, its own or its parts'. Whether the contract
+\* is met cannot be seen here.
 WorkPhaseBeforeDone ==
-    [][(state' = "Done" /\ state # "Done" =>
-        state = "Finishing" /\ seen \cap {"Leaf", "Waiting"} # {})]_<<vars, seen>>
+    [][(state' = "Done" /\ state # "Done" => seen \cap {"Leaf", "Waiting"} # {})]_<<vars, seen>>
 
-\* H3, DYD-1295 df6a785e: The first move after a split dispatches children
-\* and waits. The model has no child status or return receipts.
+\* H3, DYD-1295 df6a785e: the first move after a cut dispatches the parts and waits.
+\* H2: a slice that cannot be divided coherently under its own ticket goes back to the officer
+\* above, so a cut that cannot be made is the one other way out.
 H3_WaitAfterSplit ==
-    [][(state = "Split" /\ state' # state => state' = "Waiting")]_<<vars, seen>>
+    [][(state = "Cutting" /\ state' # state => state' \in {"Waiting", "HandedBack"})]_<<vars, seen>>
 
-\* H16, S10, DYD-1295 519126ab. The leaf waits on an answer and resumes
-\* in Leaf. Passing up an unsettled Question leaves the leaf waiting.
-\* The property checks phase order. The answer itself is unobservable.
+\* core "Who decides what": a call a captain may not decide becomes a Question for a fresh agent.
+\* H16, DYD-1295 519126ab: the work waits on the answer and then goes on; it never ends from the wait.
 H16_ResumeLeafAfterQuestion ==
-    [][(state = "Question" /\ state' # state => state' = "Leaf")]_<<vars, seen>>
+    [][(state = "Asking" /\ state' # state => state' = "Leaf")]_<<vars, seen>>
 
-\* R8: "the phase ends on the first round with no new blocker".
-\* R2 permits a part to return to its officer for whole review. R23 requires
-\* the merging holder's PASS to name its head; a mend is not R24's clean sync.
-R8_ClearBeforeFinish ==
-    [][ /\ (state' = "Clear" /\ state # "Clear" => state = "InReview")
-        /\ (state' = "Finishing" /\ state # "Finishing" /\ "InReview" \in seen =>
-            state = "Clear" \/ (state = "Mending" /\ merger = "officer"))
-    ]_<<vars, seen>>
+\* core "A ticket": a captain "either does the work itself, with native helpers, or splits the
+\* ticket and only orchestrates". Once it has cut, it never goes back to doing the work itself.
+Core_SplitOnlyOrchestrates ==
+    "Cutting" \in seen => state \notin {"Leaf", "Asking"}
 
-\* R8, R9, S9, DYD-1295 41a553f1: A blocked round requires a fix before
-\* the next round if review continues. R10 governs entry to that Fix in
-\* round three. An own-PR cheap mend requires a new-head round (R23/R24).
-R8_FixBeforeNextRound ==
-    [][ /\ (round' > round =>
-            state \in {"Fixing", "Clear", "Mending"} /\ state' = "InReview" /\ round' = round + 1)
-        /\ (state = "Fixing" /\ state' # "Fixing" =>
-            (state' = "InReview" /\ round' = round + 1) \/ state' = "Returned")
-    ]_<<vars, seen>>
-
-\* R8: A clear round ends the phase by default. The officer may order
-\* one further round after a clear verdict, once in this holder's run.
-R8_ExtraRoundOnlyOnceAfterClear ==
-    /\ ~extra
-    /\ [][ /\ (extra => extra')
-           /\ ((~extra /\ extra') => state = "Clear" /\ state' = "InReview")
-           /\ (state = "Clear" /\ state' # "Clear" =>
-                state' \in {"Finishing", "Mending"} \/ (state' = "InReview" /\ round' = round + 1 /\ ~extra /\ extra'))
-       ]_<<vars, seen>>
-
-\* R10, S10: A blocked third round requires a checkpoint before round four.
-\* DR 070 §6 says "Round 3 with a new blocker". R8's extra round after
-\* a clear third verdict, including its cheap mend, is separate from that Fix route.
-R10_CheckpointBeforeFourthRound ==
-    [][ /\ (state # "Fixing" /\ state' = "Fixing" /\ (round = 3 \/ round' = 3) =>
-            state = "Checkpoint" /\ round' = round)
-        /\ (state' = "InReview" /\ round = 3 /\ round' = 4 /\ state \notin {"Clear", "Mending"} =>
-            state = "Fixing" /\ "Checkpoint" \in seen)
-    ]_<<vars, seen>>
-
-\* R10, S10: A third-round escalation also records the checkpoint.
-S10_CheckpointBeforeThirdRoundEscalation ==
-    [][(state \in {"InReview", "Fixing", "Checkpoint"} /\ round = 3 /\ state' = "Returned" =>
-        state = "Checkpoint")]_<<vars, seen>>
-
-\* R10, S10: The checkpoint belongs to a blocked third review round.
-\* This checks the source phase and number. The blocker itself has no data.
-R10_EnterCheckpointFromThirdRound ==
-    [][(state # "Checkpoint" /\ state' = "Checkpoint" =>
-        state = "InReview" /\ round = 3 /\ round' = round)]_<<vars, seen>>
-
-\* R19: "under a fresh review of its hunks". R22: "then a fix-scoped
-\* round, then a re-land". R8 requires that review to clear before retry.
-\* A merge repair belongs to the holder that merges, not a part handoff.
-R19_ReviewAfterMergeRepair ==
-    [][ /\ (state = "Repairing" /\ state' # "Repairing" =>
-            state' \in {"InReview", "Returned"})
-        /\ ("Repairing" \in seen /\ state # "Finishing" /\ state' = "Finishing" =>
-            merger = "holder" /\ state = "Clear" /\ "InReview" \in seen)
-    ]_<<vars, seen>>
-
-\* H1 and AGENTS.md (Sort yourself) put return at the end of the job.
-\* H23 pairs the sub-captain's return line with a closed-thread signal.
-\* H12 routes escalations to the officer above.
-H1_ReturnedIsTerminal ==
-    [][(state = "Returned" => UNCHANGED vars)]_<<vars, seen>>
-
-\* H10, DYD-1372 07c86aad: "one manageable part at a time".
-\* Visibility and manageability have no data in this phase model.
-H10_WayfindingLeavesByCut ==
-    [][(state = "Wayfinding" /\ state' # state => state' = "Split")]_<<vars, seen>>
-
-\* H10, DYD-1372 777d396e, 07c86aad: fog must not skip the part's work.
-H10_PartBeforeFogFinish ==
-    [][("Wayfinding" \in seen /\ state' \in {"Finishing", "Done"} =>
-        {"Split", "Waiting"} \subseteq seen)]_<<vars, seen>>
-
-\* H2, H10: after a returned part, find the way, cut again, or proceed.
-\* H10 allows finish, find the way and cut, or wait; R2 adds whole review.
-\* H16 says the Question captain "researches first, then answers the need";
-\* K30/H2 keep the escape hatch: research may resume after its parts return.
-\* H2 returns an incoherently divisible slice to its officer for a re-cut.
-\* Continuing never returns this holder to an untaken or unread ticket.
+\* H2, H10, R2: after a part returns the captain cuts the next parts, sends the whole to review,
+\* or finishes. H2 also sends a change to its contract, or to a sibling's, through the officer
+\* above. It never returns to an untaken ticket.
 H10_ReturnedPartContinues ==
     [][(state = "Waiting" /\ state' # state =>
-        state' \in {"Wayfinding", "Split", "InReview", "Finishing"} \/
-        (state' = "Leaf" /\ kind = "answer"))]_<<vars, seen>>
+        state' \in {"Cutting", "InReview", "Done", "HandedBack"})]_<<vars, seen>>
 
-\* R34, DYD-1372 777d396e: "Reviewing the reviews is probably not a good idea."
-\* R34: "A verdict gets no review." A verdict holder has no review/fix/repair loop.
+\* R8, R23: the review ends on a verdict with no blocker, and a merge needs that PASS. The merge
+\* starts only from the review, and a reviewed ticket closes only from its merge.
+R8_PassBeforeMerge ==
+    [][ /\ (state' = "Merging" /\ state # "Merging" => state = "InReview")
+        /\ (state' = "Done" /\ state # "Done" /\ "InReview" \in seen => state = "Merging")
+    ]_<<vars, seen>>
+
+\* core "Review severities": a blocker "needs fixing now". R8: "a fix between every two rounds".
+\* A second round is entered only from the Fix, and the Fix leads to a round or back to the officer,
+\* never straight to the merge.
+R8_FixBeforeNextRound ==
+    [][ /\ (state' = "InReview" /\ state # "InReview" /\ "InReview" \in seen => state = "Fixing")
+        /\ (state = "Fixing" /\ state' # state => state' \in {"InReview", "HandedBack"})
+    ]_<<vars, seen>>
+
+\* R19: a conflict is resolved "under a fresh review of its hunks". R22: "then a fix-scoped round,
+\* then a re-land". A merge that breaks goes to a Fix, and nothing but a closed ticket or a Fix
+\* follows a merge.
+R19_ReviewAfterMergeRepair ==
+    [][(state = "Merging" /\ state' # state => state' \in {"Done", "Fixing"})]_<<vars, seen>>
+
+\* core: "It never judges its own work: the verdict is another agent's." R2, R23: the holder that
+\* merges a change closes only after a review, from its merge.
+R2_MergingHolderHasReview ==
+    [][(merges /\ state' = "Done" /\ state # "Done" =>
+        "InReview" \in seen /\ state = "Merging")]_<<vars, seen>>
+
+\* core "Review severities": "A verdict is not reviewed again." R34, DYD-1372 777d396e.
+\* A verdict's holder is never in the review, fix and merge loop.
 R34_VerdictNeverReviewed ==
-    kind = "verdict" =>
-        state \notin {"InReview", "Clear", "Checkpoint", "Fixing", "Repairing", "Mending"}
+    kind = "verdict" => state \notin {"InReview", "Fixing", "Merging"}
 
-\* K30, S6: the kind resource is loaded before the holder does its work.
+\* positions.md: only a captain that merges a change gets the review, fix and merge part.
+\* This checks that table against the model; it is the table's rule, not a rule of the spec.
+Sees_OnlyAMergerSeesReviewFixMerge ==
+    state \in {"InReview", "Fixing", "Merging"} => kind = "change" /\ merges
+
+\* K30, S6: what the ticket's result is, is known before the holder works.
 K30_KindKnownBeforeWork ==
-    state \notin {"Dispatched", "Returned"} => kind # "unread"
+    state \notin {"Dispatched", "HandedBack"} => kind # "unread"
 
-\* K30's kind belongs to this ticket; S7 and AGENTS.md: one holder, one ticket.
+\* K30, S7 and AGENTS.md: one holder, one ticket. Its kind does not change under it.
 K30_KindStaysKnown ==
     [][(kind # "unread" => kind' = kind)]_<<vars, seen>>
 
-\* S7, S6, AGENTS.md: a refused dispatch returns without starting work.
-\* No other holder or ticket identity is observable here.
+\* S7, S6: a ticket that cannot be taken goes back with no work done on it.
 S7_UnstartedReturnHasNoWork ==
-    kind = "unread" => seen \subseteq {"Dispatched", "Returned"}
+    kind = "unread" => seen \subseteq {"Dispatched", "HandedBack"}
 
-
-\* R23: "unless the PASS names the head", except R24's clean syncs.
-\* Mending changes content, so the holder that merges cannot finish on that
-\* stale PASS. R8_ClearBeforeFinish requires a cleared review before finishing.
-\* R2's officer handoff is not a merge by this holder.
-R23_ReviewMendedHead ==
-    [][(state = "Mending" /\ merger = "holder" =>
-        state' # "Finishing") ]_<<vars, seen>>
-
-\* R2: "after wiring and before its Merge hop"; R23: "the PASS names the
-\* head". Parts handed to an officer are reviewed with the whole (R2).
-R2_MergingHolderHasReview ==
-    [][(kind = "change" /\ merger = "holder" /\ state' = "Finishing" =>
-        "InReview" \in seen /\ state = "Clear") ]_<<vars, seen>>
+\* AGENTS.md "Sort yourself": crew does its one job and returns. H12: what goes up goes to the
+\* officer above. Both ends are final: nothing follows Done or a hand-back. This is a structural
+\* check of the two ends; the sources say a captain returns, not what it may do after.
+H1_EndsAreFinal ==
+    [][(state \in {"Done", "HandedBack"} => UNCHANGED vars)]_<<vars, seen>>
 ====

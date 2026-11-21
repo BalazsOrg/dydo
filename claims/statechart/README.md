@@ -10,6 +10,9 @@ Everything here except this README and the `chart.mmd` files is built: in each m
 its `transitions.json`, `<Machine>.tla`, `<Machine>.cfg` and `view.mjs`. Edit the model, never the
 files.
 
+The captain's chart is not here. It is written by hand, in `statechart/captain/` (DYD-1437), and
+the build writes none of it.
+
 ## Rebuild
 
 1. `dotnet run --project tools/SkillBuild` from the repository root writes every built file.

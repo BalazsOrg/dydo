@@ -179,7 +179,7 @@ Reason: Parts cut from a written state search only what is still open, and whoev
 
 Spec: K30, H2
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Leaf, "a research holder's parts are back: it checks their answers and takes up its own work again, to write its one answer".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Waiting → Leaf, "a research holder's parts are back: it checks their answers and takes up its own work again, to write its one answer".
 
 Evidence (tool): delegate_task, read 2026-11-21: `mode`, "Default 'async'. 'wait' only if this turn needs the result.", so its dispatcher goes on, or waits, until each part's return reaches its thread. A part puts its answer on its own ticket and returns one line (claim CaptainFinish.Nothing); Linear's list_comments reads it there.
 
@@ -245,7 +245,7 @@ Reason: Whether a call merits his attention is a judgement no notes can settle, 
 
 Spec: H23, H16, S10
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Finishing, "a Question's research leaves a call that is the user's: it is handed on as a HITL Question sub-ticket, and the research ticket has done its part".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Leaf → Finishing, "a Question's research leaves a call that is the user's: it is handed on as a HITL Question sub-ticket, and the research ticket has done its part".
 
 Evidence (tool): save_issue: `parentId`, "Parent issue ID or identifier", and `blocks`, "Issue IDs/identifiers this blocks. Append-only; existing relations are never removed". Run, Linear read 2026-11-21: DYD-1071 is a Question labelled HITL that blocks the nine tickets waiting on it; and DYD-1172 has been Done since 2026-11-18 while its child DYD-1184 is In Progress, so a parent's close moves no child.
 
@@ -263,7 +263,7 @@ Reason: Sent back as merely unsettled, such a call is researched again one level
 
 Spec: H16, L18
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Returned, "a Question's research leaves a call that is neither settled nor the user's: it goes back to the officer unsettled, the Question still open".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Leaf → Returned, "a Question's research leaves a call that is neither settled nor the user's: it goes back to the officer unsettled, the Question still open".
 
 Evidence (run): Linear, team Dydo, labels read 2026-11-21: the Type group holds Question, and no label names a council or a Question's stage.
 

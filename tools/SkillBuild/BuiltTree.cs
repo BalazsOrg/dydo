@@ -22,6 +22,12 @@ public sealed class BuiltTree
     /// </summary>
     public IReadOnlyDictionary<string, string> Unbuilt { get; }
 
+    /// <summary>
+    /// The chart files of each machine whose chart is written by hand (DYD-1437), as the model still
+    /// renders them: checked by the build's tests, never written.
+    /// </summary>
+    public IReadOnlyDictionary<string, string> Unwritten { get; init; } = new Dictionary<string, string>();
+
     public IReadOnlyList<MapLine> Map { get; }
 
     public IReadOnlyDictionary<string, byte[]> Bytes() =>
