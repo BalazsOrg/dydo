@@ -95,21 +95,23 @@ Six more controls were run by hand at DYD-1437, each one changed line in a scrat
 | `CutTheNextParts` goes to `Leaf` | Core_SplitOnlyOrchestrates, H10_ReturnedPartContinues |
 | `ReviewAgain` goes to `Merging` | R8_FixBeforeNextRound, R8_PassBeforeMerge |
 | `MergeBroke` goes to `InReview` | R19_ReviewAfterMergeRepair, R8_FixBeforeNextRound |
-| `Dispatch` goes to `Done` | H3_WaitAfterSplit |
+| `Dispatch` goes to `Done` | H3_WaitAfterSplit, WorkPhaseBeforeDone, R2_MergingHolderHasReview |
 
 ## Receipts
 
-All at `e5c282d9864107456a54ae878596500c4c29c0e4`, each run under the gate lock, with dydo 3.6.0's managed Java and TLC:
+All at `35feddb1e5eef1b7499e9ed45dfe8c699a52f1e7`, each run under the gate lock, with dydo 3.6.0's managed Java and TLC:
 
-- The model alone (`run.py --baseline --machine captain`): exit 0. `TypeOK` and `NoDeadlock` hold; 33 states, 61 steps.
-- `check-chart.mjs` on the chart that run drew: exit 0. `chart.mmd` and the model agree on 11 states and 21 arrows, and no arrow joins two cases with "or".
-- The properties (`run.py --machine captain`): exit 0. All 15 properties, `TypeOK` and `NoDeadlock` hold; 232 states generated, 137 distinct, queue empty, depth 12.
+- The model alone (`run.py --baseline --machine captain`): exit 0. `TypeOK` and `NoDeadlock` hold; 33 states, 69 steps.
+- `check-chart.mjs` on the chart that run drew: exit 0. `chart.mmd` and the model agree on 11 states and 23 arrows, and no arrow joins two cases with "or".
+- The properties (`run.py --machine captain`): exit 0. All 15 properties, `TypeOK` and `NoDeadlock` hold; 292 states generated, 161 distinct, queue empty, depth 12.
 - The registered control (`run.py --controls --machine captain`): checker 1, harness 0, `control_caught` true. H16_ResumeLeafAfterQuestion rejects `Asking` to `Done`, and so does WorkPhaseBeforeDone.
-- The five hand-run controls: checker 1 on each, and each is rejected by exactly the two properties, or the one, that the table above names.
+- The six hand-run controls: checker 1 on each, and each is rejected by exactly the properties the table above names.
 
-No control was run against H3_WaitAfterSplit, K30_KindKnownBeforeWork, K30_KindStaysKnown, S7_UnstartedReturnHasNoWork or H1_EndsAreFinal. Their meaning did not change at DYD-1437; only state names did.
+No control was run against K30_KindKnownBeforeWork, K30_KindStaysKnown, S7_UnstartedReturnHasNoWork or H1_EndsAreFinal. Their meaning did not change at DYD-1437; only state names did.
 
-Output was written to `/tmp/dyd-1437/` and is not kept. Only this page and a comment's place in `chart.mmd` changed after these runs.
+The first run of these checks was at `e5c282d9`, on the chart before review r1: 21 arrows, 137 distinct states, all holding. Review r1 found that a captain that splits had no way back to its officer; `35feddb1` adds the two arrows and the runs above repeat every check.
+
+Output was written to `/tmp/dyd-1437/` and is not kept. Only this page changed after these runs.
 
 ## Related
 
