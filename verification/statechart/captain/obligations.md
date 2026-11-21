@@ -6,11 +6,11 @@ explains: ["verification/statechart/captain/**"]
 
 # Captain prototype obligations
 
-## Phase 1 properties 2 (DYD-1372)
+## Phase 1 properties 3 (DYD-1372)
 
 Hand-written from the approved spec, his DYD-1295/DYD-1372 rulings and
 AGENTS.md (K3), never from the built skill. Historical checks remain in Git.
-The machine at d36ba509 starts at Dispatched; seen starts there through Init.
+The machine at c2345877 starts at Dispatched; seen starts there through Init.
 No move is disabled, round <= 4 is preserved and no fairness is added.
 
 | Property | Source | Observable obligation |
@@ -28,7 +28,7 @@ No move is disabled, round <= 4 is preserved and no fairness is added.
 | H1_ReturnedIsTerminal | H1, H12, H23; AGENTS.md | Returned only stutters. |
 | H10_WayfindingLeavesByCut | H10; 07c86aad | Wayfinding exits to Split. |
 | H10_PartBeforeFogFinish | H10; 777d396e, 07c86aad | Wayfinding history requires Split and Waiting before finishing. |
-| H10_ReturnedPartContinues | H10 | Waiting exits to Wayfinding, review or finishing. |
+| H10_ReturnedPartContinues | H2, H10 | Waiting exits to Wayfinding, Split, review or finishing; never intake. |
 | R34_VerdictNeverReviewed | R34; 777d396e | Verdict/answer never occupies InReview, Clear, Checkpoint, Fixing or Repairing. |
 | K30_KindKnownBeforeWork | K30; 0f340abd, 07c86aad | Every phase except Dispatched and Returned has a known kind. |
 | K30_KindStaysKnown | K30, S7; AGENTS.md | Once set, kind never changes during this ticket's run. |
@@ -90,8 +90,25 @@ Contract satisfaction is absent: "It's done when it's contract is met. Period."
 
 ## Controls and results
 
+H2 says a holder that "cannot divide its slice coherently under its own ticket"
+returns it "to the officer above for a re-cut"; a contract or sibling change
+also goes through that officer. H10's "Finding the way towards the spec, one
+manageable part at a time" (07c86aad) does not forbid cutting again. The old
+Waiting exit set was stricter than these sources. Allowing Split corrects the
+property, not the machine: the waiting officer continues its own ticket, never
+returns to Dispatched or Taken. The child's return is a different run.
+
+H2's re-cut continues through H3's dispatch-and-wait order: H3_WaitAfterSplit
+also applies after Waiting → Split. K30's stable kind and R34's ban on reviewing
+a verdict still apply through repeated cuts. Witness for either known kind:
+Dispatched → Taken → Split → Waiting → Split → Waiting → Finishing → Done.
+These are safety checks, not eventual progress: stuttering remains possible.
+The machine cannot show that the child's ticket was settled before new parts
+were cut, or by whom. It has no child ticket, settlement, officer identity,
+coherence or changed-contract data; H2's authority and settlement remain owed.
+
 Registered scratch trace: Question(change) → Finishing, round 1, extra FALSE,
-kind unchanged; H16_ResumeLeafAfterQuestion must reject it. Manual controls
+kind unchanged; H16_ResumeLeafAfterQuestion rejects it. Historical manual controls
 use the same observer injection, each a one-line scratch model change,
 preserving round 1 and extra FALSE:
 
@@ -99,14 +116,31 @@ preserving round 1 and extra FALSE:
 - Replace observer Init/Next with InReview(change) → Finishing(change): R8_ClearBeforeFinish must reject it.
 - Replace observer Init/Next with Wayfinding(change) → Finishing(change): H10_WayfindingLeavesByCut and H10_PartBeforeFogFinish must reject it.
 
-All 18 properties above and NoDeadlock hold: 1,941 generated states, 1,224
-distinct, queue empty, depth 24. The ordinary runner exited 0. No tested
-obligation failed; the semantic limits and witness traces above remain open.
-The registered control was rejected by H16_ResumeLeafAfterQuestion; the three
-manual controls were rejected by exactly the properties named above. Every
-managed control checker exited 1, and each control harness exited 0.
-No committed machine is changed. The size gate exited 0; build exited 0 with
-0 warnings and 0 errors. Dydo check exited 0: 0 errors, 0 warnings in 1,021 files.
+Phase 3 manual control: in a scratch copy of Captain.tla, change only
+CaptainTrouble_ChildReCut's destination line from `state' = "Split"` to
+`state' = "Taken"`. H10_ReturnedPartContinues rejects it, with trace
+Dispatched → Taken → Split → Waiting → Taken. The managed checker exits 1;
+the control harness exits 0. No committed machine is changed.
+
+All 18 properties above and NoDeadlock hold: 1,959 generated states, 1,230
+distinct, queue empty, depth 24. The ordinary runner exited 0. The registered
+control was rejected by H16_ResumeLeafAfterQuestion (checker 1, harness 0).
+No tested obligation failed; the semantic limits above remain open.
+Commands (OUT denotes a fresh scratch output directory; SKILL the installed
+statechart skill directory):
+
+```text
+/var/tmp/dydo-gate-lock.sh env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false systemd-run --user --scope -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 python3 verification/statechart/run.py --machine captain --skill SKILL --out OUT
+```
+
+Add `--controls` for the registered control. Ordinary runner last line:
+`captain: pass (exit 0)`. TLC: `Model checking completed. No error has been
+found.`; `1959 states generated, 1230 distinct states found, 0 states left on
+queue.`; `The depth of the complete state graph search is 24.`
+
+Size gate exited 0 (all changed files at or under 20,000 bytes). Build exited
+0 with 0 warnings and 0 errors. Dydo check exited 0: 0 errors, 0 warnings in
+1,022 files. Both dotnet commands used the same lock and memory-cap wrapper.
 
 ## Related
 

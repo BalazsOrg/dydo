@@ -99,10 +99,12 @@ H10_PartBeforeFogFinish ==
     [][("Wayfinding" \in seen /\ state' \in {"Finishing", "Done"} =>
         {"Split", "Waiting"} \subseteq seen)]_<<vars, seen>>
 
-\* H10: after a returned part, find the next part or proceed with the whole.
+\* H2, H10: after a returned part, find the way, cut again, or proceed.
+\* H2 returns an incoherently divisible slice to its officer for a re-cut.
+\* Continuing never returns this holder to an untaken or unread ticket.
 H10_ReturnedPartContinues ==
     [][(state = "Waiting" /\ state' # state =>
-        state' \in {"Wayfinding", "InReview", "Finishing"})]_<<vars, seen>>
+        state' \in {"Wayfinding", "Split", "InReview", "Finishing"})]_<<vars, seen>>
 
 \* R34, DYD-1372 777d396e: "Reviewing the reviews is probably not a good idea."
 \* Includes answers: a result with no change has no review/fix/repair loop.
