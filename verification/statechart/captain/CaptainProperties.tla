@@ -100,6 +100,7 @@ H10_PartBeforeFogFinish ==
         {"Split", "Waiting"} \subseteq seen)]_<<vars, seen>>
 
 \* H2, H10: after a returned part, find the way, cut again, or proceed.
+\* H10's defaults allow finish, find the way and cut, or wait; R2 adds whole review.
 \* H2 returns an incoherently divisible slice to its officer for a re-cut.
 \* Continuing never returns this holder to an untaken or unread ticket.
 H10_ReturnedPartContinues ==
@@ -107,14 +108,14 @@ H10_ReturnedPartContinues ==
         state' \in {"Wayfinding", "Split", "InReview", "Finishing"})]_<<vars, seen>>
 
 \* R34, DYD-1372 777d396e: "Reviewing the reviews is probably not a good idea."
-\* Includes answers: a result with no change has no review/fix/repair loop.
+\* R34: "A verdict gets no review." A verdict holder has no review/fix/repair loop.
 R34_VerdictNeverReviewed ==
     kind = "verdict" =>
         state \notin {"InReview", "Clear", "Checkpoint", "Fixing", "Repairing"}
 
 \* K30, S6: the kind resource is loaded before the holder does its work.
 K30_KindKnownBeforeWork ==
-    state \notin {"Dispatched", "Returned"} => kind \in {"change", "verdict"}
+    state \notin {"Dispatched", "Returned"} => kind # "unread"
 
 \* K30's kind belongs to this ticket; S7 and AGENTS.md: one holder, one ticket.
 K30_KindStaysKnown ==

@@ -6,11 +6,11 @@ explains: ["verification/statechart/captain/**"]
 
 # Captain prototype obligations
 
-## Phase 1 properties 3 (DYD-1372)
+## Phase 1 properties 4 (DYD-1372)
 
 Hand-written from the approved spec, his DYD-1295/DYD-1372 rulings and
 AGENTS.md (K3), never from the built skill. Historical checks remain in Git.
-The machine at c2345877 starts at Dispatched; seen starts there through Init.
+The machine at 25bf7d11 starts at Dispatched; seen starts there through Init.
 No move is disabled, round <= 4 is preserved and no fairness is added.
 
 | Property | Source | Observable obligation |
@@ -28,8 +28,8 @@ No move is disabled, round <= 4 is preserved and no fairness is added.
 | H1_ReturnedIsTerminal | H1, H12, H23; AGENTS.md | Returned only stutters. |
 | H10_WayfindingLeavesByCut | H10; 07c86aad | Wayfinding exits to Split. |
 | H10_PartBeforeFogFinish | H10; 777d396e, 07c86aad | Wayfinding history requires Split and Waiting before finishing. |
-| H10_ReturnedPartContinues | H2, H10 | Waiting exits to Wayfinding, Split, review or finishing; never intake. |
-| R34_VerdictNeverReviewed | R34; 777d396e | Verdict/answer never occupies InReview, Clear, Checkpoint, Fixing or Repairing. |
+| H10_ReturnedPartContinues | H2, H10, R2 | Waiting exits to Wayfinding, Split, review or finishing; never intake. |
+| R34_VerdictNeverReviewed | R34; 777d396e | A verdict holder never occupies InReview, Clear, Checkpoint, Fixing or Repairing. |
 | K30_KindKnownBeforeWork | K30; 0f340abd, 07c86aad | Every phase except Dispatched and Returned has a known kind. |
 | K30_KindStaysKnown | K30, S7; AGENTS.md | Once set, kind never changes during this ticket's run. |
 | S7_UnstartedReturnHasNoWork | S6, S7; AGENTS.md | An unread-kind run visits only Dispatched and Returned. |
@@ -37,7 +37,7 @@ No move is disabled, round <= 4 is preserved and no fairness is added.
 ## New obligations and remaining limits
 
 R34: "Reviewing the reviews is probably not a good idea." The invariant now
-covers every verdict/answer path, including leaves and split reviews, replacing
+covers verdict paths, including leaves and split reviews, replacing
 the narrow R34_VerdictGoesToFinishing arrow check. K30's one captain base and
 kind resources were accepted as "I like A" (0f340abd), kind-specific phases as
 "I like a" (07c86aad). Known-before-work and stable kind are now checkable;
@@ -71,7 +71,7 @@ S8–S10). Continuation beyond a blocked fourth round is outside the bound.
 
 H16 says the Question captain "researches first, then answers the need" or
 "passes it up"; the receiving officer "waits on it". These are different runs.
-Dispatched → Taken(verdict) → Leaf → Returned is an unsettled research return,
+Dispatched → Taken(answer) → Leaf → Returned is an unsettled research return,
 without Finishing or Done; Returned remains terminal. The dependent holder's
 Leaf → Question → Question → Leaf still waits. Question cannot exit to
 Returned. Neither the Question property nor wayfinding checks forbids the new
@@ -88,6 +88,20 @@ verdict are unobservable on Taken(verdict) → Split → Waiting → Finishing.
 Contract satisfaction is absent: "It's done when it's contract is met. Period."
 (7b3d2e3e) is checked only as phase order.
 
+## What is not checked about answers
+
+Whether a research answer may be reviewed has no source: no spec rule and no
+word of his speaks of it. R4 covers a plan, spec or contract; R6 gives a leaf
+an optional fresh evidence-check seat. No property is written about reviewing
+an answer either way. Observation, not obligation: today no move guarded on
+`kind = "change"` or `kind = "verdict"` is open to an answer's holder, so the
+machine shows no round on an answer.
+
+K30_KindKnownBeforeWork excludes unread in work states, without prescribing a
+closed list of known kinds. K30_KindStaysKnown still preserves any set kind;
+S7_UnstartedReturnHasNoWork still restricts only unread runs. All three retain
+their source meaning with change, verdict and answer distinct.
+
 ## Controls and results
 
 H2 says a holder that "cannot divide its slice coherently under its own ticket"
@@ -100,7 +114,7 @@ returns to Dispatched or Taken. The child's return is a different run.
 
 H2's re-cut continues through H3's dispatch-and-wait order: H3_WaitAfterSplit
 also applies after Waiting → Split. K30's stable kind and R34's ban on reviewing
-a verdict still apply through repeated cuts. Witness for either known kind:
+a verdict still apply through repeated cuts. Witness for all three known kinds:
 Dispatched → Taken → Split → Waiting → Split → Waiting → Finishing → Done.
 These are safety checks, not eventual progress: stuttering remains possible.
 The machine cannot show that the child's ticket was settled before new parts
@@ -122,7 +136,15 @@ CaptainTrouble_ChildReCut's destination line from `state' = "Split"` to
 Dispatched → Taken → Split → Waiting → Taken. The managed checker exits 1;
 the control harness exits 0. No committed machine is changed.
 
-All 18 properties above and NoDeadlock hold: 1,959 generated states, 1,230
+Phase 4 manual control: in a scratch copy of the current Captain.tla, change
+only CaptainReview_Whole's guard from `kind = "change"` to `kind = "verdict"`.
+R34_VerdictNeverReviewed rejects Dispatched → Taken(verdict) → Split → Waiting
+→ InReview. This is one model line, not an observer replacement. The managed
+checker exits 1 and the control harness exits 0. The registered Question →
+Finishing control is also rejected by H16_ResumeLeafAfterQuestion (checker 1,
+harness 0). No committed machine or registered control is changed.
+
+All 18 properties above and NoDeadlock hold: 2,033 generated states, 1,280
 distinct, queue empty, depth 24. The ordinary runner exited 0. The registered
 control was rejected by H16_ResumeLeafAfterQuestion (checker 1, harness 0).
 No tested obligation failed; the semantic limits above remain open.
@@ -135,12 +157,12 @@ statechart skill directory):
 
 Add `--controls` for the registered control. Ordinary runner last line:
 `captain: pass (exit 0)`. TLC: `Model checking completed. No error has been
-found.`; `1959 states generated, 1230 distinct states found, 0 states left on
+found.`; `2033 states generated, 1280 distinct states found, 0 states left on
 queue.`; `The depth of the complete state graph search is 24.`
 
 Size gate exited 0 (all changed files at or under 20,000 bytes). Build exited
 0 with 0 warnings and 0 errors. Dydo check exited 0: 0 errors, 0 warnings in
-1,022 files. Both dotnet commands used the same lock and memory-cap wrapper.
+1,023 files. Both dotnet commands used the same lock and memory-cap wrapper.
 
 ## Related
 
