@@ -1,15 +1,16 @@
 namespace DynaDocs.Tests.Services;
 
+using DynaDocs.Services;
 using DynaDocs.Utils;
 
 [Collection("Integration")]
-[Trait("Job", "trap: de501340 (a worktree resolves its own dydo root, the main checkout for shared state)")]
-public class PathUtilsWorktreeIsolationTests : IDisposable
+[Trait("Job", "trap: de501340 (a worktree resolves its own dydo root, not the main project's)")]
+public class ConfigServiceWorktreeIsolationTests : IDisposable
 {
     private readonly string _testDir;
     private readonly string _originalDir;
 
-    public PathUtilsWorktreeIsolationTests()
+    public ConfigServiceWorktreeIsolationTests()
     {
         _testDir = Path.Combine(Path.GetTempPath(), "dydo-wtiso-" + Guid.NewGuid().ToString("N")[..8]);
         Directory.CreateDirectory(_testDir);
@@ -41,14 +42,13 @@ public class PathUtilsWorktreeIsolationTests : IDisposable
     }
 
     [Fact]
-    public void FindDydoRoot_FromInsideWorktree_ResolvesToWorktreeNotMainProject()
+    public void GetDydoRoot_FromInsideWorktree_ResolvesToWorktreeNotMainProject()
     {
         var (mainRoot, worktreeRoot) = BuildMainAndWorktree();
         Environment.CurrentDirectory = worktreeRoot;
 
-        var resolved = PathUtils.FindDydoRoot();
+        var resolved = new ConfigService().GetDydoRoot();
 
-        Assert.NotNull(resolved);
         var normalizedResolved = PathUtils.NormalizePath(Path.GetFullPath(resolved));
         var normalizedWorktreeDydo = PathUtils.NormalizePath(Path.GetFullPath(Path.Combine(worktreeRoot, "dydo")));
         var normalizedMainDydo = PathUtils.NormalizePath(Path.GetFullPath(Path.Combine(mainRoot, "dydo")));
