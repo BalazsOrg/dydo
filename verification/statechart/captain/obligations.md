@@ -205,9 +205,10 @@ ancestry are absent: R23/R24 are checked as phase order on the path modeling
 new-head review. Answer exclusion from Mending is reachability, not a
 source-backed prohibition; verdict exclusion is source-backed.
 
-Renewed local registered bad trace: bad-trace.json includes mended and
-retains Question(change) to Finishing, rejected by H16. Shared controls.json
-outside this crew's ownership lacks mended; use this local registration.
+Renewed registered bad trace: Question(change) to Finishing, with mended
+FALSE, rejected by H16. The properties' author kept it in a local
+bad-trace.json; the captain then moved it into the shared controls.json,
+which `run.py --controls` reads, and removed the local copy.
 
 Generation 6 receipts: ordinary managed runner at 78683406 exited 0;
 all 21 properties and NoDeadlock hold, 3,695 generated states, 2,296 distinct,

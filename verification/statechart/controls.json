@@ -15,6 +15,7 @@
     "variables": {
       "round": "1",
       "extra": "FALSE",
+      "mended": "FALSE",
       "kind": "\"change\""
     },
     "property": "H16_ResumeLeafAfterQuestion"
