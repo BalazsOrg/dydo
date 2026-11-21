@@ -66,6 +66,13 @@ Dropped:
 
 Added: Core_SplitOnlyOrchestrates and Sees_OnlyAMergerSeesReviewFixMerge.
 
+## Unchanged at DYD-1453 and DYD-1454
+
+No property changed, and no state or arrow did. Both tickets changed words only, in `positions.md`, in the README and in comments of the chart and the model.
+
+- DYD-1453: a position takes only the arrows whose condition it can meet, so the two arrows into `InReview` are the merger's alone. Sees_OnlyAMergerSeesReviewFixMerge already checks that.
+- DYD-1454: `positions.md` now says who opens a Question, what its captain does when the call is Balazs's, and which row a Wayfinding captain is on. An arrow from `Asking` to `HandedBack`, for a Question that comes back without its answer, was weighed and not added. H16_ResumeLeafAfterQuestion and its sources say the work waits on the answer and never ends from the wait, so the captain reports the Question to its officer, which changes no state, and waits on.
+
 ## What the model cannot show
 
 The properties check order only. The model has no data for any of these, so none is checked:

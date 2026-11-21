@@ -44,6 +44,6 @@ The first command draws the model and checks `TypeOK` and `NoDeadlock`. The seco
 - The number of a review round. After a third FAIL the captain writes one line on the Review saying whether it took the Fix or went to its officer (R10, S10). That line is a record on two arrows the chart already has.
 - One more round after a PASS, which R8 lets an officer order, and a cheap should mended before the merge, which S17 allows. A PASS ends the review, and a should becomes a ticket that waits.
 - A merge that a revert cannot undo. That is Balazs's call, and the chart's merge is into a feature branch, which a revert undoes.
-- The stages a Question passes on its way to Balazs (H16, H23). For the captain that asks, it is one wait.
+- How a Question gets answered: research, a call its captain decides, or Balazs's question made ready and carried to him. That is its captain's job (core, "Who decides what"), so the stages the spec gives a Question (H16, H23) draw no state here, and for the captain that asks it is one wait. `positions.md` has the whole case under "A Question".
 - Who the agents are: which model reviews, which head a PASS names. The model checks order only.
 - The coordinator, usage limits, and waking a quiet thread.
