@@ -9,6 +9,8 @@ date: 2026-10-28
 
 > **§1 amended by [070 - Statuses as Sub-tickets, Shoulds and the Map](./070-statuses-as-sub-tickets-shoulds-and-the-map.md)** for where a blocker and a should go, and who registers a should, only: a blocker becomes a Blocker ticket inside the round's Fix ticket, and `Implementing` is deleted (C1, C3); a should is its own ticket under the ticket where it was found, registered by the round's holder, collected later in a Shoulds batch (C9). The severities and the verdict rule stand. The rest remains in force.
 
+> **§1's severity definitions amended by [the core](../../core.md#review-severities)** (Balazs, 2026-11-21, [DYD-1372 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-1372#comment-051616a1-699e-4d8f-89eb-ca67e0509d39)): the core defines blocker, should and nit. The old wording, "the intended case is wrong", "a real bug callers will hit, inside the intent" and "everything else", is retired, and so is the list of what is always a nit. Each severity's route and the verdict rule stand. The rest remains in force.
+
 > **Partially superseded by [059 - Inquisition Rebuilt: Area Map, Three Phases, Rounds Until Clean](./059-inquisition-rebuilt-area-map-three-phases-rounds-until-clean.md)** for §1's *a nit gets no Linear ticket*, in inquisitions only: an inquisition's nits go on its round's nit ticket. The rest remains in force.
 
 > **Partially superseded by [065 - Review Placement and the Merge-Review Cut](./065-review-placement-and-the-merge-review-cut.md)** for §2's *round 1 still seats two reviewers* and *the fifth consecutive FAIL still stops the loop* only: seats scale with the breadth and depth of the work instead of two on every first round, and the fifth-FAIL stop gives way to a checkpoint after round 3. The rest remains in force.
@@ -36,17 +38,19 @@ is copied.
 ## Decision
 
 1. **Three severities, on every rubric** (code, docs, spec, project-plan, merge):
-   - **blocker** - the intended case is wrong. Only a blocker makes the verdict FAIL and returns the
+   - **blocker** - as [the core](../../core.md#review-severities) defines it: a problem so bad
+     that it needs fixing now. Only a blocker makes the verdict FAIL and returns the
      ticket to `Implementing`. A merge-review FAIL is a blocker, routed as before.
-   - **should** - a real bug callers will hit, inside the intent. It does not block the ticket. The
+   - **should** - as [the core](../../core.md#review-severities) defines it: a problem that needs
+     a fix, but the fix can wait. It does not block the ticket. The
      captain, or the map holder for a project-plan review it runs, files it directly as its own
      ticket: Type matching the finding (Bug by default), Mode AFK, `Backlog`, in the source's
      Project, linked to the source ticket and the review block, natively wired as a blocker of the
      Project's landing Merge Ticket when that exists; otherwise the map holder wires it when it
      creates the landing ticket. Outside a Project it is a team ticket in `Backlog` the user sees.
      This is the captain's one exception to taking an adjacent outcome only on the user's word.
-   - **nit** - everything else. Another code path, a rare case, a small perf cost, extra compat or
-     style is a nit whatever label the reviewer gave it. It is one line on the ticket's record, with
+   - **nit** - as [the core](../../core.md#review-severities) defines it: an observation that
+     gets a ruling, and may need no fix at all. It is one line on the ticket's record, with
      no Linear ticket; the final walkthrough lists unaddressed nits and the user promotes any.
 2. **Verdict.** FAIL iff at least one blocker. A PASS may list its should and nit findings in the
    form's `Deferred` tail; a FAIL finding carries `severity:`. Round 1 still seats two reviewers;
