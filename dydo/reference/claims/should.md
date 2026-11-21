@@ -18,7 +18,7 @@ Transition in A should (`claims/statechart/should/Should.tla`): Found → Open, 
 
 > Holding the round alone, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where you found it.
 
-**ticket-captain** (Found, exit):
+**ticket-captain** (legacy, not built; Found, exit):
 
 > Holding the round, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where it was found.
 
@@ -42,7 +42,7 @@ Spec: S17
 
 Transition in A should (`claims/statechart/should/Should.tla`): Open → Done, "fixed in place, when a lane is free, before a round, or at the landing".
 
-**ticket-captain** (Open, exit):
+**ticket-captain** (legacy, not built; Open, exit):
 
 > Fix a cheap should in place before its parent merges; the rest wait for a shoulds batch.
 
@@ -54,7 +54,7 @@ Spec: S17
 
 Transition in A should (`claims/statechart/should/Should.tla`): Open → Duplicate, "the batch captain finds it a duplicate".
 
-**ticket-captain** (Open, exit):
+**ticket-captain** (legacy, not built; Open, exit):
 
 > In a shoulds batch, mark each duplicate Duplicate.
 
@@ -70,7 +70,7 @@ Spec: S18, S17, H5
 
 Transition in A should (`claims/statechart/should/Should.tla`): Open → Canceled, "canceled with a reason by its batch captain".
 
-**ticket-captain** (Open, exit):
+**ticket-captain** (legacy, not built; Open, exit):
 
 > In a shoulds batch, cancel a should only with a one-line reason.
 
@@ -116,7 +116,7 @@ Spec: S17
 
 Spec: S17
 
-**ticket-captain** (Open, nominal):
+**ticket-captain** (legacy, not built; Open, nominal):
 
 > Holding a Shoulds batch, re-parent each should into it, keeping a `related: found in <KEY> rN` link on it.
 
@@ -130,7 +130,7 @@ Spec: S17
 
 Spec: S17
 
-**ticket-captain** (Open, nominal):
+**ticket-captain** (legacy, not built; Open, nominal):
 
 > A parent may close Done while its shoulds stay open.
 

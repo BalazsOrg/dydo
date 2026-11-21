@@ -14,7 +14,7 @@ Spec: L23, H23, L18
 
 Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Research → Council, "a hard call not worth his time: a council child, AFK".
 
-**ticket-captain** (Council, arrival):
+**ticket-captain** (legacy, not built; Council, arrival):
 
 > Holding a Question at stage `council`, chair it by the council chair (`resources/council-chair.md`).
 
@@ -24,7 +24,7 @@ Transition in A need for Balazs (`claims/statechart/envoy/Envoy.tla`): Research 
 
 Spec: L23, L18, H23
 
-**ticket-captain** (Council):
+**ticket-captain** (legacy, not built; Council):
 
 > A council is a Question ticket at stage `council` and Mode AFK, with no Council Type; you chair it mechanically and sit on it as no member.
 
@@ -66,7 +66,7 @@ Transition in A council (`claims/statechart/council/Council.tla`): Answered → 
 
 Spec: L16, L23
 
-**ticket-captain** (Council):
+**ticket-captain** (legacy, not built; Council):
 
 > It has four uses: Review (high stakes), Merge confidence (the landing into main), Evaluate (hill-climbs, scored out of 10) and Judge (the tribunal, below).
 
@@ -76,7 +76,7 @@ Spec: L16, L23
 
 Spec: L14, L15, R13, R15
 
-**ticket-captain** (Council):
+**ticket-captain** (legacy, not built; Council):
 
 > Seat fresh members from different families, picked from the roster, and a synthesiser who is no member, each briefed from the council members' briefs (`council-members.md`).
 
@@ -86,7 +86,7 @@ Spec: L14, L15, R13, R15
 
 Spec: L16
 
-**ticket-captain** (Council):
+**ticket-captain** (legacy, not built; Council):
 
 > Run deterministic work once for the whole council, never per member.
 
@@ -96,7 +96,7 @@ Spec: L16
 
 Spec: L23
 
-**ticket-captain** (Council):
+**ticket-captain** (legacy, not built; Council):
 
 > Record the deliberation on the council ticket next to its answer; merge confidence and a score are answers too.
 
@@ -106,7 +106,7 @@ Spec: L23
 
 Spec: S8, L22
 
-**ticket-captain** (Council):
+**ticket-captain** (legacy, not built; Council):
 
 > The answer names each seat's model and provider.
 
@@ -116,7 +116,7 @@ Spec: S8, L22
 
 Spec: L22, L15
 
-**ticket-captain** (Council):
+**ticket-captain** (legacy, not built; Council):
 
 > With one family out, work goes on: Review and Evaluate run on two different models of the remaining family.
 
@@ -126,7 +126,7 @@ Spec: L22, L15
 
 Spec: L22
 
-**ticket-captain** (Council):
+**ticket-captain** (legacy, not built; Council):
 
 > With one family out, Merge confidence at the landing waits for both families only while nothing blocks on it, then runs on one; never take a missing family to him.
 
@@ -136,7 +136,7 @@ Spec: L22
 
 Spec: K14, L14
 
-**ticket-captain** (Member):
+**ticket-captain** (legacy, not built; Member):
 
 > Skills: every skill the seat needs, each with a slash · the one question · model and effort · return to.
 
@@ -146,7 +146,7 @@ Spec: K14, L14
 
 Spec: K14, L14
 
-**ticket-captain** (Synthesiser):
+**ticket-captain** (legacy, not built; Synthesiser):
 
 > Skills: every skill the seat needs, each with a slash · the members' sealed answers · model and effort · return to.
 
@@ -156,7 +156,7 @@ Spec: K14, L14
 
 Spec: L14, L16
 
-**ticket-captain** (Member):
+**ticket-captain** (legacy, not built; Member):
 
 > Answer the one question alone, sealed and read-only; every member looks at the same thing.
 
@@ -166,6 +166,6 @@ Spec: L14, L16
 
 Spec: L14
 
-**ticket-captain** (Synthesiser):
+**ticket-captain** (legacy, not built; Synthesiser):
 
 > As a non-member, give the answer, its confidence (agreed, split or contested) and the disagreements.

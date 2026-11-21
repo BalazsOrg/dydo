@@ -52,7 +52,7 @@ Spec: S6
 
 Spec: S1
 
-**ticket-captain** (Cut, nominal):
+**ticket-captain** (legacy, not built; Cut, nominal):
 
 > Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
 

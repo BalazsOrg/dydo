@@ -14,7 +14,7 @@ Spec: L18
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): HardCall → DrSettled, "a DR clearly settles it".
 
-**ticket-captain** (HardCall, exit):
+**ticket-captain** (legacy, not built; HardCall, exit):
 
 > A call a DR clearly settles is not hard: decide it and cite the DR.
 
@@ -26,7 +26,7 @@ Spec: L18, H23, H16
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): HardCall → Prepared, "worth his time to understand: a his-call child".
 
-**ticket-captain** (HardCall, exit):
+**ticket-captain** (legacy, not built; HardCall, exit):
 
 > Open a `his-call` child only when the call is worth his time and attention to understand; a rubber-stamp question never reaches him.
 
@@ -38,7 +38,7 @@ Spec: L18, L20, H23
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): HardCall → CaseFile, "a hard call not worth his time: a council child, by day or night".
 
-**ticket-captain** (HardCall, exit):
+**ticket-captain** (legacy, not built; HardCall, exit):
 
 > Otherwise open a `council` child for a hard call, by day or night: a DR and the spec disagree, nuance may change a DR or the spec, or there is no clear answer.
 
@@ -48,7 +48,7 @@ Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): HardCall
 
 Spec: L21, H23
 
-**ticket-captain** (HardCall, nominal):
+**ticket-captain** (legacy, not built; HardCall, nominal):
 
 > A `dr-grade` call goes to a `his-call` child, except overnight, when a two-way, seriously blocking one goes to a `council` child.
 
@@ -58,7 +58,7 @@ Spec: L21, H23
 
 Spec: L21, H16
 
-**ticket-captain** (NeedPassedUp):
+**ticket-captain** (legacy, not built; NeedPassedUp):
 
 > Flag a DR-grade call on your ticket with the `dr-grade` label, then pass it up like any other need.
 
@@ -68,7 +68,7 @@ Spec: L21, H16
 
 Spec: L18, L23
 
-**ticket-captain** (Tribunal):
+**ticket-captain** (legacy, not built; Tribunal):
 
 > Write the case file neutral: only the call, the options unranked, the constraints and the primary facts with their sources, never the research's tension mapping or chosen precedent.
 
@@ -80,7 +80,7 @@ Spec: L18, R13, R15
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): CaseFile → Sealed, "two judges from different families take sealed positions".
 
-**ticket-captain** (CaseFile, exit):
+**ticket-captain** (legacy, not built; CaseFile, exit):
 
 > Seat two judges from different families, picked from the roster, each briefed as a judge from the council members' briefs (`council-members.md`).
 
@@ -92,7 +92,7 @@ Spec: L22, L18, L20
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): CaseFile → Sealed, "one family out: the judges sit on the remaining family".
 
-**ticket-captain** (CaseFile, exit):
+**ticket-captain** (legacy, not built; CaseFile, exit):
 
 > With one family out, seat both judges from the remaining family; the exits below hold as with two.
 
@@ -112,7 +112,7 @@ Spec: L18, L19, L20
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → DecidedOvernight, "the judges agree on a two-way hard call".
 
-**ticket-captain** (DecidedOvernight, arrival):
+**ticket-captain** (legacy, not built; DecidedOvernight, arrival):
 
 > When both judges agree on a two-way hard call that is not DR-grade, it is decided: record it citing its law and precedent; it is acted on, provisional, and never ratified.
 
@@ -124,7 +124,7 @@ Spec: L18, L20, L21, H23
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → Prepared, "they disagree, or it is one-way or DR-grade".
 
-**ticket-captain** (Prepared, arrival):
+**ticket-captain** (legacy, not built; Prepared, arrival):
 
 > When they disagree, the precedent points both ways, or the call is one-way, return it prepared, with both positions, to the Question that opened the council, which sends it to him as a `his-call` child; a DR-grade call too, except the overnight one below.
 
@@ -136,7 +136,7 @@ Spec: L21
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): Exchange → ProposedDr, "overnight, both agree on a two-way, seriously blocking DR-grade call".
 
-**ticket-captain** (ProposedDr, arrival):
+**ticket-captain** (legacy, not built; ProposedDr, arrival):
 
 > Overnight, when both agree on a two-way, seriously blocking DR-grade call, write the ruling as a `proposed` DR for his ratification; an irreversible call is never decided.
 
@@ -156,7 +156,7 @@ Spec: L21
 
 Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): ProposedDr → Declined, "he declines it: deleted, his words on the raising ticket".
 
-**ticket-captain** (ProposedDr, exit):
+**ticket-captain** (legacy, not built; ProposedDr, exit):
 
 > When he declines a proposed DR, delete it, never keeping it beside the accepted DRs: put his decline and his words on the ticket that raised the question, which returns to its raiser.
 
@@ -182,7 +182,7 @@ Transition in The tribunal (`claims/statechart/tribunal/Tribunal.tla`): DecidedO
 
 Spec: K14, L18
 
-**ticket-captain** (Judge):
+**ticket-captain** (legacy, not built; Judge):
 
 > Skills: every skill the seat needs, each with a slash · the case file · model and effort · return to.
 
@@ -192,7 +192,7 @@ Spec: K14, L18
 
 Spec: L18
 
-**ticket-captain** (Judge):
+**ticket-captain** (legacy, not built; Judge):
 
 > Alone, map each option to the axioms it serves, find precedent through `weighed:`, name what Balazs would choose and why, and answer both duties: should this be done at all, and is the frame too narrow?
 
@@ -202,7 +202,7 @@ Spec: L18
 
 Spec: L4
 
-**ticket-captain** (Judge):
+**ticket-captain** (legacy, not built; Judge):
 
 > Take the axioms as given; never question them.
 
@@ -212,6 +212,6 @@ Spec: L4
 
 Spec: L18
 
-**ticket-captain** (Judge):
+**ticket-captain** (legacy, not built; Judge):
 
 > Then one exchange: answer the other judge's strongest point, or concede.

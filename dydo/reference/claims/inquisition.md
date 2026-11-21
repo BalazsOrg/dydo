@@ -12,7 +12,7 @@ type: reference
 
 Spec: N5, K22
 
-**ticket-captain** (Take):
+**ticket-captain** (legacy, not built; Take):
 
 > Holding an Inquisition ticket or one of its sub-tickets, conduct it by the inquisition captain (`resources/inquisition-captain.md`).
 
@@ -22,7 +22,7 @@ Spec: N5, K22
 
 Spec: N5, R34
 
-**ticket-captain** (Inquisition):
+**ticket-captain** (legacy, not built; Inquisition):
 
 > An inquisition is review at the landing level: the candidate as a whole, cut by feature and staffed with reviewers who inspect everything and test every hypothesis.
 
@@ -32,7 +32,7 @@ Spec: N5, R34
 
 Spec: N5, N12 DR 059
 
-**ticket-captain** (Inquisition):
+**ticket-captain** (legacy, not built; Inquisition):
 
 > Every round starts from zero: a fresh feature map, never an earlier round's map or findings.
 
@@ -42,7 +42,7 @@ Spec: N5, N12 DR 059
 
 Spec: N12 DR 059, N5
 
-**ticket-captain** (Inquisition):
+**ticket-captain** (legacy, not built; Inquisition):
 
 > You conduct and never hunt: reading the work for what is wrong is your reviewers' job.
 
@@ -52,7 +52,7 @@ Spec: N12 DR 059, N5
 
 Spec: N12 DR 059, N5, R9, R34
 
-**ticket-captain** (Inquisition):
+**ticket-captain** (legacy, not built; Inquisition):
 
 > As the root, check before the first round that the project has a verification skill: one with a runnable surface and none goes to your officer as a new requirement, and the round waits for the skill; a project with nothing to run needs none, and Drive does not apply.
 
@@ -62,7 +62,7 @@ Spec: N12 DR 059, N5, R9, R34
 
 Spec: N5, N12 DR 059
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > As the root, draw the feature map from the landed diff: one small slice per feature, and each seam where features meet a slice of its own; post it on the ticket with each slice's lenses, or the one-line reason a lens does not apply.
 
@@ -72,7 +72,7 @@ Spec: N5, N12 DR 059
 
 Spec: N12 DR 059, N5
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > A prose slice, a plain skill or doc, gets Read only, and a contradiction it finds is proved by quoting both passages; Break and Drive apply wherever the landing changed behaviour.
 
@@ -82,7 +82,7 @@ Spec: N12 DR 059, N5
 
 Spec: N5, H13
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Over about 10 slices, cut the map into group sub-tickets of up to about 10 slices, each held by a sub-captain; keep a seam inside a group with it, and keep the seams between groups as slices of your own.
 
@@ -92,7 +92,7 @@ Spec: N5, H13
 
 Spec: N5
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > When the map is not split, and for your own seam slices, open a sub-ticket with its own captain for those slices.
 
@@ -102,7 +102,7 @@ Spec: N5
 
 Spec: N5, N12 DR 059
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > As the root, never dispatch a slice's reviewer yourself: merge the groups' registers into yours, a finding seen in two groups becoming one finding with both sightings, and stitch the round's verdict from them.
 
@@ -112,7 +112,7 @@ Spec: N5, N12 DR 059
 
 Spec: N12 DR 059, N5
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Holding slices, keep the round's findings register on an `inquisition/<slug>` branch cut from the audit SHA, which never merges: one row per finding with its slice, severity, place, proof, sightings and disposition, pushed after every return and before the next dispatch.
 
@@ -122,7 +122,7 @@ Spec: N12 DR 059, N5
 
 Spec: N5, R34, N12 DR 059
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Run Read, then Break, then Drive on each slice, as a pipeline across slices rather than in waves, each lens its own reviewer briefed from the slice reviewer brief below; never one agent for two lenses.
 
@@ -132,7 +132,7 @@ Spec: N5, R34, N12 DR 059
 
 Spec: N12 DR 059, N5
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Send one reviewer per slice per lens: a dispatch never carries two slices, so merge tiny slices on the map instead.
 
@@ -142,7 +142,7 @@ Spec: N12 DR 059, N5
 
 Spec: N5, N12 DR 059
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Route a finding only a test or a drive can settle to that slice's Break or Drive seat, with a short follow-up seat when that lens already ran.
 
@@ -152,7 +152,7 @@ Spec: N5, N12 DR 059
 
 Spec: N12 DR 059, N5
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > A finding already in the register is a sighting on its row, never a new row: a bug read in the code and seen again while driving is one finding with two sightings.
 
@@ -162,7 +162,7 @@ Spec: N12 DR 059, N5
 
 Spec: N12 DR 059, N12 DR 058
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Check each returned severity against the source, not the reviewer's label, and record any change with its reason on the row.
 
@@ -172,7 +172,7 @@ Spec: N12 DR 059, N12 DR 058
 
 Spec: N12 DR 059, H16
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Pass a finding that needs a judgement call up as a need, like any other.
 
@@ -182,7 +182,7 @@ Spec: N12 DR 059, H16
 
 Spec: N12 DR 059, K31
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > A blocker or should a Break seat proved red, with a well-defined fix, gets the fix prepared mid-round: brief an implementer for a Bug on its own branch off the audit SHA, red test first, and at the verdict attach the branch and its SHA to the finding's ticket, whose captain verifies and reviews it once.
 
@@ -192,7 +192,7 @@ Spec: N12 DR 059, K31
 
 Spec: N12 DR 059
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Well-defined means one obvious fix inside one slice, small, touching no contract, DR or public interface; any doubt means no patch, nits are never patched, and the inquisition merges nothing but its own record.
 
@@ -202,7 +202,7 @@ Spec: N12 DR 059
 
 Spec: N12 DR 059, N5, K22
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Brief each Break seat on its own proof branch, `proof/<KEY>-<slice>-<n>`, cut from the audit SHA with the test paths it may touch, `<n>` counting that slice's Break seats; a proof branch never merges.
 
@@ -212,7 +212,7 @@ Spec: N12 DR 059, N5, K22
 
 Spec: N12 DR 059, K22
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > When a Break seat returns, push its proof branch: its red-test SHAs are the findings' reproductions.
 
@@ -222,7 +222,7 @@ Spec: N12 DR 059, K22
 
 Spec: N12 DR 059, K19, K22
 
-**ticket-captain** (InquisitionRound):
+**ticket-captain** (legacy, not built; InquisitionRound):
 
 > Holding slices, keep each open finding's red-test SHA reachable from a pushed ref apart from the audit branch, its proof branch or its patch branch, linked on its ticket, until that ticket's captain records adopting it; cleanup never deletes those refs.
 
@@ -232,7 +232,7 @@ Spec: N12 DR 059, K19, K22
 
 Spec: N12 DR 059, K31, N5
 
-**ticket-captain** (InquisitionRecord):
+**ticket-captain** (legacy, not built; InquisitionRecord):
 
 > As the root, deliver the round's one record as its last step, through your ticket's own Implement, Review and Merge hops: an implementer writes it from the pushed register, a fresh reviewer checks it, and it merges into the feature branch.
 
@@ -242,7 +242,7 @@ Spec: N12 DR 059, K31, N5
 
 Spec: N12 DR 059
 
-**ticket-captain** (InquisitionRecord):
+**ticket-captain** (legacy, not built; InquisitionRecord):
 
 > The record, `dydo/project/inquisitions/<YYYY-MM-DD>-<slug>.md`, names the audit SHA, the staffing, the map with each lens run or the reason it did not, and every finding with its severity, sightings and disposition; an empty section says so.
 
@@ -252,7 +252,7 @@ Spec: N12 DR 059
 
 Spec: N5, R34, K14
 
-**ticket-captain** (SliceBrief):
+**ticket-captain** (legacy, not built; SliceBrief):
 
 > Skills: /reviewer · level: inquisition · the lens · the slice, its map row and its findings so far · the audit SHA and the landing base · the governing spec · worktree · model and effort · return to.
 

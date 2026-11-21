@@ -17,7 +17,7 @@ public static class Registry
         HierarchyMachines.Should, MergeMachines.MergeCommand, MergeMachines.FeatureMerge, ProcessMachines.Findings,
         HierarchyMachines.Liveness, ToolMachines.Map, HierarchyMachines.Envoy, LawMachines.Council, LawMachines.Tribunal, LawMachines.Law, LawMachines.SlugCheck,
         LawMachines.Backfill, HierarchyMachines.Staff, DeliveryMachines.Landing, LawMachines.Mutation, MergeMachines.MasterRoute,
-        LawMachines.SafeDelete, LawMachines.IgnoreEntry, ProcessMachines.Adopter
+        LawMachines.SafeDelete, LawMachines.IgnoreEntry, ProcessMachines.Adopter, CaptainMachines.Captain
     ];
 
     public static IReadOnlyList<Type> Kinds { get; } =
@@ -69,7 +69,34 @@ public static class Registry
         typeof(Tree),
         typeof(Linear),
         typeof(Scout),
-        typeof(Recovery)
+        typeof(Recovery),
+        typeof(Captain),
+        typeof(CaptainIntake),
+        typeof(CaptainWaking),
+        typeof(CaptainSplit),
+        typeof(CaptainWay),
+        typeof(CaptainDispatch),
+        typeof(CaptainBriefs),
+        typeof(CaptainReview),
+        typeof(CaptainRound),
+        typeof(CaptainFinish),
+        typeof(CaptainMerging),
+        typeof(CaptainImplement),
+        typeof(CaptainImplementCode),
+        typeof(CaptainImplementDocs),
+        typeof(CaptainImplementBug),
+        typeof(CaptainReviewing),
+        typeof(CaptainReviewRead),
+        typeof(CaptainReviewBreak),
+        typeof(CaptainReviewDrive),
+        typeof(CaptainReviewModel),
+        typeof(CaptainReviewSeats),
+        typeof(CaptainResearch),
+        typeof(CaptainTrouble),
+        typeof(CaptainReCut),
+        typeof(CaptainNeed),
+        typeof(CaptainPassedUp),
+        typeof(CaptainMergeTrouble)
     ];
 
     public static IReadOnlyList<SkillSpec> Skills { get; } =
@@ -77,6 +104,7 @@ public static class Registry
         CoordinatorCarrier.Spec,
         ChiefOfStaffCarrier.Spec,
         TicketCaptainCarrier.Spec,
+        CaptainCarrier.Spec,
         ImplementerCarrier.Spec,
         ReviewerCarrier.Spec,
         ResearchCarrier.Spec,

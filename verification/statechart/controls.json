@@ -9,6 +9,18 @@
     "to": "Merged",
     "property": "L12_PageBeforeMerge"
   },
+  "captain": {
+    "from": "Question",
+    "to": "Finishing",
+    "variables": {
+      "round": "1",
+      "extra": "FALSE",
+      "mended": "FALSE",
+      "kind": "\"change\"",
+      "merger": "\"holder\""
+    },
+    "property": "H16_ResumeLeafAfterQuestion"
+  },
   "claim-build": {
     "from": "Edited",
     "to": "Approved",

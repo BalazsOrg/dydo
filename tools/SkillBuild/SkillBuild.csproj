@@ -11,4 +11,10 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
+  <!-- The reverse reference: the builder reads the CLI's real command tree, so a skill can name only
+       a command that exists (DYD-1372). -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\DynaDocs.csproj" />
+  </ItemGroup>
+
 </Project>

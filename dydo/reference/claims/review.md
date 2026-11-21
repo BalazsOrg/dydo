@@ -14,7 +14,7 @@ Spec: R2, R3, R6
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Wired → Round, "the parts are wired; Review r1 opens".
 
-**ticket-captain** (Wired, exit):
+**ticket-captain** (legacy, not built; Wired, exit):
 
 > Once the parts are wired and before the Merge hop, review the parent once: each part, the parts together, and their harmony.
 
@@ -30,7 +30,7 @@ Spec: R6
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Wired → Ended, "the parent only groups its parts".
 
-**ticket-captain** (Wired, exit):
+**ticket-captain** (legacy, not built; Wired, exit):
 
 > Skip the parent's review when it only groups parts.
 
@@ -46,7 +46,7 @@ Transition in The review loop (`claims/statechart/review/Review.tla`): Round →
 
 > Holding the round alone, post its verdict on your Review hop (PASS or FAIL, lenses, seats, shoulds) and, at the same moment, the one-line PASS naming the Review ticket in the PR body's `## Independent review`.
 
-**ticket-captain** (Round, exit):
+**ticket-captain** (legacy, not built; Round, exit):
 
 > Holding a round with several seats, post one verdict naming each seat's model and provider and its blockers, and write the PR line at the same moment.
 
@@ -62,7 +62,7 @@ Spec: R9, S9
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Fixing, "a blocker is broken or against the spec".
 
-**ticket-captain** (Verdict, exit):
+**ticket-captain** (legacy, not built; Verdict, exit):
 
 > A broken or against-spec blocker is fixed, then the next round runs.
 
@@ -74,7 +74,7 @@ Spec: R9
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Fixing, "a blocker is a security hole".
 
-**ticket-captain** (Verdict, exit):
+**ticket-captain** (legacy, not built; Verdict, exit):
 
 > A security hole is fixed, and the next round runs with the security lens first.
 
@@ -86,7 +86,7 @@ Spec: R9, H5
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Replan, "a blocker is fundamental, or a new requirement".
 
-**ticket-captain** (Verdict, exit):
+**ticket-captain** (legacy, not built; Verdict, exit):
 
 > Send a fundamental blocker or a new requirement to the officer above to re-plan; when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans.
 
@@ -98,7 +98,7 @@ Spec: R9
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Escalated, "a blocker needs Balazs".
 
-**ticket-captain** (Verdict, exit):
+**ticket-captain** (legacy, not built; Verdict, exit):
 
 > Pass a blocker that needs Balazs up the chain at once.
 
@@ -110,7 +110,7 @@ Spec: R8
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Ended, "no new blocker this round".
 
-**ticket-captain** (Verdict, exit):
+**ticket-captain** (legacy, not built; Verdict, exit):
 
 > By default, the first round with no new blocker ends the review rounds.
 
@@ -122,7 +122,7 @@ Spec: R8
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Round, "no new blocker, but the officer orders one more round".
 
-**ticket-captain** (Verdict, exit):
+**ticket-captain** (legacy, not built; Verdict, exit):
 
 > You may still order one more round after a round with no new blocker.
 
@@ -134,7 +134,7 @@ Spec: S9, R8
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Fixing → Round, "Fix rN is Done: its blockers Done, proof run on the head".
 
-**ticket-captain** (Fixing, exit):
+**ticket-captain** (legacy, not built; Fixing, exit):
 
 > Start the next round, a fresh full-lens look, once Fix rN's blockers are Done and its proof ran on the head.
 
@@ -146,7 +146,7 @@ Spec: R10
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Verdict → Checkpoint, "round 3 ends with a blocker".
 
-**ticket-captain** (Verdict, exit):
+**ticket-captain** (legacy, not built; Verdict, exit):
 
 > After round 3 with a blocker, stop at the checkpoint and decide on purpose.
 
@@ -158,7 +158,7 @@ Spec: R10, S10, R9
 
 Transition in The review loop (`claims/statechart/review/Review.tla`): Checkpoint → Fixing, "checkpoint: one more round, the security lens first for a security hole".
 
-**ticket-captain** (Checkpoint, exit):
+**ticket-captain** (legacy, not built; Checkpoint, exit):
 
 > By default, write `checkpoint: one more round, because …` on the Review and go on.
 
@@ -178,7 +178,7 @@ Transition in The review loop (`claims/statechart/review/Review.tla`): Checkpoin
 
 > The round-3 checkpoint is one line on the Review: `checkpoint: one more round, because …` or `escalated: …`.
 
-**ticket-captain** (Checkpoint, exit):
+**ticket-captain** (legacy, not built; Checkpoint, exit):
 
 > Escalate only for a fundamental break, a new requirement or a need for Balazs, writing `escalated: …` on the Review.
 
@@ -188,7 +188,7 @@ Transition in The review loop (`claims/statechart/review/Review.tla`): Checkpoin
 
 Spec: S9
 
-**ticket-captain** (Verdict, nominal):
+**ticket-captain** (legacy, not built; Verdict, nominal):
 
 > At verdict time, turn the blockers into Fix rN with one Blocker ticket per blocker inside it; for parallel writers, split it into Fix rNb.
 
@@ -202,7 +202,7 @@ Spec: S9
 
 Spec: S11
 
-**ticket-captain** (Verdict, nominal):
+**ticket-captain** (legacy, not built; Verdict, nominal):
 
 > Record each nit as one line on its record.
 
@@ -220,7 +220,7 @@ Spec: S11
 
 Spec: R16
 
-**ticket-captain** (Verdict, nominal):
+**ticket-captain** (legacy, not built; Verdict, nominal):
 
 > A blocker a later review finds in a change you made goes to a crew writer.
 
@@ -230,7 +230,7 @@ Spec: R16
 
 Spec: N12 DR 058 §3
 
-**ticket-captain** (Verdict, nominal):
+**ticket-captain** (legacy, not built; Verdict, nominal):
 
 > Record every severity a fix-hop author changed, with its reason.
 
@@ -240,7 +240,7 @@ Spec: N12 DR 058 §3
 
 Spec: S9
 
-**ticket-captain** (Fixing, nominal):
+**ticket-captain** (legacy, not built; Fixing, nominal):
 
 > Give the Fix to the implementer's thread while it is alive and has room in its context, and to a fresh agent when its context is heavy or the blocker says the approach was wrong; the next round is a fresh look either way.
 

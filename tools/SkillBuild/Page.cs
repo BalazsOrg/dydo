@@ -43,6 +43,24 @@ internal sealed class Page
     /// </summary>
     public void Step(Placed placed) => Item("1. ", placed);
 
+    /// <summary>
+    /// A truth-checked skill's slot opens after a blank line, its title a bold lead-in: a paragraph
+    /// reads on from it, and a list starts after a blank line.
+    /// </summary>
+    public void Open(string? title, bool paragraph)
+    {
+        Blank();
+        if (title is null) return;
+        _lines.Add($"**{title}**");
+        if (!paragraph) _lines.Add("");
+    }
+
+    /// <summary>A claim line of a paragraph: one sentence line, or a multi-line line verbatim.</summary>
+    public void Prose(Placed placed) => Item("", placed);
+
+    /// <summary>A step with its real number, so the source reads 1, 2, 3 as the page does (DYD-1295 519126ab).</summary>
+    public void Numbered(int number, Placed placed) => Item($"{number}. ", placed);
+
     private void Item(string marker, Placed placed)
     {
         var block = placed.Line.Text.Split('\n');

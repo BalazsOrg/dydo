@@ -2,12 +2,9 @@
 
 # A merge conflict
 
-## Resolving a CONFLICT on the ticket branch
+1. Dispatch an Implement ticket to resolve the conflict on your ticket's branch.
+2. Post the resolution's commit SHA on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.
+3. Dispatch a fresh reviewer for the resolution's hunks, the only new work on the branch.
+4. Merge again, on the new head, once that review passes.
 
-Exits:
-
-- Send the resolution's hunks to a fresh reviewer.
-
-## Save, resume and end
-
-- Save the resolution's commit SHA on the Merge hop and resume the merge from it; end resolved once the hunks pass and the merge runs green, or escalated to your officer with what you can't resolve.
+Take a conflict you cannot get resolved to your officer, with both sides named.

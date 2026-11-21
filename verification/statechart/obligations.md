@@ -81,6 +81,8 @@ mutation's `CutFix` are relabelled (H2, H4, H5). No generated `.tla` changed, an
 an actor. The should, overview and mutation properties still state their spec obligations, unchanged.
 Who cancels a should stays unobservable.
 
+[Captain prototype obligations (DYD-1372)](captain/obligations.md)
+
 ## Related
 
 - [Property modules, execution and limits](README.md)

@@ -1,0 +1,831 @@
+{
+  "$comment": "built from the model; edit there: tools/SkillBuild",
+  "id": "Captain",
+  "title": "A captain and its ticket",
+  "initial": "Dispatched",
+  "finals": [
+    "Returned"
+  ],
+  "states": [
+    {
+      "id": "Dispatched",
+      "title": "Dispatched onto a ticket, not yet started",
+      "spec": [
+        "H3",
+        "S15"
+      ]
+    },
+    {
+      "id": "Taken",
+      "title": "Taken: In Progress, its kind known",
+      "spec": [
+        "S6",
+        "K30"
+      ]
+    },
+    {
+      "id": "Leaf",
+      "title": "Working it as a leaf",
+      "spec": [
+        "S2",
+        "S7"
+      ]
+    },
+    {
+      "id": "Wayfinding",
+      "title": "Finding the way to the spec",
+      "spec": [
+        "H10",
+        "H23"
+      ]
+    },
+    {
+      "id": "Split",
+      "title": "Split into sub-tickets",
+      "spec": [
+        "S1",
+        "S15"
+      ]
+    },
+    {
+      "id": "Waiting",
+      "title": "Waiting on children, a Question's captain among them",
+      "spec": [
+        "H3",
+        "H16"
+      ]
+    },
+    {
+      "id": "InReview",
+      "title": "In review",
+      "spec": [
+        "R2",
+        "R8"
+      ]
+    },
+    {
+      "id": "Clear",
+      "title": "A round found no new blocker",
+      "spec": [
+        "R8"
+      ]
+    },
+    {
+      "id": "Fixing",
+      "title": "Fixing",
+      "spec": [
+        "S9",
+        "R8"
+      ]
+    },
+    {
+      "id": "Mending",
+      "title": "Mending a cheap should after a clear round",
+      "spec": [
+        "S17",
+        "R8"
+      ]
+    },
+    {
+      "id": "Checkpoint",
+      "title": "At the checkpoint after a third blocked round",
+      "spec": [
+        "R10",
+        "S10"
+      ]
+    },
+    {
+      "id": "Repairing",
+      "title": "Repairing a conflict or a red gate",
+      "spec": [
+        "R19",
+        "R21",
+        "R22"
+      ]
+    },
+    {
+      "id": "Question",
+      "title": "A leaf's own work waiting on a Question",
+      "spec": [
+        "H16"
+      ]
+    },
+    {
+      "id": "Finishing",
+      "title": "Finishing",
+      "spec": [
+        "R21",
+        "S6"
+      ]
+    },
+    {
+      "id": "Done",
+      "title": "Done",
+      "spec": [
+        "S6"
+      ]
+    },
+    {
+      "id": "Returned",
+      "title": "Returned to its officer",
+      "spec": [
+        "H23"
+      ]
+    }
+  ],
+  "variables": [
+    {
+      "name": "round",
+      "initial": "1",
+      "bound": "round <= 4"
+    },
+    {
+      "name": "extra",
+      "initial": "FALSE",
+      "bound": "extra \\in BOOLEAN"
+    },
+    {
+      "name": "mended",
+      "initial": "FALSE",
+      "bound": "mended \\in BOOLEAN"
+    },
+    {
+      "name": "kind",
+      "initial": "\"unread\"",
+      "bound": "kind \\in {\"unread\", \"change\", \"verdict\", \"answer\"}"
+    },
+    {
+      "name": "merger",
+      "initial": "\"unread\"",
+      "bound": "merger \\in {\"unread\", \"holder\", \"officer\", \"nobody\"}"
+    }
+  ],
+  "transitions": [
+    {
+      "claim": "claim:Captain.FillerBack",
+      "from": "Dispatched",
+      "to": "Returned",
+      "arrow": "a filler ticket fails its check: it goes back unstarted and unassigned",
+      "spec": [
+        "H11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:Captain.Start",
+      "from": "Dispatched",
+      "to": "Taken",
+      "arrow": "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer, and its brief has said who merges it",
+      "spec": [
+        "S6"
+      ],
+      "guard": null,
+      "effect": "kind' \\in {\"change\", \"verdict\", \"answer\"} /\\ merger' \\in IF kind' = \"change\" THEN {\"holder\", \"officer\", \"nobody\"} ELSE {\"nobody\"}",
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainDispatch.Send",
+      "from": "Split",
+      "to": "Waiting",
+      "arrow": "each AFK sub-ticket is dispatched, and a HITL one goes up",
+      "spec": [
+        "H3",
+        "H15"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainFinish.Close",
+      "from": "Finishing",
+      "to": "Done",
+      "arrow": "the contract is met: the ticket closes Done",
+      "spec": [
+        "S6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainFinish.HandOver",
+      "from": "Leaf",
+      "to": "Finishing",
+      "arrow": "the leaf is whole, its holder does not merge it, and it has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer",
+      "spec": [
+        "R32",
+        "R5"
+      ],
+      "guard": "merger # \"holder\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainFinish.Return",
+      "from": "Done",
+      "to": "Returned",
+      "arrow": "one line goes back to the officer",
+      "spec": [
+        "H23",
+        "K14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainIntake.Held",
+      "from": "Dispatched",
+      "to": "Returned",
+      "arrow": "the ticket is already started or closed and the brief names no take-over: the dispatch goes back as a conflict",
+      "spec": [
+        "S7",
+        "S6"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainMergeTrouble.Hunks",
+      "from": "Repairing",
+      "to": "InReview",
+      "arrow": "the repair is in: a fresh review of what it changed",
+      "spec": [
+        "R19"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainMergeTrouble.Lost",
+      "from": "Repairing",
+      "to": "Returned",
+      "arrow": "a red gate that cannot be fixed goes to the officer",
+      "spec": [
+        "K9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainMergeTrouble.Stuck",
+      "from": "Repairing",
+      "to": "Returned",
+      "arrow": "a conflict that cannot be resolved goes to the officer",
+      "spec": [
+        "K9"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainMerging.Broken",
+      "from": "Finishing",
+      "to": "Repairing",
+      "arrow": "a conflict or a real red gate: an Implement ticket repairs it",
+      "spec": [
+        "R21",
+        "R19"
+      ],
+      "guard": "kind = \"change\" /\\ merger = \"holder\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainNeed.Answered",
+      "from": "Question",
+      "to": "Leaf",
+      "arrow": "the answer is on the Question ticket",
+      "spec": [
+        "H16"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainNeed.Ask",
+      "from": "Leaf",
+      "to": "Question",
+      "arrow": "a call that is not obvious: a Question sub-ticket",
+      "spec": [
+        "H16",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainNeed.Up",
+      "from": "Question",
+      "to": "Question",
+      "arrow": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer",
+      "spec": [
+        "H16",
+        "H12",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainResearch.Handed",
+      "from": "Leaf",
+      "to": "Finishing",
+      "arrow": "a Question's research leaves a call that is the user's: it is handed on as a HITL Question sub-ticket, and the research ticket has done its part",
+      "spec": [
+        "H23",
+        "H16",
+        "S10"
+      ],
+      "guard": "kind = \"answer\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainResearch.Parts",
+      "from": "Waiting",
+      "to": "Leaf",
+      "arrow": "a research holder's parts are back: it checks their answers and takes up its own work again, to write its one answer",
+      "spec": [
+        "K30",
+        "H2"
+      ],
+      "guard": "kind = \"answer\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainResearch.Question",
+      "from": "Leaf",
+      "to": "Returned",
+      "arrow": "a Question's research leaves a call that is neither settled nor the user's: it goes back to the officer unsettled, the Question still open",
+      "spec": [
+        "H16",
+        "L18"
+      ],
+      "guard": "kind = \"answer\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Clean",
+      "from": "Clear",
+      "to": "Finishing",
+      "arrow": "no further round is ordered: the review rounds end",
+      "spec": [
+        "R8"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Cleared",
+      "from": "InReview",
+      "to": "Clear",
+      "arrow": "the round finds no new blocker",
+      "spec": [
+        "R8",
+        "R11"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Fix",
+      "from": "InReview",
+      "to": "Fixing",
+      "arrow": "a round other than the third returns a blocker: a Fix ticket",
+      "spec": [
+        "R9",
+        "S9"
+      ],
+      "guard": "round # 3",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Groups",
+      "from": "Waiting",
+      "to": "Finishing",
+      "arrow": "the children are back and the ticket only groups parts: no review of its own",
+      "spec": [
+        "R6"
+      ],
+      "guard": "kind = \"change\" /\\ merger # \"holder\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.OneMore",
+      "from": "Clear",
+      "to": "InReview",
+      "arrow": "one more round is ordered, once",
+      "spec": [
+        "R8"
+      ],
+      "guard": "~extra",
+      "effect": "round' = round + 1 /\\ extra' = TRUE",
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Other",
+      "from": "Leaf",
+      "to": "InReview",
+      "arrow": "the leaf's change is whole and the merge is its holder's: another agent reviews it",
+      "spec": [
+        "R33",
+        "R12"
+      ],
+      "guard": "kind = \"change\" /\\ merger = \"holder\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Replan",
+      "from": "InReview",
+      "to": "Returned",
+      "arrow": "in a round other than the third, a blocker is fundamental or a new requirement: back to the officer",
+      "spec": [
+        "R9"
+      ],
+      "guard": "round # 3",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReview.Whole",
+      "from": "Waiting",
+      "to": "InReview",
+      "arrow": "the parts are wired: a Review of the whole is dispatched",
+      "spec": [
+        "R2",
+        "R1"
+      ],
+      "guard": "kind = \"change\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReviewSeats.Ticket",
+      "from": "Taken",
+      "to": "Split",
+      "arrow": "a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket",
+      "spec": [
+        "S1",
+        "R34",
+        "R15"
+      ],
+      "guard": "kind = \"verdict\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReviewSeats.Verdict",
+      "from": "Waiting",
+      "to": "Finishing",
+      "arrow": "a review's seats are back: their findings become the round's one verdict, which no round reviews",
+      "spec": [
+        "S8",
+        "S1",
+        "R34"
+      ],
+      "guard": "kind = \"verdict\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainRound.Cheap",
+      "from": "Clear",
+      "to": "Mending",
+      "arrow": "a round with no blocker leaves a cheap should on a change somebody merges: a writer mends it on its own ticket, once",
+      "spec": [
+        "S17",
+        "R8"
+      ],
+      "guard": "~mended /\\ merger # \"nobody\"",
+      "effect": "mended' = TRUE",
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainRound.MendedPart",
+      "from": "Mending",
+      "to": "Finishing",
+      "arrow": "the should is mended on a candidate in no PR, which the holder's officer merges: no round of its own, and the mended head is returned, to be reviewed with the whole",
+      "spec": [
+        "R2",
+        "R23",
+        "S17",
+        "R32"
+      ],
+      "guard": "merger = \"officer\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainRound.NewHead",
+      "from": "Mending",
+      "to": "InReview",
+      "arrow": "the should is mended in its holder's PR: a round on the new head, which the merge needs",
+      "spec": [
+        "R8",
+        "R23",
+        "R24"
+      ],
+      "guard": "merger = \"holder\"",
+      "effect": "round' = round + 1",
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainSplit.Cut",
+      "from": "Taken",
+      "to": "Split",
+      "arrow": "the ticket is bigger than one agent and its route is in sight: it is cut",
+      "spec": [
+        "H2",
+        "H13"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainSplit.Leaf",
+      "from": "Taken",
+      "to": "Leaf",
+      "arrow": "the ticket fits one agent",
+      "spec": [
+        "H2",
+        "S2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.Checkpoint",
+      "from": "Checkpoint",
+      "to": "Fixing",
+      "arrow": "`checkpoint: one more round, because …`: the blockers go to a Fix",
+      "spec": [
+        "R10",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.ChildReCut",
+      "from": "Waiting",
+      "to": "Split",
+      "arrow": "a child returns `too big, re-cut`: its contract is rewritten down to what it finished, and what it left is cut",
+      "spec": [
+        "H2",
+        "H14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.Escalate",
+      "from": "Checkpoint",
+      "to": "Returned",
+      "arrow": "`escalated: …`: a fundamental break, a new requirement or a need for the user goes to the officer",
+      "spec": [
+        "R10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.NextRound",
+      "from": "Fixing",
+      "to": "InReview",
+      "arrow": "the Fix is Done: a fresh round",
+      "spec": [
+        "R8",
+        "S9"
+      ],
+      "guard": null,
+      "effect": "round' = round + 1",
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.ReCut",
+      "from": "Leaf",
+      "to": "Returned",
+      "arrow": "`too big, re-cut`: what is left cannot be divided coherently under the ticket",
+      "spec": [
+        "H2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.SplitRest",
+      "from": "Leaf",
+      "to": "Split",
+      "arrow": "the leaf proves too big: what is left is cut",
+      "spec": [
+        "H2",
+        "K30"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainTrouble.Third",
+      "from": "InReview",
+      "to": "Checkpoint",
+      "arrow": "a third round still has a blocker: the checkpoint",
+      "spec": [
+        "R10"
+      ],
+      "guard": "round = 3",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainWay.Fog",
+      "from": "Taken",
+      "to": "Wayfinding",
+      "arrow": "the route to the spec is not all in sight: the way is found before the cut",
+      "spec": [
+        "H10",
+        "H23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainWay.Next",
+      "from": "Waiting",
+      "to": "Wayfinding",
+      "arrow": "a part returns and fog remains: the way is found again from what it showed",
+      "spec": [
+        "H10",
+        "S15"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainWay.Visible",
+      "from": "Wayfinding",
+      "to": "Split",
+      "arrow": "the parts in sight are cut, and the fog is left uncut",
+      "spec": [
+        "H10",
+        "S2"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    }
+  ],
+  "gaps": []
+}
