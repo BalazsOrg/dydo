@@ -12,8 +12,11 @@ The agent that dispatched you is your officer.
 ## Take the ticket
 
 1. Read the ticket in full, and load every skill your brief names.
-2. If the ticket is closed, or another agent holds it and your brief does not say that you take it over, change nothing. End with `handed back <KEY>: <reason>`.
-3. Set the ticket In Progress.
+2. Change nothing, and end with `handed back <KEY>: <reason>`, in three cases:
+   - The ticket is closed.
+   - Another agent holds it, and your brief does not say that you take it over.
+   - Your brief calls it filler, and it is not small, easy to undo and free of design calls.
+3. Otherwise set the ticket In Progress.
 
 ## Size it
 

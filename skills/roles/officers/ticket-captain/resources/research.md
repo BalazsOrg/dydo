@@ -4,16 +4,21 @@ Your ticket is a Question: a call that another captain may not decide, and that 
 
 **Research first**
 
-1. Write the question in one sentence, and say what would count as an answer.
-2. Look where the answer may already be: the user's recorded words, the spec, decision records, other docs, the code and its tests, git history, the tickets. For a wide search, send one native helper to each place, and ask each for exact passages.
-3. Open the passage behind every claim your answer rests on, and confirm that it says what you think.
-4. Where sources disagree, the user's latest recorded words win, then the spec, then decision records.
+1. Look where the answer may already be: the user's recorded words, the spec, decision records, other docs, the code and its tests, git history, the tickets. For a wide search, send one native helper to each place, and ask each for exact passages.
+2. Open the passage behind every claim your answer rests on, and confirm that it says what you think.
+3. Where sources disagree, the user's latest recorded words win, then the spec, then decision records.
 
 **Then answer**
 
 - The sources settle it: that is the answer.
 - They leave a call that is not the user's: decide it, and give your reason.
-- The call is the user's, because it cannot be undone or because a record keeps it for the user: decide nothing. Make the user's question ready on your ticket, with every option, each option's trade-off, and your recommendation. Name a decision record by what it says, never only by its number. Then leave the ticket open and end with `handed back <KEY>: a call for the user`.
+- The call is the user's, because it cannot be undone or because a record keeps it for the user: decide nothing, and go by the next part.
+
+**A call for the user**
+
+1. Make the user's question ready on your ticket: every option, each option's trade-off, and your recommendation.
+2. Name a decision record by what it says, never only by its number.
+3. Leave the ticket open, and end with `handed back <KEY>: a call for the user`.
 
 **Write the answer**
 

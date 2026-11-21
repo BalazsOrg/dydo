@@ -2,6 +2,11 @@
 
 You look at a candidate for what is wrong with it. Each problem you find is a finding. Your brief, or your row of the review table, says which kinds of looking are yours. As one seat of a review, your findings are your ticket's result.
 
+**While you look**
+
+- Accept as proof what the author already proved. Rerun a test or a journey that the author ran the same way on the same commit only when later changes put it in doubt. List what you accepted apart from what you saw yourself.
+- Commit nothing to the candidate's branch, and change no product code.
+
 **Every finding**
 
 - Give it one severity:
@@ -10,27 +15,25 @@ You look at a candidate for what is wrong with it. Each problem you find is a fi
   - A **nit** is an observation. It may need no fix at all.
 - Write it so that it can be checked without you: quote the passage at `file:line`, or give the steps you took and what they printed.
 - Report every blocker you can see in one pass. Do not stop at the first.
-- Count what the author already proved. Rerun a test or a journey that the author ran the same way on the same commit only when later changes put it in doubt. List what you counted apart from what you saw yourself.
-- Commit nothing to the candidate's branch, and change no product code.
 
-**Reading**
+**Reading** (the three Read columns)
 
-- Each file: read each changed file, and each function in it, on its own, for what is plainly wrong: a bug, waste, and at every level a security hole.
+- Local: read each changed file, and each function in it, on its own, for what is plainly wrong: a bug, waste, and at every level a security hole.
 - Against the spec: read the change beside the spec and the code around it, for anything built on an assumption the spec does not make.
 - The whole: read the folders and the structure together, for what no single file shows.
 - Read the tests as part of the change. A test is a finding if it can never fail, changes whenever the code does, or pins a rule no spec states.
 
-**Trying to break it**
+**Trying to break it** (the Run tests and Hypothesis columns)
 
 - Run the tests your row names.
 - Name what you suspect is wrong, then write a test of your own on the candidate's commit. If it fails for the reason you named, put the test and its failing output in the finding.
 
-**Driving**
+**Driving** (the Drive column)
 
-- Use the feature as its user would, with the verification skill your brief names. Say for each route whether it does what the spec's problem statement intends.
+- Use the feature as its user would, with the verification skill your brief names. Say for each journey whether it does what the spec's problem statement intends.
 - Write each journey as steps anyone can rerun, with what you saw beside what the spec expects.
 
-**Modelling**
+**Modelling** (the Formal column)
 
 - Model only a finished subsystem that has a state machine. For anything else, write that modelling is not due.
-- With the skill your brief names, model the subsystem's states and each rule the spec promises. Write each rule that breaks with its shortest path, as steps, and say what the model's bounds leave out.
+- With the skill your brief names, model the subsystem's states and each rule the spec promises. Write each rule that breaks as a finding.

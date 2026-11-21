@@ -9,7 +9,7 @@ Two documents that the user approved are the truth for the skill. Your brief say
 - The core page: the few ideas every skill must agree with.
 - The statechart: the process the skill describes, one arrow for each case, with its page that says which position gets which text.
 
-If your brief names neither, ask your officer for them before you start. Where an older record disagrees with them, they win.
+If your brief names neither, ask your officer for them before you start. Where an older record disagrees with them, they win. Where the user's words were recorded after them and disagree, those words win: tell your officer, because the document is then stale.
 
 ## Steps
 

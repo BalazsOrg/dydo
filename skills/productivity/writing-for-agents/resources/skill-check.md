@@ -14,7 +14,7 @@ A line holds only when every answer is yes.
 4. **General.** Does it hold in a project other than this one?
 5. **Needed.** Would a competent agent get this wrong without the line, and is the linking skill silent on it?
 
-A heading holds when the lines under it are what it says.
+A heading has one check of its own, **Heading**: it holds when the lines under it are what it says.
 
 ## Check each file
 
