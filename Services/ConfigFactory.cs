@@ -140,26 +140,6 @@ public static class ConfigFactory
         };
     }
 
-    /// <summary>
-    /// Adds any default nudges missing from the config (matched by match form and pattern).
-    /// Returns the number of nudges added.
-    /// </summary>
-    public static int EnsureDefaultNudges(DydoConfig config)
-    {
-        var added = 0;
-
-        foreach (var nudge in DefaultNudges)
-        {
-            if (config.Nudges.Any(current => SameNudge(current, nudge)))
-                continue;
-
-            config.Nudges.Add(Copy(nudge));
-            added++;
-        }
-
-        return added;
-    }
-
     /// <summary>A nudge's identity: its match form (absent = command) and its pattern.</summary>
     public static bool SameNudge(NudgeConfig a, NudgeConfig b) =>
         a.Pattern == b.Pattern && a.IsCommandMatch == b.IsCommandMatch && a.IsNewFileMatch == b.IsNewFileMatch;

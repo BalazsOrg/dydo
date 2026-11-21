@@ -28,7 +28,6 @@ public static class HookInputExtensions
         ["grep"] = "read",
     };
 
-    private static readonly HashSet<string> WriteTools = new(StringComparer.OrdinalIgnoreCase) { "write", "edit", "notebookedit" };
     // MultiEdit is not in dydo's Claude hook matcher today; named so a MultiEdit call that
     // does arrive is read by its file_path rather than ignored.
     private static readonly HashSet<string> PathWriteTools = new(StringComparer.OrdinalIgnoreCase) { "write", "edit", "multiedit", "notebookedit" };
@@ -39,8 +38,6 @@ public static class HookInputExtensions
         ("*** Delete File: ", WriteTargetKind.Delete),
         ("*** Move to: ", WriteTargetKind.MoveTo),
     ];
-    private static readonly HashSet<string> ReadTools = new(StringComparer.OrdinalIgnoreCase) { "read", "glob", "grep" };
-    private static readonly HashSet<string> FileTools = new(StringComparer.OrdinalIgnoreCase) { "edit", "write", "notebookedit", "read", "bash", "glob", "grep" };
 
     public static string GetAction(this HookInput input)
     {
@@ -57,21 +54,6 @@ public static class HookInputExtensions
     public static string? GetSearchPath(this HookInput input)
     {
         return input.ToolInput?.Path;
-    }
-
-    public static bool IsWriteOperation(this HookInput input)
-    {
-        return input.ToolName != null && WriteTools.Contains(input.ToolName);
-    }
-
-    public static bool IsReadOperation(this HookInput input)
-    {
-        return input.ToolName != null && ReadTools.Contains(input.ToolName);
-    }
-
-    public static bool IsBashTool(this HookInput input)
-    {
-        return input.ToolName?.Equals("bash", StringComparison.OrdinalIgnoreCase) ?? false;
     }
 
     /// <summary>
@@ -135,10 +117,5 @@ public static class HookInputExtensions
     public static string? GetCommand(this HookInput input)
     {
         return input.ToolInput?.Command;
-    }
-
-    public static bool IsFileOperation(this HookInput input)
-    {
-        return input.ToolName != null && FileTools.Contains(input.ToolName);
     }
 }

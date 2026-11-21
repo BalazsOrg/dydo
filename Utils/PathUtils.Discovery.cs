@@ -27,17 +27,6 @@ public static partial class PathUtils
         return FindProjectRoot(start);
     }
 
-    /// <summary>
-    /// Returns the main project's dydo folder (the one with agents/, _system/, ...),
-    /// resolved from the main project root rather than the nearest one.
-    /// </summary>
-    public static string? FindMainDydoRoot(string? startPath = null)
-    {
-        var projectRoot = FindMainProjectRoot(startPath);
-        if (projectRoot == null) return null;
-        return ConfigFileLocator.GetDydoRoot(projectRoot);
-    }
-
     public static string ResolvePath(string sourcePath, string relativePath)
     {
         var sourceDir = Path.GetDirectoryName(sourcePath) ?? "";

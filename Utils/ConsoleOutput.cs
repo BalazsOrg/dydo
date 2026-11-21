@@ -4,12 +4,6 @@ using DynaDocs.Models;
 
 public static class ConsoleOutput
 {
-    public static void WriteHeader(string text)
-    {
-        Console.WriteLine(text);
-        Console.WriteLine();
-    }
-
     public static void WriteError(string text)
     {
         Console.ForegroundColor = ConsoleColor.Red;
