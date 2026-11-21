@@ -12,14 +12,14 @@ Your ticket is a Question: a call that another captain may not decide, and that 
 
 - The sources settle it: that is the answer.
 - They leave a call that is not the user's: decide it, and give your reason.
-- The call is the user's, because it cannot be undone or because a record keeps it for the user: decide nothing, and go by the next part.
+- The call is the user's, because it cannot be undone or because a record keeps it for the user: decide nothing, and go by "A call for the user".
+
+**Write the answer**
+
+Write on your ticket the answer first. Then give each claim with its source, a path at its commit or a link, and the exact passage. Then say what stayed unsettled.
 
 **A call for the user**
 
 1. Make the user's question ready on your ticket: every option, each option's trade-off, and your recommendation.
 2. Name a decision record by what it says, never only by its number.
 3. Leave the ticket open, and end with `handed back <KEY>: a call for the user`.
-
-**Write the answer**
-
-Write on your ticket the answer first. Then give each claim with its source, a path at its commit or a link, and the exact passage. Then say what stayed unsettled.

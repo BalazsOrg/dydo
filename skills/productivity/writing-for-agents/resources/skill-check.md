@@ -15,6 +15,7 @@ A line holds only when every answer is yes.
 5. **Needed.** Would a competent agent get this wrong without the line, and is the linking skill silent on it?
 
 A heading has one check of its own, **Heading**: it holds when the lines under it are what it says.
+Frontmatter, and a comment that the ticket's contract asks for, hold when they are true: the reader acts on neither, so **Needed** does not apply.
 
 ## Check each file
 

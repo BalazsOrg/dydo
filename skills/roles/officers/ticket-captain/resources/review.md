@@ -17,10 +17,6 @@ Legend: **due** every time; **if** when warranted; **–** not at this level.
 | Feature / Milestone<br>a subsystem is done | if | due | due | due<br>feature + suite | due<br>at the seams | due<br>its journeys | if<br>it has a state machine |
 | Inquisition<br>before landing, per slice | due<br>every slice | due | due | due<br>suite + --heavy + mutation | due<br>every hypothesis | due | due |
 
-> Every row: never re-run what the author ran the same way; a test receipt for the same state counts (spec R5). The security baseline is always on.
->
-> How it's used: the officer's brief names the level; the reviewer works its row.
-
 - A cell is due only as far as the project has what it names. Where a tool, a test selection or a skill is missing, write that on your verdict, never as a blocker, and build nothing.
 
 **Do it yourself, or seat it**
@@ -31,7 +27,7 @@ Legend: **due** every time; **if** when warranted; **–** not at this level.
 **Give the verdict**
 
 1. The verdict is FAIL when at least one finding is a blocker. Otherwise it is PASS.
-2. Write it on your ticket: PASS or FAIL, the level, and every blocker, should and nit. With seats, name each seat's model beside its findings.
+2. Write it on your ticket: PASS or FAIL, the level, and every blocker, should and nit. Rule on each nit there: it needs a fix, or it needs none, and why. With seats, name each seat's model beside its findings.
 3. On a PASS, add this line: `PASS - rubric/type: <code, docs or merge>; candidate <full head SHA>; base <full base SHA>`.
-4. Open a sub-ticket under the ticket you judged for each should. Shoulds in the same code may share one. First check the open shoulds under that ticket and the tickets above it for one that says the same.
+4. Open a sub-ticket under the ticket you judged for each should, and for each nit you ruled needs a fix. Those in the same code may share one. First check the open shoulds under that ticket and the tickets above it for one that says the same.
 5. Set your ticket Done. End with `done <KEY>: PASS` or `done <KEY>: FAIL, <number> blockers`.

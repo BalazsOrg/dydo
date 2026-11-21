@@ -32,4 +32,4 @@ Resolve it as a merge commit on the ticket's branch. If a hunk needs a decision 
 
 **Finish**
 
-Your result is your last commit's SHA, the commands you ran on it, and what each printed.
+Name your last commit `<KEY> <hop>: <what>`, where `<hop>` is `implement`, `fix` or `merge`. Your result is its SHA, the commands you ran on it, and what each printed.

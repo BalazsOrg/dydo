@@ -20,15 +20,15 @@ Your brief says that you merge your change, and into which branch. A merge needs
 
 **Hand it to your officer**
 
-Write why on your ticket, and end with `handed back <KEY>: <reason>`, in two cases:
+Write why on your ticket, and end with `handed back <KEY>: <reason>`, in three cases:
 
+- The branch your brief names as the target is the default branch: `dydo merge` refuses it.
 - A blocker cannot be fixed inside your ticket: the approach is wrong at the root, it asks for a new requirement, or it needs the user.
 - The Fix is handed back to you undone.
 
 **The verdict is PASS**
 
-- Each should is already a ticket that waits: the reviewer opened it. Leave it open.
-- Rule on each nit in one line on your ticket: fix it now, open a ticket for it, or leave it, and say why.
+Each should is already a ticket that waits, and so is each nit the reviewer ruled needs a fix: the reviewer opened them. Leave them open, and merge.
 
 **Merge**
 
