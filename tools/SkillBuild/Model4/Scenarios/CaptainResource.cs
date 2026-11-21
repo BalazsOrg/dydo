@@ -12,6 +12,7 @@ public enum CaptainResource
     Review,
     Research,
     Start,
+    Waking,
     SubTickets,
     Wayfind,
     Briefs,

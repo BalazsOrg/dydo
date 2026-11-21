@@ -72,6 +72,7 @@ public static class Registry
         typeof(Recovery),
         typeof(Captain),
         typeof(CaptainIntake),
+        typeof(CaptainWaking),
         typeof(CaptainSplit),
         typeof(CaptainWay),
         typeof(CaptainDispatch),

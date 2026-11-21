@@ -2,7 +2,7 @@
 
 # Fix rounds
 
-- Open one Fix when its round's verdict is posted, titled after the round, Fix rN, and list on it every blocker it is to close.
+- Open one Fix when its round's verdict is posted, unless you opened it ahead, titled after the round, Fix rN, and list on it every blocker it is to close.
 - A blocker too big to fix with the rest gets a sub-ticket of its own inside the Fix; no other blocker gets one.
 - Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong.
 - Split a Fix only between writers who work in parallel, as Fix rNa and Fix rNb.

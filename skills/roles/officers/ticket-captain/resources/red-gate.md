@@ -8,7 +8,7 @@ Green on the rerun is a flake: the merge is done.
 **Red again is real:**
 
 1. Revert the merge on the feature branch at once: `git revert -m 1 <merge SHA>`, pushed.
-2. Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings.
+2. Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings; where your work was not cut into steps, write that line on your own ticket, which stays open.
 3. Dispatch an Implement ticket to fix it on your ticket's branch, then a review round scoped to the fix.
 4. Merge the fixed branch again through a new PR that brings the reverted change back itself: `dydo merge` undoes no revert, and calls the old PR already integrated.
 

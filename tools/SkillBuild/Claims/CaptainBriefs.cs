@@ -69,8 +69,13 @@ public static class CaptainBriefs
             Reason: "Two writers with stated paths cannot overwrite each other.")
     };
 
-    public static readonly Claim Asked = new("A question's brief names the question and the choice that waits on it, and says that its holder is sent to research it.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 6, "For a question: the question, the choice that waits on it, and that you send the child to research it.")])
+    public static readonly Claim Asked = new("A captain briefs a Question only when it sends a child to research it: the brief names the question, the choice that waits on it, " +
+                                             "and that the child researches it. A HITL Question is never briefed by its captain: it goes up.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.BriefAll, 6,
+            "For a Question you send a child to research, the only Question you brief: the question, the choice that waits on it, and that the child is to research it. " +
+            "A HITL Question goes up unbriefed, by [A need for the user](need-for-the-user.md).")
+    ])
     {
         Spec = ["K14", "H23"],
         Truth = new(Evidence.Tool("delegate_task: \"Start one child agent with only `task`. No parent history.\" Linear, team Dydo, labels read 2026-11-21: no label names a Question's stage, " +
@@ -125,7 +130,7 @@ public static class CaptainBriefs
             Reason: "A review held only to the contract passes a wrong rule the contract inherited.")
     };
 
-    public static readonly Claim LeafCheck = new("A leaf gets no full review, only an optional evidence check: a Review ticket of its own beside the leaf's, for a fresh seat.", Me, [])
+    public static readonly Claim LeafCheck = new("A leaf's change gets no full review, only an optional evidence check: a Review ticket of its own beside the leaf's, for a fresh seat.", Me, [])
     {
         Spec = ["S4", "R6"],
         Truth = new(Evidence.Run("Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4 are each a ticket of their own, children of DYD-1281 beside the Fix and part tickets they judge, " +
@@ -134,11 +139,11 @@ public static class CaptainBriefs
             Reason: "The review of the whole covers each part, so a full review of one part is paid for twice.")
     };
 
-    public static readonly Claim Level = new("A review brief names the level.", Me,
+    public static readonly Claim Level = new("A review brief names the level, which follows the candidate and never the size of the ticket briefed.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.BriefReview, 4,
-            "The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. " +
-            "A leaf gets at most the check, never a full review: open the check as a Review ticket of its own beside the leaf's, for a fresh seat.",
+            "The level, which follows the candidate and never the size of the ticket you brief: the evidence check of a leaf's change, a ticket review, or a feature or Milestone review. " +
+            "A leaf's change gets at most the check, never a full review: open the check as a Review ticket of its own beside the leaf's, for a fresh seat.",
             () => [LeafCheck])
     ])
     {

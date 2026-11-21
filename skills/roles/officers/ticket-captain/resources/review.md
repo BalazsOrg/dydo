@@ -75,6 +75,6 @@ Legend: **due** every time; **if** when warranted; **–** not at this level.
 - A review that fits you is a leaf: do its kinds yourself, or run them as lanes through native helpers, and put their findings together yourself.
 - Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, each from a model family other than the author's when you can, by phase 3 of the spine.
 - A seat from a model family other than your own goes out with `delegate_task`, on a leaf sub-ticket of its own under your Review ticket.
-- Brief each seat by [Briefs](briefs.md), adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
+- Brief each seat by [Briefs](briefs.md), at your review's own level, adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
 - Post the round's one verdict yourself, by [A round's record](round.md): with seats, once they are back, from their findings put together, naming each seat. A seat posts none.
 - Asked to judge a conflict's resolution: judge its hunks, the only new work on the branch, and name the new head in your PASS.

@@ -3,7 +3,7 @@
 # A merge conflict
 
 1. Dispatch an Implement ticket to resolve the conflict on your ticket's branch.
-2. Post the resolution's commit SHA on the Merge sub-ticket.
+2. Post the resolution's commit SHA on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.
 3. Dispatch a fresh reviewer for the resolution's hunks, the only new work on the branch.
 4. Merge again, on the new head, once that review passes.
 

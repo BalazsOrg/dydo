@@ -118,7 +118,7 @@ Reason: A helper told only to drive the app improvises the recipe its caller had
 
 **ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.SeatBrief):
 
-> Brief each seat by Briefs (`briefs.md`), adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
+> Brief each seat by Briefs (`briefs.md`), at your review's own level, adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
 
 ## SeatBrief
 
@@ -134,7 +134,7 @@ Reason: A seat that is not told its kind reads the whole row and does a thin ver
 
 **ticket-captain** (ReviewRules; read by TicketCaptain):
 
-> Brief each seat by Briefs (`briefs.md`), adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
+> Brief each seat by Briefs (`briefs.md`), at your review's own level, adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
 
 ## Alone
 

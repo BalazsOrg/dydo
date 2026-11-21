@@ -97,7 +97,7 @@ public static class CaptainSplit
     public static readonly Claim Asks = new("A Question sub-ticket's Mode says how it is settled: AFK, by a captain sent to research it; HITL, by the user, when its opener already knows the call is the user's alone.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Tickets, 7,
-            "On a Question sub-ticket the Mode also says how it is settled: AFK, by a captain you send to research it; HITL, by the user, when you already know that the call is the user's alone.")
+            "On a Question sub-ticket the Mode also says how it is settled: AFK, by a captain you send to research it; HITL, by the user, when you already know that the call is the user's alone, and then you dispatch nobody onto it.")
     ])
     {
         Spec = ["H23", "S3"],

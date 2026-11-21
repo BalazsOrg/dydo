@@ -36,7 +36,7 @@ Reason: The merge can be resumed from the ticket by whoever holds it next.
 
 **ticket-captain** (ConflictSteps; read by TicketCaptain):
 
-> Post the resolution's commit SHA on the Merge sub-ticket.
+> Post the resolution's commit SHA on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.
 
 ## Hunks
 
@@ -168,7 +168,7 @@ Reason: The record says why the merge is gone, and the break has a ticket of its
 
 **ticket-captain** (RedSteps; read by TicketCaptain):
 
-> Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings.
+> Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings; where your work was not cut into steps, write that line on your own ticket, which stays open.
 
 ## Repair
 

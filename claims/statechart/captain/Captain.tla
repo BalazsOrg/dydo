@@ -192,6 +192,12 @@ CaptainTrouble_Checkpoint ==
     /\ state' = "Fixing"
     /\ UNCHANGED <<round, extra, kind>>
 
+\* claim:CaptainTrouble.ChildReCut
+CaptainTrouble_ChildReCut ==
+    /\ state = "Waiting"
+    /\ state' = "Split"
+    /\ UNCHANGED <<round, extra, kind>>
+
 \* claim:CaptainTrouble.Escalate
 CaptainTrouble_Escalate ==
     /\ state = "Checkpoint"
@@ -273,6 +279,7 @@ Next ==
     \/ CaptainSplit_Cut
     \/ CaptainSplit_Leaf
     \/ CaptainTrouble_Checkpoint
+    \/ CaptainTrouble_ChildReCut
     \/ CaptainTrouble_Escalate
     \/ CaptainTrouble_NextRound
     \/ CaptainTrouble_ReCut

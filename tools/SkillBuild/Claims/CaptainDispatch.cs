@@ -1,7 +1,8 @@
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// The ticket-captain prototype's "Dispatch" (DYD-1372): briefs, seats, sending, lanes and returns.
+/// The ticket-captain prototype's "Dispatch" (DYD-1372): briefs, seats, sending and lanes; what a
+/// return asks of its captain sits in the waking resource, which a captain reads when one wakes it.
 /// <c>delegate_task</c> is named here, where it is used (DYD-1295 2119cd65), and the reviewer-family
 /// rule sits where a reviewer is seated (df6a785e).
 /// </summary>
@@ -82,8 +83,8 @@ public static class CaptainDispatch
             Reason: "A second agent sent to run one command has to be briefed on the head, the tip and the gates that its sender already holds.")
     };
 
-    public static readonly Claim Send = new("An AFK sub-ticket is dispatched with delegate_task; a HITL one is its cutter's to send up, never to staff.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.Sending, 1, "Dispatch each AFK sub-ticket with `delegate_task`, except a Merge: that step is yours.", () => [MergeOwn])])
+    public static readonly Claim Send = new("An AFK sub-ticket is dispatched with delegate_task once nothing blocks it; a HITL one is its cutter's to send up, never to staff.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.Sending, 1, "Dispatch each AFK sub-ticket with `delegate_task` once nothing blocks it, except a Merge: that step is yours.", () => [MergeOwn])])
     {
         Spec = ["H3", "H15"],
         Truth = new(Evidence.Tool(Task + " Linear, team Dydo, labels read 2026-11-21: Mode AFK is \"an agent can produce the work without live human participation\", " +
@@ -185,7 +186,8 @@ public static class CaptainDispatch
             Reason: "An idle captain that invents tickets spends agents on something nobody asked for, and one that simply stops leaves its outcome unreached.")
     };
 
-    public static readonly Claim Route = new("An out-of-scope report from a child goes to its owner's ticket or a new Bug.", Me, [])
+    public static readonly Claim Route = new("An out-of-scope report from a child goes to its owner's ticket or a new Bug.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 3, "Send what a child reports outside its scope to the owner's ticket or a new Bug.")])
     {
         Spec = ["R5"],
         Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: the Type group holds Bug."),
@@ -195,9 +197,7 @@ public static class CaptainDispatch
 
     public static readonly Claim Resume = new("A child's returned SHA is posted on its ticket as the point to resume from.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.Returns, 1,
-            "Post the SHA a child returns on its ticket, to resume from, and send what it reports outside its scope to the owner's ticket or a new Bug.",
-            () => [Route])
+        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 2, "Post the SHA a child returns on its ticket, to resume from; a return of `too big, re-cut` then goes by [Too big to hold](too-big.md).")
     ])
     {
         Spec = ["H3", "S6"],

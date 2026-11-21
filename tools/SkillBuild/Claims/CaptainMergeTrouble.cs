@@ -21,7 +21,7 @@ public static class CaptainMergeTrouble
     };
 
     public static readonly Claim Saved = new("The resolution's commit SHA is posted on the Merge sub-ticket.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.ConflictSteps, 2, "Post the resolution's commit SHA on the Merge sub-ticket.")])
+        [At(Actor.TicketCaptain, CaptainSlot.ConflictSteps, 2, "Post the resolution's commit SHA on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.")])
     {
         Spec = ["K9", "H3"],
         Truth = new(Evidence.Run("Linear, DYD-1281's sub-tickets read 2026-11-20: each merge is its own ticket, such as DYD-1291."),
@@ -97,7 +97,8 @@ public static class CaptainMergeTrouble
     };
 
     public static readonly Claim Cancelled = new("A reverted Merge is cancelled with its reason, and what broke becomes a CI-findings ticket.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.RedSteps, 2, "Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings.")])
+        [At(Actor.TicketCaptain, CaptainSlot.RedSteps, 2, "Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings; " +
+            "where your work was not cut into steps, write that line on your own ticket, which stays open.")])
     {
         Spec = ["R22", "S12"],
         Truth = new(Evidence.Run("Linear, team Dydo, read 2026-11-20: the status Canceled exists, and so does the Project \"CI findings\"."),

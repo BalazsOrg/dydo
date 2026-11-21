@@ -99,7 +99,7 @@ public static class CaptainReviewSeats
     public static readonly Claim SeatBrief = new("A seat's brief adds its one kind of review and the cells of the row it works.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 6,
-            "Brief each seat by [Briefs](briefs.md), adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.",
+            "Brief each seat by [Briefs](briefs.md), at your review's own level, adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.",
             () => [Native])
     ])
     {

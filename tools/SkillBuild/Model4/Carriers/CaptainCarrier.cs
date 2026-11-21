@@ -63,6 +63,9 @@ public static class CaptainCarrier
 
     private static readonly Resource Merging = new(CaptainResource.Merging, "Merging", Slot.Steps(CaptainSlot.MergeSteps), Slot.Bullets(CaptainSlot.MergeRules));
 
+    // Where a holder woken in its own thread goes on from: what it re-reads, and what each return asks of it.
+    private static readonly Resource Waking = new(CaptainResource.Waking, "Waking", Slot.Paragraph(CaptainSlot.WakeLead), Slot.Steps(CaptainSlot.WakeSteps));
+
     public static readonly SkillSpec Spec = SkillSpec.Officer(CaptainSkill.TicketCaptain, "Ticket Captain",
         "A ticket you were dispatched onto, of any kind: hold it to its outcome.") with
     {
@@ -73,7 +76,7 @@ public static class CaptainCarrier
             new("Take the ticket", Slot.Paragraph(CaptainSlot.Take), Slot.Paragraph(CaptainSlot.Kinds), Slot.Paragraph(CaptainSlot.Hold))
             {
                 States = [CaptainState.Dispatched, CaptainState.Taken],
-                Resources = [Implement, Review, Research, Start]
+                Resources = [Implement, Review, Research, Start, Waking]
             },
             new("Do it or split it", Slot.Paragraph(CaptainSlot.Leaf, "A leaf."), Slot.Paragraph(CaptainSlot.Fog, "Fog."), Slot.Paragraph(CaptainSlot.Split, "A split."))
             {
@@ -81,7 +84,7 @@ public static class CaptainCarrier
                 Resources = [SubTickets, Wayfind]
             },
             new("Dispatch", Slot.Paragraph(CaptainSlot.Briefs, "Briefs."), Slot.Paragraph(CaptainSlot.Seats, "Seats."), Slot.Paragraph(CaptainSlot.Sending, "Sending."),
-                Slot.Paragraph(CaptainSlot.Lanes, "Lanes."), Slot.Paragraph(CaptainSlot.Returns, "Returns."))
+                Slot.Paragraph(CaptainSlot.Lanes, "Lanes."))
             {
                 States = [CaptainState.Split, CaptainState.Waiting],
                 Resources = [Briefs, Filler]
@@ -99,7 +102,11 @@ public static class CaptainCarrier
         ],
         Scenarios =
         [
-            new(CaptainResource.TooBig, "Too big to hold", Slot.Steps(CaptainSlot.TooBigSteps), Slot.Paragraph(CaptainSlot.TooBigChild)) { States = [CaptainState.Leaf] },
+            new(CaptainResource.TooBig, "Too big to hold", Slot.Steps(CaptainSlot.TooBigSteps), Slot.Paragraph(CaptainSlot.TooBigChild), Slot.Steps(CaptainSlot.TooBigOfficer),
+                Slot.Paragraph(CaptainSlot.TooBigEnd))
+            {
+                States = [CaptainState.Leaf, CaptainState.Waiting]
+            },
             new(CaptainResource.FixRounds, "Fix rounds", Slot.Bullets(CaptainSlot.FixRules), Slot.Paragraph(CaptainSlot.FixCheckpoint, "The checkpoint."))
             {
                 States = [CaptainState.Fixing, CaptainState.InReview, CaptainState.Checkpoint]

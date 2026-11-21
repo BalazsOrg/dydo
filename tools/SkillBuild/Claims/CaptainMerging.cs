@@ -14,7 +14,7 @@ public static class CaptainMerging
     public static readonly Claim Begin = new("The merging captain sets its Merge sub-ticket In Progress when it begins the merge, and closes it itself.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 1,
-            "Set your Merge sub-ticket In Progress, if your work was cut into steps: the merge is your own step, never dispatched, and you close it yourself.")
+            "Set your Merge sub-ticket In Progress: the merge is your own step, never dispatched, and you close it yourself. Where your work was not cut into steps, your own ticket is the record instead.")
     ])
     {
         Spec = ["R20", "S6"],
@@ -108,7 +108,7 @@ public static class CaptainMerging
                                                 "one that cannot be made goes to the officer.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.MergeRules, 4,
-            "Either repair comes back the way [A merge conflict](merge-conflict.md) lays out: its SHA goes on the Merge sub-ticket, a fresh reviewer judges what it changed, " +
+            "Either repair comes back the way [A merge conflict](merge-conflict.md) lays out: a fresh reviewer judges what it changed, " +
             "and you merge again from step 2, on the new head. A red you cannot get fixed goes to your officer, with the gate.")
     ])
     {

@@ -118,11 +118,11 @@ Reason: A second agent sent to run one command has to be briefed on the head, th
 
 **ticket-captain** (Sending; read by TicketCaptain, on claim:CaptainDispatch.Send):
 
-> Dispatch each AFK sub-ticket with `delegate_task`, except a Merge: that step is yours.
+> Dispatch each AFK sub-ticket with `delegate_task` once nothing blocks it, except a Merge: that step is yours.
 
 ## Send
 
-`claim:CaptainDispatch.Send`: An AFK sub-ticket is dispatched with delegate_task; a HITL one is its cutter's to send up, never to staff.
+`claim:CaptainDispatch.Send`: An AFK sub-ticket is dispatched with delegate_task once nothing blocks it; a HITL one is its cutter's to send up, never to staff.
 
 Spec: H3, H15
 
@@ -136,7 +136,7 @@ Reason: A captain needs a thread of its own, one its ticket can be resumed from.
 
 **ticket-captain** (Sending; read by TicketCaptain):
 
-> Dispatch each AFK sub-ticket with `delegate_task`, except a Merge: that step is yours.
+> Dispatch each AFK sub-ticket with `delegate_task` once nothing blocks it, except a Merge: that step is yours.
 
 ## Refused
 
@@ -278,9 +278,9 @@ Layer: A child reports to its dispatcher only; reaching the owner is the dispatc
 
 Reason: A report that stops at the captain is lost with the captain's thread.
 
-**ticket-captain** (Returns; read by TicketCaptain, on claim:CaptainDispatch.Resume):
+**ticket-captain** (WakeSteps; read by TicketCaptain):
 
-> Post the SHA a child returns on its ticket, to resume from, and send what it reports outside its scope to the owner's ticket or a new Bug.
+> Send what a child reports outside its scope to the owner's ticket or a new Bug.
 
 ## Resume
 
@@ -294,6 +294,6 @@ Layer: T3 returns the child's words to the dispatcher's thread, and that thread 
 
 Reason: A fresh agent can pick the work up from the ticket alone.
 
-**ticket-captain** (Returns; read by TicketCaptain):
+**ticket-captain** (WakeSteps; read by TicketCaptain):
 
-> Post the SHA a child returns on its ticket, to resume from, and send what it reports outside its scope to the owner's ticket or a new Bug.
+> Post the SHA a child returns on its ticket, to resume from; a return of `too big, re-cut` then goes by Too big to hold (`too-big.md`).

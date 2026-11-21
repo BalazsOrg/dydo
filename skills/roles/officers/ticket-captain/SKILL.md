@@ -13,6 +13,7 @@ Decide only obvious, reversible calls; any other call becomes a Question sub-tic
 
 ## 1. Take the ticket
 
+This phase is for your dispatch. Woken later in this thread, by a return or a message, go on by [Waking](resources/waking.md).
 Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.
 Then check that the ticket is unstarted and that your brief and its contract give you what the work needs; if either fails, or your brief calls it filler, go by [Before you start](resources/start.md).
 Set the ticket In Progress, then load your kind's resource and every skill your brief names.
@@ -52,14 +53,11 @@ Once the user's roster stands below, pick each seat's model from it.
 {roster_placeholder}
 
 **Sending.**
-Dispatch each AFK sub-ticket with `delegate_task`, except a Merge: that step is yours.
+Dispatch each AFK sub-ticket with `delegate_task` once nothing blocks it, except a Merge: that step is yours.
 Give a child its own worktree (`isolation: "worktree"`) when it writes in parallel with others or will open its own PR; serial work shares yours.
 
 **Lanes.**
 Keep about four lanes full: your sub-tickets first, then filler, by [Filler](resources/filler.md).
-
-**Returns.**
-Post the SHA a child returns on its ticket, to resume from, and send what it reports outside its scope to the owner's ticket or a new Bug.
 
 ## 4. Get it reviewed
 

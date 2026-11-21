@@ -6,6 +6,22 @@ type: reference
 
 # Claims: CaptainIntake
 
+## Woken
+
+`claim:CaptainIntake.Woken`: Phase 1 is read once, at dispatch; a holder woken later in its own thread goes on from the waking resource.
+
+Spec: S7, H12
+
+Evidence (tool): t3_thread_send: "A send to a finished child thread starts a fresh task and returns its `taskId`.", and `mode:'auto'` "starts an idle thread, steers a running turn, or queues". delegate_task: `mode`, default 'async', wakes a dispatcher as each child returns.
+
+Layer: T3 wakes a thread with a return or a message and says nothing of where its holder had got to.
+
+Reason: A holder that runs its intake a second time finds its own ticket started and takes itself for an intruder.
+
+**ticket-captain** (Take; read by TicketCaptain):
+
+> This phase is for your dispatch. Woken later in this thread, by a return or a message, go on by Waking (`resources/waking.md`).
+
 ## Check
 
 `claim:CaptainIntake.Check`: Before it starts a ticket, its holder checks that the ticket is unstarted and that its brief and the contract give it what the work needs.
@@ -40,7 +56,7 @@ Reason: A guess at who merges picks the wrong way to finish, and a guess at the 
 
 ## Held
 
-`claim:CaptainIntake.Held`: A holder dispatched onto a ticket that is already started or closed, with no word in its brief that it takes the ticket over, starts nothing and returns the dispatch to its officer as a conflict.
+`claim:CaptainIntake.Held`: A holder dispatched onto a ticket that another agent started or closed, with no word in its brief that it takes the ticket over, starts nothing and returns the dispatch to its officer as a conflict.
 
 Spec: S7, S6
 
@@ -54,4 +70,4 @@ Reason: Two agents on one ticket each overwrite what the other built, and neithe
 
 **ticket-captain** (StartChecks; read by TicketCaptain):
 
-> The ticket is already started, or closed, and your brief does not say that you take it over: another agent holds it, or held it. Start nothing, and return the dispatch to your officer as a conflict, with the ticket's key and its status.
+> The ticket is already started, or closed, by someone else: you did not set it In Progress in this thread, and your brief does not say that you take it over. Start nothing, and return the dispatch to your officer as a conflict, with the ticket's key and its status.

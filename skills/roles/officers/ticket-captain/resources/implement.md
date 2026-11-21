@@ -77,6 +77,7 @@ Below the rules for every change, each part is headed by the work it is for: rea
 
 - Move each should under your ticket, keeping a `related: found in <KEY> rN` link on it.
 - Mark a duplicate Duplicate, and cancel a should only with a one-line reason.
+- Close each should Done once its fix is proved, with the proof on it, before you finish the batch.
 
 **To finish:**
 End on a commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed.

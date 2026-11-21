@@ -141,8 +141,8 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 
 ## The ticket-captain prototype (DYD-1372)
 
-One more machine, outside the overview and its 31: the states of a captain holding one ticket, built
-from the truth-checked ticket-captain prototype's own claims (DYD-1295 519126ab). `round` counts review
+One more machine, outside the overview and its 31: a captain holding one ticket, built from the
+ticket-captain prototype's own claims (DYD-1295 519126ab). `round` counts review
 rounds and is bounded at 4 only so TLC ends; the skill sets no cap.
 
 - A ticket is taken by one move, Dispatched → Taken (`Captain.Start`): its holder sets it In Progress
@@ -156,22 +156,23 @@ rounds and is bounded at 4 only so TLC ends; the skill sets no cap.
 - A round that found no new blocker is a state of its own. The rounds end from it, and the one more
   round the captain may order leaves only from it, once (`extra`), so a round with a blocker reaches
   the next only through a Fix (R8). A third blocked round leaves only through the checkpoint (R10).
-- A repaired conflict or red gate goes on only through a review round, or back to the officer when it
-  cannot be finished (R19, R21).
+- A repair of a conflict or red gate goes on only through a review round, or back to the officer
+  (R19, R21).
 - Only a leaf has a Question state: a splitting captain's Question is one more child. It is left only
   to resume the leaf; one that comes back unsettled goes to the officer and stays open, a self-loop
-  (`CaptainNeed.Up`) the chart does not draw (H16, S10).
+  (`CaptainNeed.Up`; H16, S10).
 - A captain that cannot see its route to the spec finds the way before it cuts (H10): Taken → Finding
   the way (`CaptainWay.Fog`), left only by cutting the parts in sight and entered again from Waiting
-  when a part returns and fog remains, so the whole is never cut at once.
+  when a part returns and fog remains.
 - A leaf goes back as `too big, re-cut` only when what is left cannot be divided coherently under its
-  ticket (H2), or as a Question its research did not settle (`CaptainResearch.Question`).
+  ticket (H2), or as a Question its research did not settle (`CaptainResearch.Question`). After a
+  re-cut its officer settles that ticket and cuts the rest, Waiting → Split (`CaptainTrouble.ChildReCut`).
 
-The chart draws 30 of the 36 arrows: five pairs share one (the returns from Dispatched, the cuts from
+The chart draws 31 of the 37 arrows: five pairs share one (the returns from Dispatched, the cuts from
 Taken, a leaf's returns, Waiting to Finishing, a repair's ways back), and the Question's self-loop is
-not drawn. TLC line from the run on DYD-1372 phase 1, fix g1a; it holds `NoDeadlock`. Its properties
+not drawn. TLC line from DYD-1372 phase 1, fix g2; it holds `NoDeadlock`. Its properties
 are written by hand under `verification/statechart/`, from his rulings and never from this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 15 | 36 | 0 | 68 states, 127 steps |
+| A captain and its ticket | `captain` | 15 | 37 | 0 | 68 states, 129 steps |

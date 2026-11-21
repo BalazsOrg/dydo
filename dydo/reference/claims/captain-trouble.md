@@ -56,7 +56,71 @@ Reason: The officer can cut again from a known point without reading the whole t
 
 **ticket-captain** (TooBigSteps; read by TicketCaptain):
 
-> If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, return `too big, re-cut` to your officer, naming what is done and what is left.
+> If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, return `too big, re-cut` to your officer, naming what is done and what is left. Your ticket then stays open as it stands: your officer settles it, and you do nothing more on it.
+
+## Left
+
+`claim:CaptainTrouble.Left`: A ticket returned too big, re-cut stays open as it stands until its officer settles it; its holder does nothing more on it.
+
+Spec: H2, S6
+
+Evidence (tool): delegate_task: a child's final result returns to the thread that started it, and the child's task ends with it.
+
+Layer: Linear leaves the ticket In Progress after its holder's thread has ended, and says nothing of who moves it next.
+
+Reason: The child cannot close a ticket whose contract it has not met, and narrowing that contract was never its own to do.
+
+**ticket-captain** (TooBigSteps; read by TicketCaptain, on claim:CaptainTrouble.ReCut):
+
+> If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, return `too big, re-cut` to your officer, naming what is done and what is left. Your ticket then stays open as it stands: your officer settles it, and you do nothing more on it.
+
+## Yours
+
+`claim:CaptainTrouble.Yours`: The ticket a child returned too big, re-cut is its officer's to settle, before the officer cuts what is left.
+
+Spec: H2, S15
+
+Evidence (run): DYD-1372's contract, read 2026-11-21: its sections G and H were written from above, by the coordinator, and no writer below edited them. Spec H2: "a change to a unit's contract, or to its siblings', goes through the officer above".
+
+Layer: Linear lets any agent edit any ticket, and nothing says whose a returned ticket is once its holder's thread has ended.
+
+Reason: The officer cut the ticket and wrote its contract, so it alone can say what the ticket now is.
+
+**ticket-captain** (TooBigChild; read by TicketCaptain):
+
+> When a child returns `too big, re-cut`, the cut is yours, and so is the child's ticket, in this order:
+
+## Narrow
+
+`claim:CaptainTrouble.Narrow`: The officer rewrites the returned ticket's contract down to what the child finished at the SHA it returned, and notes the re-cut on the ticket.
+
+Spec: S15, H2
+
+Evidence (tool): save_issue: `description`, the ticket's body, where spec S15 puts its contract; DYD-1372's description, read 2026-11-21, holds its own.
+
+Layer: Linear keeps the old contract on the ticket until someone rewrites it.
+
+Reason: A ticket closed against a contract it never met tells whoever reads it later that the whole part was built.
+
+**ticket-captain** (TooBigOfficer; read by TicketCaptain):
+
+> Settle the child's ticket on what it finished at the SHA it returned: rewrite its contract, in the ticket's description, down to that, and close the ticket Done on it; if the child finished nothing whole, cancel it instead. Note the re-cut on the ticket in one line.
+
+## Settle
+
+`claim:CaptainTrouble.Settle`: The officer closes the returned ticket Done on the contract it now meets, or cancels it with a one-line reason when the child finished nothing whole.
+
+Spec: S6, S10
+
+Evidence (run): Linear, team Dydo, statuses read 2026-11-21: Done and Canceled are both statuses, and DYD-1372 stayed In Progress through every return of its writers.
+
+Layer: Linear leaves a returned ticket In Progress, and its holder's thread has ended, so nobody is left to close it but its officer.
+
+Reason: A card In Progress with no holder reads as work under way, and the replacements finish beside a ticket that never does.
+
+**ticket-captain** (TooBigOfficer; read by TicketCaptain, on claim:CaptainTrouble.Narrow):
+
+> Settle the child's ticket on what it finished at the SHA it returned: rewrite its contract, in the ticket's description, down to that, and close the ticket Done on it; if the child finished nothing whole, cancel it instead. Note the re-cut on the ticket in one line.
 
 ## ChildReCut
 
@@ -64,15 +128,17 @@ Reason: The officer can cut again from a known point without reading the whole t
 
 Spec: H2, H14
 
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Split, "a child returns `too big, re-cut`: its ticket is settled on what it finished, and what it left is cut".
+
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
 Layer: The return lands in the officer's thread, and nothing re-opens the work.
 
 Reason: The officer knows how the part fits the whole, which the child did not.
 
-**ticket-captain** (TooBigChild; read by TicketCaptain):
+**ticket-captain** (TooBigOfficer; read by TicketCaptain):
 
-> When a child returns `too big, re-cut`, the cut is yours: open sub-tickets for what it left, starting from the SHA it returned.
+> Open sub-tickets for what it left, starting from that SHA.
 
 ## Contracts
 
@@ -86,7 +152,7 @@ Layer: Linear lets any agent edit any ticket's description, its own or a sibling
 
 Reason: A contract its holder may rewrite stops being a promise to the officer that cut it.
 
-**ticket-captain** (TooBigChild; read by TicketCaptain):
+**ticket-captain** (TooBigEnd; read by TicketCaptain):
 
 > A change to your contract, or to a sibling's, is never part of your cut: take it to your officer.
 
@@ -120,7 +186,7 @@ Reason: Anyone reading the board finds the round a Fix belongs to without openin
 
 **ticket-captain** (FixRules; read by TicketCaptain):
 
-> Open one Fix when its round's verdict is posted, titled after the round, Fix rN, and list on it every blocker it is to close.
+> Open one Fix when its round's verdict is posted, unless you opened it ahead, titled after the round, Fix rN, and list on it every blocker it is to close.
 
 ## Big
 

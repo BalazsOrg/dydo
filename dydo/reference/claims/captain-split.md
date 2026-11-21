@@ -152,7 +152,7 @@ Reason: Whoever staffs the Question reads its Mode before anything else, and a w
 
 **ticket-captain** (Tickets; read by TicketCaptain):
 
-> On a Question sub-ticket the Mode also says how it is settled: AFK, by a captain you send to research it; HITL, by the user, when you already know that the call is the user's alone.
+> On a Question sub-ticket the Mode also says how it is settled: AFK, by a captain you send to research it; HITL, by the user, when you already know that the call is the user's alone, and then you dispatch nobody onto it.
 
 ## Steps
 

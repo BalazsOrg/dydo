@@ -381,6 +381,22 @@ Reason: One fault is then fixed once and counted once.
 
 > Mark a duplicate Duplicate, and cancel a should only with a one-line reason.
 
+## Fixed
+
+`claim:CaptainImplement.Fixed`: The holder of a batch of shoulds closes each should Done once its fix is proved, with the proof on it, before it finishes the batch.
+
+Spec: S17, S6
+
+Evidence (run): Linear, team Dydo, read 2026-11-21: Done is a status, and the Severity label should is for "should tickets filed from reviews", each a ticket of its own. No Shoulds batch has been cut in the team's Linear yet, so the act rests on spec S17, where a should's parent "may close Done while it stays open".
+
+Layer: Linear ties no child's status to its parent's, so a batch closed Done leaves every should under it open.
+
+Reason: A should left open after its fix landed is offered again to the next lane that looks for work.
+
+**ticket-captain** (ImplementShoulds; read by TicketCaptain):
+
+> Close each should Done once its fix is proved, with the proof on it, before you finish the batch.
+
 ## Commit
 
 `claim:CaptainImplement.Commit`: A writer's hop ends on a commit named for its ticket and hop, never squashed.
