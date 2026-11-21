@@ -67,6 +67,24 @@ CaptainMerging_Broken ==
     /\ state' = "Repairing"
     /\ UNCHANGED <<round, extra>>
 
+\* claim:CaptainNeed.Answered
+CaptainNeed_Answered ==
+    /\ state = "Question"
+    /\ state' = "Leaf"
+    /\ UNCHANGED <<round, extra>>
+
+\* claim:CaptainNeed.Ask
+CaptainNeed_Ask ==
+    /\ state = "Leaf"
+    /\ state' = "Question"
+    /\ UNCHANGED <<round, extra>>
+
+\* claim:CaptainNeed.Up
+CaptainNeed_Up ==
+    /\ state = "Question"
+    /\ state' = "Question"
+    /\ UNCHANGED <<round, extra>>
+
 \* claim:CaptainReview.Clean
 CaptainReview_Clean ==
     /\ state = "Clear"
@@ -130,18 +148,6 @@ CaptainSplit_Leaf ==
     /\ state' = "Leaf"
     /\ UNCHANGED <<round, extra>>
 
-\* claim:CaptainTrouble.Answered
-CaptainTrouble_Answered ==
-    /\ state = "Question"
-    /\ state' = "Leaf"
-    /\ UNCHANGED <<round, extra>>
-
-\* claim:CaptainTrouble.Ask
-CaptainTrouble_Ask ==
-    /\ state = "Leaf"
-    /\ state' = "Question"
-    /\ UNCHANGED <<round, extra>>
-
 \* claim:CaptainTrouble.Checkpoint
 CaptainTrouble_Checkpoint ==
     /\ state = "Checkpoint"
@@ -180,10 +186,22 @@ CaptainTrouble_Third ==
     /\ state' = "Checkpoint"
     /\ UNCHANGED <<round, extra>>
 
-\* claim:CaptainTrouble.Up
-CaptainTrouble_Up ==
-    /\ state = "Question"
-    /\ state' = "Question"
+\* claim:CaptainWay.Fog
+CaptainWay_Fog ==
+    /\ state = "Taken"
+    /\ state' = "Wayfinding"
+    /\ UNCHANGED <<round, extra>>
+
+\* claim:CaptainWay.Next
+CaptainWay_Next ==
+    /\ state = "Waiting"
+    /\ state' = "Wayfinding"
+    /\ UNCHANGED <<round, extra>>
+
+\* claim:CaptainWay.Visible
+CaptainWay_Visible ==
+    /\ state = "Wayfinding"
+    /\ state' = "Split"
     /\ UNCHANGED <<round, extra>>
 
 Done == state \in Finals /\ UNCHANGED vars
@@ -198,6 +216,9 @@ Next ==
     \/ CaptainMergeTrouble_Lost
     \/ CaptainMergeTrouble_Stuck
     \/ CaptainMerging_Broken
+    \/ CaptainNeed_Answered
+    \/ CaptainNeed_Ask
+    \/ CaptainNeed_Up
     \/ CaptainReview_Clean
     \/ CaptainReview_Cleared
     \/ CaptainReview_Fix
@@ -208,15 +229,15 @@ Next ==
     \/ CaptainReview_Whole
     \/ CaptainSplit_Cut
     \/ CaptainSplit_Leaf
-    \/ CaptainTrouble_Answered
-    \/ CaptainTrouble_Ask
     \/ CaptainTrouble_Checkpoint
     \/ CaptainTrouble_Escalate
     \/ CaptainTrouble_NextRound
     \/ CaptainTrouble_ReCut
     \/ CaptainTrouble_SplitRest
     \/ CaptainTrouble_Third
-    \/ CaptainTrouble_Up
+    \/ CaptainWay_Fog
+    \/ CaptainWay_Next
+    \/ CaptainWay_Visible
     \/ Done
 
 Bounds == round <= 4 /\ extra \in BOOLEAN

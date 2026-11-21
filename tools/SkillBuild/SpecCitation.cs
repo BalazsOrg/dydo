@@ -9,11 +9,11 @@ namespace DynaDocs.SkillBuild;
 /// </summary>
 public static partial class SpecCitation
 {
-    // "Spec: dydo 4.0.0", approved at updatedAt 2026-11-20T01:58:55.576Z: each area's rules run without a gap
-    // from 1 to these, and CA1–CA20 are the conformance-audit rows.
+    // "Spec: dydo 4.0.0", its third amendment approved 2026-11-21 (DYD-1195 comment 467198f4): each area's rules run
+    // without a gap from 1 to these, and CA1–CA24 are the conformance-audit rows.
     private static readonly Dictionary<string, int> LastRule = new(StringComparer.Ordinal)
     {
-        ["K"] = 31, ["R"] = 34, ["S"] = 26, ["H"] = 24, ["L"] = 23, ["T"] = 23, ["D"] = 12, ["Y"] = 9, ["N"] = 15, ["CA"] = 20
+        ["K"] = 34, ["R"] = 34, ["S"] = 26, ["H"] = 24, ["L"] = 23, ["T"] = 23, ["D"] = 12, ["Y"] = 9, ["N"] = 15, ["CA"] = 24
     };
 
     // The same spec's DRs: N12's carried-forward list (045–047, 049, 052, 055–058, 060–063) and every DR a

@@ -8,6 +8,7 @@ Brief without loading the child's kind resource: the child loads its own.
 
 - The ticket, by its key, and its kind.
 - `/ticket-captain`, then every other skill the ticket needs, each with a slash.
+- Whether you cut the ticket as a leaf: its captain then does the work itself, and splits it only if it proves too big.
 - Who merges the work: the child, you, or nobody when it merges nothing.
 - For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes.
 - For a question: the question, and the choice that waits on it.

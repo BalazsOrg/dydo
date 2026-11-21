@@ -72,6 +72,7 @@ public static class Registry
         typeof(Recovery),
         typeof(Captain),
         typeof(CaptainSplit),
+        typeof(CaptainWay),
         typeof(CaptainDispatch),
         typeof(CaptainBriefs),
         typeof(CaptainReview),
@@ -82,6 +83,7 @@ public static class Registry
         typeof(CaptainReviewing),
         typeof(CaptainResearch),
         typeof(CaptainTrouble),
+        typeof(CaptainNeed),
         typeof(CaptainMergeTrouble)
     ];
 

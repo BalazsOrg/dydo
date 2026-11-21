@@ -17,20 +17,25 @@ internal static class ReviewDocs
 
     public const string UnbuiltResources = Folder + "/unbuilt-resources.md";
 
-    /// <summary>A truth-checked skill's open claims, each with its rule, why it is open, and the line withheld.</summary>
-    public static (string Path, string Text) Open(SkillSpec skill, IEnumerable<Placed> withheld, ClaimIndex claims)
+    /// <summary>
+    /// A truth-checked skill's open claims, each with its rule, why it is open, and its line: withheld, or
+    /// for the one placeholder stated with its token, and marked so.
+    /// </summary>
+    public static (string Path, string Text) Open(SkillSpec skill, IEnumerable<Placed> lines, ClaimIndex claims)
     {
+        var open = lines.Select(placed => (Placed: placed, claims.ById[placed.Owner].Rule, claims.ById[placed.Owner].Truth!.Evidence)).ToArray();
         var page = new Page(WhyDocs.Frontmatter, "Open claims: " + skill.Name);
-        page.Block($"Claims of `{skill.Name}` that nobody has verified yet. The skill does not state them: each line below is withheld until its claim has evidence.");
-        var open = withheld.ToArray();
+        page.Block($"Claims of `{skill.Name}` that nobody has verified yet. The skill does not state them: each line below is withheld until its claim has evidence" +
+                   (open.Any(claim => claim.Evidence.Token is not null) ? ", but for the one placeholder, whose line stands in the skill with its token unfilled." : "."));
         if (open.Length == 0) page.Block("None.");
-        foreach (var placed in open)
+        foreach (var (placed, rule, evidence) in open)
         {
-            var claim = claims.ById[placed.Owner];
             page.Heading("## " + placed.Owner);
-            page.Block($"`claim:{placed.Owner}`: {claim.Rule}");
-            page.Block("Open: " + claim.Truth!.Evidence.Text);
-            page.Block($"Withheld from {placed.Line.Place.Slot}:");
+            page.Block($"`claim:{placed.Owner}`: {rule}");
+            page.Block((evidence.Token is null ? "Open: " : "Placeholder: ") + evidence.Text);
+            page.Block(evidence.Token is null
+                ? $"Withheld from {placed.Line.Place.Slot}:"
+                : $"Stated in {placed.Line.Place.Slot}, with `{evidence.Token}` where its text will stand:");
             page.Block(WhyDocs.Quote(placed.Line.Text));
         }
         return ($"{Folder}/{skill.Name}-open.md", page.Done("").Text);

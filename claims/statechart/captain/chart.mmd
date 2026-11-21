@@ -6,39 +6,43 @@ stateDiagram-v2
   s1: Working it as a leaf #183; S2, S7
   s2: Returned to its officer #183; H23
   s3: Split into sub-tickets #183; S1, S15
-  s4: Finishing #183; R21, S6
-  s5: In review #183; R2, R8
-  s6: A leaf's own work waiting on a Question #183; H16
-  s7: Waiting on children, a Question's captain among them #183; H3, H16
-  s8: A round found no new blocker #183; R8
-  s9: Done #183; S6
-  s10: Fixing #183; S9, R8
-  s11: Repairing a conflict or a red gate #183; R19, R21, R22
-  s12: At the checkpoint after a third blocked round #183; R10, S10
+  s4: Finding the way to the spec #183; H10, H23
+  s5: Finishing #183; R21, S6
+  s6: In review #183; R2, R8
+  s7: A leaf's own work waiting on a Question #183; H16
+  s8: Waiting on children, a Question's captain among them #183; H3, H16
+  s9: A round found no new blocker #183; R8
+  s10: Done #183; S6
+  s11: Fixing #183; S9, R8
+  s12: Repairing a conflict or a red gate #183; R19, R21, R22
+  s13: At the checkpoint after a third blocked round #183; R10, S10
   [*] --> s0
-  s0 --> s1: the ticket fits one agent #183; S2, S7
+  s0 --> s1: the ticket fits one agent #183; H2, S2
   s0 --> s2: a filler ticket fails its check: it goes back unstarted and unassigned #183; H11
-  s0 --> s3: the ticket is bigger than one agent: it is cut #183; H13, H14
-  s1 --> s2: #96;too big, re-cut#96;: neither the work nor its split fits #183; H2
-  s1 --> s3: the leaf proves too big: what is left is cut #183; H13, H14
-  s1 --> s4: the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer #183; R32, R5
-  s1 --> s5: the leaf's change is whole: another agent reviews it #183; R33, R12
-  s1 --> s6: a call that is not obvious: a Question sub-ticket #183; H16, S10
-  s3 --> s7: each sub-ticket is dispatched #183; H3
-  s4 --> s9: the contract is met: the ticket closes Done #183; S6
-  s4 --> s11: a conflict or a real red gate: an Implement ticket repairs it #183; R21, R19
-  s5 --> s2: in a round other than the third, a blocker is fundamental or a new requirement: back to the officer #183; R9
-  s5 --> s8: the round finds no new blocker #183; R8, R11
-  s5 --> s10: a round other than the third returns a blocker: a Fix ticket #183; R9, S9
-  s6 --> s1: the answer is on the Question ticket #183; H16
-  s7 --> s4: the children are back and the ticket only groups parts: no review of its own #183; R6
-  s7 --> s5: the parts are wired: a Review of the whole is dispatched #183; R2, R1
-  s8 --> s4: no further round is ordered: the review rounds end #183; R8
-  s8 --> s5: one more round is ordered, once #183; R8
-  s9 --> s2: one line goes back to the officer #183; H23, K14
-  s10 --> s5: the Fix is Done: a fresh round #183; R8, S9
-  s11 --> s2: a red gate that cannot be fixed goes to the officer #183; K9 or a conflict that cannot be resolved goes to the officer #183; K9
-  s11 --> s5: the repair is in: a fresh review of what it changed #183; R19
-  s5 --> s12: a third round still has a blocker: the checkpoint #183; R10
-  s12 --> s10: #96;checkpoint: one more round, because #8230;#96;: the blockers go to a Fix #183; R10, S10
-  s12 --> s2: #96;escalated: #8230;#96;: a fundamental break, a new requirement or a need for the user goes to the officer #183; R10
+  s0 --> s3: the ticket is bigger than one agent and its route is in sight: it is cut #183; H2, H13
+  s0 --> s4: the route to the spec is not all in sight: the way is found before the cut #183; H10, H23
+  s1 --> s2: #96;too big, re-cut#96;: what is left cannot be divided coherently under the ticket #183; H2
+  s1 --> s3: the leaf proves too big: what is left is cut #183; H2, K30
+  s1 --> s5: the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer #183; R32, R5
+  s1 --> s6: the leaf's change is whole: another agent reviews it #183; R33, R12
+  s1 --> s7: a call that is not obvious: a Question sub-ticket #183; H16, S10
+  s3 --> s8: each sub-ticket is dispatched #183; H3
+  s4 --> s3: the parts in sight are cut, and the fog is left uncut #183; H10, S2
+  s5 --> s10: the contract is met: the ticket closes Done #183; S6
+  s5 --> s12: a conflict or a real red gate: an Implement ticket repairs it #183; R21, R19
+  s6 --> s2: in a round other than the third, a blocker is fundamental or a new requirement: back to the officer #183; R9
+  s6 --> s9: the round finds no new blocker #183; R8, R11
+  s6 --> s11: a round other than the third returns a blocker: a Fix ticket #183; R9, S9
+  s7 --> s1: the answer is on the Question ticket #183; H16
+  s8 --> s4: a part returns and fog remains: the way is found again from what it showed #183; H10, S15
+  s8 --> s5: the children are back and the ticket only groups parts: no review of its own #183; R6
+  s8 --> s6: the parts are wired: a Review of the whole is dispatched #183; R2, R1
+  s9 --> s5: no further round is ordered: the review rounds end #183; R8
+  s9 --> s6: one more round is ordered, once #183; R8
+  s10 --> s2: one line goes back to the officer #183; H23, K14
+  s11 --> s6: the Fix is Done: a fresh round #183; R8, S9
+  s12 --> s2: a red gate that cannot be fixed goes to the officer #183; K9 or a conflict that cannot be resolved goes to the officer #183; K9
+  s12 --> s6: the repair is in: a fresh review of what it changed #183; R19
+  s6 --> s13: a third round still has a blocker: the checkpoint #183; R10
+  s13 --> s11: #96;checkpoint: one more round, because #8230;#96;: the blockers go to a Fix #183; R10, S10
+  s13 --> s2: #96;escalated: #8230;#96;: a fundamental break, a new requirement or a need for the user goes to the officer #183; R10

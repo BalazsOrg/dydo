@@ -32,9 +32,21 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Holding a Question at stage `council`, chair it by the council chair (`resources/council-chair.md`).
 
-`claim:Tree.Branch`, dropped, it fails Handled: T3 makes the checkout before the agent starts (`delegate_task`'s `isolation`), so a line on naming or creating a branch, or on posting where it is, has every agent solve it again (1ffbc4c8).
+`claim:Tree.Branch`, kept in `claim:CaptainReview.Attach`
 
 > Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
+
+A clause of it, dropped, it fails Handled: T3 makes the checkout before the agent starts (`delegate_task`'s `isolation`), so a line on naming or creating a branch, or on posting where it is, has every agent solve it again (1ffbc4c8).
+
+> Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket
+
+A clause of it, dropped, it fails Verify: Linear attaches nothing here by a branch's name or a PR's title: PRs 379, 374, 373 and 372, read 2026-11-21, left their tickets bare. The PR is its captain's to attach (claim CaptainReview.Attach), and nothing needs the branch.
+
+> so Linear attaches the branch
+
+A clause of it, dropped, it fails Handled: T3 makes the checkout before the agent starts (`delegate_task`'s `isolation`), so a line on naming or creating a branch, or on posting where it is, has every agent solve it again (1ffbc4c8).
+
+> post branch, base SHA and worktree path on the ticket before the first edit
 
 `claim:Tree.CrewLimits`, kept in `claim:CaptainReview.Pr`, `claim:CaptainBriefs.Merger`, `claim:CaptainFinish.Merged`
 

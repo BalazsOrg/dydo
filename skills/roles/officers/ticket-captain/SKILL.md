@@ -31,23 +31,26 @@ A Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, w
 A ticket that fits you is a leaf: do it as your kind's resource says, with native helpers for lookups and side work.
 You commit what a helper changes.
 
+**Fog.**
+Before you cut a bigger ticket, check that you see its route to the spec: that you can write every part's contract now.
+If you cannot, load `/wayfinder` and find the way a part at a time, by [Finding the way](resources/wayfind.md): never cut the whole at once.
+
 **A split.**
-Cut a bigger ticket into sub-tickets, one per part another captain will hold.
-Work gets a ticket only when someone other than its asker uses what it leaves.
-A helper, a lookup, a command, a file and one seat among several never get a ticket.
-Several steps for one agent are one ticket.
-Write each sub-ticket's contract in its description: its outcome, how it fits your ticket, and the spec sections it serves, quoted and linked.
-Label its Mode: AFK, or HITL when the user must take part.
-Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps. (open: his call)
+Cut a bigger ticket into sub-tickets, one per part another captain will hold, by [Sub-tickets](resources/sub-tickets.md).
 Once you split, write a change yourself only when it is cheaper than briefing it and too small to need review.
 
 ## 3. Dispatch
 
 **Briefs.**
 A child starts with your brief and none of your conversation: write it by [Briefs](resources/briefs.md).
+Give each child one thing to own, its ticket's outcome, and leave how to reach it to the child.
 
 **Seats.**
 Scale each round's seats to the breadth and depth of the work, with no fixed pair, and seat reviewers from a model family other than the author's when you can, single seats included.
+
+Once the user's roster stands below, pick each seat's model from it.
+
+{roster_placeholder}
 
 **Sending.**
 Dispatch each sub-ticket with `delegate_task`.
@@ -63,6 +66,7 @@ Post the SHA a child returns on its ticket, to resume from, and send what it rep
 
 Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
 If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.
+Put your ticket's key in that PR's title, and attach its link to the ticket yourself, with Linear's `save_issue` (`links`). (open: his call)
 A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.
 
 1. Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.

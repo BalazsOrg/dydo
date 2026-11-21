@@ -5,6 +5,7 @@ public enum CaptainState
 {
     Taken,
     Leaf,
+    Wayfinding,
     Split,
     Waiting,
     InReview,

@@ -4,11 +4,11 @@ using System.Text.RegularExpressions;
 using DynaDocs.SkillBuild;
 
 /// <summary>
-/// DYD-1372 C: the built ticket-captain prototype against the user's rulings on DYD-1295, each an
-/// acceptance line of the contract (W1 to W31). Through <see cref="SkillBuilder.Build"/> on the
-/// production model, read as the built text a captain loads. Only his own two sentences are pinned
-/// word for word; every other check is read from the model, by claim id, so an edit of the prose
-/// leaves it standing (DR 067).
+/// DYD-1372 C and G: the built ticket-captain prototype against the user's rulings on DYD-1295 and
+/// DYD-1372, each an acceptance line of the contract (W1 to W31, X2 to X17). Through
+/// <see cref="SkillBuilder.Build"/> on the production model, read as the built text a captain loads.
+/// Only his own two sentences and his roster token are pinned word for word; every other check is read
+/// from the model, by claim id, so an edit of the prose leaves it standing (DR 067).
 /// </summary>
 public partial class TicketCaptainPrototypeTests
 {
@@ -106,6 +106,7 @@ public partial class TicketCaptainPrototypeTests
     [InlineData("lands only")]
     [InlineData("the landing")]
     [InlineData("Balazs")]
+    [InlineData("one sub-ticket per blocker")]
     public void NoFile_SaysWhatHeRuledOut(string phrase) =>
         Assert.All(Files, file => Assert.DoesNotContain(phrase, file.Value, StringComparison.OrdinalIgnoreCase));
 
@@ -129,18 +130,18 @@ public partial class TicketCaptainPrototypeTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 E r1b P1 each line that depends on an open point ends with the mark, and only those carry it: the hop sub-tickets, the Fix's sub-tickets and the level table's cells")]
+    [Trait("Job", "contract: DYD-1372 E X10 X12 X13 X17 a line that depends on an open point ends with the mark, and one line is left that does: the PR its captain attaches by hand")]
     public void LinesOnAnOpenPoint_EndWithTheMark()
     {
         var marked = Stated.Where(line => line.Text.Contains(OpenMark, StringComparison.Ordinal)).ToArray();
 
         Assert.All(marked, line => Assert.EndsWith(OpenMark, line.Text));
-        Assert.Equal(new[] { Id(CaptainReview.Fix), Id(CaptainReviewing.Built), Id(CaptainSplit.Steps) }, marked.Select(line => line.Claims[0]).Order(StringComparer.Ordinal));
+        Assert.Equal(["CaptainReview.Attach"], marked.Select(line => line.Claims[0]));
         Assert.Equal(marked.Length, Files.Sum(file => file.Value.Split(OpenMark).Length - 1));
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 A3c no open claim's line stands in a file of the skill, and each open claim is listed for review")]
+    [Trait("Job", "contract: DYD-1372 A3c X11 no open claim's line stands in a file of the skill but the one placeholder's, and each open claim is listed for review")]
     public void OpenClaims_AreWithheldAndListed()
     {
         var open = Claims.Where(claim => claim.Key.Truth?.Evidence.Kind == EvidenceKind.Open).ToArray();
@@ -148,7 +149,80 @@ public partial class TicketCaptainPrototypeTests
 
         Assert.NotEmpty(open);
         Assert.Equal(open.Select(claim => "## " + claim.Value).Order(StringComparer.Ordinal), list.Order(StringComparer.Ordinal));
-        Assert.All(open.SelectMany(claim => claim.Key.Lines), line => Assert.All(Files, file => Assert.DoesNotContain(line.Text, file.Value, StringComparison.Ordinal)));
+        Assert.All(open.Where(claim => claim.Key.Truth!.Evidence.Token is null).SelectMany(claim => claim.Key.Lines),
+            line => Assert.All(Files, file => Assert.DoesNotContain(line.Text, file.Value, StringComparison.Ordinal)));
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 X3 the roster is his to write: its token stands alone on a line under Seats, once in the folder, and the open list marks it a placeholder (07c86aad)")]
+    public void Roster_StandsAsItsPlaceholderUnderSeats()
+    {
+        var token = CaptainDispatch.Roster.Truth!.Evidence.Token;
+        var list = Built.Value.Files[Review + "ticket-captain-open.md"];
+
+        Assert.Equal("{roster_placeholder}", token);
+        Assert.Contains($"\n\n{token}\n\n**Sending.**\n", Section("## 3. Dispatch"));
+        Assert.Equal(1, Files.Sum(file => file.Value.Split(token).Length - 1));
+        Assert.Contains($"## {Id(CaptainDispatch.Roster)}\n", list);
+        Assert.Contains("\n\nPlaceholder: ", list);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 X7 the dispatch phase repeats at least two anchor words of the frame every agent reads in AGENTS.md (aa5b445e)")]
+    public void Dispatch_RepeatsAnchorWordsOfTheFrame()
+    {
+        var frame = File.ReadAllText(Path.Combine(CommittedTree.Root, "AGENTS.md"));
+        var dispatch = Section("## 3. Dispatch");
+        string[] anchors = ["one thing", "outcome", "leaf", "contract is met", "only the obvious"];
+
+        Assert.All(anchors, anchor => Assert.Contains(anchor, frame));
+        Assert.True(anchors.Count(anchor => dispatch.Contains(anchor, StringComparison.Ordinal)) >= 2, "the dispatch phase repeats fewer than two anchor words of AGENTS.md");
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 X2 a captain that cannot see the route to the spec is sent to the wayfinder by a line that stands above the cut (777d396e, 07c86aad)")]
+    public void Fog_SendsACaptainToTheWayfinderBeforeItCuts()
+    {
+        var fog = LineOf("CaptainWay.Fog");
+
+        Assert.Equal(Folder + "SKILL.md", fog.Path);
+        Assert.Equal(fog.Path, LineOf("CaptainWay.Route").Path);
+        Assert.Contains("`/wayfinder`", fog.Text);
+        Assert.Contains("](resources/wayfind.md)", fog.Text);
+        Assert.True(fog.Line < LineOf(CaptainSplit.Cut).Line, "the spine tells a captain to cut before it tells it to find the way");
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 X9 the filler resource says what a captain does when no ticket is left, below the rule for what it may pull (777d396e)")]
+    public void Filler_SaysWhatACaptainDoesWithNoTicketLeft()
+    {
+        var empty = LineOf("CaptainDispatch.Empty");
+
+        Assert.Equal(Folder + "resources/filler.md", empty.Path);
+        Assert.True(empty.Line > LineOf(CaptainDispatch.Pull).Line, "the empty lane is settled above the pull rule");
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 X13 a need for the user is one numbered procedure that names the tool a step uses, and carries no open mark")]
+    public void NeedForTheUser_IsOneNumberedProcedure()
+    {
+        var need = Resource("need-for-the-user");
+        var steps = need.Split('\n').Select((line, index) => (Line: line, Index: index)).Where(row => Numbered().IsMatch(row.Line)).ToArray();
+
+        Assert.True(steps.Length > 2, "the resource holds no procedure");
+        Assert.Equal(steps.Length - 1, steps[^1].Index - steps[0].Index);
+        Assert.All(new[] { "`delegate_task`", "`t3_thread_send`" }, tool => Assert.Contains(steps, step => step.Line.Contains(tool, StringComparison.Ordinal)));
+        Assert.DoesNotContain(OpenMark, need);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 X17 nothing links a PR to its ticket, so the line after the PR's has its captain attach it, with the tool it names")]
+    public void Pr_IsAttachedToItsTicketByTheLineAfterIt()
+    {
+        var attach = LineOf("CaptainReview.Attach");
+
+        Assert.Equal(LineOf(CaptainReview.Pr).Line + 1, attach.Line);
+        Assert.Contains("`save_issue`", attach.Text);
     }
 
     [Fact]
@@ -237,7 +311,9 @@ public partial class TicketCaptainPrototypeTests
     private static string Id(Claim claim) => Claims[claim];
 
     // The one built line of the folder that states a claim.
-    private static MapLine LineOf(Claim claim) => Stated.Single(line => line.Claims.Contains(Id(claim)));
+    private static MapLine LineOf(Claim claim) => LineOf(Id(claim));
+
+    private static MapLine LineOf(string claim) => Stated.Single(line => line.Claims.Contains(claim));
 
     private static string Resource(string name) => Built.Value.Files[$"{Folder}resources/{name}.md"];
 

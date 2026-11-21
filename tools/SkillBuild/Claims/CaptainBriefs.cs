@@ -38,8 +38,21 @@ public static class CaptainBriefs
             Reason: "Named skills get loaded; skills left to judgement get loaded sometimes.")
     };
 
+    public static readonly Claim Leaf = new("A brief says when its ticket was cut as a leaf, which its captain does itself and splits only if it proves too big.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.BriefAll, 3,
+            "Whether you cut the ticket as a leaf: its captain then does the work itself, and splits it only if it proves too big.")
+    ])
+    {
+        Spec = ["K30", "H2"],
+        Truth = new(Evidence.Run("This skill's writer got such a brief (DYD-1372 phase 1, hop A): one writer for the whole hop, and \"If the rest will not fit your context, " +
+                                 "commit what is whole and green and return `too big, re-cut`\". T3 tells every child the same by default: \"do the work yourself. Start no subagents unless your task says to.\""),
+            Layer: "A child sees its ticket and never the cut that sized it, so only its dispatcher can say that the ticket was meant to fit one agent.",
+            Reason: "A captain told that it holds a leaf goes straight to the work and reads the orchestration only when the leaf fails to fit.")
+    };
+
     public static readonly Claim Merger = new("A brief names who merges the work.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 3, "Who merges the work: the child, you, or nobody when it merges nothing.")])
+        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 4, "Who merges the work: the child, you, or nobody when it merges nothing.")])
     {
         Spec = ["K14", "R21"],
         Truth = new(Evidence.Run(OwnBrief + "\"Do not push; no PR; no merge.\""),
@@ -48,7 +61,7 @@ public static class CaptainBriefs
     };
 
     public static readonly Claim Change = new("A change's brief names its owned paths and gates, and a Fix's the findings it closes.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 4, "For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes.")])
+        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 5, "For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes.")])
     {
         Spec = ["K14"],
         Truth = new(Evidence.Run(OwnBrief + "it named the gates before return and \"Commit only owned paths\"."),
@@ -57,7 +70,7 @@ public static class CaptainBriefs
     };
 
     public static readonly Claim Asked = new("A question's brief names the question and the choice that waits on it.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 5, "For a question: the question, and the choice that waits on it.")])
+        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 6, "For a question: the question, and the choice that waits on it.")])
     {
         Spec = ["K14"],
         Truth = new(Evidence.Tool("delegate_task: \"Start one child agent with only `task`. No parent history.\""),

@@ -24,6 +24,14 @@
       ]
     },
     {
+      "id": "Wayfinding",
+      "title": "Finding the way to the spec",
+      "spec": [
+        "H10",
+        "H23"
+      ]
+    },
+    {
       "id": "Split",
       "title": "Split into sub-tickets",
       "spec": [
@@ -261,6 +269,54 @@
       ]
     },
     {
+      "claim": "claim:CaptainNeed.Answered",
+      "from": "Question",
+      "to": "Leaf",
+      "arrow": "the answer is on the Question ticket",
+      "spec": [
+        "H16"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainNeed.Ask",
+      "from": "Leaf",
+      "to": "Question",
+      "arrow": "a call that is not obvious: a Question sub-ticket",
+      "spec": [
+        "H16",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainNeed.Up",
+      "from": "Question",
+      "to": "Question",
+      "arrow": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer",
+      "spec": [
+        "H16",
+        "H12",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainReview.Clean",
       "from": "Clear",
       "to": "Finishing",
@@ -388,10 +444,10 @@
       "claim": "claim:CaptainSplit.Cut",
       "from": "Taken",
       "to": "Split",
-      "arrow": "the ticket is bigger than one agent: it is cut",
+      "arrow": "the ticket is bigger than one agent and its route is in sight: it is cut",
       "spec": [
-        "H13",
-        "H14"
+        "H2",
+        "H13"
       ],
       "guard": null,
       "effect": null,
@@ -406,39 +462,8 @@
       "to": "Leaf",
       "arrow": "the ticket fits one agent",
       "spec": [
-        "S2",
-        "S7"
-      ],
-      "guard": null,
-      "effect": null,
-      "fair": false,
-      "skills": [
-        "ticket-captain"
-      ]
-    },
-    {
-      "claim": "claim:CaptainTrouble.Answered",
-      "from": "Question",
-      "to": "Leaf",
-      "arrow": "the answer is on the Question ticket",
-      "spec": [
-        "H16"
-      ],
-      "guard": null,
-      "effect": null,
-      "fair": false,
-      "skills": [
-        "ticket-captain"
-      ]
-    },
-    {
-      "claim": "claim:CaptainTrouble.Ask",
-      "from": "Leaf",
-      "to": "Question",
-      "arrow": "a call that is not obvious: a Question sub-ticket",
-      "spec": [
-        "H16",
-        "S10"
+        "H2",
+        "S2"
       ],
       "guard": null,
       "effect": null,
@@ -498,7 +523,7 @@
       "claim": "claim:CaptainTrouble.ReCut",
       "from": "Leaf",
       "to": "Returned",
-      "arrow": "`too big, re-cut`: neither the work nor its split fits",
+      "arrow": "`too big, re-cut`: what is left cannot be divided coherently under the ticket",
       "spec": [
         "H2"
       ],
@@ -515,8 +540,8 @@
       "to": "Split",
       "arrow": "the leaf proves too big: what is left is cut",
       "spec": [
-        "H13",
-        "H14"
+        "H2",
+        "K30"
       ],
       "guard": null,
       "effect": null,
@@ -541,14 +566,45 @@
       ]
     },
     {
-      "claim": "claim:CaptainTrouble.Up",
-      "from": "Question",
-      "to": "Question",
-      "arrow": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer",
+      "claim": "claim:CaptainWay.Fog",
+      "from": "Taken",
+      "to": "Wayfinding",
+      "arrow": "the route to the spec is not all in sight: the way is found before the cut",
       "spec": [
-        "H16",
-        "H12",
-        "S10"
+        "H10",
+        "H23"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainWay.Next",
+      "from": "Waiting",
+      "to": "Wayfinding",
+      "arrow": "a part returns and fog remains: the way is found again from what it showed",
+      "spec": [
+        "H10",
+        "S15"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainWay.Visible",
+      "from": "Wayfinding",
+      "to": "Split",
+      "arrow": "the parts in sight are cut, and the fog is left uncut",
+      "spec": [
+        "H10",
+        "S2"
       ],
       "guard": null,
       "effect": null,

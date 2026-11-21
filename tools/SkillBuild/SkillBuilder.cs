@@ -59,7 +59,8 @@ public static class SkillBuilder
     {
         foreach (var (skill, lines) in bySkill.Where(pair => pair.Key.TruthChecked))
         {
-            yield return ReviewDocs.Open(skill, lines.Where(open[skill].Contains), claims);
+            // An open claim is stated alone, so its line's own claim is the open one: withheld, or the one placeholder.
+            yield return ReviewDocs.Open(skill, lines.Where(placed => claims.ById[placed.Owner].Truth!.Evidence.Kind == EvidenceKind.Open), claims);
             if (skill.Ledger is null) continue;
             var legacy = bySkill.Keys.First(other => Equals(other.Id, skill.Ledger.Legacy));
             var carried = lines.SelectMany(placed => placed.Claims.Select(id => (id, Open: open[skill].Contains(placed)))).ToDictionary(pair => pair.id, pair => pair.Open);

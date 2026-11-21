@@ -7,7 +7,8 @@ namespace DynaDocs.SkillBuild;
 /// spec ids, its machine move with the machine named, and every line that states it, by skill and
 /// place. A truth-checked claim also shows its evidence, layer and reason, and each such line its
 /// reader, so the claim can be reviewed alone (DYD-1295 317be5f7). A line no built file holds says so:
-/// legacy and not built, or withheld. It lives under <c>dydo/</c> only, which never ships.
+/// legacy and not built, or withheld; a placeholder's line says that it is one. It lives under
+/// <c>dydo/</c> only, which never ships.
 /// </summary>
 internal static partial class WhyDocs
 {
@@ -46,18 +47,22 @@ internal static partial class WhyDocs
     }
 
     // Why no built file holds the line: its legacy skill is replaced, or its claim is open, alone on its line (TruthCheck).
+    // An open claim's line that is built is the placeholder's.
     private static string Unstated(Claim claim, Line line, IReadOnlySet<Enum> unbuilt)
     {
         if (unbuilt.Contains(line.Skill)) return "legacy, not built; ";
-        return claim.Truth?.Evidence.Kind == EvidenceKind.Open ? "withheld; " : "";
+        return claim.Truth?.Evidence switch { { Token: not null } => "placeholder; ", { Kind: EvidenceKind.Open } => "withheld; ", _ => "" };
     }
 
     private static void Answers(Page page, Truth truth)
     {
         var text = truth.Evidence.Kind is EvidenceKind.Command or EvidenceKind.Code ? $"`{truth.Evidence.Text}`" : truth.Evidence.Text;
-        page.Block(truth.Evidence.Kind == EvidenceKind.Open
-            ? $"Evidence: open, so no skill states this claim yet. {text}"
-            : $"Evidence ({truth.Evidence.Kind.ToString().ToLowerInvariant()}): {text}");
+        page.Block(truth.Evidence switch
+        {
+            { Token: { } token } => $"Evidence: open, a placeholder: the skill shows `{token}` where this claim's text will stand. {text}",
+            { Kind: EvidenceKind.Open } => $"Evidence: open, so no skill states this claim yet. {text}",
+            _ => $"Evidence ({truth.Evidence.Kind.ToString().ToLowerInvariant()}): {text}"
+        });
         page.Block("Layer: " + truth.Layer);
         page.Block("Reason: " + truth.Reason);
     }

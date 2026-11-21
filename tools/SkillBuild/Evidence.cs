@@ -31,4 +31,14 @@ public sealed record Evidence
 
     /// <summary>Not verified yet, and why. The claim's line is not rendered.</summary>
     public static Evidence Open(string why) => new(EvidenceKind.Open, why);
+
+    /// <summary>
+    /// The one exception to withholding (K33, DYD-1372 07c86aad): a text that is someone's to write and is not
+    /// written. The claim stays open and listed, and its line is rendered as one sentence, a blank line,
+    /// then <paramref name="token"/> alone, where the text will stand. A model holds at most one.
+    /// </summary>
+    public static Evidence Placeholder(string token, string why) => new(EvidenceKind.Open, why) { Token = token };
+
+    /// <summary>The token a placeholder's line shows where its text will stand; no other evidence has one.</summary>
+    public string? Token { get; private init; }
 }

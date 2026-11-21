@@ -6,7 +6,7 @@ type: reference
 
 # Open claims: ticket-captain
 
-Claims of `ticket-captain` that nobody has verified yet. The skill does not state them: each line below is withheld until its claim has evidence.
+Claims of `ticket-captain` that nobody has verified yet. The skill does not state them: each line below is withheld until its claim has evidence, but for the one placeholder, whose line stands in the skill with its token unfilled.
 
 ## Captain.Thread
 
@@ -22,11 +22,13 @@ Withheld from Take:
 
 `claim:CaptainDispatch.Roster`: Each seat's model comes from the user's roster.
 
-Open: The roster is the user's to write (R13), and it is not written: there is no text to state yet.
+Placeholder: The roster is the user's to write (R13), and it is not written: there is no text to state yet. He asked for the token where it will stand (DYD-1372 07c86aad): "at least put a {roster_placeholder} there", and "I will write it. (not now). Just use a placeholder for now."
 
-Withheld from Seats:
+Stated in Seats, with `{roster_placeholder}` where its text will stand:
 
-> Pick each seat's model from the roster below.
+> Once the user's roster stands below, pick each seat's model from it.
+>
+> {roster_placeholder}
 
 ## CaptainDispatch.Usage
 

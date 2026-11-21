@@ -55,6 +55,22 @@ public static class CaptainReview
             Reason: "A part reviewed alone and again inside its parent is reviewed twice for one answer.")
     };
 
+    public static readonly Claim Attach = new("The captain that opens a PR puts the ticket's key in its title and attaches its link to the ticket itself.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.Reviewed, 3,
+            "Put your ticket's key in that PR's title, and attach its link to the ticket yourself, with Linear's `save_issue` (`links`). (open: his call)")
+    ])
+    {
+        Spec = ["H3", "K32"],
+        Truth = new(Evidence.Tool("save_issue: `links`, \"Link attachments to add [{url, title}]. Append-only; existing links are never removed\". Run, Linear read 2026-11-21: nothing attached a PR by its title or its branch. " +
+                                  "PR 379 (`DYD-1372 …`, branch `DYD-1372-captain-prototype`), PR 374 (`DYD-1192: …`, `DYD-1192-remove-association-manifest`), PR 373 (`DYD-1157 fix: …`, `t3/restore-row-deadline-helpers`) " +
+                                  "and PR 372 (`DYD-1172 fix: …`, `t3/dydo-1172-safe-delete-diagnostics`) left their tickets with no attachment. The tickets that carry a PR have a hand-written title on it " +
+                                  "(DYD-1281 \"PR #378: the rebuilt 4.0.0 candidate (do not merge)\", DYD-1206, DYD-1196, DYD-968), and DYD-1372 carries \"PR 379: DYD-1372 ticket-captain prototype\" " +
+                                  "since its captain attached it with `save_issue` that day. Open, spec section 6, question 2: the user chose to keep the key in the PR's title on the belief that Linear then links it, and has yet to choose between this and setting that link up."),
+            Layer: "Linear's GitHub link attaches nothing here, by a PR's title or by a branch's name, and `dydo merge` touches no ticket.",
+            Reason: "A ticket that shows its PR leads anyone from the board to the diff and its review; without the link the two meet only in a thread that can die.")
+    };
+
     public static readonly Claim NoLoop = new("A plan, spec or contract gets no review loop; a spec gets at most one Questions pass by a native helper, chosen by risk.", Me,
         [At(Actor.TicketCaptain, CaptainSlot.BriefNone, 1, "Write no review brief for a plan, spec or contract: it gets no review rounds, and a risky spec at most one pass by a native helper, which returns questions.")])
     {
@@ -66,7 +82,7 @@ public static class CaptainReview
 
     public static readonly Claim Severity = new("A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.Reviewed, 3,
+        At(Actor.TicketCaptain, CaptainSlot.Reviewed, 4,
             "A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.")
     ])
     {
@@ -120,16 +136,17 @@ public static class CaptainReview
             Reason: "Each kind has one place that can act on it, and the wrong place sits on it.")
     };
 
-    public static readonly Claim Fix = new("A blocker on work that is broken, against the spec or a security hole goes to a Fix ticket holding one sub-ticket per blocker.", Me,
+    public static readonly Claim Fix = new("Every blocker of a round on work that is broken, against the spec or a security hole goes to that round's one Fix ticket.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.BlockerRoutes, 1,
-            "Work that is broken, against the spec or a security hole: a Fix ticket by [Fix rounds](fix-rounds.md), one sub-ticket per blocker inside it. (open: his call)")
+            "Work that is broken, against the spec or a security hole: the round's one Fix ticket, by [Fix rounds](fix-rounds.md).")
     ])
     {
         Spec = ["R9", "S9"],
-        Truth = new(Evidence.Run(Rounds + " Fix r3, DYD-1339, holds no sub-ticket, so one per blocker is the spec's rule and not yet the practice."),
+        Truth = new(Evidence.Run(Rounds + " Read again 2026-11-21: Fix r1, r2 and r3 (DYD-1327, DYD-1333, DYD-1339) are one ticket each, with no sub-ticket, and Fix r1 closed 7 blockers. " +
+                                 "The user took one Fix ticket for all of a round's blockers as the walkthrough brief recommended it (DYD-1372 07c86aad, \"4. Lgtm\")."),
             Layer: "A FAIL stops `dydo merge`; it opens no ticket for the fix.",
-            Reason: "Each blocker can be closed, and seen closed, on its own."),
+            Reason: "A writer that holds all of them understands the code once and repairs it in one pass."),
         Transition = new(CaptainState.InReview, CaptainState.Fixing, "a round other than the third returns a blocker: a Fix ticket") { Guard = "round # 3" }
     };
 

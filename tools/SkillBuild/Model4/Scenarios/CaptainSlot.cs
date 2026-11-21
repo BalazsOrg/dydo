@@ -10,6 +10,7 @@ public enum CaptainSlot
     Kinds,
     Hold,
     Leaf,
+    Fog,
     Split,
     Briefs,
     Seats,
@@ -38,8 +39,12 @@ public enum CaptainSlot
     BriefAll,
     BriefReview,
     BriefNone,
+    Tickets,
+    WaySteps,
+    WayUser,
     FillerLead,
     FillerRules,
+    FillerEmpty,
     RoundSteps,
     RoundRules,
     BlockerRoutes,
@@ -57,5 +62,6 @@ public enum CaptainSlot
     RedSteps,
     RedEnd,
     NeedLead,
+    NeedSteps,
     NeedRules
 }

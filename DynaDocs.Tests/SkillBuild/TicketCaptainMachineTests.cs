@@ -23,9 +23,20 @@ public class TicketCaptainMachineTests
 
         Assert.NotEmpty(claims);
         Assert.All(claims, claim => Assert.Contains("\"claim:Captain", claim));
-        Assert.All(new[] { "Taken", "Leaf", "Split", "Waiting", "InReview", "Clear", "Fixing", "Checkpoint", "Repairing", "Question", "Finishing", "Done", "Returned" },
+        Assert.All(new[] { "Taken", "Leaf", "Wayfinding", "Split", "Waiting", "InReview", "Clear", "Fixing", "Checkpoint", "Repairing", "Question", "Finishing", "Done", "Returned" },
             state => Assert.Contains($"\"{state}\"", Arrows));
         Assert.Contains("VARIABLES state, round", Module);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 X2 a captain that cannot see the route finds the way before it cuts: finding the way is left only by cutting the parts in sight, and entered again when a part returns and fog remains")]
+    public void CaptainMachine_FindsTheWayBeforeItCuts()
+    {
+        Assert.Contains(Arrow("CaptainWay.Fog", "Taken", "Wayfinding"), Arrows);
+        Assert.Contains(Arrow("CaptainWay.Visible", "Wayfinding", "Split"), Arrows);
+        Assert.Contains(Arrow("CaptainWay.Next", "Waiting", "Wayfinding"), Arrows);
+        Assert.Equal(1, Leaving("Wayfinding"));
+        Assert.Contains(Arrow("CaptainSplit.Cut", "Taken", "Split"), Arrows);
     }
 
     [Fact]
@@ -79,8 +90,8 @@ public class TicketCaptainMachineTests
     [Trait("Job", "contract: DYD-1372 r2b B3 H16 S10 a leaf's Question is left only to resume the leaf: passed up unsettled, it stays a wait; the research resource never routes one to the user")]
     public void CaptainMachine_LeavesAQuestionOnlyToResumeTheLeaf()
     {
-        Assert.Contains(Arrow("CaptainTrouble.Answered", "Question", "Leaf"), Arrows);
-        Assert.Contains(Arrow("CaptainTrouble.Up", "Question", "Question"), Arrows);
+        Assert.Contains(Arrow("CaptainNeed.Answered", "Question", "Leaf"), Arrows);
+        Assert.Contains(Arrow("CaptainNeed.Up", "Question", "Question"), Arrows);
         Assert.Equal(Leaving("Question"), Between("Question", "Leaf") + Between("Question", "Question"));
         Assert.DoesNotContain("user", Built.Value.Files["skills/roles/officers/ticket-captain/resources/research.md"]);
     }

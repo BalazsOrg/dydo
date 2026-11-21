@@ -154,16 +154,22 @@ rounds and is bounded at 4 only so TLC ends; the skill sets no cap.
 - A splitting captain's Question is one more child it waits on, so only a leaf has a Question state.
   A leaf's Question is left only to resume the leaf, once its answer is on the ticket. One that comes
   back unsettled goes to the officer and stays open: its holder goes on waiting. That move is a
-  self-loop, Question → Question (`CaptainTrouble.Up`), which the chart does not draw; it is in
+  self-loop, Question → Question (`CaptainNeed.Up`), which the chart does not draw; it is in
   `transitions.json` and the module (H16, S10).
 - A filler ticket that fails its captain's check goes back from Taken, before it is set In Progress:
   unstarted and unassigned, the only state in which the survey offers it again (H11).
+- A captain that cannot see the route from its ticket to the spec finds the way before it cuts (H10):
+  Taken → Finding the way (`CaptainWay.Fog`). That state is left only by cutting the parts in sight
+  (`CaptainWay.Visible`), and entered again from Waiting when a part returns and fog remains
+  (`CaptainWay.Next`), so the whole is never cut at once.
+- A leaf goes back as `too big, re-cut` only when what is left cannot be divided coherently under its
+  ticket; otherwise its holder divides it itself (H2).
 
-The chart draws 26 of the 28 arrows: a repair's two ways back to the officer share one, and the
+The chart draws 29 of the 31 arrows: a repair's two ways back to the officer share one, and the
 unsettled Question's self-loop is not drawn. TLC line from the run on the claim model of DYD-1372
-fix r3b; it holds `NoDeadlock`. Its properties are written by
+phase 1, hop A; it holds `NoDeadlock`. Its properties are written by
 hand under `verification/statechart/`, from his rulings and never from this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 13 | 28 | 0 | 56 states, 100 steps |
+| A captain and its ticket | `captain` | 14 | 31 | 0 | 57 states, 103 steps |

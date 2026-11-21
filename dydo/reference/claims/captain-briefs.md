@@ -54,6 +54,22 @@ Reason: Named skills get loaded; skills left to judgement get loaded sometimes.
 
 > `/ticket-captain`, then every other skill the ticket needs, each with a slash.
 
+## Leaf
+
+`claim:CaptainBriefs.Leaf`: A brief says when its ticket was cut as a leaf, which its captain does itself and splits only if it proves too big.
+
+Spec: K30, H2
+
+Evidence (run): This skill's writer got such a brief (DYD-1372 phase 1, hop A): one writer for the whole hop, and "If the rest will not fit your context, commit what is whole and green and return `too big, re-cut`". T3 tells every child the same by default: "do the work yourself. Start no subagents unless your task says to."
+
+Layer: A child sees its ticket and never the cut that sized it, so only its dispatcher can say that the ticket was meant to fit one agent.
+
+Reason: A captain told that it holds a leaf goes straight to the work and reads the orchestration only when the leaf fails to fit.
+
+**ticket-captain** (BriefAll; read by TicketCaptain):
+
+> Whether you cut the ticket as a leaf: its captain then does the work itself, and splits it only if it proves too big.
+
 ## Merger
 
 `claim:CaptainBriefs.Merger`: A brief names who merges the work.

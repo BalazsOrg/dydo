@@ -6,10 +6,10 @@ namespace DynaDocs.SkillBuild;
 /// The four truth questions as build checks (DYD-1295 317be5f7). On a truth-checked skill: each line is
 /// read by an actor the skill belongs to; each claim it states carries its evidence, layer and reason;
 /// every <c>dydo …</c> it names exists and stands in code; and a claim still open is withheld, alone on
-/// its line. On every claim that carries a <see cref="Truth"/>, wherever its lines sit
-/// (<see cref="Answers"/>): no field is empty, the reason is in words of its own, and an open claim
-/// reaches no built file. <see cref="CheckPaths"/> runs against the repository root, where a code-path
-/// evidence must exist.
+/// its line, but for the one placeholder, whose line shows its token and nothing of its text. On every
+/// claim that carries a <see cref="Truth"/>, wherever its lines sit (<see cref="Answers"/>): no field is
+/// empty, the reason is in words of its own, and an open claim reaches no built file.
+/// <see cref="CheckPaths"/> runs against the repository root, where a code-path evidence must exist.
 /// </summary>
 internal static partial class TruthCheck
 {
@@ -31,6 +31,9 @@ internal static partial class TruthCheck
     [GeneratedRegex(@"^ {0,3}(?:`{3,}|~{3,})")]
     private static partial Regex Fence();
 
+    [GeneratedRegex(@"^\{[a-z]+(?:_[a-z]+)*_placeholder\}$")]
+    private static partial Regex PlaceholderToken();
+
     /// <summary>The lines of <paramref name="skill"/> an open claim withholds from its files.</summary>
     public static HashSet<Placed> Check(SkillSpec skill, IReadOnlyList<Placed> lines, IReadOnlyDictionary<string, Claim> claims)
     {
@@ -45,7 +48,11 @@ internal static partial class TruthCheck
                 throw new InvalidDataException(
                     $"{skill.Name}: the line of claim:{placed.Owner} also states {string.Join(", ", placed.Claims.Skip(1).Select(id => "claim:" + id))}, " +
                     "and one of them is open; an open claim is stated alone, so its line can be withheld alone");
-            withheld.Add(placed);
+            if (claims[placed.Owner].Truth!.Evidence.Token is not { } token) withheld.Add(placed);
+            else if (!PlaceholderToken().IsMatch(token) || placed.Line.Text.Split('\n') is not [{ Length: > 0 }, "", var last] || last != token)
+                throw new InvalidDataException(
+                    $"{skill.Name}: the line of claim:{placed.Owner} is a placeholder's, and it is not one sentence, a blank line, then `{token}` alone, " +
+                    "a token of the form `{name_placeholder}`; a placeholder shows where its text will stand, and none of the text");
         }
         foreach (var placed in lines.Where(placed => !withheld.Contains(placed)))
             if (Miscommanded($"{skill.Name}: the line of claim:{placed.Owner}", placed.Line.Text) is { } problem)
@@ -72,6 +79,10 @@ internal static partial class TruthCheck
     /// </summary>
     public static void Answers(ClaimIndex claims, IReadOnlySet<Enum> truthChecked)
     {
+        // Withhold-and-list has one exception (DYD-1372 07c86aad), so a second placeholder is a claim that belongs withheld.
+        var placeholders = claims.Claims.Where(claim => claim.Claim.Truth?.Evidence.Token is not null).Select(claim => "claim:" + claim.Id).ToArray();
+        if (placeholders.Length > 1)
+            throw new InvalidDataException($"{string.Join(" and ", placeholders)} are placeholders; a model renders one open claim as a placeholder, and withholds every other");
         foreach (var (id, claim) in claims.Claims)
         {
             if (claim.Truth is not { } truth) continue;

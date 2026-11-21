@@ -12,6 +12,9 @@ namespace DynaDocs.SkillBuild;
 /// Question is left only to resume the leaf: one that comes back unsettled goes to the officer and
 /// stays open, and its holder goes on waiting, a step that leaves the state unchanged (H16, S10).
 /// A filler ticket that fails its check goes back from Taken, before it is started (H11).
+/// A captain that cannot see the route from its ticket to the spec finds the way first (H10, DYD-1372
+/// 07c86aad): that state is left only by cutting the parts in sight, and entered again whenever a
+/// part returns and fog remains, so the whole is never cut at once.
 /// </summary>
 public static class CaptainMachines
 {
@@ -19,6 +22,7 @@ public static class CaptainMachines
     [
         new(CaptainState.Taken, "Taken", "S6", "S15"),
         new(CaptainState.Leaf, "Working it as a leaf", "S2", "S7"),
+        new(CaptainState.Wayfinding, "Finding the way to the spec", "H10", "H23"),
         new(CaptainState.Split, "Split into sub-tickets", "S1", "S15"),
         new(CaptainState.Waiting, "Waiting on children, a Question's captain among them", "H3", "H16"),
         new(CaptainState.InReview, "In review", "R2", "R8"),

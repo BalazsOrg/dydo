@@ -7,7 +7,8 @@ namespace DynaDocs.SkillBuild;
 /// captain base (option A, DYD-1295 0f340abd): five phases in their real order, three kind resources
 /// its first phase links, the resources a later phase's line links, and one scenario per failure.
 /// A block only some captains reach sits in the resource its line links, which is how the spine
-/// stays within half the legacy spine's size without dropping a fact.
+/// stays within half the legacy spine's size without dropping a fact: what gets a sub-ticket, and how
+/// a captain finds its way through fog, are read only by a captain that cuts (DYD-1372 phase 1).
 /// </summary>
 public static class CaptainCarrier
 {
@@ -23,11 +24,17 @@ public static class CaptainCarrier
     private static readonly Resource Research = new(CaptainResource.Research, "Research",
         Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Steps(CaptainSlot.ResearchSteps), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"));
 
+    private static readonly Resource SubTickets = new(CaptainResource.SubTickets, "Sub-tickets", Slot.Bullets(CaptainSlot.Tickets));
+
+    private static readonly Resource Wayfind = new(CaptainResource.Wayfind, "Finding the way",
+        Slot.Steps(CaptainSlot.WaySteps), Slot.Bullets(CaptainSlot.WayUser, "The user's part:"));
+
     private static readonly Resource Briefs = new(CaptainResource.Briefs, "Briefs",
         Slot.Paragraph(CaptainSlot.BriefLead), Slot.Bullets(CaptainSlot.BriefAll, "Every brief names:"), Slot.Bullets(CaptainSlot.BriefReview, "A review brief also names:"),
         Slot.Paragraph(CaptainSlot.BriefNone));
 
-    private static readonly Resource Filler = new(CaptainResource.Filler, "Filler", Slot.Paragraph(CaptainSlot.FillerLead), Slot.Bullets(CaptainSlot.FillerRules));
+    private static readonly Resource Filler = new(CaptainResource.Filler, "Filler",
+        Slot.Paragraph(CaptainSlot.FillerLead), Slot.Bullets(CaptainSlot.FillerRules), Slot.Paragraph(CaptainSlot.FillerEmpty, "No ticket left."));
 
     private static readonly Resource Round = new(CaptainResource.Round, "A round's record", Slot.Steps(CaptainSlot.RoundSteps), Slot.Paragraph(CaptainSlot.RoundRules));
 
@@ -49,9 +56,10 @@ public static class CaptainCarrier
                 States = [CaptainState.Taken],
                 Resources = [Implement, Review, Research]
             },
-            new("Do it or split it", Slot.Paragraph(CaptainSlot.Leaf, "A leaf."), Slot.Paragraph(CaptainSlot.Split, "A split."))
+            new("Do it or split it", Slot.Paragraph(CaptainSlot.Leaf, "A leaf."), Slot.Paragraph(CaptainSlot.Fog, "Fog."), Slot.Paragraph(CaptainSlot.Split, "A split."))
             {
-                States = [CaptainState.Taken, CaptainState.Leaf, CaptainState.Split]
+                States = [CaptainState.Taken, CaptainState.Leaf, CaptainState.Wayfinding, CaptainState.Split],
+                Resources = [SubTickets, Wayfind]
             },
             new("Dispatch", Slot.Paragraph(CaptainSlot.Briefs, "Briefs."), Slot.Paragraph(CaptainSlot.Seats, "Seats."), Slot.Paragraph(CaptainSlot.Sending, "Sending."),
                 Slot.Paragraph(CaptainSlot.Lanes, "Lanes."), Slot.Paragraph(CaptainSlot.Returns, "Returns."))
@@ -86,7 +94,10 @@ public static class CaptainCarrier
             {
                 States = [CaptainState.Finishing, CaptainState.Repairing]
             },
-            new(CaptainResource.NeedForTheUser, "A need for the user", Slot.Paragraph(CaptainSlot.NeedLead), Slot.Bullets(CaptainSlot.NeedRules)) { States = [CaptainState.Question] }
+            new(CaptainResource.NeedForTheUser, "A need for the user", Slot.Paragraph(CaptainSlot.NeedLead), Slot.Steps(CaptainSlot.NeedSteps), Slot.Bullets(CaptainSlot.NeedRules))
+            {
+                States = [CaptainState.Question]
+            }
         ]
     };
 }

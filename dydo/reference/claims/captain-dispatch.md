@@ -22,6 +22,22 @@ Reason: Whatever the brief leaves out, the child has to rediscover or guess.
 
 > A child starts with your brief and none of your conversation: write it by Briefs (`resources/briefs.md`).
 
+## OneThing
+
+`claim:CaptainDispatch.OneThing`: A dispatcher gives each child one thing to own, its ticket's outcome, and leaves how to reach it to the child.
+
+Spec: K34, K30
+
+Evidence (run): This skill's writer got such a brief (DYD-1372 phase 1, hop A): it named each change to reach and left the wording to the writer, "Tell me which you chose and why." AGENTS.md gives the child the other half: "You choose how to reach its outcome".
+
+Layer: AGENTS.md tells every agent what it owns; what a dispatcher must therefore keep out of a brief is said nowhere below this skill.
+
+Reason: A brief that carries two outcomes, or a method, leaves the child a task to follow where it was meant to answer for a result.
+
+**ticket-captain** (Briefs; read by TicketCaptain):
+
+> Give each child one thing to own, its ticket's outcome, and leave how to reach it to the child.
+
 ## Family
 
 `claim:CaptainDispatch.Family`: A reviewer comes from a model family other than the author's when possible, single seats included.
@@ -58,17 +74,19 @@ Reason: Review is expensive, and a pair on everything spends it where it finds n
 
 `claim:CaptainDispatch.Roster`: Each seat's model comes from the user's roster.
 
-Spec: R13
+Spec: R13, K33
 
-Evidence: open, so no skill states this claim yet. The roster is the user's to write (R13), and it is not written: there is no text to state yet.
+Evidence: open, a placeholder: the skill shows `{roster_placeholder}` where this claim's text will stand. The roster is the user's to write (R13), and it is not written: there is no text to state yet. He asked for the token where it will stand (DYD-1372 07c86aad): "at least put a {roster_placeholder} there", and "I will write it. (not now). Just use a placeholder for now."
 
 Layer: `orchestrator_capabilities` lists the models a child can run on, and says nothing of which suits which seat.
 
 Reason: The strongest models are kept for the seats that have something non-obvious to find.
 
-**ticket-captain** (withheld; Seats; read by TicketCaptain):
+**ticket-captain** (placeholder; Seats; read by TicketCaptain):
 
-> Pick each seat's model from the roster below.
+> Once the user's roster stands below, pick each seat's model from it.
+>
+> {roster_placeholder}
 
 ## Usage
 
@@ -199,6 +217,22 @@ Reason: The one check a label cannot make is made by the first agent that opens 
 **ticket-captain** (FillerRules; read by TicketCaptain):
 
 > Say in its brief that the ticket is filler, so its captain checks what no label shows.
+
+## Empty
+
+`claim:CaptainDispatch.Empty`: A captain with no ticket left to dispatch or pull checks its contract against the spec: met, it finishes; not met, it finds the way to the next part and cuts it; and when all that is left waits on Questions or the user's calls, it waits on them.
+
+Spec: H10
+
+Evidence (run): DYD-1372, 2026-11-21: with every hop back and the user's verdict "Accepted with changes" on it, its captain held the contract against that verdict, found it unmet, and dispatched the next part, phase 1 hop A. That part went out as a brief, with no sub-ticket of its own. delegate_task: `mode`, default 'async', wakes a dispatcher as each child returns, and no field of it asks for a number of children.
+
+Layer: T3 runs as many children as it is given and never asks a dispatcher for more; only the target of four could be misread as a quota.
+
+Reason: An idle captain that invents tickets spends agents on something nobody asked for, and one that simply stops leaves its outcome unreached.
+
+**ticket-captain** (FillerEmpty; read by TicketCaptain):
+
+> When you have no ticket left to dispatch or pull, check your contract against the spec. If it is met, finish your ticket. If it is not, find the way to the next part toward the spec and cut it as a sub-ticket, by Finding the way (`wayfind.md`). If all that is left waits on Questions or on the user's calls, wait on them.
 
 ## Route
 

@@ -10,6 +10,8 @@ public enum CaptainResource
     Implement,
     Review,
     Research,
+    SubTickets,
+    Wayfind,
     Briefs,
     Filler,
     Round,

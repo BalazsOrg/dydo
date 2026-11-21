@@ -10,7 +10,7 @@ type: reference
 
 `claim:CaptainSplit.Leaf`: A ticket that fits one agent is a leaf, done by its holder with native helpers.
 
-Spec: S2, S7
+Spec: H2, S2
 
 Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Leaf, "the ticket fits one agent".
 
@@ -52,25 +52,25 @@ Layer: Linear takes any ticket anyone files; only the cutter knows who will use 
 
 Reason: A record nobody else reads is bookkeeping that slows the work it describes.
 
-**ticket-captain** (Split; read by TicketCaptain):
+**ticket-captain** (Tickets; read by TicketCaptain):
 
 > Work gets a ticket only when someone other than its asker uses what it leaves.
 
 ## OffRecord
 
-`claim:CaptainSplit.OffRecord`: A helper, a lookup, a command, a file and one seat among several are always off the record.
+`claim:CaptainSplit.OffRecord`: A helper, a lookup, a command, a file and one native seat among several are always off the record.
 
 Spec: S1
 
-Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. None of the twenty is a helper's errand, a lookup, a command, a file or a single seat of a round.
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. None of the twenty is a helper's errand, a lookup, a command, a file or a single seat of a round. A seat from another model family goes out with `delegate_task` and holds a ticket of its own (S1 as amended, DYD-1372 aa5b445e), so only a native seat stays off the record.
 
 Layer: Linear takes a ticket for a lookup or a file as readily as for a feature, and nothing stops a captain from filing one.
 
 Reason: Each of the five is a piece of some ticket's work, and a card for every piece would bury the board.
 
-**ticket-captain** (Split; read by TicketCaptain):
+**ticket-captain** (Tickets; read by TicketCaptain):
 
-> A helper, a lookup, a command, a file and one seat among several never get a ticket.
+> A helper, a lookup, a command, a file and one native seat among several never get a ticket.
 
 ## OneTicket
 
@@ -84,7 +84,7 @@ Layer: AGENTS.md says one agent holds one ticket; the cutter is who keeps a seco
 
 Reason: An agent that understands something once uses it across every step it was given.
 
-**ticket-captain** (Split; read by TicketCaptain):
+**ticket-captain** (Tickets; read by TicketCaptain):
 
 > Several steps for one agent are one ticket.
 
@@ -92,9 +92,9 @@ Reason: An agent that understands something once uses it across every step it wa
 
 `claim:CaptainSplit.Cut`: A ticket bigger than one agent is cut into sub-tickets, one per part another captain holds.
 
-Spec: H13, H14
+Spec: H2, H13
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Split, "the ticket is bigger than one agent: it is cut".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Split, "the ticket is bigger than one agent and its route is in sight: it is cut".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket.
 
@@ -104,7 +104,7 @@ Reason: Each part then has a single owner who answers for it.
 
 **ticket-captain** (Split; read by TicketCaptain):
 
-> Cut a bigger ticket into sub-tickets, one per part another captain will hold.
+> Cut a bigger ticket into sub-tickets, one per part another captain will hold, by Sub-tickets (`resources/sub-tickets.md`).
 
 ## Contract
 
@@ -118,7 +118,7 @@ Layer: A child starts from its ticket and its brief; what the ticket omits, the 
 
 Reason: A quoted section still says what was meant after the spec has moved on.
 
-**ticket-captain** (Split; read by TicketCaptain):
+**ticket-captain** (Tickets; read by TicketCaptain):
 
 > Write each sub-ticket's contract in its description: its outcome, how it fits your ticket, and the spec sections it serves, quoted and linked.
 
@@ -134,9 +134,9 @@ Layer: Linear holds the label; only the cutter knows whether a part needs the us
 
 Reason: The label tells everyone who the part waits on.
 
-**ticket-captain** (Split; read by TicketCaptain):
+**ticket-captain** (Tickets; read by TicketCaptain):
 
-> Label its Mode: AFK, or HITL when the user must take part.
+> Label each sub-ticket's Mode: AFK, or HITL when the user must take part.
 
 ## Steps
 
@@ -144,21 +144,21 @@ Reason: The label tells everyone who the part waits on.
 
 Spec: S3, S4
 
-Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. Linear has no Type label for Implement, Review or Fix, so the title carries the step. No Shoulds batch has been cut in team Dydo's Linear yet, read 2026-11-21, so the batched should rests on spec S4 alone, under the same open point.
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. Linear has no Type label for Implement, Review or Fix, so the title carries the step. No Shoulds batch has been cut in team Dydo's Linear yet, read 2026-11-21, so the batched should rests on spec S4, which the user kept (DYD-1372 07c86aad, "4. Lgtm").
 
 Layer: Linear draws the blocking order once it is set; setting it is the cutter's.
 
 Reason: The board then shows which step a piece of work has reached without anyone asking its captain.
 
-**ticket-captain** (Split; read by TicketCaptain):
+**ticket-captain** (Tickets; read by TicketCaptain):
 
-> Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps. (open: his call)
+> Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.
 
 ## Small
 
 `claim:CaptainSplit.Small`: A captain that has split writes only a change cheaper to do than to brief and too small to need review.
 
-Spec: R16
+Spec: R16, K29
 
 Evidence (code): `AGENTS.md`
 

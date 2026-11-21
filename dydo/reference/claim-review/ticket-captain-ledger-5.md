@@ -20,9 +20,13 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Holding a round with several seats, post one verdict naming each seat's model and provider and its blockers, and write the PR line at the same moment.
 
-`claim:Review.FixTicket`, kept in `claim:CaptainReview.Fix`, `claim:CaptainTrouble.FixName`, `claim:CaptainTrouble.Parallel`
+`claim:Review.FixTicket`, kept in `claim:CaptainReview.Fix`, `claim:CaptainTrouble.FixName`, `claim:CaptainTrouble.Big`, `claim:CaptainTrouble.Parallel`
 
 > At verdict time, turn the blockers into Fix rN with one Blocker ticket per blocker inside it; for parallel writers, split it into Fix rNb.
+
+A clause of it, dropped, it fails Verify: No Fix in Linear holds a ticket per blocker (Fix r1 to r3, read 2026-11-21), and S9 as amended has one Fix list them, with a sub-ticket only for a big one (07c86aad, "4. Lgtm"; claim CaptainTrouble.Big).
+
+> with one Blocker ticket per blocker inside it
 
 `claim:Review.Nit`, kept in `claim:CaptainRound.Nits`
 
@@ -56,7 +60,7 @@ A clause of it, dropped, it fails Need: Its reader is the coordinator: what an o
 
 > when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans
 
-`claim:Review.NeedsBalazs`, kept in `claim:CaptainReview.NeedsUser`, `claim:CaptainTrouble.Known`, `claim:CaptainTrouble.Refused`
+`claim:Review.NeedsBalazs`, kept in `claim:CaptainReview.NeedsUser`, `claim:CaptainNeed.AtOnce`, `claim:CaptainNeed.Skip`, `claim:CaptainNeed.Refused`
 
 > Pass a blocker that needs Balazs up the chain at once.
 

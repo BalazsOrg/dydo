@@ -29,7 +29,11 @@ public static class CaptainLedger
         Fate.Kept(Coordination.FillerBack, Captain.Filler, Captain.FillerBack),
         Fate.Kept(Project.Weeds, CaptainImplement.Weed),
         Fate.Deferred(Council.Hold, Chair),
-        Fate.Dropped(Tree.Branch, Question.Handled, Checkout),
+        Fate.Kept(Tree.Branch, CaptainReview.Attach)
+            .Dropped("Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket", Question.Handled, Checkout)
+            .Dropped("so Linear attaches the branch", Question.Verify,
+                "Linear attaches nothing here by a branch's name or a PR's title: PRs 379, 374, 373 and 372, read 2026-11-21, left their tickets bare. The PR is its captain's to attach (claim CaptainReview.Attach), and nothing needs the branch.")
+            .Dropped("post branch, base SHA and worktree path on the ticket before the first edit", Question.Handled, Checkout),
         Fate.Kept(Tree.CrewLimits, CaptainReview.Pr, CaptainBriefs.Merger, CaptainFinish.Merged)
             .Dropped("Create the ticket's branch", Question.Handled, Checkout)
             .Dropped("ordinary crew never do", Question.Verify,
@@ -78,7 +82,9 @@ public static class CaptainLedger
         Fate.Kept(Review.Open, CaptainReview.Whole, CaptainReview.Whose),
         Fate.Kept(Review.Skip, CaptainReview.Groups),
         Fate.Kept(Review.Post, CaptainReview.Record, CaptainRound.Verdict, CaptainRound.PrLine),
-        Fate.Kept(Review.FixTicket, CaptainReview.Fix, CaptainTrouble.FixName, CaptainTrouble.Parallel),
+        Fate.Kept(Review.FixTicket, CaptainReview.Fix, CaptainTrouble.FixName, CaptainTrouble.Big, CaptainTrouble.Parallel)
+            .Dropped("with one Blocker ticket per blocker inside it", Question.Verify,
+                "No Fix in Linear holds a ticket per blocker (Fix r1 to r3, read 2026-11-21), and S9 as amended has one Fix list them, with a sub-ticket only for a big one (07c86aad, \"4. Lgtm\"; claim CaptainTrouble.Big)."),
         Fate.Kept(Review.Nit, CaptainRound.Nits),
         Fate.Kept(Review.CaptainMade, CaptainReview.Mine),
         Fate.Kept(Review.Labels, CaptainRound.Changed),
@@ -88,7 +94,7 @@ public static class CaptainLedger
         Fate.Kept(Review.Fundamental, CaptainReview.Replan)
             .Dropped("when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans", Question.Need,
                 "Its reader is the coordinator: what an officer does with a re-plan belongs in that officer's skill (41a553f1)."),
-        Fate.Kept(Review.NeedsBalazs, CaptainReview.NeedsUser, CaptainTrouble.Known, CaptainTrouble.Refused),
+        Fate.Kept(Review.NeedsBalazs, CaptainReview.NeedsUser, CaptainNeed.AtOnce, CaptainNeed.Skip, CaptainNeed.Refused),
         Fate.Kept(Review.Clean, CaptainReview.Clean),
         Fate.Kept(Review.OneMore, CaptainReview.OneMore),
         Fate.Kept(Review.ToCheckpoint, CaptainTrouble.Third, CaptainTrouble.Checkpoint, CaptainTrouble.Escalate),

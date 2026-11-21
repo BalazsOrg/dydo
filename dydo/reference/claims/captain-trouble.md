@@ -24,9 +24,9 @@ Reason: Whoever goes on, the captain or a fresh agent, starts from proven work.
 
 ## SplitRest
 
-`claim:CaptainTrouble.SplitRest`: A leaf that proves too big is split: what is left becomes sub-tickets.
+`claim:CaptainTrouble.SplitRest`: A holder whose slice proves too big divides it itself, keeping coherence: what is left becomes sub-tickets.
 
-Spec: H13, H14
+Spec: H2, K30
 
 Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Split, "the leaf proves too big: what is left is cut".
 
@@ -38,15 +38,15 @@ Reason: The alternative is an agent finishing badly in a context that is nearly 
 
 **ticket-captain** (TooBigSteps; read by TicketCaptain):
 
-> Cut what is left into sub-tickets that start from that SHA, and dispatch them.
+> Divide what is left yourself, into sub-tickets that each hold together and start from that SHA, and dispatch them.
 
 ## ReCut
 
-`claim:CaptainTrouble.ReCut`: A captain that cannot hold even the split returns too big, re-cut, naming what is done and what is left.
+`claim:CaptainTrouble.ReCut`: A holder that cannot divide its slice coherently under its own ticket returns it to its officer for a re-cut, naming what is done and what is left.
 
 Spec: H2
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Returned, "`too big, re-cut`: neither the work nor its split fits".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Returned, "`too big, re-cut`: what is left cannot be divided coherently under the ticket".
 
 Evidence (run): This skill's writer was briefed (DYD-1372 hop 2): "return `too big, re-cut` naming what is done and what is left".
 
@@ -56,7 +56,7 @@ Reason: The officer can cut again from a known point without reading the whole t
 
 **ticket-captain** (TooBigSteps; read by TicketCaptain):
 
-> If you cannot hold the split either, return `too big, re-cut` to your officer, naming what is done and what is left.
+> If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, return `too big, re-cut` to your officer, naming what is done and what is left.
 
 ## ChildReCut
 
@@ -73,6 +73,22 @@ Reason: The officer knows how the part fits the whole, which the child did not.
 **ticket-captain** (TooBigChild; read by TicketCaptain):
 
 > When a child returns `too big, re-cut`, the cut is yours: open sub-tickets for what it left, starting from the SHA it returned.
+
+## Contracts
+
+`claim:CaptainTrouble.Contracts`: A change to a unit's contract, or to a sibling's, goes through the officer above.
+
+Spec: H2, S15
+
+Evidence (run): DYD-1372's contract, read 2026-11-21: its section G, the phase-1 changes, was written from above, by the coordinator, and no writer below it edited the contract.
+
+Layer: Linear lets any agent edit any ticket's description, its own or a sibling's.
+
+Reason: A contract its holder may rewrite stops being a promise to the officer that cut it.
+
+**ticket-captain** (TooBigChild; read by TicketCaptain):
+
+> A change to your contract, or to a sibling's, is never part of your cut: take it to your officer.
 
 ## FixOwner
 
@@ -92,11 +108,11 @@ Reason: The writer already understands the code, until its context is what stand
 
 ## FixName
 
-`claim:CaptainTrouble.FixName`: A Fix ticket is opened at verdict time and titled after its round: Fix rN.
+`claim:CaptainTrouble.FixName`: A Fix ticket is opened at verdict time, titled after its round, Fix rN, and lists every blocker it is to close.
 
 Spec: S9
 
-Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-21: Fix r1, Fix r2 and Fix r3, each after the Review of its number, such as "Fix r2: close review r2's 2 blockers and 5 shoulds". Fix r1, DYD-1327, was created at 04:06 on 2026-11-20, a minute before Review r1, DYD-1294, closed with its verdict.
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-21: Fix r1, Fix r2 and Fix r3, each after the Review of its number, such as "Fix r2: close review r2's 2 blockers and 5 shoulds". Fix r1, DYD-1327, was created at 04:06 on 2026-11-20, a minute before Review r1, DYD-1294, closed with its verdict, and its description lists that round's blockers by number, B1 to B7.
 
 Layer: Linear has no Type label for a Fix, so only its title says which round it closes.
 
@@ -104,7 +120,23 @@ Reason: Anyone reading the board finds the round a Fix belongs to without openin
 
 **ticket-captain** (FixRules; read by TicketCaptain):
 
-> Open a Fix when its round's verdict is posted, titled after the round: Fix rN.
+> Open one Fix when its round's verdict is posted, titled after the round, Fix rN, and list on it every blocker it is to close.
+
+## Big
+
+`claim:CaptainTrouble.Big`: A blocker gets a sub-ticket of its own inside the Fix only when it is too big to fix with the rest.
+
+Spec: S9, S7
+
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-21: Fix r1 (DYD-1327), Fix r2 (DYD-1333) and Fix r3 (DYD-1339) are one ticket each and hold no sub-ticket. Fix r1 closed 7 blockers so, and no blocker has needed a ticket of its own yet. Spec S9 as amended: one Fix ticket "listing all of them, with a sub-ticket only for a big one" (DYD-1372 07c86aad, "4. Lgtm").
+
+Layer: Linear takes a ticket for every blocker as readily as for none.
+
+Reason: A card per small repair buries the board, while a large one hidden in a list has no owner to answer for it.
+
+**ticket-captain** (FixRules; read by TicketCaptain):
+
+> A blocker too big to fix with the rest gets a sub-ticket of its own inside the Fix; no other blocker gets one.
 
 ## Parallel
 
@@ -136,7 +168,7 @@ Reason: A hole that was missed once is the first thing to look for again.
 
 **ticket-captain** (FixRules; read by TicketCaptain, on claim:CaptainTrouble.NextRound):
 
-> Dispatch the next round once every blocker of the Fix is Done and its proof ran on the head: a fresh reviewer, every lens, and after a security hole the security lens first.
+> Dispatch the next round once the Fix is Done, each blocker it lists closed and its proof run on the head: a fresh reviewer, every lens, and after a security hole the security lens first.
 
 ## NextRound
 
@@ -154,7 +186,7 @@ Reason: A fix can break what the last round passed, so the next one looks at eve
 
 **ticket-captain** (FixRules; read by TicketCaptain):
 
-> Dispatch the next round once every blocker of the Fix is Done and its proof ran on the head: a fresh reviewer, every lens, and after a security hole the security lens first.
+> Dispatch the next round once the Fix is Done, each blocker it lists closed and its proof run on the head: a fresh reviewer, every lens, and after a security hole the security lens first.
 
 ## Dead
 
@@ -225,137 +257,3 @@ Reason: Most of the time the right answer is one more round, and an escalation s
 **ticket-captain** (FixCheckpoint; read by TicketCaptain):
 
 > Write `escalated: …` instead, and take it to your officer, only for a fundamental break, a new requirement or a need for the user.
-
-## Sources
-
-`claim:CaptainTrouble.Sources`: What research can answer never reaches the user.
-
-Spec: H16
-
-Evidence (run): Linear, team Dydo, labels read 2026-11-20: the Type group holds Question.
-
-Layer: The host's question tool asks the user anything an agent cares to send.
-
-Reason: The user's attention is the one thing the swarm cannot make more of.
-
-**ticket-captain** (NeedLead; read by TicketCaptain):
-
-> Most calls never reach the user: whatever the sources can answer is a Question sub-ticket.
-
-## Ask
-
-`claim:CaptainTrouble.Ask`: A call that is not obvious and reversible becomes a Question sub-ticket that blocks only what waits on it.
-
-Spec: H16, S10
-
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Question, "a call that is not obvious: a Question sub-ticket".
-
-Evidence (run): Linear, DYD-1372 read 2026-11-20: a ticket carries `blocks` and `blockedBy` relations beside its children.
-
-Layer: Linear draws a block once it is set, and stops nobody from working on.
-
-Reason: One open question holds up one part, never the whole ticket.
-
-**ticket-captain** (NeedRules; read by TicketCaptain):
-
-> Open the Question sub-ticket, block only what waits on it, and go on with the rest.
-
-## Answered
-
-`claim:CaptainTrouble.Answered`: The blocked work resumes when the answer is on the Question ticket.
-
-Spec: H16
-
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Question → Leaf, "the answer is on the Question ticket".
-
-Evidence (run): Linear, team Dydo, labels read 2026-11-20: Question is described "Resolution: the answer, posted on close".
-
-Layer: T3 wakes the captain when the Question's captain returns; the answer itself is on the ticket.
-
-Reason: The answer outlives both threads, for whoever meets the same call next.
-
-**ticket-captain** (NeedRules; read by TicketCaptain):
-
-> Resume what waited once the answer is on the Question ticket.
-
-## Up
-
-`claim:CaptainTrouble.Up`: A Question that comes back unsettled goes to the officer's thread with what was found and stays open: its holder still waits on the answer.
-
-Spec: H16, H12, S10
-
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Question → Question, "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer".
-
-Evidence (run): T3, 2026-11-21: this skill's fixer sent a note from inside its turn to its captain's thread with `t3_thread_send`, both threads in mode `auto`. The send came back `delivery: started`, and the fixer's turn went on. `t3_thread_list` gives the address, a thread's `parentThreadId`, which the header of its brief names too.
-
-Layer: A captain has no tool that opens a thread with the user, and its officer is the only one above it.
-
-Reason: Whether a call is worth the user's time is weighed once, above, instead of by every captain that meets one.
-
-**ticket-captain** (NeedRules; read by TicketCaptain):
-
-> When a Question comes back unsettled, leave it open and send it, with what was found, to your officer's thread with `t3_thread_send`; what waited still waits on its answer.
-
-## Known
-
-`claim:CaptainTrouble.Known`: A need already known to be the user's gets no research: what only the user can give is an Enablement sub-ticket, a call only the user can make a Question sub-ticket, and it goes to the officer at once, blocking only what waits on it.
-
-Spec: R9, S10, H17, L18
-
-Evidence (run): T3, 2026-11-21: this skill's fixer sent a note from inside its turn to its captain's thread with `t3_thread_send`, both threads in mode `auto`. The send came back `delivery: started`, and the fixer's turn went on. `t3_thread_list` gives the address, a thread's `parentThreadId`, which the header of its brief names too. Linear, team Dydo, labels read 2026-11-20: the Type group holds Enablement, "Access, environment, credentials or material other work needs", beside Question.
-
-Layer: Nothing above a captain learns of a need until the captain sends it, and no tool of its own reaches the user's queue.
-
-Reason: A captain set to study what no source holds costs a day, and the user's answer is the slowest of all to arrive.
-
-**ticket-captain** (NeedRules; read by TicketCaptain):
-
-> When you already know that only the user can meet a need, skip the research: open an Enablement sub-ticket for what only the user can give, or a Question sub-ticket for a call only the user can make, block only what waits on it, and send it to your officer's thread at once with `t3_thread_send`. A call that only wants the user's approval is no such need.
-
-## Refused
-
-`claim:CaptainTrouble.Refused`: A send to the officer's thread is refused when the sender's mode is narrower than the officer's; the holder then ends its turn on the message, and its work stops until the officer sends to its thread again.
-
-Spec: H12, H23
-
-Evidence (run): t3_thread_send: "The target cannot run with broader modes than yours." The way round it ran in this ticket: each return of this skill's fixer, the last message of its turn, reached its captain, whose next `t3_thread_send` to the finished thread started it again with its context, twice by 2026-11-21. No thread here ran in a narrower mode than its officer, so the refusal itself is the schema's word.
-
-Layer: T3 refuses the send and names no other way up; a child's return is the one route that no mode closes.
-
-Reason: Without it a narrower child would sit on a need that nobody above ever hears of.
-
-**ticket-captain** (NeedRules; read by TicketCaptain):
-
-> A `t3_thread_send` to your officer is refused when your thread's mode is narrower than your officer's: end your turn on the message instead. Your work then stops until your officer sends to your thread again.
-
-## InThread
-
-`claim:CaptainTrouble.InThread`: When the user is already in an officer's thread, it may ask a one-line question there.
-
-Spec: H22, L18
-
-Evidence (tool): AskUserQuestion: "Use this tool only when you are blocked on a decision that is genuinely the user's to make".
-
-Layer: The tool asks whenever it is called; whether the user is there to answer, only the thread shows.
-
-Reason: A ticket and a wait for something the user can answer in a word would be overkill.
-
-**ticket-captain** (NeedRules; read by TicketCaptain):
-
-> When the user is already in your thread, you may ask one line there, with the host's question tool: never what the sources can answer, and never a call that only wants the user's approval.
-
-## Cite
-
-`claim:CaptainTrouble.Cite`: A question put to the user names what each decision record says, never only its number.
-
-Spec: H24
-
-Evidence (code): `dydo/project/decisions`
-
-Layer: A record's number resolves to a file for an agent, and to nothing for a person reading a question.
-
-Reason: The user answers the question in front of him without looking anything up.
-
-**ticket-captain** (NeedRules; read by TicketCaptain):
-
-> Say what a decision record decides whenever you cite one to the user, never only its number.

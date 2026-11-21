@@ -2,6 +2,7 @@
 const states = {
   "Taken": "Taken · S6, S15",
   "Leaf": "Working it as a leaf · S2, S7",
+  "Wayfinding": "Finding the way to the spec · H10, H23",
   "Split": "Split into sub-tickets · S1, S15",
   "Waiting": "Waiting on children, a Question's captain among them · H3, H16",
   "InReview": "In review · R2, R8",
@@ -24,6 +25,9 @@ const steps = {
   "CaptainMergeTrouble_Lost": "a red gate that cannot be fixed goes to the officer · K9",
   "CaptainMergeTrouble_Stuck": "a conflict that cannot be resolved goes to the officer · K9",
   "CaptainMerging_Broken": "a conflict or a real red gate: an Implement ticket repairs it · R21, R19",
+  "CaptainNeed_Answered": "the answer is on the Question ticket · H16",
+  "CaptainNeed_Ask": "a call that is not obvious: a Question sub-ticket · H16, S10",
+  "CaptainNeed_Up": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer · H16, H12, S10",
   "CaptainReview_Clean": "no further round is ordered: the review rounds end · R8",
   "CaptainReview_Cleared": "the round finds no new blocker · R8, R11",
   "CaptainReview_Fix": "a round other than the third returns a blocker: a Fix ticket · R9, S9",
@@ -32,17 +36,17 @@ const steps = {
   "CaptainReview_Other": "the leaf's change is whole: another agent reviews it · R33, R12",
   "CaptainReview_Replan": "in a round other than the third, a blocker is fundamental or a new requirement: back to the officer · R9",
   "CaptainReview_Whole": "the parts are wired: a Review of the whole is dispatched · R2, R1",
-  "CaptainSplit_Cut": "the ticket is bigger than one agent: it is cut · H13, H14",
-  "CaptainSplit_Leaf": "the ticket fits one agent · S2, S7",
-  "CaptainTrouble_Answered": "the answer is on the Question ticket · H16",
-  "CaptainTrouble_Ask": "a call that is not obvious: a Question sub-ticket · H16, S10",
+  "CaptainSplit_Cut": "the ticket is bigger than one agent and its route is in sight: it is cut · H2, H13",
+  "CaptainSplit_Leaf": "the ticket fits one agent · H2, S2",
   "CaptainTrouble_Checkpoint": "`checkpoint: one more round, because …`: the blockers go to a Fix · R10, S10",
   "CaptainTrouble_Escalate": "`escalated: …`: a fundamental break, a new requirement or a need for the user goes to the officer · R10",
   "CaptainTrouble_NextRound": "the Fix is Done: a fresh round · R8, S9",
-  "CaptainTrouble_ReCut": "`too big, re-cut`: neither the work nor its split fits · H2",
-  "CaptainTrouble_SplitRest": "the leaf proves too big: what is left is cut · H13, H14",
+  "CaptainTrouble_ReCut": "`too big, re-cut`: what is left cannot be divided coherently under the ticket · H2",
+  "CaptainTrouble_SplitRest": "the leaf proves too big: what is left is cut · H2, K30",
   "CaptainTrouble_Third": "a third round still has a blocker: the checkpoint · R10",
-  "CaptainTrouble_Up": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer · H16, H12, S10"
+  "CaptainWay_Fog": "the route to the spec is not all in sight: the way is found before the cut · H10, H23",
+  "CaptainWay_Next": "a part returns and fog remains: the way is found again from what it showed · H10, S15",
+  "CaptainWay_Visible": "the parts in sight are cut, and the fog is left uncut · H10, S2"
 };
 export const title = "A captain and its ticket";
 export const state = (v) => states[v.state];

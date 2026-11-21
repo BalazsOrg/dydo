@@ -72,6 +72,22 @@ Reason: A part reviewed alone and again inside its parent is reviewed twice for 
 
 > If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.
 
+## Attach
+
+`claim:CaptainReview.Attach`: The captain that opens a PR puts the ticket's key in its title and attaches its link to the ticket itself.
+
+Spec: H3, K32
+
+Evidence (tool): save_issue: `links`, "Link attachments to add [{url, title}]. Append-only; existing links are never removed". Run, Linear read 2026-11-21: nothing attached a PR by its title or its branch. PR 379 (`DYD-1372 …`, branch `DYD-1372-captain-prototype`), PR 374 (`DYD-1192: …`, `DYD-1192-remove-association-manifest`), PR 373 (`DYD-1157 fix: …`, `t3/restore-row-deadline-helpers`) and PR 372 (`DYD-1172 fix: …`, `t3/dydo-1172-safe-delete-diagnostics`) left their tickets with no attachment. The tickets that carry a PR have a hand-written title on it (DYD-1281 "PR #378: the rebuilt 4.0.0 candidate (do not merge)", DYD-1206, DYD-1196, DYD-968), and DYD-1372 carries "PR 379: DYD-1372 ticket-captain prototype" since its captain attached it with `save_issue` that day. Open, spec section 6, question 2: the user chose to keep the key in the PR's title on the belief that Linear then links it, and has yet to choose between this and setting that link up.
+
+Layer: Linear's GitHub link attaches nothing here, by a PR's title or by a branch's name, and `dydo merge` touches no ticket.
+
+Reason: A ticket that shows its PR leads anyone from the board to the diff and its review; without the link the two meet only in a thread that can die.
+
+**ticket-captain** (Reviewed; read by TicketCaptain):
+
+> Put your ticket's key in that PR's title, and attach its link to the ticket yourself, with Linear's `save_issue` (`links`). (open: his call)
+
 ## NoLoop
 
 `claim:CaptainReview.NoLoop`: A plan, spec or contract gets no review loop; a spec gets at most one Questions pass by a native helper, chosen by risk.
@@ -174,21 +190,21 @@ Reason: Each kind has one place that can act on it, and the wrong place sits on 
 
 ## Fix
 
-`claim:CaptainReview.Fix`: A blocker on work that is broken, against the spec or a security hole goes to a Fix ticket holding one sub-ticket per blocker.
+`claim:CaptainReview.Fix`: Every blocker of a round on work that is broken, against the spec or a security hole goes to that round's one Fix ticket.
 
 Spec: R9, S9
 
 Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Fixing, "a round other than the third returns a blocker: a Fix ticket".
 
-Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3. Fix r3, DYD-1339, holds no sub-ticket, so one per blocker is the spec's rule and not yet the practice.
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3. Read again 2026-11-21: Fix r1, r2 and r3 (DYD-1327, DYD-1333, DYD-1339) are one ticket each, with no sub-ticket, and Fix r1 closed 7 blockers. The user took one Fix ticket for all of a round's blockers as the walkthrough brief recommended it (DYD-1372 07c86aad, "4. Lgtm").
 
 Layer: A FAIL stops `dydo merge`; it opens no ticket for the fix.
 
-Reason: Each blocker can be closed, and seen closed, on its own.
+Reason: A writer that holds all of them understands the code once and repairs it in one pass.
 
 **ticket-captain** (BlockerRoutes; read by TicketCaptain):
 
-> Work that is broken, against the spec or a security hole: a Fix ticket by Fix rounds (`fix-rounds.md`), one sub-ticket per blocker inside it. (open: his call)
+> Work that is broken, against the spec or a security hole: the round's one Fix ticket, by Fix rounds (`fix-rounds.md`).
 
 ## Replan
 
