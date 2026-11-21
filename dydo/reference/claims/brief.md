@@ -12,7 +12,7 @@ type: reference
 
 Spec: K14
 
-**ticket-captain** (ImplementerBrief):
+**ticket-captain** (legacy, not built; ImplementerBrief):
 
 > Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · findings (Fix only) · model and effort · return to.
 
@@ -22,7 +22,7 @@ Spec: K14
 
 Spec: K14, R3, R6, R34
 
-**ticket-captain** (ReviewerBrief):
+**ticket-captain** (legacy, not built; ReviewerBrief):
 
 > Ticket and contract · the level: a leaf's evidence check, a ticket review, a feature or Milestone review, or an inquisition slice · the governing spec, or none · lenses · branch, worktree and base (the candidate SHA) · owned paths · gates · proof recipe · model and effort · return to.
 
@@ -32,7 +32,7 @@ Spec: K14, R3, R6, R34
 
 Spec: K14, R4
 
-**ticket-captain** (ScoutBrief):
+**ticket-captain** (legacy, not built; ScoutBrief):
 
 > The question, or the spec for a scout pass · model and effort · return to.
 
@@ -46,7 +46,7 @@ Spec: K14, R4
 
 Spec: K14, H23
 
-**ticket-captain** (TicketCaptainBrief):
+**ticket-captain** (legacy, not built; TicketCaptainBrief):
 
 > Ticket and contract · branch, worktree and base · owned paths · gates · proof recipe · model and effort · return to. A sub-captain or a job ticket's captain is briefed from this template too, adding its job's skill from the table below.
 
@@ -60,7 +60,7 @@ Spec: K14, H23
 
 Spec: K14, K30
 
-**ticket-captain** (ResearchBrief):
+**ticket-captain** (legacy, not built; ResearchBrief):
 
 > The question, and the choice it waits on · model and effort · return to.
 
@@ -70,7 +70,7 @@ Spec: K14, K30
 
 Spec: R6
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
 
@@ -80,7 +80,7 @@ Spec: R6
 
 Spec: R3
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > Name the governing spec in each reviewer's brief, or say there is none.
 
@@ -90,6 +90,6 @@ Spec: R3
 
 Spec: R4
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.

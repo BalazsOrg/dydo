@@ -7,4 +7,10 @@ namespace DynaDocs.SkillBuild;
 public sealed record Phase(string Title, params Slot[] Slots)
 {
     public IReadOnlyList<Resource> Resources { get; init; } = [];
+
+    /// <summary>
+    /// The machine states a truth-checked skill's phase covers: a transition claim's line may sit in any
+    /// slot of a phase, or of its resources, that names the move's from-state or to-state.
+    /// </summary>
+    public IReadOnlyList<Enum> States { get; init; } = [];
 }

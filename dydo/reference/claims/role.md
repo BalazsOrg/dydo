@@ -32,7 +32,7 @@ Spec: H7, K11
 
 Spec: H1, H13, H23
 
-**ticket-captain** (Job):
+**ticket-captain** (legacy, not built; Job):
 
 > You are a ticket captain: you hold one ticket to its end, and a sub-captain is a ticket captain one level down.
 
@@ -86,7 +86,7 @@ Spec: H12
 
 > You are the officer above your captains; the chief of staff is yours.
 
-**ticket-captain** (Job):
+**ticket-captain** (legacy, not built; Job):
 
 > Your officer above is whoever dispatched you; you are the officer above your crew and sub-captains.
 
@@ -130,7 +130,7 @@ Spec: H7
 
 Spec: S6, S15, R8, R21
 
-**ticket-captain** (Job):
+**ticket-captain** (legacy, not built; Job):
 
 > You answer for the ticket's outcome, its contract, hops, review rounds, merge and record, while crew do the work: you cut it, staff fresh seats, rule on what they return and merge.
 
@@ -190,7 +190,7 @@ Spec: H7, S22
 
 Spec: H3, R14, R21, R31, N10, S22
 
-**ticket-captain** (Take):
+**ticket-captain** (legacy, not built; Take):
 
 > Your tools: Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.
 

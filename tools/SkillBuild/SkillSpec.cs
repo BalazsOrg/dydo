@@ -5,7 +5,8 @@ namespace DynaDocs.SkillBuild;
 /// the kebab-case of its id, and <see cref="PathsOf"/> holds every destination rule (K6, K12).
 /// A factory names its home; <c>with { … }</c> declares its slots. A skill's spine is its job
 /// paragraph, its numbered <see cref="Phases"/>, then "When things go wrong" linking its
-/// <see cref="Scenarios"/> (K9); a standard holds <see cref="Sections"/> only.
+/// <see cref="Scenarios"/> (K9); a standard holds <see cref="Sections"/> only. Two skills may share a
+/// name, and so a folder, only when one replaces the other through its <see cref="Ledger"/>.
 /// </summary>
 public sealed record SkillSpec
 {
@@ -49,6 +50,18 @@ public sealed record SkillSpec
     public IReadOnlyList<Resource> Scenarios { get; init; } = [];
 
     public IReadOnlyList<Slot> Sections { get; init; } = [];
+
+    /// <summary>
+    /// The actors this skill belongs to. Naming them makes the skill truth-checked (DYD-1295 317be5f7):
+    /// each of its lines names one of them as its reader, each claim it states carries its
+    /// <see cref="Truth"/>, each slot declares its shape, and every command it names exists.
+    /// </summary>
+    public IReadOnlyList<Enum> Readers { get; init; } = [];
+
+    /// <summary>The legacy skill this one replaces, each of its spine's lines accounted for.</summary>
+    public Ledger? Ledger { get; init; }
+
+    internal bool TruthChecked => Readers.Count > 0;
 
     internal string Name => Names.Kebab(Id);
 

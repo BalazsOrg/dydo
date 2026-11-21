@@ -2,25 +2,16 @@
 
 # A red gate after the merge
 
-## Red gate rerun once
+Rerun the red run once.
+Green on the rerun is a flake: the merge is done.
+Note the flake in one line, the red run and the green rerun, on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.
 
-Exits:
+**Red again is real:**
 
-- Green on the rerun is a flake: the hop is Done, and DYTEST counts the flake; it becomes a ticket only when it repeats.
-- Red again, after any merge, is real: revert at once, cancel the Merge hop with `reverted: <gate> red on <merge SHA>`, and file a CI-findings ticket.
+1. Revert the merge on the feature branch at once: `git revert -m 1 <merge SHA>`, pushed.
+2. Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings; where your work was not cut into steps, write that line on your own ticket, which stays open.
+3. Open the repair as steps, each blocked by the one before with Linear's `save_issue` (`blockedBy`): an Implement that fixes it on your ticket's branch and brings the reverted change back there, a Review scoped to the fix, and a new Merge, the cancelled one left as it is. Where your work was not cut into steps, open no Merge: your own ticket stays the record.
+4. Dispatch the Implement, and when it returns open a new PR for the branch, a draft again, by [Merging](merging.md): `dydo merge` undoes no revert, and calls the old PR already integrated.
+5. Dispatch the Review, its brief naming the new PR, and once it passes merge again, by [Merging](merging.md).
 
-## Merge reverted
-
-Exits:
-
-- Send an implementer to fix it on the ticket branch, then hold a fix-scoped round.
-
-## Fix and fix-scoped round
-
-Exits:
-
-- Re-land with `dydo merge`, which reverts the revert.
-
-## Save, resume and end
-
-- Save the merge SHA and the red gate on the Merge hop and resume from them; end resolved once the rerun is green or the re-land merges green, or escalated to your officer with what you can't resolve.
+Take a red you cannot get fixed to your officer, with the merge SHA and the gate.

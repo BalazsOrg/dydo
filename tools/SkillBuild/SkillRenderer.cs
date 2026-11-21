@@ -5,7 +5,10 @@ namespace DynaDocs.SkillBuild;
 /// checklist of its slots' lines followed by its resource links, then "When things go wrong" linking its
 /// scenarios; each resource by its slots, a dispatch template opening with its skills (K14); and
 /// <c>agents/openai.yaml</c> when the skill is explicit-only or sets its Codex metadata. A standard is
-/// one file of sections.
+/// one file of sections. A truth-checked skill keeps the same spine and files, and inside each phase and
+/// resource renders every slot in its declared shape (DYD-1295 519126ab): a paragraph, bullets, or steps
+/// numbered 1, 2, 3, its title a bold lead-in. Its phases list no resources: the line that uses a
+/// resource links it, and a phase resource no line of the spine links fails the build.
 /// </summary>
 internal static class SkillRenderer
 {
@@ -23,7 +26,7 @@ internal static class SkillRenderer
             return [Slots(new Page(skill.Frontmatter, skill.Title), skill.Sections, "##", layout).Done(skill.MainFile)];
         return [
             Spine(skill, layout),
-            .. skill.Phases.SelectMany(phase => phase.Resources).Select(resource => Resource(resource, layout)),
+            .. skill.Phases.SelectMany(phase => phase.Resources).Select(resource => skill.TruthChecked ? Shaped(skill, resource, layout) : Resource(resource, layout)),
             .. skill.Scenarios.Select(scenario => Scenario(skill, scenario, layout)),
             .. OpenAi(skill)
         ];
@@ -38,7 +41,10 @@ internal static class SkillRenderer
             page.Heading($"## {index + 1}. {phase.Title}");
             // K9 supersedes DR 064 §7's state outline as the spine's grouping (review r1 S5): no slot heading and
             // no move label, only the slots in order, a state's arrivals, then its nominal path, then its exits.
-            foreach (var line in phase.Slots.SelectMany(slot => layout.In(slot.Id))) page.Step(line);
+            if (skill.TruthChecked) Shaped(page, phase.Slots, layout);
+            else foreach (var line in phase.Slots.SelectMany(slot => layout.In(slot.Id))) page.Step(line);
+            // A truth-checked phase has no list of its resources: the line that uses one links it (DYD-1372 hop 2).
+            if (skill.TruthChecked) continue;
             if (phase.Resources.Count > 0) page.Heading("Resources:");
             foreach (var resource in phase.Resources) page.Link(resource.Title, FileOf(resource.Id));
         }
@@ -46,7 +52,18 @@ internal static class SkillRenderer
         if (opening.Count + skill.Scenarios.Count > 0) page.Heading("## " + WhenThingsGoWrong);
         foreach (var line in opening) page.State(line);
         foreach (var scenario in skill.Scenarios) page.Link(scenario.Title, FileOf(scenario.Id));
-        return page.Done(skill.MainFile);
+        var spine = page.Done(skill.MainFile);
+        if (skill.TruthChecked) LinksEachPhaseResource(skill, spine);
+        return spine;
+    }
+
+    // A resource no line links would be a file nothing in the spine leads to.
+    private static void LinksEachPhaseResource(SkillSpec skill, RenderedFile spine)
+    {
+        foreach (var file in skill.Phases.SelectMany(phase => phase.Resources).Select(resource => FileOf(resource.Id)))
+            if (!spine.Stated.Any(line => line.Text.Contains($"]({file})", StringComparison.Ordinal)))
+                throw new InvalidDataException(
+                    $"{skill.Name}: no line of the spine links {file}; a truth-checked skill links a phase's resource from the line that uses it");
     }
 
     private static RenderedFile Resource(Resource resource, SkillLayout layout)
@@ -64,11 +81,41 @@ internal static class SkillRenderer
 
     private static RenderedFile Scenario(SkillSpec skill, Resource scenario, SkillLayout layout)
     {
-        var file = Slots(Opened(scenario), scenario.Slots, "##", layout).Done(FileOf(scenario.Id));
+        var file = skill.TruthChecked ? Shaped(skill, scenario, layout) : Slots(Opened(scenario), scenario.Slots, "##", layout).Done(FileOf(scenario.Id));
         return file.LineCount < ScenarioLimit
             ? file
             : throw new InvalidDataException(
                 $"{skill.Name}: scenario {Names.Of(scenario.Id)} is {file.LineCount} lines; a scenario stays under {ScenarioLimit} lines");
+    }
+
+    // A truth-checked resource reads like a phase: its slots in their shapes, no section headings, so it stays one short read.
+    private static RenderedFile Shaped(SkillSpec skill, Resource resource, SkillLayout layout)
+    {
+        var file = Shaped(Opened(resource), resource.Slots, layout).Done(FileOf(resource.Id));
+        return file.LineCount <= ContentsThreshold
+            ? file
+            : throw new InvalidDataException(
+                $"{skill.Name}: resource {Names.Of(resource.Id)} is {file.LineCount} lines; a truth-checked resource stays within {ContentsThreshold} lines");
+    }
+
+    // DYD-1295 519126ab: each slot in its declared shape, its title a bold lead-in; a slot with no line to show is left out, lead-in and all.
+    private static Page Shaped(Page page, IEnumerable<Slot> slots, SkillLayout layout)
+    {
+        foreach (var slot in slots)
+        {
+            var lines = layout.In(slot.Id);
+            if (lines.Count == 0) continue;
+            page.Open(slot.Title, slot.Shape == SlotShape.Paragraph);
+            for (var index = 0; index < lines.Count; index++) Shaped(page, slot.Shape, index + 1, lines[index]);
+        }
+        return page;
+    }
+
+    private static void Shaped(Page page, SlotShape? shape, int number, Placed line)
+    {
+        if (shape == SlotShape.Paragraph) page.Prose(line);
+        else if (shape == SlotShape.Steps) page.Numbered(number, line);
+        else page.State(line);
     }
 
     // A dispatch template's first line names its skill set, each with a slash (K14).

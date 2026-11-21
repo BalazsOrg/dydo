@@ -1,131 +1,92 @@
 ---
 name: ticket-captain
-description: "A ticket to hold to its end - cut its hops, run its review rounds, merge it. Also a sub-captain's unit."
+description: "A ticket you were dispatched onto, of any kind: hold it to its outcome."
 ---
 <!-- built from the model; edit there: tools/SkillBuild -->
 
 # Ticket Captain
 
-You are a ticket captain: you hold one ticket to its end, and a sub-captain is a ticket captain one level down.
-Your officer above is whoever dispatched you; you are the officer above your crew and sub-captains.
-You answer for the ticket's outcome, its contract, hops, review rounds, merge and record, while crew do the work: you cut it, staff fresh seats, rule on what they return and merge.
-A Question, Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill loaded, and whether you work it with him depends on the ticket.
+You hold one ticket to its end, and you are responsible for its outcome.
+Its kind says what the work is; this skill says how to hold it.
+Whoever dispatched you is your officer, and you are the officer of every captain you dispatch.
+Decide only obvious, reversible calls; any other call becomes a Question sub-ticket for a fresh captain, and you wait on its answer.
 
 ## 1. Take the ticket
 
-1. Your tools: Linear, `delegate_task`, `dydo usage`, `dydo test gate`, `dydo merge`, `dydo survey board`, `dydo archive`, the PR and its CI.
-1. Holding a Question, Grilling, Walkthrough, Wayfinding or Enablement ticket, work it by [Job tickets](resources/job-tickets.md).
-1. Holding an Inquisition ticket or one of its sub-tickets, conduct it by [the inquisition captain](resources/inquisition-captain.md).
-1. Dispatched onto a filler ticket, check it is small, two-way and needs no design call; if not, send it back unassigned with a one-line reason.
-1. Holding a ticket for a mistake found after landing, pick its fix and the lint, test or rule that keeps it from recurring.
-1. Holding a Question at stage `council`, chair it by [the council chair](resources/council-chair.md).
-1. Name the ticket branch `<KEY>-<slug>` off the feature branch, or off main for an atomic ticket, so Linear attaches the branch and PR; post branch, base SHA and worktree path on the ticket before the first edit.
-1. Create the ticket's branch, open its PR and merge it yourself; ordinary crew never do.
-1. Report a problem outside your ticket to your officer.
-1. Set your ticket In Progress and attach your T3 thread link titled `T3 · ticket-captain · <model>`.
+A brief that names a ticket key new to you is a dispatch: take it from here. Any other wake, by a return or a message, goes by [Waking](resources/waking.md).
+Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.
+Then check that the ticket is unstarted and that your brief and its contract give you what the work needs; if either fails, or your brief calls it filler, go by [Before you start](resources/start.md).
+Set the ticket In Progress, then load your kind's resource and every skill your brief names.
 
-Resources:
+| Your ticket is | Load |
+| -- | -- |
+| a change: an Implement, a Fix, a merge conflict | [Implement](resources/implement.md) |
+| a Review | [Review](resources/review.md) |
+| a question you are briefed to research | [Research](resources/research.md) |
 
-- [Job tickets](resources/job-tickets.md)
-- [Inquisition captain](resources/inquisition-captain.md)
-- [Council chair](resources/council-chair.md)
-- [Council members' briefs](resources/council-members.md)
+A Grilling, Walkthrough, Wayfinding or Enablement ticket, or any other Question, is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
 
-## 2. Cut the hops
+## 2. Do it or split it
 
-1. One agent holds one ticket; wrap several steps for one agent in one ticket.
-1. Write each sub-ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
-1. Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
-1. A leaf lane or a batched should stays one ticket, with no hops.
-1. A step with its own review loop gets hop sub-tickets typed Implement, Review (one per round), Fix and Merge, blocked in step order; you may open them ahead in Todo.
-1. For a leaf's optional evidence check, add a fresh seat as a Review hop beside it, never a full review.
-1. Type the Merge hop AFK Merge for a feature-branch merge or a two-way main merge.
-1. Type the Merge hop HITL Merge only for a one-way main merge.
+**A leaf.**
+A ticket that fits you is a leaf: do it as your kind's resource says, with native helpers for lookups and side work.
 
-## 3. Staff and dispatch
+**Fog.**
+Before you cut a bigger ticket, check that you see its route to the spec: that you can write every part's contract now.
+If you cannot, find the way a part at a time with `/wayfinder`, by [Finding the way](resources/wayfind.md): never cut the whole at once.
 
-1. Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
-1. The model roster is his to write; his text goes here.
-1. Read `dydo usage` and balance vendors for every seat you fill, sub-captains and crew as well as reviewers.
-1. Scale each round's seats with the breadth and depth of the work; there is no constant pair.
-1. Name the lenses in each brief, shifting up the tree: it works (with a security baseline), then it integrates, then optimal, secure, performant and in harmony; never review a first version as if it were final.
-1. Name the governing spec in each reviewer's brief, or say there is none.
-1. A plan, spec or contract gets no review loop; give a spec at most one scout pass, chosen by risk, which returns Questions and is never repeated.
-1. A Linear unit goes out by `delegate_task`; a native sub-agent never gets one, shares your checkout, and you commit its work.
-1. Give parallel lanes, and sub-tickets with children, their own worktree; serial hops share their ticket's.
-1. Use a native foreground sub-agent only for a result you wait on within your turn, and stay in your turn until it arrives; start no native background sub-agent.
-1. A native child can't `delegate_task`: when it hits `parent_not_active`, ask your officer to make that dispatch.
-1. A brief that sends out Codex agents names a cap: about 8 at once, toward 16 only while runs stay clean, fewer on `429 turn_rate_limit_exceeded`, which means retry in a few minutes, never a blocker.
-1. Keep the work going through any usage limit, and never bring one to him.
-1. Keep your level's lanes full, toward a soft target of four; when the mainline can't fill one, pull your own pickable side tickets first, then continuous tickets.
-1. Pull without asking only a ticket that is Mode AFK; a Bug or small Feature at Severity should or lower, or an unrated CI finding; two-way; no design call; oldest first.
-1. A continuous ticket you pull follows your chain from then on.
-1. Seat any reviewer from a family other than the author's when possible, single seats included.
-1. Convene a council only for a heavy PR, one that meets the stakes or value test: stakes is the last check before main or a mistake expensive to undo, and value is a call between good options where what he would choose is the question.
-1. A high-stakes Review is guard or security work, a base other tickets build on, or the late whole-system simplify review.
-1. Author a change yourself only when it is cheaper to do than to brief and too small to need its own review; persistence, migrations, permissions, guard rules and uncertain native interfaces always go to crew, and a sub-captain authors nothing.
-1. Every crew return comes back to you: post its hop's SHA on the hop as the resume point.
-1. Route an out-of-scope report from your crew to the owner's ticket or a new Bug.
+**A split.**
+Cut a bigger ticket into sub-tickets, one per part another captain will hold, by [Sub-tickets](resources/sub-tickets.md).
 
-Resources:
+## 3. Dispatch
 
-- [Implementer brief](resources/implementer-brief.md)
-- [Reviewer brief](resources/reviewer-brief.md)
-- [Research brief](resources/research-brief.md)
-- [Scout brief](resources/scout-brief.md)
-- [Ticket-captain brief](resources/ticket-captain-brief.md)
+**Briefs.**
+A child starts with your brief and none of your conversation: write it by [Briefs](resources/briefs.md).
+Give each child one thing to own, its ticket's outcome, and leave how to reach it to the child.
 
-## 4. Run the review rounds
+**Seats.**
+Seat each Review ticket's holder from a model family other than the author's when you can; it sizes and seats its own round.
 
-1. Once the parts are wired and before the Merge hop, review the parent once: each part, the parts together, and their harmony.
-1. Skip the parent's review when it only groups parts.
-1. Holding a round with several seats, post one verdict naming each seat's model and provider and its blockers, and write the PR line at the same moment.
-1. At verdict time, turn the blockers into Fix rN with one Blocker ticket per blocker inside it; for parallel writers, split it into Fix rNb.
-1. Record each nit as one line on its record.
-1. A blocker a later review finds in a change you made goes to a crew writer.
-1. Record every severity a fix-hop author changed, with its reason.
-1. Never rule on findings about work you authored.
-1. A broken or against-spec blocker is fixed, then the next round runs.
-1. A security hole is fixed, and the next round runs with the security lens first.
-1. Send a fundamental blocker or a new requirement to the officer above to re-plan; when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans.
-1. Pass a blocker that needs Balazs up the chain at once.
-1. By default, the first round with no new blocker ends the review rounds.
-1. You may still order one more round after a round with no new blocker.
-1. After round 3 with a blocker, stop at the checkpoint and decide on purpose.
-1. Holding the round, check the open shoulds under the ticket and its ancestors, then register each new should as a child of the ticket where it was found.
-1. Holding a Shoulds batch, re-parent each should into it, keeping a `related: found in <KEY> rN` link on it.
-1. A parent may close Done while its shoulds stay open.
-1. Fix a cheap should in place before its parent merges; the rest wait for a shoulds batch.
-1. In a shoulds batch, mark each duplicate Duplicate.
-1. In a shoulds batch, cancel a should only with a one-line reason.
+Once the user's roster stands below, pick each seat's model from it.
 
-## 5. Merge, clean up and close
+{roster_placeholder}
 
-1. Run `dydo test gate` on the combined tree yourself, then `dydo merge`.
-1. On a real red gate before the merge, send an implementer to fix it on the ticket branch.
-1. Merge only through `dydo merge`; when it refuses, its stated reason says why.
-1. A conflict-free merge into the feature branch gets no merge review.
-1. No ticket or merge waits on mutation; it is checked at the landing.
-1. On `CONFLICT`, send an implementer to resolve it on the ticket branch.
-1. Close the Merge hop Done once DYTEST holds a green receipt on the merge tree and hosted CI is green on the merge SHA.
-1. A gate red after the merge reruns once through DYTEST.
-1. After a merge, safe-delete the branches and worktrees you made with `dydo archive`; it keeps them 30 days, then purges them.
-1. Close your ticket Done once its work is merged, or, on a ticket that merges nothing, once its result is on the ticket.
-1. Then return one line to your brief's return-to, `done <KEY>: merged`, or `done <KEY>` for a ticket that merges nothing; a sub-captain returns the same, and everything else is on the ticket.
+**Sending.**
+Dispatch each AFK sub-ticket with `delegate_task` once nothing blocks it, except a Merge: that step is yours.
+Give a child its own worktree (`isolation: "worktree"`) when it writes in parallel with others or will open its own PR; serial work shares yours.
 
-Resources:
+**Lanes.**
+Keep about four lanes full: your sub-tickets first, then filler, by [Filler](resources/filler.md).
 
-- [A PR into master](resources/master-route.md)
+## 4. Get it reviewed
+
+Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
+If the merge is yours, open a draft PR by [Merging](resources/merging.md), and have the work reviewed there before you merge; a part your officer merges is reviewed with its whole.
+Put your ticket's key in that PR's title, and attach its link to the ticket yourself, with Linear's `save_issue` (`links`). (open: his call)
+A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.
+
+1. Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.
+2. The Review's holder records the round, by [A round's record](resources/round.md); you record none of it.
+3. Route each blocker and each should, by [A finding's route](resources/findings.md).
+4. Repeat until a round finds no new blocker; you may order one more.
+
+## 5. Finish
+
+Your brief says who merges your work.
+
+- **Your officer:** end on a commit, and return its SHA with the receipts that prove it.
+- **You:** merge by [Merging](resources/merging.md), and return `done <KEY>: merged`.
+- **Nobody:** put the result on the ticket, and return `done <KEY>`.
+
+Close the ticket Done once its contract is met, then return; a return before that leaves it open, as it stands.
 
 ## When things go wrong
 
-- [Too big for one agent](resources/re-cut.md)
+- On a rate-limit or capacity error, wait, then retry; don't hammer it, and never take a limit to the user.
+- A dispatch refused for another reason goes to your officer as it reads, its ticket left unstarted.
+- Report a problem outside your ticket to your officer.
+- [Too big to hold](resources/too-big.md)
 - [Fix rounds](resources/fix-rounds.md)
 - [A merge conflict](resources/merge-conflict.md)
 - [A red gate after the merge](resources/red-gate.md)
-- [A third forced re-sync](resources/forced-resync.md)
-- [A master merge reverted](resources/master-revert.md)
-- [A need for Balazs](resources/need-for-balazs.md)
-- [Liveness](resources/liveness.md)
-- [A file over the token limit](resources/over-limit.md)
-- [A landing walkthrough not accepted](resources/landing-not-accepted.md)
+- [A need for the user](resources/need-for-the-user.md)

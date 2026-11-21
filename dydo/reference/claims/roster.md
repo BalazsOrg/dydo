@@ -16,7 +16,7 @@ Spec: R13
 
 > The model roster is his to write; his text goes here.
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > The model roster is his to write; his text goes here.
 
@@ -30,7 +30,7 @@ Spec: R14
 
 > Staff every seat by one fixed rule, never by judgement: from the roster's models in its tier whose vendor still has quota in `dydo usage`, skipping a vendor below 20% unless every vendor is, take the vendor that resets soonest, then more remaining quota, then roster order.
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > Read `dydo usage` and balance vendors for every seat you fill, sub-captains and crew as well as reviewers.
 
@@ -40,7 +40,7 @@ Spec: R14
 
 Spec: R12
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > Scale each round's seats with the breadth and depth of the work; there is no constant pair.
 

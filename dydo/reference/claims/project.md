@@ -68,7 +68,7 @@ Transition in A Project and its coordinator (`claims/statechart/project/Project.
 
 Spec: S14, H4
 
-**ticket-captain** (Wayfinding):
+**ticket-captain** (legacy, not built; Wayfinding):
 
 > Write and refine `Spec: <Project>`, the Project's main Linear document with C8's headings: problem, behaviour, decisions, out of scope, acceptance checks; a sub-feature that needs defining well gets its own spec, linked from it.
 
@@ -100,7 +100,7 @@ Spec: N12 DR 045 §8
 
 Spec: H9, H4
 
-**ticket-captain** (Wayfinding):
+**ticket-captain** (legacy, not built; Wayfinding):
 
 > When a release is planned, harvest the adopters' Agent friction queues and local patches.
 
@@ -148,7 +148,7 @@ Spec: H10
 
 > Fill each lane with a captain, toward a soft target of four, oldest first at each step: ready tickets the plan names (unblocked and contracted), then the open Shoulds batch, or a new one when shoulds wait outside a batch, then the survey's `pickable` side tickets, then continuous tickets, those blocking a ticket in your Project first.
 
-**ticket-captain** (Staffing, nominal):
+**ticket-captain** (legacy, not built; Staffing, nominal):
 
 > Keep your level's lanes full, toward a soft target of four; when the mainline can't fill one, pull your own pickable side tickets first, then continuous tickets.
 
@@ -162,7 +162,7 @@ Spec: H11
 
 > Pull a filler only when its labels already meet the pull rule: Mode AFK; Type Bug or Feature at Severity should or lower, or an unrated CI finding; unblocked; oldest first; its captain checks small, two-way and no design call.
 
-**ticket-captain** (Staffing, nominal):
+**ticket-captain** (legacy, not built; Staffing, nominal):
 
 > Pull without asking only a ticket that is Mode AFK; a Bug or small Feature at Severity should or lower, or an unrated CI finding; two-way; no design call; oldest first.
 
@@ -176,7 +176,7 @@ Spec: H8
 
 > A continuous ticket you pull follows your chain from then on.
 
-**ticket-captain** (Staffing, nominal):
+**ticket-captain** (legacy, not built; Staffing, nominal):
 
 > A continuous ticket you pull follows your chain from then on.
 
@@ -196,7 +196,7 @@ Spec: H11, H8
 
 Spec: S7
 
-**ticket-captain** (Cut, nominal):
+**ticket-captain** (legacy, not built; Cut, nominal):
 
 > One agent holds one ticket; wrap several steps for one agent in one ticket.
 
@@ -210,7 +210,7 @@ Spec: S7
 
 Spec: S15
 
-**ticket-captain** (Cut, nominal):
+**ticket-captain** (legacy, not built; Cut, nominal):
 
 > Write each sub-ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
 
@@ -224,7 +224,7 @@ Spec: S15
 
 Spec: S15, H4
 
-**ticket-captain** (Wayfinding):
+**ticket-captain** (legacy, not built; Wayfinding):
 
 > When the spec changes, reconcile the open contracts with it.
 
@@ -238,7 +238,7 @@ Spec: S15, H4
 
 Spec: N12 DR 063 §4, H5, S5
 
-**ticket-captain** (Wayfinding):
+**ticket-captain** (legacy, not built; Wayfinding):
 
 > Contract each `uncontracted` Backlog ticket, so it moves to Todo.
 
@@ -300,7 +300,7 @@ Spec: R30, H5
 
 > Open a ticket for each mistake found after landing and put a captain on it.
 
-**ticket-captain** (Take):
+**ticket-captain** (legacy, not built; Take):
 
 > Holding a ticket for a mistake found after landing, pick its fix and the lint, test or rule that keeps it from recurring.
 
@@ -314,7 +314,7 @@ Spec: H21
 
 > Keep the work going through any usage limit, and never bring one to him.
 
-**ticket-captain** (Dispatching):
+**ticket-captain** (legacy, not built; Dispatching):
 
 > Keep the work going through any usage limit, and never bring one to him.
 
@@ -332,6 +332,6 @@ Spec: H5, H2, H14, N12 DR 045 §5
 
 > Send every map call to a fresh captain on a Wayfinding ticket: refining the spec, reconciling the open contracts after it changes, re-charting as fog clears, contracting an `uncontracted` ticket, and the release harvest; open the ticket, wake its captain, and sequence what it files.
 
-**ticket-captain** (Wayfinding):
+**ticket-captain** (legacy, not built; Wayfinding):
 
 > Re-chart as fog clears and cut the tickets the map needs, deciding each cut the coordinator would otherwise face; file what you cut and return, and the coordinator only sequences it.

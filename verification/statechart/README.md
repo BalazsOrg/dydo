@@ -88,7 +88,14 @@ points to inject a forbidden shortcut (or permanent stopped-hop stuttering).
 It must catch the named property on every machine. These are oracle sensitivity
 checks, not claims that the generated model actually takes those steps, and
 not a substitute for the ordinary run. `--machine NAME` restricts a diagnostic
-run; the acceptance run includes all 31 machines.
+run; the acceptance run includes all 32 machines.
+
+The DYD-1372 captain prototype adds a separate diagnostic scope. Run the
+ordinary check with `--machine captain` and run the registered control with
+`--controls --machine captain`. The registered trace tries to finish with a
+Question still pending. The repair and escalation shortcuts use the same runner
+entry point in separate scratch runs. Their commands, results and model limits
+are in [the captain obligations](captain/obligations.md).
 
 ## Model observability owed to the candidate captain
 

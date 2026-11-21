@@ -28,7 +28,7 @@ Spec: R5
 
 > Report a problem outside your question to your officer.
 
-**ticket-captain** (Briefed, nominal):
+**ticket-captain** (legacy, not built; Briefed, nominal):
 
 > Report a problem outside your ticket to your officer.
 
@@ -42,6 +42,6 @@ Spec: R5
 
 > Route an out-of-scope report to the owner's ticket or a new Bug.
 
-**ticket-captain** (Returned, nominal):
+**ticket-captain** (legacy, not built; Returned, nominal):
 
 > Route an out-of-scope report from your crew to the owner's ticket or a new Bug.

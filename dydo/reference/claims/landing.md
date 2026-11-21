@@ -18,7 +18,7 @@ Transition in The landing (`claims/statechart/landing/Landing.tla`): Integrated 
 
 > Once every delivery ticket is merged, open the Inquisition ticket for a fresh root inquisition captain.
 
-**ticket-captain** (Mapped, arrival):
+**ticket-captain** (legacy, not built; Mapped, arrival):
 
 > As the root, staff the round yourself: the provider, the models and the swarm width, from the model roster and `dydo usage`; post the staffing on the coordinator's HITL queue as an FYI for him, riding in the next envoy.
 
@@ -70,7 +70,7 @@ Spec: N5, S8, S9, S11, S17
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Inquisition → RoundFixes, "the round finds a blocker or a should".
 
-**ticket-captain** (Inquisition, exit):
+**ticket-captain** (legacy, not built; Inquisition, exit):
 
 > Hold the round: post one verdict, stitched from the groups' results, naming each seat and its findings; turn its blockers into Fix rN, register its shoulds and put its nits on the round's nit ticket.
 
@@ -202,7 +202,7 @@ Spec: N6
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): Walkthrough → NotAccepted, "he does not accept: his findings become tickets in the same Project".
 
-**ticket-captain** (Walkthrough, exit):
+**ticket-captain** (legacy, not built; Walkthrough, exit):
 
 > When he does not accept the landing walkthrough, file each of his findings as a ticket in the same Project.
 
@@ -214,7 +214,7 @@ Spec: N6
 
 Transition in The landing (`claims/statechart/landing/Landing.tla`): NotAccepted → Integrated, "a fix captain re-cuts the branch; another landing follows".
 
-**ticket-captain** (NotAccepted, exit):
+**ticket-captain** (legacy, not built; NotAccepted, exit):
 
 > As its fix captain, re-cut the landing branch once the findings' tickets are merged; another landing follows.
 
@@ -252,7 +252,7 @@ Spec: S14, D11, N7, H4, H5
 
 > Once he accepts the landing candidate, open a Wayfinding ticket to move the spec's lasting parts and delete the spec and the plan files.
 
-**ticket-captain** (Wayfinding):
+**ticket-captain** (legacy, not built; Wayfinding):
 
 > At the landing, once he accepts, move the spec's lasting parts to DRs, the glossary, docs and the verification map, then delete the spec and the plan files.
 

@@ -8,7 +8,16 @@ namespace DynaDocs.SkillBuild;
 /// </summary>
 public sealed class Line(Enum skill, string text, Place place, Func<Claim[]>? also = null)
 {
+    /// <summary>
+    /// A line of a truth-checked skill names its <paramref name="reader"/>, the actor who acts on it
+    /// (DYD-1295 41a553f1): the build fails when the skill does not belong to that reader.
+    /// </summary>
+    public Line(Enum skill, Enum reader, string text, Place place, Func<Claim[]>? also = null) : this(skill, text, place, also) =>
+        Reader = reader;
+
     public Enum Skill { get; } = skill;
+
+    public Enum? Reader { get; }
 
     public string Text { get; } = text;
 

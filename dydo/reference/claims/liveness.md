@@ -26,7 +26,7 @@ Spec: S24, H12
 
 Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Live, "alive: the finding snoozes one window".
 
-**ticket-captain** (Quiet, exit):
+**ticket-captain** (legacy, not built; Quiet, exit):
 
 > A liveness finding on a hop that is alive: comment `liveness <UTC time>: alive`, and the finding snoozes one window.
 
@@ -46,7 +46,7 @@ Spec: S24, H12
 
 Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Live, "the record is behind: brought up to date".
 
-**ticket-captain** (Quiet, exit):
+**ticket-captain** (legacy, not built; Quiet, exit):
 
 > A liveness finding on a hop whose record is behind: comment `liveness <UTC time>: record behind` and bring the record up to date (Done, Fix rN, …).
 
@@ -66,7 +66,7 @@ Spec: S24, H12
 
 Transition in Liveness (`claims/statechart/liveness/Liveness.tla`): Quiet → Restarted, "stopped: the hop back to Todo".
 
-**ticket-captain** (Quiet, exit):
+**ticket-captain** (legacy, not built; Quiet, exit):
 
 > A liveness finding on a stopped hop: comment `liveness <UTC time>: stopped`, set the hop back to Todo, then resume the thread or dispatch a fresh agent; the old thread link stays as history.
 

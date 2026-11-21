@@ -14,7 +14,7 @@ Spec: S4
 
 Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): Cut → OneTicket, "the step has no review loop of its own".
 
-**ticket-captain** (Cut, exit):
+**ticket-captain** (legacy, not built; Cut, exit):
 
 > A leaf lane or a batched should stays one ticket, with no hops.
 
@@ -30,7 +30,7 @@ Spec: S3, S4
 
 Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): Cut → ImplementHop, "the step has its own review loop: its Implement hop starts".
 
-**ticket-captain** (Cut, exit):
+**ticket-captain** (legacy, not built; Cut, exit):
 
 > A step with its own review loop gets hop sub-tickets typed Implement, Review (one per round), Fix and Merge, blocked in step order; you may open them ahead in Todo.
 
@@ -46,7 +46,7 @@ Spec: S4, R6
 
 Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): OneTicket → EvidenceCheck, "the officer adds an evidence-check seat".
 
-**ticket-captain** (OneTicket, exit):
+**ticket-captain** (legacy, not built; OneTicket, exit):
 
 > For a leaf's optional evidence check, add a fresh seat as a Review hop beside it, never a full review.
 
@@ -118,7 +118,7 @@ Spec: S12
 
 Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): ReviewHop → AfkMerge, "PASS: the Merge hop, AFK into the feature branch or two-way into main".
 
-**ticket-captain** (ReviewHop, exit):
+**ticket-captain** (legacy, not built; ReviewHop, exit):
 
 > Type the Merge hop AFK Merge for a feature-branch merge or a two-way main merge.
 
@@ -138,7 +138,7 @@ Transition in A step's hops, by Type label (`claims/statechart/hops/Hops.tla`): 
 
 > Merge sub-tickets: an AFK Merge for a feature-branch merge or a two-way main merge, a HITL Merge only for a one-way one.
 
-**ticket-captain** (ReviewHop, exit):
+**ticket-captain** (legacy, not built; ReviewHop, exit):
 
 > Type the Merge hop HITL Merge only for a one-way main merge.
 
