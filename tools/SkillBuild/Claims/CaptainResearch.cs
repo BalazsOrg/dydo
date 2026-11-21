@@ -127,7 +127,8 @@ public static class CaptainResearch
         Spec = ["H16", "L18"],
         Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, \"Resolution: the answer, posted on close\"; it holds no label for a council yet."),
             Layer: "Where an unsettled call goes next is its route, and the council that takes most of them has no resource in this skill yet.",
-            Reason: "Options left unranked let whoever decides weigh them without the researcher's leaning.")
+            Reason: "Options left unranked let whoever decides weigh them without the researcher's leaning."),
+        Transition = new(CaptainState.Leaf, CaptainState.Returned, "a Question's research does not settle its call: it goes back to the officer unsettled, the Question still open")
     };
 
     private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>

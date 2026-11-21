@@ -101,8 +101,8 @@ public static class CaptainWay
             Reason: "A look that comes after the work is built can only order it rebuilt.")
     };
 
-    public static readonly Claim Reach = new("A HITL sub-ticket is a need for the user and goes up by that procedure.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.WayUser, 3, "Each HITL sub-ticket is a need for the user: it goes up by [A need for the user](need-for-the-user.md).")])
+    public static readonly Claim Reach = new("A HITL sub-ticket is a need for the user that already has its ticket, and goes up as it is by that procedure.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.WayUser, 3, "Each HITL sub-ticket is a need for the user that already has its ticket: it goes up as it is, by [A need for the user](need-for-the-user.md).")])
     {
         Spec = ["H16", "H15"],
         Truth = new(Evidence.Run(Wayfinder + "\"A HITL ticket only resolves through that live exchange; the agent never stands in for the user's side of it\". " +

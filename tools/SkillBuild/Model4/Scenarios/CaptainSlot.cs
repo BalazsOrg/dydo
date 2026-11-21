@@ -47,6 +47,7 @@ public enum CaptainSlot
     ResearchMap,
     ResearchSteps,
     ResearchQuestion,
+    StartChecks,
     BriefLead,
     BriefAll,
     BriefReview,

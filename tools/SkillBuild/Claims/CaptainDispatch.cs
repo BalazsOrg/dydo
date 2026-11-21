@@ -30,24 +30,26 @@ public static class CaptainDispatch
             Reason: "A brief that carries two outcomes, or a method, leaves the child a task to follow where it was meant to answer for a result.")
     };
 
-    public static readonly Claim Family = new("A reviewer comes from a model family other than the author's when possible, single seats included.", Me, [])
-    {
-        Spec = ["R15"],
-        Truth = new(Evidence.Tool("delegate_task: `target.model` and `target.providerInstanceId` seat a child on another provider's model."),
-            Layer: "T3 seats whichever model it is asked for; which family wrote the work is known only to the dispatcher.",
-            Reason: "Two models of one family tend to share the blind spot that let the fault through.")
-    };
-
-    public static readonly Claim Scale = new("A round's seats scale with the breadth and depth of the work; there is no constant pair.", Me,
+    public static readonly Claim Family = new("The captain of a change seats one agent a round, the Review ticket's holder, from a model family other than the author's when possible; " +
+                                              "that holder sizes its round and fills its seats.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Seats, 1,
-            "Scale each round's seats to the breadth and depth of the work, with no fixed pair, and seat reviewers from a model family other than the author's when you can, single seats included.",
-            () => [Family])
+            "Seat each Review ticket's holder from a model family other than the author's when you can; it sizes and seats its own round.")
     ])
     {
-        Spec = ["R12"],
+        Spec = ["R15", "R34"],
+        Truth = new(Evidence.Tool("delegate_task: `target.model` and `target.providerInstanceId` seat a child on another provider's model. " +
+                                  "His words (DYD-1372 aa5b445e): \"let's say there is a captain for the review, which makes sense (it will decide what kind of a review matrix to use and how to manage it's sub agents)\"."),
+            Layer: "T3 seats whichever model it is asked for; which family wrote the work is known only to the dispatcher.",
+            Reason: "Two models of one family tend to share the blind spot that let the fault through, and a round sized by the captain whose change it judges is no longer impartial.")
+    };
+
+    // Its line sits in the review resource, on the seating line of the review's captain (CaptainReviewSeats.Prefer).
+    public static readonly Claim Scale = new("A round's seats scale with the breadth and depth of the work; there is no constant pair.", Me, [])
+    {
+        Spec = ["R12", "R34"],
         Truth = new(Evidence.Run("DYD-1281's four rounds, read 2026-11-20, are one Review ticket each; nothing in Linear or T3 sets a number of seats."),
-            Layer: "No tool counts seats; how much review a piece of work deserves is its dispatcher's to size.",
+            Layer: "No tool counts seats; how much review a piece of work deserves is the review captain's to size.",
             Reason: "Review is expensive, and a pair on everything spends it where it finds nothing.")
     };
 
@@ -71,14 +73,36 @@ public static class CaptainDispatch
             Reason: "Quota that resets unused is lost, and a seat on a spent account stalls.")
     };
 
-    public static readonly Claim Send = new("A sub-ticket is dispatched with delegate_task.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.Sending, 1, "Dispatch each sub-ticket with `delegate_task`.")])
+    public static readonly Claim MergeOwn = new("A Merge sub-ticket is never dispatched: the merge is run by the captain whose merge it is.", Me, [])
     {
-        Spec = ["H3"],
-        Truth = new(Evidence.Tool(Task),
+        Spec = ["R21", "S6"],
+        Truth = new(Evidence.Run("Linear, team Dydo, read 2026-11-21: the Type group holds Merge, and DYD-1281's four Merge sub-tickets, DYD-1290 to DYD-1293, are Done under the labels Merge and AFK. " +
+                                 "This skill has no kind resource for a merge: `tools/SkillBuild/Model4/Carriers/CaptainCarrier.cs` gives its first phase Implement, Review and Research."),
+            Layer: "`delegate_task` starts a child on any ticket it is given, a Merge among them, and the child would find no recipe to load.",
+            Reason: "A second agent sent to run one command has to be briefed on the head, the tip and the gates that its sender already holds.")
+    };
+
+    public static readonly Claim Send = new("An AFK sub-ticket is dispatched with delegate_task; a HITL one is its cutter's to send up, never to staff.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.Sending, 1, "Dispatch each AFK sub-ticket with `delegate_task`, except a Merge: that step is yours.", () => [MergeOwn])])
+    {
+        Spec = ["H3", "H15"],
+        Truth = new(Evidence.Tool(Task + " Linear, team Dydo, labels read 2026-11-21: Mode AFK is \"an agent can produce the work without live human participation\", " +
+                                  "and HITL needs the user, whose side no dispatched agent can give (claim CaptainWay.Reach sends it up)."),
             Layer: "T3 offers a native sub-agent as well; only `delegate_task` gives the child a thread that outlives the dispatcher's turn.",
             Reason: "A captain needs a thread of its own, one its ticket can be resumed from."),
-        Transition = new(CaptainState.Split, CaptainState.Waiting, "each sub-ticket is dispatched")
+        Transition = new(CaptainState.Split, CaptainState.Waiting, "each AFK sub-ticket is dispatched, and a HITL one goes up")
+    };
+
+    public static readonly Claim Refused = new("A dispatch refused for a reason other than a limit goes to the dispatcher's officer as it reads, and its ticket stays unstarted.", Me,
+    [
+        At(Actor.TicketCaptain, SpinePart.WhenThingsGoWrong, 2,
+            "A dispatch refused for another reason goes to your officer as it reads, its ticket left unstarted.")
+    ])
+    {
+        Spec = ["H3", "H12"],
+        Truth = new(Evidence.Tool("delegate_task: `runtimeMode`, \"Above yours is rejected.\"; `orchestrator_capabilities` lists the providers and models a child can run on, so a dispatch onto any other is turned down."),
+            Layer: "T3 tells every agent of a provider or model it cannot reach to say so and never to switch unasked; it names nobody to tell, and a captain's one address is its officer.",
+            Reason: "A child that never began leaves a lane empty while its card looks merely queued, and nobody above can tell the two apart.")
     };
 
     public static readonly Claim OwnWorktree = new("A child that writes in parallel or opens its own PR gets its own worktree; serial work shares the dispatcher's.", Me,

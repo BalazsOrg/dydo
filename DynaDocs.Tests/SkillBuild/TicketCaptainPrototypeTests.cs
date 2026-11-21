@@ -269,10 +269,12 @@ public partial class TicketCaptainPrototypeTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 r1b P2 H11 a filler ticket is checked before it is set In Progress, and the same line says what state a failed one goes back in")]
+    [Trait("Job", "contract: DYD-1372 r1b P2 H11 a filler ticket is checked before it is set In Progress: the line that sends it to its check stands above the start, and the check's line says what state a failed one goes back in")]
     public void FillerCheck_ComesBeforeTheStart()
     {
-        Assert.True(LineOf(Captain.Filler).Line < LineOf(Captain.Start).Line, "the spine sets the ticket In Progress before its filler check");
+        var check = Stated.Single(line => line.Path == Folder + "SKILL.md" && line.Text.Contains($"]({LineOf(Captain.Filler).Path[Folder.Length..]})", StringComparison.Ordinal));
+
+        Assert.True(check.Line < LineOf(Captain.Start).Line, "the spine sets the ticket In Progress before its filler check");
         Assert.Equal(LineOf(Captain.Filler), LineOf(Captain.FillerBack));
     }
 

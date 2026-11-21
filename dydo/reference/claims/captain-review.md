@@ -158,19 +158,19 @@ Reason: Early enough that nothing is built on a fault, late enough that the whol
 
 ## Record
 
-`claim:CaptainReview.Record`: A lone reviewer records its own round; a round of several seats is recorded by the officer that holds it.
+`claim:CaptainReview.Record`: A round is recorded by the holder of its Review ticket, alone or with seats; the captain that dispatched the ticket records none of it.
 
-Spec: S8
+Spec: S8, R33
 
-Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3. Each round's verdict is on its own Review ticket. His words (DYD-1372 aa5b445e): the review has a captain, which "will decide what kind of a review matrix to use and how to manage it's sub agents".
 
-Layer: Each seat returns its findings to its dispatcher alone, so nobody else can put them together.
+Layer: Each seat returns its findings to the review's captain alone, so the captain of the change never has them to put together.
 
-Reason: One verdict per round, however many seats looked.
+Reason: One verdict per round, however many seats looked, and none of it written by a captain with work of its own under that verdict.
 
 **ticket-captain** (Rounds; read by TicketCaptain):
 
-> A lone reviewer records its own round; a round of several seats is yours to record, by A round's record (`resources/round.md`).
+> The Review's holder records the round, by A round's record (`resources/round.md`); you record none of it.
 
 ## Route
 

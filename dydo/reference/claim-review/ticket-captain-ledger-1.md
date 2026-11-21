@@ -20,10 +20,6 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > You answer for the ticket's outcome, its contract, hops, review rounds, merge and record, while crew do the work: you cut it, staff fresh seats, rule on what they return and merge.
 
-`claim:JobTickets.Hold`, kept in `claim:Captain.Jobs`, `claim:CaptainResearch.Question`
+`claim:JobTickets.Hold`, kept in `claim:Captain.Jobs`, `claim:Captain.Stage`, `claim:CaptainResearch.Question`
 
 > A Question, Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill loaded, and whether you work it with him depends on the ticket.
-
-A clause of it, deferred: A research Question is held by claim CaptainResearch.Question; at stage `council` or `his-call` its job skill belongs to job tickets, not rebuilt in DYD-1372.
-
-> A Question

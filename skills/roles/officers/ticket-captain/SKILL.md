@@ -14,16 +14,16 @@ Decide only obvious, reversible calls; any other call becomes a Question sub-tic
 ## 1. Take the ticket
 
 Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.
-If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
+Then check that the ticket is unstarted and that your brief and its contract give you what the work needs; if either fails, or your brief calls it filler, go by [Before you start](resources/start.md).
 Set the ticket In Progress, then load your kind's resource and every skill your brief names.
 
 | Your ticket is | Load |
 | -- | -- |
 | a change: an Implement, a Fix, a merge conflict | [Implement](resources/implement.md) |
 | a Review | [Review](resources/review.md) |
-| a question a choice waits on | [Research](resources/research.md) |
+| a question you are briefed to research | [Research](resources/research.md) |
 
-A Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
+A Grilling, Walkthrough, Wayfinding or Enablement ticket, or any other Question, is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
 
 ## 2. Do it or split it
 
@@ -37,7 +37,6 @@ If you cannot, load `/wayfinder` and find the way a part at a time, by [Finding 
 
 **A split.**
 Cut a bigger ticket into sub-tickets, one per part another captain will hold, by [Sub-tickets](resources/sub-tickets.md).
-Once you split, write a change yourself only when it is cheaper than briefing it and too small to need review.
 
 ## 3. Dispatch
 
@@ -46,14 +45,14 @@ A child starts with your brief and none of your conversation: write it by [Brief
 Give each child one thing to own, its ticket's outcome, and leave how to reach it to the child.
 
 **Seats.**
-Scale each round's seats to the breadth and depth of the work, with no fixed pair, and seat reviewers from a model family other than the author's when you can, single seats included.
+Seat each Review ticket's holder from a model family other than the author's when you can; it sizes and seats its own round.
 
 Once the user's roster stands below, pick each seat's model from it.
 
 {roster_placeholder}
 
 **Sending.**
-Dispatch each sub-ticket with `delegate_task`.
+Dispatch each AFK sub-ticket with `delegate_task`, except a Merge: that step is yours.
 Give a child its own worktree (`isolation: "worktree"`) when it writes in parallel with others or will open its own PR; serial work shares yours.
 
 **Lanes.**
@@ -70,7 +69,7 @@ Put your ticket's key in that PR's title, and attach its link to the ticket your
 A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.
 
 1. Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.
-2. A lone reviewer records its own round; a round of several seats is yours to record, by [A round's record](resources/round.md).
+2. The Review's holder records the round, by [A round's record](resources/round.md); you record none of it.
 3. Route each blocker and each should, by [A finding's route](resources/findings.md).
 4. Repeat until a round finds no new blocker; you may order one more.
 
@@ -87,6 +86,7 @@ Close the ticket Done once its contract is met, then return; a return before tha
 ## When things go wrong
 
 - On a rate-limit or capacity error, wait, then retry; don't hammer it, and never take a limit to the user.
+- A dispatch refused for another reason goes to your officer as it reads, its ticket left unstarted.
 - Report a problem outside your ticket to your officer.
 - [Too big to hold](resources/too-big.md)
 - [Fix rounds](resources/fix-rounds.md)

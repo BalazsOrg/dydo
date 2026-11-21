@@ -23,7 +23,7 @@ public class TicketCaptainMachineTests
 
         Assert.NotEmpty(claims);
         Assert.All(claims, claim => Assert.Contains("\"claim:Captain", claim));
-        Assert.All(new[] { "Taken", "Leaf", "Wayfinding", "Split", "Waiting", "InReview", "Clear", "Fixing", "Checkpoint", "Repairing", "Question", "Finishing", "Done", "Returned" },
+        Assert.All(new[] { "Dispatched", "Taken", "Leaf", "Wayfinding", "Split", "Waiting", "InReview", "Clear", "Fixing", "Checkpoint", "Repairing", "Question", "Finishing", "Done", "Returned" },
             state => Assert.Contains($"\"{state}\"", Arrows));
         Assert.Contains("VARIABLES state, round", Module);
     }
@@ -79,11 +79,12 @@ public class TicketCaptainMachineTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 r1b P2 H11 a filler ticket that fails its check goes back from Taken, before anything else is done with it")]
-    public void CaptainMachine_ReturnsAFailedFillerFromTaken()
+    [Trait("Job", "contract: DYD-1372 r1b P2 H11 a filler ticket that fails its check goes back before it is taken: from the initial state, and never once it is In Progress")]
+    public void CaptainMachine_ReturnsAFailedFillerBeforeItIsTaken()
     {
-        Assert.Contains(Arrow("Captain.FillerBack", "Taken", "Returned"), Arrows);
-        Assert.Equal(1, Between("Taken", "Returned"));
+        Assert.Contains(Arrow("Captain.FillerBack", "Dispatched", "Returned"), Arrows);
+        Assert.Contains("\"initial\": \"Dispatched\"", Arrows);
+        Assert.Equal(0, Between("Taken", "Returned"));
     }
 
     [Fact]

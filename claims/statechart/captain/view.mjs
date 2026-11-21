@@ -1,6 +1,7 @@
 // built from the model; edit there: tools/SkillBuild
 const states = {
-  "Taken": "Taken · S6, S15",
+  "Dispatched": "Dispatched onto a ticket, not yet started · H3, S15",
+  "Taken": "Taken: In Progress, its kind known · S6, K30",
   "Leaf": "Working it as a leaf · S2, S7",
   "Wayfinding": "Finding the way to the spec · H10, H23",
   "Split": "Split into sub-tickets · S1, S15",
@@ -17,10 +18,12 @@ const states = {
 };
 const steps = {
   "Captain_FillerBack": "a filler ticket fails its check: it goes back unstarted and unassigned · H11",
-  "CaptainDispatch_Send": "each sub-ticket is dispatched · H3",
+  "Captain_Start": "the ticket is set In Progress and its kind's resource loaded: its result is a change, or a verdict or an answer · S6",
+  "CaptainDispatch_Send": "each AFK sub-ticket is dispatched, and a HITL one goes up · H3, H15",
   "CaptainFinish_Close": "the contract is met: the ticket closes Done · S6",
   "CaptainFinish_HandOver": "the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer · R32, R5",
   "CaptainFinish_Return": "one line goes back to the officer · H23, K14",
+  "CaptainIntake_Held": "the ticket is already started or closed and the brief names no take-over: the dispatch goes back as a conflict · S7, S6",
   "CaptainMergeTrouble_Hunks": "the repair is in: a fresh review of what it changed · R19",
   "CaptainMergeTrouble_Lost": "a red gate that cannot be fixed goes to the officer · K9",
   "CaptainMergeTrouble_Stuck": "a conflict that cannot be resolved goes to the officer · K9",
@@ -28,6 +31,7 @@ const steps = {
   "CaptainNeed_Answered": "the answer is on the Question ticket · H16",
   "CaptainNeed_Ask": "a call that is not obvious: a Question sub-ticket · H16, S10",
   "CaptainNeed_Up": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer · H16, H12, S10",
+  "CaptainResearch_Question": "a Question's research does not settle its call: it goes back to the officer unsettled, the Question still open · H16, L18",
   "CaptainReview_Clean": "no further round is ordered: the review rounds end · R8",
   "CaptainReview_Cleared": "the round finds no new blocker · R8, R11",
   "CaptainReview_Fix": "a round other than the third returns a blocker: a Fix ticket · R9, S9",

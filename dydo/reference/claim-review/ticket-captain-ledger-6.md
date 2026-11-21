@@ -16,7 +16,7 @@ A clause of it, dropped, it fails Verify: The CLI has no such command (71e649c0)
 
 > `dydo test gate`
 
-`claim:FeatureMerge.PreRed`, kept in `claim:CaptainMerging.Broken`
+`claim:FeatureMerge.PreRed`, kept in `claim:CaptainMerging.Broken`, `claim:CaptainMerging.Repaired`
 
 > On a real red gate before the merge, send an implementer to fix it on the ticket branch.
 

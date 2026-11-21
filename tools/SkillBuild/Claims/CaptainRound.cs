@@ -1,11 +1,11 @@
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// The ticket-captain prototype's round record (DYD-1372): what whoever holds a review round writes
-/// down when it returns, a lone reviewer or the captain of a round of several seats. The verdict is
-/// what the seats found; recording it judges nothing (DYD-1295 2119cd65). What then becomes of a
-/// should and of a severity a fixer changed is the act of the captain running the rounds, whoever
-/// recorded the round, so those lines sit where that captain reads: a finding's route and fix rounds.
+/// The ticket-captain prototype's round record (DYD-1372): what the holder of a Review ticket writes
+/// down for its round, alone or with seats; the captain of the change records none of it (gap hunt 1,
+/// G3; spec R33). A PASS goes into a PR only where the candidate is in one (G4). What then becomes of a
+/// should and of a severity a fixer changed is the act of the captain running the rounds, so those
+/// lines sit where that captain reads: a finding's route and fix rounds.
 /// </summary>
 public static class CaptainRound
 {
@@ -16,7 +16,7 @@ public static class CaptainRound
     public static readonly Claim Verdict = new("The verdict lives on the Review ticket: PASS or FAIL, lenses, seats and shoulds; FAIL means at least one blocker.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 1,
-            "Post one verdict on the Review ticket: PASS or FAIL, the lenses, each seat's model and provider with its blockers, and the shoulds. FAIL means at least one blocker.")
+            "Post one verdict on your Review ticket: PASS or FAIL, the lenses, each seat's model and provider with its blockers, and the shoulds. FAIL means at least one blocker.")
     ])
     {
         Spec = ["R17", "S8", "R11"],
@@ -25,10 +25,21 @@ public static class CaptainRound
             Reason: "The next round, and whoever resumes the ticket, read the verdict there.")
     };
 
-    public static readonly Claim PrLine = new("A PASS is written, with its verdict, as one line in the PR body's Independent review section.", Me,
+    public static readonly Claim NoPr = new("A round on a candidate that is in no PR, a leaf's evidence check among them, is recorded on its Review ticket alone.", Me, [])
+    {
+        Spec = ["S4", "R17"],
+        Truth = new(Evidence.Code("Commands/PrReadyCommand.cs"),
+            Layer: "`dydo merge` and `dydo pr-ready` read a PASS from a PR's body and from nowhere else, and a leaf whose officer merges has no PR of its own.",
+            Reason: "A reviewer ordered to edit a body that does not exist stalls, or opens a PR nobody asked for.")
+    };
+
+    public static readonly Claim PrLine = new("A PASS of a candidate that is in a PR is written, with its verdict, as one line in that PR body's Independent review section.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 2,
-            "On a PASS, add its line at once to the PR body's `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then the Review ticket's key.")
+            "On a PASS of a candidate that is in a PR, the one your brief names, add its line at once to that PR's body, under `## Independent review`: " +
+            "`PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then your Review ticket's key. " +
+            "A candidate in no PR, as at a leaf's evidence check, has its verdict on your Review ticket alone.",
+            () => [NoPr])
     ])
     {
         Spec = ["R17"],
@@ -38,7 +49,7 @@ public static class CaptainRound
     };
 
     public static readonly Claim Nits = new("A nit is one line on its record.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 3, "Record each nit as one line on the Review ticket.")])
+        [At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 3, "Record each nit as one line on your Review ticket.")])
     {
         Spec = ["S11"],
         Truth = new(Evidence.Run(Labels + " The nit label is described as only for an inquisition's nit ticket: \"a review nit stays one line on its ticket's record\"."),
@@ -49,7 +60,7 @@ public static class CaptainRound
     public static readonly Claim Shoulds = new("A should is filed as a child of the ticket where it was found, after a check for a duplicate under that ticket and its ancestors.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 4,
-            "File each should as a child of the ticket where it was found, after checking the open shoulds there and above for a duplicate.")
+            "File each should as a child of the ticket whose work you judged, after checking the open shoulds there and above for a duplicate.")
     ])
     {
         Spec = ["S17"],

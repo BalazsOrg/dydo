@@ -69,17 +69,37 @@ public static class CaptainBriefs
             Reason: "Two writers with stated paths cannot overwrite each other.")
     };
 
-    public static readonly Claim Asked = new("A question's brief names the question and the choice that waits on it.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 6, "For a question: the question, and the choice that waits on it.")])
+    public static readonly Claim Asked = new("A question's brief names the question and the choice that waits on it, and says that its holder is sent to research it.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 6, "For a question: the question, the choice that waits on it, and that you send the child to research it.")])
     {
-        Spec = ["K14"],
-        Truth = new(Evidence.Tool("delegate_task: \"Start one child agent with only `task`. No parent history.\""),
-            Layer: "The child cannot see the conversation the question came out of.",
-            Reason: "Knowing the choice tells the researcher what would count as an answer.")
+        Spec = ["K14", "H23"],
+        Truth = new(Evidence.Tool("delegate_task: \"Start one child agent with only `task`. No parent history.\" Linear, team Dydo, labels read 2026-11-21: no label names a Question's stage, " +
+                                  "so the brief is where its holder learns that it holds one to research."),
+            Layer: "The child cannot see the conversation the question came out of, and its ticket does not say how the question is to be settled.",
+            Reason: "Knowing the choice tells the researcher what would count as an answer, and being told to research sorts it to the right recipe at intake.")
+    };
+
+    public static readonly Claim TakeOver = new("A brief says when its child takes over a ticket another agent started, and names the commit it resumes from.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 7, "Whether the child takes over a ticket another agent started, and then the commit it resumes from.")])
+    {
+        Spec = ["S7", "H3"],
+        Truth = new(Evidence.Run("This fix's writer got such a brief (DYD-1372 phase 1, fix g1a), on a ticket already In Progress: \"You are a fresh writer: the writer who built this part ran out of context " +
+                                 "and started nothing on this fix. Start from the files.\", with the checkout's head, `e7bbb2b0`."),
+            Layer: "A ticket shows that it was started and nothing of who holds it, so a fresh agent cannot tell a hand-over from a second dispatch.",
+            Reason: "Without the word, an agent sent to resume dead work sends the dispatch back as a conflict, as it should.")
+    };
+
+    public static readonly Claim Author = new("A review brief names the model family that wrote the candidate.", Me, [])
+    {
+        Spec = ["R15", "R34"],
+        Truth = new(Evidence.Tool("delegate_task: `target.model` and `target.providerInstanceId` are set by the dispatcher, so it knows which family it seated as writer. " +
+                                  "Linear, DYD-1372 read 2026-11-21: the ticket shows no assignee, no delegate and no thread, so nothing on it names the writer's model."),
+            Layer: "A reviewer is handed a SHA and a ticket, and neither names the model that wrote the work.",
+            Reason: "A review captain left to guess the writer's family fills its seats blind, and may seat that same family.")
     };
 
     public static readonly Claim Candidate = new("A review brief names the candidate by its SHA.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefReview, 1, "The candidate, by its SHA.")])
+        [At(Actor.TicketCaptain, CaptainSlot.BriefReview, 1, "The candidate, by its SHA, and the model family that wrote it.", () => [Author])])
     {
         Spec = ["K14", "R17"],
         Truth = new(Evidence.Code("Services/Merge/PullRequestMerge.cs"),
@@ -87,8 +107,17 @@ public static class CaptainBriefs
             Reason: "A verdict on a moving branch is a verdict on nothing.")
     };
 
+    public static readonly Claim Pr = new("A review brief names the PR the candidate is in and its base, or says that the candidate has no PR.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.BriefReview, 2, "The PR the candidate is in, by its number, and the base's SHA; or that it has no PR, as at a leaf's evidence check.")])
+    {
+        Spec = ["R17", "K14"],
+        Truth = new(Evidence.Code("Services/Merge/IndependentReview.cs"),
+            Layer: "`dydo merge` reads a PASS only from the body of the PR it is given, and a reviewer handed a bare SHA cannot tell which PR that is, or whether there is one.",
+            Reason: "A reviewer that knows there is no PR writes its PASS where it will be read, and never hunts for a body to edit.")
+    };
+
     public static readonly Claim Governing = new("A review brief names the governing spec, or says there is none.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefReview, 2, "The governing spec, or that there is none.")])
+        [At(Actor.TicketCaptain, CaptainSlot.BriefReview, 3, "The governing spec, or that there is none.")])
     {
         Spec = ["R3"],
         Truth = new(Evidence.Run(OwnBrief + "it named the approved spec's file and the sections to read."),
@@ -107,7 +136,7 @@ public static class CaptainBriefs
 
     public static readonly Claim Level = new("A review brief names the level.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.BriefReview, 3,
+        At(Actor.TicketCaptain, CaptainSlot.BriefReview, 4,
             "The level: a leaf's evidence check, a ticket review, or a feature or Milestone review. " +
             "A leaf gets at most the check, never a full review: open the check as a Review ticket of its own beside the leaf's, for a fresh seat.",
             () => [LeafCheck])
@@ -121,7 +150,7 @@ public static class CaptainBriefs
 
     public static readonly Claim Lenses = new("A review brief names the lenses, which shift up the tree; a first version is never reviewed as final.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.BriefReview, 4,
+        At(Actor.TicketCaptain, CaptainSlot.BriefReview, 5,
             "The lenses, which rise up the tree: it works, with a security baseline; then it integrates; then it is optimal, secure, performant and in harmony. A first version never gets a final one's lenses.")
     ])
     {

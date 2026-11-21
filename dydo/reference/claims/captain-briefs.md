@@ -104,19 +104,51 @@ Reason: Two writers with stated paths cannot overwrite each other.
 
 ## Asked
 
-`claim:CaptainBriefs.Asked`: A question's brief names the question and the choice that waits on it.
+`claim:CaptainBriefs.Asked`: A question's brief names the question and the choice that waits on it, and says that its holder is sent to research it.
 
-Spec: K14
+Spec: K14, H23
 
-Evidence (tool): delegate_task: "Start one child agent with only `task`. No parent history."
+Evidence (tool): delegate_task: "Start one child agent with only `task`. No parent history." Linear, team Dydo, labels read 2026-11-21: no label names a Question's stage, so the brief is where its holder learns that it holds one to research.
 
-Layer: The child cannot see the conversation the question came out of.
+Layer: The child cannot see the conversation the question came out of, and its ticket does not say how the question is to be settled.
 
-Reason: Knowing the choice tells the researcher what would count as an answer.
+Reason: Knowing the choice tells the researcher what would count as an answer, and being told to research sorts it to the right recipe at intake.
 
 **ticket-captain** (BriefAll; read by TicketCaptain):
 
-> For a question: the question, and the choice that waits on it.
+> For a question: the question, the choice that waits on it, and that you send the child to research it.
+
+## TakeOver
+
+`claim:CaptainBriefs.TakeOver`: A brief says when its child takes over a ticket another agent started, and names the commit it resumes from.
+
+Spec: S7, H3
+
+Evidence (run): This fix's writer got such a brief (DYD-1372 phase 1, fix g1a), on a ticket already In Progress: "You are a fresh writer: the writer who built this part ran out of context and started nothing on this fix. Start from the files.", with the checkout's head, `e7bbb2b0`.
+
+Layer: A ticket shows that it was started and nothing of who holds it, so a fresh agent cannot tell a hand-over from a second dispatch.
+
+Reason: Without the word, an agent sent to resume dead work sends the dispatch back as a conflict, as it should.
+
+**ticket-captain** (BriefAll; read by TicketCaptain):
+
+> Whether the child takes over a ticket another agent started, and then the commit it resumes from.
+
+## Author
+
+`claim:CaptainBriefs.Author`: A review brief names the model family that wrote the candidate.
+
+Spec: R15, R34
+
+Evidence (tool): delegate_task: `target.model` and `target.providerInstanceId` are set by the dispatcher, so it knows which family it seated as writer. Linear, DYD-1372 read 2026-11-21: the ticket shows no assignee, no delegate and no thread, so nothing on it names the writer's model.
+
+Layer: A reviewer is handed a SHA and a ticket, and neither names the model that wrote the work.
+
+Reason: A review captain left to guess the writer's family fills its seats blind, and may seat that same family.
+
+**ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Candidate):
+
+> The candidate, by its SHA, and the model family that wrote it.
 
 ## Candidate
 
@@ -132,7 +164,23 @@ Reason: A verdict on a moving branch is a verdict on nothing.
 
 **ticket-captain** (BriefReview; read by TicketCaptain):
 
-> The candidate, by its SHA.
+> The candidate, by its SHA, and the model family that wrote it.
+
+## Pr
+
+`claim:CaptainBriefs.Pr`: A review brief names the PR the candidate is in and its base, or says that the candidate has no PR.
+
+Spec: R17, K14
+
+Evidence (code): `Services/Merge/IndependentReview.cs`
+
+Layer: `dydo merge` reads a PASS only from the body of the PR it is given, and a reviewer handed a bare SHA cannot tell which PR that is, or whether there is one.
+
+Reason: A reviewer that knows there is no PR writes its PASS where it will be read, and never hunts for a body to edit.
+
+**ticket-captain** (BriefReview; read by TicketCaptain):
+
+> The PR the candidate is in, by its number, and the base's SHA; or that it has no PR, as at a leaf's evidence check.
 
 ## Governing
 

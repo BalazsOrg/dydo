@@ -68,15 +68,15 @@ Reason: Research can settle a call and can never produce a token, so the two tak
 
 **ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Ask):
 
-> Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call. A child's need that is already an Enablement, or a call only the user can make, keeps the sub-ticket the child opened.
+> A need that already has its ticket keeps it, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
 ## Carried
 
-`claim:CaptainNeed.Carried`: A child's Enablement, or its call only the user can make, goes up as the one sub-ticket the child opened.
+`claim:CaptainNeed.Carried`: A need that already has its ticket goes up as that ticket, with its blocking relations: a HITL job sub-ticket its captain cut, a Grilling or a Walkthrough among them, or the sub-ticket a child opened for its Enablement or its call only the user can make.
 
-Spec: H18, R9
+Spec: H18, H15, H23
 
-Evidence (run): `skills/roles/officers/coordinator/SKILL.md`, the coordinator's skill on this branch, not yet truth-checked, queues the tickets themselves: it parents "its member Questions and Enablements" under one wrapper, each carrying "the blocking relations of the work that waits". The user kept this process: spec section 6, question 1, and project update 9099daa1, quoted in claim CaptainNeed.Never.
+Evidence (run): `skills/roles/officers/coordinator/SKILL.md`, the coordinator's skill on this branch, not yet truth-checked, queues the tickets themselves: it parents "its member Questions and Enablements" under one wrapper, each carrying "the blocking relations of the work that waits", and takes a Grilling among them: "A need for him arrives on your HITL queue as its own HITL ticket". Spec H23 has the envoy dispatched "onto this same ticket", with no second one opened. The user kept this process: spec section 6, question 1, and project update 9099daa1, quoted in claim CaptainNeed.Never.
 
 Layer: Linear takes a second ticket for the same token at every level it passes.
 
@@ -84,7 +84,7 @@ Reason: One ticket keeps every block on it in a single place, where whoever rank
 
 **ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Ask):
 
-> Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call. A child's need that is already an Enablement, or a call only the user can make, keeps the sub-ticket the child opened.
+> A need that already has its ticket keeps it, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
 ## Ask
 
@@ -102,7 +102,7 @@ Reason: One open question holds up one part, never the whole ticket.
 
 **ticket-captain** (NeedSteps; read by TicketCaptain):
 
-> Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call. A child's need that is already an Enablement, or a call only the user can make, keeps the sub-ticket the child opened.
+> A need that already has its ticket keeps it, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
 ## Skip
 

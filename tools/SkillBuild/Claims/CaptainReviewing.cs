@@ -185,7 +185,7 @@ public static class CaptainReviewing
     };
 
     public static readonly Claim Resolution = new("A conflict's resolution is judged by its hunks, and its PASS names the new head.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 7, "Asked to judge a conflict's resolution: judge its hunks, the only new work on the branch, and name the new head in your PASS.")])
+        [At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 8, "Asked to judge a conflict's resolution: judge its hunks, the only new work on the branch, and name the new head in your PASS.")])
     {
         Spec = ["R19"],
         Truth = new(Evidence.Code("Services/Merge/PullRequestMerge.cs"),

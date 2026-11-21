@@ -8,7 +8,8 @@ namespace DynaDocs.SkillBuild;
 /// its first phase links, the resources a later phase's line links, and one scenario per failure.
 /// A block only some captains reach sits in the resource its line links, which is how the spine
 /// stays within half the legacy spine's size without dropping a fact: what gets a sub-ticket, and how
-/// a captain finds its way through fog, are read only by a captain that cuts (DYD-1372 phase 1).
+/// a captain finds its way through fog, are read only by a captain that cuts (DYD-1372 phase 1); and
+/// the route of a check that fails before a ticket is started is read only by the holder it stops.
 /// A kind resource opens with its map of the spine, then holds each part under the work it is for:
 /// a review's four kinds, each a run a seat reads alone, above the part of the review's captain; and
 /// an implementer's tests, code, docs and recipes (DYD-1372 07c86aad, aa5b445e).
@@ -33,7 +34,14 @@ public static class CaptainCarrier
     };
 
     private static readonly Resource Research = new(CaptainResource.Research, "Research",
-        Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Paragraph(CaptainSlot.ResearchMap), Slot.Steps(CaptainSlot.ResearchSteps), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"));
+        Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Paragraph(CaptainSlot.ResearchMap), Slot.Steps(CaptainSlot.ResearchSteps), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"))
+    {
+        // A Question whose research does not settle its call goes back to the officer from the leaf.
+        States = [CaptainState.Leaf]
+    };
+
+    // The route of each check that fails before a ticket is started: read only by the holder it stops.
+    private static readonly Resource Start = new(CaptainResource.Start, "Before you start", Slot.Bullets(CaptainSlot.StartChecks));
 
     private static readonly Resource SubTickets = new(CaptainResource.SubTickets, "Sub-tickets", Slot.Bullets(CaptainSlot.Tickets));
 
@@ -64,8 +72,8 @@ public static class CaptainCarrier
         [
             new("Take the ticket", Slot.Paragraph(CaptainSlot.Take), Slot.Paragraph(CaptainSlot.Kinds), Slot.Paragraph(CaptainSlot.Hold))
             {
-                States = [CaptainState.Taken],
-                Resources = [Implement, Review, Research]
+                States = [CaptainState.Dispatched, CaptainState.Taken],
+                Resources = [Implement, Review, Research, Start]
             },
             new("Do it or split it", Slot.Paragraph(CaptainSlot.Leaf, "A leaf."), Slot.Paragraph(CaptainSlot.Fog, "Fog."), Slot.Paragraph(CaptainSlot.Split, "A split."))
             {

@@ -31,7 +31,7 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "`dydo merge` refuses a PR with no PASS line and cannot tell who wrote the line.",
             Reason: "A writer's own context hides from it what a fresh one sees at once."),
-        Transition = new(CaptainState.Leaf, CaptainState.InReview, "the leaf's change is whole: another agent reviews it")
+        Transition = new(CaptainState.Leaf, CaptainState.InReview, "the leaf's change is whole: another agent reviews it") { Guard = CaptainMachines.Change }
     };
 
     public static readonly Claim Pr = new("The captain that merges its work opens the PR for it, from a clean and pushed tree, before its review.", Me, [])
@@ -112,19 +112,20 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "Nothing dispatches a review when the last part returns.",
             Reason: "Early enough that nothing is built on a fault, late enough that the whole can be seen working."),
-        Transition = new(CaptainState.Waiting, CaptainState.InReview, "the parts are wired: a Review of the whole is dispatched")
+        Transition = new(CaptainState.Waiting, CaptainState.InReview, "the parts are wired: a Review of the whole is dispatched") { Guard = CaptainMachines.Change }
     };
 
-    public static readonly Claim Record = new("A lone reviewer records its own round; a round of several seats is recorded by the officer that holds it.", Me,
+    public static readonly Claim Record = new("A round is recorded by the holder of its Review ticket, alone or with seats; the captain that dispatched the ticket records none of it.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Rounds, 2,
-            "A lone reviewer records its own round; a round of several seats is yours to record, by [A round's record](resources/round.md).")
+            "The Review's holder records the round, by [A round's record](resources/round.md); you record none of it.")
     ])
     {
-        Spec = ["S8"],
-        Truth = new(Evidence.Run(Rounds),
-            Layer: "Each seat returns its findings to its dispatcher alone, so nobody else can put them together.",
-            Reason: "One verdict per round, however many seats looked.")
+        Spec = ["S8", "R33"],
+        Truth = new(Evidence.Run(Rounds + " Each round's verdict is on its own Review ticket. His words (DYD-1372 aa5b445e): the review has a captain, " +
+                                 "which \"will decide what kind of a review matrix to use and how to manage it's sub agents\"."),
+            Layer: "Each seat returns its findings to the review's captain alone, so the captain of the change never has them to put together.",
+            Reason: "One verdict per round, however many seats looked, and none of it written by a captain with work of its own under that verdict.")
     };
 
     public static readonly Claim Route = new("The officer running the rounds routes each blocker and each should by what it shows.", Me,

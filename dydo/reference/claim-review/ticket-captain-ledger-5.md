@@ -16,7 +16,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Skip the parent's review when it only groups parts.
 
-`claim:Review.Post`, kept in `claim:CaptainReview.Record`, `claim:CaptainRound.Verdict`, `claim:CaptainRound.PrLine`
+`claim:Review.Post`, kept in `claim:CaptainReview.Record`, `claim:CaptainReviewSeats.Verdict`, `claim:CaptainRound.Verdict`, `claim:CaptainRound.PrLine`, `claim:CaptainRound.NoPr`
 
 > Holding a round with several seats, post one verdict naming each seat's model and provider and its blockers, and write the PR line at the same moment.
 

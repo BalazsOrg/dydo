@@ -20,11 +20,27 @@ Reason: The next round, and whoever resumes the ticket, read the verdict there.
 
 **ticket-captain** (RoundSteps; read by TicketCaptain):
 
-> Post one verdict on the Review ticket: PASS or FAIL, the lenses, each seat's model and provider with its blockers, and the shoulds. FAIL means at least one blocker.
+> Post one verdict on your Review ticket: PASS or FAIL, the lenses, each seat's model and provider with its blockers, and the shoulds. FAIL means at least one blocker.
+
+## NoPr
+
+`claim:CaptainRound.NoPr`: A round on a candidate that is in no PR, a leaf's evidence check among them, is recorded on its Review ticket alone.
+
+Spec: S4, R17
+
+Evidence (code): `Commands/PrReadyCommand.cs`
+
+Layer: `dydo merge` and `dydo pr-ready` read a PASS from a PR's body and from nowhere else, and a leaf whose officer merges has no PR of its own.
+
+Reason: A reviewer ordered to edit a body that does not exist stalls, or opens a PR nobody asked for.
+
+**ticket-captain** (RoundSteps; read by TicketCaptain, on claim:CaptainRound.PrLine):
+
+> On a PASS of a candidate that is in a PR, the one your brief names, add its line at once to that PR's body, under `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then your Review ticket's key. A candidate in no PR, as at a leaf's evidence check, has its verdict on your Review ticket alone.
 
 ## PrLine
 
-`claim:CaptainRound.PrLine`: A PASS is written, with its verdict, as one line in the PR body's Independent review section.
+`claim:CaptainRound.PrLine`: A PASS of a candidate that is in a PR is written, with its verdict, as one line in that PR body's Independent review section.
 
 Spec: R17
 
@@ -36,7 +52,7 @@ Reason: A line in any other shape is a refusal at the merge, long after the revi
 
 **ticket-captain** (RoundSteps; read by TicketCaptain):
 
-> On a PASS, add its line at once to the PR body's `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then the Review ticket's key.
+> On a PASS of a candidate that is in a PR, the one your brief names, add its line at once to that PR's body, under `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then your Review ticket's key. A candidate in no PR, as at a leaf's evidence check, has its verdict on your Review ticket alone.
 
 ## Nits
 
@@ -52,7 +68,7 @@ Reason: A nit is kept where it can be read, without a ticket to open, hold and c
 
 **ticket-captain** (RoundSteps; read by TicketCaptain):
 
-> Record each nit as one line on the Review ticket.
+> Record each nit as one line on your Review ticket.
 
 ## Shoulds
 
@@ -68,7 +84,7 @@ Reason: It stays beside the work it is about and off the Project's root.
 
 **ticket-captain** (RoundSteps; read by TicketCaptain):
 
-> File each should as a child of the ticket where it was found, after checking the open shoulds there and above for a duplicate.
+> File each should as a child of the ticket whose work you judged, after checking the open shoulds there and above for a duplicate.
 
 ## Group
 

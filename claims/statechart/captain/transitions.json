@@ -2,17 +2,25 @@
   "$comment": "built from the model; edit there: tools/SkillBuild",
   "id": "Captain",
   "title": "A captain and its ticket",
-  "initial": "Taken",
+  "initial": "Dispatched",
   "finals": [
     "Returned"
   ],
   "states": [
     {
+      "id": "Dispatched",
+      "title": "Dispatched onto a ticket, not yet started",
+      "spec": [
+        "H3",
+        "S15"
+      ]
+    },
+    {
       "id": "Taken",
-      "title": "Taken",
+      "title": "Taken: In Progress, its kind known",
       "spec": [
         "S6",
-        "S15"
+        "K30"
       ]
     },
     {
@@ -127,12 +135,17 @@
       "name": "extra",
       "initial": "FALSE",
       "bound": "extra \\in BOOLEAN"
+    },
+    {
+      "name": "kind",
+      "initial": "\"unread\"",
+      "bound": "kind \\in {\"unread\", \"change\", \"verdict\"}"
     }
   ],
   "transitions": [
     {
       "claim": "claim:Captain.FillerBack",
-      "from": "Taken",
+      "from": "Dispatched",
       "to": "Returned",
       "arrow": "a filler ticket fails its check: it goes back unstarted and unassigned",
       "spec": [
@@ -146,12 +159,28 @@
       ]
     },
     {
+      "claim": "claim:Captain.Start",
+      "from": "Dispatched",
+      "to": "Taken",
+      "arrow": "the ticket is set In Progress and its kind's resource loaded: its result is a change, or a verdict or an answer",
+      "spec": [
+        "S6"
+      ],
+      "guard": null,
+      "effect": "kind' \\in {\"change\", \"verdict\"}",
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainDispatch.Send",
       "from": "Split",
       "to": "Waiting",
-      "arrow": "each sub-ticket is dispatched",
+      "arrow": "each AFK sub-ticket is dispatched, and a HITL one goes up",
       "spec": [
-        "H3"
+        "H3",
+        "H15"
       ],
       "guard": null,
       "effect": null,
@@ -199,6 +228,22 @@
       "spec": [
         "H23",
         "K14"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainIntake.Held",
+      "from": "Dispatched",
+      "to": "Returned",
+      "arrow": "the ticket is already started or closed and the brief names no take-over: the dispatch goes back as a conflict",
+      "spec": [
+        "S7",
+        "S6"
       ],
       "guard": null,
       "effect": null,
@@ -261,7 +306,7 @@
         "R21",
         "R19"
       ],
-      "guard": null,
+      "guard": "kind = \"change\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -308,6 +353,22 @@
         "H16",
         "H12",
         "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainResearch.Question",
+      "from": "Leaf",
+      "to": "Returned",
+      "arrow": "a Question's research does not settle its call: it goes back to the officer unsettled, the Question still open",
+      "spec": [
+        "H16",
+        "L18"
       ],
       "guard": null,
       "effect": null,
@@ -402,7 +463,7 @@
         "R33",
         "R12"
       ],
-      "guard": null,
+      "guard": "kind = \"change\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -433,7 +494,7 @@
         "R2",
         "R1"
       ],
-      "guard": null,
+      "guard": "kind = \"change\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -450,7 +511,7 @@
         "R34",
         "R15"
       ],
-      "guard": null,
+      "guard": "kind = \"verdict\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -467,7 +528,7 @@
         "S1",
         "R34"
       ],
-      "guard": null,
+      "guard": "kind = \"verdict\"",
       "effect": null,
       "fair": false,
       "skills": [

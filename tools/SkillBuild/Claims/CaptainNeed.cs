@@ -66,11 +66,13 @@ public static class CaptainNeed
             Reason: "Research can settle a call and can never produce a token, so the two take different routes from the start.")
     };
 
-    public static readonly Claim Carried = new("A child's Enablement, or its call only the user can make, goes up as the one sub-ticket the child opened.", Me, [])
+    public static readonly Claim Carried = new("A need that already has its ticket goes up as that ticket, with its blocking relations: a HITL job sub-ticket its captain cut, " +
+                                               "a Grilling or a Walkthrough among them, or the sub-ticket a child opened for its Enablement or its call only the user can make.", Me, [])
     {
-        Spec = ["H18", "R9"],
+        Spec = ["H18", "H15", "H23"],
         Truth = new(Evidence.Run("`skills/roles/officers/coordinator/SKILL.md`, the coordinator's skill on this branch, not yet truth-checked, queues the tickets themselves: " +
-                                 "it parents \"its member Questions and Enablements\" under one wrapper, each carrying \"the blocking relations of the work that waits\"." + KeptToo),
+                                 "it parents \"its member Questions and Enablements\" under one wrapper, each carrying \"the blocking relations of the work that waits\", " +
+                                 "and takes a Grilling among them: \"A need for him arrives on your HITL queue as its own HITL ticket\". Spec H23 has the envoy dispatched \"onto this same ticket\", with no second one opened." + KeptToo),
             Layer: "Linear takes a second ticket for the same token at every level it passes.",
             Reason: "One ticket keeps every block on it in a single place, where whoever ranks the user's queue can count them.")
     };
@@ -78,8 +80,8 @@ public static class CaptainNeed
     public static readonly Claim Ask = new("A call that is not obvious and reversible becomes a Question sub-ticket that blocks only what waits on it.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 2,
-            "Open a sub-ticket for any other need, by [Sub-tickets](sub-tickets.md), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call. " +
-            "A child's need that is already an Enablement, or a call only the user can make, keeps the sub-ticket the child opened.",
+            "A need that already has its ticket keeps it, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. " +
+            "Open a sub-ticket for any other need, by [Sub-tickets](sub-tickets.md), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.",
             () => [Enable, Carried])
     ])
     {

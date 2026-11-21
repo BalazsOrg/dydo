@@ -20,13 +20,12 @@ public static class CaptainLedger
         Fate.Kept(Role.Chain, Captain.Officer),
         Fate.Dropped(Role.CaptainAccounts, Question.Verify,
             "It has the captain rule on what its crew return; the captain decides only obvious calls and sends any other to a Question (519126ab, claim Captain.Calls). AGENTS.md states the ownership."),
-        Fate.Kept(JobTickets.Hold, Captain.Jobs, CaptainResearch.Question)
-            .Deferred("A Question", "A research Question is held by claim CaptainResearch.Question; at stage `council` or `his-call` its job skill belongs to job tickets, not rebuilt in DYD-1372."),
+        Fate.Kept(JobTickets.Hold, Captain.Jobs, Captain.Stage, CaptainResearch.Question),
         Fate.Dropped(Role.CaptainTools, Question.Need,
             "No act uses a list of tools: each tool is named in the line that uses it (2119cd65). Three of its commands are not in the CLI."),
         Fate.Deferred(JobTickets.Route, Jobs),
         Fate.Deferred(Inquisition.Conduct, "Its resource, the inquisition captain, is not rebuilt in DYD-1372."),
-        Fate.Kept(Coordination.FillerBack, Captain.Filler, Captain.FillerBack),
+        Fate.Kept(Coordination.FillerBack, CaptainIntake.Check, Captain.Filler, Captain.FillerBack),
         Fate.Kept(Project.Weeds, CaptainImplement.Weed),
         Fate.Deferred(Council.Hold, Chair),
         Fate.Kept(Tree.Branch, CaptainReview.Attach)
@@ -52,7 +51,7 @@ public static class CaptainLedger
         Fate.Kept(Dispatch.Template, CaptainDispatch.Brief, CaptainBriefs.Skills, CaptainBriefs.NoPeek),
         Fate.Kept(Roster.Models, CaptainDispatch.Roster),
         Fate.Kept(Roster.Usage, CaptainDispatch.Usage),
-        Fate.Kept(Roster.Seats, CaptainDispatch.Scale),
+        Fate.Kept(Roster.Seats, CaptainDispatch.Scale, CaptainReviewSeats.Prefer),
         Fate.Kept(Brief.Lenses, CaptainBriefs.Lenses),
         Fate.Kept(Brief.SpecInBrief, CaptainBriefs.Governing),
         Fate.Kept(Brief.ScoutPass, CaptainReview.NoLoop),
@@ -81,7 +80,7 @@ public static class CaptainLedger
         Fate.Kept(Report.Route, CaptainDispatch.Route),
         Fate.Kept(Review.Open, CaptainReview.Whole, CaptainReview.Whose),
         Fate.Kept(Review.Skip, CaptainReview.Groups),
-        Fate.Kept(Review.Post, CaptainReview.Record, CaptainRound.Verdict, CaptainRound.PrLine),
+        Fate.Kept(Review.Post, CaptainReview.Record, CaptainReviewSeats.Verdict, CaptainRound.Verdict, CaptainRound.PrLine, CaptainRound.NoPr),
         Fate.Kept(Review.FixTicket, CaptainReview.Fix, CaptainTrouble.FixName, CaptainTrouble.Big, CaptainTrouble.Parallel)
             .Dropped("with one Blocker ticket per blocker inside it", Question.Verify,
                 "No Fix in Linear holds a ticket per blocker (Fix r1 to r3, read 2026-11-21), and S9 as amended has one Fix list them, with a sub-ticket only for a big one (07c86aad, \"4. Lgtm\"; claim CaptainTrouble.Big)."),
@@ -108,7 +107,7 @@ public static class CaptainLedger
         Fate.Kept(Should.Cancel, CaptainImplement.Cancel),
         Fate.Kept(FeatureMerge.GateFirst, CaptainMerging.Gates, CaptainMerging.Merge)
             .Dropped("`dydo test gate`", Question.Verify, "The CLI has no such command (71e649c0); the line names the project's gates, as the brief gives them."),
-        Fate.Kept(FeatureMerge.PreRed, CaptainMerging.Broken),
+        Fate.Kept(FeatureMerge.PreRed, CaptainMerging.Broken, CaptainMerging.Repaired),
         Fate.Kept(FeatureMerge.OneEntry, CaptainMerging.Merge, CaptainMerging.Refusal)
             .Dropped("Merge only through", Question.Handled, "The guard blocks every other way to merge a PR and names this command, so the line has only to give it."),
         Fate.Kept(FeatureMerge.NoMergeReview, CaptainMerging.Clean),

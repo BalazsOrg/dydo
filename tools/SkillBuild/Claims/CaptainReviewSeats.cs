@@ -56,12 +56,24 @@ public static class CaptainReviewSeats
             Reason: "The kinds look at one candidate from different sides, so none of them needs another's result to begin.")
     };
 
-    public static readonly Claim Ticket = new("A seat from another model family is sent with delegate_task on a leaf sub-ticket of its own under the Review ticket.", Me,
+    public static readonly Claim Prefer = new("The review's captain sizes its round and fills its seats itself, preferring a model family other than the author's.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 4,
-            "Seat the kinds you do not do yourself, one seat a kind, in parallel, by phase 3 of the spine. A seat from another model family goes out with `delegate_task`, " +
-            "on a leaf sub-ticket of its own under your Review ticket.",
-            () => [Parallel])
+            "Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, " +
+            "each from a model family other than the author's when you can, by phase 3 of the spine.",
+            () => [CaptainDispatch.Scale, Parallel])
+    ])
+    {
+        Spec = ["R34", "R15"],
+        Truth = new(Evidence.Run("His words (DYD-1372 07c86aad): a review owned by a captain is \"probably better (since it will fill the two seats prefering a different model family to the one who wrote the code)\"."),
+            Layer: "T3 seats whichever model it is asked for; the author's family reaches the review's captain only in its brief.",
+            Reason: "A seat of the author's own family tends to pass the fault that family already let through once.")
+    };
+
+    public static readonly Claim Ticket = new("A seat from another model family is sent with delegate_task on a leaf sub-ticket of its own under the Review ticket.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 5,
+            "A seat from a model family other than your own goes out with `delegate_task`, on a leaf sub-ticket of its own under your Review ticket.")
     ])
     {
         Spec = ["S1", "R34", "R15"],
@@ -71,6 +83,9 @@ public static class CaptainReviewSeats
             Layer: "The host seats another family only through a dispatched child, and a dispatched child holds a ticket; nothing opens that ticket for the review's captain.",
             Reason: "A model of the author's own family tends to share the blind spot that let the fault through."),
         Transition = new(CaptainState.Taken, CaptainState.Split, "a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket")
+        {
+            Guard = CaptainMachines.Verdict
+        }
     };
 
     public static readonly Claim Native = new("A native helper that runs a kind of review gets no ticket and loads no skill, so its prompt carries its kind's part.", Me, [])
@@ -83,7 +98,7 @@ public static class CaptainReviewSeats
 
     public static readonly Claim SeatBrief = new("A seat's brief adds its one kind of review and the cells of the row it works.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 5,
+        At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 6,
             "Brief each seat by [Briefs](briefs.md), adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.",
             () => [Native])
     ])
@@ -104,7 +119,7 @@ public static class CaptainReviewSeats
 
     public static readonly Claim Verdict = new("Once its seats are back, the review's captain puts their findings together into the round's one verdict, which names each seat.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 6,
+        At(Actor.TicketCaptain, CaptainSlot.ReviewRules, 7,
             "Post the round's one verdict yourself, by [A round's record](round.md): with seats, once they are back, from their findings put together, naming each seat. A seat posts none.",
             () => [Alone])
     ])
@@ -114,6 +129,9 @@ public static class CaptainReviewSeats
             Layer: "Each seat's findings sit on its own sub-ticket, and nothing gathers them onto the Review ticket.",
             Reason: "The captain running the rounds routes on a single PASS or FAIL, and four partial answers give it nothing to route."),
         Transition = new(CaptainState.Waiting, CaptainState.Finishing, "a review's seats are back: their findings become the round's one verdict, which no round reviews")
+        {
+            Guard = CaptainMachines.Verdict
+        }
     };
 
     private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>

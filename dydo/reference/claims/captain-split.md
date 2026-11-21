@@ -138,13 +138,29 @@ Reason: The label tells everyone who the part waits on.
 
 > Label each sub-ticket's Mode: AFK, or HITL when the user must take part.
 
+## Asks
+
+`claim:CaptainSplit.Asks`: A Question sub-ticket's Mode says how it is settled: AFK, by a captain sent to research it; HITL, by the user, when its opener already knows the call is the user's alone.
+
+Spec: H23, S3
+
+Evidence (run): Linear, team Dydo, labels read 2026-11-21: the Mode group holds AFK, "an agent can produce the work without live human participation once unblocked", and HITL, "active human participation is required to produce or decide the work"; no label names a Question's stage. Spec H23 ties the two: "The stage sets its Mode, AFK for research and council and HITL for his-call".
+
+Layer: Linear has no label for a Question's stage yet, so the Mode is the only mark on the ticket that whoever dispatches its holder can read.
+
+Reason: Whoever staffs the Question reads its Mode before anything else, and a wrong one seats a researcher on what only he can say.
+
+**ticket-captain** (Tickets; read by TicketCaptain):
+
+> On a Question sub-ticket the Mode also says how it is settled: AFK, by a captain you send to research it; HITL, by the user, when you already know that the call is the user's alone.
+
 ## Steps
 
-`claim:CaptainSplit.Steps`: Work with its own review rounds is cut into Implement, Review, Fix and Merge sub-tickets blocked in order; a small leaf and a batched should are each one ticket.
+`claim:CaptainSplit.Steps`: Work with its own review rounds is cut into Implement, Review, Fix and Merge sub-tickets blocked in order, the Merge its cutter's own step; a small leaf and a batched should are each one ticket.
 
 Spec: S3, S4
 
-Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. Linear has no Type label for Implement, Review or Fix, so the title carries the step. No Shoulds batch has been cut in team Dydo's Linear yet, read 2026-11-21, so the batched should rests on spec S4, which the user kept (DYD-1372 07c86aad, "4. Lgtm").
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. Its four Merge sub-tickets, DYD-1290 to DYD-1293, read 2026-11-21, carry the labels Merge and AFK. Linear has no Type label for Implement, Review or Fix, so the title carries the step. No Shoulds batch has been cut in team Dydo's Linear yet, read 2026-11-21, so the batched should rests on spec S4, which the user kept (DYD-1372 07c86aad, "4. Lgtm").
 
 Layer: Linear draws the blocking order once it is set; setting it is the cutter's.
 
@@ -152,7 +168,7 @@ Reason: The board then shows which step a piece of work has reached without anyo
 
 **ticket-captain** (Tickets; read by TicketCaptain):
 
-> Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.
+> Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge, the last your own step. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.
 
 ## Small
 
@@ -166,6 +182,6 @@ Layer: AGENTS.md says a splitting captain only orchestrates; this is the one exc
 
 Reason: A captain that wrote the work can no longer be impartial about the findings on it.
 
-**ticket-captain** (Split; read by TicketCaptain):
+**ticket-captain** (Tickets; read by TicketCaptain):
 
-> Once you split, write a change yourself only when it is cheaper than briefing it and too small to need review.
+> A change cheaper to make than to brief, and too small to need review, gets no ticket either: once you have split, it is the only change you write yourself.

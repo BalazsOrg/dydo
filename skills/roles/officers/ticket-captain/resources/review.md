@@ -73,7 +73,8 @@ Legend: **due** every time; **if** when warranted; **–** not at this level.
 - Work the row of the level your brief names: every **due** cell is owed, and each **if** cell is your call. The kinds above are its columns: Reading, the three Read columns; Trying to break it, Run tests and Hypothesis; Driving the feature, Drive; Modelling it as a statechart, Formal.
 - A cell is due only as far as the project has what it names: Drive and Formal where the tool is built and the subject is settled, any other cell where its tools, selectors and results exist. Report what is missing to your officer as a finding, instead of building it.
 - A review that fits you is a leaf: do its kinds yourself, or run them as lanes through native helpers, and put their findings together yourself.
-- Seat the kinds you do not do yourself, one seat a kind, in parallel, by phase 3 of the spine. A seat from another model family goes out with `delegate_task`, on a leaf sub-ticket of its own under your Review ticket.
+- Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, each from a model family other than the author's when you can, by phase 3 of the spine.
+- A seat from a model family other than your own goes out with `delegate_task`, on a leaf sub-ticket of its own under your Review ticket.
 - Brief each seat by [Briefs](briefs.md), adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
 - Post the round's one verdict yourself, by [A round's record](round.md): with seats, once they are back, from their findings put together, naming each seat. A seat posts none.
 - Asked to judge a conflict's resolution: judge its hunks, the only new work on the branch, and name the new head in your PASS.

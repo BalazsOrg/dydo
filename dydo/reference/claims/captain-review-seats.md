@@ -66,9 +66,25 @@ Layer: T3 runs children side by side when asked; that the kinds of one review ne
 
 Reason: The kinds look at one candidate from different sides, so none of them needs another's result to begin.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Ticket):
+**ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Prefer):
 
-> Seat the kinds you do not do yourself, one seat a kind, in parallel, by phase 3 of the spine. A seat from another model family goes out with `delegate_task`, on a leaf sub-ticket of its own under your Review ticket.
+> Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, each from a model family other than the author's when you can, by phase 3 of the spine.
+
+## Prefer
+
+`claim:CaptainReviewSeats.Prefer`: The review's captain sizes its round and fills its seats itself, preferring a model family other than the author's.
+
+Spec: R34, R15
+
+Evidence (run): His words (DYD-1372 07c86aad): a review owned by a captain is "probably better (since it will fill the two seats prefering a different model family to the one who wrote the code)".
+
+Layer: T3 seats whichever model it is asked for; the author's family reaches the review's captain only in its brief.
+
+Reason: A seat of the author's own family tends to pass the fault that family already let through once.
+
+**ticket-captain** (ReviewRules; read by TicketCaptain):
+
+> Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, each from a model family other than the author's when you can, by phase 3 of the spine.
 
 ## Ticket
 
@@ -86,7 +102,7 @@ Reason: A model of the author's own family tends to share the blind spot that le
 
 **ticket-captain** (ReviewRules; read by TicketCaptain):
 
-> Seat the kinds you do not do yourself, one seat a kind, in parallel, by phase 3 of the spine. A seat from another model family goes out with `delegate_task`, on a leaf sub-ticket of its own under your Review ticket.
+> A seat from a model family other than your own goes out with `delegate_task`, on a leaf sub-ticket of its own under your Review ticket.
 
 ## Native
 

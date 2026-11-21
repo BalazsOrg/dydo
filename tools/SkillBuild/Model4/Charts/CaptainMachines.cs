@@ -11,7 +11,13 @@ namespace DynaDocs.SkillBuild;
 /// cannot be finished (R19). A splitting captain's Question is one more child it waits on. A leaf's
 /// Question is left only to resume the leaf: one that comes back unsettled goes to the officer and
 /// stays open, and its holder goes on waiting, a step that leaves the state unchanged (H16, S10).
-/// A filler ticket that fails its check goes back from Taken, before it is started (H11).
+/// A ticket is taken by one move, from Dispatched: its holder sets it In Progress and loads its kind's
+/// resource, and so learns what its result is. <c>kind</c> holds that from then on: <c>change</c>, or
+/// <c>verdict</c> for every result that is no change, a review's verdict, a seat's findings, an answer.
+/// Only a change enters a review round or a repair, and only a verdict's holder seats a round and forms
+/// its verdict, so no path leads a verdict into a review (R34, DYD-1372 777d396e).
+/// A ticket that cannot be started goes back from Dispatched: a filler ticket that fails its check
+/// (H11), and one another agent already holds (S7).
 /// A captain that cannot see the route from its ticket to the spec finds the way first (H10, DYD-1372
 /// 07c86aad): that state is left only by cutting the parts in sight, and entered again whenever a
 /// part returns and fog remains, so the whole is never cut at once.
@@ -23,7 +29,8 @@ public static class CaptainMachines
 {
     public static readonly Machine Captain = new(MachineId.Captain, "A captain and its ticket",
     [
-        new(CaptainState.Taken, "Taken", "S6", "S15"),
+        new(CaptainState.Dispatched, "Dispatched onto a ticket, not yet started", "H3", "S15"),
+        new(CaptainState.Taken, "Taken: In Progress, its kind known", "S6", "K30"),
         new(CaptainState.Leaf, "Working it as a leaf", "S2", "S7"),
         new(CaptainState.Wayfinding, "Finding the way to the spec", "H10", "H23"),
         new(CaptainState.Split, "Split into sub-tickets", "S1", "S15"),
@@ -37,9 +44,22 @@ public static class CaptainMachines
         new(CaptainState.Finishing, "Finishing", "R21", "S6"),
         new(CaptainState.Done, "Done", "S6"),
         new(CaptainState.Returned, "Returned to its officer", "H23")
-    ], CaptainState.Taken, [CaptainState.Returned])
+    ], CaptainState.Dispatched, [CaptainState.Returned])
     {
         Extends = ["Naturals"],
-        Variables = [new("round", "1", "round <= 4"), new("extra", "FALSE", "extra \\in BOOLEAN")]
+        Variables =
+        [
+            new("round", "1", "round <= 4"), new("extra", "FALSE", "extra \\in BOOLEAN"),
+            new("kind", "\"unread\"", "kind \\in {\"unread\", \"change\", \"verdict\"}")
+        ]
     };
+
+    /// <summary>The guard of a move only a change's holder makes: into a review round, or into a repair.</summary>
+    public const string Change = "kind = \"change\"";
+
+    /// <summary>The guard of a move only a verdict's holder makes: seating a round, and forming its verdict.</summary>
+    public const string Verdict = "kind = \"verdict\"";
+
+    /// <summary>The effect of the move that takes a ticket: its holder learns which of the two its result is.</summary>
+    public const string Learn = "kind' \\in {\"change\", \"verdict\"}";
 }

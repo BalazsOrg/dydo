@@ -92,7 +92,7 @@ Reason: A holder that works from its contract alone drifts from the intent a lit
 
 Spec: H11
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Returned, "a filler ticket fails its check: it goes back unstarted and unassigned".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Dispatched → Returned, "a filler ticket fails its check: it goes back unstarted and unassigned".
 
 Evidence (code): `Services/Survey/SurveyRules.cs`
 
@@ -100,9 +100,9 @@ Layer: `dydo survey <project>` offers a ticket as pickable only while it is unst
 
 Reason: A rejected ticket left In Progress looks held, and no officer is ever offered it again.
 
-**ticket-captain** (Take; read by TicketCaptain, on claim:Captain.Filler):
+**ticket-captain** (StartChecks; read by TicketCaptain, on claim:Captain.Filler):
 
-> If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
+> Your brief calls the ticket filler: if it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
 
 ## Filler
 
@@ -116,9 +116,9 @@ Layer: Whoever pulls filler sorts by labels alone; these three need someone who 
 
 Reason: Work that hides a design call is caught before anyone builds it.
 
-**ticket-captain** (Take; read by TicketCaptain):
+**ticket-captain** (StartChecks; read by TicketCaptain):
 
-> If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
+> Your brief calls the ticket filler: if it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
 
 ## Load
 
@@ -141,6 +141,8 @@ Reason: Naming them in the brief keeps the process from resting on an agent's gu
 `claim:Captain.Start`: Whoever starts a ticket sets it In Progress.
 
 Spec: S6
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Dispatched → Taken, "the ticket is set In Progress and its kind's resource loaded: its result is a change, or a verdict or an answer".
 
 Evidence (run): Linear, team Dydo, statuses read 2026-11-20: In Progress is a started status and Todo the unstarted one, beside Done, Canceled and Duplicate; DYD-1372 was In Progress while this was written.
 
@@ -186,7 +188,23 @@ Reason: Each kind carries only its own recipe, so no captain reads past two othe
 > | -- | -- |
 > | a change: an Implement, a Fix, a merge conflict | Implement (`resources/implement.md`) |
 > | a Review | Review (`resources/review.md`) |
-> | a question a choice waits on | Research (`resources/research.md`) |
+> | a question you are briefed to research | Research (`resources/research.md`) |
+
+## Stage
+
+`claim:Captain.Stage`: A Question is held with the Research kind only when its brief sends its holder to research it; one whose brief names a job's skill is a job ticket, held with that skill.
+
+Spec: H23, S3
+
+Evidence (run): Linear, team Dydo, labels read 2026-11-21: the Type group holds Question and Research, and no label names a Question's stage, which spec H23 calls `research`, `council` and `his-call` and S3 leaves to the user's Enablement. So a Question's holder has its brief alone to tell which it holds. `skills/` holds co-thinker, the skill H23 gives the Question the user settles.
+
+Layer: Linear shows that a ticket is a Question and nothing of how it is to be settled.
+
+Reason: A call the user alone can make, sent through the sources once more, costs a pass that cannot answer it and puts off his sitting.
+
+**ticket-captain** (Hold; read by TicketCaptain, on claim:Captain.Jobs):
+
+> A Grilling, Walkthrough, Wayfinding or Enablement ticket, or any other Question, is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
 
 ## Jobs
 
@@ -202,7 +220,7 @@ Reason: One way of holding every kind keeps a job ticket from growing a process 
 
 **ticket-captain** (Hold; read by TicketCaptain):
 
-> A Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
+> A Grilling, Walkthrough, Wayfinding or Enablement ticket, or any other Question, is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
 
 ## ReportUp
 

@@ -11,8 +11,20 @@ public static class CaptainMerging
 
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
+    public static readonly Claim Begin = new("The merging captain sets its Merge sub-ticket In Progress when it begins the merge, and closes it itself.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 1,
+            "Set your Merge sub-ticket In Progress, if your work was cut into steps: the merge is your own step, never dispatched, and you close it yourself.")
+    ])
+    {
+        Spec = ["R20", "S6"],
+        Truth = new(Evidence.Run("Linear, DYD-1281's Merge sub-tickets read 2026-11-21: DYD-1290 to DYD-1293, one a merge, each Done under the labels Merge and AFK."),
+            Layer: "Linear leaves a Merge sub-ticket in Todo until someone moves it, and `dydo merge` touches no ticket.",
+            Reason: "The board then shows a merge under way, and a card left in Todo invites a second captain to begin the same one.")
+    };
+
     public static readonly Claim Gates = new("The captain runs the project's gates on the combined tree before it merges.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 1, "Run the project's gates, as your brief names them, on the combined tree: your branch merged with the target's current tip.")])
+        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 2, "Run the project's gates, as your brief names them, on the combined tree: your branch merged with the target's current tip.")])
     {
         Spec = ["R21", "R18"],
         Truth = new(Evidence.Code(".github/workflows/ci.yml"),
@@ -30,7 +42,7 @@ public static class CaptainMerging
 
     public static readonly Claim Merge = new("A captain merges into a feature branch with dydo merge, naming the reviewed head and the target tip it gated against.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 2,
+        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 3,
             "Merge with `dydo merge <pr-number> --match-head-commit <sha> --match-base-commit <sha>`: the reviewed head, and the tip you ran the gates against. When it refuses, its message says why.",
             () => [Refusal])
     ])
@@ -42,7 +54,7 @@ public static class CaptainMerging
     };
 
     public static readonly Claim Ci = new("A merge is done once hosted CI is green on the merge commit.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 3, "Close the Merge sub-ticket once hosted CI is green on the merge commit.")])
+        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 4, "Close the Merge sub-ticket once hosted CI is green on the merge commit.")])
     {
         Spec = ["R20", "R18"],
         Truth = new(Evidence.Code(".github/workflows/ci.yml"),
@@ -51,7 +63,7 @@ public static class CaptainMerging
     };
 
     public static readonly Claim Receipt = new("A merge is done only once DYTEST also holds a green receipt on the merge tree.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 4, "Before you close it, wait for DYTEST's green receipt on the merge tree as well.")])
+        [At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 5, "Before you close it, wait for DYTEST's green receipt on the merge tree as well.")])
     {
         Spec = ["R20"],
         Truth = new(Evidence.Open("DYTEST is not built: no command of the CLI is DYTEST (`Commands/DydoRootCommand.cs` registers none), so nothing issues a receipt to wait for."),
@@ -61,7 +73,7 @@ public static class CaptainMerging
 
     public static readonly Claim Archive = new("After a merge the captain archives the branches and worktrees its dispatches created.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 5,
+        At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 6,
             "Archive each branch and worktree your dispatches created, with `dydo archive branch <target>` and `dydo archive worktree <target>`; the archive keeps them 30 days.")
     ])
     {
@@ -89,7 +101,21 @@ public static class CaptainMerging
         Truth = new(Evidence.Code(MergeCode),
             Layer: "On a conflict `dydo merge` refuses and merges nothing; it repairs neither that nor a red gate.",
             Reason: "A captain that repairs the work it is about to merge has written what nobody reviewed."),
-        Transition = new(CaptainState.Finishing, CaptainState.Repairing, "a conflict or a real red gate: an Implement ticket repairs it")
+        Transition = new(CaptainState.Finishing, CaptainState.Repairing, "a conflict or a real red gate: an Implement ticket repairs it") { Guard = CaptainMachines.Change }
+    };
+
+    public static readonly Claim Repaired = new("A repair made before the merge, of a conflict or of a red gate, returns to a fresh review of what it changed, and the merge is then run again on the new head; " +
+                                                "one that cannot be made goes to the officer.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.MergeRules, 4,
+            "Either repair comes back the way [A merge conflict](merge-conflict.md) lays out: its SHA goes on the Merge sub-ticket, a fresh reviewer judges what it changed, " +
+            "and you merge again from step 2, on the new head. A red you cannot get fixed goes to your officer, with the gate.")
+    ])
+    {
+        Spec = ["R19", "R21", "R23"],
+        Truth = new(Evidence.Code(MergeCode),
+            Layer: "`dydo merge` refuses a head no PASS names, and a repair always makes a new head; it sends the repair to no reviewer.",
+            Reason: "A fix written to turn a gate green is new code like any other, and unread it would be the one line nobody judged.")
     };
 
     public static readonly Claim Mutation = new("No ticket or merge waits on mutation testing.", Me,

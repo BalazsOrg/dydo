@@ -163,6 +163,8 @@ Reason: Its reader checks any claim in one step, and sees where nobody looked.
 
 Spec: H16, L18
 
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Returned, "a Question's research does not settle its call: it goes back to the officer unsettled, the Question still open".
+
 Evidence (run): Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, "Resolution: the answer, posted on close"; it holds no label for a council yet.
 
 Layer: Where an unsettled call goes next is its route, and the council that takes most of them has no resource in this skill yet.

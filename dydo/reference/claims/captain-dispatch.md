@@ -40,35 +40,35 @@ Reason: A brief that carries two outcomes, or a method, leaves the child a task 
 
 ## Family
 
-`claim:CaptainDispatch.Family`: A reviewer comes from a model family other than the author's when possible, single seats included.
+`claim:CaptainDispatch.Family`: The captain of a change seats one agent a round, the Review ticket's holder, from a model family other than the author's when possible; that holder sizes its round and fills its seats.
 
-Spec: R15
+Spec: R15, R34
 
-Evidence (tool): delegate_task: `target.model` and `target.providerInstanceId` seat a child on another provider's model.
+Evidence (tool): delegate_task: `target.model` and `target.providerInstanceId` seat a child on another provider's model. His words (DYD-1372 aa5b445e): "let's say there is a captain for the review, which makes sense (it will decide what kind of a review matrix to use and how to manage it's sub agents)".
 
 Layer: T3 seats whichever model it is asked for; which family wrote the work is known only to the dispatcher.
 
-Reason: Two models of one family tend to share the blind spot that let the fault through.
+Reason: Two models of one family tend to share the blind spot that let the fault through, and a round sized by the captain whose change it judges is no longer impartial.
 
-**ticket-captain** (Seats; read by TicketCaptain, on claim:CaptainDispatch.Scale):
+**ticket-captain** (Seats; read by TicketCaptain):
 
-> Scale each round's seats to the breadth and depth of the work, with no fixed pair, and seat reviewers from a model family other than the author's when you can, single seats included.
+> Seat each Review ticket's holder from a model family other than the author's when you can; it sizes and seats its own round.
 
 ## Scale
 
 `claim:CaptainDispatch.Scale`: A round's seats scale with the breadth and depth of the work; there is no constant pair.
 
-Spec: R12
+Spec: R12, R34
 
 Evidence (run): DYD-1281's four rounds, read 2026-11-20, are one Review ticket each; nothing in Linear or T3 sets a number of seats.
 
-Layer: No tool counts seats; how much review a piece of work deserves is its dispatcher's to size.
+Layer: No tool counts seats; how much review a piece of work deserves is the review captain's to size.
 
 Reason: Review is expensive, and a pair on everything spends it where it finds nothing.
 
-**ticket-captain** (Seats; read by TicketCaptain):
+**ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Prefer):
 
-> Scale each round's seats to the breadth and depth of the work, with no fixed pair, and seat reviewers from a model family other than the author's when you can, single seats included.
+> Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, each from a model family other than the author's when you can, by phase 3 of the spine.
 
 ## Roster
 
@@ -104,15 +104,31 @@ Reason: Quota that resets unused is lost, and a seat on a spent account stalls.
 
 > Read `dydo usage` and balance vendors across every seat you fill.
 
+## MergeOwn
+
+`claim:CaptainDispatch.MergeOwn`: A Merge sub-ticket is never dispatched: the merge is run by the captain whose merge it is.
+
+Spec: R21, S6
+
+Evidence (run): Linear, team Dydo, read 2026-11-21: the Type group holds Merge, and DYD-1281's four Merge sub-tickets, DYD-1290 to DYD-1293, are Done under the labels Merge and AFK. This skill has no kind resource for a merge: `tools/SkillBuild/Model4/Carriers/CaptainCarrier.cs` gives its first phase Implement, Review and Research.
+
+Layer: `delegate_task` starts a child on any ticket it is given, a Merge among them, and the child would find no recipe to load.
+
+Reason: A second agent sent to run one command has to be briefed on the head, the tip and the gates that its sender already holds.
+
+**ticket-captain** (Sending; read by TicketCaptain, on claim:CaptainDispatch.Send):
+
+> Dispatch each AFK sub-ticket with `delegate_task`, except a Merge: that step is yours.
+
 ## Send
 
-`claim:CaptainDispatch.Send`: A sub-ticket is dispatched with delegate_task.
+`claim:CaptainDispatch.Send`: An AFK sub-ticket is dispatched with delegate_task; a HITL one is its cutter's to send up, never to staff.
 
-Spec: H3
+Spec: H3, H15
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Split → Waiting, "each sub-ticket is dispatched".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Split → Waiting, "each AFK sub-ticket is dispatched, and a HITL one goes up".
 
-Evidence (tool): delegate_task: "Start one child agent with only `task`. No parent history."
+Evidence (tool): delegate_task: "Start one child agent with only `task`. No parent history." Linear, team Dydo, labels read 2026-11-21: Mode AFK is "an agent can produce the work without live human participation", and HITL needs the user, whose side no dispatched agent can give (claim CaptainWay.Reach sends it up).
 
 Layer: T3 offers a native sub-agent as well; only `delegate_task` gives the child a thread that outlives the dispatcher's turn.
 
@@ -120,7 +136,23 @@ Reason: A captain needs a thread of its own, one its ticket can be resumed from.
 
 **ticket-captain** (Sending; read by TicketCaptain):
 
-> Dispatch each sub-ticket with `delegate_task`.
+> Dispatch each AFK sub-ticket with `delegate_task`, except a Merge: that step is yours.
+
+## Refused
+
+`claim:CaptainDispatch.Refused`: A dispatch refused for a reason other than a limit goes to the dispatcher's officer as it reads, and its ticket stays unstarted.
+
+Spec: H3, H12
+
+Evidence (tool): delegate_task: `runtimeMode`, "Above yours is rejected."; `orchestrator_capabilities` lists the providers and models a child can run on, so a dispatch onto any other is turned down.
+
+Layer: T3 tells every agent of a provider or model it cannot reach to say so and never to switch unasked; it names nobody to tell, and a captain's one address is its officer.
+
+Reason: A child that never began leaves a lane empty while its card looks merely queued, and nobody above can tell the two apart.
+
+**ticket-captain** (WhenThingsGoWrong; read by TicketCaptain):
+
+> A dispatch refused for another reason goes to your officer as it reads, its ticket left unstarted.
 
 ## OwnWorktree
 

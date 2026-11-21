@@ -70,13 +70,13 @@ public static class Captain
         Truth = new(Evidence.Code("Services/Survey/SurveyRules.cs"),
             Layer: "`dydo survey <project>` offers a ticket as pickable only while it is unstarted and unassigned, and nothing puts a rejected one back in that state.",
             Reason: "A rejected ticket left In Progress looks held, and no officer is ever offered it again."),
-        Transition = new(CaptainState.Taken, CaptainState.Returned, "a filler ticket fails its check: it goes back unstarted and unassigned")
+        Transition = new(CaptainState.Dispatched, CaptainState.Returned, "a filler ticket fails its check: it goes back unstarted and unassigned")
     };
 
     public static readonly Claim Filler = new("A captain on a filler ticket checks, before it starts it, that the ticket is small, reversible and free of design calls.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.Take, 2,
-            "If your brief calls the ticket filler and it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.",
+        At(Actor.TicketCaptain, CaptainSlot.StartChecks, 3,
+            "Your brief calls the ticket filler: if it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.",
             () => [FillerBack])
     ])
     {
@@ -102,7 +102,11 @@ public static class Captain
         Spec = ["S6"],
         Truth = new(Evidence.Run("Linear, team Dydo, statuses read 2026-11-20: In Progress is a started status and Todo the unstarted one, beside Done, Canceled and Duplicate; DYD-1372 was In Progress while this was written."),
             Layer: "T3's `link_issue` only shows the ticket beside its thread; it changes no status in Linear.",
-            Reason: "The status is how every other agent sees that someone already has the ticket.")
+            Reason: "The status is how every other agent sees that someone already has the ticket."),
+        Transition = new(CaptainState.Dispatched, CaptainState.Taken, "the ticket is set In Progress and its kind's resource loaded: its result is a change, or a verdict or an answer")
+        {
+            Effect = CaptainMachines.Learn
+        }
     };
 
     public static readonly Claim Thread = new("Whoever sets a ticket In Progress attaches the holder's T3 thread link.", Me,
@@ -121,7 +125,7 @@ public static class Captain
             "| Your ticket is | Load |\n| -- | -- |\n" +
             "| a change: an Implement, a Fix, a merge conflict | [Implement](resources/implement.md) |\n" +
             "| a Review | [Review](resources/review.md) |\n" +
-            "| a question a choice waits on | [Research](resources/research.md) |")
+            "| a question you are briefed to research | [Research](resources/research.md) |")
     ])
     {
         Spec = ["K30", "K31"],
@@ -130,10 +134,21 @@ public static class Captain
             Reason: "Each kind carries only its own recipe, so no captain reads past two others to find it.")
     };
 
+    public static readonly Claim Stage = new("A Question is held with the Research kind only when its brief sends its holder to research it; one whose brief names a job's skill is a job ticket, held with that skill.", Me, [])
+    {
+        Spec = ["H23", "S3"],
+        Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-21: the Type group holds Question and Research, and no label names a Question's stage, " +
+                                 "which spec H23 calls `research`, `council` and `his-call` and S3 leaves to the user's Enablement. So a Question's holder has its brief alone to tell which it holds. " +
+                                 "`skills/` holds co-thinker, the skill H23 gives the Question the user settles."),
+            Layer: "Linear shows that a ticket is a Question and nothing of how it is to be settled.",
+            Reason: "A call the user alone can make, sent through the sources once more, costs a pass that cannot answer it and puts off his sitting.")
+    };
+
     public static readonly Claim Jobs = new("A Grilling, Walkthrough, Wayfinding or Enablement ticket is held as any other, with its job's skill; its Mode says whether the user takes part.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Hold, 1,
-            "A Grilling, Walkthrough, Wayfinding or Enablement ticket is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.")
+            "A Grilling, Walkthrough, Wayfinding or Enablement ticket, or any other Question, is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.",
+            () => [Stage])
     ])
     {
         Spec = ["H15", "H23"],
@@ -143,7 +158,7 @@ public static class Captain
     };
 
     public static readonly Claim ReportUp = new("A captain reports a problem outside its ticket to its officer.", Me,
-        [At(Actor.TicketCaptain, SpinePart.WhenThingsGoWrong, 2, "Report a problem outside your ticket to your officer.")])
+        [At(Actor.TicketCaptain, SpinePart.WhenThingsGoWrong, 3, "Report a problem outside your ticket to your officer.")])
     {
         Spec = ["R5"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it, which reads it with `task_status`."),

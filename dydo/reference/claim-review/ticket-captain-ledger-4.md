@@ -20,7 +20,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Read `dydo usage` and balance vendors for every seat you fill, sub-captains and crew as well as reviewers.
 
-`claim:Roster.Seats`, kept in `claim:CaptainDispatch.Scale`
+`claim:Roster.Seats`, kept in `claim:CaptainDispatch.Scale`, `claim:CaptainReviewSeats.Prefer`
 
 > Scale each round's seats with the breadth and depth of the work; there is no constant pair.
 

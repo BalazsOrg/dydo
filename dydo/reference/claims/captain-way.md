@@ -110,7 +110,7 @@ Reason: A look that comes after the work is built can only order it rebuilt.
 
 ## Reach
 
-`claim:CaptainWay.Reach`: A HITL sub-ticket is a need for the user and goes up by that procedure.
+`claim:CaptainWay.Reach`: A HITL sub-ticket is a need for the user that already has its ticket, and goes up as it is by that procedure.
 
 Spec: H16, H15
 
@@ -122,4 +122,4 @@ Reason: A captain that staffs its own HITL ticket gets an agent talking to itsel
 
 **ticket-captain** (WayUser; read by TicketCaptain):
 
-> Each HITL sub-ticket is a need for the user: it goes up by A need for the user (`need-for-the-user.md`).
+> Each HITL sub-ticket is a need for the user that already has its ticket: it goes up as it is, by A need for the user (`need-for-the-user.md`).
