@@ -236,7 +236,7 @@ Reason: A clean merge adds no line anyone wrote, so the gates and CI prove it.
 
 Spec: R21, R19
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Finishing → Repairing, "a conflict or a real red gate: an Implement ticket repairs it".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Finishing → Repairing, "a conflict or a real red gate: an Implement ticket repairs it".
 
 Evidence (code): `Services/Merge/PullRequestMerge.cs`
 

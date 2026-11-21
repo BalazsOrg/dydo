@@ -11,9 +11,9 @@ public class TicketCaptainMachineTests
 {
     private static readonly Lazy<BuiltTree> Built = new(() => SkillBuilder.Build(ProductionModel.Model));
 
-    private static string Arrows => Built.Value.Files["claims/statechart/captain/transitions.json"];
+    private static string Arrows => Built.Value.Unwritten["claims/statechart/captain/transitions.json"];
 
-    private static string Module => Built.Value.Files["claims/statechart/captain/Captain.tla"];
+    private static string Module => Built.Value.Unwritten["claims/statechart/captain/Captain.tla"];
 
     [Fact]
     [Trait("Job", "contract: DYD-1372 A8 W5 the captain's states are one machine whose arrows are the prototype's own claims")]

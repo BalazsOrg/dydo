@@ -92,7 +92,7 @@ Reason: A seat of the author's own family tends to pass the fault that family al
 
 Spec: S1, R34, R15
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Split, "a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Taken → Split, "a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket".
 
 Evidence (tool): delegate_task: `target.model` and `target.providerInstanceId` seat a child on another provider's model; the native Agent tool runs only its caller's provider. His words (DYD-1372 aa5b445e): "by virtue of having to use the other model family it has to go through T3 delegate task which means that it's not a native sub agent. And then therefore those agents get their own tickets."
 
@@ -158,7 +158,7 @@ Reason: The verdict is written by the one who formed it, with nothing lost in a 
 
 Spec: S8, S1, R34
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Finishing, "a review's seats are back: their findings become the round's one verdict, which no round reviews".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Waiting → Finishing, "a review's seats are back: their findings become the round's one verdict, which no round reviews".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it, so every seat's findings meet only in the thread of the review's captain.
 

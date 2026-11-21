@@ -28,7 +28,7 @@ Reason: Whoever goes on, the captain or a fresh agent, starts from proven work.
 
 Spec: H2, K30
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Split, "the leaf proves too big: what is left is cut".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Leaf → Split, "the leaf proves too big: what is left is cut".
 
 Evidence (code): `AGENTS.md`
 
@@ -46,7 +46,7 @@ Reason: The alternative is an agent finishing badly in a context that is nearly 
 
 Spec: H2
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Returned, "`too big, re-cut`: what is left cannot be divided coherently under the ticket".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Leaf → Returned, "`too big, re-cut`: what is left cannot be divided coherently under the ticket".
 
 Evidence (run): This skill's writer was briefed (DYD-1372 hop 2): "return `too big, re-cut` naming what is done and what is left".
 
@@ -144,7 +144,7 @@ Reason: Left unsent, the narrowed card sits In Progress with a holder that belie
 
 Spec: H2, H14
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Split, "a child returns `too big, re-cut`: its contract is rewritten down to what it finished, and what it left is cut".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Waiting → Split, "a child returns `too big, re-cut`: its contract is rewritten down to what it finished, and what it left is cut".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
@@ -274,7 +274,7 @@ Reason: A hole that was missed once is the first thing to look for again.
 
 Spec: R8, S9
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Fixing → InReview, "the Fix is Done: a fresh round".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Fixing → InReview, "the Fix is Done: a fresh round".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, r2 and r3, each followed by a Review titled a fresh review; r4 is titled the checkpoint round.
 
@@ -308,7 +308,7 @@ Reason: A dropped ticket left open looks like work someone still owes.
 
 Spec: R10
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): InReview → Checkpoint, "a third round still has a blocker: the checkpoint".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): InReview → Checkpoint, "a third round still has a blocker: the checkpoint".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, r2 and r3, each followed by a Review titled a fresh review; r4 is titled the checkpoint round.
 
@@ -326,7 +326,7 @@ Reason: Three blocked rounds say something other than the code may be wrong, and
 
 Spec: R10, S10
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Checkpoint → Fixing, "`checkpoint: one more round, because …`: the blockers go to a Fix".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Checkpoint → Fixing, "`checkpoint: one more round, because …`: the blockers go to a Fix".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, r2 and r3, each followed by a Review titled a fresh review; r4 is titled the checkpoint round.
 
@@ -344,7 +344,7 @@ Reason: A written reason makes the captain look at why three rounds were not eno
 
 Spec: R10
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Checkpoint → Returned, "`escalated: …`: a fundamental break, a new requirement or a need for the user goes to the officer".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Checkpoint → Returned, "`escalated: …`: a fundamental break, a new requirement or a need for the user goes to the officer".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 

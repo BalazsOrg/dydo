@@ -73,7 +73,9 @@ public static class CaptainMachines
             new("round", "1", "round <= 4"), new("extra", "FALSE", "extra \\in BOOLEAN"), new("mended", "FALSE", "mended \\in BOOLEAN"),
             new("kind", "\"unread\"", "kind \\in {\"unread\", \"change\", \"verdict\", \"answer\"}"),
             new("merger", "\"unread\"", "merger \\in {\"unread\", \"holder\", \"officer\", \"nobody\"}")
-        ]
+        ],
+        // DYD-1437: the captain's chart is written by hand; this machine stays the model's own, unwritten.
+        HandWritten = "statechart/captain"
     };
 
     /// <summary>The guard of a move only a change's holder makes: into a review round, or into a repair.</summary>

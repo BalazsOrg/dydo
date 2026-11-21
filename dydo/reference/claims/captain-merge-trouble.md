@@ -44,7 +44,7 @@ Reason: The merge can be resumed from the ticket by whoever holds it next.
 
 Spec: R19
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Repairing → InReview, "the repair is in: a fresh review of what it changed".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Repairing → InReview, "the repair is in: a fresh review of what it changed".
 
 Evidence (code): `Services/Merge/PullRequestMerge.cs`
 
@@ -78,7 +78,7 @@ Reason: The pin on the old head would refuse, and rightly.
 
 Spec: K9
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Repairing → Returned, "a conflict that cannot be resolved goes to the officer".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Repairing → Returned, "a conflict that cannot be resolved goes to the officer".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
@@ -256,7 +256,7 @@ Reason: A verdict left in the first PR's body is a refusal at the second landing
 
 Spec: K9
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Repairing → Returned, "a red gate that cannot be fixed goes to the officer".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Repairing → Returned, "a red gate that cannot be fixed goes to the officer".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 

@@ -25,7 +25,7 @@ public class TicketCaptainGapTests
             move.GetProperty("to").GetString()!, move.GetProperty("guard").GetString(), move.GetProperty("effect").GetString()))
     ]);
 
-    private static JsonElement Machine => JsonDocument.Parse(Built.Value.Files["claims/statechart/captain/transitions.json"]).RootElement;
+    private static JsonElement Machine => JsonDocument.Parse(Built.Value.Unwritten["claims/statechart/captain/transitions.json"]).RootElement;
 
     [Fact]
     [Trait("Job", "contract: DYD-1372 g1a G1 H23 a Question is sorted at intake by its brief: the line that holds job tickets holds every Question not sent to research, and whoever opens one marks how it is settled")]

@@ -40,10 +40,13 @@ internal sealed class Statechart
 
     public static string FolderOf(Machine machine) => $"claims/statechart/{Names.Kebab(machine.Id)}";
 
-    /// <summary>Each machine's <c>transitions.json</c>, module, config and view; nothing for a model with no machines.</summary>
-    public IEnumerable<(string Path, string Text)> Files(ClaimIndex claims)
+    /// <summary>
+    /// Each machine's <c>transitions.json</c>, module, config and view; nothing for a model with no machines.
+    /// <paramref name="handWritten"/> picks the machines whose chart is written by hand, or the others.
+    /// </summary>
+    public IEnumerable<(string Path, string Text)> Files(ClaimIndex claims, bool handWritten = false)
     {
-        foreach (var machine in Machines)
+        foreach (var machine in Machines.Where(machine => machine.HandWritten is not null == handWritten))
         {
             var transitions = TransitionsOf(machine);
             yield return ($"{FolderOf(machine)}/transitions.json", TransitionsJson.Render(machine, transitions, claims));

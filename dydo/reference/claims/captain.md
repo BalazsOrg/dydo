@@ -92,7 +92,7 @@ Reason: A holder that works from its contract alone drifts from the intent a lit
 
 Spec: H11
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Dispatched → Returned, "a filler ticket fails its check: it goes back unstarted and unassigned".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Dispatched → Returned, "a filler ticket fails its check: it goes back unstarted and unassigned".
 
 Evidence (code): `Services/Survey/SurveyRules.cs`
 
@@ -142,7 +142,7 @@ Reason: Naming them in the brief keeps the process from resting on an agent's gu
 
 Spec: S6
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Dispatched → Taken, "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer, and its brief has said who merges it".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Dispatched → Taken, "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer, and its brief has said who merges it".
 
 Evidence (run): Linear, team Dydo, statuses read 2026-11-20: In Progress is a started status and Todo the unstarted one, beside Done, Canceled and Duplicate; DYD-1372 was In Progress while this was written.
 

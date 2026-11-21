@@ -76,7 +76,7 @@ Reason: A guess at who merges picks the wrong way to finish, and a guess at the 
 
 Spec: S7, S6
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Dispatched → Returned, "the ticket is already started or closed and the brief names no take-over: the dispatch goes back as a conflict".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Dispatched → Returned, "the ticket is already started or closed and the brief names no take-over: the dispatch goes back as a conflict".
 
 Evidence (run): Linear, DYD-1372 read 2026-11-21: `status` In Progress, `statusType` started and `startedAt` set, with no assignee, no delegate and no attachment but its PR. Team Dydo's statuses, read the same day: Todo is the one unstarted status. This fix's writer was briefed (DYD-1372 phase 1, fix g1a): DYD-1372 was In Progress when it was dispatched, and its brief said so: "You are a fresh writer: the writer who built this part ran out of context and started nothing on this fix."
 

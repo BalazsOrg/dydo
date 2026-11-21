@@ -12,7 +12,7 @@ type: reference
 
 Spec: H2, S2
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Leaf, "the ticket fits one agent".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Taken → Leaf, "the ticket fits one agent".
 
 Evidence (code): `AGENTS.md`
 
@@ -94,7 +94,7 @@ Reason: An agent that understands something once uses it across every step it wa
 
 Spec: H2, H13
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Taken → Split, "the ticket is bigger than one agent and its route is in sight: it is cut".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Taken → Split, "the ticket is bigger than one agent and its route is in sight: it is cut".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket.
 

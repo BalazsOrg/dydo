@@ -108,7 +108,7 @@ Reason: Five small fixes one agent makes in a pass need no five tickets, and a l
 
 Spec: S17, R8
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Clear → Mending, "a round with no blocker leaves a cheap should on a change somebody merges: a writer mends it on its own ticket, once".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Clear → Mending, "a round with no blocker leaves a cheap should on a change somebody merges: a writer mends it on its own ticket, once".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, DYD-1327, closed "7 blockers, 12 shoulds and 9 nits" and Fix r2, DYD-1333, "2 blockers and 5 shoulds", each as one ticket.
 
@@ -126,7 +126,7 @@ Reason: A fix made while the code is open costs less than a ticket that remember
 
 Spec: R8, R23, R24
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Mending → InReview, "the should is mended in its holder's PR: a round on the new head, which the merge needs".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Mending → InReview, "the should is mended in its holder's PR: a round on the new head, which the merge needs".
 
 Evidence (code): `Services/Merge/PullRequestMerge.cs`
 
@@ -144,7 +144,7 @@ Reason: Spent as the optional look, the repair's round would leave a captain tha
 
 Spec: R2, R23, S17, R32
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Mending → Finishing, "the should is mended on a candidate in no PR, which the holder's officer merges: no round of its own, and the mended head is returned, to be reviewed with the whole".
+Transition in A captain and its ticket (the model's own machine, not written; the hand-written chart is in `statechart/captain/`): Mending → Finishing, "the should is mended on a candidate in no PR, which the holder's officer merges: no round of its own, and the mended head is returned, to be reviewed with the whole".
 
 Evidence (run): This fix's writer was briefed "Do not push; no PR; no merge." (DYD-1372 phase 1, fix g6) and returned its commit's SHA: its part was in no PR. The whole is in PR 379, and `dydo merge <pr-number> --match-head-commit <sha> --match-base-commit <sha> --dry-run`, run on it 2026-11-21 at head `13da419b`, went past its PASS check and stopped at "checks on 13da419bf447 are not green": the one PASS the command asks for stood on the whole's head, in the whole's PR. `Services/Merge/PullRequestMerge.cs` reads a PASS only from the body of the PR it is given.
 

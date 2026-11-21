@@ -18,7 +18,7 @@ public class TicketCaptainGap3Tests
 
     private static readonly Lazy<BuiltTree> Built = new(() => SkillBuilder.Build(ProductionModel.Model));
 
-    private static JsonElement Machine => JsonDocument.Parse(Built.Value.Files["claims/statechart/captain/transitions.json"]).RootElement;
+    private static JsonElement Machine => JsonDocument.Parse(Built.Value.Unwritten["claims/statechart/captain/transitions.json"]).RootElement;
 
     [Fact]
     [Trait("Job", "contract: DYD-1372 g3 N1 R21 S6 a woken captain dispatches only what is still in Todo and never its Merge: the dispatch line excepts the Merge itself, and a line below it makes the ready Merge the captain's own step, by the merging resource")]
