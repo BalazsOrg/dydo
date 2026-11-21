@@ -56,47 +56,4 @@ public class PathUtilsWorktreeIsolationTests : IDisposable
         Assert.NotEqual(normalizedMainDydo, normalizedResolved);
         Assert.Contains("_system/.local/worktrees/my-wt", normalizedResolved);
     }
-
-    [Fact]
-    public void FindMainProjectRoot_FromInsideWorktree_ResolvesToMainNotWorktree()
-    {
-        var (mainRoot, worktreeRoot) = BuildMainAndWorktree();
-        Environment.CurrentDirectory = worktreeRoot;
-
-        var resolved = PathUtils.FindMainProjectRoot();
-
-        Assert.NotNull(resolved);
-        var normalizedResolved = PathUtils.NormalizePath(Path.GetFullPath(resolved));
-        var normalizedMainRoot = PathUtils.NormalizePath(Path.GetFullPath(mainRoot));
-        var normalizedWorktreeRoot = PathUtils.NormalizePath(Path.GetFullPath(worktreeRoot));
-        Assert.Equal(normalizedMainRoot, normalizedResolved);
-        Assert.NotEqual(normalizedWorktreeRoot, normalizedResolved);
-    }
-
-    [Fact]
-    public void FindMainProjectRoot_FromOutsideWorktree_FallsBackToFindProjectRoot()
-    {
-        var (mainRoot, _) = BuildMainAndWorktree();
-        var subDir = Path.Combine(mainRoot, "dydo", "project");
-        Directory.CreateDirectory(subDir);
-        Environment.CurrentDirectory = subDir;
-
-        var resolved = PathUtils.FindMainProjectRoot();
-
-        Assert.NotNull(resolved);
-        Assert.Equal(
-            PathUtils.NormalizePath(Path.GetFullPath(mainRoot)),
-            PathUtils.NormalizePath(Path.GetFullPath(resolved)));
-    }
-
-    [Fact]
-    public void FindMainProjectRoot_NotInProject_ReturnsNull()
-    {
-        Environment.CurrentDirectory = _testDir;
-
-        var resolved = PathUtils.FindMainProjectRoot();
-
-        Assert.Null(resolved);
-    }
-
 }

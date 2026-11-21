@@ -14,19 +14,6 @@ public static partial class PathUtils
         return ConfigFileLocator.FindProjectRoot(startPath);
     }
 
-    /// <summary>
-    /// Find the main project root even when called from inside a worktree.
-    /// Resolves via the <c>dydo/_system/.local/worktrees/</c> marker; falls back
-    /// to <see cref="FindProjectRoot"/> when not inside a worktree.
-    /// </summary>
-    public static string? FindMainProjectRoot(string? startPath = null)
-    {
-        var start = startPath ?? Environment.CurrentDirectory;
-        var worktreeMainRoot = GetMainProjectRoot(start);
-        if (worktreeMainRoot != null) return worktreeMainRoot;
-        return FindProjectRoot(start);
-    }
-
     public static string ResolvePath(string sourcePath, string relativePath)
     {
         var sourceDir = Path.GetDirectoryName(sourcePath) ?? "";
