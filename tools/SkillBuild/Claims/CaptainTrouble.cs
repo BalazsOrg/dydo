@@ -126,12 +126,13 @@ public static class CaptainTrouble
             Reason: "A contract its holder may rewrite stops being a promise to the officer that cut it.")
     };
 
-    public static readonly Claim FixOwner = new("A Fix goes to its writer's thread while that thread has room, and to a fresh agent otherwise.", Me,
+    public static readonly Claim FixOwner = new("A Fix goes to the thread of the last child that wrote on the change it repairs while that thread has room, and to a fresh writer otherwise.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.FixRules, 3,
-            "Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong. " +
+            "Give a Fix to the thread of the last child that wrote on the change it repairs, its implementer or an earlier Fix's writer, with `t3_thread_send`, while that thread is alive and has room in its context. " +
+            "Dispatch a fresh writer for it, with `delegate_task`, when that context is heavy, when a blocker says the approach was wrong, or when no child has written on the change because you wrote it: you never fix a change of your own. " +
             "Either way the Fix is a new ticket to its holder: brief it by [Briefs](briefs.md), under the Fix's own key.",
-            () => [FixBrief!])
+            () => [FixBrief!, CaptainReview.Mine])
     ])
     {
         Spec = ["S9"],

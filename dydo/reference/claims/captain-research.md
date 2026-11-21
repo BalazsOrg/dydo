@@ -157,6 +157,40 @@ Reason: Its reader checks any claim in one step, and sees where nobody looked.
 
 > Write the answer first, then each claim with its citation (a path at its commit, or a URL) and its exact passage, what stayed unsettled, and every family searched, the empty ones included.
 
+## Big
+
+`claim:CaptainResearch.Big`: A research holder whose question is too big for one agent divides it as any holder does, what it has answered so far, written on its ticket with its citations, standing in for the commit, and each part a Research sub-ticket: one question that can be answered on its own.
+
+Spec: H2, K30
+
+Evidence (run): Linear, team Dydo, labels read 2026-11-21: the Type group holds Research, "A factual answer whose investigation needs its own owner, status or evidence", which "Closes on cited findings on the Issue": a research result stands on its ticket, and no commit carries it. save_comment: `issueId` and `body`, a comment on that issue. delegate_task: "Start one child agent with only `task`. No parent history.", so a part's captain starts from its ticket alone.
+
+Layer: The too-big scenario saves work as a commit and its SHA, and a holder whose work is an answer makes neither; nothing else says what such a holder saves before it divides.
+
+Reason: Parts cut from a written state search only what is still open, and whoever takes the ticket over finds what was already established.
+
+**ticket-captain** (ResearchBig; read by TicketCaptain):
+
+> Divide it by Too big to hold (`too-big.md`), what you have answered so far standing in for its commit: write that on your ticket, each claim with its citation, and make each part a Research sub-ticket, one question that can be answered on its own.
+
+## Parts
+
+`claim:CaptainResearch.Parts`: A research holder whose parts are back checks their answers as it checks a scout's, then takes up its own work again and writes its one answer from theirs and its own.
+
+Spec: K30, H2
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Leaf, "a research holder's parts are back: it checks their answers and takes up its own work again, to write its one answer".
+
+Evidence (tool): delegate_task, read 2026-11-21: `mode`, "Default 'async'. 'wait' only if this turn needs the result.", so its dispatcher goes on, or waits, until each part's return reaches its thread. A part puts its answer on its own ticket and returns one line (claim CaptainFinish.Nothing); Linear's list_comments reads it there.
+
+Layer: Each part's answer sits on its own ticket, and nothing gathers them onto the parent's or holds one against another.
+
+Reason: A part's mistake comes back as confident as a scout's, and an answer stitched from unchecked parts hands it to whoever decides.
+
+**ticket-captain** (ResearchBig; read by TicketCaptain):
+
+> When the parts are back, their answers are on their tickets: take each as you would a scout's report, from step 4 on, and write the one answer from theirs and yours.
+
 ## First
 
 `claim:CaptainResearch.First`: A Question's captain researches first, and lays out a call its research leaves open neutrally: the call, its options unranked and the facts with their sources.
@@ -239,4 +273,4 @@ Reason: An officer often holds what the sources lacked, and it is the one place 
 
 **ticket-captain** (ResearchRoutes; read by TicketCaptain):
 
-> They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open.
+> They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.

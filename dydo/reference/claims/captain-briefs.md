@@ -228,7 +228,7 @@ Reason: A reviewer that knows there is no PR writes its PASS where it will be re
 
 **ticket-captain** (BriefReview; read by TicketCaptain):
 
-> The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by Merging (`merging.md`), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. Only a candidate somebody else will have reviewed in a PR has none, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
+> The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by Merging (`merging.md`), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. The candidate is also that PR's head: after a Fix, a mended should or a resolved conflict, push your branch with `git push` and see `dydo pr-ready` pass again, since `dydo merge` refuses a PR whose head is not the reviewed SHA. Only a candidate somebody else will have reviewed in a PR has no PR, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
 
 ## PrFirst
 
@@ -244,7 +244,23 @@ Reason: A verdict written where the command never looks buys no merge, and the w
 
 **ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Pr):
 
-> The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by Merging (`merging.md`), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. Only a candidate somebody else will have reviewed in a PR has none, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
+> The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by Merging (`merging.md`), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. The candidate is also that PR's head: after a Fix, a mended should or a resolved conflict, push your branch with `git push` and see `dydo pr-ready` pass again, since `dydo merge` refuses a PR whose head is not the reviewed SHA. Only a candidate somebody else will have reviewed in a PR has no PR, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
+
+## Pushed
+
+`claim:CaptainBriefs.Pushed`: The candidate of a Review in its holder's PR is that PR's head, pushed, before the Review is briefed: each commit taken in since the PR was opened is pushed first.
+
+Spec: R23, R17
+
+Evidence (run): `Services/Merge/PullRequestMerge.cs` refuses a PR whose hosted head is not the SHA it is given: "PR #… head is …, not the reviewed …". `dydo pr-ready`, run with no body file in DYD-1372's checkout at `951addda`, clean and pushed, 2026-11-21: "ready: … is clean and HEAD matches its upstream", exit 0; `Services/PrReadyCheck.cs` answers a head ahead of its upstream with "HEAD differs from its upstream". `git push --dry-run origin HEAD`, typed there the same day on the ticket's branch, passed the guard and answered "Everything up-to-date": `Commands/GuardCommand.MergeRoutes.cs` refuses only a push that updates the default branch, and `Services/BashCommandAnalyzer.cs` a forced or deleting one.
+
+Layer: The guard lets a ticket branch be pushed and never asks for it; the tree check ran once, before the PR was opened, and `dydo merge` names a stale head only at the merge.
+
+Reason: Left local, the reviewed commit meets the host only at the merge: the command refuses there, and hosted CI has yet to run on what the reviewer passed.
+
+**ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Pr):
+
+> The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by Merging (`merging.md`), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. The candidate is also that PR's head: after a Fix, a mended should or a resolved conflict, push your branch with `git push` and see `dydo pr-ready` pass again, since `dydo merge` refuses a PR whose head is not the reviewed SHA. Only a candidate somebody else will have reviewed in a PR has no PR, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
 
 ## Governing
 

@@ -141,41 +141,39 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 
 ## The ticket-captain prototype (DYD-1372)
 
-One more machine, outside the overview and its 31: a captain holding one ticket, built from the
-prototype's claims (DYD-1295 519126ab). `round` counts review rounds, bounded at 4
-so TLC ends; the skill sets no cap.
+One more machine, outside the overview's 31: a captain holding one ticket, built from the
+prototype's claims (DYD-1295 519126ab). `round` counts rounds, bounded at 4 so TLC ends; the skill
+sets no cap.
 
 - A ticket is taken by one move, Dispatched → Taken (`Captain.Start`): set In Progress, its kind's
-  resource loaded. `kind` holds what it learns there, `change`, `verdict` or `answer`,
-  and `unread` before.
+  resource loaded. `kind` holds what it learns: `change`, `verdict` or `answer`; `unread` before.
 - Only a `change` enters a review round or a repair (`CaptainReview.Other`, `Whole`,
   `CaptainMerging.Broken`), and only a `verdict` seats a round and forms its verdict
   (`CaptainReviewSeats.Ticket`, `Verdict`), so no path leads a verdict into In review (R34). An
-  `answer` is no verdict; no rule speaks of reviewing one.
-- A ticket that cannot be started goes back from Dispatched: a filler that fails its check (H11), or
-  one another agent holds (`CaptainIntake.Held`; S7).
-- A clear round is its own state: the rounds end from it; the one more round the captain may
-  order leaves only from it, once (`extra`); and a cheap should it leaves is mended once (`mended`):
+  `answer` is no verdict; no rule speaks of reviewing one. Only an `answer` goes Waiting → Leaf,
+  its parts back (`CaptainResearch.Parts`; H2).
+- A ticket that cannot start goes back from Dispatched: a filler failing its check (H11), or one
+  another agent holds (`CaptainIntake.Held`; S7).
+- A clear round is a state: the rounds end from it; the one more round leaves only from
+  it, once (`extra`); and a cheap should it leaves is mended once (`mended`):
   Clear → Mending (`CaptainRound.Cheap`), then, in the holder's PR, a round on the new head (`NewHead`),
   not the one more; in no PR, Finishing (`MendedPart`; S17). A blocked round reaches the next only
   through a Fix (R8), a third only through the checkpoint (R10).
-- A repair of a conflict or red gate goes on only through a review round, or back to the officer
-  (R19, R21).
+- A repair of a conflict or red gate goes on only through a review round, or to the officer (R19, R21).
 - Only a leaf has a Question state: a splitting captain's is one more child. It is left only
-  to resume the leaf; unsettled, it goes up and stays open, a self-loop
-  (`CaptainNeed.Up`; H16, S10).
+  to resume the leaf; unsettled, it goes up and stays open, a self-loop (`CaptainNeed.Up`; H16, S10).
 - A captain that cannot see its route finds the way before it cuts (H10): Taken → Finding the way
-  (`CaptainWay.Fog`), left only by a cut of the parts in sight, entered again from Waiting.
+  (`CaptainWay.Fog`), left only by a cut of the parts in sight, re-entered from Waiting.
 - A leaf goes back as `too big, re-cut` (H2), or as a Question its research left neither settled nor
   the user's (`CaptainResearch.Question`); the user's call goes on as a HITL Question and the
   research ticket finishes (`Handed`; H23). After a re-cut the officer rewrites its contract and
   cuts the rest (`CaptainTrouble.ChildReCut`).
 
-The chart draws 34 of the 41 arrows: six pairs share one (the returns from Dispatched, the cuts from
-Taken, a leaf's returns and its ways to Finishing, Waiting to Finishing, a repair's ways back); the
-Question's self-loop is undrawn. TLC, fix g6b: `NoDeadlock` holds. Its properties are hand-written
-under `verification/statechart/`, from his rulings, never this model (K3).
+The chart draws 35 of the 42 arrows: six pairs share one (Dispatched's returns, Taken's cuts, a leaf's returns
+and its ways to Finishing, Waiting to Finishing, a repair's ways back); the
+Question's self-loop is undrawn. TLC, fix g7: `NoDeadlock` holds. Its properties are hand-written
+under `verification/statechart/` from his rulings, never this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 16 | 41 | 0 | 135 states, 257 steps |
+| A captain and its ticket | `captain` | 16 | 42 | 0 | 135 states, 258 steps |

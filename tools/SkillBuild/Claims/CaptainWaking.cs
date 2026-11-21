@@ -9,7 +9,8 @@ namespace DynaDocs.SkillBuild;
 /// head that holds it. The phase then routes and opens, and sends nothing out: first a step opened
 /// ahead and no longer needed is cancelled and a Fix or Review opened after the Merge is made to block
 /// it; only then is everything ready dispatched, the Merge never, because that step is its captain's
-/// own and comes last. The posting of a returned SHA and the
+/// own and comes last. A wake by a need, or by a Question's return or answer, is sent to the need's
+/// own steps (gap hunt 6, J1). The posting of a returned SHA and the
 /// route of an out-of-scope report are <see cref="CaptainDispatch"/>'s claims, stated here because a
 /// return is when they are done.
 /// </summary>
@@ -66,10 +67,23 @@ public static class CaptainWaking
             Reason: "A reviewer handed a head that lacks something passes a tree nobody assembled, and the missing piece first meets the others after the verdict.")
     };
 
+    public static readonly Claim Needs = new("A holder woken by a need a child sends up, or by the return or the answer of a Question it opened, takes it by the steps of a need for the user.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 5,
+            "A need a child sends up to you, and the return or the answer of a Question you opened, go by [A need for the user](need-for-the-user.md).")
+    ])
+    {
+        Spec = ["H16", "H12"],
+        Truth = new(Evidence.Tool("t3_thread_send, read 2026-11-21: `mode:'auto'` \"starts an idle thread, steers a running turn, or queues\", so a child's need and an officer's answer both arrive as a message " +
+                                  "in a thread whose holder was doing something else, or nothing."),
+            Layer: "T3 delivers the message and says nothing of which steps it belongs to, and those steps sit under a heading that names the user.",
+            Reason: "Woken with somebody else's open call, a holder that finds no route answers it from its own context, which is the one thing the steps exist to prevent.")
+    };
+
     public static readonly Claim GoOn = new("A woken holder goes on from the phase it had reached once the return is taken in, its SHA posted and its commit merged; " +
                                             "whatever that phase has it dispatch, and its finish, wait until the unneeded step is cancelled and each later step blocks the Merge.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 5,
+        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 6,
             "Go on from the phase you had reached; any sub-ticket it has you send out, and phase 5 of the spine, wait for the steps below.")
     ])
     {
@@ -82,7 +96,7 @@ public static class CaptainWaking
 
     public static readonly Claim Unneeded = new("A sub-ticket opened ahead that its predecessor's outcome made unnecessary is cancelled with a one-line reason, and a cancelled step blocks nothing.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 6,
+        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 7,
             "Cancel a sub-ticket you opened ahead that the return made unnecessary, such as the Fix of a round that passed, with a one-line reason: a Canceled step blocks nothing.")
     ])
     {
@@ -95,7 +109,7 @@ public static class CaptainWaking
 
     public static readonly Claim Wired = new("A Fix or Review opened after its Merge sub-ticket is made to block that Merge before anything newly ready is dispatched.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 7,
+        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 8,
             "A Fix or Review you opened after your Merge sub-ticket blocks nothing until you set it: make it block the Merge, with Linear's `save_issue` (`blocks`).")
     ])
     {
@@ -108,7 +122,7 @@ public static class CaptainWaking
 
     public static readonly Claim Ready = new("At each return a captain dispatches the sub-tickets it unblocked, never its Merge: those still unstarted and not sent out, whose every blocker is Done or Canceled.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 8,
+        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 9,
             "Dispatch each AFK sub-ticket, the Merge excepted, that is still in Todo, that you have not sent out already and that nothing blocks any more: " +
             "every sub-ticket that blocked it is Done or Canceled.")
     ])
@@ -133,7 +147,7 @@ public static class CaptainWaking
     public static readonly Claim MergeNext = new("A captain's Merge sub-ticket is never dispatched at a wake: where the merge is the captain's, once its review rounds have ended and nothing blocks the Merge, " +
                                                  "the captain runs it itself, as its own step, in the last phase.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 9,
+        At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 10,
             "Take phase 5 of the spine last, once your work has reached it: with review rounds, once they have ended. If your brief gives you the merge, the Merge is your own step, " +
             "your next one once nothing blocks it, by [Merging](merging.md); if your officer merges, you have no Merge, and you return your commit.",
             () => [NoMerge])

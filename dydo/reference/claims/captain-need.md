@@ -68,7 +68,7 @@ Reason: Research can settle a call and can never produce a token, so the two tak
 
 **ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Ask):
 
-> A need that already has its ticket keeps it, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
+> Only these needs keep the ticket they have, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
 ## Carried
 
@@ -84,7 +84,7 @@ Reason: One ticket keeps every block on it in a single place, where whoever rank
 
 **ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Ask):
 
-> A need that already has its ticket keeps it, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
+> Only these needs keep the ticket they have, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
 ## Ask
 
@@ -102,7 +102,7 @@ Reason: One open question holds up one part, never the whole ticket.
 
 **ticket-captain** (NeedSteps; read by TicketCaptain):
 
-> A need that already has its ticket keeps it, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
+> Only these needs keep the ticket they have, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
 ## Skip
 
@@ -118,7 +118,7 @@ Reason: A captain set to study what only he can give costs a day, and his answer
 
 **ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Fresh):
 
-> Dispatch a fresh captain onto a Question with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
+> Dispatch a fresh captain onto a Question you opened, with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
 
 ## Approval
 
@@ -134,7 +134,7 @@ Reason: A rubber stamp costs him the time to understand the question and returns
 
 **ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Fresh):
 
-> Dispatch a fresh captain onto a Question with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
+> Dispatch a fresh captain onto a Question you opened, with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
 
 ## Fresh
 
@@ -150,7 +150,7 @@ Reason: A context full of its own work answers with a bias; a fresh one reads th
 
 **ticket-captain** (NeedSteps; read by TicketCaptain):
 
-> Dispatch a fresh captain onto a Question with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
+> Dispatch a fresh captain onto a Question you opened, with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
 
 ## Down
 

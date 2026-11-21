@@ -34,10 +34,12 @@ public static class CaptainCarrier
     };
 
     private static readonly Resource Research = new(CaptainResource.Research, "Research",
-        Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Paragraph(CaptainSlot.ResearchMap), Slot.Steps(CaptainSlot.ResearchSteps), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"),
+        Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Paragraph(CaptainSlot.ResearchMap), Slot.Steps(CaptainSlot.ResearchSteps),
+        Slot.Paragraph(CaptainSlot.ResearchBig, "If the question is too big for one agent:"), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"),
         Slot.Bullets(CaptainSlot.ResearchRoutes))
     {
         // A Question whose research does not settle its call leaves the leaf: handed on to the user, or back to the officer.
+        // A holder that divided its question comes back to the leaf once its parts return.
         States = [CaptainState.Leaf]
     };
 

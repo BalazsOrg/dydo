@@ -296,7 +296,7 @@ Reason: The loop ends on evidence, with no cap that would let a known blocker th
 
 ## Mine
 
-`claim:CaptainReview.Mine`: A blocker found in a change a captain wrote goes to a fresh writer.
+`claim:CaptainReview.Mine`: A captain never fixes a change it wrote itself: while no child has written on that change, its Fix goes to a fresh writer.
 
 Spec: R16, R33
 
@@ -306,9 +306,9 @@ Layer: Nothing keeps an agent from repairing its own work and calling it fixed.
 
 Reason: Whoever wrote the fault tends to defend the thinking that produced it.
 
-**ticket-captain** (OwnChange; read by TicketCaptain, on claim:CaptainReview.OwnFinding):
+**ticket-captain** (FixRules; read by TicketCaptain, on claim:CaptainTrouble.FixOwner):
 
-> Take a finding on a change you wrote as the reviewer wrote it: a fresh writer fixes it, and if you doubt it, the doubt is a Question sub-ticket, never your call.
+> Give a Fix to the thread of the last child that wrote on the change it repairs, its implementer or an earlier Fix's writer, with `t3_thread_send`, while that thread is alive and has room in its context. Dispatch a fresh writer for it, with `delegate_task`, when that context is heavy, when a blocker says the approach was wrong, or when no child has written on the change because you wrote it: you never fix a change of your own. Either way the Fix is a new ticket to its holder: brief it by Briefs (`briefs.md`), under the Fix's own key.
 
 ## OwnFinding
 
@@ -324,4 +324,4 @@ Reason: Once its own change is under review, the captain is no longer impartial 
 
 **ticket-captain** (OwnChange; read by TicketCaptain):
 
-> Take a finding on a change you wrote as the reviewer wrote it: a fresh writer fixes it, and if you doubt it, the doubt is a Question sub-ticket, never your call.
+> Take a finding on a change you wrote as the reviewer wrote it: its Fix is never yours to write, and goes out by Fix rounds (`fix-rounds.md`); if you doubt the finding, the doubt is a Question sub-ticket, never your call.

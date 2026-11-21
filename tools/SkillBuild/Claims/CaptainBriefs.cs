@@ -153,8 +153,10 @@ public static class CaptainBriefs
     [
         At(Actor.TicketCaptain, CaptainSlot.BriefReview, 3,
             "The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by [Merging](merging.md), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. " +
-            "Only a candidate somebody else will have reviewed in a PR has none, a leaf's evidence check or the round of a part its officer merges, and its brief says so.",
-            () => [PrFirst!])
+            "The candidate is also that PR's head: after a Fix, a mended should or a resolved conflict, push your branch with `git push` and see `dydo pr-ready` pass again, " +
+            "since `dydo merge` refuses a PR whose head is not the reviewed SHA. " +
+            "Only a candidate somebody else will have reviewed in a PR has no PR, a leaf's evidence check or the round of a part its officer merges, and its brief says so.",
+            () => [PrFirst!, Pushed!])
     ])
     {
         Spec = ["R17", "K14"],
@@ -171,6 +173,18 @@ public static class CaptainBriefs
                                  "`Services/Merge/PullRequestMerge.cs` takes its PASS from the PR's body and refuses with \"holds no PASS for candidate\" when it is absent."),
             Layer: "`dydo merge` tells a captain that its PR holds no PASS only at the merge, after the reviewer that could have written the line has returned.",
             Reason: "A verdict written where the command never looks buys no merge, and the whole is judged a second time for the sake of one line.")
+    };
+
+    public static readonly Claim Pushed = new("The candidate of a Review in its holder's PR is that PR's head, pushed, before the Review is briefed: each commit taken in since the PR was opened is pushed first.", Me, [])
+    {
+        Spec = ["R23", "R17"],
+        Truth = new(Evidence.Run("`Services/Merge/PullRequestMerge.cs` refuses a PR whose hosted head is not the SHA it is given: \"PR #… head is …, not the reviewed …\". " +
+                                 "`dydo pr-ready`, run with no body file in DYD-1372's checkout at `951addda`, clean and pushed, 2026-11-21: \"ready: … is clean and HEAD matches its upstream\", exit 0; " +
+                                 "`Services/PrReadyCheck.cs` answers a head ahead of its upstream with \"HEAD differs from its upstream\". `git push --dry-run origin HEAD`, typed there the same day on the ticket's branch, " +
+                                 "passed the guard and answered \"Everything up-to-date\": `Commands/GuardCommand.MergeRoutes.cs` refuses only a push that updates the default branch, " +
+                                 "and `Services/BashCommandAnalyzer.cs` a forced or deleting one."),
+            Layer: "The guard lets a ticket branch be pushed and never asks for it; the tree check ran once, before the PR was opened, and `dydo merge` names a stale head only at the merge.",
+            Reason: "Left local, the reviewed commit meets the host only at the merge: the command refuses there, and hosted CI has yet to run on what the reviewer passed.")
     };
 
     public static readonly Claim Governing = new("A review brief names the governing spec, or says there is none.", Me,

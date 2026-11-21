@@ -20,6 +20,9 @@ namespace DynaDocs.SkillBuild;
 /// stays open, and its holder goes on waiting, a step that leaves the state unchanged (H16, S10).
 /// A research holder leaves its leaf three ways: with the answer; with the call handed on to the user
 /// as a HITL Question of its own, its research ticket finished; or back to its officer, unsettled (H23).
+/// One that divided a question too big for one agent leaves its wait back to the leaf, where it checks
+/// the parts' answers and writes its own: the three ways out are the leaf's, so none leads from the wait
+/// (H2, K30, gap hunt 6, J4).
 /// A ticket is taken by one move, from Dispatched: its holder sets it In Progress and loads its kind's
 /// resource, and so learns what its result is. <c>kind</c> holds that from then on: <c>change</c>;
 /// <c>verdict</c>, a review's verdict or a seat's findings; or <c>answer</c>, what a research holder or
@@ -73,8 +76,14 @@ public static class CaptainMachines
     public const string Verdict = "kind = \"verdict\"";
 
     /// <summary>
-    /// The effect of the move that takes a ticket: its holder learns which of the three its result is. No
-    /// move is guarded on an answer: its holder takes every move that is open to any result, and no other.
+    /// The guard of the one move only an answer's holder makes: back from its wait to its own work, once the
+    /// parts of a divided question return.
+    /// </summary>
+    public const string Answer = "kind = \"answer\"";
+
+    /// <summary>
+    /// The effect of the move that takes a ticket: its holder learns which of the three its result is. But
+    /// for that one move, an answer's holder takes every move that is open to any result, and no other.
     /// </summary>
     public const string Learn = "kind' \\in {\"change\", \"verdict\", \"answer\"}";
 }

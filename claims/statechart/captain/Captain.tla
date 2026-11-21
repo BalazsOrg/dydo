@@ -107,6 +107,13 @@ CaptainResearch_Handed ==
     /\ state' = "Finishing"
     /\ UNCHANGED <<round, extra, mended, kind>>
 
+\* claim:CaptainResearch.Parts
+CaptainResearch_Parts ==
+    /\ state = "Waiting"
+    /\ kind = "answer"
+    /\ state' = "Leaf"
+    /\ UNCHANGED <<round, extra, mended, kind>>
+
 \* claim:CaptainResearch.Question
 CaptainResearch_Question ==
     /\ state = "Leaf"
@@ -294,6 +301,7 @@ Next ==
     \/ CaptainNeed_Ask
     \/ CaptainNeed_Up
     \/ CaptainResearch_Handed
+    \/ CaptainResearch_Parts
     \/ CaptainResearch_Question
     \/ CaptainReview_Clean
     \/ CaptainReview_Cleared

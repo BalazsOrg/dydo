@@ -209,7 +209,7 @@ public static class CaptainReview
         Transition = new(CaptainState.Clear, CaptainState.Finishing, "no further round is ordered: the review rounds end")
     };
 
-    public static readonly Claim Mine = new("A blocker found in a change a captain wrote goes to a fresh writer.", Me, [])
+    public static readonly Claim Mine = new("A captain never fixes a change it wrote itself: while no child has written on that change, its Fix goes to a fresh writer.", Me, [])
     {
         Spec = ["R16", "R33"],
         Truth = new(Evidence.Tool("delegate_task: \"Start one child agent with only `task`. No parent history.\""),
@@ -220,8 +220,7 @@ public static class CaptainReview
     public static readonly Claim OwnFinding = new("A captain makes no call on a finding about a change it wrote: the finding stands as the reviewer wrote it, and a doubt about it is a Question.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.OwnChange, 1,
-            "Take a finding on a change you wrote as the reviewer wrote it: a fresh writer fixes it, and if you doubt it, the doubt is a Question sub-ticket, never your call.",
-            () => [Mine])
+            "Take a finding on a change you wrote as the reviewer wrote it: its Fix is never yours to write, and goes out by [Fix rounds](fix-rounds.md); if you doubt the finding, the doubt is a Question sub-ticket, never your call.")
     ])
     {
         Spec = ["R33", "H16"],

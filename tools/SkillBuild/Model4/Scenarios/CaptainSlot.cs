@@ -45,6 +45,7 @@ public enum CaptainSlot
     ResearchLead,
     ResearchMap,
     ResearchSteps,
+    ResearchBig,
     ResearchQuestion,
     ResearchRoutes,
     StartChecks,

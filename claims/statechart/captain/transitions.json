@@ -392,6 +392,22 @@
       ]
     },
     {
+      "claim": "claim:CaptainResearch.Parts",
+      "from": "Waiting",
+      "to": "Leaf",
+      "arrow": "a research holder's parts are back: it checks their answers and takes up its own work again, to write its one answer",
+      "spec": [
+        "K30",
+        "H2"
+      ],
+      "guard": "kind = \"answer\"",
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainResearch.Question",
       "from": "Leaf",
       "to": "Returned",

@@ -33,6 +33,7 @@ const steps = {
   "CaptainNeed_Ask": "a call that is not obvious: a Question sub-ticket · H16, S10",
   "CaptainNeed_Up": "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer · H16, H12, S10",
   "CaptainResearch_Handed": "a Question's research leaves a call that is the user's: it is handed on as a HITL Question sub-ticket, and the research ticket has done its part · H23, H16, S10",
+  "CaptainResearch_Parts": "a research holder's parts are back: it checks their answers and takes up its own work again, to write its one answer · K30, H2",
   "CaptainResearch_Question": "a Question's research leaves a call that is neither settled nor the user's: it goes back to the officer unsettled, the Question still open · H16, L18",
   "CaptainReview_Clean": "no further round is ordered: the review rounds end · R8",
   "CaptainReview_Cleared": "the round finds no new blocker · R8, R11",

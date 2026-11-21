@@ -3,7 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// The ticket-captain prototype's Research kind resource (DYD-1372): one question a choice waits on.
 /// Research pools and verifies; a scout is its native helper for one lookup and holds no ticket
-/// (option A, DYD-1295 0f340abd).
+/// (option A, DYD-1295 0f340abd). A question too big for one agent is divided like any slice, the answer so
+/// far standing in for the commit, and its holder takes up its own work again once the parts are back
+/// (gap hunt 6, J4).
 /// </summary>
 public static class CaptainResearch
 {
@@ -120,6 +122,39 @@ public static class CaptainResearch
             Reason: "Its reader checks any claim in one step, and sees where nobody looked.")
     };
 
+    public static readonly Claim Big = new("A research holder whose question is too big for one agent divides it as any holder does, what it has answered so far, written on its ticket with its citations, " +
+                                           "standing in for the commit, and each part a Research sub-ticket: one question that can be answered on its own.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.ResearchBig, 1,
+            "Divide it by [Too big to hold](too-big.md), what you have answered so far standing in for its commit: write that on your ticket, each claim with its citation, " +
+            "and make each part a Research sub-ticket, one question that can be answered on its own.")
+    ])
+    {
+        Spec = ["H2", "K30"],
+        Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-21: the Type group holds Research, \"A factual answer whose investigation needs its own owner, status or evidence\", " +
+                                 "which \"Closes on cited findings on the Issue\": a research result stands on its ticket, and no commit carries it. save_comment: `issueId` and `body`, a comment on that issue. " +
+                                 "delegate_task: \"Start one child agent with only `task`. No parent history.\", so a part's captain starts from its ticket alone."),
+            Layer: "The too-big scenario saves work as a commit and its SHA, and a holder whose work is an answer makes neither; nothing else says what such a holder saves before it divides.",
+            Reason: "Parts cut from a written state search only what is still open, and whoever takes the ticket over finds what was already established.")
+    };
+
+    public static readonly Claim Parts = new("A research holder whose parts are back checks their answers as it checks a scout's, then takes up its own work again and writes its one answer from theirs and its own.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.ResearchBig, 2,
+            "When the parts are back, their answers are on their tickets: take each as you would a scout's report, from step 4 on, and write the one answer from theirs and yours.")
+    ])
+    {
+        Spec = ["K30", "H2"],
+        Truth = new(Evidence.Tool("delegate_task, read 2026-11-21: `mode`, \"Default 'async'. 'wait' only if this turn needs the result.\", so its dispatcher goes on, or waits, until each part's return reaches its thread. " +
+                                  "A part puts its answer on its own ticket and returns one line (claim CaptainFinish.Nothing); Linear's list_comments reads it there."),
+            Layer: "Each part's answer sits on its own ticket, and nothing gathers them onto the parent's or holds one against another.",
+            Reason: "A part's mistake comes back as confident as a scout's, and an answer stitched from unchecked parts hands it to whoever decides."),
+        Transition = new(CaptainState.Waiting, CaptainState.Leaf, "a research holder's parts are back: it checks their answers and takes up its own work again, to write its one answer")
+        {
+            Guard = CaptainMachines.Answer
+        }
+    };
+
     public static readonly Claim First = new("A Question's captain researches first, and lays out a call its research leaves open neutrally: the call, its options unranked and the facts with their sources.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ResearchQuestion, 1,
@@ -174,7 +209,9 @@ public static class CaptainResearch
     public static readonly Claim Question = new("A Question's captain returns to its officer as unsettled, with the call laid out, any call its research neither settles nor finds to be the user's.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ResearchRoutes, 3,
-            "They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open.")
+            "They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. " +
+            "Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.",
+            () => [CaptainPassedUp.Woken])
     ])
     {
         Spec = ["H16", "L18"],
