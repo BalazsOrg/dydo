@@ -441,6 +441,40 @@
       ]
     },
     {
+      "claim": "claim:CaptainReviewSeats.Ticket",
+      "from": "Taken",
+      "to": "Split",
+      "arrow": "a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket",
+      "spec": [
+        "S1",
+        "R34",
+        "R15"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainReviewSeats.Verdict",
+      "from": "Waiting",
+      "to": "Finishing",
+      "arrow": "a review's seats are back: their findings become the round's one verdict, which no round reviews",
+      "spec": [
+        "S8",
+        "S1",
+        "R34"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainSplit.Cut",
       "from": "Taken",
       "to": "Split",

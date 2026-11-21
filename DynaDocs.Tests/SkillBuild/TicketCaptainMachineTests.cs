@@ -96,6 +96,16 @@ public class TicketCaptainMachineTests
         Assert.DoesNotContain("user", Built.Value.Files["skills/roles/officers/ticket-captain/resources/research.md"]);
     }
 
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 X4 X5 a review's captain cuts its ticket into seats and, once they are back, goes straight to finishing: its verdict passes through no review round (07c86aad, aa5b445e)")]
+    public void CaptainMachine_SendsAReviewsSeatsAndNeverReviewsTheVerdict()
+    {
+        Assert.Contains(Arrow("CaptainReviewSeats.Ticket", "Taken", "Split"), Arrows);
+        Assert.Contains(Arrow("CaptainReviewSeats.Verdict", "Waiting", "Finishing"), Arrows);
+        Assert.Equal(1, Between("Waiting", "InReview"));
+        Assert.Contains(Arrow("CaptainReview.Whole", "Waiting", "InReview"), Arrows);
+    }
+
     private static int Between(string from, string to) => Arrows.Split($"\"from\": \"{from}\",\n      \"to\": \"{to}\"").Length - 1;
 
     private static int Leaving(string state) => Arrows.Split($"\"from\": \"{state}\"").Length - 1;

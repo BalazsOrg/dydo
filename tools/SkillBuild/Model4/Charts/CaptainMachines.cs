@@ -15,6 +15,9 @@ namespace DynaDocs.SkillBuild;
 /// A captain that cannot see the route from its ticket to the spec finds the way first (H10, DYD-1372
 /// 07c86aad): that state is left only by cutting the parts in sight, and entered again whenever a
 /// part returns and fog remains, so the whole is never cut at once.
+/// A review's captain cuts its ticket for a second reason, the family of its seats: a seat from
+/// another model family goes out on a leaf sub-ticket of its own. Once its seats are back it goes
+/// straight to finishing, because a verdict is never reviewed (R34, S1, DYD-1372 07c86aad, aa5b445e).
 /// </summary>
 public static class CaptainMachines
 {

@@ -136,6 +136,18 @@ CaptainReview_Whole ==
     /\ state' = "InReview"
     /\ UNCHANGED <<round, extra>>
 
+\* claim:CaptainReviewSeats.Ticket
+CaptainReviewSeats_Ticket ==
+    /\ state = "Taken"
+    /\ state' = "Split"
+    /\ UNCHANGED <<round, extra>>
+
+\* claim:CaptainReviewSeats.Verdict
+CaptainReviewSeats_Verdict ==
+    /\ state = "Waiting"
+    /\ state' = "Finishing"
+    /\ UNCHANGED <<round, extra>>
+
 \* claim:CaptainSplit.Cut
 CaptainSplit_Cut ==
     /\ state = "Taken"
@@ -227,6 +239,8 @@ Next ==
     \/ CaptainReview_Other
     \/ CaptainReview_Replan
     \/ CaptainReview_Whole
+    \/ CaptainReviewSeats_Ticket
+    \/ CaptainReviewSeats_Verdict
     \/ CaptainSplit_Cut
     \/ CaptainSplit_Leaf
     \/ CaptainTrouble_Checkpoint

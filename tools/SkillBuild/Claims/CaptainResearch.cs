@@ -10,7 +10,35 @@ public static class CaptainResearch
     private const string Legacy = "skills/roles/crew/research/SKILL.md";
     private const string Helper = "Agent: a native sub-agent, awaited within the turn, returns its report to its caller alone.";
 
+    private const string Map = """
+        | Spine phase | You |
+        | -- | -- |
+        | 1. Take the ticket | use |
+        | 2. Do it or split it | use: a leaf, whose scouts are native helpers and never sub-tickets |
+        | 3. Dispatch | skip, unless you split |
+        | 4. Get it reviewed | skip: an answer is no change, so no round is opened on it |
+        | 5. Finish | use: the Nobody case |
+        | When things go wrong | use |
+        """;
+
     private static readonly Enum[] Me = [Actor.TicketCaptain];
+
+    public static readonly Claim Phases = new("A Research holder uses the spine's first, second and last phases, and skips dispatch and review.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ResearchMap, 1, Map)])
+    {
+        Spec = ["K30", "S1"],
+        Truth = new(Evidence.Code("claims/statechart/captain/transitions.json"),
+            Layer: "The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out.",
+            Reason: "A researcher would otherwise wonder who is to check its answer, or open tickets for its lookups.")
+    };
+
+    public static readonly Claim Passages = new("A scout returns exact passages with their citations, from the source that owns the claim, and says what it searched where it found nothing.", Me, [])
+    {
+        Spec = ["K30", "K22"],
+        Truth = new(Evidence.Tool(Helper),
+            Layer: "A scout is a native helper that loads no skill, so what it must bring back reaches it only in its prompt.",
+            Reason: "A summary cannot be verified, and an empty report hides whether the family was searched at all.")
+    };
 
     public static readonly Claim Asked = new("A Research-kind ticket is one question a choice waits on, answered with every claim cited to an opened passage.", Me,
         [At(Actor.TicketCaptain, CaptainSlot.ResearchLead, 1, "Your ticket is one question a choice waits on. Answer it with every claim cited to a passage you opened.")])
@@ -43,7 +71,12 @@ public static class CaptainResearch
     };
 
     public static readonly Claim Scouts = new("Research sends one scout per source family in play, as native helpers in parallel, and reads a lone family itself.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.ResearchSteps, 3, "Send one scout per family in play, as native helpers in parallel, each with the question and its one family; read a lone family yourself.")])
+    [
+        At(Actor.TicketCaptain, CaptainSlot.ResearchSteps, 3,
+            "Send one scout per family in play, as native helpers in parallel, each with the question and its one family; ask each for exact passages with their citations, " +
+            "from the source that owns the claim, and for what it searched where it found nothing. Read a lone family yourself.",
+            () => [Passages])
+    ])
     {
         Spec = ["K30", "S1"],
         Truth = new(Evidence.Tool(Helper),
@@ -97,6 +130,6 @@ public static class CaptainResearch
             Reason: "Options left unranked let whoever decides weigh them without the researcher's leaning.")
     };
 
-    private static Line At(Actor reader, Enum slot, int order, string text) =>
-        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order));
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

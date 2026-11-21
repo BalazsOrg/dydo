@@ -6,6 +6,45 @@ type: reference
 
 # Claims: CaptainResearch
 
+## Phases
+
+`claim:CaptainResearch.Phases`: A Research holder uses the spine's first, second and last phases, and skips dispatch and review.
+
+Spec: K30, S1
+
+Evidence (code): `claims/statechart/captain/transitions.json`
+
+Layer: The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out.
+
+Reason: A researcher would otherwise wonder who is to check its answer, or open tickets for its lookups.
+
+**ticket-captain** (ResearchMap; read by TicketCaptain):
+
+> | Spine phase | You |
+> | -- | -- |
+> | 1. Take the ticket | use |
+> | 2. Do it or split it | use: a leaf, whose scouts are native helpers and never sub-tickets |
+> | 3. Dispatch | skip, unless you split |
+> | 4. Get it reviewed | skip: an answer is no change, so no round is opened on it |
+> | 5. Finish | use: the Nobody case |
+> | When things go wrong | use |
+
+## Passages
+
+`claim:CaptainResearch.Passages`: A scout returns exact passages with their citations, from the source that owns the claim, and says what it searched where it found nothing.
+
+Spec: K30, K22
+
+Evidence (tool): Agent: a native sub-agent, awaited within the turn, returns its report to its caller alone.
+
+Layer: A scout is a native helper that loads no skill, so what it must bring back reaches it only in its prompt.
+
+Reason: A summary cannot be verified, and an empty report hides whether the family was searched at all.
+
+**ticket-captain** (ResearchSteps; read by TicketCaptain, on claim:CaptainResearch.Scouts):
+
+> Send one scout per family in play, as native helpers in parallel, each with the question and its one family; ask each for exact passages with their citations, from the source that owns the claim, and for what it searched where it found nothing. Read a lone family yourself.
+
 ## Asked
 
 `claim:CaptainResearch.Asked`: A Research-kind ticket is one question a choice waits on, answered with every claim cited to an opened passage.
@@ -68,7 +107,7 @@ Reason: One lookup leaves nothing anyone but the researcher uses, so a ticket fo
 
 **ticket-captain** (ResearchSteps; read by TicketCaptain):
 
-> Send one scout per family in play, as native helpers in parallel, each with the question and its one family; read a lone family yourself.
+> Send one scout per family in play, as native helpers in parallel, each with the question and its one family; ask each for exact passages with their citations, from the source that owns the claim, and for what it searched where it found nothing. Read a lone family yourself.
 
 ## Open
 

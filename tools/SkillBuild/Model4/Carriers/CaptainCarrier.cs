@@ -9,20 +9,31 @@ namespace DynaDocs.SkillBuild;
 /// A block only some captains reach sits in the resource its line links, which is how the spine
 /// stays within half the legacy spine's size without dropping a fact: what gets a sub-ticket, and how
 /// a captain finds its way through fog, are read only by a captain that cuts (DYD-1372 phase 1).
+/// A kind resource opens with its map of the spine, then holds each part under the work it is for:
+/// a review's four kinds, each a run a seat reads alone, above the part of the review's captain; and
+/// an implementer's tests, code, docs and recipes (DYD-1372 07c86aad, aa5b445e).
 /// </summary>
 public static class CaptainCarrier
 {
     private static readonly Resource Implement = new(CaptainResource.Implement, "Implement",
-        Slot.Paragraph(CaptainSlot.ImplementLead), Slot.Bullets(CaptainSlot.ImplementRules),
-        Slot.Bullets(CaptainSlot.ImplementFix, "On a Fix:"), Slot.Bullets(CaptainSlot.ImplementConflict, "On a merge conflict:"),
+        Slot.Paragraph(CaptainSlot.ImplementLead), Slot.Paragraph(CaptainSlot.ImplementMap), Slot.Bullets(CaptainSlot.ImplementRules),
+        Slot.Bullets(CaptainSlot.ImplementTests, "Tests:"), Slot.Bullets(CaptainSlot.ImplementCode, "Code:"), Slot.Bullets(CaptainSlot.ImplementDocs, "Docs:"),
+        Slot.Bullets(CaptainSlot.ImplementBug, "On a Bug:"), Slot.Bullets(CaptainSlot.ImplementFix, "On a Fix:"), Slot.Bullets(CaptainSlot.ImplementConflict, "On a merge conflict:"),
         Slot.Bullets(CaptainSlot.ImplementShoulds, "On a batch of shoulds:"), Slot.Paragraph(CaptainSlot.ImplementEnd, "To finish:"));
 
     private static readonly Resource Review = new(CaptainResource.Review, "Review",
-        Slot.Paragraph(CaptainSlot.ReviewLead), Slot.Paragraph(CaptainSlot.ReviewRow),
-        Slot.Bullets(CaptainSlot.ReviewRules), Slot.Bullets(CaptainSlot.ReviewHolding, "Your return:"));
+        Slot.Paragraph(CaptainSlot.ReviewLead), Slot.Paragraph(CaptainSlot.ReviewMap), Slot.Bullets(CaptainSlot.ReviewAll),
+        Slot.Paragraph(CaptainSlot.ReviewSeat, "If you are one seat:"), Slot.Bullets(CaptainSlot.ReviewRead, "Reading:"),
+        Slot.Bullets(CaptainSlot.ReviewBreak, "Trying to break it:"), Slot.Bullets(CaptainSlot.ReviewDrive, "Driving the feature:"),
+        Slot.Bullets(CaptainSlot.ReviewModel, "Modelling it as a statechart:"), Slot.Paragraph(CaptainSlot.ReviewRow, "If you hold the review:"),
+        Slot.Bullets(CaptainSlot.ReviewRules))
+    {
+        // A review's captain cuts its ticket into seats and, once they are back, goes straight to finishing.
+        States = [CaptainState.Split, CaptainState.Waiting, CaptainState.Finishing]
+    };
 
     private static readonly Resource Research = new(CaptainResource.Research, "Research",
-        Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Steps(CaptainSlot.ResearchSteps), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"));
+        Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Paragraph(CaptainSlot.ResearchMap), Slot.Steps(CaptainSlot.ResearchSteps), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"));
 
     private static readonly Resource SubTickets = new(CaptainResource.SubTickets, "Sub-tickets", Slot.Bullets(CaptainSlot.Tickets));
 

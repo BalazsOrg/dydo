@@ -9,6 +9,18 @@ public static class CaptainImplement
 {
     private const string Legacy = "skills/roles/crew/implementer/SKILL.md";
     private const string OwnBrief = "This skill's writer was briefed (DYD-1372 hop 2): ";
+    private const string MergeRecipe = "skills/roles/crew/implementer/resources/merge.md";
+
+    private const string Map = """
+        | Spine phase | You |
+        | -- | -- |
+        | 1. Take the ticket | use |
+        | 2. Do it or split it | use: a leaf, unless the change proves too big |
+        | 3. Dispatch | skip; use it only if the merge is yours, or you split |
+        | 4. Get it reviewed | skip, since a part is reviewed with its whole; use it only if the merge is yours, or you split |
+        | 5. Finish | use: the case your brief names |
+        | When things go wrong | use |
+        """;
 
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
@@ -33,6 +45,24 @@ public static class CaptainImplement
             Reason: "A fault caught while the file is open costs a minute; caught at review, a round.")
     };
 
+    public static readonly Claim Parts = new("The implement resource heads each part with the work it is for, and a holder reads the parts that name its own.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementLead, 3, "Below the rules for every change, each part is headed by the work it is for: read the ones that name yours.")])
+    {
+        Spec = ["K31", "K30"],
+        Truth = new(Evidence.Code("tools/SkillBuild/Model4/Carriers/CaptainCarrier.cs"),
+            Layer: "A page shows every recipe to every reader, and only the reader knows whether its ticket is a Bug, a doc or a conflict.",
+            Reason: "A writer on a small Fix reaches its three lines without a detour through recipes meant for somebody else.")
+    };
+
+    public static readonly Claim Phases = new("An Implement holder uses the spine's first, second and last phases, and dispatches or gets a review only when the merge is its own or it splits.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementMap, 1, Map)])
+    {
+        Spec = ["K30", "R2"],
+        Truth = new(Evidence.Code("claims/statechart/captain/transitions.json"),
+            Layer: "The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out.",
+            Reason: "A writer told at the top that sending and review belong to others goes straight to the change.")
+    };
+
     public static readonly Claim NoWorse = new("A writer leaves what it touched no worse than it found it.", Me,
         [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 1, "Leave what you touched no worse than you found it.")])
     {
@@ -42,13 +72,24 @@ public static class CaptainImplement
             Reason: "Decay that every change adds a little of is never anyone's ticket.")
     };
 
-    public static readonly Claim Limit = new("Every changed file stays within the file token limit, tests included.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 2, "Keep every file you change at or under 20,000 bytes (5k tokens at bytes ÷ 4), tests included, and split one that passes it.")])
+    public static readonly Claim Limit = new("Every changed file stays within the file size limit the brief's gates check, tests included.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 2, "Keep every file you change, tests included, within the file size limit your brief's gates check, and split one that passes it.")])
     {
-        Spec = ["T15"],
-        Truth = new(Evidence.Code("tools/SkillBuild/changed-file-sizes.sh"),
+        Spec = ["T15", "T14"],
+        Truth = new(Evidence.Run("This hop's brief named the gate among its gates: `bash tools/SkillBuild/changed-file-sizes.sh`, which exits 1 on a changed file over its limit. " +
+                                 "The briefs resource has every change's brief name \"the project's gates it must pass\"."),
             Layer: "The size check runs as a gate, after the file is already written.",
             Reason: "A file an agent can read whole is one it can change without missing half of it.")
+    };
+
+    public static readonly Claim LimitNumber = new("The file size limit is 5k tokens, counted as bytes ÷ 4, unless the project's configuration sets another.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 8, "Unless your project's configuration says otherwise, the limit is 5k tokens, counted as bytes ÷ 4.")])
+    {
+        Spec = ["T15", "T14"],
+        Truth = new(Evidence.Open("The number is this repository's alone as the system runs: only `tools/SkillBuild/changed-file-sizes.sh` and this suite check 20,000 bytes. " +
+                                  "T14 makes the number configuration, and no key of `dydo.json`, no command of the CLI and no file of the scaffold holds it, so nothing tells another project's holder its limit."),
+            Layer: "No shipped gate or setting carries the number yet, so a holder elsewhere would learn it only from this page.",
+            Reason: "A number stated here would bind every adopting project to this repository's choice.")
     };
 
     public static readonly Claim Paths = new("One writer per worktree, committing only inside its ticket's owned paths.", Me,
@@ -60,12 +101,23 @@ public static class CaptainImplement
             Reason: "A commit that strays into another ticket's files is a conflict someone else pays for.")
     };
 
-    public static readonly Claim Skills = new("A writer loads domain-modeling for a glossary term or a Decision Record, and diagnosing-bugs for a Bug with no red reproduction.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 4, "Load /domain-modeling when you touch a glossary term or a Decision Record, and /diagnosing-bugs for a Bug with no red reproduction yet.")])
+    public static readonly Claim Seam = new("A writer loads codebase-design when it designs a seam or an interface.", Me, [])
+    {
+        Spec = ["K14", "K31"],
+        Truth = new(Evidence.Code("skills/engineering/codebase-design/SKILL.md"),
+            Layer: "A brief names the skills its dispatcher foresaw, and a seam shows up only once the work is open.",
+            Reason: "Where a boundary is drawn decides how testable everything behind it will be.")
+    };
+
+    public static readonly Claim Skills = new("A writer loads domain-modeling when it touches a glossary term or a Decision Record.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 4,
+            "Load /domain-modeling when you touch a glossary term or a Decision Record, and /codebase-design when you design a seam or an interface.", () => [Seam])
+    ])
     {
         Spec = ["K14", "K31"],
         Truth = new(Evidence.Code("skills/engineering/domain-modeling/SKILL.md"),
-            Layer: "A brief names the skills its writer foresaw; these two depend on what the work turns up.",
+            Layer: "A brief names the skills its writer foresaw; these depend on what the work turns up.",
             Reason: "Each holds a method the writer would otherwise improvise.")
     };
 
@@ -76,15 +128,6 @@ public static class CaptainImplement
         Truth = new(Evidence.Code("skills/engineering/prototype/SKILL.md"),
             Layer: "Nothing stops a writer from choosing a design by building it.",
             Reason: "A design chosen in passing is found at review, after it has been built on.")
-    };
-
-    public static readonly Claim Red = new("A Bug starts from a red reproduction, and each new test is shown failing without the code.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 6, "A Bug starts from a red reproduction, and every new test is shown failing without the code.")])
-    {
-        Spec = ["T3"],
-        Truth = new(Evidence.Run("This ticket's generator change was made so: two tests failed, on the Resources list and on an unlinked resource, before `SkillRenderer` changed."),
-            Layer: "A test runner reports green; it cannot say whether the test could ever have been red.",
-            Reason: "A test never seen failing proves nothing about the code it sits beside.")
     };
 
     public static readonly Claim Weed = new("A mistake found after it landed gets its fix and a lint, test or rule that keeps it from recurring.", Me,
@@ -136,9 +179,35 @@ public static class CaptainImplement
         [At(Actor.TicketCaptain, CaptainSlot.ImplementConflict, 2, "Read both sides, and what changed since the source was reviewed, before you resolve a hunk; one that needs a new product choice is a Question.")])
     {
         Spec = ["R19", "H16"],
-        Truth = new(Evidence.Code("skills/roles/crew/implementer/resources/merge.md"),
+        Truth = new(Evidence.Code(MergeRecipe),
             Layer: "git marks where two sides differ and nothing of what either side meant.",
             Reason: "A hunk resolved by picking a side can drop behaviour the other side was reviewed for.")
+    };
+
+    public static readonly Claim Parents = new("A resolver returns both parents with the merge commit's SHA.", Me, [])
+    {
+        Spec = ["R19", "R32"],
+        Truth = new(Evidence.Code(MergeRecipe),
+            Layer: "A merge commit holds its parents, and a return that names only the new head makes its reader dig them out.",
+            Reason: "The fresh reviewer of the hunks compares the resolution with each side it came from.")
+    };
+
+    public static readonly Claim Intent = new("A resolver states the behaviour each resolved hunk is meant to have.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementConflict, 3, "State the behaviour each hunk you resolved is meant to have, and return both parents with the merge commit's SHA.", () => [Parents])])
+    {
+        Spec = ["R19"],
+        Truth = new(Evidence.Code(MergeRecipe),
+            Layer: "A resolved hunk looks like any other code, with nothing to show that two intents met there.",
+            Reason: "Its reviewer judges the hunk against a stated intent, and need not guess one.")
+    };
+
+    public static readonly Claim Refactor = new("A resolution that refactors leaves the code no worse than either side.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementConflict, 4, "A resolution that refactors leaves the code no worse than either side had it.")])
+    {
+        Spec = ["R19", "K31"],
+        Truth = new(Evidence.Code(MergeRecipe),
+            Layer: "git accepts any content as a resolution, well beyond the lines that were in conflict.",
+            Reason: "A conflict is where two designs meet, and the lazy way out keeps the weaker of them.")
     };
 
     public static readonly Claim Reparent = new("A shoulds batch's captain moves each should under its ticket and keeps a link to where it was found.", Me,

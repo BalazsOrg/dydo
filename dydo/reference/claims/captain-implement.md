@@ -38,6 +38,45 @@ Reason: A fault caught while the file is open costs a minute; caught at review, 
 
 > Verify your work while you build it, each file the way it is used: run the code and drive the app, render an image and look at it, hold a doc against its source.
 
+## Parts
+
+`claim:CaptainImplement.Parts`: The implement resource heads each part with the work it is for, and a holder reads the parts that name its own.
+
+Spec: K31, K30
+
+Evidence (code): `tools/SkillBuild/Model4/Carriers/CaptainCarrier.cs`
+
+Layer: A page shows every recipe to every reader, and only the reader knows whether its ticket is a Bug, a doc or a conflict.
+
+Reason: A writer on a small Fix reaches its three lines without a detour through recipes meant for somebody else.
+
+**ticket-captain** (ImplementLead; read by TicketCaptain):
+
+> Below the rules for every change, each part is headed by the work it is for: read the ones that name yours.
+
+## Phases
+
+`claim:CaptainImplement.Phases`: An Implement holder uses the spine's first, second and last phases, and dispatches or gets a review only when the merge is its own or it splits.
+
+Spec: K30, R2
+
+Evidence (code): `claims/statechart/captain/transitions.json`
+
+Layer: The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out.
+
+Reason: A writer told at the top that sending and review belong to others goes straight to the change.
+
+**ticket-captain** (ImplementMap; read by TicketCaptain):
+
+> | Spine phase | You |
+> | -- | -- |
+> | 1. Take the ticket | use |
+> | 2. Do it or split it | use: a leaf, unless the change proves too big |
+> | 3. Dispatch | skip; use it only if the merge is yours, or you split |
+> | 4. Get it reviewed | skip, since a part is reviewed with its whole; use it only if the merge is yours, or you split |
+> | 5. Finish | use: the case your brief names |
+> | When things go wrong | use |
+
 ## NoWorse
 
 `claim:CaptainImplement.NoWorse`: A writer leaves what it touched no worse than it found it.
@@ -56,11 +95,11 @@ Reason: Decay that every change adds a little of is never anyone's ticket.
 
 ## Limit
 
-`claim:CaptainImplement.Limit`: Every changed file stays within the file token limit, tests included.
+`claim:CaptainImplement.Limit`: Every changed file stays within the file size limit the brief's gates check, tests included.
 
-Spec: T15
+Spec: T15, T14
 
-Evidence (code): `tools/SkillBuild/changed-file-sizes.sh`
+Evidence (run): This hop's brief named the gate among its gates: `bash tools/SkillBuild/changed-file-sizes.sh`, which exits 1 on a changed file over its limit. The briefs resource has every change's brief name "the project's gates it must pass".
 
 Layer: The size check runs as a gate, after the file is already written.
 
@@ -68,7 +107,23 @@ Reason: A file an agent can read whole is one it can change without missing half
 
 **ticket-captain** (ImplementRules; read by TicketCaptain):
 
-> Keep every file you change at or under 20,000 bytes (5k tokens at bytes ÷ 4), tests included, and split one that passes it.
+> Keep every file you change, tests included, within the file size limit your brief's gates check, and split one that passes it.
+
+## LimitNumber
+
+`claim:CaptainImplement.LimitNumber`: The file size limit is 5k tokens, counted as bytes ÷ 4, unless the project's configuration sets another.
+
+Spec: T15, T14
+
+Evidence: open, so no skill states this claim yet. The number is this repository's alone as the system runs: only `tools/SkillBuild/changed-file-sizes.sh` and this suite check 20,000 bytes. T14 makes the number configuration, and no key of `dydo.json`, no command of the CLI and no file of the scaffold holds it, so nothing tells another project's holder its limit.
+
+Layer: No shipped gate or setting carries the number yet, so a holder elsewhere would learn it only from this page.
+
+Reason: A number stated here would bind every adopting project to this repository's choice.
+
+**ticket-captain** (withheld; ImplementRules; read by TicketCaptain):
+
+> Unless your project's configuration says otherwise, the limit is 5k tokens, counted as bytes ÷ 4.
 
 ## Paths
 
@@ -86,21 +141,37 @@ Reason: A commit that strays into another ticket's files is a conflict someone e
 
 > One writer per worktree: commit only inside the paths your ticket owns.
 
+## Seam
+
+`claim:CaptainImplement.Seam`: A writer loads codebase-design when it designs a seam or an interface.
+
+Spec: K14, K31
+
+Evidence (code): `skills/engineering/codebase-design/SKILL.md`
+
+Layer: A brief names the skills its dispatcher foresaw, and a seam shows up only once the work is open.
+
+Reason: Where a boundary is drawn decides how testable everything behind it will be.
+
+**ticket-captain** (ImplementRules; read by TicketCaptain, on claim:CaptainImplement.Skills):
+
+> Load /domain-modeling when you touch a glossary term or a Decision Record, and /codebase-design when you design a seam or an interface.
+
 ## Skills
 
-`claim:CaptainImplement.Skills`: A writer loads domain-modeling for a glossary term or a Decision Record, and diagnosing-bugs for a Bug with no red reproduction.
+`claim:CaptainImplement.Skills`: A writer loads domain-modeling when it touches a glossary term or a Decision Record.
 
 Spec: K14, K31
 
 Evidence (code): `skills/engineering/domain-modeling/SKILL.md`
 
-Layer: A brief names the skills its writer foresaw; these two depend on what the work turns up.
+Layer: A brief names the skills its writer foresaw; these depend on what the work turns up.
 
 Reason: Each holds a method the writer would otherwise improvise.
 
 **ticket-captain** (ImplementRules; read by TicketCaptain):
 
-> Load /domain-modeling when you touch a glossary term or a Decision Record, and /diagnosing-bugs for a Bug with no red reproduction yet.
+> Load /domain-modeling when you touch a glossary term or a Decision Record, and /codebase-design when you design a seam or an interface.
 
 ## Design
 
@@ -117,22 +188,6 @@ Reason: A design chosen in passing is found at review, after it has been built o
 **ticket-captain** (ImplementRules; read by TicketCaptain):
 
 > An open design question is a Question sub-ticket, never yours to settle; /prototype is the skill that answers one.
-
-## Red
-
-`claim:CaptainImplement.Red`: A Bug starts from a red reproduction, and each new test is shown failing without the code.
-
-Spec: T3
-
-Evidence (run): This ticket's generator change was made so: two tests failed, on the Resources list and on an unlinked resource, before `SkillRenderer` changed.
-
-Layer: A test runner reports green; it cannot say whether the test could ever have been red.
-
-Reason: A test never seen failing proves nothing about the code it sits beside.
-
-**ticket-captain** (ImplementRules; read by TicketCaptain):
-
-> A Bug starts from a red reproduction, and every new test is shown failing without the code.
 
 ## Weed
 
@@ -229,6 +284,54 @@ Reason: A hunk resolved by picking a side can drop behaviour the other side was 
 **ticket-captain** (ImplementConflict; read by TicketCaptain):
 
 > Read both sides, and what changed since the source was reviewed, before you resolve a hunk; one that needs a new product choice is a Question.
+
+## Parents
+
+`claim:CaptainImplement.Parents`: A resolver returns both parents with the merge commit's SHA.
+
+Spec: R19, R32
+
+Evidence (code): `skills/roles/crew/implementer/resources/merge.md`
+
+Layer: A merge commit holds its parents, and a return that names only the new head makes its reader dig them out.
+
+Reason: The fresh reviewer of the hunks compares the resolution with each side it came from.
+
+**ticket-captain** (ImplementConflict; read by TicketCaptain, on claim:CaptainImplement.Intent):
+
+> State the behaviour each hunk you resolved is meant to have, and return both parents with the merge commit's SHA.
+
+## Intent
+
+`claim:CaptainImplement.Intent`: A resolver states the behaviour each resolved hunk is meant to have.
+
+Spec: R19
+
+Evidence (code): `skills/roles/crew/implementer/resources/merge.md`
+
+Layer: A resolved hunk looks like any other code, with nothing to show that two intents met there.
+
+Reason: Its reviewer judges the hunk against a stated intent, and need not guess one.
+
+**ticket-captain** (ImplementConflict; read by TicketCaptain):
+
+> State the behaviour each hunk you resolved is meant to have, and return both parents with the merge commit's SHA.
+
+## Refactor
+
+`claim:CaptainImplement.Refactor`: A resolution that refactors leaves the code no worse than either side.
+
+Spec: R19, K31
+
+Evidence (code): `skills/roles/crew/implementer/resources/merge.md`
+
+Layer: git accepts any content as a resolution, well beyond the lines that were in conflict.
+
+Reason: A conflict is where two designs meet, and the lazy way out keeps the weaker of them.
+
+**ticket-captain** (ImplementConflict; read by TicketCaptain):
+
+> A resolution that refactors leaves the code no worse than either side had it.
 
 ## Reparent
 

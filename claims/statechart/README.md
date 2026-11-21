@@ -164,12 +164,15 @@ rounds and is bounded at 4 only so TLC ends; the skill sets no cap.
   (`CaptainWay.Next`), so the whole is never cut at once.
 - A leaf goes back as `too big, re-cut` only when what is left cannot be divided coherently under its
   ticket; otherwise its holder divides it itself (H2).
+- A review's captain also cuts for the family of its seats: a seat from another model family gets a
+  leaf sub-ticket (`CaptainReviewSeats.Ticket`; S1). Its seats back, it goes straight to Finishing
+  (`CaptainReviewSeats.Verdict`): no arrow leads a verdict into In review (R34).
 
-The chart draws 29 of the 31 arrows: a repair's two ways back to the officer share one, and the
-unsettled Question's self-loop is not drawn. TLC line from the run on the claim model of DYD-1372
-phase 1, hop A; it holds `NoDeadlock`. Its properties are written by
+The chart draws 29 of the 33 arrows: three pairs share one (a repair's ways back, the cuts from
+Taken, Waiting to Finishing), and the Question's self-loop is not drawn. TLC line from the run on
+DYD-1372 phase 1, hop B; it holds `NoDeadlock`. Its properties are written by
 hand under `verification/statechart/`, from his rulings and never from this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 14 | 31 | 0 | 57 states, 103 steps |
+| A captain and its ticket | `captain` | 14 | 33 | 0 | 57 states, 105 steps |

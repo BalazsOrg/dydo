@@ -36,6 +36,8 @@ const steps = {
   "CaptainReview_Other": "the leaf's change is whole: another agent reviews it · R33, R12",
   "CaptainReview_Replan": "in a round other than the third, a blocker is fundamental or a new requirement: back to the officer · R9",
   "CaptainReview_Whole": "the parts are wired: a Review of the whole is dispatched · R2, R1",
+  "CaptainReviewSeats_Ticket": "a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket · S1, R34, R15",
+  "CaptainReviewSeats_Verdict": "a review's seats are back: their findings become the round's one verdict, which no round reviews · S8, S1, R34",
   "CaptainSplit_Cut": "the ticket is bigger than one agent and its route is in sight: it is cut · H2, H13",
   "CaptainSplit_Leaf": "the ticket fits one agent · H2, S2",
   "CaptainTrouble_Checkpoint": "`checkpoint: one more round, because …`: the blockers go to a Fix · R10, S10",
