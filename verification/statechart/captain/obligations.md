@@ -144,25 +144,7 @@ checker exits 1 and the control harness exits 0. The registered Question →
 Finishing control is also rejected by H16_ResumeLeafAfterQuestion (checker 1,
 harness 0). No committed machine or registered control is changed.
 
-All 18 properties above and NoDeadlock hold: 2,033 generated states, 1,280
-distinct, queue empty, depth 24. The ordinary runner exited 0. The registered
-control was rejected by H16_ResumeLeafAfterQuestion (checker 1, harness 0).
-No tested obligation failed; the semantic limits above remain open.
-Commands (OUT denotes a fresh scratch output directory; SKILL the installed
-statechart skill directory):
-
-```text
-/var/tmp/dydo-gate-lock.sh env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false systemd-run --user --scope -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 python3 verification/statechart/run.py --machine captain --skill SKILL --out OUT
-```
-
-Add `--controls` for the registered control. Ordinary runner last line:
-`captain: pass (exit 0)`. TLC: `Model checking completed. No error has been
-found.`; `2033 states generated, 1280 distinct states found, 0 states left on
-queue.`; `The depth of the complete state graph search is 24.`
-
-Size gate exited 0 (all changed files at or under 20,000 bytes). Build exited
-0 with 0 warnings and 0 errors. Dydo check exited 0: 0 errors, 0 warnings in
-1,023 files. Both dotnet commands used the same lock and memory-cap wrapper.
+Historical phase 4 receipts are retained in Git; current receipts are below.
 
 ## Related
 
@@ -324,3 +306,14 @@ seen only; no moves or fairness assumptions are changed.
 The registered Question -> Finishing control explicitly names round, extra,
 mended, kind and merger; from/to supply state. The runner supplies seen.
 Its named rejecting property remains H16_ResumeLeafAfterQuestion.
+
+Generation 6c receipts at 98c73d02803bba6e70c3147b391ee87f211a13c4:
+all 20 hand-written properties plus NoDeadlock hold; 4,817 generated states,
+3,150 distinct, queue empty, depth 27. Ordinary runner exited 0. Output:
+/tmp/dyd-1372/tlc-p6-1. Registered control: checker 1, harness 0,
+control_caught=true; H16_ResumeLeafAfterQuestion rejects Question -> Finishing.
+The same trace also violates R2_MergingHolderHasReview. Output:
+/tmp/dyd-1372/tlc-p6-2. No machine violation remains. Both successful runs
+used the gate lock, app-t3code-agents.slice, MemoryMax=8G, MemorySwapMax=0
+and OOMPolicy=continue.
+Only this documentation changed after those runs.
