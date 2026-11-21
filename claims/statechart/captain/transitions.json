@@ -153,6 +153,11 @@
       "name": "kind",
       "initial": "\"unread\"",
       "bound": "kind \\in {\"unread\", \"change\", \"verdict\", \"answer\"}"
+    },
+    {
+      "name": "merger",
+      "initial": "\"unread\"",
+      "bound": "merger \\in {\"unread\", \"holder\", \"officer\", \"nobody\"}"
     }
   ],
   "transitions": [
@@ -175,12 +180,12 @@
       "claim": "claim:Captain.Start",
       "from": "Dispatched",
       "to": "Taken",
-      "arrow": "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer",
+      "arrow": "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer, and its brief has said who merges it",
       "spec": [
         "S6"
       ],
       "guard": null,
-      "effect": "kind' \\in {\"change\", \"verdict\", \"answer\"}",
+      "effect": "kind' \\in {\"change\", \"verdict\", \"answer\"} /\\ merger' \\in IF kind' = \"change\" THEN {\"holder\", \"officer\", \"nobody\"} ELSE {\"nobody\"}",
       "fair": false,
       "skills": [
         "ticket-captain"
@@ -221,12 +226,12 @@
       "claim": "claim:CaptainFinish.HandOver",
       "from": "Leaf",
       "to": "Finishing",
-      "arrow": "the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer",
+      "arrow": "the leaf is whole, its holder does not merge it, and it has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer",
       "spec": [
         "R32",
         "R5"
       ],
-      "guard": null,
+      "guard": "merger # \"holder\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -319,7 +324,7 @@
         "R21",
         "R19"
       ],
-      "guard": "kind = \"change\"",
+      "guard": "kind = \"change\" /\\ merger = \"holder\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -384,7 +389,7 @@
         "H16",
         "S10"
       ],
-      "guard": null,
+      "guard": "kind = \"answer\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -416,7 +421,7 @@
         "H16",
         "L18"
       ],
-      "guard": null,
+      "guard": "kind = \"answer\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -478,7 +483,7 @@
       "spec": [
         "R6"
       ],
-      "guard": null,
+      "guard": "merger # \"holder\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -504,12 +509,12 @@
       "claim": "claim:CaptainReview.Other",
       "from": "Leaf",
       "to": "InReview",
-      "arrow": "the leaf's change is whole: another agent reviews it",
+      "arrow": "the leaf's change is whole and the merge is its holder's: another agent reviews it",
       "spec": [
         "R33",
         "R12"
       ],
-      "guard": "kind = \"change\"",
+      "guard": "kind = \"change\" /\\ merger = \"holder\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -585,12 +590,12 @@
       "claim": "claim:CaptainRound.Cheap",
       "from": "Clear",
       "to": "Mending",
-      "arrow": "a round with no blocker leaves a cheap should: a writer mends it on its own ticket, once",
+      "arrow": "a round with no blocker leaves a cheap should on a change somebody merges: a writer mends it on its own ticket, once",
       "spec": [
         "S17",
         "R8"
       ],
-      "guard": "~mended",
+      "guard": "~mended /\\ merger # \"nobody\"",
       "effect": "mended' = TRUE",
       "fair": false,
       "skills": [
@@ -608,7 +613,7 @@
         "S17",
         "R32"
       ],
-      "guard": null,
+      "guard": "merger = \"officer\"",
       "effect": null,
       "fair": false,
       "skills": [
@@ -619,13 +624,13 @@
       "claim": "claim:CaptainRound.NewHead",
       "from": "Mending",
       "to": "InReview",
-      "arrow": "the should is mended: a round on the new head, which the merge needs",
+      "arrow": "the should is mended in its holder's PR: a round on the new head, which the merge needs",
       "spec": [
         "R8",
         "R23",
         "R24"
       ],
-      "guard": null,
+      "guard": "merger = \"holder\"",
       "effect": "round' = round + 1",
       "fair": false,
       "skills": [

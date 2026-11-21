@@ -27,7 +27,10 @@ public static class CaptainFinish
             Layer: "T3 returns the child's words; without a SHA they point at nothing the officer can check out.",
             Reason: "The officer merges and reviews exactly what was proved, and nothing that came after."),
         Transition = new(CaptainState.Leaf, CaptainState.Finishing,
-            "the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer")
+            "the leaf is whole, its holder does not merge it, and it has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer")
+        {
+            Guard = CaptainMachines.NoMerge
+        }
     };
 
     public static readonly Claim Merged = new("A captain that merges its work returns one line, done and merged.", Me,

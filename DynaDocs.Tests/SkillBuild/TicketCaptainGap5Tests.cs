@@ -31,6 +31,10 @@ public partial class TicketCaptainGap5Tests
     [GeneratedRegex("\"([a-z]+)\"")]
     private static partial Regex Quoted();
 
+    // The set the taking move draws the result from; who merges is drawn beside it, from a set of its own (review r3, B1).
+    [GeneratedRegex(@"kind' \\in \{[^}]*\}")]
+    private static partial Regex KindSet();
+
     [Fact]
     [Trait("Job", "contract: DYD-1372 g5 B1 the move that takes a ticket teaches its holder one of three results, a change, a verdict or an answer, and every guard on the result names one of them")]
     public void Kind_IsOneOfThreeResults()
@@ -94,11 +98,11 @@ public partial class TicketCaptainGap5Tests
 
     // The results the taking move can teach, read from its effect, in order.
     private static string[] Learned() =>
-        [.. Quoted().Matches(Moves.Value.Single(move => move.Effect?.Contains("kind'", StringComparison.Ordinal) == true).Effect!).Select(match => match.Groups[1].Value).Order()];
+        [.. Quoted().Matches(KindSet().Match(Moves.Value.Single(move => move.Effect?.Contains("kind'", StringComparison.Ordinal) == true).Effect!).Value).Select(match => match.Groups[1].Value).Order()];
 
-    // The moves open to the holder of one kind of result: a move guarded on the result is open only when its guard names that kind.
+    // The moves open to the holder of one kind of result: a move guarded on the result is open only when its guard names that kind, whatever else it asks.
     private static (string Claim, string From, string To, string? Guard, string? Effect)[] Open(string kind) =>
-        [.. Moves.Value.Where(move => !OnKind(move.Guard) || move.Guard == $"kind = \"{kind}\"")];
+        [.. Moves.Value.Where(move => !OnKind(move.Guard) || move.Guard!.Split(" /\\ ")[0] == $"kind = \"{kind}\"")];
 
     // Every state that holder can reach; the guards on anything but the result are left open, so nothing reachable is missed.
     private static HashSet<string> Reached(string kind)

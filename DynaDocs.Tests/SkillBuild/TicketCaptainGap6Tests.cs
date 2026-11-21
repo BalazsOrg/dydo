@@ -105,13 +105,13 @@ public partial class TicketCaptainGap6Tests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 g6b H3 R2 R23 a should mended on a candidate in no PR of its holder's gets no round of its own: the repair has a way on to finishing that no marker guards and that touches neither the round's count nor either marker, stated where the repair stands")]
+    [Trait("Job", "contract: DYD-1372 g6b H3 R2 R23 a should mended on a candidate in no PR of its holder's gets no round of its own: the repair has a way on to finishing that no marker guards and that touches neither the round's count nor either marker, stated where the repair stands; r3 B1 it is open only where the holder's officer merges")]
     public void AMendedPart_GoesOnToFinishing_WithNoRoundOfItsOwn()
     {
         var repair = Moves.Value.Single(move => move.From == "Clear" && move.To is not ("Finishing" or "InReview"));
         var on = Assert.Single(Moves.Value, move => move.From == repair.To && move.To == "Finishing");
 
-        Assert.Null(on.Guard);
+        Assert.Equal("merger = \"officer\"", on.Guard);
         Assert.Null(on.Effect);
         Assert.Equal(LineOf(repair.Claim["claim:".Length..]), LineOf(on.Claim["claim:".Length..]));
     }
@@ -133,9 +133,10 @@ public partial class TicketCaptainGap6Tests
     public void TheRepairLoop_Ends()
     {
         var repair = Moves.Value.Single(move => move.From == "Clear" && move.To is not ("Finishing" or "InReview"));
-        var marker = Assert.IsType<string>(repair.Guard).TrimStart('~');
+        var first = Assert.IsType<string>(repair.Guard).Split(" /\\ ")[0];
+        var marker = first.TrimStart('~');
 
-        Assert.StartsWith("~", repair.Guard);
+        Assert.StartsWith("~", first);
         Assert.Contains(Machine.GetProperty("variables").EnumerateArray(), variable => variable.GetProperty("name").GetString() == marker);
         Assert.Equal($"{marker}' = TRUE", repair.Effect);
         Assert.All(Moves.Value, move => Assert.DoesNotContain($"{marker}' = FALSE", move.Effect ?? ""));

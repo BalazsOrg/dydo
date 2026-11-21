@@ -68,4 +68,4 @@ Reason: Told at the return what the later wake asks, a researcher ends its step 
 
 **ticket-captain** (ResearchRoutes; read by TicketCaptain, on claim:CaptainResearch.Question):
 
-> They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.
+> They leave anything else open, a weighty call that can still be undone among them: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.

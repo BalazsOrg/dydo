@@ -177,14 +177,16 @@ public static class CaptainResearch
             Reason: "Most calls end here, and whoever meets the same one later finds it already answered.")
     };
 
-    public static readonly Claim Users = new("A call its research leaves open is the user's to make when it cannot be undone once made, or when making it sets or changes a decision record.", Me, [])
+    public static readonly Claim Users = new("A call its research leaves open is the user's to make when it cannot be undone once made, or when making it sets or changes a decision record: " +
+                                             "two marks a researcher can check, standing in for L18's \"worth his time and attention\"; any other open call goes back unsettled, " +
+                                             "a two-way one that may be worth his time among them.", Me, [])
     {
         Spec = ["L18", "L21", "H16"],
-        Truth = new(Evidence.Run("`skills/roles/officers/coordinator/SKILL.md`, the coordinator's skill on this branch, not yet truth-checked, expects it of the captain it puts on a need: " +
-                                 "that captain \"answers the need, sends it to a council, or puts a `his-call` Question on your HITL queue\". Spec L18 names the calls that end with the user whatever a council says, " +
-                                 "\"one-way or DR-grade → always prepared\", and L21: \"Irreversible calls are never decided.\" A researcher has read the decision records and knows each option, so both marks are in its own findings."),
-            Layer: "Linear's Mode label says who settles a Question and nothing of which calls are his; the council that weighs every other open call has no resource in this skill yet.",
-            Reason: "Two marks a reader can check against its notes keep a nod-seeking question away from him, and keep an agent from settling what only he may.")
+        Truth = new(Evidence.Code("skills/roles/officers/coordinator/SKILL.md"),
+            Layer: "L18 sends a call to the user \"only when it is worth his time and attention to understand\" and gives no test for that; " +
+                   "Linear's Mode label says who settles a Question and nothing of which calls are his.",
+            Reason: "Whether a call merits his attention is a judgement no notes can settle, and left to the asker it brings him the nod-seeking questions he detests; " +
+                    "sent back up, a call that can be undone loses a delay at most, and an officer that holds more weighs it.")
     };
 
     public static readonly Claim Handed = new("A Question's captain whose research leaves a call that is the user's opens a HITL Question sub-ticket for it, with the call laid out and blocking what its own ticket blocks, " +
@@ -204,12 +206,15 @@ public static class CaptainResearch
             Layer: "Linear keeps a block on the ticket it was set on: once the research ticket closes, what waited on it reads as free unless the new ticket blocks it, and nothing opens a ticket for the user in a researcher's place.",
             Reason: "Sent back as merely unsettled, such a call is researched again one level up and never reaches the single queue that can end it."),
         Transition = new(CaptainState.Leaf, CaptainState.Finishing, "a Question's research leaves a call that is the user's: it is handed on as a HITL Question sub-ticket, and the research ticket has done its part")
+        {
+            Guard = CaptainMachines.Answer
+        }
     };
 
     public static readonly Claim Question = new("A Question's captain returns to its officer as unsettled, with the call laid out, any call its research neither settles nor finds to be the user's.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ResearchRoutes, 3,
-            "They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. " +
+            "They leave anything else open, a weighty call that can still be undone among them: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. " +
             "Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.",
             () => [CaptainPassedUp.Woken])
     ])
@@ -219,6 +224,9 @@ public static class CaptainResearch
             Layer: "Where an unsettled call goes next is its route, and the council that takes most of them has no resource in this skill yet.",
             Reason: "An officer often holds what the sources lacked, and it is the one place the remaining routes start from."),
         Transition = new(CaptainState.Leaf, CaptainState.Returned, "a Question's research leaves a call that is neither settled nor the user's: it goes back to the officer unsettled, the Question still open")
+        {
+            Guard = CaptainMachines.Answer
+        }
     };
 
     private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>

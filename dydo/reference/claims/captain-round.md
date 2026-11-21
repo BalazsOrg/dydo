@@ -108,7 +108,7 @@ Reason: Five small fixes one agent makes in a pass need no five tickets, and a l
 
 Spec: S17, R8
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Clear → Mending, "a round with no blocker leaves a cheap should: a writer mends it on its own ticket, once".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Clear → Mending, "a round with no blocker leaves a cheap should on a change somebody merges: a writer mends it on its own ticket, once".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, DYD-1327, closed "7 blockers, 12 shoulds and 9 nits" and Fix r2, DYD-1333, "2 blockers and 5 shoulds", each as one ticket.
 
@@ -118,7 +118,7 @@ Reason: A fix made while the code is open costs less than a ticket that remember
 
 **ticket-captain** (ShouldRoutes; read by TicketCaptain):
 
-> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA.
+> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
 ## NewHead
 
@@ -126,7 +126,7 @@ Reason: A fix made while the code is open costs less than a ticket that remember
 
 Spec: R8, R23, R24
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Mending → InReview, "the should is mended: a round on the new head, which the merge needs".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Mending → InReview, "the should is mended in its holder's PR: a round on the new head, which the merge needs".
 
 Evidence (code): `Services/Merge/PullRequestMerge.cs`
 
@@ -136,7 +136,7 @@ Reason: Spent as the optional look, the repair's round would leave a captain tha
 
 **ticket-captain** (ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
 
-> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA.
+> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
 ## MendedPart
 
@@ -154,7 +154,23 @@ Reason: Another verdict on the part alone would be read by no command, while the
 
 **ticket-captain** (ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
 
-> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA.
+> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
+
+## Unmerged
+
+`claim:CaptainRound.Unmerged`: A should that a round with no blocker leaves on a change nobody merges is not mended there: it waits on its ticket, since no later Review would judge its fix.
+
+Spec: S17, R2, R33
+
+Evidence (run): Linear, team Dydo, labels read 2026-11-21: the Severity group holds should, "On should tickets filed from reviews and should Bugs an inquisition files; open ones gate the Project's landing", so a should left on its ticket is still collected.
+
+Layer: Nothing asks a PASS of a head that no command merges, and no whole stands above a change nobody merges for a later round to see.
+
+Reason: Mended after its last round, such a change would end on lines no second agent ever read.
+
+**ticket-captain** (ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
+
+> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
 ## Once
 
@@ -164,13 +180,13 @@ Spec: R8, S17
 
 Evidence (run): Linear, team Dydo, read 2026-11-21: DYD-1336, DYD-1346, DYD-1301 and DYD-1347 carry the label should and sit in Backlog in the dydo 4.0.0 Project, each a ticket of its own that no round waits on. Spec R8: "By default a round with no new blocker ends the phase". The user (DYD-1295 41a553f1): a should "needs fixing, but the fix can happen later".
 
-Layer: Nothing counts rounds or weighs what one costs, and `dydo merge` is content with the PASS the head already has.
+Layer: Nothing counts rounds or weighs what one costs, and `dydo merge` is content with the PASS the head already has. No rule names a number either: "once" is this skill's own bound, chosen within R8's default.
 
 Reason: Each repair buys another whole review, so without an end the cheapest findings keep the dearest step running.
 
 **ticket-captain** (ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
 
-> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA.
+> Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
 ## ShouldInFix
 

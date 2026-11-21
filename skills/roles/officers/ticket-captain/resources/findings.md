@@ -10,7 +10,7 @@
 
 **A should, by what its fix costs:**
 
-- Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA.
+- Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 - Anything more: it waits on its ticket, and its parent may close Done meanwhile.
 
 Take a finding on a change you wrote as the reviewer wrote it: its Fix is never yours to write, and goes out by [Fix rounds](fix-rounds.md); if you doubt the finding, the doubt is a Question sub-ticket, never your call.

@@ -31,7 +31,7 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "`dydo merge` refuses a PR with no PASS line and cannot tell who wrote the line.",
             Reason: "A writer's own context hides from it what a fresh one sees at once."),
-        Transition = new(CaptainState.Leaf, CaptainState.InReview, "the leaf's change is whole: another agent reviews it") { Guard = CaptainMachines.Change }
+        Transition = new(CaptainState.Leaf, CaptainState.InReview, "the leaf's change is whole and the merge is its holder's: another agent reviews it") { Guard = CaptainMachines.MergesChange }
     };
 
     public static readonly Claim Pr = new("The captain that merges its work opens the PR for it, from a clean and pushed tree, before its review.", Me,
@@ -102,7 +102,7 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "Linear nests tickets for any reason; whether a parent integrates anything is known to its captain.",
             Reason: "A grouping adds no behaviour for a reviewer to find wrong."),
-        Transition = new(CaptainState.Waiting, CaptainState.Finishing, "the children are back and the ticket only groups parts: no review of its own")
+        Transition = new(CaptainState.Waiting, CaptainState.Finishing, "the children are back and the ticket only groups parts: no review of its own") { Guard = CaptainMachines.NoMerge }
     };
 
     public static readonly Claim Whole = new("Once its parts are wired, a parent is reviewed once: each part, the parts together, their harmony.", Me,

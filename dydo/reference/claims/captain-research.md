@@ -225,15 +225,15 @@ Reason: Most calls end here, and whoever meets the same one later finds it alrea
 
 ## Users
 
-`claim:CaptainResearch.Users`: A call its research leaves open is the user's to make when it cannot be undone once made, or when making it sets or changes a decision record.
+`claim:CaptainResearch.Users`: A call its research leaves open is the user's to make when it cannot be undone once made, or when making it sets or changes a decision record: two marks a researcher can check, standing in for L18's "worth his time and attention"; any other open call goes back unsettled, a two-way one that may be worth his time among them.
 
 Spec: L18, L21, H16
 
-Evidence (run): `skills/roles/officers/coordinator/SKILL.md`, the coordinator's skill on this branch, not yet truth-checked, expects it of the captain it puts on a need: that captain "answers the need, sends it to a council, or puts a `his-call` Question on your HITL queue". Spec L18 names the calls that end with the user whatever a council says, "one-way or DR-grade → always prepared", and L21: "Irreversible calls are never decided." A researcher has read the decision records and knows each option, so both marks are in its own findings.
+Evidence (code): `skills/roles/officers/coordinator/SKILL.md`
 
-Layer: Linear's Mode label says who settles a Question and nothing of which calls are his; the council that weighs every other open call has no resource in this skill yet.
+Layer: L18 sends a call to the user "only when it is worth his time and attention to understand" and gives no test for that; Linear's Mode label says who settles a Question and nothing of which calls are his.
 
-Reason: Two marks a reader can check against its notes keep a nod-seeking question away from him, and keep an agent from settling what only he may.
+Reason: Whether a call merits his attention is a judgement no notes can settle, and left to the asker it brings him the nod-seeking questions he detests; sent back up, a call that can be undone loses a delay at most, and an officer that holds more weighs it.
 
 **ticket-captain** (ResearchRoutes; read by TicketCaptain, on claim:CaptainResearch.Handed):
 
@@ -273,4 +273,4 @@ Reason: An officer often holds what the sources lacked, and it is the one place 
 
 **ticket-captain** (ResearchRoutes; read by TicketCaptain):
 
-> They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.
+> They leave anything else open, a weighty call that can still be undone among them: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.

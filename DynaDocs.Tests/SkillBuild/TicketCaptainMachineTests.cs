@@ -75,7 +75,7 @@ public class TicketCaptainMachineTests
         Assert.DoesNotContain("\"from\": \"InReview\",\n      \"to\": \"Finishing\"", Arrows);
         Assert.Contains("CaptainReview_OneMore ==\n    /\\ state = \"Clear\"\n    /\\ ~extra\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1 /\\ extra' = TRUE\n", Module);
         Assert.Contains("CaptainTrouble_NextRound ==\n    /\\ state = \"Fixing\"\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1\n", Module);
-        Assert.Contains("CaptainRound_NewHead ==\n    /\\ state = \"Mending\"\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1\n", Module);
+        Assert.Contains("CaptainRound_NewHead ==\n    /\\ state = \"Mending\"\n    /\\ merger = \"holder\"\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1\n", Module);
         Assert.Equal(3, Module.Split("round' = round + 1").Length - 1);
     }
 

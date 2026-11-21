@@ -105,7 +105,7 @@ public class TicketCaptainGap7Tests
         Assert.Null(back.Effect);
         Assert.Equal("claim:CaptainResearch.Parts", back.Claim);
         Assert.Equal(["Finishing", "Returned"], research);
-        Assert.DoesNotContain(Moves.Value, move => move.Guard == OnAnswer && move.To == "Finishing");
+        Assert.DoesNotContain(Moves.Value, move => move.From == "Waiting" && move.Guard == OnAnswer && move.To == "Finishing");
     }
 
     [Fact]

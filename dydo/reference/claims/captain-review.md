@@ -28,7 +28,7 @@ Reason: A mistake here is costly or impossible to undo once it has run.
 
 Spec: R33, R12
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → InReview, "the leaf's change is whole: another agent reviews it".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → InReview, "the leaf's change is whole and the merge is its holder's: another agent reviews it".
 
 Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4, each after the first titled a fresh review that follows Fix r1, r2 or r3.
 

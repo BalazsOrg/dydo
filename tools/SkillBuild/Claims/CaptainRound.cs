@@ -84,11 +84,12 @@ public static class CaptainRound
     public static readonly Claim Cheap = new("A cheap should is fixed in place before its parent merges: in the round's Fix, or, after a round with no blocker, by a writer on its own ticket; the rest wait.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ShouldRoutes, 1,
-            "Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, then go by where the candidate is. " +
+            "Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. " +
             "In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: " +
             "a should that it, or a later round with no blocker, finds waits on its ticket. " +
-            "In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA.",
-            () => [NewHead!, Once!, MendedPart!])
+            "In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. " +
+            "Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.",
+            () => [NewHead!, Once!, MendedPart!, Unmerged!])
     ])
     {
         Spec = ["S17", "R8"],
@@ -96,9 +97,9 @@ public static class CaptainRound
                                  "each as one ticket."),
             Layer: "Nothing weighs a should's cost, and a filed should sits on its ticket until somebody dispatches it.",
             Reason: "A fix made while the code is open costs less than a ticket that remembers it."),
-        Transition = new(CaptainState.Clear, CaptainState.Mending, "a round with no blocker leaves a cheap should: a writer mends it on its own ticket, once")
+        Transition = new(CaptainState.Clear, CaptainState.Mending, "a round with no blocker leaves a cheap should on a change somebody merges: a writer mends it on its own ticket, once")
         {
-            Guard = "~mended",
+            Guard = "~mended /\\ " + CaptainMachines.Merged,
             Effect = "mended' = TRUE"
         }
     };
@@ -109,7 +110,11 @@ public static class CaptainRound
         Truth = new(Evidence.Code("Services/Merge/PullRequestMerge.cs"),
             Layer: "`dydo merge` refuses a head that its PR's PASS does not name, and counts no rounds: it cannot tell a repair's round from an optional second look.",
             Reason: "Spent as the optional look, the repair's round would leave a captain that had already taken that look with a fixed head and no way to have it passed."),
-        Transition = new(CaptainState.Mending, CaptainState.InReview, "the should is mended: a round on the new head, which the merge needs") { Effect = "round' = round + 1" }
+        Transition = new(CaptainState.Mending, CaptainState.InReview, "the should is mended in its holder's PR: a round on the new head, which the merge needs")
+        {
+            Guard = CaptainMachines.Merges,
+            Effect = "round' = round + 1"
+        }
     };
 
     public static readonly Claim MendedPart = new("A should mended on a candidate that is in no PR gets no round of its own, since the whole's Review judges the mended head; " +
@@ -123,6 +128,18 @@ public static class CaptainRound
             Layer: "`dydo merge` asks a PASS of the head of the PR it is handed and of no other commit, and a part's head is in no PR: nothing asks a second round of it, and nothing tells its holder that the mend was its last step before finishing.",
             Reason: "Another verdict on the part alone would be read by no command, while the lines the writer changed are judged anyway once every part is wired."),
         Transition = new(CaptainState.Mending, CaptainState.Finishing, "the should is mended on a candidate in no PR, which the holder's officer merges: no round of its own, and the mended head is returned, to be reviewed with the whole")
+        {
+            Guard = CaptainMachines.OfficerMerges
+        }
+    };
+
+    public static readonly Claim Unmerged = new("A should that a round with no blocker leaves on a change nobody merges is not mended there: it waits on its ticket, since no later Review would judge its fix.", Me, [])
+    {
+        Spec = ["S17", "R2", "R33"],
+        Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-21: the Severity group holds should, \"On should tickets filed from reviews and should Bugs an inquisition files; " +
+                                 "open ones gate the Project's landing\", so a should left on its ticket is still collected."),
+            Layer: "Nothing asks a PASS of a head that no command merges, and no whole stands above a change nobody merges for a later round to see.",
+            Reason: "Mended after its last round, such a change would end on lines no second agent ever read.")
     };
 
     public static readonly Claim Once = new("The round that follows a mended should is taken once: a should that it, or a later round with no blocker, finds waits on its ticket.", Me, [])
@@ -130,7 +147,8 @@ public static class CaptainRound
         Spec = ["R8", "S17"],
         Truth = new(Evidence.Run("Linear, team Dydo, read 2026-11-21: DYD-1336, DYD-1346, DYD-1301 and DYD-1347 carry the label should and sit in Backlog in the dydo 4.0.0 Project, each a ticket of its own that no round waits on. " +
                                  "Spec R8: \"By default a round with no new blocker ends the phase\". The user (DYD-1295 41a553f1): a should \"needs fixing, but the fix can happen later\"."),
-            Layer: "Nothing counts rounds or weighs what one costs, and `dydo merge` is content with the PASS the head already has.",
+            Layer: "Nothing counts rounds or weighs what one costs, and `dydo merge` is content with the PASS the head already has. " +
+                   "No rule names a number either: \"once\" is this skill's own bound, chosen within R8's default.",
             Reason: "Each repair buys another whole review, so without an end the cheapest findings keep the dearest step running.")
     };
 

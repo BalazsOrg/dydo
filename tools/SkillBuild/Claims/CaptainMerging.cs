@@ -170,7 +170,7 @@ public static class CaptainMerging
         Truth = new(Evidence.Code(MergeCode),
             Layer: "On a conflict `dydo merge` refuses and merges nothing; it repairs neither that nor a red gate.",
             Reason: "A captain that repairs the work it is about to merge has written what nobody reviewed."),
-        Transition = new(CaptainState.Finishing, CaptainState.Repairing, "a conflict or a real red gate: an Implement ticket repairs it") { Guard = CaptainMachines.Change }
+        Transition = new(CaptainState.Finishing, CaptainState.Repairing, "a conflict or a real red gate: an Implement ticket repairs it") { Guard = CaptainMachines.MergesChange }
     };
 
     public static readonly Claim Repaired = new("A repair made before the merge, of a conflict or of a red gate, returns to a fresh review of what it changed, and the merge is then run again on the new head; " +
