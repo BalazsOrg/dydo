@@ -5,12 +5,17 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// A <see cref="Ledger"/>, checked complete and built for review (DYD-1295 2119cd65): one file per
 /// section of the legacy spine under <c>dydo/reference/claim-review/</c>, each claim line and each
-/// linked resource with what became of it: kept, withheld with the open claim that holds it, dropped
-/// or deferred, and under a kept line each clause its claims leave out, with that clause's own fate.
+/// linked resource with what became of it: kept, a placeholder or withheld with the open claim that
+/// holds it, dropped or deferred, and under a kept line each clause its claims leave out, with that
+/// clause's own fate.
 /// Sections keep every file under the token limit.
 /// </summary>
 internal static class LedgerDocs
 {
+    private const string Kept = "kept in ";
+    private const string Placeholder = "placeholder in ";
+    private const string Withheld = "withheld (open) in ";
+
     /// <summary>The legacy skills a ledger replaces: in the model, checked, and not built.</summary>
     public static HashSet<Enum> Replaced(Model model)
     {
@@ -134,7 +139,7 @@ internal static class LedgerDocs
 
     private static string Outcome(Clause clause, ClaimIndex claims) => clause switch
     {
-        { Open: { } open } => $"withheld (open) in `claim:{claims.IdOf(open)}`",
+        { Open: { } open } => $"{Withheld}`claim:{claims.IdOf(open)}`",
         { Fails: { } fails } => $"dropped, it fails {fails}: {clause.Why}",
         _ => $"deferred: {clause.Why}"
     };
@@ -144,11 +149,18 @@ internal static class LedgerDocs
         FateKind.Dropped => $"dropped, it fails {fate.Fails}: {fate.Why}",
         FateKind.Deferred => $"deferred: {fate.Why}",
         _ when fate.ByResource is { } resource => $"kept as `{SkillRenderer.FileOf(resource)}`",
-        _ => Stated(fate.By.Select(by => claims.IdOf(by)!).ToLookup(id => carried[id]))
+        _ => Stated(fate.By.Select(by => claims.IdOf(by)!).ToLookup(id => Held(carried[id], claims.ById[id])))
     };
 
-    // Kept means a built file states it. An open claim's line is withheld, so what the ledger keeps there no file states yet.
-    private static string Stated(ILookup<bool, string> byOpen) => string.Join("; ",
-        new[] { (Open: false, Outcome: "kept in "), (Open: true, Outcome: "withheld (open) in ") }.Where(part => byOpen.Contains(part.Open))
-            .Select(part => part.Outcome + string.Join(", ", byOpen[part.Open].Select(id => $"`claim:{id}`"))));
+    // Kept means a built file states it. An open claim's line is withheld, so what the ledger keeps there no file states yet;
+    // the placeholder's line is built, and shows its token where the text will stand, so no file states that either.
+    private static string Held(bool withheld, Claim claim) => (withheld, claim.Truth?.Evidence.Token) switch
+    {
+        (true, _) => Withheld,
+        (_, null) => Kept,
+        _ => Placeholder
+    };
+
+    private static string Stated(ILookup<string, string> byOutcome) => string.Join("; ",
+        new[] { Kept, Placeholder, Withheld }.Where(byOutcome.Contains).Select(outcome => outcome + string.Join(", ", byOutcome[outcome].Select(id => $"`claim:{id}`"))));
 }

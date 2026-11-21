@@ -19,15 +19,15 @@ stateDiagram-v2
   s14: At the checkpoint after a third blocked round #183; R10, S10
   [*] --> s0
   s0 --> s1: the ticket is already started or closed and the brief names no take-over: the dispatch goes back as a conflict #183; S7, S6 or a filler ticket fails its check: it goes back unstarted and unassigned #183; H11
-  s0 --> s2: the ticket is set In Progress and its kind's resource loaded: its result is a change, or a verdict or an answer #183; S6
+  s0 --> s2: the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer #183; S6
   s2 --> s3: the ticket fits one agent #183; H2, S2
   s2 --> s4: the ticket is bigger than one agent and its route is in sight: it is cut #183; H2, H13 or a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket #183; S1, R34, R15
   s2 --> s5: the route to the spec is not all in sight: the way is found before the cut #183; H10, H23
   s3 --> s4: the leaf proves too big: what is left is cut #183; H2, K30
   s3 --> s6: the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer #183; R32, R5
-  s3 --> s7: the leaf's change is whole: another agent reviews it #183; R33, R12
   s3 --> s8: a call that is not obvious: a Question sub-ticket #183; H16, S10
   s3 --> s1: a Question's research does not settle its call: it goes back to the officer unsettled, the Question still open #183; H16, L18 or #96;too big, re-cut#96;: what is left cannot be divided coherently under the ticket #183; H2
+  s3 --> s7: the leaf's change is whole: another agent reviews it #183; R33, R12
   s4 --> s9: each AFK sub-ticket is dispatched, and a HITL one goes up #183; H3, H15
   s5 --> s4: the parts in sight are cut, and the fog is left uncut #183; H10, S2
   s6 --> s11: the contract is met: the ticket closes Done #183; S6

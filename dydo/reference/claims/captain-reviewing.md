@@ -44,7 +44,7 @@ Reason: Its own context hides from a writer exactly what a fresh reader would ca
 
 Spec: K30, R34
 
-Evidence (code): `claims/statechart/captain/transitions.json`
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-21: Review r1 to r4 (DYD-1294, DYD-1328, DYD-1334, DYD-1340) are Done with no sub-ticket, and no Review ticket beside them judges one of them. His words (DYD-1372 777d396e): "Reviewing the reviews is probably not a good idea." Of a seat (aa5b445e): "Yes, they're leafs. And we know that they are.", and of a read review whose slice is too big, "it can be further divided (while keeping the coherence)".
 
 Layer: The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out.
 
@@ -67,7 +67,7 @@ Reason: Without the map a reviewer works out for itself that the phase named for
 
 Spec: R34, K30
 
-Evidence (run): `claims/statechart/captain/transitions.json`: a leaf that is "a verdict or an answer" goes from Working it as a leaf to Finishing, and no arrow leads a verdict into In review. Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4 have no Review ticket beneath or beside them that judges them. His words: "Reviewing the reviews is probably not a good idea." (DYD-1372 777d396e)
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-21: Review r1 to r4 (DYD-1294, DYD-1328, DYD-1334, DYD-1340) are Done with no sub-ticket, and no Review ticket beside them judges one of them. His words: "Reviewing the reviews is probably not a good idea." (DYD-1372 777d396e)
 
 Layer: The spine's fourth phase speaks to every captain alike and cannot tell a holder whose result is a judgement.
 
@@ -163,7 +163,7 @@ Reason: A reviewer sent to do one thing spends its attention on that thing, and 
 
 Spec: H2, K30
 
-Evidence (run): His words (DYD-1372 aa5b445e): "let's take the read review then it makes sense to keep the escape hatch, because if it's a too big of a slice it can be further divided (while keeping the coherence)." and "So keeping the escape hatch is probably right." `claims/statechart/captain/transitions.json` holds both ways out of a leaf that proves too big: cut what is left, or `too big, re-cut` back to the officer.
+Evidence (run): His words (DYD-1372 aa5b445e): "let's take the read review then it makes sense to keep the escape hatch, because if it's a too big of a slice it can be further divided (while keeping the coherence)." and "So keeping the escape hatch is probably right."
 
 Layer: A reviewer learns how large its slice really is only once it has opened it, long after the cut was made.
 

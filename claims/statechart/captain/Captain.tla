@@ -24,7 +24,7 @@ Captain_FillerBack ==
 Captain_Start ==
     /\ state = "Dispatched"
     /\ state' = "Taken"
-    /\ kind' \in {"change", "verdict"}
+    /\ kind' \in {"change", "verdict", "answer"}
     /\ UNCHANGED <<round, extra>>
 
 \* claim:CaptainDispatch.Send
@@ -290,7 +290,7 @@ Next ==
     \/ CaptainWay_Visible
     \/ Done
 
-Bounds == round <= 4 /\ extra \in BOOLEAN /\ kind \in {"unread", "change", "verdict"}
+Bounds == round <= 4 /\ extra \in BOOLEAN /\ kind \in {"unread", "change", "verdict", "answer"}
 
 Fairness == TRUE
 

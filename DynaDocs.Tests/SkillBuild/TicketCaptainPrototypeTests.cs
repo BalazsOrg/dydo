@@ -236,7 +236,8 @@ public partial class TicketCaptainPrototypeTests
         var drops = entries.Where(entry => entry.Contains(", dropped,", StringComparison.Ordinal)).ToArray();
 
         Assert.Equal(paragraph + legacy.Count(line => line.StartsWith("1. ", StringComparison.Ordinal)), entries.Length);
-        Assert.DoesNotContain("placeholder", ledger);
+        // No entry's own words are a placeholder; the one line that holds the word is the roster's, kept in the claim whose text is not written (fix g5 N3).
+        Assert.Equal(["`claim:Roster.Models`, placeholder in `claim:CaptainDispatch.Roster`"], ledger.Split('\n').Where(line => line.Contains("placeholder", StringComparison.Ordinal)));
         Assert.NotEmpty(drops);
         Assert.All(drops, drop => Assert.Matches($@"^`claim:[\w.]+`, dropped, it fails ({string.Join('|', Enum.GetNames<Question>())}): \S", drop));
     }

@@ -12,7 +12,7 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Brief from the kind's dispatch template and name every skill the role requires with a slash: the template carries the default set, and you add the ticket's own skills; never read a crew skill to brief it.
 
-`claim:Roster.Models`, kept in `claim:CaptainDispatch.Roster`
+`claim:Roster.Models`, placeholder in `claim:CaptainDispatch.Roster`
 
 > The model roster is his to write; his text goes here.
 

@@ -12,10 +12,12 @@ namespace DynaDocs.SkillBuild;
 /// Question is left only to resume the leaf: one that comes back unsettled goes to the officer and
 /// stays open, and its holder goes on waiting, a step that leaves the state unchanged (H16, S10).
 /// A ticket is taken by one move, from Dispatched: its holder sets it In Progress and loads its kind's
-/// resource, and so learns what its result is. <c>kind</c> holds that from then on: <c>change</c>, or
-/// <c>verdict</c> for every result that is no change, a review's verdict, a seat's findings, an answer.
-/// Only a change enters a review round or a repair, and only a verdict's holder seats a round and forms
-/// its verdict, so no path leads a verdict into a review (R34, DYD-1372 777d396e).
+/// resource, and so learns what its result is. <c>kind</c> holds that from then on: <c>change</c>;
+/// <c>verdict</c>, a review's verdict or a seat's findings; or <c>answer</c>, what a research holder or
+/// a Question's captain returns. Only a change enters a review round or a repair, and only a verdict's
+/// holder seats a round and forms its verdict, so no path leads a verdict into a review (R34, DYD-1372
+/// 777d396e). An answer is no verdict, and no rule speaks of reviewing one: the machine shows no round
+/// on it only because the skill states none, its review phase being about a change.
 /// A ticket that cannot be started goes back from Dispatched: a filler ticket that fails its check
 /// (H11), and one another agent already holds (S7).
 /// A captain that cannot see the route from its ticket to the spec finds the way first (H10, DYD-1372
@@ -50,7 +52,7 @@ public static class CaptainMachines
         Variables =
         [
             new("round", "1", "round <= 4"), new("extra", "FALSE", "extra \\in BOOLEAN"),
-            new("kind", "\"unread\"", "kind \\in {\"unread\", \"change\", \"verdict\"}")
+            new("kind", "\"unread\"", "kind \\in {\"unread\", \"change\", \"verdict\", \"answer\"}")
         ]
     };
 
@@ -60,6 +62,9 @@ public static class CaptainMachines
     /// <summary>The guard of a move only a verdict's holder makes: seating a round, and forming its verdict.</summary>
     public const string Verdict = "kind = \"verdict\"";
 
-    /// <summary>The effect of the move that takes a ticket: its holder learns which of the two its result is.</summary>
-    public const string Learn = "kind' \\in {\"change\", \"verdict\"}";
+    /// <summary>
+    /// The effect of the move that takes a ticket: its holder learns which of the three its result is. No
+    /// move is guarded on an answer: its holder takes every move that is open to any result, and no other.
+    /// </summary>
+    public const string Learn = "kind' \\in {\"change\", \"verdict\", \"answer\"}";
 }

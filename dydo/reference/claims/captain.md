@@ -142,7 +142,7 @@ Reason: Naming them in the brief keeps the process from resting on an agent's gu
 
 Spec: S6
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Dispatched → Taken, "the ticket is set In Progress and its kind's resource loaded: its result is a change, or a verdict or an answer".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Dispatched → Taken, "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer".
 
 Evidence (run): Linear, team Dydo, statuses read 2026-11-20: In Progress is a started status and Todo the unstarted one, beside Done, Canceled and Duplicate; DYD-1372 was In Progress while this was written.
 

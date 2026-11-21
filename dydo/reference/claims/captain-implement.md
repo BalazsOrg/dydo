@@ -60,7 +60,7 @@ Reason: A writer on a small Fix reaches its three lines without a detour through
 
 Spec: K30, R2
 
-Evidence (code): `claims/statechart/captain/transitions.json`
+Evidence (run): Linear, read 2026-11-21: Fix r1, r2 and r3 (DYD-1327, DYD-1333, DYD-1339) have no sub-ticket and no Review of their own; each was judged by DYD-1281's next Review of the whole.
 
 Layer: The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out.
 

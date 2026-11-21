@@ -12,7 +12,8 @@ namespace DynaDocs.SkillBuild;
 public static class CaptainReviewing
 {
     private const string Toolset = "skills/roles/crew/reviewer/resources/toolset.md";
-    private const string Machine = "claims/statechart/captain/transitions.json";
+    private const string Unjudged = "Linear, DYD-1281's sub-tickets read 2026-11-21: Review r1 to r4 (DYD-1294, DYD-1328, DYD-1334, DYD-1340) are Done with no sub-ticket, " +
+                                    "and no Review ticket beside them judges one of them. ";
 
     private const string Map = """
         | Spine phase | You hold the review | You are one seat of it |
@@ -67,7 +68,8 @@ public static class CaptainReviewing
         [At(Actor.TicketCaptain, CaptainSlot.ReviewMap, 1, Map)])
     {
         Spec = ["K30", "R34"],
-        Truth = new(Evidence.Code(Machine),
+        Truth = new(Evidence.Run(Unjudged + "His words (DYD-1372 777d396e): \"Reviewing the reviews is probably not a good idea.\" Of a seat (aa5b445e): " +
+                                 "\"Yes, they're leafs. And we know that they are.\", and of a read review whose slice is too big, \"it can be further divided (while keeping the coherence)\"."),
             Layer: "The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out.",
             Reason: "Without the map a reviewer works out for itself that the phase named for review is about somebody else's change.")
     };
@@ -79,9 +81,7 @@ public static class CaptainReviewing
     ])
     {
         Spec = ["R34", "K30"],
-        Truth = new(Evidence.Run("`" + Machine + "`: a leaf that is \"a verdict or an answer\" goes from Working it as a leaf to Finishing, and no arrow leads a verdict into In review. " +
-                                 "Linear, DYD-1281's sub-tickets read 2026-11-20: Review r1 to r4 have no Review ticket beneath or beside them that judges them. " +
-                                 "His words: \"Reviewing the reviews is probably not a good idea.\" (DYD-1372 777d396e)"),
+        Truth = new(Evidence.Run(Unjudged + "His words: \"Reviewing the reviews is probably not a good idea.\" (DYD-1372 777d396e)"),
             Layer: "The spine's fourth phase speaks to every captain alike and cannot tell a holder whose result is a judgement.",
             Reason: "A judgement sent on to be judged again has no end, and each further pass costs as much as the first.")
     };
@@ -152,8 +152,7 @@ public static class CaptainReviewing
     {
         Spec = ["H2", "K30"],
         Truth = new(Evidence.Run("His words (DYD-1372 aa5b445e): \"let's take the read review then it makes sense to keep the escape hatch, because if it's a too big of a slice " +
-                                 "it can be further divided (while keeping the coherence).\" and \"So keeping the escape hatch is probably right.\" " +
-                                 "`" + Machine + "` holds both ways out of a leaf that proves too big: cut what is left, or `too big, re-cut` back to the officer."),
+                                 "it can be further divided (while keeping the coherence).\" and \"So keeping the escape hatch is probably right.\""),
             Layer: "A reviewer learns how large its slice really is only once it has opened it, long after the cut was made.",
             Reason: "A reader pushed past what it can hold skims, and a skimmed slice passes with its faults unread.")
     };

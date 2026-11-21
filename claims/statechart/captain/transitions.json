@@ -139,7 +139,7 @@
     {
       "name": "kind",
       "initial": "\"unread\"",
-      "bound": "kind \\in {\"unread\", \"change\", \"verdict\"}"
+      "bound": "kind \\in {\"unread\", \"change\", \"verdict\", \"answer\"}"
     }
   ],
   "transitions": [
@@ -162,12 +162,12 @@
       "claim": "claim:Captain.Start",
       "from": "Dispatched",
       "to": "Taken",
-      "arrow": "the ticket is set In Progress and its kind's resource loaded: its result is a change, or a verdict or an answer",
+      "arrow": "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer",
       "spec": [
         "S6"
       ],
       "guard": null,
-      "effect": "kind' \\in {\"change\", \"verdict\"}",
+      "effect": "kind' \\in {\"change\", \"verdict\", \"answer\"}",
       "fair": false,
       "skills": [
         "ticket-captain"

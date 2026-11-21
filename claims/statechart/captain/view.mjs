@@ -18,7 +18,7 @@ const states = {
 };
 const steps = {
   "Captain_FillerBack": "a filler ticket fails its check: it goes back unstarted and unassigned · H11",
-  "Captain_Start": "the ticket is set In Progress and its kind's resource loaded: its result is a change, or a verdict or an answer · S6",
+  "Captain_Start": "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer · S6",
   "CaptainDispatch_Send": "each AFK sub-ticket is dispatched, and a HITL one goes up · H3, H15",
   "CaptainFinish_Close": "the contract is met: the ticket closes Done · S6",
   "CaptainFinish_HandOver": "the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer · R32, R5",

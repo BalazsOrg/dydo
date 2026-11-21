@@ -34,6 +34,10 @@ internal static partial class TruthCheck
     [GeneratedRegex(@"^\{[a-z]+(?:_[a-z]+)*_placeholder\}$")]
     private static partial Regex PlaceholderToken();
 
+    // A sentence's end with more text after it: the lead of a placeholder is one sentence, so a second one is drafted text.
+    [GeneratedRegex(@"[.!?][^\s\p{L}\p{Nd}]*\s+\S")]
+    private static partial Regex SecondSentence();
+
     /// <summary>The lines of <paramref name="skill"/> an open claim withholds from its files.</summary>
     public static HashSet<Placed> Check(SkillSpec skill, IReadOnlyList<Placed> lines, IReadOnlyDictionary<string, Claim> claims)
     {
@@ -49,7 +53,7 @@ internal static partial class TruthCheck
                     $"{skill.Name}: the line of claim:{placed.Owner} also states {string.Join(", ", placed.Claims.Skip(1).Select(id => "claim:" + id))}, " +
                     "and one of them is open; an open claim is stated alone, so its line can be withheld alone");
             if (claims[placed.Owner].Truth!.Evidence.Token is not { } token) withheld.Add(placed);
-            else if (!PlaceholderToken().IsMatch(token) || placed.Line.Text.Split('\n') is not [{ Length: > 0 }, "", var last] || last != token)
+            else if (!PlaceholderToken().IsMatch(token) || placed.Line.Text.Split('\n') is not [{ Length: > 0 } lead, "", var last] || last != token || SecondSentence().IsMatch(lead))
                 throw new InvalidDataException(
                     $"{skill.Name}: the line of claim:{placed.Owner} is a placeholder's, and it is not one sentence, a blank line, then `{token}` alone, " +
                     "a token of the form `{name_placeholder}`; a placeholder shows where its text will stand, and none of the text");

@@ -86,6 +86,21 @@ public class LedgerTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1372 g5 N3 a legacy line kept in the placeholder's claim, whose text no built file states yet, reads placeholder, never kept, between what is kept and what is withheld")]
+    public void LineKeptInThePlaceholdersClaim_ReadsPlaceholder()
+    {
+        var files = SkillBuilder.Build(TruthModel.Replacing(
+            [.. TruthModel.Entries.Where(fate => fate.Line != OldMoves.Owns && fate.Line != OldMoves.Cap),
+                Fate.Kept(OldMoves.Owns, KeeperMoves.Owns, KeeperSecondOpen.Dusk, KeeperPlaceholder.Bells), Fate.Kept(OldMoves.Cap, KeeperPlaceholder.Bells)],
+            typeof(KeeperPlaceholder), typeof(KeeperSecondOpen))).Files;
+
+        Assert.EndsWith(
+            "`claim:OldMoves.Owns`, kept in `claim:KeeperMoves.Owns`; placeholder in `claim:KeeperPlaceholder.Bells`; withheld (open) in `claim:KeeperSecondOpen.Dusk`\n\n> You keep one thing.\n",
+            files[Review + "keeper-ledger-1.md"]);
+        Assert.Contains("`claim:OldMoves.Cap`, placeholder in `claim:KeeperPlaceholder.Bells`\n\n> Cap the runs at eight.\n", files[Review + "keeper-ledger-2.md"]);
+    }
+
+    [Fact]
     [Trait("Job", "contract: DYD-1372 A7 r2 L1 a kept line says what became of each clause its claims leave out: dropped, deferred or withheld, printed under the line")]
     public void ClausesOfAKeptLine_ArePrintedUnderIt()
     {

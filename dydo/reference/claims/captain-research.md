@@ -10,11 +10,11 @@ type: reference
 
 `claim:CaptainResearch.Phases`: A Research holder uses the spine's first, second and last phases, and skips dispatch and review.
 
-Spec: K30, S1
+Spec: K30, S1, R2
 
-Evidence (code): `claims/statechart/captain/transitions.json`
+Evidence (run): The spine as built, read 2026-11-21: phase 4 of `skills/roles/officers/ticket-captain/SKILL.md` opens "Every change is reviewed by an agent other than its writer", and nowhere in that phase is an answer named. Spec R2 has "The feature is the review unit"; R4 rules out a review loop for a plan, spec or contract, and an answer is none of the three. Linear, read the same day: the Research tickets DYD-1072 and DYD-1253 are Done with no sub-ticket, so no Review ticket stands beneath either.
 
-Layer: The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out.
+Layer: The spine is one text for every kind of ticket, and nothing in it marks the phases a kind leaves out. No spec rule and no word of the user's speaks of reviewing an answer: the skip of phase 4 says only what this skill holds, a phase written for a change.
 
 Reason: A researcher would otherwise wonder who is to check its answer, or open tickets for its lookups.
 

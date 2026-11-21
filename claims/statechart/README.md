@@ -142,15 +142,16 @@ His walkthrough closed all ten in round 5 (DYD-1082 555a8300), and envoy 5 settl
 ## The ticket-captain prototype (DYD-1372)
 
 One more machine, outside the overview and its 31: a captain holding one ticket, built from the
-prototype's own claims (DYD-1295 519126ab). `round` counts review rounds and is bounded at 4 only
+prototype's own claims (DYD-1295 519126ab). `round` counts review rounds, bounded at 4 only
 so TLC ends; the skill sets no cap.
 
 - A ticket is taken by one move, Dispatched → Taken (`Captain.Start`): its holder sets it In Progress
-  and loads its kind's resource. `kind` holds what it learns there: `change`, or `verdict` for any
-  other result (a verdict, a seat's findings, an answer); until then, `unread`.
+  and loads its kind's resource. `kind` holds what it learns there: `change`, `verdict` or `answer`;
+  until then, `unread`.
 - Only a `change` enters a review round or a repair (`CaptainReview.Other`, `Whole`,
   `CaptainMerging.Broken`), and only a `verdict` seats a round and forms its verdict
-  (`CaptainReviewSeats.Ticket`, `Verdict`), so no path leads a verdict into In review (R34).
+  (`CaptainReviewSeats.Ticket`, `Verdict`), so no path leads a verdict into In review (R34). An
+  `answer` is no verdict, and no rule speaks of reviewing one.
 - A ticket that cannot be started goes back from Dispatched, unstarted: a filler that fails its check
   (H11), or one another agent already holds (`CaptainIntake.Held`; S7).
 - A round that found no new blocker is a state of its own. The rounds end from it, and the one more
@@ -171,9 +172,9 @@ so TLC ends; the skill sets no cap.
 
 The chart draws 31 of the 37 arrows: five pairs share one (the returns from Dispatched, the cuts from
 Taken, a leaf's returns, Waiting to Finishing, a repair's ways back); the Question's self-loop is
-not drawn. TLC line from fix g3; it holds `NoDeadlock`. Its properties are written by hand under
+not drawn. TLC line from fix g5: `NoDeadlock` holds. Its properties are written by hand under
 `verification/statechart/`, from his rulings and never from this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 15 | 37 | 0 | 68 states, 129 steps |
+| A captain and its ticket | `captain` | 15 | 37 | 0 | 77 states, 148 steps |

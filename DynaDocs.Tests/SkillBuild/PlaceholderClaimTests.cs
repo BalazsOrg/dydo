@@ -58,8 +58,9 @@ public class PlaceholderClaimTests
             typeof(KeeperPlaceholder), typeof(KeeperSecondPlaceholder));
 
     [Theory]
-    [Trait("Job", "trap: DYD-1372 X3 a placeholder's line that drafts the text it stands for, or whose token does not read as a placeholder, fails the build")]
+    [Trait("Job", "trap: DYD-1372 X3 a placeholder's line that drafts the text it stands for, below its token or in a second sentence above it, or whose token does not read as a placeholder, fails the build")]
     [InlineData(typeof(KeeperDraftedPlaceholder), "{bell_placeholder}")]
+    [InlineData(typeof(KeeperTwoSentencePlaceholder), "{bell_placeholder}")]
     [InlineData(typeof(KeeperPlainPlaceholder), "the bells")]
     public void PlaceholderThatShowsMoreThanItsToken_FailsTheBuild(Type kind, string token) =>
         AssertRejected(

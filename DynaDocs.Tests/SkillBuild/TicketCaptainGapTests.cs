@@ -15,10 +15,7 @@ public class TicketCaptainGapTests
     private const string Folder = "skills/roles/officers/ticket-captain/";
     private const string Spine = Folder + "SKILL.md";
     private const string Resources = Folder + "resources/";
-    private const string OnlyAChange = "kind = \"change\"";
     private const string OnlyAVerdict = "kind = \"verdict\"";
-
-    private static readonly string[] ReviewLoop = ["InReview", "Clear", "Fixing", "Checkpoint", "Repairing"];
 
     private static readonly Lazy<BuiltTree> Built = new(() => SkillBuilder.Build(ProductionModel.Model));
 
@@ -138,18 +135,7 @@ public class TicketCaptainGapTests
     public void UnsettledQuestion_ReturnsFromTheLeaf() =>
         Assert.Contains(Moves.Value, move => move is { Claim: "claim:CaptainResearch.Question", From: "Leaf", To: "Returned" });
 
-    [Fact]
-    [Trait("Job", "contract: DYD-1372 g1a M1 R34 a verdict is never reviewed: no path of the machine leads a holder whose result is a verdict or an answer into a review round or a repair, and a change still reaches both (777d396e)")]
-    public void Verdict_ReachesNoReviewRound()
-    {
-        var verdict = Reached(OnlyAChange);
-        var change = Reached(OnlyAVerdict);
-
-        Assert.All(ReviewLoop, state => Assert.DoesNotContain(state, verdict));
-        Assert.All(ReviewLoop, state => Assert.Contains(state, change));
-        Assert.All(new[] { verdict, change }, reached => Assert.Contains("Returned", reached));
-    }
-
+    // M1's walk, that a verdict reaches no review round, is in TicketCaptainGap5Tests: since fix g5 the result has three kinds, and each is walked there.
     [Fact]
     [Trait("Job", "contract: DYD-1372 g1a M1 a holder learns its kind by the one move that takes the ticket: it leaves the initial state, and no later move changes what the result is")]
     public void Kind_IsLearnedByTheMoveThatTakesTheTicket()
@@ -159,16 +145,6 @@ public class TicketCaptainGapTests
         Assert.Equal(["claim:Captain.Start"], learns.Select(move => move.Claim));
         Assert.Equal(Machine.GetProperty("initial").GetString(), learns[0].From);
         Assert.DoesNotContain(Moves.Value, move => move.Guard?.Contains("kind", StringComparison.Ordinal) == true && move.From == learns[0].From);
-    }
-
-    // Every state a holder can reach when no move under the excluded guard is open to it; the other guards are left open, so nothing reachable is missed.
-    private static HashSet<string> Reached(string excluded)
-    {
-        var reached = new HashSet<string> { Machine.GetProperty("initial").GetString()! };
-        var open = Moves.Value.Where(move => move.Guard != excluded).ToArray();
-        var grew = true;
-        while (grew) grew = open.Where(move => reached.Contains(move.From)).Count(move => reached.Add(move.To)) > 0;
-        return reached;
     }
 
     private static MapLine[] Stated(string path) => [.. Built.Value.Map.Where(line => line.Path == path)];
