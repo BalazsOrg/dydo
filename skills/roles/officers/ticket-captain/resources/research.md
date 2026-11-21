@@ -21,4 +21,8 @@ Your ticket is one question a choice waits on. Answer it with every claim cited 
 6. Write the answer first, then each claim with its citation (a path at its commit, or a URL) and its exact passage, what stayed unsettled, and every family searched, the empty ones included.
 
 **On a Question ticket:**
-Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, and return it to your officer as unsettled, the Question still open.
+Research first, then go by what the facts leave of the call. An open call is laid out the same way wherever it goes: the call, its options unranked and the facts with their sources.
+
+- They settle it: put the answer on the ticket.
+- They leave a call that is the user's to make, because it cannot be undone once made or because making it sets or changes a decision record: open a Question sub-ticket under yours, Mode HITL, by [Sub-tickets](sub-tickets.md), lay the call out on it, and have it block every ticket yours blocks. Your ticket has then handed its call on: close it Done, and return the new ticket's key to your officer. That return is how the call goes up: your officer carries the ticket on as it is, by [A need for the user](need-for-the-user.md).
+- They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open.

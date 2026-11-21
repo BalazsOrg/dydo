@@ -146,35 +146,36 @@ prototype's own claims (DYD-1295 519126ab). `round` counts review rounds, bounde
 so TLC ends; the skill sets no cap.
 
 - A ticket is taken by one move, Dispatched → Taken (`Captain.Start`): its holder sets it In Progress
-  and loads its kind's resource. `kind` holds what it learns there: `change`, `verdict` or `answer`;
-  until then, `unread`.
+  and loads its kind's resource. `kind` holds what it learns there, `change`, `verdict` or `answer`,
+  and `unread` before.
 - Only a `change` enters a review round or a repair (`CaptainReview.Other`, `Whole`,
   `CaptainMerging.Broken`), and only a `verdict` seats a round and forms its verdict
   (`CaptainReviewSeats.Ticket`, `Verdict`), so no path leads a verdict into In review (R34). An
-  `answer` is no verdict, and no rule speaks of reviewing one.
-- A ticket that cannot be started goes back from Dispatched, unstarted: a filler that fails its check
-  (H11), or one another agent already holds (`CaptainIntake.Held`; S7).
-- A round that found no new blocker is a state of its own. The rounds end from it, and the one more
-  round the captain may order leaves only from it, once (`extra`), so a blocked round reaches
-  the next only through a Fix (R8). A third blocked round leaves only through the checkpoint (R10).
+  `answer` is no verdict; no rule speaks of reviewing one.
+- A ticket that cannot be started goes back from Dispatched: a filler that fails its check (H11), or
+  one another agent holds (`CaptainIntake.Held`; S7).
+- A clear round is its own state: the rounds end from it; the one more round the captain may
+  order leaves only from it, once (`extra`); and a cheap should it leaves is mended once (`mended`):
+  Clear → Mending (`CaptainRound.Cheap`), then a round on the new head (`NewHead`), not the one
+  more (S17). A blocked round reaches the next only through a Fix (R8), a third only through the
+  checkpoint (R10).
 - A repair of a conflict or red gate goes on only through a review round, or back to the officer
   (R19, R21).
 - Only a leaf has a Question state: a splitting captain's Question is one more child. It is left only
-  to resume the leaf; one that comes back unsettled goes to the officer and stays open, a self-loop
+  to resume the leaf; one that comes back unsettled goes up and stays open, a self-loop
   (`CaptainNeed.Up`; H16, S10).
-- A captain that cannot see its route to the spec finds the way before it cuts (H10): Taken → Finding
-  the way (`CaptainWay.Fog`), left only by cutting the parts in sight and entered again from Waiting
-  when a part returns with fog left.
-- A leaf goes back as `too big, re-cut` only when what is left cannot be divided coherently under its
-  ticket (H2), or as a Question its research did not settle (`CaptainResearch.Question`). After a
-  re-cut its officer rewrites that ticket's contract and cuts the rest, Waiting → Split
-  (`CaptainTrouble.ChildReCut`). The child's own close (S6) is a second run, not shown.
+- A captain that cannot see its route finds the way before it cuts (H10): Taken → Finding the way
+  (`CaptainWay.Fog`), left only by a cut of the parts in sight, entered again from Waiting.
+- A leaf goes back as `too big, re-cut` (H2), or as a Question its research left neither settled nor
+  the user's (`CaptainResearch.Question`); the user's call goes on as a HITL Question and the
+  research ticket finishes (`Handed`; H23). After a re-cut the officer rewrites its contract and
+  cuts the rest (`CaptainTrouble.ChildReCut`).
 
-The chart draws 31 of the 37 arrows: five pairs share one (the returns from Dispatched, the cuts from
-Taken, a leaf's returns, Waiting to Finishing, a repair's ways back); the Question's self-loop is
-not drawn. TLC line from fix g5: `NoDeadlock` holds. Its properties are written by hand under
-`verification/statechart/`, from his rulings and never from this model (K3).
+The chart draws 33 of the 40 arrows: six pairs share one (the returns from Dispatched, the cuts from
+Taken, a leaf's returns and its ways to Finishing, Waiting to Finishing, a repair's ways back); the
+Question's self-loop is undrawn. TLC, fix g6: `NoDeadlock` holds. Its properties are hand-written
+under `verification/statechart/`, from his rulings, never from this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 15 | 37 | 0 | 77 states, 148 steps |
+| A captain and its ticket | `captain` | 16 | 40 | 0 | 121 states, 225 steps |

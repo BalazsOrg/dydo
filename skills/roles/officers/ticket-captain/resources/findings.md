@@ -10,7 +10,7 @@
 
 **A should, by what its fix costs:**
 
-- Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, and order one more round on the new head.
+- Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket. Where the candidate is in your PR, dispatch a Review onto the new head next: `dydo merge` takes no head without a PASS, and this round is not the one more you may order. Take it once: a should that it, or a later round with no blocker, finds waits on its ticket.
 - Anything more: it waits on its ticket, and its parent may close Done meanwhile.
 
 Take a finding on a change you wrote as the reviewer wrote it: a fresh writer fixes it, and if you doubt it, the doubt is a Question sub-ticket, never your call.

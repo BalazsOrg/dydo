@@ -52,13 +52,13 @@ Layer: The guard refuses a `gh` PR call from a dirty or unpushed tree and reads 
 
 Reason: The verdict's PASS line and `dydo merge` both need a PR that shows exactly the reviewed commit.
 
-**ticket-captain** (Reviewed; read by TicketCaptain, on claim:CaptainReview.Whose):
+**ticket-captain** (MergePr; read by TicketCaptain):
 
-> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, then have it reviewed in that PR before you merge; a part your officer merges is reviewed with its whole.
+> Open the PR for your work as a draft once `dydo pr-ready` passes: run with no body file, it checks your tree alone, clean and pushed, and asks for no review. Any check of the PR's body waits for step 3.
 
 ## Whose
 
-`claim:CaptainReview.Whose`: Whoever merges a piece of work has it reviewed first; a part is reviewed with the parent it joins.
+`claim:CaptainReview.Whose`: Whoever merges a piece of work has it reviewed first, in its PR; a part is reviewed with the parent it joins.
 
 Spec: R2
 
@@ -70,7 +70,7 @@ Reason: A part reviewed alone and again inside its parent is reviewed twice for 
 
 **ticket-captain** (Reviewed; read by TicketCaptain):
 
-> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, then have it reviewed in that PR before you merge; a part your officer merges is reviewed with its whole.
+> If the merge is yours, open a draft PR by Merging (`resources/merging.md`), and have the work reviewed there before you merge; a part your officer merges is reviewed with its whole.
 
 ## Attach
 

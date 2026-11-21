@@ -216,12 +216,13 @@ public partial class TicketCaptainPrototypeTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 X17 nothing links a PR to its ticket, so the line after the PR's has its captain attach it, with the tool it names")]
+    [Trait("Job", "contract: DYD-1372 X17 nothing links a PR to its ticket, so the line after the spine's PR line, the one that has it opened (g6 H2), has its captain attach it, with the tool it names")]
     public void Pr_IsAttachedToItsTicketByTheLineAfterIt()
     {
         var attach = LineOf("CaptainReview.Attach");
 
-        Assert.Equal(LineOf(CaptainReview.Pr).Line + 1, attach.Line);
+        Assert.Contains(" PR ", LineOf(CaptainReview.Whose).Text);
+        Assert.Equal(LineOf(CaptainReview.Whose).Line + 1, attach.Line);
         Assert.Contains("`save_issue`", attach.Text);
     }
 

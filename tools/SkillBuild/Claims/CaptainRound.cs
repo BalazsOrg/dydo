@@ -60,7 +60,7 @@ public static class CaptainRound
     public static readonly Claim Shoulds = new("A should is filed as a child of the ticket where it was found, after a check for a duplicate under that ticket and its ancestors.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.RoundSteps, 4,
-            "File each should as a child of the ticket whose work you judged, after checking the open shoulds there and above for a duplicate.")
+            "File each should as a child of the ticket whose work you judged, the one your brief names, after checking the open shoulds there and above for a duplicate.")
     ])
     {
         Spec = ["S17"],
@@ -81,17 +81,43 @@ public static class CaptainRound
             Reason: "Five small fixes one agent makes in a pass need no five tickets, and a large one needs room of its own.")
     };
 
-    public static readonly Claim Cheap = new("A cheap should is fixed in place before its parent merges, in the round's Fix or by a writer of its own; the rest wait.", Me,
+    public static readonly Claim Cheap = new("A cheap should is fixed in place before its parent merges: in the round's Fix, or, after a round with no blocker, by a writer on its own ticket; the rest wait.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ShouldRoutes, 1,
-            "Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket, and order one more round on the new head.")
+            "Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, dispatch a writer onto its ticket. " +
+            "Where the candidate is in your PR, dispatch a Review onto the new head next: `dydo merge` takes no head without a PASS, and this round is not the one more you may order. " +
+            "Take it once: a should that it, or a later round with no blocker, finds waits on its ticket.",
+            () => [NewHead!, Once!])
     ])
     {
         Spec = ["S17", "R8"],
         Truth = new(Evidence.Run("Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, DYD-1327, closed \"7 blockers, 12 shoulds and 9 nits\" and Fix r2, DYD-1333, \"2 blockers and 5 shoulds\", " +
-                                 "each as one ticket. `Services/Merge/PullRequestMerge.cs` refuses a head whose PR \"holds no PASS for candidate\" it, so a fix made after a round with no blocker needs a round of its own."),
+                                 "each as one ticket."),
             Layer: "Nothing weighs a should's cost, and a filed should sits on its ticket until somebody dispatches it.",
-            Reason: "A fix made while the code is open costs less than a ticket that remembers it.")
+            Reason: "A fix made while the code is open costs less than a ticket that remembers it."),
+        Transition = new(CaptainState.Clear, CaptainState.Mending, "a round with no blocker leaves a cheap should: a writer mends it on its own ticket, once")
+        {
+            Guard = "~mended",
+            Effect = "mended' = TRUE"
+        }
+    };
+
+    public static readonly Claim NewHead = new("A should mended after a round with no blocker, on a candidate in its holder's PR, makes a new head, which gets a round of its own before the merge; that round is not the one more round the officer may order.", Me, [])
+    {
+        Spec = ["R8", "R23", "R24"],
+        Truth = new(Evidence.Code("Services/Merge/PullRequestMerge.cs"),
+            Layer: "`dydo merge` refuses a head that its PR's PASS does not name, and counts no rounds: it cannot tell a repair's round from an optional second look.",
+            Reason: "Spent as the optional look, the repair's round would leave a captain that had already taken that look with a fixed head and no way to have it passed."),
+        Transition = new(CaptainState.Mending, CaptainState.InReview, "the should is mended: a round on the new head, which the merge needs") { Effect = "round' = round + 1" }
+    };
+
+    public static readonly Claim Once = new("The round that follows a mended should is taken once: a should that it, or a later round with no blocker, finds waits on its ticket.", Me, [])
+    {
+        Spec = ["R8", "S17"],
+        Truth = new(Evidence.Run("Linear, team Dydo, read 2026-11-21: DYD-1336, DYD-1346, DYD-1301 and DYD-1347 carry the label should and sit in Backlog in the dydo 4.0.0 Project, each a ticket of its own that no round waits on. " +
+                                 "Spec R8: \"By default a round with no new blocker ends the phase\". The user (DYD-1295 41a553f1): a should \"needs fixing, but the fix can happen later\"."),
+            Layer: "Nothing counts rounds or weighs what one costs, and `dydo merge` is content with the PASS the head already has.",
+            Reason: "Each repair buys another whole review, so without an end the cheapest findings keep the dearest step running.")
     };
 
     public static readonly Claim ShouldInFix = new("A should fixed inside a Fix is closed by that Fix's holder: each should its brief names goes Done once its fix is proved, with the proof on it, before the Fix closes.", Me,

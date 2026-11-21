@@ -79,6 +79,14 @@
       ]
     },
     {
+      "id": "Mending",
+      "title": "Mending a cheap should after a clear round",
+      "spec": [
+        "S17",
+        "R8"
+      ]
+    },
+    {
       "id": "Checkpoint",
       "title": "At the checkpoint after a third blocked round",
       "spec": [
@@ -135,6 +143,11 @@
       "name": "extra",
       "initial": "FALSE",
       "bound": "extra \\in BOOLEAN"
+    },
+    {
+      "name": "mended",
+      "initial": "FALSE",
+      "bound": "mended \\in BOOLEAN"
     },
     {
       "name": "kind",
@@ -362,10 +375,27 @@
       ]
     },
     {
+      "claim": "claim:CaptainResearch.Handed",
+      "from": "Leaf",
+      "to": "Finishing",
+      "arrow": "a Question's research leaves a call that is the user's: it is handed on as a HITL Question sub-ticket, and the research ticket has done its part",
+      "spec": [
+        "H23",
+        "H16",
+        "S10"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainResearch.Question",
       "from": "Leaf",
       "to": "Returned",
-      "arrow": "a Question's research does not settle its call: it goes back to the officer unsettled, the Question still open",
+      "arrow": "a Question's research leaves a call that is neither settled nor the user's: it goes back to the officer unsettled, the Question still open",
       "spec": [
         "H16",
         "L18"
@@ -530,6 +560,39 @@
       ],
       "guard": "kind = \"verdict\"",
       "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainRound.Cheap",
+      "from": "Clear",
+      "to": "Mending",
+      "arrow": "a round with no blocker leaves a cheap should: a writer mends it on its own ticket, once",
+      "spec": [
+        "S17",
+        "R8"
+      ],
+      "guard": "~mended",
+      "effect": "mended' = TRUE",
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
+      "claim": "claim:CaptainRound.NewHead",
+      "from": "Mending",
+      "to": "InReview",
+      "arrow": "the should is mended: a round on the new head, which the merge needs",
+      "spec": [
+        "R8",
+        "R23",
+        "R24"
+      ],
+      "guard": null,
+      "effect": "round' = round + 1",
       "fair": false,
       "skills": [
         "ticket-captain"

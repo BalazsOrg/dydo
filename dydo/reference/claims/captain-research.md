@@ -157,20 +157,86 @@ Reason: Its reader checks any claim in one step, and sees where nobody looked.
 
 > Write the answer first, then each claim with its citation (a path at its commit, or a URL) and its exact passage, what stayed unsettled, and every family searched, the empty ones included.
 
-## Question
+## First
 
-`claim:CaptainResearch.Question`: A Question's captain researches first, answers what the facts settle, and returns the rest to its officer as unsettled, with the call laid out.
+`claim:CaptainResearch.First`: A Question's captain researches first, and lays out a call its research leaves open neutrally: the call, its options unranked and the facts with their sources.
 
 Spec: H16, L18
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Returned, "a Question's research does not settle its call: it goes back to the officer unsettled, the Question still open".
+Evidence (run): Linear, DYD-1071 read 2026-11-21: a Question the user is to settle, whose body is all its reader has of the call. Spec L18, of the file such a call travels in: "only the call, the options unranked, the constraints, and the primary facts with their sources".
 
-Evidence (run): Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, "Resolution: the answer, posted on close"; it holds no label for a council yet.
+Layer: Linear takes any text as a Question's body, a recommendation as readily as a neutral account, and nothing reads the sources before somebody is asked.
 
-Layer: Where an unsettled call goes next is its route, and the council that takes most of them has no resource in this skill yet.
-
-Reason: Options left unranked let whoever decides weigh them without the researcher's leaning.
+Reason: Whoever decides weighs the options without the researcher's leaning, and a mistake in the research poisons no judge.
 
 **ticket-captain** (ResearchQuestion; read by TicketCaptain):
 
-> Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, and return it to your officer as unsettled, the Question still open.
+> Research first, then go by what the facts leave of the call. An open call is laid out the same way wherever it goes: the call, its options unranked and the facts with their sources.
+
+## Settled
+
+`claim:CaptainResearch.Settled`: A call the facts settle is answered on the Question ticket.
+
+Spec: H16, L18
+
+Evidence (run): Linear, team Dydo, labels read 2026-11-20: the Type group holds Question, "Resolution: the answer, posted on close".
+
+Layer: Linear closes a Question with or without an answer on it.
+
+Reason: Most calls end here, and whoever meets the same one later finds it already answered.
+
+**ticket-captain** (ResearchRoutes; read by TicketCaptain):
+
+> They settle it: put the answer on the ticket.
+
+## Users
+
+`claim:CaptainResearch.Users`: A call its research leaves open is the user's to make when it cannot be undone once made, or when making it sets or changes a decision record.
+
+Spec: L18, L21, H16
+
+Evidence (run): `skills/roles/officers/coordinator/SKILL.md`, the coordinator's skill on this branch, not yet truth-checked, expects it of the captain it puts on a need: that captain "answers the need, sends it to a council, or puts a `his-call` Question on your HITL queue". Spec L18 names the calls that end with the user whatever a council says, "one-way or DR-grade → always prepared", and L21: "Irreversible calls are never decided." A researcher has read the decision records and knows each option, so both marks are in its own findings.
+
+Layer: Linear's Mode label says who settles a Question and nothing of which calls are his; the council that weighs every other open call has no resource in this skill yet.
+
+Reason: Two marks a reader can check against its notes keep a nod-seeking question away from him, and keep an agent from settling what only he may.
+
+**ticket-captain** (ResearchRoutes; read by TicketCaptain, on claim:CaptainResearch.Handed):
+
+> They leave a call that is the user's to make, because it cannot be undone once made or because making it sets or changes a decision record: open a Question sub-ticket under yours, Mode HITL, by Sub-tickets (`sub-tickets.md`), lay the call out on it, and have it block every ticket yours blocks. Your ticket has then handed its call on: close it Done, and return the new ticket's key to your officer. That return is how the call goes up: your officer carries the ticket on as it is, by A need for the user (`need-for-the-user.md`).
+
+## Handed
+
+`claim:CaptainResearch.Handed`: A Question's captain whose research leaves a call that is the user's opens a HITL Question sub-ticket for it, with the call laid out and blocking what its own ticket blocks, closes its own ticket, and returns the new ticket's key, which goes up as it is.
+
+Spec: H23, H16, S10
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Finishing, "a Question's research leaves a call that is the user's: it is handed on as a HITL Question sub-ticket, and the research ticket has done its part".
+
+Evidence (tool): save_issue: `parentId`, "Parent issue ID or identifier", and `blocks`, "Issue IDs/identifiers this blocks. Append-only; existing relations are never removed". Run, Linear read 2026-11-21: DYD-1071 is a Question labelled HITL that blocks the nine tickets waiting on it; and DYD-1172 has been Done since 2026-11-18 while its child DYD-1184 is In Progress, so a parent's close moves no child.
+
+Layer: Linear keeps a block on the ticket it was set on: once the research ticket closes, what waited on it reads as free unless the new ticket blocks it, and nothing opens a ticket for the user in a researcher's place.
+
+Reason: Sent back as merely unsettled, such a call is researched again one level up and never reaches the single queue that can end it.
+
+**ticket-captain** (ResearchRoutes; read by TicketCaptain):
+
+> They leave a call that is the user's to make, because it cannot be undone once made or because making it sets or changes a decision record: open a Question sub-ticket under yours, Mode HITL, by Sub-tickets (`sub-tickets.md`), lay the call out on it, and have it block every ticket yours blocks. Your ticket has then handed its call on: close it Done, and return the new ticket's key to your officer. That return is how the call goes up: your officer carries the ticket on as it is, by A need for the user (`need-for-the-user.md`).
+
+## Question
+
+`claim:CaptainResearch.Question`: A Question's captain returns to its officer as unsettled, with the call laid out, any call its research neither settles nor finds to be the user's.
+
+Spec: H16, L18
+
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Leaf → Returned, "a Question's research leaves a call that is neither settled nor the user's: it goes back to the officer unsettled, the Question still open".
+
+Evidence (run): Linear, team Dydo, labels read 2026-11-21: the Type group holds Question, and no label names a council or a Question's stage.
+
+Layer: Where an unsettled call goes next is its route, and the council that takes most of them has no resource in this skill yet.
+
+Reason: An officer often holds what the sources lacked, and it is the one place the remaining routes start from.
+
+**ticket-captain** (ResearchRoutes; read by TicketCaptain):
+
+> They leave anything else open: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open.

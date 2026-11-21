@@ -146,7 +146,7 @@ public static class CaptainMergeTrouble
     public static readonly Claim Reland = new("The fixed branch is merged again through a new PR, opened once the repair is back, that itself restores the reverted change.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.RedSteps, 4,
-            "Dispatch the Implement, and when it returns open a new PR for the branch: `dydo merge` undoes no revert, and calls the old PR already integrated.")
+            "Dispatch the Implement, and when it returns open a new PR for the branch, a draft again, by [Merging](merging.md): `dydo merge` undoes no revert, and calls the old PR already integrated.")
     ])
     {
         Spec = ["R22", "R23"],

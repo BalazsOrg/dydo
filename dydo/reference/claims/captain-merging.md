@@ -8,7 +8,7 @@ type: reference
 
 ## Mine
 
-`claim:CaptainMerging.Mine`: Only the holder whose brief gives it the merge merges: a holder whose officer merges cuts no Merge sub-ticket and takes none of the merging steps.
+`claim:CaptainMerging.Mine`: Only the holder whose brief gives it the merge merges: a holder whose officer merges opens no PR, cuts no Merge sub-ticket and takes none of the merging steps.
 
 Spec: R21, K14
 
@@ -20,7 +20,7 @@ Reason: Run by a part, the command lands that part ahead of the whole its office
 
 **ticket-captain** (MergeLead; read by TicketCaptain):
 
-> Merge only if your brief gives you the merge: where your officer merges, you cut no Merge sub-ticket and take none of these steps.
+> Merge only if your brief gives you the merge: where your officer merges, you open no PR, cut no Merge sub-ticket and take none of these steps.
 
 ## NoPass
 
@@ -69,6 +69,70 @@ Reason: Two branches that are each green can still break each other once they me
 **ticket-captain** (MergeSteps; read by TicketCaptain):
 
 > Run the project's gates, as your brief names them, on the combined tree: your branch merged with the target's current tip.
+
+## Draft
+
+`claim:CaptainMerging.Draft`: A PR is opened as a draft and stays one through its review: a draft opens on the tree check alone, its body can be written to, and a check of that body waits until the PR is made ready.
+
+Spec: R17, R23
+
+Evidence (run): `dydo pr-ready`, run with no body file in DYD-1372's checkout at `13da419b`, clean and pushed, 2026-11-21: "ready: … is clean and HEAD matches its upstream", exit 0, and no review was asked for. The guard runs those tree checks and no other on a call that opens a PR or makes one ready (`Commands/GuardCommand.PrReady.cs`, `Services/PrReadyCheck.cs`), and `Services/PrCallScanner.cs` reads no draft flag, so a draft opens on the same check. GitHub, asked the same day about PR 356, an open draft: `viewerCanUpdate` is true, so its body can be written to, and hosted CI had run on it: `.github/workflows/ci.yml` starts on every pull request, a draft included.
+
+Layer: The guard and the bare check ask the same of a draft as of any PR, and nothing else marks an unreviewed PR as not yet for merging; only `dydo merge` tells the two apart, by refusing the draft.
+
+Reason: Opened as a draft, the work can be judged in place while no command will merge it, and the one check that needs a PASS has a later moment to belong to.
+
+**ticket-captain** (MergePr; read by TicketCaptain, on claim:CaptainReview.Pr):
+
+> Open the PR for your work as a draft once `dydo pr-ready` passes: run with no body file, it checks your tree alone, clean and pushed, and asks for no review. Any check of the PR's body waits for step 3.
+
+## Heading
+
+`claim:CaptainMerging.Heading`: A PR's body carries the Independent review heading from the moment the PR is opened: the round's holder writes its PASS under it.
+
+Spec: R17
+
+Evidence (code): `Services/Merge/IndependentReview.cs`
+
+Layer: `dydo merge` reads a verdict only inside that section, and the guard stops, once, a PR opened with those two words nowhere in it (`Services/ConfigFactory.cs`); neither writes the heading.
+
+Reason: A reviewer finds where its line goes, and a captain is spared a stop that reads as if the review had to come before the PR.
+
+**ticket-captain** (MergePr; read by TicketCaptain):
+
+> Give its body the heading `## Independent review`: the round's holder writes its PASS under it.
+
+## BodyCheck
+
+`claim:CaptainMerging.BodyCheck`: A brief that names the PR skill adds one check of the PR's body, which needs the PASS, so it comes when the PR is made ready and never before the draft is opened.
+
+Spec: R17, K14
+
+Evidence (run): `dydo pr-ready --body <file>`, run in DYD-1372's checkout 2026-11-21 on a body whose Independent review section held no PASS: "not ready: the '## Independent review' section holds no reviewer 'PASS - rubric/type: ...' block with usable fields", exit 1; on that body with a PASS line and a ticket key: "ready: … the body names its ticket and holds a PASS review", exit 0. `skills/engineering/pr/SKILL.md` asks for that run "before opening or readying the PR".
+
+Layer: The PR skill names two moments for its check and cannot know that at the first of them no review exists yet; the command only reports that the PASS is missing.
+
+Reason: Taken at the opening, the check can never pass, and a captain that obeys both skills waits on a review that waits on its PR.
+
+**ticket-captain** (MergeSteps; read by TicketCaptain, on claim:CaptainMerging.Ready):
+
+> Make the PR ready, no longer a draft, once its body holds the PASS for its head: `dydo merge` refuses a draft. Where your brief names `/pr`, that skill's check of the body comes here, on the body as the PR now holds it: `dydo pr-ready --body <file>`.
+
+## Ready
+
+`claim:CaptainMerging.Ready`: A draft PR is made ready once its body holds the PASS for its head, before the merge, which refuses a draft.
+
+Spec: R23, R17
+
+Evidence (run): `dydo merge <pr-number> --match-head-commit <sha> --match-base-commit <sha> --dry-run`, run 2026-11-21 on PR 356, an open draft into `feature/dydo-4-0-0`: "refused: PR #356 is a draft", exit 1. `Services/Merge/PullRequestMerge.cs` checks that first of all on an open PR, before it looks for a PASS.
+
+Layer: `dydo merge` refuses a draft and readies none; the guard lets a PR be made ready from any clean, pushed tree and reads no body for it.
+
+Reason: Readied only after its PASS, a PR never stands open for merging with nothing but its author's word behind it.
+
+**ticket-captain** (MergeSteps; read by TicketCaptain):
+
+> Make the PR ready, no longer a draft, once its body holds the PASS for its head: `dydo merge` refuses a draft. Where your brief names `/pr`, that skill's check of the body comes here, on the body as the PR now holds it: `dydo pr-ready --body <file>`.
 
 ## Refusal
 
