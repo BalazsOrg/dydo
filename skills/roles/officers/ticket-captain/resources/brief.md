@@ -12,7 +12,7 @@ Then name:
 - What the ticket's result is: a change, a verdict, findings as one seat of a review, or an answer.
 - How the ticket fits your ticket and the spec.
 - For a change: the branch and the base it works on, the paths it owns, the gates it must pass, and how the work is proved.
-- For a change: the skill that holds the project's rules for code, comments and tests, with a slash.
+- For a change: the skill that holds the project's rules for code, comments and tests, with a slash, or that the project has none.
 - For a change: whether the agent merges it, and into which branch. A part that you will wire merges nothing.
 
 | The ticket | Its brief adds |

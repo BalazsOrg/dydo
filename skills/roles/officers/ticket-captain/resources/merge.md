@@ -4,9 +4,10 @@ Your brief says that you merge your change, and into which branch. A merge needs
 
 **Get it reviewed**
 
-1. Run the gates your brief names on your branch, then push it.
-2. Open a Review sub-ticket under your ticket, and dispatch a fresh agent onto it by [Brief](brief.md).
-3. Wait for the verdict. It is on the Review ticket.
+1. If the target your brief names is not a `feature/*` branch, end with `handed back <KEY>: dydo merge merges only into feature/* branches`.
+2. Run the gates your brief names on your branch, then push it.
+3. Open a Review sub-ticket under your ticket, and dispatch a fresh agent onto it by [Brief](brief.md).
+4. Wait for the verdict. It is on the Review ticket.
 
 **The verdict is FAIL**
 
@@ -20,9 +21,8 @@ Your brief says that you merge your change, and into which branch. A merge needs
 
 **Hand it to your officer**
 
-Write why on your ticket, and end with `handed back <KEY>: <reason>`, in three cases:
+Write why on your ticket, and end with `handed back <KEY>: <reason>`, in two cases:
 
-- The branch your brief names as the target is the default branch: `dydo merge` refuses it.
 - A blocker cannot be fixed inside your ticket: the approach is wrong at the root, it asks for a new requirement, or it needs the user.
 - The Fix is handed back to you undone.
 

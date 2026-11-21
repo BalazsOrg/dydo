@@ -20,6 +20,6 @@ Write on your ticket the answer first. Then give each claim with its source, a p
 
 **A call for the user**
 
-1. Make the user's question ready on your ticket: every option, each option's trade-off, and your recommendation.
+1. Make the user's question ready on your ticket: every option, each option's trade-off, and your recommendation. Give the facts you found with their sources, as in "Write the answer".
 2. Name a decision record by what it says, never only by its number.
 3. Leave the ticket open, and end with `handed back <KEY>: a call for the user`.
