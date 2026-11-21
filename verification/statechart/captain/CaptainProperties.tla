@@ -24,12 +24,13 @@ H3_WaitAfterSplit ==
 H16_ResumeLeafAfterQuestion ==
     [][(state = "Question" /\ state' # state => state' = "Leaf")]_<<vars, seen>>
 
-\* R8: review clears before finishing. R2/S17 also allow a cheap-mended
-\* part to be handed back for review with the whole, without its own round.
+\* R8: "the phase ends on the first round with no new blocker".
+\* R2 permits a part to return to its officer for whole review. R23 requires
+\* the merging holder's PASS to name its head; a mend is not R24's clean sync.
 R8_ClearBeforeFinish ==
     [][ /\ (state' = "Clear" /\ state # "Clear" => state = "InReview")
         /\ (state' = "Finishing" /\ state # "Finishing" /\ "InReview" \in seen =>
-            state \in {"Clear", "Mending"})
+            state = "Clear" \/ (state = "Mending" /\ merger = "officer"))
     ]_<<vars, seen>>
 
 \* R8, R9, S9, DYD-1295 41a553f1: A blocked round requires a fix before
@@ -73,16 +74,14 @@ R10_EnterCheckpointFromThirdRound ==
     [][(state # "Checkpoint" /\ state' = "Checkpoint" =>
         state = "InReview" /\ round = 3 /\ round' = round)]_<<vars, seen>>
 
-\* R19 requires fresh review of conflict hunks. R21 and R22 route a real
-\* red gate through a Fix and fix-scoped review before re-landing. R8
-\* requires a clear verdict. R2 permits handing a mended part to the whole;
-\* Finishing does not distinguish that handoff from a local merge retry.
-\* K9 and H12 route escalation to the officer.
+\* R19: "under a fresh review of its hunks". R22: "then a fix-scoped
+\* round, then a re-land". R8 requires that review to clear before retry.
+\* A merge repair belongs to the holder that merges, not a part handoff.
 R19_ReviewAfterMergeRepair ==
     [][ /\ (state = "Repairing" /\ state' # "Repairing" =>
             state' \in {"InReview", "Returned"})
         /\ ("Repairing" \in seen /\ state # "Finishing" /\ state' = "Finishing" =>
-            state \in {"Clear", "Mending"} /\ "InReview" \in seen)
+            merger = "holder" /\ state = "Clear" /\ "InReview" \in seen)
     ]_<<vars, seen>>
 
 \* H1 and AGENTS.md (Sort yourself) put return at the end of the job.
@@ -102,12 +101,15 @@ H10_PartBeforeFogFinish ==
         {"Split", "Waiting"} \subseteq seen)]_<<vars, seen>>
 
 \* H2, H10: after a returned part, find the way, cut again, or proceed.
-\* H10's defaults allow finish, find the way and cut, or wait; R2 adds whole review.
+\* H10 allows finish, find the way and cut, or wait; R2 adds whole review.
+\* H16 says the Question captain "researches first, then answers the need";
+\* K30/H2 keep the escape hatch: research may resume after its parts return.
 \* H2 returns an incoherently divisible slice to its officer for a re-cut.
 \* Continuing never returns this holder to an untaken or unread ticket.
 H10_ReturnedPartContinues ==
     [][(state = "Waiting" /\ state' # state =>
-        state' \in {"Wayfinding", "Split", "InReview", "Finishing"})]_<<vars, seen>>
+        state' \in {"Wayfinding", "Split", "InReview", "Finishing"} \/
+        (state' = "Leaf" /\ kind = "answer"))]_<<vars, seen>>
 
 \* R34, DYD-1372 777d396e: "Reviewing the reviews is probably not a good idea."
 \* R34: "A verdict gets no review." A verdict holder has no review/fix/repair loop.
@@ -129,25 +131,17 @@ S7_UnstartedReturnHasNoWork ==
     kind = "unread" => seen \subseteq {"Dispatched", "Returned"}
 
 
-\* S17 cheap fixes before merge; R8 ends the blocker loop at clear.
-S17_MendAfterClear ==
-    [][(state' = "Mending" /\ state # "Mending" =>
-        state = "Clear" /\ round' = round)]_<<vars, seen>>
-
-\* R23/R24: a content fix is not a clean sync covered by an ancestor PASS.
-\* R2: unreviewed parts are reviewed with the whole. Finishing may hand back
-\* a mended part; only continuing local review requires a new numbered round.
+\* R23: "unless the PASS names the head", except R24's clean syncs.
+\* Mending changes content, so the holder that merges cannot finish on that
+\* stale PASS. R8_ClearBeforeFinish requires a cleared review before finishing.
+\* R2's officer handoff is not a merge by this holder.
 R23_ReviewMendedHead ==
-    [][(state = "Mending" /\ state' # state =>
-        /\ extra' = extra
-        /\ ((state' = "InReview" /\ round' = round + 1)
-            \/ (state' = "Finishing" /\ round' = round)))]_<<vars, seen>>
+    [][(state = "Mending" /\ merger = "holder" =>
+        state' # "Finishing") ]_<<vars, seen>>
 
-\* R8 default interpreted by the skill writer, not R8's own word "once".
-R8_MendOnlyOnce ==
-    /\ ~mended
-    /\ [][ /\ (mended => mended')
-           /\ (state' = "Mending" /\ state # "Mending" => ~mended /\ mended')
-           /\ (~mended /\ mended' => state = "Clear" /\ state' = "Mending")
-       ]_<<vars, seen>>
+\* R2: "after wiring and before its Merge hop"; R23: "the PASS names the
+\* head". Parts handed to an officer are reviewed with the whole (R2).
+R2_MergingHolderHasReview ==
+    [][(kind = "change" /\ merger = "holder" /\ state' = "Finishing" =>
+        "InReview" \in seen /\ state = "Clear") ]_<<vars, seen>>
 ====

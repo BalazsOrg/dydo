@@ -16,7 +16,8 @@
       "round": "1",
       "extra": "FALSE",
       "mended": "FALSE",
-      "kind": "\"change\""
+      "kind": "\"change\"",
+      "merger": "\"holder\""
     },
     "property": "H16_ResumeLeafAfterQuestion"
   },

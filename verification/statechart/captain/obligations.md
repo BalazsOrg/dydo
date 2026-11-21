@@ -198,8 +198,9 @@ The model has no candidate-in-PR, merge-owner, returned-SHA, revision or whole
 identity. Finishing represents both local landing and returning to an officer.
 It cannot establish that the Mending handoff was in no PR, that the officer
 merges the returned head, or that the whole's review actually judged it before
-merge. In particular, prior Repairing does not establish permanent PR ownership
-in this model. The allowed trace must not be read as permission to locally
+merge. Historically, Repairing did not establish merge ownership. In the
+current model it DOES establish persistent holder merge ownership; generation
+6c below supersedes this paragraph. The old trace was not permission to locally
 merge a changed own-PR head under a stale PASS. R23/R24 still prohibit that;
 the missing predicates prevent distinguishing it from the valid handoff.
 The phase abstraction admits both and cannot prove the conditional rule.
@@ -261,3 +262,65 @@ repeat disabled bytecode. The final TLA edits after these runs change comments
 only. No machine, skill, shared runner or shared control file was changed.
 
 - [Statechart property runner](../README.md)
+
+## Generation 6c: independent source corrections (p6)
+
+This section supersedes the historical results and weakened generation 6b
+obligations. Machine eea6fa48 introduces merger: holder merges its own change,
+officer merges the returned part, nobody merges, or unread before intake.
+The role persists throughout this ticket. Repairing therefore DOES identify
+the merging holder for the rest of the run; actual PR existence is absent.
+
+B1: R8_ClearBeforeFinish now requires Clear after review, except a Mending
+handoff with merger=officer. R8 says "the phase ends on the first round with
+no new blocker". R2 permits unreviewed parts and review with the whole.
+R19_ReviewAfterMergeRepair requires review or return immediately after repair,
+and every later finishing entry requires holder ownership and Clear: R19 says
+"under a fresh review of its hunks"; R22 says "then a fix-scoped round, then a
+re-land". R23_ReviewMendedHead forbids Mending -> Finishing for the holder that
+merges: "unless the PASS names the head" (R23); only clean syncs preserve an
+ancestor PASS (R24). Together with R8 this requires a new clear review before
+local finishing, without copying the machine's two permitted exits.
+
+B2: removed R8_MendOnlyOnce and its registration. Neither R8 nor S17 limits
+the number of content mends. The single mend is the model's own finite bound,
+checked by no property. N3: removed S17_MendAfterClear and its registration.
+S17 says "fixed in place before the parent merges if cheap", not only after a
+clear round or without changing its number. Cheapness, registration, duplicate
+checks and actual parent merge are absent; phase provenance was no independent
+S17 obligation.
+
+H10_ReturnedPartContinues now permits Waiting -> Leaf for kind=answer. H16
+says "researches first, then answers the need"; K30/H2 and aa5b445e preserve
+"keeping the escape hatch is probably right" for division of oversized work.
+These sources do not forbid a research holder resuming its own work after
+parts return. The former property was stricter than its source.
+
+Added R2_MergingHolderHasReview: R2 says "after wiring and before its Merge
+hop" and R23 says "the PASS names the head". A change holder that merges must
+enter Finishing from Clear with its own review in history. R2 still allows
+an unreviewed part to return to its officer for review with the whole.
+
+WorkPhaseBeforeDone, H3_WaitAfterSplit and K30_KindStaysKnown retain their
+source meaning: work before completion, dispatch/wait order, and one ticket's
+stable kind. Waiting -> Leaf neither erases work history nor changes kind.
+All remaining registered properties were re-bound without changes. No source
+forbids answer review, or literally prescribes merger=nobody for answers and
+verdicts. That encoding is a model choice, not an independent obligation.
+R34 already forbids verdict review and its repair loop; R2/R23 express the
+source-supported obligations behind the new merge guards.
+
+Remaining limits: no actual head, PASS receipt, clean-sync ancestry, PR,
+merge action, returned SHA, child identity, whole-review receipt, reviewer or
+author identity, blocker data, cheapness or contract-satisfaction predicate.
+Clear represents a PASS on the current candidate only at phase level, and
+Mending represents content change. R23/R24 cannot prove receipt binding to a
+hash or that an officer reviewed a returned head. R19 cannot prove hunk
+coverage or reviewer freshness. R33 identity remains unobservable. The four
+round and single mend bounds and lack of fairness still limit the universe;
+safety does not establish eventual completion. The observer remains passive
+seen only; no moves or fairness assumptions are changed.
+
+The registered Question -> Finishing control explicitly names round, extra,
+mended, kind and merger; from/to supply state. The runner supplies seen.
+Its named rejecting property remains H16_ResumeLeafAfterQuestion.
