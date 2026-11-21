@@ -39,6 +39,8 @@ A captain that dispatches another agent also gets the text for writing a brief, 
 
 A Fix is a ticket of its own. By default its holder is the thread that wrote the change, and a fresh agent when that thread is full or the blocker says the approach was wrong (S9). When the captain that waits in `Fixing` is that same thread, it holds two tickets in turn: it does the Fix as a leaf, with a leaf's arrows, and then goes on from `Fixing` on its own ticket.
 
+A review's captain may cut the review into seats, each with one kind of review (R34). A seat is on the reviewer's row. Its ticket is a part of the review, its result is its findings, and its brief adds its one kind. The review's captain gives the one verdict (S8). In the model a seat's run is a verdict's run.
+
 ## A Question
 
 A call a captain may not decide becomes a Question ticket for a fresh agent (core, "Who decides what"). The chart draws one case of it, and this is the whole of that case:

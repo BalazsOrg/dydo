@@ -2,7 +2,7 @@
 
 7 skills that carry an identity, sorted by whether they hold something or return a result. The
 builder writes every file under `officers/` and `crew/` from the claim model in `tools/SkillBuild`;
-edit there, never here.
+edit there, never here. The one exception is `officers/ticket-captain/`, which is written by hand.
 
 ## Officers
 
