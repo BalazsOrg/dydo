@@ -46,10 +46,16 @@ public partial class MusterQuestionTests
     [InlineData("A3 the context he has not seen", "StaffQuestion.Context", "everything he needs to answer and has not seen", "from the block alone")]
     [InlineData("A3 every option with its trade-off, never one option", "StaffQuestion.Options", "every option", "each with its trade-off", "at least two")]
     [InlineData("A3 a recommendation with its reason", "StaffQuestion.Recommend", "Recommend one option", "`➡️`", "with your reason")]
-    [InlineData("A4 premises verified before the question is shown, the evidence linked in the block", "StaffQuestion.Premises",
-        "Verify each premise the question rests on before you show it", "link the evidence in the block")]
+    [InlineData("A4 premises verified before the question is shown, the evidence linked in the block, a trade-off a premise too", "StaffQuestion.Premises",
+        "Verify each premise the question rests on before you show it", "link the evidence in the block", "a premise is anything the block gives as fact", "what an option can do and its trade-off included")]
+    [InlineData("A4 a question whose answer depends on an unverified fact is held back, and he is told which waits", "StaffQuestion.Held",
+        "Hold a question back while a fact its answer depends on is unverified", "send the question back to its source to verify", "tell him in one line which question waits and on what")]
+    [InlineData("A4 a fact nobody can verify reaches him as a question about acting without it", "StaffQuestion.Unknown",
+        "neither you nor the question's source can verify a fact its answer depends on", "ask him how to act without it", "say in the block what is unknown", "only ways to act without knowing it")]
+    [InlineData("A3 A4 a trade-off nobody has evidence of is said to be missing, and the recommendation rests on verified premises", "StaffQuestion.Unweighed",
+        "neither you nor the question's source has evidence of an option's trade-off", "say so beside the option", "rest your recommendation on verified premises alone")]
     [InlineData("A5 plain language, a term he has not used defined or replaced", "StaffQuestion.Plain",
-        "plain language", "define a term he has not used where it first appears, or replace it")]
+        "plain language", "define a term he has not used where it first appears, or replace it with plain words that mean the same")]
     [InlineData("A6 a route that needs no money and no permission is checked first, and the block says what it showed", "StaffQuestion.Route",
         "Before a question that asks him to spend money or grant a permission", "a route that needs neither", "say in the block what you checked and what it showed")]
     public void MusterMd_SaysWhatAQuestionHolds(string rule, string claim, params string[] words)
@@ -61,6 +67,23 @@ public partial class MusterQuestionTests
         Assert.Contains("- " + stated[0].Text + "\n", Built.Value.Files[Muster]);
         Assert.All(words, word => Assert.Contains(word, stated[0].Text));
     }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1402 A4 no line of muster.md lets a decision reach him on a premise nobody verified: the premises line has no exception, a question that depends on an unverified fact waits, and a fact nobody can verify is asked about as an unknown")]
+    public void NoDecisionReachesHim_OnAPremiseNobodyVerified()
+    {
+        var (premises, held, unknown) = (Stated("StaffQuestion.Premises"), Stated("StaffQuestion.Held"), Stated("StaffQuestion.Unknown"));
+
+        Assert.DoesNotContain("could not verify", premises);
+        Assert.DoesNotContain("say so", premises);
+        Assert.StartsWith("Hold a question back while a fact its answer depends on is unverified: verify it, or send the question back to its source to verify,", held);
+        Assert.StartsWith("Where neither you nor the question's source can verify a fact its answer depends on, ask him how to act without it:", unknown);
+        Assert.EndsWith("give as options only ways to act without knowing it.", unknown);
+    }
+
+    // The one line of muster.md that states the claim, or nothing where no line does.
+    private static string Stated(string claim) =>
+        string.Join('\n', Built.Value.Map.Where(line => line.Path == Muster && line.Claims.Contains(claim)).Select(line => line.Text));
 
     // The fenced block that opens with the question marker, each placeholder emptied: what is left is the format's markers.
     private static string[] Markers(string markdown)

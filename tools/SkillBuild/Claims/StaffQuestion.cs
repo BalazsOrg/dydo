@@ -80,7 +80,7 @@ public static class StaffQuestion
     public static readonly Claim Premises = new("Each premise a question rests on is verified before the question is shown, with the evidence linked in the block.", Asking,
     [
         At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2105,
-            "Verify each premise the question rests on before you show it, and link the evidence in the block; where you could not verify one, say so in the block.")
+            "Verify each premise the question rests on before you show it, and link the evidence in the block: a premise is anything the block gives as fact, what an option can do and its trade-off included.")
     ])
     {
         Spec = ["K11", "H24"],
@@ -91,8 +91,53 @@ public static class StaffQuestion
             Reason: "He decides on what he is told; one wrong fact makes his answer wrong, however well he reasons.")
     };
 
+    // Review r1 B1: the line this replaces let a question through on an unverified premise when the block said so. A question now waits, or asks about the unknown itself (Unknown).
+    public static readonly Claim Held = new("A question whose answer depends on an unverified fact is held back until the fact is verified, and he is told which question waits and on what.", Asking,
+    [
+        At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2106,
+            "Hold a question back while a fact its answer depends on is unverified: verify it, or send the question back to its source to verify, and tell him in one line which question waits and on what.")
+    ])
+    {
+        Spec = ["K11", "H16"],
+        Truth = new(Evidence.Run(Night + "Q1 asked him for money at 02:05 on a coordinator's word that the hosted Actions budget was \"exhausted\" (positions 42 and 44); the chief of staff read the org's billing " +
+                                 "only at 02:17, after his doubt (position 52). Asking a coordinator took under 90 seconds that night: the four requests went out by 02:03:58 and the four reports were in by 02:05:10 " +
+                                 "(positions 24 to 27, then 31, 34, 41 and 42). Linear DYD-1402, review comment 656d17fc, read 2026-11-21, on the line this one replaces, " +
+                                 "\"where you could not verify one, say so in the block\": the reviewer found that a Q2 re-rendered under it leaves \"the operator\" undefined, says so, and still offers \"allow it now\"."),
+            Layer: "T3 shows him whatever block an agent writes; nothing between a draft and his screen checks that anybody read its facts.",
+            Reason: "An approval given on a guess has to be taken back later, and by then he is asleep and the work has run on it.")
+    };
+
+    public static readonly Claim Unknown = new("A fact the answer depends on that neither the chief of staff nor the question's source can verify reaches him as a question about how to act without it.", Asking,
+    [
+        At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2107,
+            "Where neither you nor the question's source can verify a fact its answer depends on, ask him how to act without it: say in the block what is unknown, and give as options only ways to act without knowing it.")
+    ])
+    {
+        Spec = ["K11", "H17"],
+        Truth = new(Evidence.Run(Night + "the DYTEST Network coordinator leaves every change to dytest's CI to him, \"I do no merges, re-pins, CI or billing changes\" (position 41), and he answered the Windows question " +
+                                 "with a way to act that needed nothing learned first: \"I would hold the windows checks until the very end\" (position 50). BalazsOrg/dytest at 607dc306, merged 2026-11-20, " +
+                                 "`.github/workflows/verified-marks.yml`: \"DYTEST_WINDOWS_PROOF_RUNNER_LABEL must select a GitHub-hosted Windows runner\", so whether another machine can run those checks is learned only by changing that CI."),
+            Layer: "Some facts sit behind what only he may do, a payment, a login, a change to CI; no tool tells an agent it has reached such a wall, it only finds nothing.",
+            Reason: "Work stalls all night behind a gap only he can close, unless he says beforehand how to proceed in the dark.")
+    };
+
+    // Review r1 B4: "each with its trade-off" (Options) got a trade-off written where no record held one. A trade-off is a premise; a missing one is said to be missing.
+    public static readonly Claim Unweighed = new("An option's trade-off nobody has evidence of is said to be missing, and the recommendation rests on verified premises alone.", Asking,
+    [
+        At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2108,
+            "Where neither you nor the question's source has evidence of an option's trade-off, say so beside the option, and rest your recommendation on verified premises alone.")
+    ])
+    {
+        Spec = ["K11", "H24"],
+        Truth = new(Evidence.Run(Night + "the dydo coordinator's report named its options (b) and (c) in a few words each, with no trade-off for either (position 34). " +
+                                 "Linear DYD-1402, review comment 656d17fc, read 2026-11-21: an agent told to give each option its trade-off wrote one for both, and the reviewer found that " +
+                                 "\"the re-rendered Q3 invents consequences for options (b) and (c)\", and that \"they tilt the comparison toward (a)\"."),
+            Layer: "A format with a place for each option's trade-off gets that place filled; nothing checks where the words in it came from.",
+            Reason: "A made-up cost steers him as surely as a real one, and he cannot tell the two apart; a stated gap he can fill or ignore.")
+    };
+
     public static readonly Claim Plain = new("A question's block is in plain language: a term he has not used is defined where it first appears, or replaced.", Asking,
-        [At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2106, "Write the block in plain language: define a term he has not used where it first appears, or replace it.")])
+        [At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2109, "Write the block in plain language: define a term he has not used where it first appears, or replace it with plain words that mean the same.")])
     {
         Spec = ["K11", "H24"],
         Truth = new(Evidence.Run(Night + "Q2 asked him about \"Mutation's request to raise the output limit to 4 MB for the operator only\", and added that " +
@@ -103,7 +148,7 @@ public static class StaffQuestion
 
     public static readonly Claim Route = new("Before a question that asks him to spend money or grant a permission, a route that needs neither is checked, and the block says what was checked and what it showed.", Asking,
     [
-        At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2107,
+        At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2110,
             "Before a question that asks him to spend money or grant a permission, check for a route that needs neither, and say in the block what you checked and what it showed.")
     ])
     {
@@ -117,7 +162,7 @@ public static class StaffQuestion
     };
 
     public static readonly Claim Form = new("A question's block: the grilling skill's markers, with what the muster puts between them.", [Actor.ChiefOfStaff],
-        [At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterBlock, 2108, Block)])
+        [At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterBlock, 2111, Block)])
     {
         Spec = ["K11", "H24"],
         Truth = new(Evidence.Code(Grilling),
