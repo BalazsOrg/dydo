@@ -35,11 +35,11 @@ public static class StaffQuestion
         [At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2101, "Put every question you ask him at muster, whatever its source, as one block in the `grilling` skill's format, shown in the question block below.")])
     {
         Spec = ["K11", "H24"],
-        Truth = new(Evidence.Run(Night + "the chief of staff put three questions to him as plain bullet lists under \"Your calls\" (position 44). His reply: " +
+        Truth = new(Evidence.Run(Night + "the chief of staff put three questions to him as bullet lists under \"Your calls\" (position 44). His reply: " +
                                  "\"You should have structured the questions better (grilling emojis)\" (position 50). " +
                                  "`skills/productivity/overnight-mode/SKILL.md` on this branch, hand-written, has the muster \"Use `grilling` for decisions\"."),
-            Layer: "The host shows him whatever text an agent writes; no tool gives a decision its layout.",
-            Reason: "A layout he already reads in each grilling session puts the choices and the recommendation where his eye expects them.")
+            Layer: "T3 showed him the three questions in the layout the chief of staff wrote, bullet lists (position 44); this resource as built at 13da419b named no layout for a question.",
+            Reason: "A layout he knows by name shows him where each choice and the advice stand.")
     };
 
     public static readonly Claim Context = new("A question's block gives everything he needs to answer and has not seen, so he answers from the block alone.", Asking,
@@ -50,11 +50,11 @@ public static class StaffQuestion
     {
         // His ruling of 2026-11-21 is later than H7's "never relays content" and wins for a question's block; the readiness list stays links (StaffMuster.List).
         Spec = ["K11", "H24"],
-        Truth = new(Evidence.Run(Night + "the third question shown to him was \"Q3. dydo: how a need reaches you\", with one recommendation and none of what the dydo coordinator's report " +
-                                 "said about it (positions 34 and 44). His reply, kept verbatim on Linear DYD-1402: \"the worst offence you made is that you shown me a question I've never seen " +
+        Truth = new(Evidence.Run(Night + "the third question shown to him was \"Q3. dydo: how a need reaches you\", with one recommendation and neither the context nor the other two options that the dydo coordinator's report " +
+                                 "gave (positions 34 and 44). His reply, kept verbatim on Linear DYD-1402: \"the worst offence you made is that you shown me a question I've never seen " +
                                  "and only given me one recommended answer. That is antithetical to everything\" (position 50)."),
-            Layer: "The four reports sit above the questions in the same thread, each hundreds of words long; nothing carries the sentences that matter down.",
-            Reason: "A decision he must research first costs him the time the muster exists to save, or gets a guess.")
+            Layer: "The four reports stood higher in the same thread (positions 31, 34, 41 and 42), and the dydo coordinator's three options stood in one of them; the question he was shown held one of the three (position 44).",
+            Reason: "Lacking it, he must look the matter up himself or reply unsure.")
     };
 
     public static readonly Claim Options = new("A question's block gives every option with its trade-off, and never one option.", Asking,
@@ -63,18 +63,18 @@ public static class StaffQuestion
         Spec = ["K11", "L18"],
         Truth = new(Evidence.Run(Night + "the dydo coordinator's report listed three options for its question, (a), (b) and (c), and recommended (a) (position 34); " +
                                  "the chief of staff showed him only \"I recommend (a)\" (position 44). His reply: \"only given me one recommended answer\" (position 50)."),
-            Layer: "A recommendation reads as complete by itself; nothing shows him the alternatives that were dropped on the way.",
-            Reason: "Choosing is his part; with a single answer in front of him he can only approve, which is no decision at all.")
+            Layer: "T3 showed him the one recommendation the chief of staff wrote (position 44); the two options it left out stayed in the dydo coordinator's report, higher in the thread (position 34).",
+            Reason: "Choosing is his part, and a lone answer leaves him to approve or refuse it with the alternatives unseen.")
     };
 
-    public static readonly Claim Recommend = new("A question's block recommends one option, with the reason.", Asking,
-        [At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2104, "Recommend one option after `➡️`, with your reason.")])
+    public static readonly Claim Recommend = new("A question's block recommends one of the options it gives, with the reason.", Asking,
+        [At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2104, "Recommend one of those options after `➡️`, with your reason.")])
     {
         Spec = ["K11", "H24"],
-        Truth = new(Evidence.Run(Night + "\"Q3 ... I recommend (a)\" reached him with no reason he could weigh (position 44), and on Q2 he had to guess one: " +
-                                 "\"if it's a stupid thing as you implied then I defer to you\" (position 50). `" + Grilling + "` gives the marker a single placeholder, \"<your recommended answer>\"."),
-            Layer: "The grilling format has a place for the recommended answer and none for why.",
-            Reason: "He can overrule advice only when he sees what it rests on; bare advice asks for trust.")
+        Truth = new(Evidence.Run(Night + "Q3 reached him as \"I recommend (a), today's question-ticket rule\", with no ground for choosing (a) over the options he was not shown (position 44). " +
+                                 "`" + Grilling + "` gives the marker a single placeholder, \"<your recommended answer>\"."),
+            Layer: "The `grilling` skill's format shows `➡️` followed by one placeholder, \"<your recommended answer>\".",
+            Reason: "Stated grounds give him something to check and to overrule; bare advice leaves him to trust it or to guess what it implies.")
     };
 
     public static readonly Claim Premises = new("Each premise a question rests on is verified before the question is shown, with the evidence linked in the block.", Asking,
@@ -84,56 +84,51 @@ public static class StaffQuestion
     ])
     {
         Spec = ["K11", "H24"],
-        Truth = new(Evidence.Run(Night + "Q1 reached him at 02:05 resting on a coordinator's word that the hosted Actions budget was \"exhausted\" (positions 42 and 44). " +
-                                 "He doubted it, \"Did we use up github actions usage? I don't think so\" (position 50), and only then, at 02:17, did the chief of staff read the org's billing: " +
-                                 "one `gh api` call (position 52)."),
-            Layer: "A report states what its writer checked and what it assumed in the same voice, and nothing marks which is which.",
-            Reason: "He decides on what he is told; one wrong fact makes his answer wrong, however well he reasons.")
+        Truth = new(Evidence.Run(Night + "Q1 reached him at 02:05 with the budget facts as the DYTEST Network coordinator's report gave them (positions 41 and 44). " +
+                                 "He doubted them, \"Did we use up github actions usage? I don't think so\" (position 50), and the chief of staff then read the org's billing, at 02:17: " +
+                                 "\"I'll take a quick look at the GitHub billing API to see whether the Actions budget really is used up\" (positions 51 and 52)."),
+            Layer: "The Network coordinator's report put a refusal and a budget reading in one sentence, \"Hosted Windows jobs have been refused since 2026-11-20 21:06Z: org Actions budget $0 with prevent_further_usage\" " +
+                   "(position 41); the chief of staff's question repeated the sentence as fact (position 44).",
+            Reason: "A wrong fact put in front of him can turn sound reasoning into a wrong answer.")
     };
 
-    // Review r1 B1: the line this replaces let a question through on an unverified premise when the block said so. A question now waits, or asks about the unknown itself (Unknown).
-    public static readonly Claim Held = new("A question whose answer depends on an unverified fact is held back until the fact is verified, and he is told which question waits and on what.", Asking,
+    // Review r1 B1: the line this replaces let a question through on an unverified premise when the block said so. Review r2 B1: an option's trade-off is such a fact, and a missing one holds the question too.
+    public static readonly Claim Held = new(
+        "A question whose answer depends on an unverified fact, an option's trade-off included, is held back until the fact is verified, and he is told which question waits and on what.", Asking,
     [
         At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2106,
-            "Hold a question back while a fact its answer depends on is unverified: verify it, or send the question back to its source to verify, and tell him in one line which question waits and on what.")
+            "Hold a question back while a fact its answer depends on is unverified, each option's trade-off included: verify it, or send the question back to its source to verify, " +
+            "and tell him in one line which question waits and on what.")
     ])
     {
         Spec = ["K11", "H16"],
-        Truth = new(Evidence.Run(Night + "Q1 asked him for money at 02:05 on a coordinator's word that the hosted Actions budget was \"exhausted\" (positions 42 and 44); the chief of staff read the org's billing " +
-                                 "only at 02:17, after his doubt (position 52). Asking a coordinator took under 90 seconds that night: the four requests went out by 02:03:58 and the four reports were in by 02:05:10 " +
-                                 "(positions 24 to 27, then 31, 34, 41 and 42). Linear DYD-1402, review comment 656d17fc, read 2026-11-21, on the line this one replaces, " +
-                                 "\"where you could not verify one, say so in the block\": the reviewer found that a Q2 re-rendered under it leaves \"the operator\" undefined, says so, and still offers \"allow it now\"."),
-            Layer: "T3 shows him whatever block an agent writes; nothing between a draft and his screen checks that anybody read its facts.",
-            Reason: "An approval given on a guess has to be taken back later, and by then he is asleep and the work has run on it.")
+        Truth = new(Evidence.Run(Night + "Q1 asked him for money at 02:05 on the budget facts of a coordinator's report (positions 41 and 44), and the chief of staff read the org's billing at 02:17, after his doubt " +
+                                 "(positions 50 to 52). Q2 said nothing on what approving could harm (position 44), and his answer hung on that: " +
+                                 "\"If no harm can come from it then sure, why not\" (position 50). That night the four muster requests went out by 02:03:58 " +
+                                 "and the four reports were in by 02:05:10 (positions 24 to 27, then 31, 34, 41 and 42)."),
+            Layer: "T3 showed him Q1 as the chief of staff wrote it, twelve minutes before the chief of staff read the billing it rested on (positions 44 and 52).",
+            Reason: "An approval given on a guess may prove wrong after he is asleep, when work has already run on it.")
     };
 
-    public static readonly Claim Unknown = new("A fact the answer depends on that neither the chief of staff nor the question's source can verify reaches him as a question about how to act without it.", Asking,
+    // Review r2 B1: the options of the question asked in the held one's place each carry a trade-off verified without the unknown, so none of them is "do it anyway, cost unknown".
+    public static readonly Claim Unknown = new(
+        "A fact the answer depends on that no record and no check open to the chief of staff or the question's source verifies keeps its question held; " +
+        "where at least two ways to act have trade-offs verified without the fact, he is asked how to act without it, with only those ways as options.", Asking,
     [
         At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2107,
-            "Where neither you nor the question's source can verify a fact its answer depends on, ask him how to act without it: say in the block what is unknown, and give as options only ways to act without knowing it.")
+            "Where no record and no check open to you or to the question's source verifies a fact its answer depends on, the question stays held; " +
+            "where at least two ways to act have trade-offs verified without that fact, ask him a question of your own, how to act without it: " +
+            "say in the block what is unknown, and give only those ways as options.")
     ])
     {
         Spec = ["K11", "H17"],
-        Truth = new(Evidence.Run(Night + "the DYTEST Network coordinator leaves every change to dytest's CI to him, \"I do no merges, re-pins, CI or billing changes\" (position 41), and he answered the Windows question " +
-                                 "with a way to act that needed nothing learned first: \"I would hold the windows checks until the very end\" (position 50). BalazsOrg/dytest at 607dc306, merged 2026-11-20, " +
-                                 "`.github/workflows/verified-marks.yml`: \"DYTEST_WINDOWS_PROOF_RUNNER_LABEL must select a GitHub-hosted Windows runner\", so whether another machine can run those checks is learned only by changing that CI."),
-            Layer: "Some facts sit behind what only he may do, a payment, a login, a change to CI; no tool tells an agent it has reached such a wall, it only finds nothing.",
-            Reason: "Work stalls all night behind a gap only he can close, unless he says beforehand how to proceed in the dark.")
-    };
-
-    // Review r1 B4: "each with its trade-off" (Options) got a trade-off written where no record held one. A trade-off is a premise; a missing one is said to be missing.
-    public static readonly Claim Unweighed = new("An option's trade-off nobody has evidence of is said to be missing, and the recommendation rests on verified premises alone.", Asking,
-    [
-        At(Actor.ChiefOfStaff, ChiefOfStaffSlot.MusterQuestions, 2108,
-            "Where neither you nor the question's source has evidence of an option's trade-off, say so beside the option, and rest your recommendation on verified premises alone.")
-    ])
-    {
-        Spec = ["K11", "H24"],
-        Truth = new(Evidence.Run(Night + "the dydo coordinator's report named its options (b) and (c) in a few words each, with no trade-off for either (position 34). " +
-                                 "Linear DYD-1402, review comment 656d17fc, read 2026-11-21: an agent told to give each option its trade-off wrote one for both, and the reviewer found that " +
-                                 "\"the re-rendered Q3 invents consequences for options (b) and (c)\", and that \"they tilt the comparison toward (a)\"."),
-            Layer: "A format with a place for each option's trade-off gets that place filled; nothing checks where the words in it came from.",
-            Reason: "A made-up cost steers him as surely as a real one, and he cannot tell the two apart; a stated gap he can fill or ignore.")
+        Truth = new(Evidence.Run(Night + "he named a route for the Windows checks, Blacksmith, \"if we want to run windows we should run it there\", and a way to act that waited on nothing more, " +
+                                 "\"I would hold the windows checks until the very end\" (position 50). BalazsOrg/dytest at 607dc306, merged 2026-11-20: the machine those checks run on is a repository variable, and " +
+                                 "\"The repository owner sets the repository variable\" (`dydo/reference/engine/gate.md`). The DYTEST Network coordinator does \"no merges, re-pins, CI or billing changes\" (position 41). " +
+                                 "So a trial of those checks on Blacksmith was open to neither the coordinator nor the chief of staff."),
+            Layer: "The coordinator's report listed what it may not exercise, \"Unsupported gaps (by design, Balazs only): billing; merges; re-pins (the wizard); CI activation\" (position 41); " +
+                   "a fact that shows through one of those alone is out of an agent's reach until he acts.",
+            Reason: "At muster he can still say how work goes on in the dark; later the same gap may meet him asleep.")
     };
 
     public static readonly Claim Plain = new("A question's block is in plain language: a term he has not used is defined where it first appears, or replaced.", Asking,
@@ -142,8 +137,8 @@ public static class StaffQuestion
         Spec = ["K11", "H24"],
         Truth = new(Evidence.Run(Night + "Q2 asked him about \"Mutation's request to raise the output limit to 4 MB for the operator only\", and added that " +
                                  "\"the admiral hasn't shown the run would fit\" (position 44). His reply: \"I don't understand the question. Mutation for what?\" (position 50)."),
-            Layer: "A coordinator writes in the words of its own Project, and nothing translates them on the way to him.",
-            Reason: "Each word he must ask about adds a round of asking and answering before he can decide.")
+            Layer: "The Mutation coordinator's report used its Project's words, \"operator-only4MB proposal\" and \"forward fit\" (position 42); the chief of staff's question carried \"Mutation's request\", \"the operator\" and \"fit\" to him unexplained (position 44).",
+            Reason: "Each word he has to ask about costs a round of asking and answering.")
     };
 
     public static readonly Claim Route = new("Before a question that asks him to spend money or grant a permission, a route that needs neither is checked, and the block says what was checked and what it showed.", Asking,
@@ -157,8 +152,8 @@ public static class StaffQuestion
                                  "\"we still have blacksmith wired and at least 2 dollars of usage before our self-imposed cap so if we want to run windows we should run it there\" (position 50). " +
                                  "GitHub, read 2026-11-21 with `gh variable list -R BalazsOrg/dytest`: `DYTEST_CI_PROVIDER` is `blacksmith`, last set 2026-11-10, and " +
                                  "`DYTEST_WINDOWS_PROOF_RUNNER_LABEL`, the runner that `.github/workflows/verified-marks.yml` runs on, is `windows-latest`, last set 2026-11-15."),
-            Layer: "A blocked agent reports the obstacle it met; the way round lies in a file or a setting it had no reason to open.",
-            Reason: "His wallet and his consent are the costliest things to request, and a free way round makes the request unnecessary.")
+            Layer: "The Network coordinator's report offered raising the budget or waiting for the reset (position 41); neither it nor the question named Blacksmith (positions 41 and 44), and he raised it himself (position 50).",
+            Reason: "Where a way round exists, finding it first spares him a request for cash or consent.")
     };
 
     public static readonly Claim Form = new("A question's block: the grilling skill's markers, with what the muster puts between them.", [Actor.ChiefOfStaff],
@@ -166,8 +161,8 @@ public static class StaffQuestion
     {
         Spec = ["K11", "H24"],
         Truth = new(Evidence.Code(Grilling),
-            Layer: "The `grilling` skill holds the format for a grilling session; a chief of staff holding a muster has not loaded it.",
-            Reason: "Seeing each emoji and rule in place leaves no room to approximate them, as a description in prose would.")
+            Layer: "The `grilling` skill gives the format for a grilling session, with placeholders for a question's title, its body and the recommended answer; what a muster question puts in each stands here.",
+            Reason: "Shown whole, each emoji and rule can be copied in place, where a description in prose would have to be rebuilt.")
     };
 
     private static Line At(Actor reader, Enum slot, int order, string text) => new(Skill.ChiefOfStaff, reader, text, new(slot, order));

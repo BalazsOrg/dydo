@@ -45,15 +45,16 @@ public partial class MusterQuestionTests
         "every question", "at muster", "whatever its source", "one block", "`grilling` skill's format")]
     [InlineData("A3 the context he has not seen", "StaffQuestion.Context", "everything he needs to answer and has not seen", "from the block alone")]
     [InlineData("A3 every option with its trade-off, never one option", "StaffQuestion.Options", "every option", "each with its trade-off", "at least two")]
-    [InlineData("A3 a recommendation with its reason", "StaffQuestion.Recommend", "Recommend one option", "`➡️`", "with your reason")]
+    [InlineData("A3 a recommendation of one of the options given, with its reason", "StaffQuestion.Recommend", "Recommend one of those options", "`➡️`", "with your reason")]
     [InlineData("A4 premises verified before the question is shown, the evidence linked in the block, a trade-off a premise too", "StaffQuestion.Premises",
         "Verify each premise the question rests on before you show it", "link the evidence in the block", "a premise is anything the block gives as fact", "what an option can do and its trade-off included")]
-    [InlineData("A4 a question whose answer depends on an unverified fact is held back, and he is told which waits", "StaffQuestion.Held",
-        "Hold a question back while a fact its answer depends on is unverified", "send the question back to its source to verify", "tell him in one line which question waits and on what")]
-    [InlineData("A4 a fact nobody can verify reaches him as a question about acting without it", "StaffQuestion.Unknown",
-        "neither you nor the question's source can verify a fact its answer depends on", "ask him how to act without it", "say in the block what is unknown", "only ways to act without knowing it")]
-    [InlineData("A3 A4 a trade-off nobody has evidence of is said to be missing, and the recommendation rests on verified premises", "StaffQuestion.Unweighed",
-        "neither you nor the question's source has evidence of an option's trade-off", "say so beside the option", "rest your recommendation on verified premises alone")]
+    [InlineData("A3 A4 a question whose answer depends on an unverified fact, an option's trade-off included, is held back, and he is told which waits", "StaffQuestion.Held",
+        "Hold a question back while a fact its answer depends on is unverified, each option's trade-off included", "send the question back to its source to verify",
+        "tell him in one line which question waits and on what")]
+    [InlineData("A3 A4 a fact nobody can verify keeps its question held, and he is asked how to act without it only where two ways to act have verified trade-offs", "StaffQuestion.Unknown",
+        "no record and no check open to you or to the question's source verifies a fact its answer depends on", "the question stays held",
+        "where at least two ways to act have trade-offs verified without that fact", "ask him a question of your own, how to act without it", "say in the block what is unknown",
+        "give only those ways as options")]
     [InlineData("A5 plain language, a term he has not used defined or replaced", "StaffQuestion.Plain",
         "plain language", "define a term he has not used where it first appears, or replace it with plain words that mean the same")]
     [InlineData("A6 a route that needs no money and no permission is checked first, and the block says what it showed", "StaffQuestion.Route",
@@ -76,9 +77,26 @@ public partial class MusterQuestionTests
 
         Assert.DoesNotContain("could not verify", premises);
         Assert.DoesNotContain("say so", premises);
-        Assert.StartsWith("Hold a question back while a fact its answer depends on is unverified: verify it, or send the question back to its source to verify,", held);
-        Assert.StartsWith("Where neither you nor the question's source can verify a fact its answer depends on, ask him how to act without it:", unknown);
-        Assert.EndsWith("give as options only ways to act without knowing it.", unknown);
+        Assert.StartsWith("Hold a question back while a fact its answer depends on is unverified, each option's trade-off included: verify it, or send the question back to its source to verify,", held);
+        Assert.StartsWith("Where no record and no check open to you or to the question's source verifies a fact its answer depends on, the question stays held; " +
+                          "where at least two ways to act have trade-offs verified without that fact, ask him a question of your own, how to act without it:", unknown);
+        Assert.EndsWith("give only those ways as options.", unknown);
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1402 A3 no line of muster.md lets an option reach him without its trade-off, or a recommendation land on an option whose cost nobody verified: a trade-off is named only where it is required, a missing one holds the question, and the question asked in a held one's place offers only options whose trade-offs are verified")]
+    public void NoOptionReachesHim_WithoutItsVerifiedTradeOff()
+    {
+        var naming = Built.Value.Map.Where(line => line.Path == Muster && line.Text.Contains("trade-off", StringComparison.Ordinal)).SelectMany(line => line.Claims).Order().ToArray();
+
+        Assert.Equal(["StaffQuestion.Form", "StaffQuestion.Held", "StaffQuestion.Options", "StaffQuestion.Premises", "StaffQuestion.Unknown"], naming);
+        Assert.StartsWith("Give every option, each with its trade-off:", Stated("StaffQuestion.Options"));
+        Assert.EndsWith("what an option can do and its trade-off included.", Stated("StaffQuestion.Premises"));
+        Assert.StartsWith("Hold a question back while a fact its answer depends on is unverified, each option's trade-off included:", Stated("StaffQuestion.Held"));
+        Assert.Contains("where at least two ways to act have trade-offs verified without that fact, ask him a question of your own,", Stated("StaffQuestion.Unknown"));
+        Assert.EndsWith("give only those ways as options.", Stated("StaffQuestion.Unknown"));
+        Assert.StartsWith("Recommend one of those options", Stated("StaffQuestion.Recommend"));
+        Assert.DoesNotContain("say so", Built.Value.Files[Muster]);
     }
 
     // The one line of muster.md that states the claim, or nothing where no line does.

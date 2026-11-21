@@ -14,9 +14,9 @@ Spec: K11, H7, K22
 
 Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: the chief of staff read `overnight: off` with `dydo mode show` at 02:03 UTC (position 6), before it sent a request, and its report to him at 02:05 says the mode is still off (position 44). `skills/productivity/overnight-mode/SKILL.md` on this branch, hand-written: "Hold the muster by the chief of staff's checklist, `chief-of-staff/resources/muster.md`."
 
-Layer: The guard answers the command that switches the mode with a reminder and passes its retry; it never checks that a muster was held.
+Layer: `Commands/GuardCommand.ModeSet.cs`: the guard answers the command that switches the mode with a reminder and passes the same command's retry; that file does not name the muster.
 
-Reason: Once he is asleep nobody can unblock a coordinator, so whatever wants his answer is settled while he can still give one.
+Reason: Whatever wants his answer is settled while he is awake to give it, ahead of the hours when a question finds him asleep.
 
 **chief-of-staff** (Muster; read by ChiefOfStaff):
 
@@ -30,9 +30,9 @@ Spec: K11, H7, K22
 
 Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: four `t3_thread_send` calls, one to each coordinator's thread, came back `delivery: started` between 02:03:44 and 02:03:58 UTC (positions 24 to 27), and the four reports arrived in the chief of staff's thread between 02:04:10 and 02:05:10 (positions 31, 34, 41 and 42).
 
-Layer: T3 delivers a message to a thread and shapes no answer; what comes back follows what was asked.
+Layer: `t3_thread_send` delivered each request as it was written (positions 24 to 27), and each report that came back answered the request's parts (positions 31, 34, 41 and 42).
 
-Reason: Four answers in one shape can be laid side by side, and a part nobody asked for is a part nobody sends.
+Reason: Answers in one shape can be laid side by side, and a part asked of all four is missed at once when one leaves it out.
 
 **chief-of-staff** (MusterChecklist; read by ChiefOfStaff):
 
@@ -44,11 +44,11 @@ Reason: Four answers in one shape can be laid side by side, and a part nobody as
 
 Spec: K11, K22
 
-Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: the DYTEST Network coordinator named its blocker, a fix and the check that would show it fixed, "Verify: one windows-proof push succeeds" (position 41). The chief of staff passed the fix on to him unchecked at 02:05 (position 44), and read the org's billing only at 02:17, after he doubted it: one `gh api` call, while he was still there (position 52).
+Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: the DYTEST Network coordinator named its blocker, a fix and the check that would show it fixed, "Verify: one windows-proof push succeeds" (position 41). The chief of staff passed the fix on to him at 02:05 (position 44), and read the org's billing at 02:17, after he doubted it: one command, three `gh api` calls (positions 50 to 52).
 
-Layer: A coordinator's report names a fix; nothing between its thread and his reply tests one.
+Layer: The coordinator's report named a fix and its check (position 41); the fix reached him twelve minutes before the billing was read (positions 44 and 52).
 
-Reason: A repair that only looks done fails in the small hours, when the one person who could mend it is asleep.
+Reason: A repair proved in front of him can still be corrected by him; one that fails later meets him asleep.
 
 **chief-of-staff** (MusterChecklist; read by ChiefOfStaff):
 
@@ -60,11 +60,11 @@ Reason: A repair that only looks done fails in the small hours, when the one per
 
 Spec: K11, K22
 
-Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: the four sends to the coordinators came back `delivery: started` (positions 24 to 27), and the chief of staff's Linear write returned its update's id (position 55). The LC coordinator's report named a write that only its exercise showed missing: "My `save_project` edit was refused by the classifier" (position 31). The dydo coordinator gave its merges by their last real use, "last exercised with PR 376 → 6dc834f0 on 2026-11-20" (position 34), and no merge was run for the muster. GitHub, read 2026-11-21 with `gh api repos/BalazsOrg/dydo/branches/feature%2Fdydo-4-0-0`: `protected: false`.
+Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: the four sends to the coordinators came back `delivery: started` (positions 24 to 27), and the chief of staff's Linear write returned its update's id (position 55). The LC coordinator's report named a write its exercise had shown refused: "My `save_project` edit was refused by the classifier" (position 31). The dydo coordinator gave its merges by their last real use, "last exercised with PR 376 → 6dc834f0 on 2026-11-20" (position 34), and no merge was run for the muster. GitHub, read 2026-11-21 with `gh api repos/BalazsOrg/dydo/branches/feature%2Fdydo-4-0-0`: `protected: false`.
 
-Layer: GitHub takes a push to an unprotected branch from any writer, and a host classifier can refuse a call the service would accept; neither says what he has granted.
+Layer: GitHub reports `feature/dydo-4-0-0` as unprotected, which says nothing of what he has granted; and the host's classifier refused the LC coordinator a Linear write, which its report told (position 31).
 
-Reason: A grant found missing at three in the morning stops a lane until he wakes; found at muster, he gives it in a minute.
+Reason: A grant found missing at muster is one he can give on the spot; found missing in the small hours, it waits for him.
 
 **chief-of-staff** (MusterChecklist; read by ChiefOfStaff):
 
@@ -78,9 +78,9 @@ Spec: K11, K22
 
 Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: the DYTEST Network coordinator listed what it could not exercise, "Unsupported gaps (by design, Balazs only): billing; merges; re-pins (the wizard); CI activation" (position 41). He disposed of the work that hung on the first, "I would hold the windows checks until the very end" (position 50), and that night a DYTEST PR counted as ready once reviewed and proven on Linux (position 55).
 
-Layer: Nothing lists what was skipped: a check that never ran leaves no trace on a board or in a thread.
+Layer: What the Network coordinator could not exercise was known that night because its report wrote it out (position 41).
 
-Reason: Work that leans on something unproven is the first to stall overnight, so he says beforehand whether it runs, waits or is dropped.
+Reason: He says beforehand whether work leaning on something unproven runs, waits or is dropped, instead of finding it stalled in the morning.
 
 **chief-of-staff** (MusterChecklist; read by ChiefOfStaff):
 
@@ -94,9 +94,9 @@ Spec: K11
 
 Evidence (run): `skills/roles/officers/coordinator/SKILL.md`, the coordinator's skill on this branch, not yet truth-checked: "Read the Project from Linear, its plan included" and "when he wants a stop line, it is in the Project plan, and you stop there". `skills/productivity/overnight-mode/SKILL.md` on this branch, hand-written: "A stop line, when the user wants one, goes in the Project plan its coordinator already reads." The muster of 2026-11-21 ran the installed skills, which put each stop line in a Project update instead (T3 thread d4c81ce0, position 55).
 
-Layer: Linear keeps a plan and a Project update side by side and marks neither as the one that binds tonight.
+Layer: That night each stop line went into a Project update (position 55), a second place beside the Project plan that the coordinator's skill has it read.
 
-Reason: A limit written where its reader already looks is met on every tick, with no second document to find, trust and expire.
+Reason: A limit written where its reader already looks needs no second document to be found, trusted and expired.
 
 **chief-of-staff** (MusterChecklist; read by ChiefOfStaff):
 
@@ -108,9 +108,9 @@ Reason: A limit written where its reader already looks is met on every tick, wit
 
 Spec: K11
 
-Evidence: open, so no skill states this claim yet. On 2026-11-21 he gave one himself at muster, "one night order: we're short on openai usage so when using models from that family use 6.1 sol on low. This order is only for the night" (T3 thread d4c81ce0, position 50), and the chief of staff posted night orders on each Project as a Project update (positions 55 and 56), which spec H16 now cites as "night orders 9099daa1". The skills on this branch have none. No muster has been held without them, and whether one can be is his call.
+Evidence: open, so no skill states this claim yet. On 2026-11-21 he gave one himself at muster, "one night order: we're short on openai usage so when using models from that family use 6.1 sol on low. This order is only for the night" (T3 thread d4c81ce0, position 50), and the chief of staff posted night orders on each Project as a Project update (positions 55 and 56), which spec H16 now cites as "night orders 9099daa1". The officer skills on this branch, `skills/roles/officers`, name none. The one muster on record gave them, and whether a muster goes without is his call.
 
-Layer: Linear takes a Project update from any agent; nothing marks one as an instruction or ends it in the morning.
+Layer: The night orders of 2026-11-21 were Project updates the chief of staff posted, each with a line of its own that it expires at the morning brief (positions 55 and 56).
 
 Reason: Two places for one evening's instructions let a coordinator follow the stale one.
 
@@ -126,7 +126,7 @@ Spec: K11, K22
 
 Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: each of the four coordinators sent back that its work was runnable, between 02:19:39 and 02:20:06 UTC (positions 64, 68, 71 and 73).
 
-Layer: A board shows a ticket as ready; whether its holder can begin tonight, only that holder knows.
+Layer: That its work could begin was each coordinator's own statement, given after the night's orders reached it (positions 64, 68, 71 and 73).
 
 Reason: A lane that cannot begin is found while he is there, not at the first watch tick half an hour later.
 
@@ -142,7 +142,7 @@ Spec: K11, H7, H6
 
 Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: each coordinator's report arrived whole in the chief of staff's own thread, where he was reading (positions 31, 34, 41 and 42). The chief of staff then retold all four (position 44), and the retelling lost part of one: the dydo coordinator's question listed options (a), (b) and (c), and he was shown (a) alone.
 
-Layer: A message sent to a thread stays there, whole; a retold one is a second copy that nothing keeps equal to the first.
+Layer: Each report stayed whole in the thread it was sent to (positions 31, 34, 41 and 42); the chief of staff's retelling was a second copy, and it differed from the first (position 44).
 
 Reason: He corrects the original, where its author will see the correction, instead of a summary that may have dropped something.
 
@@ -156,9 +156,9 @@ Reason: He corrects the original, where its author will see the correction, inst
 
 Spec: K11, K22, H5
 
-Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: the request sent that night asked for Intent, Work, Questions, Blockers and Permissions (positions 24 to 27), and each of the four reports answered every part (positions 31, 34, 41 and 42). This one keeps four of those parts and has no Questions part; nobody has sent it yet. `skills/productivity/in-your-own-words/SKILL.md` loads on "the user's muster request relayed by the chief of staff".
+Evidence (run): T3 thread d4c81ce0-f13a-4cea-80bd-6911b05d288f, the muster of 2026-11-21, read 2026-11-21: the request sent that night asked for Intent, Work, Questions, Blockers and Permissions (positions 24 to 27), and each of the four reports answered every part (positions 31, 34, 41 and 42). This one keeps four of those parts and has no Questions part; the one muster on record sent the older request. `skills/productivity/in-your-own-words/SKILL.md` loads on "the user's muster request relayed by the chief of staff".
 
-Layer: No tool gives a report its parts: each Project would otherwise describe itself in headings of its own.
+Layer: The four reports took their parts from the request that asked for them (positions 24 to 27, then 31, 34, 41 and 42).
 
 Reason: The same four headings from every Project let him compare them, and a missing one shows at a glance.
 
@@ -180,7 +180,7 @@ Spec: K11, H7
 
 Evidence (tool): t3_thread_read, called 2026-11-21 on thread d4c81ce0-f13a-4cea-80bd-6911b05d288f: the result's `thread.link` is a Markdown link to the thread, `[Overnight Muster and Admiral Readiness](t3-thread://v2/f7f7b47f-c6f2-4990-a113-851014c04ff0/d4c81ce0-f13a-4cea-80bd-6911b05d288f)`.
 
-Layer: T3 gives every thread a link and lists over two thousand of them; which are tonight's coordinators, no listing says.
+Layer: `t3_thread_read` returns a thread's link; which threads were that night's coordinators came from him, "There are 4 admirals working" (position 0), and from the chief of staff's search (position 19).
 
 Reason: One row for each shows at a glance who is not prepared, with the click that takes him there.
 

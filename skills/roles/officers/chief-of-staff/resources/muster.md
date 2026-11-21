@@ -17,11 +17,10 @@ Hold this checklist with him present, after `overnight-mode`'s transition prefli
 - Put every question you ask him at muster, whatever its source, as one block in the `grilling` skill's format, shown in the question block below.
 - Give in the block everything he needs to answer and has not seen, even what a coordinator's report already says: he answers from the block alone, without opening a thread.
 - Give every option, each with its trade-off: at least two, and all that the question's source named.
-- Recommend one option after `➡️`, with your reason.
+- Recommend one of those options after `➡️`, with your reason.
 - Verify each premise the question rests on before you show it, and link the evidence in the block: a premise is anything the block gives as fact, what an option can do and its trade-off included.
-- Hold a question back while a fact its answer depends on is unverified: verify it, or send the question back to its source to verify, and tell him in one line which question waits and on what.
-- Where neither you nor the question's source can verify a fact its answer depends on, ask him how to act without it: say in the block what is unknown, and give as options only ways to act without knowing it.
-- Where neither you nor the question's source has evidence of an option's trade-off, say so beside the option, and rest your recommendation on verified premises alone.
+- Hold a question back while a fact its answer depends on is unverified, each option's trade-off included: verify it, or send the question back to its source to verify, and tell him in one line which question waits and on what.
+- Where no record and no check open to you or to the question's source verifies a fact its answer depends on, the question stays held; where at least two ways to act have trade-offs verified without that fact, ask him a question of your own, how to act without it: say in the block what is unknown, and give only those ways as options.
 - Write the block in plain language: define a term he has not used where it first appears, or replace it with plain words that mean the same.
 - Before a question that asks him to spend money or grant a permission, check for a route that needs neither, and say in the block what you checked and what it showed.
 
