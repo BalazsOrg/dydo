@@ -105,8 +105,26 @@ public class TicketCaptainGap7Tests
         Assert.Null(back.Effect);
         Assert.Equal("claim:CaptainResearch.Parts", back.Claim);
         Assert.Equal(["Finishing", "Returned"], research);
-        Assert.DoesNotContain(Moves.Value, move => move.From == "Waiting" && move.Guard == OnAnswer && move.To == "Finishing");
+        // Review r4: read by what a guard lets through, never by its text. An answer is merged by nobody.
+        Assert.DoesNotContain(Moves.Value, move => move.From == "Waiting" && move.To == "Finishing" && Open(move.Guard, "answer", "nobody"));
+        Assert.Equal(["claim:CaptainReviewSeats.Verdict"],
+            Moves.Value.Where(move => move.From == "Waiting" && move.To == "Finishing" && Open(move.Guard, "verdict", "nobody")).Select(move => move.Claim));
+        Assert.Contains(Moves.Value, move => move.From == "Waiting" && move.To == "Finishing" && Open(move.Guard, "change", "officer"));
     }
+
+    /// <summary>
+    /// Whether a guard lets a holder with this result and this merger through. It reads the conjuncts the
+    /// captain machine's guards are made of, and fails on one it does not know, so a new shape of guard
+    /// cannot pass unread.
+    /// </summary>
+    private static bool Open(string? guard, string kind, string merger) =>
+        guard is null || guard.Split(" /\\ ").All(part => part switch
+        {
+            _ when part.StartsWith("kind = ", StringComparison.Ordinal) => part == $"kind = \"{kind}\"",
+            _ when part.StartsWith("merger = ", StringComparison.Ordinal) => part == $"merger = \"{merger}\"",
+            _ when part.StartsWith("merger # ", StringComparison.Ordinal) => part != $"merger # \"{merger}\"",
+            _ => throw new InvalidOperationException($"a guard this test cannot read: {part}")
+        });
 
     [Fact]
     [Trait("Job", "trap: DYD-1372 g7 J5 R23 dydo merge refuses a PR whose hosted head is not the reviewed SHA (Services/Merge/PullRequestMerge.cs), so the review brief's PR line has the candidate pushed as that PR's head, with the command that pushes and the check that proves it, and the folder says so once")]

@@ -102,7 +102,7 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "Linear nests tickets for any reason; whether a parent integrates anything is known to its captain.",
             Reason: "A grouping adds no behaviour for a reviewer to find wrong."),
-        Transition = new(CaptainState.Waiting, CaptainState.Finishing, "the children are back and the ticket only groups parts: no review of its own") { Guard = CaptainMachines.NoMerge }
+        Transition = new(CaptainState.Waiting, CaptainState.Finishing, "the children are back and the ticket only groups parts: no review of its own") { Guard = CaptainMachines.GroupsChange }
     };
 
     public static readonly Claim Whole = new("Once its parts are wired, a parent is reviewed once: each part, the parts together, their harmony.", Me,

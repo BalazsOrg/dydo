@@ -153,8 +153,8 @@ prototype's claims (DYD-1295 519126ab). `round` is bounded at 4 so TLC ends; the
 - A captain that cannot see its route finds the way before it cuts (H10; `CaptainWay.Fog`): a state left only by cutting the parts in sight, re-entered from Waiting.
 - A leaf goes back as `too big, re-cut` (H2), or as a Question its research left neither settled nor the user's (`CaptainResearch.Question`); the user's call goes on as a HITL Question, the research ticket finishing (`Handed`; H23). After a re-cut the officer rewrites the contract and cuts the rest (`CaptainTrouble.ChildReCut`).
 
-The chart draws 35 of 42 arrows: six pairs share one; the Question's self-loop is undrawn. TLC, fix r3: `NoDeadlock` holds. Its properties are hand-written under `verification/statechart/` from his rulings, never this model (K3).
+The chart draws 35 of 42 arrows: six pairs share one; the Question's self-loop is undrawn. TLC, fix r4: `NoDeadlock` holds. Its properties are hand-written under `verification/statechart/` from his rulings, never this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |
 |---|---|---|---|---|---|
-| A captain and its ticket | `captain` | 16 | 42 | 0 | 249 states, 405 steps |
+| A captain and its ticket | `captain` | 16 | 42 | 0 | 249 states, 403 steps |

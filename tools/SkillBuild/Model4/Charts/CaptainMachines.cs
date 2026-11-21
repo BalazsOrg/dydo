@@ -97,6 +97,12 @@ public static class CaptainMachines
     /// <summary>The guard of a move closed to a merging holder: finishing with no review of its own.</summary>
     public const string NoMerge = "merger # \"holder\"";
 
+    /// <summary>
+    /// The guard of the finish of a change that only groups its parts: a verdict's holder forms its verdict
+    /// first and an answer's holder writes its answer first, each by a move of its own (review r4).
+    /// </summary>
+    public const string GroupsChange = Change + " /\\ " + NoMerge;
+
     /// <summary>The guard of the hand-back of a mended head with no round of its own: the holder's officer merges it.</summary>
     public const string OfficerMerges = "merger = \"officer\"";
 

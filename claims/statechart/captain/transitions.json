@@ -483,7 +483,7 @@
       "spec": [
         "R6"
       ],
-      "guard": "merger # \"holder\"",
+      "guard": "kind = \"change\" /\\ merger # \"holder\"",
       "effect": null,
       "fair": false,
       "skills": [

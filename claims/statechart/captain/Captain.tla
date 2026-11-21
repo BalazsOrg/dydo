@@ -146,7 +146,7 @@ CaptainReview_Fix ==
 \* claim:CaptainReview.Groups
 CaptainReview_Groups ==
     /\ state = "Waiting"
-    /\ merger # "holder"
+    /\ kind = "change" /\ merger # "holder"
     /\ state' = "Finishing"
     /\ UNCHANGED <<round, extra, mended, kind, merger>>
 
