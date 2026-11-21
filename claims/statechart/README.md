@@ -153,14 +153,15 @@ rounds and is bounded at 4 only so TLC ends; the skill sets no cap.
   cannot be finished (R19, R21).
 - A splitting captain's Question is one more child it waits on, so only a leaf has a Question state.
   A leaf's Question is left only to resume the leaf, once its answer is on the ticket. One that comes
-  back unsettled goes to the officer's thread and stays open: its holder goes on waiting, a step
-  that leaves the state unchanged (H16, S10).
+  back unsettled goes to the officer and stays open: its holder goes on waiting. That move is a
+  self-loop, Question → Question (`CaptainTrouble.Up`), which the chart does not draw; it is in
+  `transitions.json` and the module (H16, S10).
 - A filler ticket that fails its captain's check goes back from Taken, before it is set In Progress:
   unstarted and unassigned, the only state in which the survey offers it again (H11).
 
 The chart draws 26 of the 28 arrows: a repair's two ways back to the officer share one, and the
-unsettled Question's step stays in its state. TLC line from the run on the claim model of DYD-1372
-fix r2b; it holds `NoDeadlock`. Its properties are written by
+unsettled Question's self-loop is not drawn. TLC line from the run on the claim model of DYD-1372
+fix r3b; it holds `NoDeadlock`. Its properties are written by
 hand under `verification/statechart/`, from his rulings and never from this model (K3).
 
 | Machine | Folder | States | Transitions | GAPs | TLC |

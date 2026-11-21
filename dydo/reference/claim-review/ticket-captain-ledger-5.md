@@ -56,7 +56,7 @@ A clause of it, dropped, it fails Need: Its reader is the coordinator: what an o
 
 > when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans
 
-`claim:Review.NeedsBalazs`, kept in `claim:CaptainReview.NeedsUser`, `claim:CaptainTrouble.Known`
+`claim:Review.NeedsBalazs`, kept in `claim:CaptainReview.NeedsUser`, `claim:CaptainTrouble.Known`, `claim:CaptainTrouble.Refused`
 
 > Pass a blocker that needs Balazs up the chain at once.
 

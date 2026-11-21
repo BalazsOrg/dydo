@@ -132,4 +132,4 @@ Reason: Options left unranked let whoever decides weigh them without the researc
 
 **ticket-captain** (ResearchQuestion; read by TicketCaptain):
 
-> Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, and return it to your officer as unsettled.
+> Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, and return it to your officer as unsettled, the Question still open.

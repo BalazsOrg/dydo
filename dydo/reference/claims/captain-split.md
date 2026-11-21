@@ -40,9 +40,9 @@ Reason: A helper's edits are part of the holder's change, so they land under the
 
 > You commit what a helper changes.
 
-## OffRecord
+## Uses
 
-`claim:CaptainSplit.OffRecord`: Work gets a ticket only when someone other than its asker uses what it leaves; a helper, a lookup, a command and one seat among several stay off the record.
+`claim:CaptainSplit.Uses`: Work gets a ticket only when someone other than its asker uses what it leaves.
 
 Spec: S1
 
@@ -52,9 +52,25 @@ Layer: Linear takes any ticket anyone files; only the cutter knows who will use 
 
 Reason: A record nobody else reads is bookkeeping that slows the work it describes.
 
-**ticket-captain** (Split; read by TicketCaptain, on claim:CaptainSplit.Cut):
+**ticket-captain** (Split; read by TicketCaptain):
 
-> Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
+> Work gets a ticket only when someone other than its asker uses what it leaves.
+
+## OffRecord
+
+`claim:CaptainSplit.OffRecord`: A helper, a lookup, a command, a file and one seat among several are always off the record.
+
+Spec: S1
+
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. None of the twenty is a helper's errand, a lookup, a command, a file or a single seat of a round.
+
+Layer: Linear takes a ticket for a lookup or a file as readily as for a feature, and nothing stops a captain from filing one.
+
+Reason: Each of the five is a piece of some ticket's work, and a card for every piece would bury the board.
+
+**ticket-captain** (Split; read by TicketCaptain):
+
+> A helper, a lookup, a command, a file and one seat among several never get a ticket.
 
 ## OneTicket
 
@@ -68,9 +84,9 @@ Layer: AGENTS.md says one agent holds one ticket; the cutter is who keeps a seco
 
 Reason: An agent that understands something once uses it across every step it was given.
 
-**ticket-captain** (Split; read by TicketCaptain, on claim:CaptainSplit.Cut):
+**ticket-captain** (Split; read by TicketCaptain):
 
-> Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
+> Several steps for one agent are one ticket.
 
 ## Cut
 
@@ -88,7 +104,7 @@ Reason: Each part then has a single owner who answers for it.
 
 **ticket-captain** (Split; read by TicketCaptain):
 
-> Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
+> Cut a bigger ticket into sub-tickets, one per part another captain will hold.
 
 ## Contract
 
@@ -124,11 +140,11 @@ Reason: The label tells everyone who the part waits on.
 
 ## Steps
 
-`claim:CaptainSplit.Steps`: Work with its own review rounds is cut into Implement, Review, Fix and Merge sub-tickets blocked in order; a small leaf is one ticket.
+`claim:CaptainSplit.Steps`: Work with its own review rounds is cut into Implement, Review, Fix and Merge sub-tickets blocked in order; a small leaf and a batched should are each one ticket.
 
 Spec: S3, S4
 
-Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. Linear has no Type label for Implement, Review or Fix, so the title carries the step.
+Evidence (run): Linear, DYD-1281's sub-tickets read 2026-11-20: twenty, titled Review r1 to r4, Fix r1 to r3, Merge … and by part, each a child of the ticket. Linear has no Type label for Implement, Review or Fix, so the title carries the step. No Shoulds batch has been cut in team Dydo's Linear yet, read 2026-11-21, so the batched should rests on spec S4 alone, under the same open point.
 
 Layer: Linear draws the blocking order once it is set; setting it is the cutter's.
 
@@ -136,7 +152,7 @@ Reason: The board then shows which step a piece of work has reached without anyo
 
 **ticket-captain** (Split; read by TicketCaptain):
 
-> Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; a small leaf is one ticket. (open: his call)
+> Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps. (open: his call)
 
 ## Small
 

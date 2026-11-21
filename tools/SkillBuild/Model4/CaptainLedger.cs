@@ -38,11 +38,8 @@ public static class CaptainLedger
         Fate.Kept(Dispatch.Start, Captain.Start, Captain.Thread),
         Fate.Kept(Project.OneTicket, Captain.Owns, CaptainSplit.OneTicket),
         Fate.Kept(Project.Contract, CaptainSplit.Contract),
-        Fate.Kept(Linear.CutRule, CaptainSplit.Cut, CaptainSplit.OffRecord, CaptainResearch.Scouts)
-            .Dropped("or a file", Question.Need, "No captain acts on it: the criterion the line gives decides it, as it decides any case the list leaves out."),
-        Fate.Kept(Hops.Single, CaptainSplit.Steps)
-            .Dropped("or a batched should", Question.Handled,
-                "AGENTS.md says it to every agent: \"A leaf may still carry children, such as three shoulds fixed under one implementer's ticket\" (df6a785e)."),
+        Fate.Kept(Linear.CutRule, CaptainSplit.Cut, CaptainSplit.Uses, CaptainSplit.OffRecord, CaptainResearch.Scouts),
+        Fate.Kept(Hops.Single, CaptainSplit.Steps),
         Fate.Kept(Hops.Chain, CaptainSplit.Steps)
             .Deferred("typed", "Linear has no Type label for Implement, Review or Fix: S3 leaves setting them up to the user's Enablement. Until then the title names the step."),
         Fate.Kept(Hops.AddCheck, CaptainBriefs.LeafCheck),
@@ -91,7 +88,7 @@ public static class CaptainLedger
         Fate.Kept(Review.Fundamental, CaptainReview.Replan)
             .Dropped("when that is the coordinator, it only opens a Wayfinding ticket, and a fresh captain there re-plans", Question.Need,
                 "Its reader is the coordinator: what an officer does with a re-plan belongs in that officer's skill (41a553f1)."),
-        Fate.Kept(Review.NeedsBalazs, CaptainReview.NeedsUser, CaptainTrouble.Known),
+        Fate.Kept(Review.NeedsBalazs, CaptainReview.NeedsUser, CaptainTrouble.Known, CaptainTrouble.Refused),
         Fate.Kept(Review.Clean, CaptainReview.Clean),
         Fate.Kept(Review.OneMore, CaptainReview.OneMore),
         Fate.Kept(Review.ToCheckpoint, CaptainTrouble.Third, CaptainTrouble.Checkpoint, CaptainTrouble.Escalate),

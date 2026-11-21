@@ -286,7 +286,7 @@ Spec: H16, H12, S10
 
 Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Question → Question, "the Question comes back unsettled: it goes to the officer and stays open, and the work still waits on its answer".
 
-Evidence (run): T3, read 2026-11-21 from the thread of this skill's fixer: `t3_thread_list` gives its `parentThreadId`, the thread of the captain that dispatched it, and the header of its brief names the same thread. t3_thread_send: "Send a message to any thread"; its `mode:'auto'` "starts an idle thread, steers a running turn, or queues". So a holder reaches its officer's thread without ending its own run.
+Evidence (run): T3, 2026-11-21: this skill's fixer sent a note from inside its turn to its captain's thread with `t3_thread_send`, both threads in mode `auto`. The send came back `delivery: started`, and the fixer's turn went on. `t3_thread_list` gives the address, a thread's `parentThreadId`, which the header of its brief names too.
 
 Layer: A captain has no tool that opens a thread with the user, and its officer is the only one above it.
 
@@ -294,15 +294,15 @@ Reason: Whether a call is worth the user's time is weighed once, above, instead 
 
 **ticket-captain** (NeedRules; read by TicketCaptain):
 
-> When a Question comes back unsettled, send it and what was found to your officer's thread with `t3_thread_send`, and leave it open: what waited still waits on its answer.
+> When a Question comes back unsettled, leave it open and send it, with what was found, to your officer's thread with `t3_thread_send`; what waited still waits on its answer.
 
 ## Known
 
-`claim:CaptainTrouble.Known`: A need already known to be one only the user can meet gets no research: its Question sub-ticket goes to the officer at once and blocks only what waits on it.
+`claim:CaptainTrouble.Known`: A need already known to be the user's gets no research: what only the user can give is an Enablement sub-ticket, a call only the user can make a Question sub-ticket, and it goes to the officer at once, blocking only what waits on it.
 
-Spec: R9, S10, L18
+Spec: R9, S10, H17, L18
 
-Evidence (run): T3, read 2026-11-21 from the thread of this skill's fixer: `t3_thread_list` gives its `parentThreadId`, the thread of the captain that dispatched it, and the header of its brief names the same thread. t3_thread_send: "Send a message to any thread"; its `mode:'auto'` "starts an idle thread, steers a running turn, or queues". So a holder reaches its officer's thread without ending its own run.
+Evidence (run): T3, 2026-11-21: this skill's fixer sent a note from inside its turn to its captain's thread with `t3_thread_send`, both threads in mode `auto`. The send came back `delivery: started`, and the fixer's turn went on. `t3_thread_list` gives the address, a thread's `parentThreadId`, which the header of its brief names too. Linear, team Dydo, labels read 2026-11-20: the Type group holds Enablement, "Access, environment, credentials or material other work needs", beside Question.
 
 Layer: Nothing above a captain learns of a need until the captain sends it, and no tool of its own reaches the user's queue.
 
@@ -310,7 +310,23 @@ Reason: A captain set to study what no source holds costs a day, and the user's 
 
 **ticket-captain** (NeedRules; read by TicketCaptain):
 
-> When you already know that only the user can meet a need, skip the research: open its Question sub-ticket, block only what waits on it, and send it to your officer's thread at once with `t3_thread_send`. A call that only wants the user's approval is no such need.
+> When you already know that only the user can meet a need, skip the research: open an Enablement sub-ticket for what only the user can give, or a Question sub-ticket for a call only the user can make, block only what waits on it, and send it to your officer's thread at once with `t3_thread_send`. A call that only wants the user's approval is no such need.
+
+## Refused
+
+`claim:CaptainTrouble.Refused`: A send to the officer's thread is refused when the sender's mode is narrower than the officer's; the holder then ends its turn on the message, and its work stops until the officer sends to its thread again.
+
+Spec: H12, H23
+
+Evidence (run): t3_thread_send: "The target cannot run with broader modes than yours." The way round it ran in this ticket: each return of this skill's fixer, the last message of its turn, reached its captain, whose next `t3_thread_send` to the finished thread started it again with its context, twice by 2026-11-21. No thread here ran in a narrower mode than its officer, so the refusal itself is the schema's word.
+
+Layer: T3 refuses the send and names no other way up; a child's return is the one route that no mode closes.
+
+Reason: Without it a narrower child would sit on a need that nobody above ever hears of.
+
+**ticket-captain** (NeedRules; read by TicketCaptain):
+
+> A `t3_thread_send` to your officer is refused when your thread's mode is narrower than your officer's: end your turn on the message instead. Your work then stops until your officer sends to your thread again.
 
 ## InThread
 

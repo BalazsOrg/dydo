@@ -32,16 +32,19 @@ A ticket that fits you is a leaf: do it as your kind's resource says, with nativ
 You commit what a helper changes.
 
 **A split.**
-Cut a bigger ticket into sub-tickets, one per part another captain will hold. Work gets a ticket only when someone other than its asker uses what it leaves: a helper, a lookup, a command and one seat among several get none, and several steps for one agent are one ticket.
+Cut a bigger ticket into sub-tickets, one per part another captain will hold.
+Work gets a ticket only when someone other than its asker uses what it leaves.
+A helper, a lookup, a command, a file and one seat among several never get a ticket.
+Several steps for one agent are one ticket.
 Write each sub-ticket's contract in its description: its outcome, how it fits your ticket, and the spec sections it serves, quoted and linked.
 Label its Mode: AFK, or HITL when the user must take part.
-Work with its own review rounds becomes Implement, Review (one per round), Fix and Merge sub-tickets, blocked in that order, opened ahead in Todo if you like; a small leaf is one ticket. (open: his call)
+Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps. (open: his call)
 Once you split, write a change yourself only when it is cheaper than briefing it and too small to need review.
 
 ## 3. Dispatch
 
 **Briefs.**
-A child knows only what your brief says: write it by [Briefs](resources/briefs.md).
+A child starts with your brief and none of your conversation: write it by [Briefs](resources/briefs.md).
 
 **Seats.**
 Scale each round's seats to the breadth and depth of the work, with no fixed pair, and seat reviewers from a model family other than the author's when you can, single seats included.
@@ -75,7 +78,7 @@ Your brief says who merges your work.
 - **You:** merge by [Merging](resources/merging.md), and return `done <KEY>: merged`.
 - **Nobody:** put the result on the ticket, and return `done <KEY>`.
 
-Close the ticket Done before you return.
+Close the ticket Done once its contract is met, then return; a return before that leaves it open, as it stands.
 
 ## When things go wrong
 

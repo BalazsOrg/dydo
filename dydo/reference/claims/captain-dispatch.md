@@ -8,7 +8,7 @@ type: reference
 
 ## Brief
 
-`claim:CaptainDispatch.Brief`: A child knows only its brief, which its dispatcher writes from the briefs resource.
+`claim:CaptainDispatch.Brief`: A child starts with only its brief and none of its dispatcher's conversation; the dispatcher writes the brief from the briefs resource.
 
 Spec: K14
 
@@ -20,7 +20,7 @@ Reason: Whatever the brief leaves out, the child has to rediscover or guess.
 
 **ticket-captain** (Briefs; read by TicketCaptain):
 
-> A child knows only what your brief says: write it by Briefs (`resources/briefs.md`).
+> A child starts with your brief and none of your conversation: write it by Briefs (`resources/briefs.md`).
 
 ## Family
 

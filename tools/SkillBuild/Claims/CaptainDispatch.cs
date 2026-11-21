@@ -11,8 +11,8 @@ public static class CaptainDispatch
 
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
-    public static readonly Claim Brief = new("A child knows only its brief, which its dispatcher writes from the briefs resource.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.Briefs, 1, "A child knows only what your brief says: write it by [Briefs](resources/briefs.md).")])
+    public static readonly Claim Brief = new("A child starts with only its brief and none of its dispatcher's conversation; the dispatcher writes the brief from the briefs resource.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.Briefs, 1, "A child starts with your brief and none of your conversation: write it by [Briefs](resources/briefs.md).")])
     {
         Spec = ["K14"],
         Truth = new(Evidence.Tool(Task),

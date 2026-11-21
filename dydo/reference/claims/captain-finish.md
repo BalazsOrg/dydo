@@ -88,17 +88,17 @@ Reason: An officer woken by a return can count on the ticket being closed.
 
 **ticket-captain** (Close; read by TicketCaptain, on claim:CaptainFinish.Close):
 
-> Close the ticket Done before you return.
+> Close the ticket Done once its contract is met, then return; a return before that leaves it open, as it stands.
 
 ## Close
 
-`claim:CaptainFinish.Close`: The captain that started its ticket closes it Done once its contract is met.
+`claim:CaptainFinish.Close`: The captain that started its ticket closes it Done once its contract is met, and a return before that leaves the ticket open.
 
 Spec: S6
 
 Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Finishing → Done, "the contract is met: the ticket closes Done".
 
-Evidence (run): Linear, team Dydo, statuses read 2026-11-20: Done exists, and DYD-1281's finished sub-tickets are Done.
+Evidence (run): Linear, team Dydo, read 2026-11-21: Done exists, and DYD-1281's nineteen finished sub-tickets are Done, while DYD-1295, the walkthrough whose envoy returned with no verdict from the user, is still open, in Todo.
 
 Layer: `dydo merge` merges a PR and touches no ticket.
 
@@ -106,7 +106,7 @@ Reason: An open ticket whose work is finished looks stalled to everyone who read
 
 **ticket-captain** (Close; read by TicketCaptain):
 
-> Close the ticket Done before you return.
+> Close the ticket Done once its contract is met, then return; a return before that leaves it open, as it stands.
 
 ## Limits
 

@@ -88,7 +88,7 @@ public static class CaptainResearch
     [
         At(Actor.TicketCaptain, CaptainSlot.ResearchQuestion, 1,
             "Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, " +
-            "and return it to your officer as unsettled.")
+            "and return it to your officer as unsettled, the Question still open.")
     ])
     {
         Spec = ["H16", "L18"],

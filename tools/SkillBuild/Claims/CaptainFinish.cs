@@ -57,11 +57,14 @@ public static class CaptainFinish
         Transition = new(CaptainState.Done, CaptainState.Returned, "one line goes back to the officer")
     };
 
-    public static readonly Claim Close = new("The captain that started its ticket closes it Done once its contract is met.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.Close, 1, "Close the ticket Done before you return.", () => [Return])])
+    public static readonly Claim Close = new("The captain that started its ticket closes it Done once its contract is met, and a return before that leaves the ticket open.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.Close, 1, "Close the ticket Done once its contract is met, then return; a return before that leaves it open, as it stands.", () => [Return])
+    ])
     {
         Spec = ["S6"],
-        Truth = new(Evidence.Run("Linear, team Dydo, statuses read 2026-11-20: Done exists, and DYD-1281's finished sub-tickets are Done."),
+        Truth = new(Evidence.Run("Linear, team Dydo, read 2026-11-21: Done exists, and DYD-1281's nineteen finished sub-tickets are Done, while DYD-1295, the walkthrough whose envoy returned " +
+                                 "with no verdict from the user, is still open, in Todo."),
             Layer: "`dydo merge` merges a PR and touches no ticket.",
             Reason: "An open ticket whose work is finished looks stalled to everyone who reads the board."),
         Transition = new(CaptainState.Finishing, CaptainState.Done, "the contract is met: the ticket closes Done")

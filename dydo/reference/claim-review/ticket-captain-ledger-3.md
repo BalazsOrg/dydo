@@ -16,21 +16,13 @@ What became of each line of the legacy `ticket-captain` spine in this section, a
 
 > Write each sub-ticket's contract in its description: its expected outcome, quoting and linking the spec sections it derives from.
 
-`claim:Linear.CutRule`, kept in `claim:CaptainSplit.Cut`, `claim:CaptainSplit.OffRecord`, `claim:CaptainResearch.Scouts`
+`claim:Linear.CutRule`, kept in `claim:CaptainSplit.Cut`, `claim:CaptainSplit.Uses`, `claim:CaptainSplit.OffRecord`, `claim:CaptainResearch.Scouts`
 
 > Cut a ticket only when someone other than its asker uses what the work leaves; a native helper, a scout, a lookup, one seat among several, a command or a file stays off the record.
-
-A clause of it, dropped, it fails Need: No captain acts on it: the criterion the line gives decides it, as it decides any case the list leaves out.
-
-> or a file
 
 `claim:Hops.Single`, kept in `claim:CaptainSplit.Steps`
 
 > A leaf lane or a batched should stays one ticket, with no hops.
-
-A clause of it, dropped, it fails Handled: AGENTS.md says it to every agent: "A leaf may still carry children, such as three shoulds fixed under one implementer's ticket" (df6a785e).
-
-> or a batched should
 
 `claim:Hops.Chain`, kept in `claim:CaptainSplit.Steps`
 
