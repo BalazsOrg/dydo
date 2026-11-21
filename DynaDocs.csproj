@@ -65,7 +65,6 @@
         <Content Remove="DynaDocs.Tests\**" />
         <EmbeddedResource Remove="DynaDocs.Tests\**" />
         <None Remove="DynaDocs.Tests\**" />
-        <None Remove="nupkg\dydo.1.2.22.nupkg" />
         <None Remove="viewer\**" />
         <!-- dydo's own skill builder and its claims never compile into or ship with dydo (Grilling A D9). -->
         <Compile Remove="tools\**;claims\**" />
@@ -96,12 +95,6 @@
     <ItemGroup>
         <None Include="README.md" Pack="true" PackagePath="" />
         <None Include="THIRD-PARTY-NOTICES.md" Pack="true" PackagePath="" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Folder Include="dydo\agents\Brian\inbox\" />
-      <Folder Include="dydo\agents\Zelda\inbox\" />
-      <Folder Include="nupkg\" />
     </ItemGroup>
 
 </Project>

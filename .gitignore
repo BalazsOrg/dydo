@@ -4,6 +4,7 @@ obj/
 /nupkg/
 /packages/
 riderModule.iml
+.idea/
 /_ReSharper.Caches/
 
 nul
@@ -12,8 +13,6 @@ DynaDocs.sln.DotSettings.user
 # Host-local files stay local. Canonical skills are authored in /skills; setup-skills.mjs
 # creates the ignored host discovery projections without hiding other host configuration.
 .claude/*
-!.claude/agents/
-!.claude/workflows/
 !.claude/settings.json
 /.claude/skills/
 /.agents/skills/

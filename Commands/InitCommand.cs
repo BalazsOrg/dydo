@@ -739,13 +739,6 @@ public static class InitCommand
         + "    not_match = [\"dydo init codex\"],\n"
         + ")\n";
 
-    internal static JsonNode BuildCodexHooks()
-    {
-        var settings = new JsonObject();
-        ConfigureGuardHook(settings, CodexGuardMatcher);
-        return settings;
-    }
-
     // Removes only exact dydo-managed hook commands, leaving custom hooks in mixed entries intact.
     // An entry goes only when that empties it; one already empty is the user's.
     private static void RemoveDydoGuardEntries(JsonArray entries, params string[] managedCommands)

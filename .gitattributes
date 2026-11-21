@@ -1,12 +1,7 @@
-# Host artifacts and canonical skills must stay LF on every platform. Claude Code's
-# Workflow permission handler rejects CRLF scripts ("control characters that would
-# be hidden in the approval dialog").
-.claude/workflows/*.js text eol=lf
-.claude/agents/*.md text eol=lf
+# Canonical skills must stay LF on every platform.
 skills/**/*.md text eol=lf
 skills/**/agents/openai.yaml text eol=lf
 setup-skills.mjs text eol=lf
-.codex/agents/*.toml text=auto eol=lf
 
 # The skill builder writes its chart files and why docs with LF, and the golden test compares bytes (K7).
 claims/statechart/** text eol=lf
