@@ -3,8 +3,9 @@ using System.Text.RegularExpressions;
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
-/// The four truth questions as build checks (DYD-1295 317be5f7). On a truth-checked skill: each line is
-/// read by an actor the skill belongs to; each claim it states carries its evidence, layer and reason;
+/// The four truth questions as build checks (DYD-1295 317be5f7). On a truth-checked skill, and on a
+/// resource truth-checked ahead of its skill (<see cref="Resource.Readers"/>): each line is
+/// read by an actor the skill or the resource belongs to; each claim it states carries its evidence, layer and reason;
 /// every <c>dydo …</c> it names exists and stands in code; and a claim still open is withheld, alone on
 /// its line, but for the one placeholder, whose line shows its token and nothing of its text. On every
 /// claim that carries a <see cref="Truth"/>, wherever its lines sit (<see cref="Answers"/>): no field is
@@ -38,15 +39,19 @@ internal static partial class TruthCheck
     [GeneratedRegex(@"[.!?][^\s\p{L}\p{Nd}]*\s+\S")]
     private static partial Regex SecondSentence();
 
-    /// <summary>The lines of <paramref name="skill"/> an open claim withholds from its files.</summary>
+    /// <summary>
+    /// The lines of <paramref name="skill"/> an open claim withholds from its files. A legacy skill's lines are
+    /// checked only where they sit in a resource truth-checked ahead of it.
+    /// </summary>
     public static HashSet<Placed> Check(SkillSpec skill, IReadOnlyList<Placed> lines, IReadOnlyDictionary<string, Claim> claims)
     {
         var withheld = new HashSet<Placed>();
-        foreach (var placed in lines)
+        Placed[] held = [.. lines.Where(placed => skill.ReadersOf(placed.Line).Count > 0)];
+        foreach (var placed in held)
         {
             ReadBy(skill, placed);
             foreach (var id in placed.Claims.Where(id => claims[id].Truth is null))
-                throw new InvalidDataException($"claim:{id} is stated by {skill.Name}, a truth-checked skill, and carries no Truth: its evidence, layer and reason");
+                throw new InvalidDataException($"claim:{id} is stated by {Holder(skill, placed)}, and carries no Truth: its evidence, layer and reason");
             if (!placed.Claims.Any(id => claims[id].Truth!.Evidence.Kind == EvidenceKind.Open)) continue;
             if (placed.Claims.Count > 1)
                 throw new InvalidDataException(
@@ -58,7 +63,7 @@ internal static partial class TruthCheck
                     $"{skill.Name}: the line of claim:{placed.Owner} is a placeholder's, and it is not one sentence, a blank line, then `{token}` alone, " +
                     "a token of the form `{name_placeholder}`; a placeholder shows where its text will stand, and none of the text");
         }
-        foreach (var placed in lines.Where(placed => !withheld.Contains(placed)))
+        foreach (var placed in held.Where(placed => !withheld.Contains(placed)))
             if (Miscommanded($"{skill.Name}: the line of claim:{placed.Owner}", placed.Line.Text) is { } problem)
                 throw new InvalidDataException(problem);
         return withheld;
@@ -78,10 +83,11 @@ internal static partial class TruthCheck
 
     /// <summary>
     /// Every claim that carries a <see cref="Truth"/> answers it, whichever skills state it and even when none does.
-    /// An open claim reaches no built file: its line sits only in a <paramref name="truthChecked"/> skill, which
-    /// withholds it, and it is no machine's move, whose arrow nothing could withhold.
+    /// An open claim reaches no built file: its line sits only where one of the <paramref name="skills"/> is
+    /// truth-checked, as a whole or in the resource that holds the line, which withholds it, and it is no
+    /// machine's move, whose arrow nothing could withhold.
     /// </summary>
-    public static void Answers(ClaimIndex claims, IReadOnlySet<Enum> truthChecked)
+    public static void Answers(ClaimIndex claims, IReadOnlyList<SkillSpec> skills)
     {
         // Withhold-and-list has one exception (DYD-1372 07c86aad), so a second placeholder is a claim that belongs withheld.
         var placeholders = claims.Claims.Where(claim => claim.Claim.Truth?.Evidence.Token is not null).Select(claim => "claim:" + claim.Id).ToArray();
@@ -95,9 +101,10 @@ internal static partial class TruthCheck
             if (claim.Transition is { } move)
                 throw new InvalidDataException(
                     $"claim:{id} is open, and it moves {Names.Of(move.From)} to {Names.Of(move.To)}; a machine's arrow is built, so an open claim is no move");
-            foreach (var (line, _) in claims.LinesOf(claim).Where(stated => !truthChecked.Contains(stated.Line.Skill)))
+            foreach (var (line, _) in claims.LinesOf(claim).Where(stated => !skills.Any(skill => Equals(skill.Id, stated.Line.Skill) && skill.ReadersOf(stated.Line).Count > 0)))
                 throw new InvalidDataException(
-                    $"claim:{id} is open, and its line in {Names.Kebab(line.Skill)} would state it; only a truth-checked skill withholds an open claim's line");
+                    $"claim:{id} is open, and its line in {Names.Kebab(line.Skill)} would state it; only a truth-checked skill withholds an open claim's line, " +
+                    "or a resource truth-checked ahead of its skill");
         }
     }
 
@@ -146,11 +153,17 @@ internal static partial class TruthCheck
     {
         if (placed.Line.Reader is not { } reader)
             throw new InvalidDataException($"{skill.Name}: the line of claim:{placed.Owner} names no reader; a truth-checked line names the actor who acts on it");
-        if (!skill.Readers.Contains(reader))
+        var readers = skill.ReadersOf(placed.Line);
+        if (!readers.Contains(reader))
             throw new InvalidDataException(
-                $"{skill.Name}: the line of claim:{placed.Owner} is read by {Names.Of(reader)}, and this skill belongs to " +
-                $"{string.Join(", ", skill.Readers.Select(Names.Of))}; a line belongs in the skill of the reader who acts on it");
+                $"{skill.Name}: the line of claim:{placed.Owner} is read by {Names.Of(reader)}, and this {(skill.TruthChecked ? "skill" : "resource")} belongs to " +
+                $"{string.Join(", ", readers.Select(Names.Of))}; a line belongs in the skill of the reader who acts on it");
     }
+
+    // What holds a line to the truth checks, as a failure names it: its skill, or the resource checked ahead of that skill.
+    private static string Holder(SkillSpec skill, Placed placed) => skill.AheadOf(placed.Line) is { } ahead
+        ? $"{skill.Name} in {Names.Kebab(ahead.Id)}, a truth-checked resource"
+        : $"{skill.Name}, a truth-checked skill";
 
     /// <summary>
     /// No field is empty, a command evidence names a real command, and the reason is its own: of its content

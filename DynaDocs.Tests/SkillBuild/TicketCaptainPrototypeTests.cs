@@ -144,7 +144,8 @@ public partial class TicketCaptainPrototypeTests
     [Trait("Job", "contract: DYD-1372 A3c X11 no open claim's line stands in a file of the skill but the one placeholder's, and each open claim is listed for review")]
     public void OpenClaims_AreWithheldAndListed()
     {
-        var open = Claims.Where(claim => claim.Key.Truth?.Evidence.Kind == EvidenceKind.Open).ToArray();
+        // The ticket captain's own: a resource truth-checked ahead of another skill lists its open claims itself (DYD-1402).
+        var open = Claims.Where(claim => claim.Key.Truth?.Evidence.Kind == EvidenceKind.Open && claim.Key.Lines.Any(line => Equals(line.Skill, CaptainSkill.TicketCaptain))).ToArray();
         var list = Built.Value.Files[Review + "ticket-captain-open.md"].Split('\n').Where(line => line.StartsWith("## ", StringComparison.Ordinal));
 
         Assert.NotEmpty(open);

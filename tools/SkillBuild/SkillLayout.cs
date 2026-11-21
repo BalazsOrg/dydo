@@ -4,7 +4,8 @@ namespace DynaDocs.SkillBuild;
 /// One skill's slots and the lines placed in them (K9), checked: a skill's spine is its job paragraph,
 /// titled phases and scenarios, and a standard holds sections only; every line has a placement in a
 /// declared slot; a move is one line in a state; a job line is one line; no two lines share an order in
-/// a slot. A truth-checked skill declares each slot by its shape and holds no state; a step is one line.
+/// a slot. A truth-checked skill, and a resource truth-checked ahead of its skill, declares each slot by its
+/// shape and holds no state; a step is one line.
 /// A withheld line is checked like any other and left out of <see cref="In"/>.
 /// </summary>
 internal sealed class SkillLayout
@@ -33,7 +34,7 @@ internal sealed class SkillLayout
         if (skill.IsStandard)
         {
             if (skill.Phases.Count + skill.Scenarios.Count > 0) throw Error("a standard holds sections only");
-            Declare(skill.Sections);
+            Declare(skill.Sections, skill.TruthChecked);
             return;
         }
         if (skill.Sections.Count > 0)
@@ -43,26 +44,27 @@ internal sealed class SkillLayout
         foreach (var phase in skill.Phases)
         {
             if (string.IsNullOrWhiteSpace(phase.Title)) throw Error("a job phase needs a title");
-            Declare(phase.Slots);
+            Declare(phase.Slots, skill.TruthChecked);
         }
         var files = new HashSet<string>(StringComparer.Ordinal);
         foreach (var resource in skill.Resources)
         {
             if (!files.Add(SkillRenderer.FileOf(resource.Id))) throw Error($"resource {Names.Of(resource.Id)} is declared twice");
-            Declare(resource.Slots);
+            Declare(resource.Slots, skill.Checks(resource));
         }
     }
 
     // Each list's first slot may be untitled: its lines follow the phase's, the resource's or the standard's heading.
-    private void Declare(IReadOnlyList<Slot> slots)
+    private void Declare(IReadOnlyList<Slot> slots, bool shaped)
     {
         for (var index = 0; index < slots.Count; index++)
         {
             var slot = slots[index];
-            if (_skill.TruthChecked != slot.Shape.HasValue)
-                throw Error(_skill.TruthChecked
-                    ? $"{Names.Of(slot.Id)} declares no shape; a truth-checked skill's slot is a paragraph, bullets or steps"
-                    : $"{Names.Of(slot.Id)} declares a shape; only a truth-checked skill's slots have one");
+            var holder = _skill.TruthChecked ? "skill" : "resource";
+            if (shaped != slot.Shape.HasValue)
+                throw Error(shaped
+                    ? $"{Names.Of(slot.Id)} declares no shape; a truth-checked {holder}'s slot is a paragraph, bullets or steps"
+                    : $"{Names.Of(slot.Id)} declares a shape; only a truth-checked skill's slots have one, or those of a resource truth-checked ahead of it");
             if (slot.Shape is { } shape) _shapes[slot.Id] = shape;
             else if (slot.Title is null && (index > 0 || slot.IsState))
                 throw Error($"{Names.Of(slot.Id)} needs a title; only the slot that opens a phase, resource or standard may have none");
