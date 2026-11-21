@@ -98,7 +98,17 @@ Five more controls were run by hand at DYD-1437, each one changed line in a scra
 
 ## Receipts
 
-RECEIPTS
+All at `e5c282d9864107456a54ae878596500c4c29c0e4`, each run under the gate lock, with dydo 3.6.0's managed Java and TLC:
+
+- The model alone (`run.py --baseline --machine captain`): exit 0. `TypeOK` and `NoDeadlock` hold; 33 states, 61 steps.
+- `check-chart.mjs` on the chart that run drew: exit 0. `chart.mmd` and the model agree on 11 states and 21 arrows, and no arrow joins two cases with "or".
+- The properties (`run.py --machine captain`): exit 0. All 15 properties, `TypeOK` and `NoDeadlock` hold; 232 states generated, 137 distinct, queue empty, depth 12.
+- The registered control (`run.py --controls --machine captain`): checker 1, harness 0, `control_caught` true. H16_ResumeLeafAfterQuestion rejects `Asking` to `Done`, and so does WorkPhaseBeforeDone.
+- The five hand-run controls: checker 1 on each, and each is rejected by exactly the two properties, or the one, that the table above names.
+
+No control was run against H3_WaitAfterSplit, K30_KindKnownBeforeWork, K30_KindStaysKnown, S7_UnstartedReturnHasNoWork or H1_EndsAreFinal. Their meaning did not change at DYD-1437; only state names did.
+
+Output was written to `/tmp/dyd-1437/` and is not kept. Only this page and a comment's place in `chart.mmd` changed after these runs.
 
 ## Related
 
