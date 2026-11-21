@@ -4,7 +4,7 @@
 # (5k tokens, counted as bytes / 4). A suite test cannot see the merge base reliably, so this runs as
 # a gate command, from the repository root:
 #
-#   bash tools/SkillBuild/changed-file-sizes.sh [base]    # base defaults to origin/feature/dydo-4-0-0
+#   bash tools/changed-file-sizes.sh [base]    # base defaults to origin/feature/dydo-4-0-0
 #
 # It covers committed changes since the merge base, uncommitted ones and untracked files, prints the
 # five largest, and exits 1 naming every file over the limit.
