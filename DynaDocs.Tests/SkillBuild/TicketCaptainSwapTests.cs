@@ -9,11 +9,13 @@ using DynaDocs.SkillBuild;
 /// ticket captain's folder, and nothing else moves by a byte. Each digest below was taken from the
 /// built files of the base, <c>bf3fea83</c>: every other role skill, both standards in both copies, the
 /// 31 legacy machines, and the legacy ticket captain, which still renders them, unbuilt. A digest is
-/// SHA-256 over each file's path, a NUL, its bytes and a NUL, in ordinal path order.
+/// SHA-256 over each file's path, a NUL, its bytes and a NUL, in ordinal path order. The chief of staff's
+/// digest leaves out its muster resource, which DYD-1402 rebuilt (<see cref="MusterResourceTests"/>).
 /// </summary>
 public class TicketCaptainSwapTests
 {
     private const string Captain = "skills/roles/officers/ticket-captain/";
+    private const string Muster = "skills/roles/officers/chief-of-staff/resources/muster.md";
 
     private static readonly string[] LegacyMachines =
     [
@@ -33,7 +35,7 @@ public class TicketCaptainSwapTests
     [Theory]
     [Trait("Job", "contract: DYD-1372 A6 every other role skill, both standards and every legacy machine build the bytes of the base bf3fea83")]
     [InlineData("coordinator", "679f370c85ac46d7ae8e01c9e7bb2efc01f5c7db574a7eda5275493bcfb9b865")]
-    [InlineData("chief-of-staff", "d02d5737b659e3a4e38819bd727e3440de01177f7116c450608d2d8c699b60b5")]
+    [InlineData("chief-of-staff", "52e5f4dec6d03fcc079fa754fb82a612de7115c4d7391a6d128e4d84ba157ca5")]
     [InlineData("crew", "41f191ec23aed1c1542e46a3d868d816fe7449fafb48c6db203455e3d7c14650")]
     [InlineData("standards", "2b04b76df87dc0ed019b355f210a0e4b9909756399fc672f57e4886c90f0ce61")]
     [InlineData("machines", "a1a167eb913a99c5135210bdb9477728bb4e048679b2f960adcf161a4a5a16f2")]
@@ -85,10 +87,10 @@ public class TicketCaptainSwapTests
         "standards" => Standards.Contains(path),
         "machines" => LegacyMachines.Any(machine => path.StartsWith($"claims/statechart/{machine}/", StringComparison.Ordinal)),
         "crew" => path.StartsWith("skills/roles/crew/", StringComparison.Ordinal),
-        _ => path.StartsWith($"skills/roles/officers/{group}/", StringComparison.Ordinal)
+        _ => path.StartsWith($"skills/roles/officers/{group}/", StringComparison.Ordinal) && path != Muster
     };
 
-    private static string Digest(IEnumerable<KeyValuePair<string, string>> files)
+    internal static string Digest(IEnumerable<KeyValuePair<string, string>> files)
     {
         using var hash = IncrementalHash.CreateHash(HashAlgorithmName.SHA256);
         foreach (var (path, text) in files.OrderBy(file => file.Key, StringComparer.Ordinal))

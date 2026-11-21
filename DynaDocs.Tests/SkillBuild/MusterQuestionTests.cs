@@ -1,0 +1,73 @@
+namespace DynaDocs.Tests.SkillBuild;
+
+using System.Text.RegularExpressions;
+using DynaDocs.SkillBuild;
+
+/// <summary>
+/// DYD-1402: what the built muster resource requires of every question the chief of staff puts to him, each
+/// an acceptance line of the contract (A3 to A7), after his words on the muster of 2026-11-21: "you shown me
+/// a question I've never seen and only given me one recommended answer". Through
+/// <see cref="SkillBuilder.Build"/> on the production model, read as the built text a chief of staff loads.
+/// A rule is found by its claim and held to the words the contract gives it, so other edits of the prose
+/// leave the checks standing (DR 067).
+/// </summary>
+public partial class MusterQuestionTests
+{
+    private const string Muster = "skills/roles/officers/chief-of-staff/resources/muster.md";
+    private const string Grilling = "skills/productivity/grilling/SKILL.md";
+
+    private static readonly Lazy<BuiltTree> Built = new(() => SkillBuilder.Build(ProductionModel.Model));
+
+    [GeneratedRegex("<[^>\n]*>")]
+    private static partial Regex Placeholder();
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1402 A3 the question block in muster.md carries the grilling skill's markers, line for line, so the two cannot drift apart")]
+    public void QuestionBlock_HasTheGrillingSkillsMarkers()
+    {
+        var grilling = Markers(File.ReadAllText(Path.Combine(CommittedTree.Root, Grilling)));
+
+        Assert.Equal(["❓ **Q1** - **<>**: <>", "", "➡️ <>", "", "---", "", "❓ **Q2** - **<>**: <>", "", "➡️ <>"], grilling);
+        Assert.Equal(grilling, Markers(Built.Value.Files[Muster]));
+    }
+
+    [Theory]
+    [Trait("Job", "trap: DYD-1402 A3 a question block whose marker drifts from the grilling skill's is no match")]
+    [InlineData("➡️", "->")]
+    [InlineData("❓ **Q1** - ", "**Q1.** ")]
+    [InlineData("\n---\n", "\n")]
+    public void QuestionBlockWithADriftedMarker_IsNoMatch(string marker, string drifted) =>
+        Assert.NotEqual(Markers(File.ReadAllText(Path.Combine(CommittedTree.Root, Grilling))), Markers(Built.Value.Files[Muster].Replace(marker, drifted)));
+
+    [Theory]
+    [Trait("Job", "contract: DYD-1402 A3 to A7 muster.md says, on a line of its own claim, what every question put to him at muster holds")]
+    [InlineData("A3 A7 one block in the grilling skill's format, whatever the question's source", "StaffQuestion.Shape",
+        "every question", "at muster", "whatever its source", "one block", "`grilling` skill's format")]
+    [InlineData("A3 the context he has not seen", "StaffQuestion.Context", "everything he needs to answer and has not seen", "from the block alone")]
+    [InlineData("A3 every option with its trade-off, never one option", "StaffQuestion.Options", "every option", "each with its trade-off", "at least two")]
+    [InlineData("A3 a recommendation with its reason", "StaffQuestion.Recommend", "Recommend one option", "`➡️`", "with your reason")]
+    [InlineData("A4 premises verified before the question is shown, the evidence linked in the block", "StaffQuestion.Premises",
+        "Verify each premise the question rests on before you show it", "link the evidence in the block")]
+    [InlineData("A5 plain language, a term he has not used defined or replaced", "StaffQuestion.Plain",
+        "plain language", "define a term he has not used where it first appears, or replace it")]
+    [InlineData("A6 a route that needs no money and no permission is checked first, and the block says what it showed", "StaffQuestion.Route",
+        "Before a question that asks him to spend money or grant a permission", "a route that needs neither", "say in the block what you checked and what it showed")]
+    public void MusterMd_SaysWhatAQuestionHolds(string rule, string claim, params string[] words)
+    {
+        var stated = Built.Value.Map.Where(line => line.Path == Muster && line.Claims.Contains(claim)).ToArray();
+
+        Assert.True(stated.Length == 1, $"{rule}: claim:{claim} is stated on {stated.Length} lines of {Muster}");
+        Assert.Equal([claim], stated[0].Claims);
+        Assert.Contains("- " + stated[0].Text + "\n", Built.Value.Files[Muster]);
+        Assert.All(words, word => Assert.Contains(word, stated[0].Text));
+    }
+
+    // The fenced block that opens with the question marker, each placeholder emptied: what is left is the format's markers.
+    private static string[] Markers(string markdown)
+    {
+        var lines = markdown.Split('\n');
+        var open = Array.FindIndex(lines, line => line.StartsWith("❓ ", StringComparison.Ordinal));
+        if (open < 1 || !lines[open - 1].StartsWith("```", StringComparison.Ordinal)) return [];
+        return [.. lines.Skip(open).TakeWhile(line => !line.StartsWith("```", StringComparison.Ordinal)).Select(line => Placeholder().Replace(line, "<>"))];
+    }
+}

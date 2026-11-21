@@ -10,7 +10,7 @@ These are not truth-checked: no line of theirs names its reader, and no claim ca
 
 `coordinator`: not yet migrated; 91 lines, 4 naming a command the CLI does not have.
 
-`chief-of-staff`: not yet migrated; 42 lines, 3 naming a command the CLI does not have.
+`chief-of-staff`: not yet migrated; 32 lines, 3 naming a command the CLI does not have. Its resource `muster` is truth-checked ahead of it: those lines name their reader, and are not counted here.
 
 `implementer`: not yet migrated; 67 lines, 2 naming a command the CLI does not have.
 

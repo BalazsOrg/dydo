@@ -58,6 +58,8 @@ public static class Registry
         typeof(Slugs),
         typeof(Backfill),
         typeof(Staff),
+        typeof(StaffMuster),
+        typeof(StaffQuestion),
         typeof(Landing),
         typeof(Inquisition),
         typeof(JobTickets),
