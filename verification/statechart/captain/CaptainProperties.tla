@@ -105,9 +105,22 @@ H10_ReturnedPartContinues ==
         state' \in {"Wayfinding", "InReview", "Finishing"})]_<<vars, seen>>
 
 \* R34, DYD-1372 777d396e: "Reviewing the reviews is probably not a good idea."
-\* Checks only the designated verdict arrow, not the unrepresented holder kind.
-R34_VerdictGoesToFinishing ==
-    [][(CaptainReviewSeats_Verdict =>
-        state = "Waiting" /\ state' = "Finishing" /\ UNCHANGED <<round, extra>>)]_<<vars, seen>>
+\* Includes answers: a result with no change has no review/fix/repair loop.
+R34_VerdictNeverReviewed ==
+    kind = "verdict" =>
+        state \notin {"InReview", "Clear", "Checkpoint", "Fixing", "Repairing"}
+
+\* K30, S6: the kind resource is loaded before the holder does its work.
+K30_KindKnownBeforeWork ==
+    state \notin {"Dispatched", "Returned"} => kind \in {"change", "verdict"}
+
+\* K30's kind belongs to this ticket; S7 and AGENTS.md: one holder, one ticket.
+K30_KindStaysKnown ==
+    [][(kind # "unread" => kind' = kind)]_<<vars, seen>>
+
+\* S7, S6, AGENTS.md: a refused dispatch returns without starting work.
+\* No other holder or ticket identity is observable here.
+S7_UnstartedReturnHasNoWork ==
+    kind = "unread" => seen \subseteq {"Dispatched", "Returned"}
 
 ====
