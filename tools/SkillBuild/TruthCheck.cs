@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Text.RegularExpressions;
 
 namespace DynaDocs.SkillBuild;
@@ -88,13 +87,14 @@ internal static partial class TruthCheck
     }
 
     /// <summary>
-    /// Each code-path evidence a claim carries names, from <paramref name="root"/>, a file or a folder the repository
-    /// tracks there: never an absolute path, a path through <c>..</c>, or a file only this machine holds.
+    /// Each code-path evidence a claim carries names, from <paramref name="root"/>, a file or a folder that is there:
+    /// never an absolute path or a path through <c>..</c>. The builder asks no other tool, so whether git tracks the
+    /// path is the suite's to check, over the committed tree.
     /// </summary>
     public static void CheckPaths(Model model, string root)
     {
         foreach (var (claim, id) in ModelIndex.ClaimIds(model.Kinds))
-            if (claim.Truth is { Evidence: { Kind: EvidenceKind.Code, Text: var path } } && !Tracked(root, path))
+            if (claim.Truth is { Evidence: { Kind: EvidenceKind.Code, Text: var path } } && !Exists(root, path))
                 throw new InvalidDataException($"claim:{id}: its code evidence, {path}, is no path in the repository");
     }
 
@@ -118,19 +118,13 @@ internal static partial class TruthCheck
         return null;
     }
 
-    // A path names a file or a folder; an anchor after `#` or a line after `:` is not part of it. Git lists what it tracks there by its
-    // name from the root, so only a path written that way is one of them, or the folder of one.
-    private static bool Tracked(string root, string path)
+    // A path names a file or a folder from the root; an anchor after `#` or a line after `:` is not part of it.
+    private static bool Exists(string root, string path)
     {
-        var named = path.Split('#', ':')[0].TrimEnd('/');
-        using var git = Process.Start(new ProcessStartInfo("git", ["--literal-pathspecs", "-C", root, "ls-files", "-z", "--", named])
-        {
-            RedirectStandardOutput = true,
-            RedirectStandardError = true
-        })!;
-        var listed = git.StandardOutput.ReadToEnd().Split('\0', StringSplitOptions.RemoveEmptyEntries);
-        git.WaitForExit();
-        return listed.Any(file => file == named || file.StartsWith(named + "/", StringComparison.Ordinal));
+        var named = path.Split('#', ':')[0];
+        if (Path.IsPathRooted(named) || named.Split('/', '\\').Contains("..")) return false;
+        var file = Path.Combine(root, named);
+        return File.Exists(file) || Directory.Exists(file);
     }
 
     private static void ReadBy(SkillSpec skill, Placed placed)
@@ -146,7 +140,7 @@ internal static partial class TruthCheck
     /// <summary>
     /// No field is empty, a command evidence names a real command, and the reason is its own: of its content
     /// words, the ones that are no English stop word (<see cref="StopWords"/>), pointer or citation, at least
-    /// half are in neither the rule, the claim's lines nor its spec ids. That is a floor, and padding with
+    /// half are in neither the rule nor its spec ids (contract A3d). That is a floor, and padding with
     /// content words still clears it. Whether those words say what the claim prevents or enables is a
     /// reviewer's to judge, claim by claim, from the review list the why docs are.
     /// </summary>
@@ -164,10 +158,11 @@ internal static partial class TruthCheck
                 "and a reason says what the claim prevents or enables");
     }
 
-    // How many of the reason's words carry meaning, and how many of those its rule, its lines and its citations do not already hold.
+    // How many of the reason's words carry meaning, and how many of those its rule and its citations do not already hold.
+    // Its lines are not held against it: a line says what to do, and its reason may well use the same words to say why.
     private static (int Own, int Words) OwnWords(string reason, Claim claim)
     {
-        var said = WordsOf(string.Join(' ', [claim.Rule, .. claim.Lines.Select(line => line.Text), .. claim.Spec]));
+        var said = WordsOf(string.Join(' ', [claim.Rule, .. claim.Spec]));
         var words = WordsOf(reason).Where(word => !StopWords.English.Contains(word) && !Pointers.Contains(word) && !CitationWord().IsMatch(word)).ToArray();
         return (words.Count(word => !said.Contains(word)), words.Length);
     }

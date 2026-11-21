@@ -105,9 +105,13 @@ public class LedgerTests
     }
 
     [Fact]
-    [Trait("Job", "trap: DYD-1372 A7 r2 L1 a clause the legacy line does not hold word for word, or a blank one, fails the build")]
+    [Trait("Job", "trap: DYD-1372 A7 r2 L1 a clause the legacy line does not hold word for word, a part of a word, or a blank one, fails the build")]
     public void ClauseNotQuotedFromItsLine_FailsTheBuild()
     {
+        AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Dropped("a", Question.Reason, "Nobody knows.")),
+            "keeper: the clause \"a\" of claim:OldMoves.Cap is not in its legacy line; a clause is quoted from the line, word for word");
+        AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Dropped("at eigh", Question.Reason, "Nobody knows.")),
+            "keeper: the clause \"at eigh\" of claim:OldMoves.Cap is not in its legacy line");
         AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Dropped("at nine", Question.Reason, "Nobody knows.")),
             "keeper: the clause \"at nine\" of claim:OldMoves.Cap is not in its legacy line; a clause is quoted from the line, word for word");
         AssertRejected(Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Deferred(" ", "Not rebuilt here.")),
@@ -127,6 +131,20 @@ public class LedgerTests
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-1372 A7 r3 a clause quoted twice on one entry fails the build: one clause has one fate")]
+    public void ClauseQuotedTwice_FailsTheBuild() =>
+        AssertRejected(
+            Swap(OldMoves.Cap, Fate.Kept(OldMoves.Cap, KeeperMoves.Limit).Dropped("at eight", Question.Reason, "Nobody knows.").Deferred("at eight", "Later.")),
+            "keeper: the clause \"at eight\" of claim:OldMoves.Cap is quoted twice; one clause has one fate");
+
+    [Fact]
+    [Trait("Job", "edge: DYD-1372 A7 r3 a clause that opens or closes on punctuation is matched as it stands")]
+    public void ClauseEdgedByPunctuation_IsPrinted() =>
+        Assert.Contains("A clause of it, deferred: Later.\n\n> `dydo survey board` first,\n",
+            SkillBuilder.Build(Swap(OldMoves.Survey, Fate.Kept(OldMoves.Survey, KeeperMoves.Scale).Deferred("`dydo survey board` first,", "Later.")))
+                .Files[Review + "keeper-ledger-2.md"]);
+
+    [Fact]
     [Trait("Job", "trap: DYD-1372 A7 r2 L1 only a kept line has clauses: one on a dropped or deferred entry fails the build")]
     public void ClauseOnAnEntryThatIsNotAKeptLine_FailsTheBuild() =>
         AssertRejected(Swap(OldMoves.Cap, Fate.Dropped(OldMoves.Cap, Question.Handled, "The proxy limits the runs.").Deferred("at eight", "Later.")),
@@ -144,7 +162,7 @@ public class LedgerTests
 
             # Lines that name a resource no longer built
 
-            Lines of the skills and standards not yet truth-checked that name a resource of a legacy skill which the skill that replaced it does not build. Each sends its reader to a file that is not there; these are listed, not hidden, until their skill is switched over or the resource is rebuilt.
+            Lines of the model's skills and standards not yet truth-checked that name a resource of a legacy skill which the skill that replaced it does not build. A hand-written file is not read here. Each sends its reader to a file that is not there; these are listed, not hidden, until their skill is switched over or the resource is rebuilt.
 
             ## clerk
 

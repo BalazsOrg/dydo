@@ -119,6 +119,11 @@ public class TruthFieldTests
         AssertRejected(typeof(KeeperPaddedReason), "claim:KeeperPaddedReason.Bell: its reason restates its rule or its spec citation, with 1 of 5 words its own");
 
     [Fact]
+    [Trait("Job", "contract: DYD-1372 A3d r3 a reason is held against its rule and its spec citation only: one that shares words with its own line builds")]
+    public void ReasonThatSharesWordsWithItsLine_Builds() =>
+        Assert.Contains("- Split a watch that one keeper cannot hold in its context.\n", SkillBuilder.Build(TruthModel.With(typeof(KeeperReasonInItsLine))).Files[Spine]);
+
+    [Fact]
     [Trait("Job", "edge: DYD-1372 A3d r1 G4 a reason with exactly half of its words its own builds")]
     public void ReasonWithHalfItsWordsItsOwn_Builds() =>
         Assert.Contains("- Ring the bell at noon.\n", SkillBuilder.Build(TruthModel.With(typeof(KeeperHalfOwnReason))).Files[Spine]);
@@ -194,15 +199,13 @@ public class TruthFieldTests
     }
 
     [Theory]
-    [Trait("Job", "trap: DYD-1372 A3e r2 N4 a code evidence that exists on this machine only, as an absolute path, a path through .. or an untracked file, fails the run")]
-    [InlineData(typeof(KeeperAbsolutePath), true, "/")]
-    [InlineData(typeof(KeeperParentPath), true, "docs/../docs/keeper.md")]
-    [InlineData(typeof(KeeperCodePath), false, "docs/keeper.md")]
-    public void CodeEvidenceTheRepositoryDoesNotTrackByThatName_FailsTheRun(Type kind, bool tracked, string path)
+    [Trait("Job", "trap: DYD-1372 A3e r2 N4 a code evidence that is an absolute path, or a path through .., fails the run though the file is there")]
+    [InlineData(typeof(KeeperAbsolutePath), "/")]
+    [InlineData(typeof(KeeperParentPath), "docs/../docs/keeper.md")]
+    public void CodeEvidenceNotWrittenFromTheRoot_FailsTheRun(Type kind, string path)
     {
         using var root = new TempRoot();
         root.Write("docs/keeper.md", "# Keeper\n");
-        if (tracked) root.Track();
 
         var (exit, _, error) = root.Run(TruthModel.With(kind));
 
@@ -211,17 +214,28 @@ public class TruthFieldTests
     }
 
     [Fact]
-    [Trait("Job", "edge: DYD-1372 A3e a code evidence naming, from the root, a path the repository tracks lets the run go on")]
+    [Trait("Job", "edge: DYD-1372 A3e r3 a code evidence naming, from the root, a file that is there lets the run go on, with no git: a new file, an export")]
     public void CodeEvidenceNamingAPath_TheRunGoesOn()
     {
         using var root = new TempRoot();
         root.Write("docs/keeper.md", "# Keeper\n");
-        root.Track();
 
         var (exit, _, error) = root.Run(TruthModel.With(typeof(KeeperCodePath)));
 
         Assert.True(exit == 0, error);
         Assert.Contains("File your notes in the docs.", root.Files()[Spine]);
+    }
+
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 A3e r3 every code evidence of the production model is a path the checkout tracks, so none cites a file only one machine holds")]
+    public void ProductionCodeEvidence_IsTrackedInTheCheckout()
+    {
+        var tracked = CommittedTree.Tracked();
+        var cited = ModelIndex.ClaimIds(ProductionModel.Model.Kinds).Keys.Where(claim => claim.Truth?.Evidence.Kind == EvidenceKind.Code)
+            .Select(claim => claim.Truth!.Evidence.Text.Split('#', ':')[0].TrimEnd('/')).Distinct().ToArray();
+
+        Assert.NotEmpty(cited);
+        Assert.All(cited, path => Assert.Contains(tracked, file => file == path || file.StartsWith(path + "/", StringComparison.Ordinal)));
     }
 
     private static void AssertRejected(Type kind, string message) => AssertRejected(TruthModel.With(kind), message);

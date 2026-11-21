@@ -6,7 +6,7 @@ type: reference
 
 # Lines that name a resource no longer built
 
-Lines of the skills and standards not yet truth-checked that name a resource of a legacy skill which the skill that replaced it does not build. Each sends its reader to a file that is not there; these are listed, not hidden, until their skill is switched over or the resource is rebuilt.
+Lines of the model's skills and standards not yet truth-checked that name a resource of a legacy skill which the skill that replaced it does not build. A hand-written file is not read here. Each sends its reader to a file that is not there; these are listed, not hidden, until their skill is switched over or the resource is rebuilt.
 
 ## coordinator
 

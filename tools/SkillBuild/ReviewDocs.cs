@@ -56,7 +56,7 @@ internal static class ReviewDocs
     }
 
     /// <summary>
-    /// The lines of skills not yet migrated that name a resource of a <paramref name="replaced"/> legacy skill which
+    /// The model's lines, of skills not yet migrated, that name a resource of a <paramref name="replaced"/> legacy skill which
     /// the skill replacing it does not build (DYD-1372 F): a line names one when it holds the skill's name and the
     /// resource's, in code or as its file. Listed, never failed, since such a line may not be changed yet; nothing
     /// when no line does.
@@ -68,8 +68,8 @@ internal static class ReviewDocs
             .Except(pair.By.Resources.Select(resource => SkillRenderer.FileOf(resource.Id)))
             .Select(file => (Skill: pair.By.Name, File: file, Name: System.IO.Path.GetFileNameWithoutExtension(file)))).ToArray();
         var page = new Page(WhyDocs.Frontmatter, "Lines that name a resource no longer built");
-        page.Block("Lines of the skills and standards not yet truth-checked that name a resource of a legacy skill which the skill that replaced it does not build. " +
-                   "Each sends its reader to a file that is not there; these are listed, not hidden, until their skill is switched over or the resource is rebuilt.");
+        page.Block("Lines of the model's skills and standards not yet truth-checked that name a resource of a legacy skill which the skill that replaced it does not build. " +
+                   "A hand-written file is not read here. Each sends its reader to a file that is not there; these are listed, not hidden, until their skill is switched over or the resource is rebuilt.");
         var any = false;
         foreach (var (skill, lines) in legacy)
         {

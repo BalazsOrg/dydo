@@ -1,6 +1,5 @@
 namespace DynaDocs.Tests.SkillBuild;
 
-using System.Diagnostics;
 using DynaDocs.SkillBuild;
 
 /// <summary>A disposable repository root for builds, and the tool's <c>Program.Run</c> against it.</summary>
@@ -29,21 +28,5 @@ internal sealed class TempRoot : IDisposable
         .EnumerateFiles(Path, "*", SearchOption.AllDirectories)
         .ToDictionary(file => System.IO.Path.GetRelativePath(Path, file).Replace('\\', '/'), File.ReadAllText, StringComparer.Ordinal);
 
-    /// <summary>Makes the root a git repository that tracks every file written so far.</summary>
-    public void Track()
-    {
-        foreach (var arguments in new string[][] { ["init", "-q"], ["add", "-A"] })
-        {
-            using var git = Process.Start(new ProcessStartInfo("git", ["-C", Path, .. arguments]) { RedirectStandardOutput = true, RedirectStandardError = true })!;
-            git.WaitForExit();
-            Assert.Equal(0, git.ExitCode);
-        }
-    }
-
-    // Git's object files are read-only, which stops a recursive delete on Windows.
-    public void Dispose()
-    {
-        foreach (var file in Directory.EnumerateFiles(Path, "*", SearchOption.AllDirectories)) File.SetAttributes(file, FileAttributes.Normal);
-        Directory.Delete(Path, recursive: true);
-    }
+    public void Dispose() => Directory.Delete(Path, recursive: true);
 }

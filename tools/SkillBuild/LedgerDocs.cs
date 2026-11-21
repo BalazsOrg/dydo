@@ -1,3 +1,5 @@
+using System.Text.RegularExpressions;
+
 namespace DynaDocs.SkillBuild;
 
 /// <summary>
@@ -115,14 +117,20 @@ internal static class LedgerDocs
         foreach (var clause in fate.Clauses)
         {
             var what = $"{skill.Name}: the clause \"{clause.Quote}\" of claim:{line.Owner}";
-            if (string.IsNullOrWhiteSpace(clause.Quote) || !line.Line.Text.Contains(clause.Quote, StringComparison.Ordinal))
+            if (string.IsNullOrWhiteSpace(clause.Quote) || !Holds(line.Line.Text, clause.Quote))
                 throw new InvalidDataException($"{what} is not in its legacy line; a clause is quoted from the line, word for word");
+            if (fate.Clauses.Count(other => other.Quote == clause.Quote) > 1)
+                throw new InvalidDataException($"{what} is quoted twice; one clause has one fate");
             if (clause.Open is null && string.IsNullOrWhiteSpace(clause.Why))
                 throw new InvalidDataException($"{what} has no reason; a dropped or deferred clause says why in one line");
             if (clause.Open is { } open && !(claims.IdOf(open) is { } id && carried.GetValueOrDefault(id)))
                 throw new InvalidDataException($"{what} is withheld in a claim that is not an open claim the skill carries");
         }
     }
+
+    // Whole words: where the quote opens or closes on a letter or a digit, the line has no letter or digit beside it.
+    private static bool Holds(string line, string quote) => Regex.IsMatch(line,
+        (char.IsLetterOrDigit(quote[0]) ? @"(?<![\p{L}\p{Nd}])" : "") + Regex.Escape(quote) + (char.IsLetterOrDigit(quote[^1]) ? @"(?![\p{L}\p{Nd}])" : ""));
 
     private static string Outcome(Clause clause, ClaimIndex claims) => clause switch
     {

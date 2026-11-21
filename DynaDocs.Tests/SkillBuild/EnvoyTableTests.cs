@@ -181,9 +181,8 @@ public class EnvoyTableTests
     {
         // The other skills the production prose names (review r1 S7) are the checkout's own, so only the table's decide.
         using var root = Skills(["grilling", "walkthrough", "wayfinder", "co-thinker", "deep/wizard", .. HandWrittenOutsideTheTable()]);
-        // DYD-1372 A3e: the run also wants each code path a truth-checked claim gives as evidence, tracked, as the checkout holds it.
+        // DYD-1372 A3e: the run also wants each code path a truth-checked claim gives as evidence, which the checkout holds.
         foreach (var path in CodeEvidence()) root.Write(path, "");
-        root.Track();
 
         var (exit, _, error) = root.Run(ProductionModel.Model, "map");
 
