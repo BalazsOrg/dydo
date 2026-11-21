@@ -56,39 +56,39 @@ Reason: The officer can cut again from a known point without reading the whole t
 
 **ticket-captain** (TooBigSteps; read by TicketCaptain):
 
-> If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, return `too big, re-cut` to your officer, naming what is done and what is left. Your ticket then stays open as it stands: your officer settles it, and you do nothing more on it.
+> If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, return `too big, re-cut` to your officer, naming what is done and what is left. Your ticket then stays open as it stands. Your officer rewrites its contract down to what you finished and sends it to your thread: woken with it, close your ticket Done on that contract and return.
 
 ## Left
 
-`claim:CaptainTrouble.Left`: A ticket returned too big, re-cut stays open as it stands until its officer settles it; its holder does nothing more on it.
+`claim:CaptainTrouble.Left`: A ticket returned too big, re-cut stays open as it stands: its contract is its officer's to rewrite, and its holder, woken with the rewritten contract, closes it Done and returns.
 
 Spec: H2, S6
 
-Evidence (tool): delegate_task: a child's final result returns to the thread that started it, and the child's task ends with it.
+Evidence (tool): t3_thread_send: "A send to a finished child thread starts a fresh task and returns its `taskId`." delegate_task: a child's final result returns to the thread that started it.
 
-Layer: Linear leaves the ticket In Progress after its holder's thread has ended, and says nothing of who moves it next.
+Layer: Linear leaves the ticket In Progress after its holder's turn has ended, and says nothing of who moves it next.
 
-Reason: The child cannot close a ticket whose contract it has not met, and narrowing that contract was never its own to do.
+Reason: The child cannot end a step whose promise it has not met, and narrowing that promise was never its own to do; once narrowed, the step is still the child's to end, since the child began it.
 
 **ticket-captain** (TooBigSteps; read by TicketCaptain, on claim:CaptainTrouble.ReCut):
 
-> If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, return `too big, re-cut` to your officer, naming what is done and what is left. Your ticket then stays open as it stands: your officer settles it, and you do nothing more on it.
+> If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, return `too big, re-cut` to your officer, naming what is done and what is left. Your ticket then stays open as it stands. Your officer rewrites its contract down to what you finished and sends it to your thread: woken with it, close your ticket Done on that contract and return.
 
 ## Yours
 
-`claim:CaptainTrouble.Yours`: The ticket a child returned too big, re-cut is its officer's to settle, before the officer cuts what is left.
+`claim:CaptainTrouble.Yours`: The contract of a ticket a child returned too big, re-cut is its officer's to rewrite, before the officer cuts what is left; the ticket stays the child's to close.
 
-Spec: H2, S15
+Spec: H2, S15, S6
 
 Evidence (run): DYD-1372's contract, read 2026-11-21: its sections G and H were written from above, by the coordinator, and no writer below edited them. Spec H2: "a change to a unit's contract, or to its siblings', goes through the officer above".
 
-Layer: Linear lets any agent edit any ticket, and nothing says whose a returned ticket is once its holder's thread has ended.
+Layer: Linear lets any agent edit any ticket, and nothing says whose a returned ticket's contract is once its holder's turn has ended.
 
-Reason: The officer cut the ticket and wrote its contract, so it alone can say what the ticket now is.
+Reason: Whoever sized a part and wrote down its outcome is the one agent that knows what the narrowed part must still promise.
 
 **ticket-captain** (TooBigChild; read by TicketCaptain):
 
-> When a child returns `too big, re-cut`, the cut is yours, and so is the child's ticket, in this order:
+> When a child returns `too big, re-cut`, the cut is yours, and so is the child's contract, in this order:
 
 ## Narrow
 
@@ -104,23 +104,39 @@ Reason: A ticket closed against a contract it never met tells whoever reads it l
 
 **ticket-captain** (TooBigOfficer; read by TicketCaptain):
 
-> Settle the child's ticket on what it finished at the SHA it returned: rewrite its contract, in the ticket's description, down to that, and close the ticket Done on it; if the child finished nothing whole, cancel it instead. Note the re-cut on the ticket in one line.
+> Rewrite the child's contract, in its ticket's description, down to what it finished at the SHA it returned, and note the re-cut on the ticket in one line. If it finished nothing whole, cancel the ticket instead, with a one-line reason, and skip the next step.
 
 ## Settle
 
-`claim:CaptainTrouble.Settle`: The officer closes the returned ticket Done on the contract it now meets, or cancels it with a one-line reason when the child finished nothing whole.
+`claim:CaptainTrouble.Settle`: The officer never closes the returned ticket: it cancels it, with a one-line reason, only when the child finished nothing whole.
 
-Spec: S6, S10
+Spec: S10, S6
 
-Evidence (run): Linear, team Dydo, statuses read 2026-11-21: Done and Canceled are both statuses, and DYD-1372 stayed In Progress through every return of its writers.
+Evidence (tool): save_issue: `state`, "State type, name, or ID", moves a ticket for whoever calls it. Linear, DYD-1290 read 2026-11-21, is Done, of the type completed; team Dydo's statuses hold Canceled beside it (claim CaptainWaking.Unneeded).
 
-Layer: Linear leaves a returned ticket In Progress, and its holder's thread has ended, so nobody is left to close it but its officer.
+Layer: Linear lets any agent move any ticket to Done, the officer as readily as the child that started it.
 
-Reason: A card In Progress with no holder reads as work under way, and the replacements finish beside a ticket that never does.
+Reason: A dead card left In Progress reads as work under way, and one its officer closed Done reads as a step its starter ended, which nobody did.
 
 **ticket-captain** (TooBigOfficer; read by TicketCaptain, on claim:CaptainTrouble.Narrow):
 
-> Settle the child's ticket on what it finished at the SHA it returned: rewrite its contract, in the ticket's description, down to that, and close the ticket Done on it; if the child finished nothing whole, cancel it instead. Note the re-cut on the ticket in one line.
+> Rewrite the child's contract, in its ticket's description, down to what it finished at the SHA it returned, and note the re-cut on the ticket in one line. If it finished nothing whole, cancel the ticket instead, with a one-line reason, and skip the next step.
+
+## Handed
+
+`claim:CaptainTrouble.Handed`: The officer sends the rewritten contract to the child's thread under the ticket's key, and the child, which started the ticket, closes it Done on that contract and returns.
+
+Spec: S6, H2
+
+Evidence (tool): t3_thread_send: "A send to a finished child thread starts a fresh task and returns its `taskId`." Its `message` is all it carries, so the key in it is what tells the child which ticket the send is about.
+
+Layer: A rewritten description wakes nobody: Linear tells no thread that its ticket changed, and T3 starts a finished thread only on a send.
+
+Reason: Left unsent, the narrowed card sits In Progress with a holder that believes itself finished, and no agent remains that may end it.
+
+**ticket-captain** (TooBigOfficer; read by TicketCaptain):
+
+> Send the rewritten contract to the child's thread with `t3_thread_send`, under the ticket's key: the child started the ticket, so the child closes it Done on that contract and returns.
 
 ## ChildReCut
 
@@ -128,7 +144,7 @@ Reason: A card In Progress with no holder reads as work under way, and the repla
 
 Spec: H2, H14
 
-Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Split, "a child returns `too big, re-cut`: its ticket is settled on what it finished, and what it left is cut".
+Transition in A captain and its ticket (`claims/statechart/captain/Captain.tla`): Waiting → Split, "a child returns `too big, re-cut`: its contract is rewritten down to what it finished, and what it left is cut".
 
 Evidence (tool): delegate_task: a child's final result returns to the thread that started it.
 
@@ -138,7 +154,7 @@ Reason: The officer knows how the part fits the whole, which the child did not.
 
 **ticket-captain** (TooBigOfficer; read by TicketCaptain):
 
-> Open sub-tickets for what it left, starting from that SHA.
+> Open sub-tickets for what the child left, starting from that SHA.
 
 ## Contracts
 
@@ -170,7 +186,23 @@ Reason: The writer already understands the code, until its context is what stand
 
 **ticket-captain** (FixRules; read by TicketCaptain):
 
-> Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong.
+> Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong. Either way the Fix is a new ticket to its holder: brief it by Briefs (`briefs.md`), under the Fix's own key.
+
+## FixBrief
+
+`claim:CaptainTrouble.FixBrief`: A Fix is a new ticket to whoever takes it, its writer's thread included: its brief is written like any dispatch's and names the Fix's own key.
+
+Spec: S9, S6, K14
+
+Evidence (tool): t3_thread_send: "A send to a finished child thread starts a fresh task and returns its `taskId`." Its `message` is all it carries: nothing in a send marks it as a second ticket for the thread that receives it.
+
+Layer: T3 carries a message into a thread as it is, and adds no key and no mark that an assignment is new.
+
+Reason: The key is the one thing in the message that tells a writer its Implement is over and another step begins, to be started and closed as its own.
+
+**ticket-captain** (FixRules; read by TicketCaptain, on claim:CaptainTrouble.FixOwner):
+
+> Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong. Either way the Fix is a new ticket to its holder: brief it by Briefs (`briefs.md`), under the Fix's own key.
 
 ## FixName
 

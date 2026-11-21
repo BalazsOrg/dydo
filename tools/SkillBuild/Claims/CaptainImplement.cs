@@ -111,7 +111,7 @@ public static class CaptainImplement
 
     public static readonly Claim Skills = new("A writer loads domain-modeling when it touches a glossary term or a Decision Record.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 4,
+        At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 5,
             "Load /domain-modeling when you touch a glossary term or a Decision Record, and /codebase-design when you design a seam or an interface.", () => [Seam])
     ])
     {
@@ -122,7 +122,7 @@ public static class CaptainImplement
     };
 
     public static readonly Claim Design = new("An open design question is not the writer's to settle; a prototype answers one.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 5, "An open design question is a Question sub-ticket, never yours to settle; /prototype is the skill that answers one.")])
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 6, "An open design question is a Question sub-ticket, never yours to settle; /prototype is the skill that answers one.")])
     {
         Spec = ["H16"],
         Truth = new(Evidence.Code("skills/engineering/prototype/SKILL.md"),
@@ -137,6 +137,16 @@ public static class CaptainImplement
         Truth = new(Evidence.Code("tools/SkillBuild/TruthCheck.cs"),
             Layer: "A fix closes its ticket whether or not anything stops the same mistake next time.",
             Reason: "The candidate's lists numbered `1. 1. 1.` reached the user once; the build now fails on one.")
+    };
+
+    public static readonly Claim From = new("On a Fix, its writer starts from the SHA its brief names and brings its own checkout up to that commit first.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementFix, 0, "Start from the SHA your brief names: where your checkout is behind it, bring your branch up to it with `git merge <SHA>` before you change anything.")])
+    {
+        Spec = ["S9", "K14", "H3"],
+        Truth = new(Evidence.Run("`git merge` ran unrefused on DYD-1372's branch, 2026-11-21, under the guard; `git rev-parse --git-common-dir` in a T3 worktree names the one repository all of them share, " +
+                                 "so a SHA made in one checkout is reachable from another. t3_thread_send prepares no checkout: its fields are a thread and a message."),
+            Layer: "T3 prepares a checkout only for a child it starts; a send to a thread that already has one leaves it where its last commit left it.",
+            Reason: "A repair written on a stale tree is judged, a round later, against code it was never built with.")
     };
 
     public static readonly Claim Source = new("On a Fix, each finding's severity is checked against the source, not its label.", Me,

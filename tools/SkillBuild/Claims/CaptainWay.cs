@@ -5,6 +5,8 @@ namespace DynaDocs.SkillBuild;
 /// that cannot see the route from its ticket to the spec finds the way before it cuts, a part at a
 /// time. The hand-written wayfinder skill says how fog is charted and cleared; these claims carry only
 /// what the ticket's captain does with it, each held against that skill so the two never disagree.
+/// Where that skill holds a procedure of its own for tickets, Questions and needs, the captain's lines
+/// govern: the line that has it loaded says so (gap hunt 3, N4).
 /// </summary>
 public static class CaptainWay
 {
@@ -29,7 +31,7 @@ public static class CaptainWay
     public static readonly Claim Fog = new("A captain that cannot see the route loads the wayfinder skill and finds the way a part at a time; it never cuts the whole at once.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Fog, 2,
-            "If you cannot, load `/wayfinder` and find the way a part at a time, by [Finding the way](resources/wayfind.md): never cut the whole at once.")
+            "If you cannot, find the way a part at a time with `/wayfinder`, by [Finding the way](resources/wayfind.md): never cut the whole at once.")
     ])
     {
         Spec = ["H10", "H23"],
@@ -38,6 +40,20 @@ public static class CaptainWay
             Layer: "The host lists the wayfinder among its skills and loads it only when asked, and until this line a captain was asked only when its brief named it.",
             Reason: "A feature cut whole in the fog fixes every later part before the first has shown what the next should be."),
         Transition = new(CaptainState.Taken, CaptainState.Wayfinding, "the route to the spec is not all in sight: the way is found before the cut")
+    };
+
+    public static readonly Claim Scope = new("A captain takes from the wayfinder skill only how to find the way: every ticket it opens on the way, every Question and every need goes by the captain skill's own lines.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.WayLead, 1,
+            "Load `/wayfinder` for how to find the way, and for that alone: every ticket you open on the way, every Question and every need goes by this skill's own lines.")
+    ])
+    {
+        Spec = ["H10", "H23", "H16"],
+        Truth = new(Evidence.Run(Wayfinder + "beside its way of finding a route it holds a Question procedure of its own, \"Whoever opens it sets its stage label\", and has a researching captain open " +
+                                 "\"a `council` child, an AFK council chaired with the ticket captain's council-chair resource\". " + Labels + "the groups are Severity, Mode and Type, and no label names a stage. " +
+                                 "`tools/SkillBuild/Model4/CaptainLedger.cs` defers the council-chair resource: this skill builds none."),
+            Layer: "The host loads a skill whole: it cannot load the part on finding a route and leave out the part on Questions.",
+            Reason: "Two procedures for one call leave its holder to pick, and the one it must not pick sets labels Linear lacks and names a resource nobody built.")
     };
 
     public static readonly Claim Visible = new("While it finds the way, a captain cuts only the parts whose contract it can write now, each sized to one agent, and leaves the fog uncut.", Me,

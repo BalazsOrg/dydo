@@ -587,7 +587,7 @@
       "claim": "claim:CaptainTrouble.ChildReCut",
       "from": "Waiting",
       "to": "Split",
-      "arrow": "a child returns `too big, re-cut`: its ticket is settled on what it finished, and what it left is cut",
+      "arrow": "a child returns `too big, re-cut`: its contract is rewritten down to what it finished, and what it left is cut",
       "spec": [
         "H2",
         "H14"

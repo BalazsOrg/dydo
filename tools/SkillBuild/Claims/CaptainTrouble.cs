@@ -3,7 +3,9 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// The ticket-captain prototype's scenarios that are not about a merge or a need for the user
 /// (DYD-1372): a ticket too big to hold, and fix rounds with their checkpoint. Each says where the work
-/// is saved, how it resumes, and where it goes when the captain cannot settle it (K9).
+/// is saved, how it resumes, and where it goes when the captain cannot settle it (K9). After a re-cut
+/// the officer rewrites the child's contract and the child, which started the ticket, closes it (gap
+/// hunt 3, N3; spec S6, H2); the officer cancels only a ticket with nothing whole (S10).
 /// </summary>
 public static class CaptainTrouble
 {
@@ -11,6 +13,8 @@ public static class CaptainTrouble
     private const string Rounds = "Linear, DYD-1281's sub-tickets read 2026-11-20: Fix r1, r2 and r3, each followed by a Review titled a fresh review; r4 is titled the checkpoint round.";
 
     private const string Fixes = "Linear, DYD-1281's sub-tickets read 2026-11-21: Fix r1 (DYD-1327), Fix r2 (DYD-1333) and Fix r3 (DYD-1339) are one ticket each and hold no sub-ticket. ";
+
+    private const string Restart = "t3_thread_send: \"A send to a finished child thread starts a fresh task and returns its `taskId`.\"";
 
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
@@ -37,7 +41,8 @@ public static class CaptainTrouble
     [
         At(Actor.TicketCaptain, CaptainSlot.TooBigSteps, 3,
             "If what is left cannot be divided coherently under your ticket, for example because part of it belongs with a sibling's work, " +
-            "return `too big, re-cut` to your officer, naming what is done and what is left. Your ticket then stays open as it stands: your officer settles it, and you do nothing more on it.",
+            "return `too big, re-cut` to your officer, naming what is done and what is left. Your ticket then stays open as it stands. " +
+            "Your officer rewrites its contract down to what you finished and sends it to your thread: woken with it, close your ticket Done on that contract and return.",
             () => [Left!])
     ])
     {
@@ -48,29 +53,30 @@ public static class CaptainTrouble
         Transition = new(CaptainState.Leaf, CaptainState.Returned, "`too big, re-cut`: what is left cannot be divided coherently under the ticket")
     };
 
-    public static readonly Claim Left = new("A ticket returned too big, re-cut stays open as it stands until its officer settles it; its holder does nothing more on it.", Me, [])
+    public static readonly Claim Left = new("A ticket returned too big, re-cut stays open as it stands: its contract is its officer's to rewrite, and its holder, woken with the rewritten contract, " +
+                                            "closes it Done and returns.", Me, [])
     {
         Spec = ["H2", "S6"],
-        Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it, and the child's task ends with it."),
-            Layer: "Linear leaves the ticket In Progress after its holder's thread has ended, and says nothing of who moves it next.",
-            Reason: "The child cannot close a ticket whose contract it has not met, and narrowing that contract was never its own to do.")
+        Truth = new(Evidence.Tool(Restart + " delegate_task: a child's final result returns to the thread that started it."),
+            Layer: "Linear leaves the ticket In Progress after its holder's turn has ended, and says nothing of who moves it next.",
+            Reason: "The child cannot end a step whose promise it has not met, and narrowing that promise was never its own to do; once narrowed, the step is still the child's to end, since the child began it.")
     };
 
-    public static readonly Claim Yours = new("The ticket a child returned too big, re-cut is its officer's to settle, before the officer cuts what is left.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.TooBigChild, 1, "When a child returns `too big, re-cut`, the cut is yours, and so is the child's ticket, in this order:")])
+    public static readonly Claim Yours = new("The contract of a ticket a child returned too big, re-cut is its officer's to rewrite, before the officer cuts what is left; the ticket stays the child's to close.", Me,
+        [At(Actor.TicketCaptain, CaptainSlot.TooBigChild, 1, "When a child returns `too big, re-cut`, the cut is yours, and so is the child's contract, in this order:")])
     {
-        Spec = ["H2", "S15"],
+        Spec = ["H2", "S15", "S6"],
         Truth = new(Evidence.Run("DYD-1372's contract, read 2026-11-21: its sections G and H were written from above, by the coordinator, and no writer below edited them. " +
                                  "Spec H2: \"a change to a unit's contract, or to its siblings', goes through the officer above\"."),
-            Layer: "Linear lets any agent edit any ticket, and nothing says whose a returned ticket is once its holder's thread has ended.",
-            Reason: "The officer cut the ticket and wrote its contract, so it alone can say what the ticket now is.")
+            Layer: "Linear lets any agent edit any ticket, and nothing says whose a returned ticket's contract is once its holder's turn has ended.",
+            Reason: "Whoever sized a part and wrote down its outcome is the one agent that knows what the narrowed part must still promise.")
     };
 
     public static readonly Claim Narrow = new("The officer rewrites the returned ticket's contract down to what the child finished at the SHA it returned, and notes the re-cut on the ticket.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.TooBigOfficer, 1,
-            "Settle the child's ticket on what it finished at the SHA it returned: rewrite its contract, in the ticket's description, down to that, and close the ticket Done on it; " +
-            "if the child finished nothing whole, cancel it instead. Note the re-cut on the ticket in one line.",
+            "Rewrite the child's contract, in its ticket's description, down to what it finished at the SHA it returned, and note the re-cut on the ticket in one line. " +
+            "If it finished nothing whole, cancel the ticket instead, with a one-line reason, and skip the next step.",
             () => [Settle!])
     ])
     {
@@ -80,22 +86,35 @@ public static class CaptainTrouble
             Reason: "A ticket closed against a contract it never met tells whoever reads it later that the whole part was built.")
     };
 
-    public static readonly Claim Settle = new("The officer closes the returned ticket Done on the contract it now meets, or cancels it with a one-line reason when the child finished nothing whole.", Me, [])
+    public static readonly Claim Settle = new("The officer never closes the returned ticket: it cancels it, with a one-line reason, only when the child finished nothing whole.", Me, [])
     {
-        Spec = ["S6", "S10"],
-        Truth = new(Evidence.Run("Linear, team Dydo, statuses read 2026-11-21: Done and Canceled are both statuses, and DYD-1372 stayed In Progress through every return of its writers."),
-            Layer: "Linear leaves a returned ticket In Progress, and its holder's thread has ended, so nobody is left to close it but its officer.",
-            Reason: "A card In Progress with no holder reads as work under way, and the replacements finish beside a ticket that never does.")
+        Spec = ["S10", "S6"],
+        Truth = new(Evidence.Tool("save_issue: `state`, \"State type, name, or ID\", moves a ticket for whoever calls it. Linear, DYD-1290 read 2026-11-21, is Done, of the type completed; " +
+                                  "team Dydo's statuses hold Canceled beside it (claim CaptainWaking.Unneeded)."),
+            Layer: "Linear lets any agent move any ticket to Done, the officer as readily as the child that started it.",
+            Reason: "A dead card left In Progress reads as work under way, and one its officer closed Done reads as a step its starter ended, which nobody did.")
+    };
+
+    public static readonly Claim Handed = new("The officer sends the rewritten contract to the child's thread under the ticket's key, and the child, which started the ticket, closes it Done on that contract and returns.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.TooBigOfficer, 2,
+            "Send the rewritten contract to the child's thread with `t3_thread_send`, under the ticket's key: the child started the ticket, so the child closes it Done on that contract and returns.")
+    ])
+    {
+        Spec = ["S6", "H2"],
+        Truth = new(Evidence.Tool(Restart + " Its `message` is all it carries, so the key in it is what tells the child which ticket the send is about."),
+            Layer: "A rewritten description wakes nobody: Linear tells no thread that its ticket changed, and T3 starts a finished thread only on a send.",
+            Reason: "Left unsent, the narrowed card sits In Progress with a holder that believes itself finished, and no agent remains that may end it.")
     };
 
     public static readonly Claim ChildReCut = new("An officer whose child returns too big, re-cut cuts what the child left.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.TooBigOfficer, 2, "Open sub-tickets for what it left, starting from that SHA.")])
+        [At(Actor.TicketCaptain, CaptainSlot.TooBigOfficer, 3, "Open sub-tickets for what the child left, starting from that SHA.")])
     {
         Spec = ["H2", "H14"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),
             Layer: "The return lands in the officer's thread, and nothing re-opens the work.",
             Reason: "The officer knows how the part fits the whole, which the child did not."),
-        Transition = new(CaptainState.Waiting, CaptainState.Split, "a child returns `too big, re-cut`: its ticket is settled on what it finished, and what it left is cut")
+        Transition = new(CaptainState.Waiting, CaptainState.Split, "a child returns `too big, re-cut`: its contract is rewritten down to what it finished, and what it left is cut")
     };
 
     public static readonly Claim Contracts = new("A change to a unit's contract, or to a sibling's, goes through the officer above.", Me,
@@ -110,13 +129,23 @@ public static class CaptainTrouble
     public static readonly Claim FixOwner = new("A Fix goes to its writer's thread while that thread has room, and to a fresh agent otherwise.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.FixRules, 3,
-            "Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong.")
+            "Give a Fix to its writer's thread, with `t3_thread_send`, while that thread is alive and has room in its context; dispatch a fresh agent for it when the context is heavy or a blocker says the approach was wrong. " +
+            "Either way the Fix is a new ticket to its holder: brief it by [Briefs](briefs.md), under the Fix's own key.",
+            () => [FixBrief!])
     ])
     {
         Spec = ["S9"],
-        Truth = new(Evidence.Run("This skill's own Fix came so: its captain sent fix r0 to the thread that wrote hop 2. t3_thread_send: \"A send to a finished child thread starts a fresh task and returns its `taskId`.\""),
+        Truth = new(Evidence.Run("This skill's own Fix came so: its captain sent fix r0 to the thread that wrote hop 2. " + Restart),
             Layer: "T3 will resume any thread, and cannot tell a useful context from a spent one.",
             Reason: "The writer already understands the code, until its context is what stands in the way.")
+    };
+
+    public static readonly Claim FixBrief = new("A Fix is a new ticket to whoever takes it, its writer's thread included: its brief is written like any dispatch's and names the Fix's own key.", Me, [])
+    {
+        Spec = ["S9", "S6", "K14"],
+        Truth = new(Evidence.Tool(Restart + " Its `message` is all it carries: nothing in a send marks it as a second ticket for the thread that receives it."),
+            Layer: "T3 carries a message into a thread as it is, and adds no key and no mark that an assignment is new.",
+            Reason: "The key is the one thing in the message that tells a writer its Implement is over and another step begins, to be started and closed as its own.")
     };
 
     public static readonly Claim FixName = new("A Fix ticket is opened at verdict time, titled after its round, Fix rN, and lists every blocker it is to close.", Me,

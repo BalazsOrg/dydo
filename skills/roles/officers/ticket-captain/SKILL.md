@@ -13,7 +13,7 @@ Decide only obvious, reversible calls; any other call becomes a Question sub-tic
 
 ## 1. Take the ticket
 
-This phase is for your dispatch. Woken later in this thread, by a return or a message, go on by [Waking](resources/waking.md).
+A brief that names a ticket key new to you is a dispatch: take it from here. Any other wake, by a return or a message, goes by [Waking](resources/waking.md).
 Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.
 Then check that the ticket is unstarted and that your brief and its contract give you what the work needs; if either fails, or your brief calls it filler, go by [Before you start](resources/start.md).
 Set the ticket In Progress, then load your kind's resource and every skill your brief names.
@@ -30,11 +30,10 @@ A Grilling, Walkthrough, Wayfinding or Enablement ticket, or any other Question,
 
 **A leaf.**
 A ticket that fits you is a leaf: do it as your kind's resource says, with native helpers for lookups and side work.
-You commit what a helper changes.
 
 **Fog.**
 Before you cut a bigger ticket, check that you see its route to the spec: that you can write every part's contract now.
-If you cannot, load `/wayfinder` and find the way a part at a time, by [Finding the way](resources/wayfind.md): never cut the whole at once.
+If you cannot, find the way a part at a time with `/wayfinder`, by [Finding the way](resources/wayfind.md): never cut the whole at once.
 
 **A split.**
 Cut a bigger ticket into sub-tickets, one per part another captain will hold, by [Sub-tickets](resources/sub-tickets.md).

@@ -18,6 +18,7 @@ Below the rules for every change, each part is headed by the work it is for: rea
 - Leave what you touched no worse than you found it.
 - Keep every file you change, tests included, within the file size limit your brief's gates check, and split one that passes it.
 - One writer per worktree: commit only inside the paths your ticket owns.
+- You commit what a helper changes.
 - Load /domain-modeling when you touch a glossary term or a Decision Record, and /codebase-design when you design a seam or an interface.
 - An open design question is a Question sub-ticket, never yours to settle; /prototype is the skill that answers one.
 - A fix for a mistake that had already landed carries the lint, test or rule that keeps it from coming back.
@@ -62,6 +63,7 @@ Below the rules for every change, each part is headed by the work it is for: rea
 
 **On a Fix:**
 
+- Start from the SHA your brief names: where your checkout is behind it, bring your branch up to it with `git merge <SHA>` before you change anything.
 - Check each finding's severity against the source, not its label.
 - Close only the findings your brief names, preferring the change that deletes or narrows code.
 - Put a label you dispute in your return, with its evidence: file:line, test or output.

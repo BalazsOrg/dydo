@@ -54,6 +54,7 @@ public enum CaptainSlot
     BriefReview,
     BriefNone,
     Tickets,
+    WayLead,
     WaySteps,
     WayUser,
     FillerLead,

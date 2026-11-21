@@ -187,7 +187,7 @@ public static class CaptainDispatch
     };
 
     public static readonly Claim Route = new("An out-of-scope report from a child goes to its owner's ticket or a new Bug.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 3, "Send what a child reports outside its scope to the owner's ticket or a new Bug.")])
+        [At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 4, "Send what a child reports outside its scope to the owner's ticket or a new Bug.")])
     {
         Spec = ["R5"],
         Truth = new(Evidence.Run("Linear, team Dydo, labels read 2026-11-20: the Type group holds Bug."),

@@ -36,7 +36,7 @@ Layer: The host starts the helper; whether its work is recorded and committed is
 
 Reason: A helper's edits are part of the holder's change, so they land under the holder's commit and its review.
 
-**ticket-captain** (Leaf; read by TicketCaptain):
+**ticket-captain** (ImplementRules; read by TicketCaptain):
 
 > You commit what a helper changes.
 

@@ -6,9 +6,25 @@ type: reference
 
 # Claims: CaptainIntake
 
+## NewKey
+
+`claim:CaptainIntake.NewKey`: A brief that names a ticket key its reader does not hold is a new dispatch, in a thread the reader has worked in as in a fresh one: it takes phase 1 from its first line.
+
+Spec: S6, S9, S7
+
+Evidence (tool): t3_thread_send: "A send to a finished child thread starts a fresh task and returns its `taskId`.", and its `message` is all a send carries. So a thread whose ticket is closed can be handed a second ticket, and only the message's words say that it is one.
+
+Layer: T3 delivers a message to a thread and says nothing of whether it continues the thread's ticket or hands it another.
+
+Reason: A Fix read as more of the Implement it follows is never started, so its card stays in Todo while the work is done under a ticket already closed.
+
+**ticket-captain** (Take; read by TicketCaptain, on claim:CaptainIntake.Woken):
+
+> A brief that names a ticket key new to you is a dispatch: take it from here. Any other wake, by a return or a message, goes by Waking (`resources/waking.md`).
+
 ## Woken
 
-`claim:CaptainIntake.Woken`: Phase 1 is read once, at dispatch; a holder woken later in its own thread goes on from the waking resource.
+`claim:CaptainIntake.Woken`: Phase 1 is read once for each ticket key a brief gives its reader; every other wake in a thread, by a return or a message, goes on from the waking resource.
 
 Spec: S7, H12
 
@@ -20,7 +36,7 @@ Reason: A holder that runs its intake a second time finds its own ticket started
 
 **ticket-captain** (Take; read by TicketCaptain):
 
-> This phase is for your dispatch. Woken later in this thread, by a return or a message, go on by Waking (`resources/waking.md`).
+> A brief that names a ticket key new to you is a dispatch: take it from here. Any other wake, by a return or a message, goes by Waking (`resources/waking.md`).
 
 ## Check
 

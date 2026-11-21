@@ -45,8 +45,9 @@ public static class CaptainCarrier
 
     private static readonly Resource SubTickets = new(CaptainResource.SubTickets, "Sub-tickets", Slot.Bullets(CaptainSlot.Tickets));
 
+    // It opens with the one line that has the wayfinder skill loaded, and says how far that skill reaches.
     private static readonly Resource Wayfind = new(CaptainResource.Wayfind, "Finding the way",
-        Slot.Steps(CaptainSlot.WaySteps), Slot.Bullets(CaptainSlot.WayUser, "The user's part:"));
+        Slot.Paragraph(CaptainSlot.WayLead), Slot.Steps(CaptainSlot.WaySteps), Slot.Bullets(CaptainSlot.WayUser, "The user's part:"));
 
     private static readonly Resource Briefs = new(CaptainResource.Briefs, "Briefs",
         Slot.Paragraph(CaptainSlot.BriefLead), Slot.Bullets(CaptainSlot.BriefAll, "Every brief names:"), Slot.Bullets(CaptainSlot.BriefReview, "A review brief also names:"),

@@ -52,7 +52,11 @@ public static class CaptainBriefs
     };
 
     public static readonly Claim Merger = new("A brief names who merges the work.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 4, "Who merges the work: the child, you, or nobody when it merges nothing.")])
+    [
+        At(Actor.TicketCaptain, CaptainSlot.BriefAll, 4,
+            "Who merges the work: the child, you, or nobody when it merges nothing. When it is the child, also the branch its PR targets, a `feature/` branch: `dydo merge` takes no other.",
+            () => [Target!])
+    ])
     {
         Spec = ["K14", "R21"],
         Truth = new(Evidence.Run(OwnBrief + "\"Do not push; no PR; no merge.\""),
@@ -60,13 +64,33 @@ public static class CaptainBriefs
             Reason: "It decides how the child finishes, and two agents never both merge.")
     };
 
+    public static readonly Claim Target = new("The brief of a child that merges its own work names the branch its PR targets, which dydo merge takes only when it is a feature branch.", Me, [])
+    {
+        Spec = ["K14", "R23"],
+        Truth = new(Evidence.Code("Services/Merge/FeatureBranch.cs"),
+            Layer: "`dydo merge` refuses a PR whose base is no `feature/` branch, and says so only at the merge; a fresh checkout names no branch as the one its work is for.",
+            Reason: "A child left to pick its base aims at its officer's ticket branch, where the one command that may merge a PR refuses.")
+    };
+
     public static readonly Claim Change = new("A change's brief names its owned paths and gates, and a Fix's the findings it closes.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefAll, 5, "For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes.")])
+    [
+        At(Actor.TicketCaptain, CaptainSlot.BriefAll, 5,
+            "For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes and the SHA it starts from: your branch's head, which holds the candidate they were found at.",
+            () => [FixBase!])
+    ])
     {
         Spec = ["K14"],
         Truth = new(Evidence.Run(OwnBrief + "it named the gates before return and \"Commit only owned paths\"."),
             Layer: "The guard blocks a few paths for everyone and knows nothing of one ticket's.",
             Reason: "Two writers with stated paths cannot overwrite each other.")
+    };
+
+    public static readonly Claim FixBase = new("A Fix's brief names the SHA the Fix starts from: its dispatcher's branch head, which holds the candidate the findings were found at.", Me, [])
+    {
+        Spec = ["K14", "S9"],
+        Truth = new(Evidence.Run("This skill's third fixer got such a brief (DYD-1372 phase 1, fix g3): \"branch `DYD-1372-captain-prototype`, head `269188cd`, clean\", the head of its captain's branch that day."),
+            Layer: "A writer's thread keeps its own last commit, and nothing in a message says that the whole has moved past it.",
+            Reason: "Told where to begin, a writer whose checkout stayed at its own part does not repair a tree the round never saw.")
     };
 
     public static readonly Claim Asked = new("A captain briefs a Question only when it sends a child to research it: the brief names the question, the choice that waits on it, " +

@@ -9,8 +9,8 @@ Brief without loading the child's kind resource: the child loads its own.
 - The ticket, by its key, and its kind.
 - `/ticket-captain`, then every other skill the ticket needs, each with a slash.
 - Whether you cut the ticket as a leaf: its captain then does the work itself, and splits it only if it proves too big.
-- Who merges the work: the child, you, or nobody when it merges nothing.
-- For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes.
+- Who merges the work: the child, you, or nobody when it merges nothing. When it is the child, also the branch its PR targets, a `feature/` branch: `dydo merge` takes no other.
+- For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes and the SHA it starts from: your branch's head, which holds the candidate they were found at.
 - For a Question you send a child to research, the only Question you brief: the question, the choice that waits on it, and that the child is to research it. A HITL Question goes up unbriefed, by [A need for the user](need-for-the-user.md).
 - Whether the child takes over a ticket another agent started, and then the commit it resumes from.
 

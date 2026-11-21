@@ -5,7 +5,9 @@ namespace DynaDocs.SkillBuild;
 /// leaf and how work is cut; these claims say only what the captain then does (DYD-1295 0f340abd).
 /// What gets a sub-ticket, its contract, its Mode and its steps sit in the Sub-tickets resource the
 /// cut links, which only a captain that cuts reads; so does the one change a captain that has split
-/// still writes itself, which is the last thing that gets no ticket.
+/// still writes itself, which is the last thing that gets no ticket. Who commits a helper's changes
+/// sits in the implement resource, beside its rule on commits: only a holder that writes has a helper
+/// that changes a file (gap hunt 3).
 /// </summary>
 public static class CaptainSplit
 {
@@ -24,7 +26,7 @@ public static class CaptainSplit
     };
 
     public static readonly Claim Helpers = new("A native helper's work is committed by its holder.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.Leaf, 2, "You commit what a helper changes.")])
+        [At(Actor.TicketCaptain, CaptainSlot.ImplementRules, 4, "You commit what a helper changes.")])
     {
         Spec = ["H3", "S1"],
         Truth = new(Evidence.Tool("Agent: a native sub-agent runs inside its caller's session and reports only to the caller."),

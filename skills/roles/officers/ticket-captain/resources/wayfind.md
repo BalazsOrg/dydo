@@ -2,6 +2,8 @@
 
 # Finding the way
 
+Load `/wayfinder` for how to find the way, and for that alone: every ticket you open on the way, every Question and every need goes by this skill's own lines.
+
 1. Cut only the parts whose contract you can write now, each small enough for one agent, by [Sub-tickets](sub-tickets.md), and leave the fog uncut. A question whose answer would clear fog is such a part.
 2. When a part returns, cut the parts whose contract its result lets you write, and repeat until no fog is left.
 

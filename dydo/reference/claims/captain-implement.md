@@ -205,6 +205,22 @@ Reason: The candidate's lists numbered `1. 1. 1.` reached the user once; the bui
 
 > A fix for a mistake that had already landed carries the lint, test or rule that keeps it from coming back.
 
+## From
+
+`claim:CaptainImplement.From`: On a Fix, its writer starts from the SHA its brief names and brings its own checkout up to that commit first.
+
+Spec: S9, K14, H3
+
+Evidence (run): `git merge` ran unrefused on DYD-1372's branch, 2026-11-21, under the guard; `git rev-parse --git-common-dir` in a T3 worktree names the one repository all of them share, so a SHA made in one checkout is reachable from another. t3_thread_send prepares no checkout: its fields are a thread and a message.
+
+Layer: T3 prepares a checkout only for a child it starts; a send to a thread that already has one leaves it where its last commit left it.
+
+Reason: A repair written on a stale tree is judged, a round later, against code it was never built with.
+
+**ticket-captain** (ImplementFix; read by TicketCaptain):
+
+> Start from the SHA your brief names: where your checkout is behind it, bring your branch up to it with `git merge <SHA>` before you change anything.
+
 ## Source
 
 `claim:CaptainImplement.Source`: On a Fix, each finding's severity is checked against the source, not its label.

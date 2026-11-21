@@ -38,7 +38,23 @@ Reason: A feature cut whole in the fog fixes every later part before the first h
 
 **ticket-captain** (Fog; read by TicketCaptain):
 
-> If you cannot, load `/wayfinder` and find the way a part at a time, by Finding the way (`resources/wayfind.md`): never cut the whole at once.
+> If you cannot, find the way a part at a time with `/wayfinder`, by Finding the way (`resources/wayfind.md`): never cut the whole at once.
+
+## Scope
+
+`claim:CaptainWay.Scope`: A captain takes from the wayfinder skill only how to find the way: every ticket it opens on the way, every Question and every need goes by the captain skill's own lines.
+
+Spec: H10, H23, H16
+
+Evidence (run): `skills/productivity/wayfinder/SKILL.md`, read 2026-11-21: beside its way of finding a route it holds a Question procedure of its own, "Whoever opens it sets its stage label", and has a researching captain open "a `council` child, an AFK council chaired with the ticket captain's council-chair resource". Linear, team Dydo, labels read 2026-11-21: the groups are Severity, Mode and Type, and no label names a stage. `tools/SkillBuild/Model4/CaptainLedger.cs` defers the council-chair resource: this skill builds none.
+
+Layer: The host loads a skill whole: it cannot load the part on finding a route and leave out the part on Questions.
+
+Reason: Two procedures for one call leave its holder to pick, and the one it must not pick sets labels Linear lacks and names a resource nobody built.
+
+**ticket-captain** (WayLead; read by TicketCaptain):
+
+> Load `/wayfinder` for how to find the way, and for that alone: every ticket you open on the way, every Question and every need goes by this skill's own lines.
 
 ## Visible
 

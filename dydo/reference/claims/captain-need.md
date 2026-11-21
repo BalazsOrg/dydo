@@ -200,7 +200,23 @@ Reason: His answer is the slowest route there is, so every hour before it is ask
 
 **ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Up):
 
-> Send what stays open to your officer's thread with `t3_thread_send`, by its key and with what was found: at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.
+> Send what stays open, by its key and with what was found, to your officer's thread, which `t3_thread_list` shows as your own thread's parent, with `t3_thread_send`: at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.
+
+## Address
+
+`claim:CaptainNeed.Address`: A holder finds its officer's thread as the parent of its own thread, which the thread list shows.
+
+Spec: H12, H16
+
+Evidence (tool): t3_thread_list, called 2026-11-21 from the thread of this skill's third fixer: the result names `currentThreadId`, and that thread's row carries `parentThreadId`, there its captain's thread, with `relationshipToParent` "subagent". t3_thread_send: `threadId` is required.
+
+Layer: T3 carries a child's last message back to its dispatcher unasked; a send from inside a turn needs the thread's id, and nothing hands a child that id.
+
+Reason: With a need and no address, an agent ends its turn on it and stops work that one answer from above would have kept moving.
+
+**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Up):
+
+> Send what stays open, by its key and with what was found, to your officer's thread, which `t3_thread_list` shows as your own thread's parent, with `t3_thread_send`: at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.
 
 ## Up
 
@@ -218,7 +234,7 @@ Reason: Whether a call is worth his time is weighed once, above, instead of by e
 
 **ticket-captain** (NeedSteps; read by TicketCaptain):
 
-> Send what stays open to your officer's thread with `t3_thread_send`, by its key and with what was found: at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.
+> Send what stays open, by its key and with what was found, to your officer's thread, which `t3_thread_list` shows as your own thread's parent, with `t3_thread_send`: at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.
 
 ## Refused
 

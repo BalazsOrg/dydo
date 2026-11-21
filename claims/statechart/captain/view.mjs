@@ -45,7 +45,7 @@ const steps = {
   "CaptainSplit_Cut": "the ticket is bigger than one agent and its route is in sight: it is cut · H2, H13",
   "CaptainSplit_Leaf": "the ticket fits one agent · H2, S2",
   "CaptainTrouble_Checkpoint": "`checkpoint: one more round, because …`: the blockers go to a Fix · R10, S10",
-  "CaptainTrouble_ChildReCut": "a child returns `too big, re-cut`: its ticket is settled on what it finished, and what it left is cut · H2, H14",
+  "CaptainTrouble_ChildReCut": "a child returns `too big, re-cut`: its contract is rewritten down to what it finished, and what it left is cut · H2, H14",
   "CaptainTrouble_Escalate": "`escalated: …`: a fundamental break, a new requirement or a need for the user goes to the officer · R10",
   "CaptainTrouble_NextRound": "the Fix is Done: a fresh round · R8, S9",
   "CaptainTrouble_ReCut": "`too big, re-cut`: what is left cannot be divided coherently under the ticket · H2",
