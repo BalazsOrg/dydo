@@ -22,11 +22,11 @@ public static class SkillBuilder
         var claims = new ClaimIndex(ModelIndex.ClaimIds(model.Kinds));
         var chart = new Statechart(model, claims);
         var replaced = LedgerDocs.Replaced(model);
-        TruthCheck.Answers(claims, model.Skills.Where(skill => skill.TruthChecked).Select(skill => skill.Id).ToHashSet());
+        TruthCheck.Answers(claims, model.Skills);
         chart.OwnsItsArrows(claims);
         foreach (var (skill, lines) in bySkill)
         {
-            open[skill] = skill.TruthChecked ? TruthCheck.Check(skill, lines, claims.ById) : [];
+            open[skill] = TruthCheck.Check(skill, lines, claims.ById);
             layouts[skill] = new SkillLayout(skill, lines, open[skill]);
             var rendered = SkillRenderer.Render(skill, layouts[skill]).ToArray();
             StatesEachClaimOnce(skill, lines.Where(placed => !open[skill].Contains(placed)), rendered);
@@ -46,26 +46,31 @@ public static class SkillBuilder
     private static void Emit(SkillSpec skill, string path, RenderedFile file, SortedDictionary<string, string> files, List<MapLine> map)
     {
         // The whole file, so a lead-in, a title and the frontmatter are read as a claim line is (DYD-1372 C).
-        if (skill.TruthChecked && (TruthCheck.Misnumbered(path, file.Text) ?? TruthCheck.Miscommanded(path, file.Text)) is { } problem)
+        if ((skill.TruthChecked || skill.Ahead.Any(resource => SkillRenderer.FileOf(resource.Id) == file.Local)) && (TruthCheck.Misnumbered(path, file.Text) ?? TruthCheck.Miscommanded(path, file.Text)) is { } problem)
             throw new InvalidDataException(problem);
         if (!files.TryAdd(path, file.Text))
             throw new InvalidDataException($"{path} is built twice; two skills share a folder only when one replaces the other through its ledger");
         map.AddRange(file.Stated.Select(line => new MapLine(path, line.Line, line.Text, line.Placed.Claims)));
     }
 
-    // DYD-1372 A4, A7, F: each truth-checked skill's open claims and its ledger, the legacy lines that name a missing command or an unbuilt resource, then every skill not yet migrated.
+    // DYD-1372 A4, A7, F: each truth-checked skill's open claims and its ledger, the open claims of each resource truth-checked ahead of
+    // its skill (DYD-1402), the legacy lines that name a missing command or an unbuilt resource, then every skill not yet migrated.
     private static IEnumerable<(string Path, string Text)> Review(Dictionary<SkillSpec, List<Placed>> bySkill, HashSet<Enum> replaced,
         Dictionary<SkillSpec, SkillLayout> layouts, Dictionary<SkillSpec, HashSet<Placed>> open, ClaimIndex claims)
     {
         foreach (var (skill, lines) in bySkill.Where(pair => pair.Key.TruthChecked))
         {
             // An open claim is stated alone, so its line's own claim is the open one: withheld, or the one placeholder.
-            yield return ReviewDocs.Open(skill, lines.Where(placed => claims.ById[placed.Owner].Truth!.Evidence.Kind == EvidenceKind.Open), claims);
+            yield return ReviewDocs.Open(skill.Name, "skill", lines.Where(placed => claims.ById[placed.Owner].Truth!.Evidence.Kind == EvidenceKind.Open), claims);
             if (skill.Ledger is null) continue;
             var legacy = bySkill.Keys.First(other => Equals(other.Id, skill.Ledger.Legacy));
             var carried = lines.SelectMany(placed => placed.Claims.Select(id => (id, Open: open[skill].Contains(placed)))).ToDictionary(pair => pair.id, pair => pair.Open);
             foreach (var file in LedgerDocs.Render(skill, legacy, layouts[legacy], carried, claims)) yield return file;
         }
+        foreach (var (skill, lines) in bySkill)
+            foreach (var resource in skill.Ahead)
+                yield return ReviewDocs.Open($"{skill.Name}/{Names.Kebab(resource.Id)}", "resource",
+                    lines.Where(placed => ReferenceEquals(skill.AheadOf(placed.Line), resource) && claims.ById[placed.Owner].Truth!.Evidence.Kind == EvidenceKind.Open), claims);
         foreach (var file in ReviewDocs.Commands(bySkill.Where(pair => !pair.Key.TruthChecked)
                      .Select(pair => (pair.Key, !replaced.Contains(pair.Key.Id), (IReadOnlyList<Placed>)pair.Value))))
             yield return file;
@@ -75,7 +80,7 @@ public static class SkillBuilder
             yield return file;
         foreach (var file in ReviewDocs.Unmigrated(
                      bySkill.Where(pair => !pair.Key.TruthChecked && !replaced.Contains(pair.Key.Id)).Select(pair => (pair.Key, (IReadOnlyList<Placed>)pair.Value)),
-                     bySkill.Keys.Any(skill => skill.TruthChecked)))
+                     bySkill.Keys.Any(skill => skill.TruthChecked || skill.Ahead.Any())))
             yield return file;
     }
 

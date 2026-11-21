@@ -2,8 +2,8 @@ namespace DynaDocs.SkillBuild;
 
 /// <summary>
 /// The lists the build emits for review beside the why docs (DYD-1372 A4), under
-/// <c>dydo/reference/claim-review/</c>, which never ships: each truth-checked skill's open claims, whose
-/// lines it withholds, the legacy lines that name a command the CLI does not have or a resource no
+/// <c>dydo/reference/claim-review/</c>, which never ships: the open claims of each truth-checked skill, and of
+/// each resource truth-checked ahead of its skill, whose lines it withholds, the legacy lines that name a command the CLI does not have or a resource no
 /// longer built, and every skill and standard not yet migrated. A truth-checked skill fails the build
 /// on such a command; a legacy line is listed here until its skill is switched over.
 /// </summary>
@@ -18,14 +18,15 @@ internal static class ReviewDocs
     public const string UnbuiltResources = Folder + "/unbuilt-resources.md";
 
     /// <summary>
-    /// A truth-checked skill's open claims, each with its rule, why it is open, and its line: withheld, or
+    /// The open claims of <paramref name="of"/>, a truth-checked skill by its name or a resource truth-checked ahead of
+    /// its skill as <c>skill/resource</c>, each with its rule, why it is open, and its line: withheld, or
     /// for the one placeholder stated with its token, and marked so.
     /// </summary>
-    public static (string Path, string Text) Open(SkillSpec skill, IEnumerable<Placed> lines, ClaimIndex claims)
+    public static (string Path, string Text) Open(string of, string holder, IEnumerable<Placed> lines, ClaimIndex claims)
     {
         var open = lines.Select(placed => (Placed: placed, claims.ById[placed.Owner].Rule, claims.ById[placed.Owner].Truth!.Evidence)).ToArray();
-        var page = new Page(WhyDocs.Frontmatter, "Open claims: " + skill.Name);
-        page.Block($"Claims of `{skill.Name}` that nobody has verified yet. The skill does not state them: each line below is withheld until its claim has evidence" +
+        var page = new Page(WhyDocs.Frontmatter, "Open claims: " + of);
+        page.Block($"Claims of `{of}` that nobody has verified yet. The {holder} does not state them: each line below is withheld until its claim has evidence" +
                    (open.Any(claim => claim.Evidence.Token is not null) ? ", but for the one placeholder, whose line stands in the skill with its token unfilled." : "."));
         if (open.Length == 0) page.Block("None.");
         foreach (var (placed, rule, evidence) in open)
@@ -38,7 +39,7 @@ internal static class ReviewDocs
                 : $"Stated in {placed.Line.Place.Slot}, with `{evidence.Token}` where its text will stand:");
             page.Block(WhyDocs.Quote(placed.Line.Text));
         }
-        return ($"{Folder}/{skill.Name}-open.md", page.Done("").Text);
+        return ($"{Folder}/{of.Replace('/', '-')}-open.md", page.Done("").Text);
     }
 
     /// <summary>The list of legacy lines that name a missing command, by skill; nothing when no line does.</summary>
@@ -96,7 +97,8 @@ internal static class ReviewDocs
 
     /// <summary>
     /// Every skill and standard still built without the truth checks, named as not yet migrated (DYD-1372 F),
-    /// so none reads as checked beside one that is. Nothing while no skill is truth-checked, or once all are.
+    /// so none reads as checked beside one that is. Nothing while no skill or resource is truth-checked, or once all skills are.
+    /// A resource truth-checked ahead of its skill is named on that skill's line, and its lines are not counted.
     /// </summary>
     public static IEnumerable<(string Path, string Text)> Unmigrated(IEnumerable<(SkillSpec Skill, IReadOnlyList<Placed> Lines)> legacy, bool begun)
     {
@@ -107,8 +109,10 @@ internal static class ReviewDocs
                    "Each builds as it did, unchanged, until it is switched over.");
         foreach (var (skill, lines) in rest)
         {
-            var missing = lines.Count(placed => CommandNames.Missing(placed.Line.Text).Any());
-            page.Block($"`{skill.Name}`: not yet migrated; {lines.Count} line{(lines.Count == 1 ? "" : "s")}, {missing} naming a command the CLI does not have.");
+            Placed[] counted = [.. lines.Where(placed => skill.ReadersOf(placed.Line).Count == 0)];
+            var missing = counted.Count(placed => CommandNames.Missing(placed.Line.Text).Any());
+            var ahead = string.Concat(skill.Ahead.Select(resource => $" Its resource `{Names.Kebab(resource.Id)}` is truth-checked ahead of it: those lines name their reader, and are not counted here."));
+            page.Block($"`{skill.Name}`: not yet migrated; {counted.Length} line{(counted.Length == 1 ? "" : "s")}, {missing} naming a command the CLI does not have.{ahead}");
         }
         return [(NotYetMigrated, page.Done("").Text)];
     }

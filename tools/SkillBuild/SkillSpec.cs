@@ -63,6 +63,19 @@ public sealed record SkillSpec
 
     internal bool TruthChecked => Readers.Count > 0;
 
+    /// <summary>The resources truth-checked ahead of this skill (<see cref="Resource.Readers"/>); none once the skill itself is.</summary>
+    internal IEnumerable<Resource> Ahead => TruthChecked ? [] : Resources.Where(resource => resource.Readers.Count > 0);
+
+    /// <summary>Whether <paramref name="resource"/> is truth-checked: with its skill, or ahead of it.</summary>
+    internal bool Checks(Resource resource) => TruthChecked || resource.Readers.Count > 0;
+
+    /// <summary>The resource truth-checked ahead of this skill whose slot holds <paramref name="line"/>, or none.</summary>
+    internal Resource? AheadOf(Line line) =>
+        line.Place is { } place ? Ahead.FirstOrDefault(resource => resource.Slots.Any(slot => Equals(slot.Id, place.Slot))) : null;
+
+    /// <summary>The readers <paramref name="line"/> answers to: this skill's, or its resource's; none for a legacy line.</summary>
+    internal IReadOnlyList<Enum> ReadersOf(Line line) => TruthChecked ? Readers : AheadOf(line)?.Readers ?? [];
+
     internal string Name => Names.Kebab(Id);
 
     internal bool IsStandard => _home == SkillHome.Standard;

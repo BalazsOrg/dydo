@@ -8,7 +8,8 @@ namespace DynaDocs.SkillBuild;
 /// one file of sections. A truth-checked skill keeps the same spine and files, and inside each phase and
 /// resource renders every slot in its declared shape (DYD-1295 519126ab): a paragraph, bullets, or steps
 /// numbered 1, 2, 3, its title a bold lead-in. Its phases list no resources: the line that uses a
-/// resource links it, and a phase resource no line of the spine links fails the build.
+/// resource links it, and a phase resource no line of the spine links fails the build. A resource
+/// truth-checked ahead of its skill (<see cref="Resource.Readers"/>) renders in its shapes too, and its legacy spine still lists it.
 /// </summary>
 internal static class SkillRenderer
 {
@@ -26,7 +27,7 @@ internal static class SkillRenderer
             return [Slots(new Page(skill.Frontmatter, skill.Title), skill.Sections, "##", layout).Done(skill.MainFile)];
         return [
             Spine(skill, layout),
-            .. skill.Phases.SelectMany(phase => phase.Resources).Select(resource => skill.TruthChecked ? Shaped(skill, resource, layout) : Resource(resource, layout)),
+            .. skill.Phases.SelectMany(phase => phase.Resources).Select(resource => skill.Checks(resource) ? Shaped(skill, resource, layout) : Resource(resource, layout)),
             .. skill.Scenarios.Select(scenario => Scenario(skill, scenario, layout)),
             .. OpenAi(skill)
         ];
@@ -81,7 +82,7 @@ internal static class SkillRenderer
 
     private static RenderedFile Scenario(SkillSpec skill, Resource scenario, SkillLayout layout)
     {
-        var file = skill.TruthChecked ? Shaped(skill, scenario, layout) : Slots(Opened(scenario), scenario.Slots, "##", layout).Done(FileOf(scenario.Id));
+        var file = skill.Checks(scenario) ? Shaped(skill, scenario, layout) : Slots(Opened(scenario), scenario.Slots, "##", layout).Done(FileOf(scenario.Id));
         return file.LineCount < ScenarioLimit
             ? file
             : throw new InvalidDataException(
