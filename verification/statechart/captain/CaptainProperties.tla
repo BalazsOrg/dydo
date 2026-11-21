@@ -24,17 +24,17 @@ H3_WaitAfterSplit ==
 H16_ResumeLeafAfterQuestion ==
     [][(state = "Question" /\ state' # state => state' = "Leaf")]_<<vars, seen>>
 
-\* R8: Once review has started, every entry to finishing
-\* follows a clear round. Only a review round can produce that result.
+\* R8: review clears before finishing. R2/S17 also allow a cheap-mended
+\* part to be handed back for review with the whole, without its own round.
 R8_ClearBeforeFinish ==
     [][ /\ (state' = "Clear" /\ state # "Clear" => state = "InReview")
         /\ (state' = "Finishing" /\ state # "Finishing" /\ "InReview" \in seen =>
-            state = "Clear")
+            state \in {"Clear", "Mending"})
     ]_<<vars, seen>>
 
 \* R8, R9, S9, DYD-1295 41a553f1: A blocked round requires a fix before
 \* the next round if review continues. R10 governs entry to that Fix in
-\* round three. S17's cheap mend also requires a new-head round (R23/R24).
+\* round three. An own-PR cheap mend requires a new-head round (R23/R24).
 R8_FixBeforeNextRound ==
     [][ /\ (round' > round =>
             state \in {"Fixing", "Clear", "Mending"} /\ state' = "InReview" /\ round' = round + 1)
@@ -75,12 +75,14 @@ R10_EnterCheckpointFromThirdRound ==
 
 \* R19 requires fresh review of conflict hunks. R21 and R22 route a real
 \* red gate through a Fix and fix-scoped review before re-landing. R8
-\* requires a clear verdict. K9 and H12 route escalation to the officer.
+\* requires a clear verdict. R2 permits handing a mended part to the whole;
+\* Finishing does not distinguish that handoff from a local merge retry.
+\* K9 and H12 route escalation to the officer.
 R19_ReviewAfterMergeRepair ==
     [][ /\ (state = "Repairing" /\ state' # "Repairing" =>
             state' \in {"InReview", "Returned"})
         /\ ("Repairing" \in seen /\ state # "Finishing" /\ state' = "Finishing" =>
-            state = "Clear" /\ "InReview" \in seen)
+            state \in {"Clear", "Mending"} /\ "InReview" \in seen)
     ]_<<vars, seen>>
 
 \* H1 and AGENTS.md (Sort yourself) put return at the end of the job.
@@ -133,10 +135,13 @@ S17_MendAfterClear ==
         state = "Clear" /\ round' = round)]_<<vars, seen>>
 
 \* R23/R24: a content fix is not a clean sync covered by an ancestor PASS.
-\* Safety only: continuing from the changed candidate requires a fresh round.
+\* R2: unreviewed parts are reviewed with the whole. Finishing may hand back
+\* a mended part; only continuing local review requires a new numbered round.
 R23_ReviewMendedHead ==
     [][(state = "Mending" /\ state' # state =>
-        state' = "InReview" /\ round' = round + 1 /\ extra' = extra)]_<<vars, seen>>
+        /\ extra' = extra
+        /\ ((state' = "InReview" /\ round' = round + 1)
+            \/ (state' = "Finishing" /\ round' = round)))]_<<vars, seen>>
 
 \* R8 default interpreted by the skill writer, not R8's own word "once".
 R8_MendOnlyOnce ==

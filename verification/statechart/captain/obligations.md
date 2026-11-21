@@ -166,6 +166,44 @@ Size gate exited 0 (all changed files at or under 20,000 bytes). Build exited
 
 ## Related
 
+## Generation 6b: mended part handoff
+
+The machine at 5179c005 adds Mending to Finishing. R2 says "Its parts are
+unreviewed sub-tickets or lanes" and "The parent is reviewed once, after
+wiring and before its Merge hop". S17 permits cheap shoulds to be "fixed in
+place before the parent merges". R23 requires a PASS at the merge entry
+point; R24 permits only clean-sync descendants of an ancestor PASS. Neither
+requires a separate round on each part before handoff. R32's writer commit
+rule supplies no additional review requirement. Therefore this handoff is
+allowed, conditional on review with the whole before merge.
+
+The unchanged-property run at 5179c005 (tlc-g6b-props-1) rejected three
+properties. R8_ClearBeforeFinish and R23_ReviewMendedHead rejected
+Dispatched -> Taken(change) -> Leaf -> InReview -> Clear -> Mending ->
+Finishing. R19_ReviewAfterMergeRepair rejected Dispatched -> Taken(change)
+-> Leaf -> Finishing -> Repairing -> InReview -> Clear -> Mending ->
+Finishing. All other 18 properties and NoDeadlock held.
+
+These three properties were stricter than R2's allocation of review to the
+whole. R8_ClearBeforeFinish now permits finishing from Clear or Mending;
+S17_MendAfterClear still requires that Mending came from Clear, and a new
+review round must still clear before it finishes. R23_ReviewMendedHead now
+permits either a next numbered local round or a same-round handoff to
+Finishing, preserving extra in both cases. R19_ReviewAfterMergeRepair keeps
+the immediate fresh-review-or-return obligation after Repairing, but allows
+the later Mending handoff after that review has cleared. A conflict repair
+itself still cannot skip review.
+
+The model has no candidate-in-PR, merge-owner, returned-SHA, revision or whole
+identity. Finishing represents both local landing and returning to an officer.
+It cannot establish that the Mending handoff was in no PR, that the officer
+merges the returned head, or that the whole's review actually judged it before
+merge. In particular, prior Repairing does not establish permanent PR ownership
+in this model. The allowed trace must not be read as permission to locally
+merge a changed own-PR head under a stale PASS. R23/R24 still prohibit that;
+the missing predicates prevent distinguishing it from the valid handoff.
+The phase abstraction admits both and cannot prove the conditional rule.
+
 ## Generation 6: cheap mend and research handoff
 
 Machine 33081889 adds Mending and mended (included in vars and the passive
