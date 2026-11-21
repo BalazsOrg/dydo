@@ -10,7 +10,7 @@ Below the rules for every change, each part is headed by the work it is for: rea
 | -- | -- |
 | 1. Take the ticket | use |
 | 2. Do it or split it | use: a leaf, unless the change proves too big |
-| 3. Dispatch | skip; use it only if the merge is yours, or you split |
+| 3. Dispatch | skip; use it only for a Question's captain, when the merge is yours, or once you split |
 | 4. Get it reviewed | skip, since a part is reviewed with its whole; use it only if the merge is yours, or you split |
 | 5. Finish | use: the case your brief names |
 | When things go wrong | use |
@@ -31,14 +31,15 @@ Below the rules for every change, each part is headed by the work it is for: rea
 - Tag each suite test with its job, the way the tests beside it carry theirs: trap, naming the bug or pitfall; contract, citing the spec or decision record; or edge.
 - Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.
 - A rewrite or wide refactor gets a conformance suite beside its own tests, never in their place; its assertions that only match the old implementation go once the rewrite has replaced it. Property tests for edges and differential tests for rewrites are guidance, never a gate.
-- Where your contract marks an acceptance line for a scenario, write and wire it as `dydo/guides/coding-standards.md` says under Testing, and never weaken one.
+- Where your contract marks an acceptance line for a scenario, write and wire it as `dydo/guides/coding-standards.md` says of a scenario, and never weaken one.
 
 **Code:**
 
-- Your project's own rules are in `dydo/guides/coding-standards.md`: read it before you write, and follow it wherever it asks more than this page does.
+- Your project's rules for writing code are in `dydo/guides/coding-standards.md`: read it before you write.
 - Before you write a comment, read Comments in that file: your project says there what a comment is for and what it must never be.
-- The static gates and their numbers, cognitive complexity among them, are your project's: `dydo/guides/coding-standards.md` gives the numbers under Testing, and `dydo/guides/testing-strategy.md` the command that runs the gates.
-- When your change trips a static gate, change the code until it passes, splitting or flattening the method it names: a gate takes no suppression, and its number is never raised.
+- The gates your change must pass are the ones your brief names: run them with your project's own commands, which `dydo/guides/testing-strategy.md` holds.
+- Where a project doc and those gates disagree, the gates decide what must pass: report the difference to your officer as a finding, and chase no figure that no gate checks.
+- When your change trips a static gate, such as the one on cognitive complexity, change the code until it passes, splitting or flattening the method it names: a gate takes no suppression, and its limit is never raised.
 - Prove platform-specific code, such as processes, paths and signals, on CI's platform too, not only on yours.
 
 **Docs:**

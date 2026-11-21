@@ -8,8 +8,8 @@ Never judge work you implemented or fixed.
 | Spine phase | You hold the review | You are one seat of it |
 | -- | -- | -- |
 | 1. Take the ticket | use | use |
-| 2. Do it or split it | use: a leaf, or a split into seats | use: a leaf |
-| 3. Dispatch | skip, unless you send seats | skip |
+| 2. Do it or split it | use: a leaf, or a split into seats | use: a leaf, unless your slice proves too big |
+| 3. Dispatch | skip, unless you send seats | skip, unless you divide a slice too big to hold |
 | 4. Get it reviewed | skip | skip |
 | 5. Finish | use: the Nobody case | use: the Nobody case |
 | When things go wrong | use | use |
@@ -42,8 +42,9 @@ A leaf divides only what is too big for one agent, as a large read can be. Divid
 **Driving the feature:**
 
 - Drive through your project's verification skill, the one your brief names, whose name starts with `verify-`: follow its Launch, Doctor, Drive, Evidence and Cleanup sections, in that order.
-- Use the feature the way its user would, by every route that skill's feature map lists for it, and say for each whether it works as the spec's problem statement intends.
-- Return each journey as steps anyone can rerun, with what you observed beside what the spec expects; only what you observed yourself, in this session, is proof.
+- Use the feature the way its user would, by the routes that skill's feature map lists for it, and say for each whether it works as the spec's problem statement intends.
+- Do not repeat a journey the author drove the same way and holds a receipt for on the same state, unless later changes put its result in doubt: the receipt counts, and your driving goes to what it left out.
+- Return each journey you drove as steps anyone can rerun, with what you observed beside what the spec expects, and list apart each receipt you counted without driving: you vouch only for what you observed yourself, in this session.
 - What a user can do and the skill cannot drive is a finding to return, never a driver to build; change no product code while you drive.
 - Driving is due only where that skill is built and covers the feature, and the feature is settled; where it is not, return that as your finding.
 

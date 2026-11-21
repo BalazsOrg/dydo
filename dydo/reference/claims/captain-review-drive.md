@@ -24,7 +24,7 @@ Reason: A driver that improvises its launch tests an instance nobody would recog
 
 ## User
 
-`claim:CaptainReviewDrive.User`: A driver uses the feature the way its user would, by every route the feature map lists, and says for each whether it works as the spec's problem statement intends.
+`claim:CaptainReviewDrive.User`: A driver uses the feature the way its user would, by the routes the feature map lists, and says for each whether it works as the spec's problem statement intends.
 
 Spec: R34, R3
 
@@ -36,11 +36,27 @@ Reason: A feature can pass every test and still fail the first person who tries 
 
 **ticket-captain** (ReviewDrive; read by TicketCaptain):
 
-> Use the feature the way its user would, by every route that skill's feature map lists for it, and say for each whether it works as the spec's problem statement intends.
+> Use the feature the way its user would, by the routes that skill's feature map lists for it, and say for each whether it works as the spec's problem statement intends.
+
+## Inherit
+
+`claim:CaptainReviewDrive.Inherit`: A journey the author drove the same way, with a receipt for the same state, is not driven again unless later changes put its result in doubt: its receipt counts.
+
+Spec: R5, R34
+
+Evidence (run): The user's table says it in its own footer: "never re-run what the author ran the same way; a test receipt for the same state counts (spec R5)". His words behind R5: "doing the exact same thing (like driving the app the same way) is just stupid. Unless there were enough changes down the line that the truth is questioned."
+
+Layer: A driving skill replays any journey it is asked for, however fresh the last receipt.
+
+Reason: A second identical drive finds what the first found, while the routes nobody tried stay untried.
+
+**ticket-captain** (ReviewDrive; read by TicketCaptain):
+
+> Do not repeat a journey the author drove the same way and holds a receipt for on the same state, unless later changes put its result in doubt: the receipt counts, and your driving goes to what it left out.
 
 ## Steps
 
-`claim:CaptainReviewDrive.Steps`: A driver returns each journey as steps anyone can rerun, with what it observed beside what the spec expects; only what it observed itself is proof.
+`claim:CaptainReviewDrive.Steps`: A driver returns each journey it drove as steps anyone can rerun, with what it observed beside what the spec expects, and lists apart each receipt it counted without driving.
 
 Spec: R5, R34
 
@@ -52,7 +68,7 @@ Reason: The Fix's writer reproduces the fault from the steps alone, without aski
 
 **ticket-captain** (ReviewDrive; read by TicketCaptain):
 
-> Return each journey as steps anyone can rerun, with what you observed beside what the spec expects; only what you observed yourself, in this session, is proof.
+> Return each journey you drove as steps anyone can rerun, with what you observed beside what the spec expects, and list apart each receipt you counted without driving: you vouch only for what you observed yourself, in this session.
 
 ## Gap
 

@@ -115,9 +115,52 @@ public partial class TicketCaptainKindTests
     public void Implement_StatesNoNumberAProjectSets() =>
         Assert.DoesNotMatch(Number(), Built.Value.Files[Folder + "implement.md"]);
 
+    [Fact]
+    [Trait("Job", "trap: DYD-1372 g1b G6 a project doc can be stale: the brief's gates decide what must pass, a line says so below the pointer at the standards, and no line sends a holder to a doc for a gate's number")]
+    public void Implement_HoldsTheBriefsGatesAboveAProjectDoc()
+    {
+        var disagree = LineOf("CaptainImplementCode.Disagree");
+        var pointers = Kinds().SelectMany(Stated).Where(line => DocPath().IsMatch(line.Text)).ToArray();
+
+        Assert.Equal(Folder + "implement.md", disagree.Path);
+        Assert.True(disagree.Line > LineOf("CaptainImplementCode.Rules").Line, "the gates' line stands above the pointer it bounds");
+        Assert.NotEmpty(pointers);
+        Assert.All(pointers, line => Assert.DoesNotContain("number", line.Text, StringComparison.OrdinalIgnoreCase));
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 g1b G7 R5 a drive seat counts the author's receipt for a journey driven the same way: a line of the Drive run says so, between its first line and its last")]
+    public void Review_DriveCountsWhatTheAuthorAlreadyDrove()
+    {
+        var inherit = LineOf("CaptainReviewDrive.Inherit");
+
+        Assert.Equal(Review, inherit.Path);
+        Assert.InRange(inherit.Line, LineOf("CaptainReviewDrive.Driver").Line + 1, LineOf("CaptainReviewDrive.Due").Line - 1);
+    }
+
+    [Theory]
+    [Trait("Job", "trap: DYD-1372 g1b G8 a map never bars the dispatch its own resource orders: where a resource links the too-big scenario or opens a Question sub-ticket, no Dispatch cell is a bare skip")]
+    [InlineData("implement")]
+    [InlineData("review")]
+    [InlineData("research")]
+    public void KindMap_LeavesDispatchOpenWhereItsResourceDispatches(string kind)
+    {
+        var text = Built.Value.Files[$"{Folder}{kind}.md"];
+        var dispatch = text.Split('\n').Single(line => line.StartsWith($"| 3. {CaptainCarrier.Spec.Phases[2].Title} |", StringComparison.Ordinal));
+        var dispatches = text.Contains("](too-big.md)", StringComparison.Ordinal) || text.Contains("Question sub-ticket", StringComparison.Ordinal);
+
+        Assert.All(dispatch.Trim('|').Split('|').Skip(1), cell => Assert.False(dispatches && cell.Trim() == "skip", $"{kind}.md bars a dispatch one of its lines orders"));
+    }
+
+    private static IEnumerable<string> Kinds() => new[] { "implement", "review", "research" }.Select(kind => $"{Folder}{kind}.md");
+
     private static MapLine[] Stated(string path) => [.. Built.Value.Map.Where(line => line.Path == path)];
 
     // The built line that states a claim; a table's is its first.
-    private static MapLine LineOf(string claim) =>
-        Built.Value.Map.Where(line => line.Path.StartsWith(Folder, StringComparison.Ordinal) && line.Claims.Contains(claim)).MinBy(line => line.Line)!;
+    private static MapLine LineOf(string claim)
+    {
+        var stated = Built.Value.Map.Where(line => line.Path.StartsWith(Folder, StringComparison.Ordinal) && line.Claims.Contains(claim)).MinBy(line => line.Line);
+        Assert.True(stated is not null, $"no line of the kind resources states claim:{claim}");
+        return stated!;
+    }
 }

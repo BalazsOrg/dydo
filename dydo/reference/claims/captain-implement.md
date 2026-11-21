@@ -72,7 +72,7 @@ Reason: A writer told at the top that sending and review belong to others goes s
 > | -- | -- |
 > | 1. Take the ticket | use |
 > | 2. Do it or split it | use: a leaf, unless the change proves too big |
-> | 3. Dispatch | skip; use it only if the merge is yours, or you split |
+> | 3. Dispatch | skip; use it only for a Question's captain, when the merge is yours, or once you split |
 > | 4. Get it reviewed | skip, since a part is reviewed with its whole; use it only if the merge is yours, or you split |
 > | 5. Finish | use: the case your brief names |
 > | When things go wrong | use |

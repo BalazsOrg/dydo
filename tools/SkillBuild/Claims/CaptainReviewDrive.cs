@@ -27,10 +27,10 @@ public static class CaptainReviewDrive
             Reason: "A driver that improvises its launch tests an instance nobody would recognise, and strands processes when it leaves.")
     };
 
-    public static readonly Claim User = new("A driver uses the feature the way its user would, by every route the feature map lists, and says for each whether it works as the spec's problem statement intends.", Me,
+    public static readonly Claim User = new("A driver uses the feature the way its user would, by the routes the feature map lists, and says for each whether it works as the spec's problem statement intends.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ReviewDrive, 2,
-            "Use the feature the way its user would, by every route that skill's feature map lists for it, and say for each whether it works as the spec's problem statement intends.")
+            "Use the feature the way its user would, by the routes that skill's feature map lists for it, and say for each whether it works as the spec's problem statement intends.")
     ])
     {
         Spec = ["R34", "R3"],
@@ -40,10 +40,24 @@ public static class CaptainReviewDrive
             Reason: "A feature can pass every test and still fail the first person who tries to use it.")
     };
 
-    public static readonly Claim Steps = new("A driver returns each journey as steps anyone can rerun, with what it observed beside what the spec expects; only what it observed itself is proof.", Me,
+    public static readonly Claim Inherit = new("A journey the author drove the same way, with a receipt for the same state, is not driven again unless later changes put its result in doubt: its receipt counts.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.ReviewDrive, 3,
-            "Return each journey as steps anyone can rerun, with what you observed beside what the spec expects; only what you observed yourself, in this session, is proof.")
+            "Do not repeat a journey the author drove the same way and holds a receipt for on the same state, unless later changes put its result in doubt: the receipt counts, and your driving goes to what it left out.")
+    ])
+    {
+        Spec = ["R5", "R34"],
+        Truth = new(Evidence.Run("The user's table says it in its own footer: \"never re-run what the author ran the same way; a test receipt for the same state counts (spec R5)\". " +
+                                 "His words behind R5: \"doing the exact same thing (like driving the app the same way) is just stupid. Unless there were enough changes down the line that the truth is questioned.\""),
+            Layer: "A driving skill replays any journey it is asked for, however fresh the last receipt.",
+            Reason: "A second identical drive finds what the first found, while the routes nobody tried stay untried.")
+    };
+
+    public static readonly Claim Steps = new("A driver returns each journey it drove as steps anyone can rerun, with what it observed beside what the spec expects, and lists apart each receipt it counted without driving.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.ReviewDrive, 4,
+            "Return each journey you drove as steps anyone can rerun, with what you observed beside what the spec expects, and list apart each receipt you counted without driving: " +
+            "you vouch only for what you observed yourself, in this session.")
     ])
     {
         Spec = ["R5", "R34"],
@@ -55,7 +69,7 @@ public static class CaptainReviewDrive
 
     public static readonly Claim Gap = new("What a user can do and the verification skill cannot drive is a finding to return, never a driver to build, and a driver changes no product code.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.ReviewDrive, 4,
+        At(Actor.TicketCaptain, CaptainSlot.ReviewDrive, 5,
             "What a user can do and the skill cannot drive is a finding to return, never a driver to build; change no product code while you drive.")
     ])
     {
@@ -68,7 +82,7 @@ public static class CaptainReviewDrive
 
     public static readonly Claim Due = new("Driving is due only where the verification skill is built and covers the feature, and the feature is settled.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.ReviewDrive, 5,
+        At(Actor.TicketCaptain, CaptainSlot.ReviewDrive, 6,
             "Driving is due only where that skill is built and covers the feature, and the feature is settled; where it is not, return that as your finding.")
     ])
     {

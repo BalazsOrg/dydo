@@ -148,7 +148,7 @@ Reason: A scenario is the contract in runnable form, so loosening one changes wh
 
 **ticket-captain** (ImplementTests; read by TicketCaptain):
 
-> Where your contract marks an acceptance line for a scenario, write and wire it as `dydo/guides/coding-standards.md` says under Testing, and never weaken one.
+> Where your contract marks an acceptance line for a scenario, write and wire it as `dydo/guides/coding-standards.md` says of a scenario, and never weaken one.
 
 ## Graduation
 
@@ -168,7 +168,7 @@ Reason: Evidence nobody will look at again is weight every later run carries.
 
 ## Rules
 
-`claim:CaptainImplementCode.Rules`: A project's own coding rules are in its coding standards, which a writer reads before it writes.
+`claim:CaptainImplementCode.Rules`: A project's own rules for writing code are in its coding standards, which a writer reads before it writes.
 
 Spec: K31, T14
 
@@ -180,7 +180,7 @@ Reason: Practice differs between projects, and a writer that knows only the gene
 
 **ticket-captain** (ImplementCode; read by TicketCaptain):
 
-> Your project's own rules are in `dydo/guides/coding-standards.md`: read it before you write, and follow it wherever it asks more than this page does.
+> Your project's rules for writing code are in `dydo/guides/coding-standards.md`: read it before you write.
 
 ## Comments
 
@@ -198,25 +198,41 @@ Reason: A model left to its habit narrates every line, and the narration goes st
 
 > Before you write a comment, read Comments in that file: your project says there what a comment is for and what it must never be.
 
-## Statics
+## Gates
 
-`claim:CaptainImplementCode.Statics`: The static gates and their numbers, cognitive complexity among them, are the project's: its coding standards hold the numbers, its testing guide the command.
+`claim:CaptainImplementCode.Gates`: The gates a change must pass are the ones its brief names, run with the project's own commands, which the project's testing guide holds.
 
-Spec: T11, T14
+Spec: T14, T11
 
-Evidence (run): `DynaDocs.Tests/coverage/gate_policy.py` holds this repository's limits on cognitive complexity and on parameters, and `dydo/guides/coding-standards.md`, here and under `Scaffold/`, states the same two under Testing. `dydo/guides/testing-strategy.md` names the runner here, `gap_check.py gate static`; the scaffold's copy is where an adopting project declares its own.
+Evidence (run): This fix's brief named its gates one by one (DYD-1372 g1b): the build with warnings as errors, the SkillBuild tests, a clean tree after a rebuild, the file size check and `dydo check`. `dydo/guides/testing-strategy.md`, here and under `Scaffold/`: here its section "Current project facade" gives the runner, and the scaffold's copy is where an adopting project declares its own.
 
-Layer: The gate reports a breach only once the method is written, and the CLI has no command that runs it.
+Layer: The CLI has no command that runs a project's tests or its static checks, so which ones count for a ticket is known only from its brief.
 
-Reason: A writer that knows the limit shapes the method to fit, which is cheaper than splitting it after a red run.
+Reason: A writer that runs what was asked proves what its officer will check, and guesses at nothing.
 
 **ticket-captain** (ImplementCode; read by TicketCaptain):
 
-> The static gates and their numbers, cognitive complexity among them, are your project's: `dydo/guides/coding-standards.md` gives the numbers under Testing, and `dydo/guides/testing-strategy.md` the command that runs the gates.
+> The gates your change must pass are the ones your brief names: run them with your project's own commands, which `dydo/guides/testing-strategy.md` holds.
+
+## Disagree
+
+`claim:CaptainImplementCode.Disagree`: Where a project doc and the brief's gates disagree, the gates decide what must pass, and the writer reports the difference to its officer as a finding.
+
+Spec: T9, T10, T11, R5
+
+Evidence (run): Read 2026-11-21: `DynaDocs.Tests/coverage/gate_policy.py` fails a method on two limits only, cognitive complexity and parameters, and no file of the facade names HCRAP. Yet `dydo/guides/coding-standards.md:194` and `dydo/guides/testing-strategy.md:243` still demand 80% line coverage, 60% branch coverage and HCRAP at most 20. Spec CA6 records the change: "Resolved by PR 363 (`892d41f8`): CI coverage is report-only, and HCRAP no longer gates." `.github/workflows/ci.yml` calls its step "Full Python suite and platform coverage report".
+
+Layer: A doc is edited by hand and a gate in code, so the two drift apart, and nothing compares them.
+
+Reason: A writer that takes a stale page for law spends its ticket lifting a measure nobody enforces any more.
+
+**ticket-captain** (ImplementCode; read by TicketCaptain):
+
+> Where a project doc and those gates disagree, the gates decide what must pass: report the difference to your officer as a finding, and chase no figure that no gate checks.
 
 ## Trip
 
-`claim:CaptainImplementCode.Trip`: A change that trips a static gate is changed until it passes: a gate takes no suppression, and its number is never raised.
+`claim:CaptainImplementCode.Trip`: A change that trips a static gate is changed until it passes: a gate takes no suppression, and its limit is never raised.
 
 Spec: T11, T19
 
@@ -228,7 +244,7 @@ Reason: A gate exists only where a breach is certainly wrong, so an exception to
 
 **ticket-captain** (ImplementCode; read by TicketCaptain):
 
-> When your change trips a static gate, change the code until it passes, splitting or flattening the method it names: a gate takes no suppression, and its number is never raised.
+> When your change trips a static gate, such as the one on cognitive complexity, change the code until it passes, splitting or flattening the method it names: a gate takes no suppression, and its limit is never raised.
 
 ## Platform
 

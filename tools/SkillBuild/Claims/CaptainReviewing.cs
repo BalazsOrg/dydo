@@ -18,8 +18,8 @@ public static class CaptainReviewing
         | Spine phase | You hold the review | You are one seat of it |
         | -- | -- | -- |
         | 1. Take the ticket | use | use |
-        | 2. Do it or split it | use: a leaf, or a split into seats | use: a leaf |
-        | 3. Dispatch | skip, unless you send seats | skip |
+        | 2. Do it or split it | use: a leaf, or a split into seats | use: a leaf, unless your slice proves too big |
+        | 3. Dispatch | skip, unless you send seats | skip, unless you divide a slice too big to hold |
         | 4. Get it reviewed | skip | skip |
         | 5. Finish | use: the Nobody case | use: the Nobody case |
         | When things go wrong | use | use |
