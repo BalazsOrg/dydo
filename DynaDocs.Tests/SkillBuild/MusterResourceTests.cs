@@ -6,7 +6,7 @@ using DynaDocs.Tests.SkillBuild.Truths;
 /// <summary>
 /// DYD-1402 over the production model: the chief of staff's muster resource is built from claims that answer
 /// for themselves, truth-checked ahead of its skill, and nothing else the build writes moves by a byte from
-/// the base, <c>13da419b</c>. Each digest below was taken from that commit's built files, as
+/// the base, <c>c07d4ac3</c>. Each digest below was taken from that commit's built files, as
 /// <see cref="TicketCaptainSwapTests"/> takes its own. Checks are read from the model, by claim, so an edit
 /// of the prose leaves them standing (DR 067).
 /// </summary>
@@ -103,14 +103,14 @@ public class MusterResourceTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1402 A8 muster.md is rebuilt, and every built file but it and the pages that list or count its claims is the bytes of the base 13da419b")]
+    [Trait("Job", "contract: DYD-1402 A8 muster.md is rebuilt, and every built file but it and the pages that list or count its claims is the bytes of the base c07d4ac3")]
     public void OnlyTheMusterAndItsClaimPages_MoveFromTheBase()
     {
         var files = Built.Value.Files;
 
         Assert.All(Rebuilt, path => Assert.Contains(path, files.Keys));
         Assert.NotEqual("851e343231cfb60b2a331d6022157d0a5aa3bb053645f31ae6c3624d88762cb8", TicketCaptainSwapTests.Digest(files.Where(file => file.Key == Muster)));
-        Assert.Equal(263, files.Keys.Except(Rebuilt).Count());
-        Assert.Equal("b41f80a99e2c29264712d59974a058056a4f052429e57f54268a0a21f1a0d066", TicketCaptainSwapTests.Digest(files.Where(file => !Rebuilt.Contains(file.Key))));
+        Assert.Equal(264, files.Keys.Except(Rebuilt).Count());
+        Assert.Equal("578691ade739c7ad7ca01b5fb799024348d5fd127114058598c21c2e86d25dde", TicketCaptainSwapTests.Digest(files.Where(file => !Rebuilt.Contains(file.Key))));
     }
 }
