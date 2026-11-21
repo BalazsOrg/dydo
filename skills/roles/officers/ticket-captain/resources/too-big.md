@@ -10,6 +10,7 @@ When a child returns `too big, re-cut`, the cut is yours, and so is the child's 
 
 1. Rewrite the child's contract, in its ticket's description, down to what it finished at the SHA it returned, and note the re-cut on the ticket in one line. If it finished nothing whole, cancel the ticket instead, with a one-line reason, and skip the next step.
 2. Send the rewritten contract to the child's thread with `t3_thread_send`, under the ticket's key: the child started the ticket, so the child closes it Done on that contract and returns.
-3. Open sub-tickets for what the child left, starting from that SHA.
+3. If that send does not get through, for another reason than a limit, note the failed delivery on the ticket in one line, beside the rewritten contract and the SHA, and take the ticket's closure to your officer, by the step of [A need for the user](need-for-the-user.md) that sends to your officer's thread: never count on the child to close it.
+4. Open sub-tickets for what the child left, starting from that SHA.
 
 A change to your contract, or to a sibling's, is never part of your cut: take it to your officer.

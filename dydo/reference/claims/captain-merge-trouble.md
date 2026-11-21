@@ -138,6 +138,22 @@ Reason: A merge that is sound is not reverted for a test that wobbled.
 
 > Green on the rerun is a flake: the merge is done.
 
+## FlakeNote
+
+`claim:CaptainMergeTrouble.FlakeNote`: A flake after a merge is noted in one line on the Merge sub-ticket, or on the holder's own ticket where its work was not cut into steps.
+
+Spec: Y9, R22
+
+Evidence (tool): save_comment: `issueId` and `body`, a comment on a Linear issue. ci_rerun: "Re-run a PR's failing checks, or one named check.", which keeps no tally of the runs it turned green.
+
+Layer: Hosted CI shows a rerun's green and forgets the red before it, and nothing yet counts a wobble: the tool that will is not built.
+
+Reason: A wobble that leaves a line can be seen to repeat; one that leaves none fails the next merge as if for the first time.
+
+**ticket-captain** (RedLead; read by TicketCaptain):
+
+> Note the flake in one line, the red run and the green rerun, on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.
+
 ## Revert
 
 `claim:CaptainMergeTrouble.Revert`: A real red after a merge is reverted on the feature branch at once, by the captain.
@@ -170,9 +186,25 @@ Reason: The record says why the merge is gone, and the break has a ticket of its
 
 > Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings; where your work was not cut into steps, write that line on your own ticket, which stays open.
 
+## NewMerge
+
+`claim:CaptainMergeTrouble.NewMerge`: A merge made again after a revert has a Merge sub-ticket of its own, blocked by the repair and its Review; the cancelled one stays as it is, and work not cut into steps keeps its holder's own ticket as the record.
+
+Spec: R20, S12, S3
+
+Evidence (tool): save_issue: `blockedBy`, "Issue IDs/identifiers blocking this. Append-only; existing relations are never removed", set as the ticket is created. Linear, team Dydo, statuses read 2026-11-21: Canceled is of the type canceled, a closed status no merge can be started on.
+
+Layer: Linear keeps a cancelled Merge cancelled and opens no second one, and `dydo merge` touches no ticket.
+
+Reason: Without a card of its own the second landing is run on a step the board shows as dead, and nothing there says that a merge is under way again.
+
+**ticket-captain** (RedSteps; read by TicketCaptain, on claim:CaptainMergeTrouble.Repair):
+
+> Open the repair as steps, each blocked by the one before with Linear's `save_issue` (`blockedBy`): an Implement that fixes it on your ticket's branch and brings the reverted change back there, a Review scoped to the fix, and a new Merge, the cancelled one left as it is. Where your work was not cut into steps, open no Merge: your own ticket stays the record.
+
 ## Repair
 
-`claim:CaptainMergeTrouble.Repair`: After a revert, an Implement ticket fixes it on the ticket's branch, then a review round scoped to the fix.
+`claim:CaptainMergeTrouble.Repair`: After a revert, the repair is opened as steps: an Implement that fixes it on the ticket's branch and brings the reverted change back there, then a review round scoped to the fix.
 
 Spec: R22
 
@@ -184,11 +216,11 @@ Reason: The rest of the branch already passed, so the round looks at what change
 
 **ticket-captain** (RedSteps; read by TicketCaptain):
 
-> Dispatch an Implement ticket to fix it on your ticket's branch, then a review round scoped to the fix.
+> Open the repair as steps, each blocked by the one before with Linear's `save_issue` (`blockedBy`): an Implement that fixes it on your ticket's branch and brings the reverted change back there, a Review scoped to the fix, and a new Merge, the cancelled one left as it is. Where your work was not cut into steps, open no Merge: your own ticket stays the record.
 
 ## Reland
 
-`claim:CaptainMergeTrouble.Reland`: The fixed branch is merged again through a PR that itself restores the reverted change.
+`claim:CaptainMergeTrouble.Reland`: The fixed branch is merged again through a new PR, opened once the repair is back, that itself restores the reverted change.
 
 Spec: R22, R23
 
@@ -200,7 +232,23 @@ Reason: A re-merge of the old commits would land nothing and still report succes
 
 **ticket-captain** (RedSteps; read by TicketCaptain):
 
-> Merge the fixed branch again through a new PR that brings the reverted change back itself: `dydo merge` undoes no revert, and calls the old PR already integrated.
+> Dispatch the Implement, and when it returns open a new PR for the branch: `dydo merge` undoes no revert, and calls the old PR already integrated.
+
+## Scoped
+
+`claim:CaptainMergeTrouble.Scoped`: The repair's Review is briefed with the new PR, so its PASS stands in that PR's body, and the merge then runs again by the merging steps.
+
+Spec: R22, R17, R23
+
+Evidence (code): `Services/Merge/PullRequestMerge.cs`
+
+Layer: `dydo merge` reads a PASS from the body of the PR it is given, and the old PR, already merged, is not the one it will be given.
+
+Reason: A verdict left in the first PR's body is a refusal at the second landing, with the reviewer long gone.
+
+**ticket-captain** (RedSteps; read by TicketCaptain):
+
+> Dispatch the Review, its brief naming the new PR, and once it passes merge again, by Merging (`merging.md`).
 
 ## Lost
 

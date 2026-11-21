@@ -154,9 +154,25 @@ Reason: Whoever staffs the Question reads its Mode before anything else, and a w
 
 > On a Question sub-ticket the Mode also says how it is settled: AFK, by a captain you send to research it; HITL, by the user, when you already know that the call is the user's alone, and then you dispatch nobody onto it.
 
+## MergeIfMine
+
+`claim:CaptainSplit.MergeIfMine`: A Merge sub-ticket is cut only by the holder whose brief gives it the merge; a holder whose officer merges cuts none.
+
+Spec: R21, K14, S3
+
+Evidence (run): This skill's third fixer was briefed "Do not push; no PR; no merge." (DYD-1372 phase 1, fix g3) and returned a commit: it held no Merge. Linear, DYD-1290 read 2026-11-21: "Merge the crew lane (DYD-1287) into the rebuilt candidate" sits under DYD-1281, the whole it merged into, and not under the lane it merged. `Services/Merge/PullRequestMerge.cs` merges a PR by its number, and only the holder that merges opens one.
+
+Layer: Linear takes a Merge sub-ticket under any ticket, and nothing reads a brief to see whose the merge is.
+
+Reason: A part that opens a Merge it was never given runs a command with no PR to name, or lands work its officer meant to assemble first.
+
+**ticket-captain** (Tickets; read by TicketCaptain, on claim:CaptainSplit.Steps):
+
+> Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, and a Merge only if your brief gives you the merge, as your own step. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.
+
 ## Steps
 
-`claim:CaptainSplit.Steps`: Work with its own review rounds is cut into Implement, Review, Fix and Merge sub-tickets blocked in order, the Merge its cutter's own step; a small leaf and a batched should are each one ticket.
+`claim:CaptainSplit.Steps`: Work with its own review rounds is cut into Implement, Review and Fix sub-tickets blocked in order, with a Merge last where the merge is the cutter's, as its own step; a small leaf and a batched should are each one ticket.
 
 Spec: S3, S4
 
@@ -168,7 +184,7 @@ Reason: The board then shows which step a piece of work has reached without anyo
 
 **ticket-captain** (Tickets; read by TicketCaptain):
 
-> Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge, the last your own step. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.
+> Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, and a Merge only if your brief gives you the merge, as your own step. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.
 
 ## Small
 

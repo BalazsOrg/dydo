@@ -62,7 +62,9 @@ public static class CaptainCarrier
         Slot.Bullets(CaptainSlot.BlockerRoutes, "A blocker, by what it shows:"), Slot.Bullets(CaptainSlot.ShouldRoutes, "A should, by what its fix costs:"),
         Slot.Paragraph(CaptainSlot.OwnChange));
 
-    private static readonly Resource Merging = new(CaptainResource.Merging, "Merging", Slot.Steps(CaptainSlot.MergeSteps), Slot.Bullets(CaptainSlot.MergeRules));
+    // It opens with whose the merge is: a holder whose officer merges reads no further.
+    private static readonly Resource Merging = new(CaptainResource.Merging, "Merging",
+        Slot.Paragraph(CaptainSlot.MergeLead), Slot.Steps(CaptainSlot.MergeSteps), Slot.Bullets(CaptainSlot.MergeRules));
 
     // Where a holder woken in its own thread goes on from: what it re-reads, and what each return asks of it.
     private static readonly Resource Waking = new(CaptainResource.Waking, "Waking", Slot.Paragraph(CaptainSlot.WakeLead), Slot.Steps(CaptainSlot.WakeSteps));

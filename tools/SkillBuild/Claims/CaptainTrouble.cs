@@ -108,7 +108,7 @@ public static class CaptainTrouble
     };
 
     public static readonly Claim ChildReCut = new("An officer whose child returns too big, re-cut cuts what the child left.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.TooBigOfficer, 3, "Open sub-tickets for what the child left, starting from that SHA.")])
+        [At(Actor.TicketCaptain, CaptainSlot.TooBigOfficer, 4, "Open sub-tickets for what the child left, starting from that SHA.")])
     {
         Spec = ["H2", "H14"],
         Truth = new(Evidence.Tool("delegate_task: a child's final result returns to the thread that started it."),

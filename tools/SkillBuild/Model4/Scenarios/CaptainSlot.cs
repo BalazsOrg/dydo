@@ -65,6 +65,7 @@ public enum CaptainSlot
     BlockerRoutes,
     ShouldRoutes,
     OwnChange,
+    MergeLead,
     MergeSteps,
     MergeRules,
     TooBigSteps,

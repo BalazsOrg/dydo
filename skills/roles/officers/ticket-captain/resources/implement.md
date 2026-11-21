@@ -67,6 +67,7 @@ Below the rules for every change, each part is headed by the work it is for: rea
 - Check each finding's severity against the source, not its label.
 - Close only the findings your brief names, preferring the change that deletes or narrows code.
 - Put a label you dispute in your return, with its evidence: file:line, test or output.
+- Close each should your brief names Done once its fix is proved, with the proof on it, before you close the Fix.
 
 **On a merge conflict:**
 

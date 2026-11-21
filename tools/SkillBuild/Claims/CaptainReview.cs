@@ -45,7 +45,7 @@ public static class CaptainReview
     public static readonly Claim Whose = new("Whoever merges a piece of work has it reviewed first; a part is reviewed with the parent it joins.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Reviewed, 2,
-            "If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.",
+            "If the merge is yours, open a PR for the work once `dydo pr-ready` passes, then have it reviewed in that PR before you merge; a part your officer merges is reviewed with its whole.",
             () => [Pr])
     ])
     {

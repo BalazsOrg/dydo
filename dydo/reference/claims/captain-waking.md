@@ -56,7 +56,7 @@ Reason: A reviewer handed a head that lacks something passes a tree nobody assem
 
 ## GoOn
 
-`claim:CaptainWaking.GoOn`: A woken holder goes on from the phase it had reached once the return is taken in, its SHA posted and its commit merged; whatever that phase has it dispatch, and its own Merge, wait until the unneeded step is cancelled and each later step blocks the Merge.
+`claim:CaptainWaking.GoOn`: A woken holder goes on from the phase it had reached once the return is taken in, its SHA posted and its commit merged; whatever that phase has it dispatch, and its finish, wait until the unneeded step is cancelled and each later step blocks the Merge.
 
 Spec: S6, R8, S3
 
@@ -68,7 +68,7 @@ Reason: A next round sent out ahead of the merge judges a head the repair never 
 
 **ticket-captain** (WakeSteps; read by TicketCaptain):
 
-> Go on from the phase you had reached; any sub-ticket it has you send out, and your own Merge, wait for the steps below.
+> Go on from the phase you had reached; any sub-ticket it has you send out, and phase 5 of the spine, wait for the steps below.
 
 ## Unneeded
 
@@ -118,9 +118,25 @@ Reason: A Review sent out ahead of its Implement has no candidate to look at, a 
 
 > Dispatch each AFK sub-ticket, the Merge excepted, that is still in Todo, that you have not sent out already and that nothing blocks any more: every sub-ticket that blocked it is Done or Canceled.
 
+## NoMerge
+
+`claim:CaptainWaking.NoMerge`: A holder whose brief gives the merge to its officer has no Merge: once its review rounds have ended, it finishes by returning its commit.
+
+Spec: R21, K14, R2
+
+Evidence (run): This skill's third fixer, 2026-11-21: briefed "Do not push; no PR; no merge.", it ended on commit `c1a8e3ab` and returned that SHA, and its captain's thread, which `t3_thread_list` showed as its parent, went on from there. `Services/Merge/PullRequestMerge.cs` merges a PR by its number, and that holder had opened none.
+
+Layer: A phase that ends in review rounds reads the same for every holder; whose the merge is, only its brief says.
+
+Reason: Told that a Merge comes next, a part merges what its officer meant to assemble, or stalls on a command that has no PR to name.
+
+**ticket-captain** (WakeSteps; read by TicketCaptain, on claim:CaptainWaking.MergeNext):
+
+> Take phase 5 of the spine last, once your work has reached it: with review rounds, once they have ended. If your brief gives you the merge, the Merge is your own step, your next one once nothing blocks it, by Merging (`merging.md`); if your officer merges, you have no Merge, and you return your commit.
+
 ## MergeNext
 
-`claim:CaptainWaking.MergeNext`: A captain's Merge sub-ticket is never dispatched at a wake: once its review rounds have ended and nothing blocks the Merge, the captain runs it itself, as its own next step.
+`claim:CaptainWaking.MergeNext`: A captain's Merge sub-ticket is never dispatched at a wake: where the merge is the captain's, once its review rounds have ended and nothing blocks the Merge, the captain runs it itself, as its own step, in the last phase.
 
 Spec: R21, S6, R8
 
@@ -132,4 +148,4 @@ Reason: Left as one more card to hand out, it goes to a child with nothing to lo
 
 **ticket-captain** (WakeSteps; read by TicketCaptain):
 
-> The Merge is your own step: once the review rounds have ended and nothing blocks it, it is your next one, by Merging (`merging.md`).
+> Take phase 5 of the spine last, once your work has reached it: with review rounds, once they have ended. If your brief gives you the merge, the Merge is your own step, your next one once nothing blocks it, by Merging (`merging.md`); if your officer merges, you have no Merge, and you return your commit.

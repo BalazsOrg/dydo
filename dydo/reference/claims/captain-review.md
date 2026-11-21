@@ -54,7 +54,7 @@ Reason: The verdict's PASS line and `dydo merge` both need a PR that shows exact
 
 **ticket-captain** (Reviewed; read by TicketCaptain, on claim:CaptainReview.Whose):
 
-> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.
+> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, then have it reviewed in that PR before you merge; a part your officer merges is reviewed with its whole.
 
 ## Whose
 
@@ -70,7 +70,7 @@ Reason: A part reviewed alone and again inside its parent is reviewed twice for 
 
 **ticket-captain** (Reviewed; read by TicketCaptain):
 
-> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, and have it reviewed before you merge; a part your officer merges is reviewed with its whole.
+> If the merge is yours, open a PR for the work once `dydo pr-ready` passes, then have it reviewed in that PR before you merge; a part your officer merges is reviewed with its whole.
 
 ## Attach
 

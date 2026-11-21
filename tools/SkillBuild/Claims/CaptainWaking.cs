@@ -67,10 +67,10 @@ public static class CaptainWaking
     };
 
     public static readonly Claim GoOn = new("A woken holder goes on from the phase it had reached once the return is taken in, its SHA posted and its commit merged; " +
-                                            "whatever that phase has it dispatch, and its own Merge, wait until the unneeded step is cancelled and each later step blocks the Merge.", Me,
+                                            "whatever that phase has it dispatch, and its finish, wait until the unneeded step is cancelled and each later step blocks the Merge.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 5,
-            "Go on from the phase you had reached; any sub-ticket it has you send out, and your own Merge, wait for the steps below.")
+            "Go on from the phase you had reached; any sub-ticket it has you send out, and phase 5 of the spine, wait for the steps below.")
     ])
     {
         Spec = ["S6", "R8", "S3"],
@@ -121,10 +121,22 @@ public static class CaptainWaking
             Reason: "A Review sent out ahead of its Implement has no candidate to look at, a Fix ahead of its round has no finding to close, and a second child on a running step overwrites the first.")
     };
 
-    public static readonly Claim MergeNext = new("A captain's Merge sub-ticket is never dispatched at a wake: once its review rounds have ended and nothing blocks the Merge, the captain runs it itself, as its own next step.", Me,
+    public static readonly Claim NoMerge = new("A holder whose brief gives the merge to its officer has no Merge: once its review rounds have ended, it finishes by returning its commit.", Me, [])
+    {
+        Spec = ["R21", "K14", "R2"],
+        Truth = new(Evidence.Run("This skill's third fixer, 2026-11-21: briefed \"Do not push; no PR; no merge.\", it ended on commit `c1a8e3ab` and returned that SHA, and its captain's thread, " +
+                                 "which `t3_thread_list` showed as its parent, went on from there. `Services/Merge/PullRequestMerge.cs` merges a PR by its number, and that holder had opened none."),
+            Layer: "A phase that ends in review rounds reads the same for every holder; whose the merge is, only its brief says.",
+            Reason: "Told that a Merge comes next, a part merges what its officer meant to assemble, or stalls on a command that has no PR to name.")
+    };
+
+    public static readonly Claim MergeNext = new("A captain's Merge sub-ticket is never dispatched at a wake: where the merge is the captain's, once its review rounds have ended and nothing blocks the Merge, " +
+                                                 "the captain runs it itself, as its own step, in the last phase.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.WakeSteps, 9,
-            "The Merge is your own step: once the review rounds have ended and nothing blocks it, it is your next one, by [Merging](merging.md).")
+            "Take phase 5 of the spine last, once your work has reached it: with review rounds, once they have ended. If your brief gives you the merge, the Merge is your own step, " +
+            "your next one once nothing blocks it, by [Merging](merging.md); if your officer merges, you have no Merge, and you return your commit.",
+            () => [NoMerge])
     ])
     {
         Spec = ["R21", "S6", "R8"],
@@ -134,6 +146,6 @@ public static class CaptainWaking
             Reason: "Left as one more card to hand out, it goes to a child with nothing to load, or waits for a taker that will never come.")
     };
 
-    private static Line At(Actor reader, Enum slot, int order, string text) =>
-        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order));
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

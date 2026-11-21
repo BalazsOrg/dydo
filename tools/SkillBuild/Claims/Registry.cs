@@ -93,6 +93,7 @@ public static class Registry
         typeof(CaptainReviewSeats),
         typeof(CaptainResearch),
         typeof(CaptainTrouble),
+        typeof(CaptainReCut),
         typeof(CaptainNeed),
         typeof(CaptainMergeTrouble)
     ];

@@ -75,7 +75,7 @@ public static class CaptainBriefs
     public static readonly Claim Change = new("A change's brief names its owned paths and gates, and a Fix's the findings it closes.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.BriefAll, 5,
-            "For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes and the SHA it starts from: your branch's head, which holds the candidate they were found at.",
+            "For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes, each should by its ticket's key, and the SHA it starts from: your branch's head, which holds the candidate they were found at.",
             () => [FixBase!])
     ])
     {
@@ -137,12 +137,27 @@ public static class CaptainBriefs
     };
 
     public static readonly Claim Pr = new("A review brief names the PR the candidate is in and its base, or says that the candidate has no PR.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.BriefReview, 2, "The PR the candidate is in, by its number, and the base's SHA; or that it has no PR, as at a leaf's evidence check.")])
+    [
+        At(Actor.TicketCaptain, CaptainSlot.BriefReview, 2,
+            "The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. " +
+            "Only a candidate somebody else will have reviewed in a PR has none, a leaf's evidence check or the round of a part its officer merges, and its brief says so.",
+            () => [PrFirst!])
+    ])
     {
         Spec = ["R17", "K14"],
         Truth = new(Evidence.Code("Services/Merge/IndependentReview.cs"),
             Layer: "`dydo merge` reads a PASS only from the body of the PR it is given, and a reviewer handed a bare SHA cannot tell which PR that is, or whether there is one.",
             Reason: "A reviewer that knows there is no PR writes its PASS where it will be read, and never hunts for a body to edit.")
+    };
+
+    public static readonly Claim PrFirst = new("A candidate its holder will merge is in its PR before its Review is briefed; only a candidate somebody else will have reviewed in a PR is reviewed outside one.", Me, [])
+    {
+        Spec = ["R17", "R23", "R2"],
+        Truth = new(Evidence.Run("`dydo pr-ready`, run with no body in DYD-1372's checkout 2026-11-21: it answered \"not ready: HEAD differs from its upstream\", a fact of the tree, and asked for no review; " +
+                                 "`Commands/PrReadyCommand.cs` reads a body only under `--body`. So a PR can be opened before any round. " +
+                                 "`Services/Merge/PullRequestMerge.cs` takes its PASS from the PR's body and refuses with \"holds no PASS for candidate\" when it is absent."),
+            Layer: "`dydo merge` tells a captain that its PR holds no PASS only at the merge, after the reviewer that could have written the line has returned.",
+            Reason: "A verdict written where the command never looks buys no merge, and the whole is judged a second time for the sake of one line.")
     };
 
     public static readonly Claim Governing = new("A review brief names the governing spec, or says there is none.", Me,

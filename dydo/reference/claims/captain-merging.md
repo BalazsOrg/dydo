@@ -6,6 +6,38 @@ type: reference
 
 # Claims: CaptainMerging
 
+## Mine
+
+`claim:CaptainMerging.Mine`: Only the holder whose brief gives it the merge merges: a holder whose officer merges cuts no Merge sub-ticket and takes none of the merging steps.
+
+Spec: R21, K14
+
+Evidence (code): `Services/Merge/PullRequestMerge.cs`
+
+Layer: `dydo merge` merges whatever PR it is given and for whoever runs it; whose the merge is, it cannot know.
+
+Reason: Run by a part, the command lands that part ahead of the whole its officer was to assemble and have judged.
+
+**ticket-captain** (MergeLead; read by TicketCaptain):
+
+> Merge only if your brief gives you the merge: where your officer merges, you cut no Merge sub-ticket and take none of these steps.
+
+## NoPass
+
+`claim:CaptainMerging.NoPass`: A PASS that stands on a Review ticket alone merges nothing: a head reviewed outside its PR needs a round in that PR.
+
+Spec: R17, R23
+
+Evidence (code): `Services/Merge/PullRequestMerge.cs`
+
+Layer: `dydo merge` refuses a PR whose body holds no PASS for its head, and reads no ticket to find one.
+
+Reason: Copied into the body by the captain it favours, a verdict stops being the reviewer's word, so the cure is a fresh look where the command can see it.
+
+**ticket-captain** (MergeRules; read by TicketCaptain):
+
+> A PASS that stands on a Review ticket alone merges nothing, since `dydo merge` reads only the PR's body: a head reviewed outside its PR needs a round in it.
+
 ## Begin
 
 `claim:CaptainMerging.Begin`: The merging captain sets its Merge sub-ticket In Progress when it begins the merge, and closes it itself.

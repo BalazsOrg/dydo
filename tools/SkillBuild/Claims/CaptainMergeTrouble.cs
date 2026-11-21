@@ -3,7 +3,8 @@ namespace DynaDocs.SkillBuild;
 /// <summary>
 /// The ticket-captain prototype's two merge scenarios (DYD-1372): a conflict, and a gate red after the
 /// merge. What <c>dydo merge</c> does on each is read from its code: it refuses a conflict, and it
-/// undoes no revert.
+/// undoes no revert. A flake is noted on the Merge step (spec Y9), and a merge made again after a
+/// revert is a new step of its own behind its repair, reviewed in its new PR (gap hunt 4: G4 to G6).
 /// </summary>
 public static class CaptainMergeTrouble
 {
@@ -85,6 +86,18 @@ public static class CaptainMergeTrouble
             Reason: "A merge that is sound is not reverted for a test that wobbled.")
     };
 
+    public static readonly Claim FlakeNote = new("A flake after a merge is noted in one line on the Merge sub-ticket, or on the holder's own ticket where its work was not cut into steps.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.RedLead, 4,
+            "Note the flake in one line, the red run and the green rerun, on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.")
+    ])
+    {
+        Spec = ["Y9", "R22"],
+        Truth = new(Evidence.Tool("save_comment: `issueId` and `body`, a comment on a Linear issue. ci_rerun: \"Re-run a PR's failing checks, or one named check.\", which keeps no tally of the runs it turned green."),
+            Layer: "Hosted CI shows a rerun's green and forgets the red before it, and nothing yet counts a wobble: the tool that will is not built.",
+            Reason: "A wobble that leaves a line can be seen to repeat; one that leaves none fails the next merge as if for the first time.")
+    };
+
     public static readonly Claim Revert = new("A real red after a merge is reverted on the feature branch at once, by the captain.", Me,
         [At(Actor.TicketCaptain, CaptainSlot.RedSteps, 1, "Revert the merge on the feature branch at once: `git revert -m 1 <merge SHA>`, pushed.")])
     {
@@ -106,8 +119,23 @@ public static class CaptainMergeTrouble
             Reason: "The record says why the merge is gone, and the break has a ticket of its own.")
     };
 
-    public static readonly Claim Repair = new("After a revert, an Implement ticket fixes it on the ticket's branch, then a review round scoped to the fix.", Me,
-        [At(Actor.TicketCaptain, CaptainSlot.RedSteps, 3, "Dispatch an Implement ticket to fix it on your ticket's branch, then a review round scoped to the fix.")])
+    public static readonly Claim NewMerge = new("A merge made again after a revert has a Merge sub-ticket of its own, blocked by the repair and its Review; the cancelled one stays as it is, " +
+                                                "and work not cut into steps keeps its holder's own ticket as the record.", Me, [])
+    {
+        Spec = ["R20", "S12", "S3"],
+        Truth = new(Evidence.Tool("save_issue: `blockedBy`, \"Issue IDs/identifiers blocking this. Append-only; existing relations are never removed\", set as the ticket is created. " +
+                                  "Linear, team Dydo, statuses read 2026-11-21: Canceled is of the type canceled, a closed status no merge can be started on."),
+            Layer: "Linear keeps a cancelled Merge cancelled and opens no second one, and `dydo merge` touches no ticket.",
+            Reason: "Without a card of its own the second landing is run on a step the board shows as dead, and nothing there says that a merge is under way again.")
+    };
+
+    public static readonly Claim Repair = new("After a revert, the repair is opened as steps: an Implement that fixes it on the ticket's branch and brings the reverted change back there, then a review round scoped to the fix.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.RedSteps, 3,
+            "Open the repair as steps, each blocked by the one before with Linear's `save_issue` (`blockedBy`): an Implement that fixes it on your ticket's branch and brings the reverted change back there, " +
+            "a Review scoped to the fix, and a new Merge, the cancelled one left as it is. Where your work was not cut into steps, open no Merge: your own ticket stays the record.",
+            () => [NewMerge])
+    ])
     {
         Spec = ["R22"],
         Truth = new(Evidence.Code(MergeCode),
@@ -115,16 +143,28 @@ public static class CaptainMergeTrouble
             Reason: "The rest of the branch already passed, so the round looks at what changed.")
     };
 
-    public static readonly Claim Reland = new("The fixed branch is merged again through a PR that itself restores the reverted change.", Me,
+    public static readonly Claim Reland = new("The fixed branch is merged again through a new PR, opened once the repair is back, that itself restores the reverted change.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.RedSteps, 4,
-            "Merge the fixed branch again through a new PR that brings the reverted change back itself: `dydo merge` undoes no revert, and calls the old PR already integrated.")
+            "Dispatch the Implement, and when it returns open a new PR for the branch: `dydo merge` undoes no revert, and calls the old PR already integrated.")
     ])
     {
         Spec = ["R22", "R23"],
         Truth = new(Evidence.Code(MergeCode),
             Layer: "The spec has `dydo merge` revert the revert; the command as built does not, so the branch must.",
             Reason: "A re-merge of the old commits would land nothing and still report success.")
+    };
+
+    public static readonly Claim Scoped = new("The repair's Review is briefed with the new PR, so its PASS stands in that PR's body, and the merge then runs again by the merging steps.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.RedSteps, 5,
+            "Dispatch the Review, its brief naming the new PR, and once it passes merge again, by [Merging](merging.md).")
+    ])
+    {
+        Spec = ["R22", "R17", "R23"],
+        Truth = new(Evidence.Code(MergeCode),
+            Layer: "`dydo merge` reads a PASS from the body of the PR it is given, and the old PR, already merged, is not the one it will be given.",
+            Reason: "A verdict left in the first PR's body is a refusal at the second landing, with the reviewer long gone.")
     };
 
     public static readonly Claim Lost = new("A red gate the captain cannot get fixed goes to its officer.", Me,
@@ -137,6 +177,6 @@ public static class CaptainMergeTrouble
         Transition = new(CaptainState.Repairing, CaptainState.Returned, "a red gate that cannot be fixed goes to the officer")
     };
 
-    private static Line At(Actor reader, Enum slot, int order, string text) =>
-        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order));
+    private static Line At(Actor reader, Enum slot, int order, string text, Func<Claim[]>? also = null) =>
+        new(CaptainSkill.TicketCaptain, reader, text, new(slot, order), also);
 }

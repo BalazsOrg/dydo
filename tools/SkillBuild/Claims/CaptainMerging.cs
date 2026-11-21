@@ -11,6 +11,30 @@ public static class CaptainMerging
 
     private static readonly Enum[] Me = [Actor.TicketCaptain];
 
+    public static readonly Claim Mine = new("Only the holder whose brief gives it the merge merges: a holder whose officer merges cuts no Merge sub-ticket and takes none of the merging steps.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.MergeLead, 1,
+            "Merge only if your brief gives you the merge: where your officer merges, you cut no Merge sub-ticket and take none of these steps.")
+    ])
+    {
+        Spec = ["R21", "K14"],
+        Truth = new(Evidence.Code(MergeCode),
+            Layer: "`dydo merge` merges whatever PR it is given and for whoever runs it; whose the merge is, it cannot know.",
+            Reason: "Run by a part, the command lands that part ahead of the whole its officer was to assemble and have judged.")
+    };
+
+    public static readonly Claim NoPass = new("A PASS that stands on a Review ticket alone merges nothing: a head reviewed outside its PR needs a round in that PR.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.MergeRules, 5,
+            "A PASS that stands on a Review ticket alone merges nothing, since `dydo merge` reads only the PR's body: a head reviewed outside its PR needs a round in it.")
+    ])
+    {
+        Spec = ["R17", "R23"],
+        Truth = new(Evidence.Code(MergeCode),
+            Layer: "`dydo merge` refuses a PR whose body holds no PASS for its head, and reads no ticket to find one.",
+            Reason: "Copied into the body by the captain it favours, a verdict stops being the reviewer's word, so the cure is a fresh look where the command can see it.")
+    };
+
     public static readonly Claim Begin = new("The merging captain sets its Merge sub-ticket In Progress when it begins the merge, and closes it itself.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.MergeSteps, 1,

@@ -110,12 +110,23 @@ public static class CaptainSplit
             Reason: "Whoever staffs the Question reads its Mode before anything else, and a wrong one seats a researcher on what only he can say.")
     };
 
-    public static readonly Claim Steps = new("Work with its own review rounds is cut into Implement, Review, Fix and Merge sub-tickets blocked in order, the Merge its cutter's own step; " +
+    public static readonly Claim MergeIfMine = new("A Merge sub-ticket is cut only by the holder whose brief gives it the merge; a holder whose officer merges cuts none.", Me, [])
+    {
+        Spec = ["R21", "K14", "S3"],
+        Truth = new(Evidence.Run("This skill's third fixer was briefed \"Do not push; no PR; no merge.\" (DYD-1372 phase 1, fix g3) and returned a commit: it held no Merge. " +
+                                 "Linear, DYD-1290 read 2026-11-21: \"Merge the crew lane (DYD-1287) into the rebuilt candidate\" sits under DYD-1281, the whole it merged into, " +
+                                 "and not under the lane it merged. `Services/Merge/PullRequestMerge.cs` merges a PR by its number, and only the holder that merges opens one."),
+            Layer: "Linear takes a Merge sub-ticket under any ticket, and nothing reads a brief to see whose the merge is.",
+            Reason: "A part that opens a Merge it was never given runs a command with no PR to name, or lands work its officer meant to assemble first.")
+    };
+
+    public static readonly Claim Steps = new("Work with its own review rounds is cut into Implement, Review and Fix sub-tickets blocked in order, with a Merge last where the merge is the cutter's, as its own step; " +
                                              "a small leaf and a batched should are each one ticket.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Tickets, 8,
-            "Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, Merge, the last your own step. You may open them ahead, in Todo. " +
-            "A small leaf or a batched should is one ticket, with no steps.")
+            "Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, and a Merge only if your brief gives you the merge, as your own step. " +
+            "You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.",
+            () => [MergeIfMine])
     ])
     {
         Spec = ["S3", "S4"],

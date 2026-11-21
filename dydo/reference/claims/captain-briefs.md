@@ -116,7 +116,7 @@ Reason: Two writers with stated paths cannot overwrite each other.
 
 **ticket-captain** (BriefAll; read by TicketCaptain):
 
-> For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes and the SHA it starts from: your branch's head, which holds the candidate they were found at.
+> For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes, each should by its ticket's key, and the SHA it starts from: your branch's head, which holds the candidate they were found at.
 
 ## FixBase
 
@@ -132,7 +132,7 @@ Reason: Told where to begin, a writer whose checkout stayed at its own part does
 
 **ticket-captain** (BriefAll; read by TicketCaptain, on claim:CaptainBriefs.Change):
 
-> For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes and the SHA it starts from: your branch's head, which holds the candidate they were found at.
+> For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes, each should by its ticket's key, and the SHA it starts from: your branch's head, which holds the candidate they were found at.
 
 ## Asked
 
@@ -212,7 +212,23 @@ Reason: A reviewer that knows there is no PR writes its PASS where it will be re
 
 **ticket-captain** (BriefReview; read by TicketCaptain):
 
-> The PR the candidate is in, by its number, and the base's SHA; or that it has no PR, as at a leaf's evidence check.
+> The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. Only a candidate somebody else will have reviewed in a PR has none, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
+
+## PrFirst
+
+`claim:CaptainBriefs.PrFirst`: A candidate its holder will merge is in its PR before its Review is briefed; only a candidate somebody else will have reviewed in a PR is reviewed outside one.
+
+Spec: R17, R23, R2
+
+Evidence (run): `dydo pr-ready`, run with no body in DYD-1372's checkout 2026-11-21: it answered "not ready: HEAD differs from its upstream", a fact of the tree, and asked for no review; `Commands/PrReadyCommand.cs` reads a body only under `--body`. So a PR can be opened before any round. `Services/Merge/PullRequestMerge.cs` takes its PASS from the PR's body and refuses with "holds no PASS for candidate" when it is absent.
+
+Layer: `dydo merge` tells a captain that its PR holds no PASS only at the merge, after the reviewer that could have written the line has returned.
+
+Reason: A verdict written where the command never looks buys no merge, and the whole is judged a second time for the sake of one line.
+
+**ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Pr):
+
+> The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. Only a candidate somebody else will have reviewed in a PR has none, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
 
 ## Governing
 

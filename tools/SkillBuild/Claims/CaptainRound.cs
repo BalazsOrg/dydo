@@ -94,6 +94,19 @@ public static class CaptainRound
             Reason: "A fix made while the code is open costs less than a ticket that remembers it.")
     };
 
+    public static readonly Claim ShouldInFix = new("A should fixed inside a Fix is closed by that Fix's holder: each should its brief names goes Done once its fix is proved, with the proof on it, before the Fix closes.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.ImplementFix, 4,
+            "Close each should your brief names Done once its fix is proved, with the proof on it, before you close the Fix.")
+    ])
+    {
+        Spec = ["S17", "S9"],
+        Truth = new(Evidence.Run("Linear, DYD-1281 read 2026-11-21: Fix r2, DYD-1333, is titled as closing \"2 blockers and 5 shoulds\", and no child of DYD-1281 carries the label should: " +
+                                 "those shoulds had no ticket of their own. A should filed by its round's holder has one, and save_issue's `state` is what moves it."),
+            Layer: "Linear closes a Fix and leaves every other ticket where it stood; a should repaired under another ticket's name stays open on its own.",
+            Reason: "An open card for work already done is collected into the next batch, and an agent is sent to repair what is no longer broken.")
+    };
+
     public static readonly Claim ParentDone = new("A parent may close Done while its shoulds stay open.", Me,
         [At(Actor.TicketCaptain, CaptainSlot.ShouldRoutes, 2, "Anything more: it waits on its ticket, and its parent may close Done meanwhile.")])
     {
