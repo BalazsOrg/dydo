@@ -7,9 +7,12 @@ namespace DynaDocs.SkillBuild;
 /// blocker is a state of its own: the rounds end from it, and the one more round the captain may order
 /// leaves only from it, once (<c>extra</c>), so a round with a blocker reaches the next only through a
 /// Fix (R8). A clear round may leave a cheap should: a writer mends it on its own ticket, a state of its
-/// own that only a clear round enters, and the new head then gets a round, which <c>dydo merge</c>
-/// needs and which is not that one more round. It happens once (<c>mended</c>): a should a later clear
-/// round finds waits on its ticket, so the loop ends (S17, DYD-1295 41a553f1).
+/// own that only a clear round enters. Where the candidate is in the holder's PR, the new head then gets
+/// a round, which <c>dydo merge</c> needs and which is not that one more round. Where it is in no PR,
+/// its officer merging it, the mend is left for finishing: the mended head is returned and reviewed
+/// with its whole (R2, R23). The machine does not model who merges, so neither way out is
+/// guarded. The mend happens once (<c>mended</c>): a should a later clear round finds waits on its
+/// ticket, so the loop ends (S17, DYD-1295 41a553f1).
 /// A third round that still has a blocker leaves only through the checkpoint (R10), and a
 /// repaired conflict or red gate goes on only through a review round, or back to the officer when it
 /// cannot be finished (R19). A splitting captain's Question is one more child it waits on. A leaf's

@@ -94,14 +94,26 @@ public partial class TicketCaptainGap6Tests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 g6 H3 S17 a should's repair after a clear round is a move of the machine: a clear round leaves to a state of its own, which is entered from nowhere else and left only into a review round")]
+    [Trait("Job", "contract: DYD-1372 g6 H3 S17 a should's repair after a clear round is a move of the machine: a clear round leaves to a state of its own, which is entered from nowhere else and left only into a review round or on to finishing")]
     public void AClearRound_HasAMoveForAShouldsRepair()
     {
         var known = new[] { "Finishing", "InReview" };
         var repair = Assert.Single(Moves.Value, move => move.From == "Clear" && !known.Contains(move.To));
 
         Assert.All(Moves.Value.Where(move => move.To == repair.To), move => Assert.Equal("Clear", move.From));
-        Assert.Equal("InReview", Assert.Single(Moves.Value, move => move.From == repair.To).To);
+        Assert.Equal(known, Moves.Value.Where(move => move.From == repair.To).Select(move => move.To).Order());
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DYD-1372 g6b H3 R2 R23 a should mended on a candidate in no PR of its holder's gets no round of its own: the repair has a way on to finishing that no marker guards and that touches neither the round's count nor either marker, stated where the repair stands")]
+    public void AMendedPart_GoesOnToFinishing_WithNoRoundOfItsOwn()
+    {
+        var repair = Moves.Value.Single(move => move.From == "Clear" && move.To is not ("Finishing" or "InReview"));
+        var on = Assert.Single(Moves.Value, move => move.From == repair.To && move.To == "Finishing");
+
+        Assert.Null(on.Guard);
+        Assert.Null(on.Effect);
+        Assert.Equal(LineOf(repair.Claim["claim:".Length..]), LineOf(on.Claim["claim:".Length..]));
     }
 
     [Fact]
@@ -109,7 +121,7 @@ public partial class TicketCaptainGap6Tests
     public void TheRepairsRound_IsNotTheOneMoreRound()
     {
         var repair = Moves.Value.Single(move => move.From == "Clear" && move.To is not ("Finishing" or "InReview"));
-        var round = Moves.Value.Single(move => move.From == repair.To);
+        var round = Moves.Value.Single(move => move.From == repair.To && move.To == "InReview");
 
         Assert.Contains("round' = round + 1", round.Effect);
         Assert.All(new[] { repair.Guard, repair.Effect, round.Guard, round.Effect }, text => Assert.DoesNotContain("extra", text ?? ""));

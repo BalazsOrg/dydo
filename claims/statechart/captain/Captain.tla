@@ -189,6 +189,12 @@ CaptainRound_Cheap ==
     /\ mended' = TRUE
     /\ UNCHANGED <<round, extra, kind>>
 
+\* claim:CaptainRound.MendedPart
+CaptainRound_MendedPart ==
+    /\ state = "Mending"
+    /\ state' = "Finishing"
+    /\ UNCHANGED <<round, extra, mended, kind>>
+
 \* claim:CaptainRound.NewHead
 CaptainRound_NewHead ==
     /\ state = "Mending"
@@ -300,6 +306,7 @@ Next ==
     \/ CaptainReviewSeats_Ticket
     \/ CaptainReviewSeats_Verdict
     \/ CaptainRound_Cheap
+    \/ CaptainRound_MendedPart
     \/ CaptainRound_NewHead
     \/ CaptainSplit_Cut
     \/ CaptainSplit_Leaf

@@ -48,6 +48,7 @@ stateDiagram-v2
   s12 --> s7: the Fix is Done: a fresh round #183; R8, S9
   s13 --> s7: the repair is in: a fresh review of what it changed #183; R19
   s13 --> s1: a red gate that cannot be fixed goes to the officer #183; K9 or a conflict that cannot be resolved goes to the officer #183; K9
+  s14 --> s6: the should is mended on a candidate in no PR, which the holder's officer merges: no round of its own, and the mended head is returned, to be reviewed with the whole #183; R2, R23, S17, R32
   s14 --> s7: the should is mended: a round on the new head, which the merge needs #183; R8, R23, R24
   s7 --> s15: a third round still has a blocker: the checkpoint #183; R10
   s15 --> s12: #96;checkpoint: one more round, because #8230;#96;: the blockers go to a Fix #183; R10, S10

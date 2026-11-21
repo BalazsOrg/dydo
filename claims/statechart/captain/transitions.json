@@ -582,6 +582,24 @@
       ]
     },
     {
+      "claim": "claim:CaptainRound.MendedPart",
+      "from": "Mending",
+      "to": "Finishing",
+      "arrow": "the should is mended on a candidate in no PR, which the holder's officer merges: no round of its own, and the mended head is returned, to be reviewed with the whole",
+      "spec": [
+        "R2",
+        "R23",
+        "S17",
+        "R32"
+      ],
+      "guard": null,
+      "effect": null,
+      "fair": false,
+      "skills": [
+        "ticket-captain"
+      ]
+    },
+    {
       "claim": "claim:CaptainRound.NewHead",
       "from": "Mending",
       "to": "InReview",

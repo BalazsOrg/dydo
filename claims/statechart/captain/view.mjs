@@ -45,6 +45,7 @@ const steps = {
   "CaptainReviewSeats_Ticket": "a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket · S1, R34, R15",
   "CaptainReviewSeats_Verdict": "a review's seats are back: their findings become the round's one verdict, which no round reviews · S8, S1, R34",
   "CaptainRound_Cheap": "a round with no blocker leaves a cheap should: a writer mends it on its own ticket, once · S17, R8",
+  "CaptainRound_MendedPart": "the should is mended on a candidate in no PR, which the holder's officer merges: no round of its own, and the mended head is returned, to be reviewed with the whole · R2, R23, S17, R32",
   "CaptainRound_NewHead": "the should is mended: a round on the new head, which the merge needs · R8, R23, R24",
   "CaptainSplit_Cut": "the ticket is bigger than one agent and its route is in sight: it is cut · H2, H13",
   "CaptainSplit_Leaf": "the ticket fits one agent · H2, S2",
