@@ -34,9 +34,12 @@ public static class CaptainCarrier
     };
 
     private static readonly Resource Research = new(CaptainResource.Research, "Research",
-        Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Paragraph(CaptainSlot.ResearchMap), Slot.Steps(CaptainSlot.ResearchSteps), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"))
+        Slot.Paragraph(CaptainSlot.ResearchLead), Slot.Paragraph(CaptainSlot.ResearchMap), Slot.Steps(CaptainSlot.ResearchSteps),
+        Slot.Paragraph(CaptainSlot.ResearchBig, "If the question is too big for one agent:"), Slot.Paragraph(CaptainSlot.ResearchQuestion, "On a Question ticket:"),
+        Slot.Bullets(CaptainSlot.ResearchRoutes))
     {
-        // A Question whose research does not settle its call goes back to the officer from the leaf.
+        // A Question whose research does not settle its call leaves the leaf: handed on to the user, or back to the officer.
+        // A holder that divided its question comes back to the leaf once its parts return.
         States = [CaptainState.Leaf]
     };
 
@@ -62,9 +65,11 @@ public static class CaptainCarrier
         Slot.Bullets(CaptainSlot.BlockerRoutes, "A blocker, by what it shows:"), Slot.Bullets(CaptainSlot.ShouldRoutes, "A should, by what its fix costs:"),
         Slot.Paragraph(CaptainSlot.OwnChange));
 
-    // It opens with whose the merge is: a holder whose officer merges reads no further.
+    // It opens with whose the merge is: a holder whose officer merges reads no further. Then the one order of a
+    // PR, in its two moments: opened as a draft before the review, and made ready and merged after it (gap hunt 5, H2).
     private static readonly Resource Merging = new(CaptainResource.Merging, "Merging",
-        Slot.Paragraph(CaptainSlot.MergeLead), Slot.Steps(CaptainSlot.MergeSteps), Slot.Bullets(CaptainSlot.MergeRules));
+        Slot.Paragraph(CaptainSlot.MergeLead), Slot.Paragraph(CaptainSlot.MergePr, "Before the review:"), Slot.Steps(CaptainSlot.MergeSteps, "Once the rounds have ended:"),
+        Slot.Bullets(CaptainSlot.MergeRules));
 
     // Where a holder woken in its own thread goes on from: what it re-reads, and what each return asks of it.
     private static readonly Resource Waking = new(CaptainResource.Waking, "Waking", Slot.Paragraph(CaptainSlot.WakeLead), Slot.Steps(CaptainSlot.WakeSteps));
@@ -94,7 +99,7 @@ public static class CaptainCarrier
             },
             new("Get it reviewed", Slot.Paragraph(CaptainSlot.Reviewed), Slot.Steps(CaptainSlot.Rounds))
             {
-                States = [CaptainState.Leaf, CaptainState.Waiting, CaptainState.InReview, CaptainState.Clear, CaptainState.Fixing],
+                States = [CaptainState.Leaf, CaptainState.Waiting, CaptainState.InReview, CaptainState.Clear, CaptainState.Fixing, CaptainState.Mending],
                 Resources = [Round, Findings]
             },
             new("Finish", Slot.Paragraph(CaptainSlot.Who), Slot.Bullets(CaptainSlot.Cases), Slot.Paragraph(CaptainSlot.Close))

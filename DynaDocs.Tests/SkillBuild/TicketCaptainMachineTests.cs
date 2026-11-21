@@ -65,7 +65,7 @@ public class TicketCaptainMachineTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 r0b 1 2 R8 R10 a clear round is a state of its own: the review rounds end from it, one more round is ordered only from it and only once, and a blocked round reaches the next only through a Fix")]
+    [Trait("Job", "contract: DYD-1372 r0b 1 2 R8 R10 a clear round is a state of its own: the review rounds end from it, one more round is ordered only from it and only once, and a blocked round reaches the next only through a Fix; g6 H3 the third counted round is the one after a should is mended")]
     public void CaptainMachine_OrdersOneMoreRoundOnlyAfterAClearOne()
     {
         Assert.Contains(Arrow("CaptainReview.Cleared", "InReview", "Clear"), Arrows);
@@ -75,7 +75,8 @@ public class TicketCaptainMachineTests
         Assert.DoesNotContain("\"from\": \"InReview\",\n      \"to\": \"Finishing\"", Arrows);
         Assert.Contains("CaptainReview_OneMore ==\n    /\\ state = \"Clear\"\n    /\\ ~extra\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1 /\\ extra' = TRUE\n", Module);
         Assert.Contains("CaptainTrouble_NextRound ==\n    /\\ state = \"Fixing\"\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1\n", Module);
-        Assert.Equal(2, Module.Split("round' = round + 1").Length - 1);
+        Assert.Contains("CaptainRound_NewHead ==\n    /\\ state = \"Mending\"\n    /\\ merger = \"holder\"\n    /\\ state' = \"InReview\"\n    /\\ round' = round + 1\n", Module);
+        Assert.Equal(3, Module.Split("round' = round + 1").Length - 1);
     }
 
     [Fact]
@@ -88,13 +89,17 @@ public class TicketCaptainMachineTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 r2b B3 H16 S10 a leaf's Question is left only to resume the leaf: passed up unsettled, it stays a wait; the research resource never routes one to the user")]
+    [Trait("Job", "contract: DYD-1372 r2b B3 H16 S10 a leaf's Question is left only to resume the leaf: passed up unsettled, it stays a wait; g6 H1 H23 the research resource takes no call to the user itself: the user's call goes up as a ticket, by the need's own resource, through the officer")]
     public void CaptainMachine_LeavesAQuestionOnlyToResumeTheLeaf()
     {
+        var research = Built.Value.Files["skills/roles/officers/ticket-captain/resources/research.md"];
+
         Assert.Contains(Arrow("CaptainNeed.Answered", "Question", "Leaf"), Arrows);
         Assert.Contains(Arrow("CaptainNeed.Up", "Question", "Question"), Arrows);
         Assert.Equal(Leaving("Question"), Between("Question", "Leaf") + Between("Question", "Question"));
-        Assert.DoesNotContain("user", Built.Value.Files["skills/roles/officers/ticket-captain/resources/research.md"]);
+        Assert.All(research.Split('\n').Where(line => line.Contains("user", StringComparison.Ordinal)), line => Assert.Contains("](need-for-the-user.md)", line));
+        Assert.DoesNotContain("envoy", research);
+        Assert.DoesNotContain("question tool", research);
     }
 
     [Fact]

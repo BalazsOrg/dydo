@@ -61,7 +61,7 @@ Keep about four lanes full: your sub-tickets first, then filler, by [Filler](res
 ## 4. Get it reviewed
 
 Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
-If the merge is yours, open a PR for the work once `dydo pr-ready` passes, then have it reviewed in that PR before you merge; a part your officer merges is reviewed with its whole.
+If the merge is yours, open a draft PR by [Merging](resources/merging.md), and have the work reviewed there before you merge; a part your officer merges is reviewed with its whole.
 Put your ticket's key in that PR's title, and attach its link to the ticket yourself, with Linear's `save_issue` (`links`). (open: his call)
 A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.
 

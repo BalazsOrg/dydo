@@ -20,5 +20,13 @@ Your ticket is one question a choice waits on. Answer it with every claim cited 
 5. Where sources conflict, name the conflict and the source that governs; where they are silent, mark the point unsettled rather than reason your way to a fact.
 6. Write the answer first, then each claim with its citation (a path at its commit, or a URL) and its exact passage, what stayed unsettled, and every family searched, the empty ones included.
 
+**If the question is too big for one agent:**
+Divide it by [Too big to hold](too-big.md), what you have answered so far standing in for its commit: write that on your ticket, each claim with its citation, and make each part a Research sub-ticket, one question that can be answered on its own.
+When the parts are back, their answers are on their tickets: take each as you would a scout's report, from step 4 on, and write the one answer from theirs and yours.
+
 **On a Question ticket:**
-Research first. When the facts settle the call, put the answer on the ticket. When they do not, put on it the call, its options unranked and the facts with their sources, and return it to your officer as unsettled, the Question still open.
+Research first, then go by what the facts leave of the call. An open call is laid out the same way wherever it goes: the call, its options unranked and the facts with their sources.
+
+- They settle it: put the answer on the ticket.
+- They leave a call that is the user's to make, because it cannot be undone once made or because making it sets or changes a decision record: open a Question sub-ticket under yours, Mode HITL, by [Sub-tickets](sub-tickets.md), lay the call out on it, and have it block every ticket yours blocks. Your ticket has then handed its call on: close it Done, and return the new ticket's key to your officer. That return is how the call goes up: your officer carries the ticket on as it is, by [A need for the user](need-for-the-user.md).
+- They leave anything else open, a weighty call that can still be undone among them: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.

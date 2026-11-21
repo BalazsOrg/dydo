@@ -31,10 +31,15 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "`dydo merge` refuses a PR with no PASS line and cannot tell who wrote the line.",
             Reason: "A writer's own context hides from it what a fresh one sees at once."),
-        Transition = new(CaptainState.Leaf, CaptainState.InReview, "the leaf's change is whole: another agent reviews it") { Guard = CaptainMachines.Change }
+        Transition = new(CaptainState.Leaf, CaptainState.InReview, "the leaf's change is whole and the merge is its holder's: another agent reviews it") { Guard = CaptainMachines.MergesChange }
     };
 
-    public static readonly Claim Pr = new("The captain that merges its work opens the PR for it, from a clean and pushed tree, before its review.", Me, [])
+    public static readonly Claim Pr = new("The captain that merges its work opens the PR for it, from a clean and pushed tree, before its review.", Me,
+    [
+        At(Actor.TicketCaptain, CaptainSlot.MergePr, 1,
+            "Open the PR for your work as a draft once `dydo pr-ready` passes: run with no body file, it checks your tree alone, clean and pushed, and asks for no review. Any check of the PR's body waits for step 3.",
+            () => [CaptainMerging.Draft])
+    ])
     {
         Spec = ["R17", "R21"],
         Truth = new(Evidence.Command("dydo pr-ready"),
@@ -42,11 +47,10 @@ public static class CaptainReview
             Reason: "The verdict's PASS line and `dydo merge` both need a PR that shows exactly the reviewed commit.")
     };
 
-    public static readonly Claim Whose = new("Whoever merges a piece of work has it reviewed first; a part is reviewed with the parent it joins.", Me,
+    public static readonly Claim Whose = new("Whoever merges a piece of work has it reviewed first, in its PR; a part is reviewed with the parent it joins.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.Reviewed, 2,
-            "If the merge is yours, open a PR for the work once `dydo pr-ready` passes, then have it reviewed in that PR before you merge; a part your officer merges is reviewed with its whole.",
-            () => [Pr])
+            "If the merge is yours, open a draft PR by [Merging](resources/merging.md), and have the work reviewed there before you merge; a part your officer merges is reviewed with its whole.")
     ])
     {
         Spec = ["R2"],
@@ -98,7 +102,7 @@ public static class CaptainReview
         Truth = new(Evidence.Run(Rounds),
             Layer: "Linear nests tickets for any reason; whether a parent integrates anything is known to its captain.",
             Reason: "A grouping adds no behaviour for a reviewer to find wrong."),
-        Transition = new(CaptainState.Waiting, CaptainState.Finishing, "the children are back and the ticket only groups parts: no review of its own")
+        Transition = new(CaptainState.Waiting, CaptainState.Finishing, "the children are back and the ticket only groups parts: no review of its own") { Guard = CaptainMachines.GroupsChange }
     };
 
     public static readonly Claim Whole = new("Once its parts are wired, a parent is reviewed once: each part, the parts together, their harmony.", Me,
@@ -205,7 +209,7 @@ public static class CaptainReview
         Transition = new(CaptainState.Clear, CaptainState.Finishing, "no further round is ordered: the review rounds end")
     };
 
-    public static readonly Claim Mine = new("A blocker found in a change a captain wrote goes to a fresh writer.", Me, [])
+    public static readonly Claim Mine = new("A captain never fixes a change it wrote itself: while no child has written on that change, its Fix goes to a fresh writer.", Me, [])
     {
         Spec = ["R16", "R33"],
         Truth = new(Evidence.Tool("delegate_task: \"Start one child agent with only `task`. No parent history.\""),
@@ -216,8 +220,7 @@ public static class CaptainReview
     public static readonly Claim OwnFinding = new("A captain makes no call on a finding about a change it wrote: the finding stands as the reviewer wrote it, and a doubt about it is a Question.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.OwnChange, 1,
-            "Take a finding on a change you wrote as the reviewer wrote it: a fresh writer fixes it, and if you doubt it, the doubt is a Question sub-ticket, never your call.",
-            () => [Mine])
+            "Take a finding on a change you wrote as the reviewer wrote it: its Fix is never yours to write, and goes out by [Fix rounds](fix-rounds.md); if you doubt the finding, the doubt is a Question sub-ticket, never your call.")
     ])
     {
         Spec = ["R33", "H16"],

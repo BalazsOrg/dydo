@@ -97,6 +97,7 @@ public static class Registry
         typeof(CaptainTrouble),
         typeof(CaptainReCut),
         typeof(CaptainNeed),
+        typeof(CaptainPassedUp),
         typeof(CaptainMergeTrouble)
     ];
 

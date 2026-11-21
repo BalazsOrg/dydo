@@ -54,6 +54,22 @@ Reason: A reviewer handed a head that lacks something passes a tree nobody assem
 
 > When a child that works in its own worktree returns a commit that is yours to merge, merge it into your branch with `git merge <SHA>`: the whole is reviewed at one SHA, your branch's head once it holds every part. A conflict there goes to an Implement ticket on your branch.
 
+## Needs
+
+`claim:CaptainWaking.Needs`: A holder woken by a need a child sends up, or by the return or the answer of a Question it opened, takes it by the steps of a need for the user.
+
+Spec: H16, H12
+
+Evidence (tool): t3_thread_send, read 2026-11-21: `mode:'auto'` "starts an idle thread, steers a running turn, or queues", so a child's need and an officer's answer both arrive as a message in a thread whose holder was doing something else, or nothing.
+
+Layer: T3 delivers the message and says nothing of which steps it belongs to, and those steps sit under a heading that names the user.
+
+Reason: Woken with somebody else's open call, a holder that finds no route answers it from its own context, which is the one thing the steps exist to prevent.
+
+**ticket-captain** (WakeSteps; read by TicketCaptain):
+
+> A need a child sends up to you, and the return or the answer of a Question you opened, go by A need for the user (`need-for-the-user.md`).
+
 ## GoOn
 
 `claim:CaptainWaking.GoOn`: A woken holder goes on from the phase it had reached once the return is taken in, its SHA posted and its commit merged; whatever that phase has it dispatch, and its finish, wait until the unneeded step is cancelled and each later step blocks the Merge.

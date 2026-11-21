@@ -5,7 +5,7 @@ namespace DynaDocs.SkillBuild;
 /// ordered procedure of the steps a ticket's captain performs, for its own need and for one a child
 /// passes up to it (spec H16 to H18, H22, L18, S10). The user kept this process when asked how a need
 /// should reach him (<see cref="Kept"/>, quoted once, on the claim that frames the procedure). What a coordinator, a council or an envoy does is theirs,
-/// and is named only as where the need goes.
+/// and is named only as where the need goes. Two of its steps are <see cref="CaptainPassedUp"/>'s: the Question a child sends up unsettled, and its close on the way down.
 /// </summary>
 public static class CaptainNeed
 {
@@ -80,7 +80,7 @@ public static class CaptainNeed
     public static readonly Claim Ask = new("A call that is not obvious and reversible becomes a Question sub-ticket that blocks only what waits on it.", Me,
     [
         At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 2,
-            "A need that already has its ticket keeps it, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. " +
+            "Only these needs keep the ticket they have, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. " +
             "Open a sub-ticket for any other need, by [Sub-tickets](sub-tickets.md), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.",
             () => [Enable, Carried])
     ])
@@ -110,8 +110,8 @@ public static class CaptainNeed
 
     public static readonly Claim Fresh = new("What the sources can answer never reaches the user: a Question is held by a fresh captain, dispatched with delegate_task, who researches it first.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 3,
-            "Dispatch a fresh captain onto a Question with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. " +
+        At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 4,
+            "Dispatch a fresh captain onto a Question you opened, with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. " +
             "A call that only wants the user's approval is never such a need.",
             () => [Skip, Approval])
     ])
@@ -133,7 +133,7 @@ public static class CaptainNeed
 
     public static readonly Claim Answered = new("The blocked work resumes when the answer is on the Question ticket.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 4,
+        At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 5,
             "When the answer is on the Question ticket, resume what waited; an answer to a child's need you put on the child's sub-ticket and send to the child's thread with `t3_thread_send`.",
             () => [Down])
     ])
@@ -164,7 +164,7 @@ public static class CaptainNeed
 
     public static readonly Claim Up = new("A Question that comes back unsettled goes to the officer's thread with what was found and stays open: its holder still waits on the answer.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 5,
+        At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 7,
             "Send what stays open, by its key and with what was found, to your officer's thread, which `t3_thread_list` shows as your own thread's parent, with `t3_thread_send`: " +
             "at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.",
             () => [AtOnce, Address])
@@ -180,7 +180,7 @@ public static class CaptainNeed
     public static readonly Claim Refused = new("A send to the officer's thread is refused when the sender's mode is narrower than the officer's; the holder then ends its turn on the message, " +
                                                "and its work stops until the officer sends to its thread again.", Me,
     [
-        At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 6,
+        At(Actor.TicketCaptain, CaptainSlot.NeedSteps, 8,
             "If that send is refused, because your thread's mode is narrower than your officer's, end your turn on the message instead; " +
             "your work then stops until your officer sends to your thread again.")
     ])

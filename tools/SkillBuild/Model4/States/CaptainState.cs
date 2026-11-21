@@ -12,6 +12,7 @@ public enum CaptainState
     InReview,
     Clear,
     Fixing,
+    Mending,
     Checkpoint,
     Repairing,
     Question,

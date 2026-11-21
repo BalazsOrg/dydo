@@ -103,7 +103,7 @@ public static class Captain
         Truth = new(Evidence.Run("Linear, team Dydo, statuses read 2026-11-20: In Progress is a started status and Todo the unstarted one, beside Done, Canceled and Duplicate; DYD-1372 was In Progress while this was written."),
             Layer: "T3's `link_issue` only shows the ticket beside its thread; it changes no status in Linear.",
             Reason: "The status is how every other agent sees that someone already has the ticket."),
-        Transition = new(CaptainState.Dispatched, CaptainState.Taken, "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer")
+        Transition = new(CaptainState.Dispatched, CaptainState.Taken, "the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer, and its brief has said who merges it")
         {
             Effect = CaptainMachines.Learn
         }

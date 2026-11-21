@@ -144,26 +144,176 @@ checker exits 1 and the control harness exits 0. The registered Question →
 Finishing control is also rejected by H16_ResumeLeafAfterQuestion (checker 1,
 harness 0). No committed machine or registered control is changed.
 
-All 18 properties above and NoDeadlock hold: 2,033 generated states, 1,280
-distinct, queue empty, depth 24. The ordinary runner exited 0. The registered
-control was rejected by H16_ResumeLeafAfterQuestion (checker 1, harness 0).
-No tested obligation failed; the semantic limits above remain open.
-Commands (OUT denotes a fresh scratch output directory; SKILL the installed
-statechart skill directory):
-
-```text
-/var/tmp/dydo-gate-lock.sh env MSBUILDDISABLENODEREUSE=1 DOTNET_CLI_USE_MSBUILD_SERVER=0 UseSharedCompilation=false systemd-run --user --scope -p MemoryMax=8G -p MemorySwapMax=0 -p OOMPolicy=continue timeout 3600 python3 verification/statechart/run.py --machine captain --skill SKILL --out OUT
-```
-
-Add `--controls` for the registered control. Ordinary runner last line:
-`captain: pass (exit 0)`. TLC: `Model checking completed. No error has been
-found.`; `2033 states generated, 1280 distinct states found, 0 states left on
-queue.`; `The depth of the complete state graph search is 24.`
-
-Size gate exited 0 (all changed files at or under 20,000 bytes). Build exited
-0 with 0 warnings and 0 errors. Dydo check exited 0: 0 errors, 0 warnings in
-1,023 files. Both dotnet commands used the same lock and memory-cap wrapper.
+Historical phase 4 receipts are retained in Git; current receipts are below.
 
 ## Related
 
+## Generation 6b: mended part handoff
+
+The machine at 5179c005 adds Mending to Finishing. R2 says "Its parts are
+unreviewed sub-tickets or lanes" and "The parent is reviewed once, after
+wiring and before its Merge hop". S17 permits cheap shoulds to be "fixed in
+place before the parent merges". R23 requires a PASS at the merge entry
+point; R24 permits only clean-sync descendants of an ancestor PASS. Neither
+requires a separate round on each part before handoff. R32's writer commit
+rule supplies no additional review requirement. Therefore this handoff is
+allowed, conditional on review with the whole before merge.
+
+The unchanged-property run at 5179c005 (tlc-g6b-props-1) rejected three
+properties. R8_ClearBeforeFinish and R23_ReviewMendedHead rejected
+Dispatched -> Taken(change) -> Leaf -> InReview -> Clear -> Mending ->
+Finishing. R19_ReviewAfterMergeRepair rejected Dispatched -> Taken(change)
+-> Leaf -> Finishing -> Repairing -> InReview -> Clear -> Mending ->
+Finishing. All other 18 properties and NoDeadlock held.
+
+These three properties were stricter than R2's allocation of review to the
+whole. R8_ClearBeforeFinish now permits finishing from Clear or Mending;
+S17_MendAfterClear still requires that Mending came from Clear, and a new
+review round must still clear before it finishes. R23_ReviewMendedHead now
+permits either a next numbered local round or a same-round handoff to
+Finishing, preserving extra in both cases. R19_ReviewAfterMergeRepair keeps
+the immediate fresh-review-or-return obligation after Repairing, but allows
+the later Mending handoff after that review has cleared. A conflict repair
+itself still cannot skip review.
+
+The model has no candidate-in-PR, merge-owner, returned-SHA, revision or whole
+identity. Finishing represents both local landing and returning to an officer.
+It cannot establish that the Mending handoff was in no PR, that the officer
+merges the returned head, or that the whole's review actually judged it before
+merge. Historically, Repairing did not establish merge ownership. In the
+current model it DOES establish persistent holder merge ownership; generation
+6c below supersedes this paragraph. The old trace was not permission to locally
+merge a changed own-PR head under a stale PASS. R23/R24 still prohibit that;
+the missing predicates prevent distinguishing it from the valid handoff.
+The phase abstraction admits both and cannot prove the conditional rule.
+
+## Generation 6: cheap mend and research handoff
+
+Machine 33081889 adds Mending and mended (included in vars and the passive
+observer). The earlier results are historical. All 18 properties remain;
+three are added, without fairness or disabling moves.
+
+Changed R8_FixBeforeNextRound to allow Mending as a predecessor: S17 says
+"fixed in place before the parent merges if cheap" and R23 requires that
+"the PASS names the head", except R24's clean syncs. Changed
+R8_ExtraRoundOnlyOnceAfterClear to allow Mending after Clear: R8 says "By
+default" and S17 allows the cheap fix; its mandatory new-head review is
+separate from the optional "one more". Changed
+R10_CheckpointBeforeFourthRound to exempt Mending from the blocked-third-round
+premise: the approved draft says "After round 3 with a blocker". A clear
+third round followed by a cheap fix has no such blocker. Extended
+R34_VerdictNeverReviewed to Mending: "A verdict gets no review" excludes
+this review/fix loop too. No source forbids reviewing an answer.
+
+Added S17_MendAfterClear (clear provenance, same round),
+R23_ReviewMendedHead (continuation requires the next review round without
+spending extra), and R8_MendOnlyOnce (persistent marker and single entry).
+"Once" is the skill writer's reading of R8's default, not the rule's own
+word or a separate user ruling. These are safety checks, not eventual exit.
+R8_ClearBeforeFinish requires a clear result after new-head review.
+
+WorkPhaseBeforeDone already allows Leaf to finish; H16's Question is the
+dependent holder's wait, a different run from research handoff. That wait
+still exits only to Leaf. K30 and unread-return checks apply unchanged.
+
+The model cannot show whether the handed-on call is really the user's,
+worth his time (L18), or correctly filed as a HITL his-call child with
+blocking relations (H16/H23/S10), or meets the research contract. Leaf to
+Finishing also represents other handovers. It cannot show whether a should
+was cheap, duplicate-checked, filed, fixed by another writer, or in the
+holder's own PR. Head identity, PASS receipt, actual merge and clean-sync
+ancestry are absent: R23/R24 are checked as phase order on the path modeling
+new-head review. Answer exclusion from Mending is reachability, not a
+source-backed prohibition; verdict exclusion is source-backed.
+
+Renewed registered bad trace: Question(change) to Finishing, with mended
+FALSE, rejected by H16. The properties' author kept it in a local
+bad-trace.json; the captain then moved it into the shared controls.json,
+which `run.py --controls` reads, and removed the local copy.
+
+Generation 6 receipts: ordinary managed runner at 78683406 exited 0;
+all 21 properties and NoDeadlock hold, 3,695 generated states, 2,296 distinct,
+queue empty, depth 25. Output: /tmp/dyd-1372/tlc-g6-props-1.
+The renewed local control was rejected only by H16_ResumeLeafAfterQuestion
+(checker 1, harness 0; /tmp/dyd-1372/tlc-g6-props-3). No machine violation
+remains. Both runs used the required gate lock, app-t3code-agents.slice,
+8G MemoryMax and zero swap. The first control attempt caught the property
+but its harness exited 2 because importing run.py created bytecode in the
+checkout; that explicit scratch bytecode was removed and the successful
+repeat disabled bytecode. The final TLA edits after these runs change comments
+only. No machine, skill, shared runner or shared control file was changed.
+
 - [Statechart property runner](../README.md)
+
+## Generation 6c: independent source corrections (p6)
+
+This section supersedes the historical results and weakened generation 6b
+obligations. Machine eea6fa48 introduces merger: holder merges its own change,
+officer merges the returned part, nobody merges, or unread before intake.
+The role persists throughout this ticket. Repairing therefore DOES identify
+the merging holder for the rest of the run; actual PR existence is absent.
+
+B1: R8_ClearBeforeFinish now requires Clear after review, except a Mending
+handoff with merger=officer. R8 says "the phase ends on the first round with
+no new blocker". R2 permits unreviewed parts and review with the whole.
+R19_ReviewAfterMergeRepair requires review or return immediately after repair,
+and every later finishing entry requires holder ownership and Clear: R19 says
+"under a fresh review of its hunks"; R22 says "then a fix-scoped round, then a
+re-land". R23_ReviewMendedHead forbids Mending -> Finishing for the holder that
+merges: "unless the PASS names the head" (R23); only clean syncs preserve an
+ancestor PASS (R24). Together with R8 this requires a new clear review before
+local finishing, without copying the machine's two permitted exits.
+
+B2: removed R8_MendOnlyOnce and its registration. Neither R8 nor S17 limits
+the number of content mends. The single mend is the model's own finite bound,
+checked by no property. N3: removed S17_MendAfterClear and its registration.
+S17 says "fixed in place before the parent merges if cheap", not only after a
+clear round or without changing its number. Cheapness, registration, duplicate
+checks and actual parent merge are absent; phase provenance was no independent
+S17 obligation.
+
+H10_ReturnedPartContinues now permits Waiting -> Leaf for kind=answer. H16
+says "researches first, then answers the need"; K30/H2 and aa5b445e preserve
+"keeping the escape hatch is probably right" for division of oversized work.
+These sources do not forbid a research holder resuming its own work after
+parts return. The former property was stricter than its source.
+
+Added R2_MergingHolderHasReview: R2 says "after wiring and before its Merge
+hop" and R23 says "the PASS names the head". A change holder that merges must
+enter Finishing from Clear with its own review in history. R2 still allows
+an unreviewed part to return to its officer for review with the whole.
+
+WorkPhaseBeforeDone, H3_WaitAfterSplit and K30_KindStaysKnown retain their
+source meaning: work before completion, dispatch/wait order, and one ticket's
+stable kind. Waiting -> Leaf neither erases work history nor changes kind.
+All remaining registered properties were re-bound without changes. No source
+forbids answer review, or literally prescribes merger=nobody for answers and
+verdicts. That encoding is a model choice, not an independent obligation.
+R34 already forbids verdict review and its repair loop; R2/R23 express the
+source-supported obligations behind the new merge guards.
+
+Remaining limits: no actual head, PASS receipt, clean-sync ancestry, PR,
+merge action, returned SHA, child identity, whole-review receipt, reviewer or
+author identity, blocker data, cheapness or contract-satisfaction predicate.
+Clear represents a PASS on the current candidate only at phase level, and
+Mending represents content change. R23/R24 cannot prove receipt binding to a
+hash or that an officer reviewed a returned head. R19 cannot prove hunk
+coverage or reviewer freshness. R33 identity remains unobservable. The four
+round and single mend bounds and lack of fairness still limit the universe;
+safety does not establish eventual completion. The observer remains passive
+seen only; no moves or fairness assumptions are changed.
+
+The registered Question -> Finishing control explicitly names round, extra,
+mended, kind and merger; from/to supply state. The runner supplies seen.
+Its named rejecting property remains H16_ResumeLeafAfterQuestion.
+
+Generation 6c receipts at 98c73d02803bba6e70c3147b391ee87f211a13c4:
+all 20 hand-written properties plus NoDeadlock hold; 4,817 generated states,
+3,150 distinct, queue empty, depth 27. Ordinary runner exited 0. Output:
+/tmp/dyd-1372/tlc-p6-1. Registered control: checker 1, harness 0,
+control_caught=true; H16_ResumeLeafAfterQuestion rejects Question -> Finishing.
+The same trace also violates R2_MergingHolderHasReview. Output:
+/tmp/dyd-1372/tlc-p6-2. No machine violation remains. Both successful runs
+used the gate lock, app-t3code-agents.slice, MemoryMax=8G, MemorySwapMax=0
+and OOMPolicy=continue.
+Only this documentation changed after those runs.

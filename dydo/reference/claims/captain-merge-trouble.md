@@ -232,7 +232,7 @@ Reason: A re-merge of the old commits would land nothing and still report succes
 
 **ticket-captain** (RedSteps; read by TicketCaptain):
 
-> Dispatch the Implement, and when it returns open a new PR for the branch: `dydo merge` undoes no revert, and calls the old PR already integrated.
+> Dispatch the Implement, and when it returns open a new PR for the branch, a draft again, by Merging (`merging.md`): `dydo merge` undoes no revert, and calls the old PR already integrated.
 
 ## Scoped
 

@@ -84,8 +84,10 @@ public class TicketCaptainGap4Tests
         Assert.Contains("`dydo merge`", first.Text);
         Assert.Equal(Resources + "merging.md", outside.Path);
         Assert.True(outside.Line > LineOf("CaptainMerging.Merge").Line, "the refusal is explained above the step that meets it");
-        Assert.Equal(Spine, LineOf("CaptainReview.Pr").Path);
-        Assert.True(LineOf("CaptainReview.Pr").Line < LineOf("CaptainReview.Whole").Line, "the spine dispatches the Review above the line that opens the PR");
+        Assert.Equal(Spine, LineOf("CaptainReview.Whose").Path);
+        Assert.True(LineOf("CaptainReview.Whose").Line < LineOf("CaptainReview.Whole").Line, "the spine dispatches the Review above the line that has the PR opened");
+        Assert.Equal(Resources + "merging.md", LineOf("CaptainReview.Pr").Path);
+        Assert.True(LineOf("CaptainReview.Pr").Line < LineOf("CaptainMerging.Begin").Line, "the merging resource opens the PR above its first step of the merge");
     }
 
     [Fact]

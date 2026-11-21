@@ -15,37 +15,42 @@ stateDiagram-v2
   s10: A round found no new blocker #183; R8
   s11: Done #183; S6
   s12: Fixing #183; S9, R8
-  s13: Repairing a conflict or a red gate #183; R19, R21, R22
-  s14: At the checkpoint after a third blocked round #183; R10, S10
+  s13: Mending a cheap should after a clear round #183; S17, R8
+  s14: Repairing a conflict or a red gate #183; R19, R21, R22
+  s15: At the checkpoint after a third blocked round #183; R10, S10
   [*] --> s0
   s0 --> s1: the ticket is already started or closed and the brief names no take-over: the dispatch goes back as a conflict #183; S7, S6 or a filler ticket fails its check: it goes back unstarted and unassigned #183; H11
-  s0 --> s2: the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer #183; S6
+  s0 --> s2: the ticket is set In Progress and its kind's resource loaded: its result is a change, a verdict or an answer, and its brief has said who merges it #183; S6
   s2 --> s3: the ticket fits one agent #183; H2, S2
   s2 --> s4: the ticket is bigger than one agent and its route is in sight: it is cut #183; H2, H13 or a review's seats come from another model family: each gets a leaf sub-ticket under the Review ticket #183; S1, R34, R15
   s2 --> s5: the route to the spec is not all in sight: the way is found before the cut #183; H10, H23
   s3 --> s4: the leaf proves too big: what is left is cut #183; H2, K30
-  s3 --> s6: the leaf is whole and has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer #183; R32, R5
+  s3 --> s6: the leaf is whole, its holder does not merge it, and it has no review of its own: its officer reviews it, or it is too small to need one, or it is a verdict or an answer #183; R32, R5 or a Question's research leaves a call that is the user's: it is handed on as a HITL Question sub-ticket, and the research ticket has done its part #183; H23, H16, S10
   s3 --> s8: a call that is not obvious: a Question sub-ticket #183; H16, S10
-  s3 --> s1: a Question's research does not settle its call: it goes back to the officer unsettled, the Question still open #183; H16, L18 or #96;too big, re-cut#96;: what is left cannot be divided coherently under the ticket #183; H2
-  s3 --> s7: the leaf's change is whole: another agent reviews it #183; R33, R12
+  s3 --> s1: a Question's research leaves a call that is neither settled nor the user's: it goes back to the officer unsettled, the Question still open #183; H16, L18 or #96;too big, re-cut#96;: what is left cannot be divided coherently under the ticket #183; H2
+  s3 --> s7: the leaf's change is whole and the merge is its holder's: another agent reviews it #183; R33, R12
   s4 --> s9: each AFK sub-ticket is dispatched, and a HITL one goes up #183; H3, H15
   s5 --> s4: the parts in sight are cut, and the fog is left uncut #183; H10, S2
   s6 --> s11: the contract is met: the ticket closes Done #183; S6
-  s6 --> s13: a conflict or a real red gate: an Implement ticket repairs it #183; R21, R19
   s7 --> s1: in a round other than the third, a blocker is fundamental or a new requirement: back to the officer #183; R9
   s7 --> s10: the round finds no new blocker #183; R8, R11
   s7 --> s12: a round other than the third returns a blocker: a Fix ticket #183; R9, S9
   s8 --> s3: the answer is on the Question ticket #183; H16
+  s9 --> s3: a research holder's parts are back: it checks their answers and takes up its own work again, to write its one answer #183; K30, H2
   s9 --> s4: a child returns #96;too big, re-cut#96;: its contract is rewritten down to what it finished, and what it left is cut #183; H2, H14
   s9 --> s5: a part returns and fog remains: the way is found again from what it showed #183; H10, S15
-  s9 --> s6: the children are back and the ticket only groups parts: no review of its own #183; R6 or a review's seats are back: their findings become the round's one verdict, which no round reviews #183; S8, S1, R34
   s9 --> s7: the parts are wired: a Review of the whole is dispatched #183; R2, R1
+  s9 --> s6: the children are back and the ticket only groups parts: no review of its own #183; R6 or a review's seats are back: their findings become the round's one verdict, which no round reviews #183; S8, S1, R34
   s10 --> s6: no further round is ordered: the review rounds end #183; R8
+  s10 --> s13: a round with no blocker leaves a cheap should on a change somebody merges: a writer mends it on its own ticket, once #183; S17, R8
   s10 --> s7: one more round is ordered, once #183; R8
   s11 --> s1: one line goes back to the officer #183; H23, K14
   s12 --> s7: the Fix is Done: a fresh round #183; R8, S9
-  s13 --> s7: the repair is in: a fresh review of what it changed #183; R19
-  s13 --> s1: a red gate that cannot be fixed goes to the officer #183; K9 or a conflict that cannot be resolved goes to the officer #183; K9
-  s7 --> s14: a third round still has a blocker: the checkpoint #183; R10
-  s14 --> s12: #96;checkpoint: one more round, because #8230;#96;: the blockers go to a Fix #183; R10, S10
-  s14 --> s1: #96;escalated: #8230;#96;: a fundamental break, a new requirement or a need for the user goes to the officer #183; R10
+  s6 --> s14: a conflict or a real red gate: an Implement ticket repairs it #183; R21, R19
+  s13 --> s7: the should is mended in its holder's PR: a round on the new head, which the merge needs #183; R8, R23, R24
+  s13 --> s6: the should is mended on a candidate in no PR, which the holder's officer merges: no round of its own, and the mended head is returned, to be reviewed with the whole #183; R2, R23, S17, R32
+  s14 --> s7: the repair is in: a fresh review of what it changed #183; R19
+  s14 --> s1: a red gate that cannot be fixed goes to the officer #183; K9 or a conflict that cannot be resolved goes to the officer #183; K9
+  s7 --> s15: a third round still has a blocker: the checkpoint #183; R10
+  s15 --> s12: #96;checkpoint: one more round, because #8230;#96;: the blockers go to a Fix #183; R10, S10
+  s15 --> s1: #96;escalated: #8230;#96;: a fundamental break, a new requirement or a need for the user goes to the officer #183; R10
