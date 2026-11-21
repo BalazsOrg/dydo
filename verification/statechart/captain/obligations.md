@@ -64,14 +64,11 @@ may still order one more.” R9 sends a fixable blocker to “Fix, then the next
 round,” and S9 requires its blockers Done and proof on the head first. A numbered
 advance therefore follows a Fix or is the one extra round after a clear verdict.
 
-R10’s “After round 3 comes a checkpoint” also admits a reading where every
-fourth round requires one, including the optional round after `Clear(3)`. S10
-cites the decision that specifies the trigger as “Round 3 with a new blocker.”
-R10 replaces the fifth-FAIL stop and its escalation reasons describe blockers.
-I applied the checkpoint to the blocked route and kept R8’s clear-round option
-at round three. The old unconditional check reported `Taken → Leaf →
+R10's checkpoint is applied to blocked rounds: S10 cites “Round 3 with a new
+blocker” (DR 070 §6). R8 still permits Clear(3) → InReview(4). The broader
+reading that every fourth round requires a checkpoint fails on Taken → Leaf →
 InReview(1) → Fixing(1) → InReview(2) → Fixing(2) → InReview(3) → Clear(3) →
-InReview(4)`. That remains a witness for the broader reading. [4.0.0 spec](https://linear.app/bodnar-balazs/document/spec-dydo-400-08326afbb349) · [DR 070 §6](https://github.com/BalazsOrg/dydo/blob/1ee7066e/dydo/project/decisions/070-statuses-as-sub-tickets-shoulds-and-the-map.md)
+InReview(4).
 
 | Property | Source | TLC result and observable promise |
 |---|---|---|
@@ -154,6 +151,62 @@ moves, and a wait may continue indefinitely.
 | R8, R9, R11, R16, R33, S8, S9, 2119cd65, df6a785e, 32cc5599, 41a553f1 | InReview → Fixing → InReview has no blocker items or severity, shoulds, completed Fix and proof on the head, reviewer/fixer identities, seats, verdict origin, lenses or security-first ordering. InReview → Clear reports the phase but carries no verdict evidence. Clear → InReview consumes the extra round but carries no officer decision or identity. |
 | R9, R10, S10 | InReview(3) → Checkpoint(3) → Returned(3) carries no blocker, checkpoint note, reason or officer decision. InReview → Returned outside round three also carries no reason. InReview(4) → Fixing(4) is reachable, with the next review at round five beyond `round <= 4`. |
 | R19, R21, R22 | Finishing → Repairing → InReview → Clear → Finishing carries no conflict/red distinction, repair branch/SHA, reviewed hunks, reviewer, rerun, flake, revert, CI record or re-land evidence. Repairing → Returned carries no evidence that the repair was unresolved. |
+
+## Phase 1: wayfinding and review seats (DYD-1372)
+
+Sources: approved spec H10, H16, S10, R34 and DYD-1372 DECIDED comments
+777d396e and 07c86aad. No built skill supplies an obligation. The eleven
+existing properties name phases, not the renamed Ask/Answered/Up actions;
+they already bind to the unchanged Question arrows now named CaptainNeed.
+
+| Added property | Source and obligation |
+|---|---|
+| `H10_WayfindingLeavesByCut` | H10; 07c86aad: “Finding the way towards the spec, one manageable part at a time.” Any exit from Wayfinding goes to Split. |
+| `H10_PartBeforeFogFinish` | H10; 777d396e's concern about cutting before seeing the route; 07c86aad's words above. After fog, finishing or Done requires prior Split and Waiting. This history check is cumulative; together with the exit and split-wait checks it requires a cut and wait on every wayfinding cycle. |
+| `H10_ReturnedPartContinues` | H10; 07c86aad: “removing the fog gradually”. Waiting finds the way again or proceeds to review/finishing, never restarts at Taken. |
+| `R34_VerdictGoesToFinishing` | R34; 777d396e: “Reviewing the reviews is probably not a good idea.” The designated verdict arrow goes Waiting → Finishing and preserves round and extra. |
+
+H16 and S10 still require a Question to be left only to resume dependent work.
+`H16_ResumeLeafAfterQuestion` stays unchanged: passing the need up stutters,
+and the only exit resumes Leaf. An answer's existence remains unobservable.
+
+### Limits and witnesses
+
+H10's route visibility, manageable size and timing of human input are
+**untestable**. Taken → Split → Waiting → Finishing → Done is enabled without
+a route predicate: it cannot tell whether the initial cut was premature.
+Taken → Wayfinding → Split → Waiting → Wayfinding → Split → Waiting → Finishing
+shows gradual phase order, but no evidence that either part was in sight,
+that its work returned, or that the remaining fog was left uncut. Without
+fairness, Wayfinding may stutter indefinitely.
+
+R34's full “A verdict gets no review” obligation is **untestable** for a review
+holder. Taken → Split (`CaptainReviewSeats.Ticket`) → Waiting
+(`CaptainDispatch.Send`) → InReview (`CaptainReview.Whole`) is enabled.
+The model cannot distinguish this review-seat dispatch from an implementation
+split. Even after the verdict, Taken → Split → Waiting → Finishing
+(`CaptainReviewSeats.Verdict`) → Repairing → InReview is enabled. No ticket
+kind or verdict identity can forbid these paths only for reviews. The arrow
+check does not prove the full obligation. R34's family preference, separate
+seat tickets and one posted verdict, S1's cut and S8's verdict contents are
+also unobservable on Taken → Split → Waiting → Finishing. No kind is invented.
+
+### New manual control
+
+One-line scratch change: replace observer Init/Next with round 1, extra FALSE
+and the edge Wayfinding → Finishing. `H10_WayfindingLeavesByCut` must reject
+it; the fog-history check rejects it too. The registered Question → Finishing
+control stays unchanged. Controls use the existing `check_machine` entry point
+and change only scratch observer entry points. Both were rejected: Question by
+`H16_ResumeLeafAfterQuestion`; Wayfinding by both H10 checks named above.
+Each managed checker exited 1 and each control runner exited 0.
+
+TLC held all eleven existing and four added properties plus NoDeadlock:
+1,872 generated states, 1,176 distinct, queue empty, depth 23, round <= 4.
+The ordinary runner exited 0. No tested obligation failed; the semantic gaps
+and their witnesses above remain unresolved.
+Size gate exited 0 (this file 19,815 bytes before this result line); build
+exited 0; dydo check exited 0: 0 errors, 0 warnings in 1,020 files.
 
 ## Related
 

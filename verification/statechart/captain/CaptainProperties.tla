@@ -89,4 +89,25 @@ R19_ReviewAfterMergeRepair ==
 H1_ReturnedIsTerminal ==
     [][(state = "Returned" => UNCHANGED vars)]_<<vars, seen>>
 
+\* H10, DYD-1372 07c86aad: "one manageable part at a time".
+\* Visibility and manageability have no data in this phase model.
+H10_WayfindingLeavesByCut ==
+    [][(state = "Wayfinding" /\ state' # state => state' = "Split")]_<<vars, seen>>
+
+\* H10, DYD-1372 777d396e, 07c86aad: fog must not skip the part's work.
+H10_PartBeforeFogFinish ==
+    [][("Wayfinding" \in seen /\ state' \in {"Finishing", "Done"} =>
+        {"Split", "Waiting"} \subseteq seen)]_<<vars, seen>>
+
+\* H10: after a returned part, find the next part or proceed with the whole.
+H10_ReturnedPartContinues ==
+    [][(state = "Waiting" /\ state' # state =>
+        state' \in {"Wayfinding", "InReview", "Finishing"})]_<<vars, seen>>
+
+\* R34, DYD-1372 777d396e: "Reviewing the reviews is probably not a good idea."
+\* Checks only the designated verdict arrow, not the unrepresented holder kind.
+R34_VerdictGoesToFinishing ==
+    [][(CaptainReviewSeats_Verdict =>
+        state = "Waiting" /\ state' = "Finishing" /\ UNCHANGED <<round, extra>>)]_<<vars, seen>>
+
 ====
