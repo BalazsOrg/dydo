@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainFinish
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Who
 
 `claim:CaptainFinish.Who`: A captain's brief says who merges its work.
@@ -18,7 +20,7 @@ Layer: A checkout does not say whose the merge is; a child sharing its officer's
 
 Reason: The three ways of finishing differ, and a captain that picks the wrong one merges twice or not at all.
 
-**ticket-captain** (Who; read by TicketCaptain):
+**ticket-captain** (unwritten; Who; read by TicketCaptain):
 
 > Your brief says who merges your work.
 
@@ -36,7 +38,7 @@ Layer: T3 returns the child's words; without a SHA they point at nothing the off
 
 Reason: The officer merges and reviews exactly what was proved, and nothing that came after.
 
-**ticket-captain** (Cases; read by TicketCaptain):
+**ticket-captain** (unwritten; Cases; read by TicketCaptain):
 
 > **Your officer:** end on a commit, and return its SHA with the receipts that prove it.
 
@@ -52,7 +54,7 @@ Layer: `dydo merge` merges and reports to whoever ran it; the officer learns of 
 
 Reason: One line is all the officer needs, because everything else is already on the ticket.
 
-**ticket-captain** (Cases; read by TicketCaptain):
+**ticket-captain** (unwritten; Cases; read by TicketCaptain):
 
 > **You:** merge by Merging (`resources/merging.md`), and return `done <KEY>: merged`.
 
@@ -68,7 +70,7 @@ Layer: A verdict or an answer has no commit to carry it; the ticket is the only 
 
 Reason: A result left in a thread is gone when the thread is.
 
-**ticket-captain** (Cases; read by TicketCaptain):
+**ticket-captain** (unwritten; Cases; read by TicketCaptain):
 
 > **Nobody:** put the result on the ticket, and return `done <KEY>`.
 
@@ -86,7 +88,7 @@ Layer: T3 delivers whatever the child's last message is, finished or not.
 
 Reason: An officer woken by a return can count on the ticket being closed.
 
-**ticket-captain** (Close; read by TicketCaptain, on claim:CaptainFinish.Close):
+**ticket-captain** (unwritten; Close; read by TicketCaptain, on claim:CaptainFinish.Close):
 
 > Close the ticket Done once its contract is met, then return; a return before that leaves it open, as it stands.
 
@@ -104,7 +106,7 @@ Layer: `dydo merge` merges a PR and touches no ticket.
 
 Reason: An open ticket whose work is finished looks stalled to everyone who reads the board.
 
-**ticket-captain** (Close; read by TicketCaptain):
+**ticket-captain** (unwritten; Close; read by TicketCaptain):
 
 > Close the ticket Done once its contract is met, then return; a return before that leaves it open, as it stands.
 
@@ -120,6 +122,6 @@ Layer: CLIProxy carries every agent's inference and its limits; all that is left
 
 Reason: A swarm that retries at once turns one limit into a storm.
 
-**ticket-captain** (WhenThingsGoWrong; read by TicketCaptain):
+**ticket-captain** (unwritten; WhenThingsGoWrong; read by TicketCaptain):
 
 > On a rate-limit or capacity error, wait, then retry; don't hammer it, and never take a limit to the user.

@@ -31,7 +31,7 @@ public partial class TicketCaptainKindTests
     [InlineData("research")]
     public void KindResource_OpensWithItsPhaseMap(string kind)
     {
-        var lines = Built.Value.Files[$"{Folder}{kind}.md"].Split('\n');
+        var lines = Built.Value.Unwritten[$"{Folder}{kind}.md"].Split('\n');
         var start = Array.FindIndex(lines, line => line.StartsWith("| ", StringComparison.Ordinal));
         var rows = lines.Skip(start).TakeWhile(line => line.StartsWith("| ", StringComparison.Ordinal)).Skip(2)
             .Select(row => row.Trim('|').Split('|').Select(cell => cell.Trim()).ToArray()).ToArray();
@@ -47,7 +47,7 @@ public partial class TicketCaptainKindTests
     [Trait("Job", "contract: DYD-1372 X4 a verdict is never reviewed: the review resource says so, and its map has every Review holder skip the review phase (777d396e, 07c86aad)")]
     public void Review_SaysAVerdictIsNeverReviewed()
     {
-        var reviewed = Built.Value.Files[Review].Split('\n').Single(line => line.StartsWith($"| 4. {CaptainCarrier.Spec.Phases[3].Title} |", StringComparison.Ordinal));
+        var reviewed = Built.Value.Unwritten[Review].Split('\n').Single(line => line.StartsWith($"| 4. {CaptainCarrier.Spec.Phases[3].Title} |", StringComparison.Ordinal));
 
         Assert.Equal(Review, LineOf("CaptainReviewing.NoReview").Path);
         Assert.All(reviewed.Trim('|').Split('|').Skip(1), cell => Assert.StartsWith("skip", cell.Trim()));
@@ -95,7 +95,7 @@ public partial class TicketCaptainKindTests
     [InlineData("research")]
     public void KindResource_NamesOnlyDocsEveryProjectHas(string kind)
     {
-        var paths = DocPath().Matches(Built.Value.Files[$"{Folder}{kind}.md"]).Select(match => match.Groups[1].Value).Distinct().ToArray();
+        var paths = DocPath().Matches(Built.Value.Unwritten[$"{Folder}{kind}.md"]).Select(match => match.Groups[1].Value).Distinct().ToArray();
 
         Assert.All(paths, path => Assert.True(File.Exists(Path.Combine(CommittedTree.Root, path)), $"{path} is not in this repository"));
         Assert.All(paths, path => Assert.True(File.Exists(Path.Combine(CommittedTree.Root, "Scaffold", path)), $"{path} is not in the scaffold"));
@@ -105,7 +105,7 @@ public partial class TicketCaptainKindTests
     [Trait("Job", "contract: DYD-1372 X8 implement carries its practice: its tests, its code and its docs each name the project doc that holds what the project sets (aa5b445e)")]
     public void Implement_PointsAtTheProjectsOwnStandards()
     {
-        var implement = Built.Value.Files[Folder + "implement.md"];
+        var implement = Built.Value.Unwritten[Folder + "implement.md"];
 
         Assert.All(new[] { "dydo/guides/coding-standards.md", "dydo/guides/testing-strategy.md", "dydo/reference/writing-docs.md" }, path => Assert.Contains($"`{path}`", implement));
     }
@@ -113,7 +113,7 @@ public partial class TicketCaptainKindTests
     [Fact]
     [Trait("Job", "trap: DYD-1372 X8 a project's numbers stay in its own docs: the implement resource states no file size, complexity or parameter number (aa5b445e)")]
     public void Implement_StatesNoNumberAProjectSets() =>
-        Assert.DoesNotMatch(Number(), Built.Value.Files[Folder + "implement.md"]);
+        Assert.DoesNotMatch(Number(), Built.Value.Unwritten[Folder + "implement.md"]);
 
     [Fact]
     [Trait("Job", "trap: DYD-1372 g1b G6 a project doc can be stale: the brief's gates decide what must pass, a line says so below the pointer at the standards, and no line sends a holder to a doc for a gate's number")]
@@ -145,7 +145,7 @@ public partial class TicketCaptainKindTests
     [InlineData("research")]
     public void KindMap_LeavesDispatchOpenWhereItsResourceDispatches(string kind)
     {
-        var text = Built.Value.Files[$"{Folder}{kind}.md"];
+        var text = Built.Value.Unwritten[$"{Folder}{kind}.md"];
         var dispatch = text.Split('\n').Single(line => line.StartsWith($"| 3. {CaptainCarrier.Spec.Phases[2].Title} |", StringComparison.Ordinal));
         var dispatches = text.Contains("](too-big.md)", StringComparison.Ordinal) || text.Contains("Question sub-ticket", StringComparison.Ordinal);
 

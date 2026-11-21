@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainReviewBreak
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Rerun
 
 `claim:CaptainReviewBreak.Rerun`: What the author ran is run again the same way only when later changes put its result in doubt.
@@ -18,7 +20,7 @@ Layer: A test runner runs whatever it is asked to, however often the same thing 
 
 Reason: A second identical run finds what the first one found, and spends the reviewer on nothing.
 
-**ticket-captain** (ReviewBreak; read by TicketCaptain, on claim:CaptainReviewBreak.Run):
+**ticket-captain** (unwritten; ReviewBreak; read by TicketCaptain, on claim:CaptainReviewBreak.Run):
 
 > Run the tests your row names with your project's own commands, which `dydo/guides/testing-strategy.md` holds; run again what the author ran the same way only when later changes put its result in doubt.
 
@@ -34,7 +36,7 @@ Layer: The CLI has no test command of its own, so how a suite is run differs fro
 
 Reason: A command copied from another repository fails here, or passes while selecting no test at all.
 
-**ticket-captain** (ReviewBreak; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewBreak; read by TicketCaptain):
 
 > Run the tests your row names with your project's own commands, which `dydo/guides/testing-strategy.md` holds; run again what the author ran the same way only when later changes put its result in doubt.
 
@@ -50,7 +52,7 @@ Layer: The author's tests cover what the author thought of, and nothing in a sui
 
 Reason: A suspicion costs its reader an argument; a failing test settles it without one.
 
-**ticket-captain** (ReviewBreak; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewBreak; read by TicketCaptain):
 
 > Name what you suspect is wrong, then decide it with a test of your own on the candidate's commit: a test that fails for the reason you named proves the finding.
 
@@ -66,7 +68,7 @@ Layer: `dydo merge` merges only the head a PASS names, and git lets a reviewer m
 
 Reason: The Fix's writer starts from a reproduction that already fails, on a branch still exactly as it was judged.
 
-**ticket-captain** (ReviewBreak; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewBreak; read by TicketCaptain):
 
 > Put that test and its failing output in the finding, and commit nothing to the candidate's branch.
 
@@ -82,7 +84,7 @@ Layer: The table's cell says "mutation on changed" and leaves open whether the r
 
 Reason: A mutation campaign outlasts any review, so a reviewer that started one would hold its verdict for hours.
 
-**ticket-captain** (ReviewBreak; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewBreak; read by TicketCaptain):
 
 > At a ticket review, mutation means reading the results that already exist for the changed code: start no mutation run, wait on none, and note a missing result, never as a blocker.
 
@@ -98,6 +100,6 @@ Layer: A mutation tool reports a survivor and cannot say whether killing it is p
 
 Reason: Whoever wrote the code is the one who most wants its survivor waved through.
 
-**ticket-captain** (withheld; ReviewBreak; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; ReviewBreak; read by TicketCaptain):
 
 > Asked to judge an equivalent mutant: approve one at a time, with a reason, and only if you wrote neither the code nor its tests; a rejection the author disputes goes to a council.

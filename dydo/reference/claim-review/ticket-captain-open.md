@@ -6,7 +6,7 @@ type: reference
 
 # Open claims: ticket-captain
 
-Claims of `ticket-captain` that nobody has verified yet. The skill does not state them: each line below is withheld until its claim has evidence, but for the one placeholder, whose line stands in the skill with its token unfilled.
+Claims of `ticket-captain` that nobody has verified yet. The skill does not state them: each line below is withheld until its claim has evidence, but for the one placeholder, whose line stands in the skill with its token unfilled. The skill is hand-written, in `skills/roles/officers/ticket-captain/`: the lines below are the model's own, and the build writes none of them.
 
 ## Captain.Thread
 

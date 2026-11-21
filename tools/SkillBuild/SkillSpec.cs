@@ -61,6 +61,12 @@ public sealed record SkillSpec
     /// <summary>The legacy skill this one replaces, each of its spine's lines accounted for.</summary>
     public Ledger? Ledger { get; init; }
 
+    /// <summary>
+    /// Its folder is written by hand (DYD-1439). The build still renders the skill for its own checks, and
+    /// writes, deletes and compares no file in that folder.
+    /// </summary>
+    public bool HandWritten { get; init; }
+
     internal bool TruthChecked => Readers.Count > 0;
 
     /// <summary>The resources truth-checked ahead of this skill (<see cref="Resource.Readers"/>); none once the skill itself is.</summary>
@@ -81,6 +87,9 @@ public sealed record SkillSpec
     internal bool IsStandard => _home == SkillHome.Standard;
 
     internal string MainFile => IsStandard ? Name + ".md" : "SKILL.md";
+
+    /// <summary>The folders this carrier's files land in, each ending in <c>/</c>.</summary>
+    internal IReadOnlyList<string> Folders => PathsOf("");
 
     internal IReadOnlyList<string> Frontmatter => IsStandard ? _frontmatter : SkillFrontmatter();
 

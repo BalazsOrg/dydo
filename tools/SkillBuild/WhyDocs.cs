@@ -14,22 +14,36 @@ internal static partial class WhyDocs
 {
     internal static readonly string[] Frontmatter = ["area: reference", "type: reference"];
 
+    /// <summary>The mark on a line of a skill written by hand (DYD-1439), which <see cref="HandWrittenLead"/> explains.</summary>
+    internal const string HandWrittenLine = "unwritten; ";
+
     // A skill line's link is relative to its skill folder, so in a why doc it names its target instead.
     [GeneratedRegex(@"\[([^\]]+)\]\(([^)\s]+)\)")]
     private static partial Regex Link();
 
     /// <param name="unbuilt">The legacy skills a ledger replaces: their lines stand in the model, and no file states them.</param>
-    public static IEnumerable<(string Path, string Text)> Render(IEnumerable<Type> kinds, ClaimIndex claims, Statechart chart, IReadOnlySet<Enum> unbuilt) =>
-        kinds.Distinct().Select(kind => ($"dydo/reference/claims/{Names.Kebab(kind.Name)}.md", Doc(kind.Name, claims, chart, unbuilt)));
+    /// <param name="handWritten">The folder of each skill written by hand (DYD-1439), by the skill's id: its lines are the model's own, and the build writes none of them.</param>
+    public static IEnumerable<(string Path, string Text)> Render(IEnumerable<Type> kinds, ClaimIndex claims, Statechart chart, IReadOnlySet<Enum> unbuilt,
+        IReadOnlyDictionary<Enum, string> handWritten) =>
+        kinds.Distinct().Select(kind => ($"dydo/reference/claims/{Names.Kebab(kind.Name)}.md", Doc(kind.Name, claims, chart, unbuilt, handWritten)));
 
     /// <summary>A line's text as a block quote, each link named rather than made.</summary>
     internal static string[] Quote(string text) =>
         [.. Link().Replace(text, "$1 (`$2`)").Split('\n').Select(line => line.Length == 0 ? ">" : "> " + line)];
 
-    private static string Doc(string kind, ClaimIndex claims, Statechart chart, IReadOnlySet<Enum> unbuilt)
+    /// <summary>The lead of a why doc that names a line of a skill written by hand in <paramref name="folders"/> (DYD-1439).</summary>
+    internal static string HandWrittenLead(IEnumerable<string> folders) =>
+        $"A line marked unwritten is the model's own, of a skill written by hand in {string.Join(", ", folders.Select(folder => $"`{folder}`"))}: " +
+        "the build writes it nowhere, and the hand-written skill need not hold it.";
+
+    private static string Doc(string kind, ClaimIndex claims, Statechart chart, IReadOnlySet<Enum> unbuilt, IReadOnlyDictionary<Enum, string> handWritten)
     {
         var page = new Page(Frontmatter, "Claims: " + kind);
-        foreach (var (id, claim) in claims.Claims.Where(claim => claim.Id.StartsWith(kind + ".", StringComparison.Ordinal)))
+        var ofKind = claims.Claims.Where(claim => claim.Id.StartsWith(kind + ".", StringComparison.Ordinal)).ToArray();
+        var folders = ofKind.SelectMany(claim => claims.LinesOf(claim.Claim)).Select(line => line.Line.Skill)
+            .Where(handWritten.ContainsKey).Select(skill => handWritten[skill]).Distinct().ToArray();
+        if (folders.Length > 0) page.Block(HandWrittenLead(folders));
+        foreach (var (id, claim) in ofKind)
         {
             page.Heading("## " + id[(kind.Length + 1)..]);
             page.Block($"`claim:{id}`: {claim.Rule}");
@@ -38,7 +52,7 @@ internal static partial class WhyDocs
             if (claim.Truth is { } truth) Answers(page, truth);
             foreach (var (line, owner) in claims.LinesOf(claim))
             {
-                var place = Unstated(claim, line, unbuilt) + Place(line.Place) + (line.Reader is null ? "" : $"; read by {line.Reader}");
+                var place = (handWritten.ContainsKey(line.Skill) ? HandWrittenLine : "") + Unstated(claim, line, unbuilt) + Place(line.Place) + (line.Reader is null ? "" : $"; read by {line.Reader}");
                 page.Block($"**{Names.Kebab(line.Skill)}** ({place}{(owner == id ? "" : $", on claim:{owner}")}):");
                 page.Block(Quote(line.Text));
             }

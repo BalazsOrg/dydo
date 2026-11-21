@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainWaking
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Mine
 
 `claim:CaptainWaking.Mine`: A holder tells its own ticket from another's by its own thread: the ticket it set In Progress there is its own, whatever its status says since.
@@ -18,7 +20,7 @@ Layer: Linear shows that a ticket was started and nothing of who started it, so 
 
 Reason: Without the test a holder sends back, as an intruder's, the very work it was woken to go on with.
 
-**ticket-captain** (WakeLead; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeLead; read by TicketCaptain):
 
 > A ticket you set In Progress yourself, earlier in this thread, is yours: its status is no conflict, and you need no take-over line.
 
@@ -34,7 +36,7 @@ Layer: A thread keeps what its holder knew when it stopped, and nothing in it ch
 
 Reason: Two hours on, a sibling has merged or an officer has re-planned, and work resumed from a stale picture is built on a head that is gone.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > Re-read your ticket, your sub-tickets' statuses and the last SHA posted on each: the record, never your memory of it, says where things stand.
 
@@ -50,7 +52,7 @@ Layer: T3 gives a child a checkout of its own and brings none of its commits bac
 
 Reason: A reviewer handed a head that lacks something passes a tree nobody assembled, and the missing piece first meets the others after the verdict.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > When a child that works in its own worktree returns a commit that is yours to merge, merge it into your branch with `git merge <SHA>`: the whole is reviewed at one SHA, your branch's head once it holds every part. A conflict there goes to an Implement ticket on your branch.
 
@@ -66,7 +68,7 @@ Layer: T3 delivers the message and says nothing of which steps it belongs to, an
 
 Reason: Woken with somebody else's open call, a holder that finds no route answers it from its own context, which is the one thing the steps exist to prevent.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > A need a child sends up to you, and the return or the answer of a Question you opened, go by A need for the user (`need-for-the-user.md`).
 
@@ -82,7 +84,7 @@ Layer: A phase says what its holder does next, and nothing of what a return need
 
 Reason: A next round sent out ahead of the merge judges a head the repair never reached, and a ticket closed before the cancel leaves a dead card behind it.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > Go on from the phase you had reached; any sub-ticket it has you send out, and phase 5 of the spine, wait for the steps below.
 
@@ -98,7 +100,7 @@ Layer: Linear leaves a step opened ahead in Todo for as long as nobody moves it,
 
 Reason: A Fix nobody will ever start holds the merge behind a card that reads as work still owed.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > Cancel a sub-ticket you opened ahead that the return made unnecessary, such as the Fix of a round that passed, with a one-line reason: a Canceled step blocks nothing.
 
@@ -114,7 +116,7 @@ Layer: Linear draws a block only where one was set, and a Merge opened ahead was
 
 Reason: Without it a second round runs beside a card that reads as free to go, and the board invites the very merge that round was ordered to hold.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > A Fix or Review you opened after your Merge sub-ticket blocks nothing until you set it: make it block the Merge, with Linear's `save_issue` (`blocks`).
 
@@ -130,7 +132,7 @@ Layer: `delegate_task` starts a child on a blocked ticket, or on one a child alr
 
 Reason: A Review sent out ahead of its Implement has no candidate to look at, a Fix ahead of its round has no finding to close, and a second child on a running step overwrites the first.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > Dispatch each AFK sub-ticket, the Merge excepted, that is still in Todo, that you have not sent out already and that nothing blocks any more: every sub-ticket that blocked it is Done or Canceled.
 
@@ -146,7 +148,7 @@ Layer: A phase that ends in review rounds reads the same for every holder; whose
 
 Reason: Told that a Merge comes next, a part merges what its officer meant to assemble, or stalls on a command that has no PR to name.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain, on claim:CaptainWaking.MergeNext):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain, on claim:CaptainWaking.MergeNext):
 
 > Take phase 5 of the spine last, once your work has reached it: with review rounds, once they have ended. If your brief gives you the merge, the Merge is your own step, your next one once nothing blocks it, by Merging (`merging.md`); if your officer merges, you have no Merge, and you return your commit.
 
@@ -162,6 +164,6 @@ Layer: Linear lists an unblocked Merge among the tickets free to go and cannot s
 
 Reason: Left as one more card to hand out, it goes to a child with nothing to load, or waits for a taker that will never come.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > Take phase 5 of the spine last, once your work has reached it: with review rounds, once they have ended. If your brief gives you the merge, the Merge is your own step, your next one once nothing blocks it, by Merging (`merging.md`); if your officer merges, you have no Merge, and you return your commit.

@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainReview
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Risk
 
 `claim:CaptainReview.Risk`: Persistence, migrations, permissions, guard rules and uncertain native interfaces are always reviewed.
@@ -18,7 +20,7 @@ Layer: `dydo merge` asks every PR for a PASS and cannot tell these five apart fr
 
 Reason: A mistake here is costly or impossible to undo once it has run.
 
-**ticket-captain** (Reviewed; read by TicketCaptain, on claim:CaptainReview.Other):
+**ticket-captain** (unwritten; Reviewed; read by TicketCaptain, on claim:CaptainReview.Other):
 
 > Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
 
@@ -36,7 +38,7 @@ Layer: `dydo merge` refuses a PR with no PASS line and cannot tell who wrote the
 
 Reason: A writer's own context hides from it what a fresh one sees at once.
 
-**ticket-captain** (Reviewed; read by TicketCaptain):
+**ticket-captain** (unwritten; Reviewed; read by TicketCaptain):
 
 > Every change is reviewed by an agent other than its writer, unless too small to need it; persistence, migrations, permissions, guard rules and uncertain native interfaces always are.
 
@@ -52,7 +54,7 @@ Layer: The guard refuses a `gh` PR call from a dirty or unpushed tree and reads 
 
 Reason: The verdict's PASS line and `dydo merge` both need a PR that shows exactly the reviewed commit.
 
-**ticket-captain** (MergePr; read by TicketCaptain):
+**ticket-captain** (unwritten; MergePr; read by TicketCaptain):
 
 > Open the PR for your work as a draft once `dydo pr-ready` passes: run with no body file, it checks your tree alone, clean and pushed, and asks for no review. Any check of the PR's body waits for step 3.
 
@@ -68,7 +70,7 @@ Layer: `dydo merge` refuses a head with no PASS, so the merger finds out at the 
 
 Reason: A part reviewed alone and again inside its parent is reviewed twice for one answer.
 
-**ticket-captain** (Reviewed; read by TicketCaptain):
+**ticket-captain** (unwritten; Reviewed; read by TicketCaptain):
 
 > If the merge is yours, open a draft PR by Merging (`resources/merging.md`), and have the work reviewed there before you merge; a part your officer merges is reviewed with its whole.
 
@@ -84,7 +86,7 @@ Layer: Linear's GitHub link attaches nothing here, by a PR's title or by a branc
 
 Reason: A ticket that shows its PR leads anyone from the board to the diff and its review; without the link the two meet only in a thread that can die.
 
-**ticket-captain** (Reviewed; read by TicketCaptain):
+**ticket-captain** (unwritten; Reviewed; read by TicketCaptain):
 
 > Put your ticket's key in that PR's title, and attach its link to the ticket yourself, with Linear's `save_issue` (`links`). (open: his call)
 
@@ -100,7 +102,7 @@ Layer: Nothing limits how often a document is sent for review.
 
 Reason: First make it work, then make it good: rounds on a plan polish what building will change.
 
-**ticket-captain** (BriefNone; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefNone; read by TicketCaptain):
 
 > Write no review brief for a plan, spec or contract: it gets no review rounds, and a risky spec at most one pass by a native helper, which returns questions.
 
@@ -116,7 +118,7 @@ Layer: Linear holds the three labels and says nothing of what a captain does wit
 
 Reason: The three words decide what happens next, so they are defined before the steps that use them.
 
-**ticket-captain** (Reviewed; read by TicketCaptain):
+**ticket-captain** (unwritten; Reviewed; read by TicketCaptain):
 
 > A reviewer gives each finding a severity. A blocker is fixed now; a should needs fixing, but the fix can wait; a nit is everything else.
 
@@ -134,7 +136,7 @@ Layer: Linear nests tickets for any reason; whether a parent integrates anything
 
 Reason: A grouping adds no behaviour for a reviewer to find wrong.
 
-**ticket-captain** (Rounds; read by TicketCaptain, on claim:CaptainReview.Whole):
+**ticket-captain** (unwritten; Rounds; read by TicketCaptain, on claim:CaptainReview.Whole):
 
 > Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.
 
@@ -152,7 +154,7 @@ Layer: Nothing dispatches a review when the last part returns.
 
 Reason: Early enough that nothing is built on a fault, late enough that the whole can be seen working.
 
-**ticket-captain** (Rounds; read by TicketCaptain):
+**ticket-captain** (unwritten; Rounds; read by TicketCaptain):
 
 > Once the parts are wired, dispatch a Review ticket for the whole: each part, the parts together, their harmony. A ticket that only groups parts needs none.
 
@@ -168,7 +170,7 @@ Layer: Each seat returns its findings to the review's captain alone, so the capt
 
 Reason: One verdict per round, however many seats looked, and none of it written by a captain with work of its own under that verdict.
 
-**ticket-captain** (Rounds; read by TicketCaptain):
+**ticket-captain** (unwritten; Rounds; read by TicketCaptain):
 
 > The Review's holder records the round, by A round's record (`resources/round.md`); you record none of it.
 
@@ -184,7 +186,7 @@ Layer: A FAIL stops `dydo merge` and sends the finding nowhere; a should stops n
 
 Reason: Each kind has one place that can act on it, and the wrong place sits on it.
 
-**ticket-captain** (Rounds; read by TicketCaptain):
+**ticket-captain** (unwritten; Rounds; read by TicketCaptain):
 
 > Route each blocker and each should, by A finding's route (`resources/findings.md`).
 
@@ -202,7 +204,7 @@ Layer: A FAIL stops `dydo merge`; it opens no ticket for the fix.
 
 Reason: A writer that holds all of them understands the code once and repairs it in one pass.
 
-**ticket-captain** (BlockerRoutes; read by TicketCaptain):
+**ticket-captain** (unwritten; BlockerRoutes; read by TicketCaptain):
 
 > Work that is broken, against the spec or a security hole: the round's one Fix ticket, by Fix rounds (`fix-rounds.md`).
 
@@ -220,7 +222,7 @@ Layer: A Fix can only repair what the plan asked for; nothing below the officer 
 
 Reason: Fixing toward a plan that is itself wrong builds more of the wrong thing.
 
-**ticket-captain** (BlockerRoutes; read by TicketCaptain):
+**ticket-captain** (unwritten; BlockerRoutes; read by TicketCaptain):
 
 > A fundamental fault, or a new requirement: your officer, for a re-plan.
 
@@ -236,7 +238,7 @@ Layer: A FAIL stops `dydo merge` and tells nobody above the captain; the officer
 
 Reason: The user's answer is the slowest route of the three, so each hour before it is asked for lengthens the wait.
 
-**ticket-captain** (BlockerRoutes; read by TicketCaptain):
+**ticket-captain** (unwritten; BlockerRoutes; read by TicketCaptain):
 
 > A need only the user can meet: your officer, at once, by A need for the user (`need-for-the-user.md`).
 
@@ -254,7 +256,7 @@ Layer: Nothing counts rounds or closes the loop.
 
 Reason: A round that barely passed can be looked at again without anyone inventing a blocker.
 
-**ticket-captain** (Rounds; read by TicketCaptain, on claim:CaptainReview.Clean):
+**ticket-captain** (unwritten; Rounds; read by TicketCaptain, on claim:CaptainReview.Clean):
 
 > Repeat until a round finds no new blocker; you may order one more.
 
@@ -272,7 +274,7 @@ Layer: `dydo merge` reads a PASS line and cannot tell a clear round from one who
 
 Reason: A should can wait, so it never keeps a round from ending.
 
-**ticket-captain** (Rounds; read by TicketCaptain, on claim:CaptainReview.Clean):
+**ticket-captain** (unwritten; Rounds; read by TicketCaptain, on claim:CaptainReview.Clean):
 
 > Repeat until a round finds no new blocker; you may order one more.
 
@@ -290,7 +292,7 @@ Layer: `dydo merge` needs one PASS on the head and knows nothing of earlier roun
 
 Reason: The loop ends on evidence, with no cap that would let a known blocker through.
 
-**ticket-captain** (Rounds; read by TicketCaptain):
+**ticket-captain** (unwritten; Rounds; read by TicketCaptain):
 
 > Repeat until a round finds no new blocker; you may order one more.
 
@@ -306,7 +308,7 @@ Layer: Nothing keeps an agent from repairing its own work and calling it fixed.
 
 Reason: Whoever wrote the fault tends to defend the thinking that produced it.
 
-**ticket-captain** (FixRules; read by TicketCaptain, on claim:CaptainTrouble.FixOwner):
+**ticket-captain** (unwritten; FixRules; read by TicketCaptain, on claim:CaptainTrouble.FixOwner):
 
 > Give a Fix to the thread of the last child that wrote on the change it repairs, its implementer or an earlier Fix's writer, with `t3_thread_send`, while that thread is alive and has room in its context. Dispatch a fresh writer for it, with `delegate_task`, when that context is heavy, when a blocker says the approach was wrong, or when no child has written on the change because you wrote it: you never fix a change of your own. Either way the Fix is a new ticket to its holder: brief it by Briefs (`briefs.md`), under the Fix's own key.
 
@@ -322,6 +324,6 @@ Layer: A round's findings all come back to the captain running it, and nothing m
 
 Reason: Once its own change is under review, the captain is no longer impartial about that review.
 
-**ticket-captain** (OwnChange; read by TicketCaptain):
+**ticket-captain** (unwritten; OwnChange; read by TicketCaptain):
 
 > Take a finding on a change you wrote as the reviewer wrote it: its Fix is never yours to write, and goes out by Fix rounds (`fix-rounds.md`); if you doubt the finding, the doubt is a Question sub-ticket, never your call.

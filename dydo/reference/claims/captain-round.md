@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainRound
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Verdict
 
 `claim:CaptainRound.Verdict`: The verdict lives on the Review ticket: PASS or FAIL, lenses, seats and shoulds; FAIL means at least one blocker.
@@ -18,7 +20,7 @@ Layer: The seats' returns live in the dispatcher's thread until someone writes t
 
 Reason: The next round, and whoever resumes the ticket, read the verdict there.
 
-**ticket-captain** (RoundSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RoundSteps; read by TicketCaptain):
 
 > Post one verdict on your Review ticket: PASS or FAIL, the lenses, each seat's model and provider with its blockers, and the shoulds. FAIL means at least one blocker.
 
@@ -34,7 +36,7 @@ Layer: `dydo merge` and `dydo pr-ready` read a PASS from a PR's body and from no
 
 Reason: A reviewer ordered to edit a body that does not exist stalls, or opens a PR nobody asked for.
 
-**ticket-captain** (RoundSteps; read by TicketCaptain, on claim:CaptainRound.PrLine):
+**ticket-captain** (unwritten; RoundSteps; read by TicketCaptain, on claim:CaptainRound.PrLine):
 
 > On a PASS of a candidate that is in a PR, the one your brief names, add its line at once to that PR's body, under `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then your Review ticket's key. A candidate in no PR, as at a leaf's evidence check, has its verdict on your Review ticket alone.
 
@@ -50,7 +52,7 @@ Layer: `dydo merge` reads that line and refuses without it; it cannot write it.
 
 Reason: A line in any other shape is a refusal at the merge, long after the reviewer has gone.
 
-**ticket-captain** (RoundSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RoundSteps; read by TicketCaptain):
 
 > On a PASS of a candidate that is in a PR, the one your brief names, add its line at once to that PR's body, under `## Independent review`: `PASS - rubric/type: <code, docs or merge>; candidate <head SHA>; base <base SHA>`, then your Review ticket's key. A candidate in no PR, as at a leaf's evidence check, has its verdict on your Review ticket alone.
 
@@ -66,7 +68,7 @@ Layer: Linear would take a ticket per nit; the workspace keeps them off the boar
 
 Reason: A nit is kept where it can be read, without a ticket to open, hold and close.
 
-**ticket-captain** (RoundSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RoundSteps; read by TicketCaptain):
 
 > Record each nit as one line on your Review ticket.
 
@@ -82,7 +84,7 @@ Layer: Linear takes a second ticket for the same fault without a word.
 
 Reason: It stays beside the work it is about and off the Project's root.
 
-**ticket-captain** (RoundSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RoundSteps; read by TicketCaptain):
 
 > File each should as a child of the ticket whose work you judged, the one your brief names, after checking the open shoulds there and above for a duplicate.
 
@@ -98,7 +100,7 @@ Layer: A ticket is both a unit of work and a record, and no rule fits both readi
 
 Reason: Five small fixes one agent makes in a pass need no five tickets, and a large one needs room of its own.
 
-**ticket-captain** (RoundRules; read by TicketCaptain):
+**ticket-captain** (unwritten; RoundRules; read by TicketCaptain):
 
 > Group shoulds by judgement: minor ones may share a ticket, ones on the same code may stay together, and one that needs a lot of work gets its own.
 
@@ -116,7 +118,7 @@ Layer: Nothing weighs a should's cost, and a filed should sits on its ticket unt
 
 Reason: A fix made while the code is open costs less than a ticket that remembers it.
 
-**ticket-captain** (ShouldRoutes; read by TicketCaptain):
+**ticket-captain** (unwritten; ShouldRoutes; read by TicketCaptain):
 
 > Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
@@ -134,7 +136,7 @@ Layer: `dydo merge` refuses a head that its PR's PASS does not name, and counts 
 
 Reason: Spent as the optional look, the repair's round would leave a captain that had already taken that look with a fixed head and no way to have it passed.
 
-**ticket-captain** (ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
+**ticket-captain** (unwritten; ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
 
 > Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
@@ -152,7 +154,7 @@ Layer: `dydo merge` asks a PASS of the head of the PR it is handed and of no oth
 
 Reason: Another verdict on the part alone would be read by no command, while the lines the writer changed are judged anyway once every part is wired.
 
-**ticket-captain** (ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
+**ticket-captain** (unwritten; ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
 
 > Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
@@ -168,7 +170,7 @@ Layer: Nothing asks a PASS of a head that no command merges, and no whole stands
 
 Reason: Mended after its last round, such a change would end on lines no second agent ever read.
 
-**ticket-captain** (ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
+**ticket-captain** (unwritten; ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
 
 > Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
@@ -184,7 +186,7 @@ Layer: Nothing counts rounds or weighs what one costs, and `dydo merge` is conte
 
 Reason: Each repair buys another whole review, so without an end the cheapest findings keep the dearest step running.
 
-**ticket-captain** (ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
+**ticket-captain** (unwritten; ShouldRoutes; read by TicketCaptain, on claim:CaptainRound.Cheap):
 
 > Cheap: have it fixed before the merge. Name it in the round's Fix brief; when the round has no blocker, and somebody merges the change, dispatch a writer onto its ticket, then go by where the candidate is. In your PR: dispatch a Review onto the new head, since `dydo merge` takes no head without a PASS. This round is not the one more you may order, and you take it once: a should that it, or a later round with no blocker, finds waits on its ticket. In no PR: dispatch none, since the whole's Review will judge the mended head. If that head is the one your officer merges, go on to phase 5 of the spine and return its SHA. Where nobody merges the change, a should that a round with no blocker leaves waits on its ticket instead: no later Review would judge its fix.
 
@@ -200,7 +202,7 @@ Layer: Linear closes a Fix and leaves every other ticket where it stood; a shoul
 
 Reason: An open card for work already done is collected into the next batch, and an agent is sent to repair what is no longer broken.
 
-**ticket-captain** (ImplementFix; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementFix; read by TicketCaptain):
 
 > Close each should your brief names Done once its fix is proved, with the proof on it, before you close the Fix.
 
@@ -216,7 +218,7 @@ Layer: Linear ties a parent's status to none of its children, so nothing settles
 
 Reason: A should can wait, so it never holds back the work it was found in.
 
-**ticket-captain** (ShouldRoutes; read by TicketCaptain):
+**ticket-captain** (unwritten; ShouldRoutes; read by TicketCaptain):
 
 > Anything more: it waits on its ticket, and its parent may close Done meanwhile.
 
@@ -232,6 +234,6 @@ Layer: The fixer returns its dispute to its dispatcher only; the Review ticket s
 
 Reason: The next reviewer sees why a blocker was not fixed as one.
 
-**ticket-captain** (FixRules; read by TicketCaptain):
+**ticket-captain** (unwritten; FixRules; read by TicketCaptain):
 
 > If the Fix's writer changed a finding's severity, record the change and its reason on the Review ticket.

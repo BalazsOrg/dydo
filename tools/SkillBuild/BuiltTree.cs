@@ -23,11 +23,18 @@ public sealed class BuiltTree
     public IReadOnlyDictionary<string, string> Unbuilt { get; }
 
     /// <summary>
-    /// The chart files of each machine whose chart is written by hand (DYD-1437), as the model still
-    /// renders them: checked by the build's tests, never written.
+    /// The chart files of each machine whose chart is written by hand (DYD-1437) and the files of each skill
+    /// written by hand (DYD-1439), as the model still renders them: checked by the build's tests, never written.
     /// </summary>
     public IReadOnlyDictionary<string, string> Unwritten { get; init; } = new Dictionary<string, string>();
 
+    /// <summary>
+    /// The folder of each skill written by hand (DYD-1439), ending in <c>/</c>: the build writes, deletes
+    /// and compares no file under it, whatever the folder holds.
+    /// </summary>
+    public IReadOnlyList<string> HandWritten { get; init; } = [];
+
+    /// <summary>The claim-stating lines of the built skill files and of the unwritten ones.</summary>
     public IReadOnlyList<MapLine> Map { get; }
 
     public IReadOnlyDictionary<string, byte[]> Bytes() =>
@@ -36,11 +43,12 @@ public sealed class BuiltTree
     /// <summary>
     /// Writes every built file under <paramref name="root"/> and deletes each committed file that carries
     /// the header but is no longer built (K5, K6). A file without the header is never touched: when one
-    /// sits at a built path, nothing is written and the write throws.
+    /// sits at a built path, nothing is written and the write throws. No file under a
+    /// <see cref="HandWritten"/> folder is touched, with the header or without it.
     /// </summary>
     public void Write(string root)
     {
-        var committed = BuiltHeader.Committed(root);
+        var committed = Owned(BuiltHeader.Committed(root));
         var handWritten = Files.Keys.FirstOrDefault(path => File.Exists(Path.Combine(root, path)) && !committed.ContainsKey(path));
         if (handWritten is not null)
             throw new InvalidDataException($"{handWritten} has no built header; the build never overwrites a hand-written file");
@@ -53,6 +61,13 @@ public sealed class BuiltTree
             File.WriteAllText(target, text, Utf8);
         }
     }
+
+    /// <summary>The committed files outside every <see cref="HandWritten"/> folder: the ones the build owns.</summary>
+    public IReadOnlyDictionary<string, byte[]> Owned(IReadOnlyDictionary<string, byte[]> committed) =>
+        committed.Where(file => !IsHandWritten(file.Key)).ToDictionary(file => file.Key, file => file.Value, StringComparer.Ordinal);
+
+    /// <summary>Whether <paramref name="path"/>, relative to the repository root, lies under a <see cref="HandWritten"/> folder.</summary>
+    public bool IsHandWritten(string path) => HandWritten.Any(folder => path.StartsWith(folder, StringComparison.Ordinal));
 
     private static void Delete(string root, string path)
     {

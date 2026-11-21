@@ -67,6 +67,25 @@ public class SkillBuildWriteTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1439 a hand-written skill's folder is rendered and never written: no file in it is written, overwritten or deleted, with the header or without it")]
+    public void Run_LeavesAHandWrittenSkillsFolderAlone()
+    {
+        using var root = new TempRoot();
+        var model = new Model([typeof(DemoMoves)], [DemoModel.Skill() with { HandWritten = true }]);
+        root.Write(Spine, "# Demo, by hand\n");
+        root.Write("skills/roles/crew/demo/resources/stale.md", BuiltHeader.Markdown + "\n\n# Stale\n");
+
+        Assert.Equal((0, "", ""), root.Run(model));
+
+        Assert.Equal(new Dictionary<string, string>
+        {
+            [Spine] = "# Demo, by hand\n",
+            ["skills/roles/crew/demo/resources/stale.md"] = BuiltHeader.Markdown + "\n\n# Stale\n"
+        }, root.Files().Where(file => file.Key.StartsWith("skills/roles/crew/demo/", StringComparison.Ordinal)));
+        Assert.Contains(Spine, SkillBuilder.Build(model).Unwritten.Keys);
+    }
+
+    [Fact]
     [Trait("Job", "trap: a model the rules reject exits 1 with the reason and writes nothing, so it never reaches the tree")]
     public void Run_WithAModelTheRulesReject_ExitsOneWithTheReason()
     {

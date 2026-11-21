@@ -20,14 +20,16 @@ internal static class ReviewDocs
     /// <summary>
     /// The open claims of <paramref name="of"/>, a truth-checked skill by its name or a resource truth-checked ahead of
     /// its skill as <c>skill/resource</c>, each with its rule, why it is open, and its line: withheld, or
-    /// for the one placeholder stated with its token, and marked so.
+    /// for the one placeholder stated with its token, and marked so. A skill written by hand in <paramref name="handWritten"/>
+    /// (DYD-1439) is named as such: the lines are the model's own, and the build writes none of them.
     /// </summary>
-    public static (string Path, string Text) Open(string of, string holder, IEnumerable<Placed> lines, ClaimIndex claims)
+    public static (string Path, string Text) Open(string of, string holder, IEnumerable<Placed> lines, ClaimIndex claims, string? handWritten = null)
     {
         var open = lines.Select(placed => (Placed: placed, claims.ById[placed.Owner].Rule, claims.ById[placed.Owner].Truth!.Evidence)).ToArray();
         var page = new Page(WhyDocs.Frontmatter, "Open claims: " + of);
         page.Block($"Claims of `{of}` that nobody has verified yet. The {holder} does not state them: each line below is withheld until its claim has evidence" +
-                   (open.Any(claim => claim.Evidence.Token is not null) ? ", but for the one placeholder, whose line stands in the skill with its token unfilled." : "."));
+                   (open.Any(claim => claim.Evidence.Token is not null) ? ", but for the one placeholder, whose line stands in the skill with its token unfilled." : ".") +
+                   (handWritten is null ? "" : HandWrittenNote(handWritten)));
         if (open.Length == 0) page.Block("None.");
         foreach (var (placed, rule, evidence) in open)
         {
@@ -41,6 +43,10 @@ internal static class ReviewDocs
         }
         return ($"{Folder}/{of.Replace('/', '-')}-open.md", page.Done("").Text);
     }
+
+    /// <summary>The sentence an open list of a hand-written skill adds to its lead (DYD-1439).</summary>
+    internal static string HandWrittenNote(string folder) =>
+        $" The skill is hand-written, in `{folder}`: the lines below are the model's own, and the build writes none of them.";
 
     /// <summary>The list of legacy lines that name a missing command, by skill; nothing when no line does.</summary>
     public static IEnumerable<(string Path, string Text)> Commands(IEnumerable<(SkillSpec Skill, bool Built, IReadOnlyList<Placed> Lines)> legacy)

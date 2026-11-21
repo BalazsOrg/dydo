@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainReCut
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Undelivered
 
 `claim:CaptainReCut.Undelivered`: When the rewritten contract cannot be delivered to the child for a reason other than a limit, its officer notes the failed delivery on the ticket and takes the ticket's closure to the officer above; it never counts on the child to close.
@@ -18,6 +20,6 @@ Layer: T3 reports a send that failed to its sender and to nobody else, and Linea
 
 Reason: Unrecorded, the reduced card waits for a close that cannot come, and whoever is handed it later finds neither why it stalled nor what was already built.
 
-**ticket-captain** (TooBigOfficer; read by TicketCaptain):
+**ticket-captain** (unwritten; TooBigOfficer; read by TicketCaptain):
 
 > If that send does not get through, for another reason than a limit, note the failed delivery on the ticket in one line, beside the rewritten contract and the SHA, and take the ticket's closure to your officer, by the step of A need for the user (`need-for-the-user.md`) that sends to your officer's thread: never count on the child to close it.

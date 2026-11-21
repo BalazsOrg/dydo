@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainNeed
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Never
 
 `claim:CaptainNeed.Never`: A captain never takes a need to the user itself: a need goes up through its officer, and only the coordinator sends an envoy to the user.
@@ -18,7 +20,7 @@ Layer: The host's question tool asks the user whatever an agent sends it, and no
 
 Reason: His attention is the one thing the swarm cannot make more of, so a single queue spends it.
 
-**ticket-captain** (NeedLead; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedLead; read by TicketCaptain):
 
 > You never take a need to the user yourself: it goes up through your officer, and only the coordinator sends an envoy to the user.
 
@@ -34,7 +36,7 @@ Layer: A child's message lands in its officer's thread, and nothing there says w
 
 Reason: An officer often holds what its child lacked, so the same question is cheaper to settle one level up than at the top.
 
-**ticket-captain** (NeedLead; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedLead; read by TicketCaptain):
 
 > Your own need, and one a child sends up to you, take these steps in order.
 
@@ -50,7 +52,7 @@ Layer: Linear takes a Question for any call, the plain ones included.
 
 Reason: A ticket and a wait for something its reader can see at a glance stops a child for nothing.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain):
 
 > Decide a call yourself when, from where you stand, it is obvious and reversible; it gets no ticket.
 
@@ -66,7 +68,7 @@ Layer: Linear holds both labels and cannot tell a thing to be given from a call 
 
 Reason: Research can settle a call and can never produce a token, so the two take different routes from the start.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Ask):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Ask):
 
 > Only these needs keep the ticket they have, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
@@ -82,7 +84,7 @@ Layer: Linear takes a second ticket for the same token at every level it passes.
 
 Reason: One ticket keeps every block on it in a single place, where whoever ranks the user's queue can count them.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Ask):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Ask):
 
 > Only these needs keep the ticket they have, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
@@ -100,7 +102,7 @@ Layer: Linear draws a block once it is set, and stops nobody from working on.
 
 Reason: One open question holds up one part, never the whole ticket.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain):
 
 > Only these needs keep the ticket they have, with its blocking relations: a Grilling, a Walkthrough or another HITL sub-ticket you cut, and the sub-ticket a child opened for its Enablement or for a call only the user can make. Open a sub-ticket for any other need, by Sub-tickets (`sub-tickets.md`), blocking only what waits on it, and go on with the rest: an Enablement for what only the user can give, a token or an authorisation; a Question for a call.
 
@@ -116,7 +118,7 @@ Layer: Nothing keeps a captain from dispatching a researcher onto a need that no
 
 Reason: A captain set to study what only he can give costs a day, and his answer is the slowest of all to arrive.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Fresh):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Fresh):
 
 > Dispatch a fresh captain onto a Question you opened, with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
 
@@ -132,7 +134,7 @@ Layer: Nothing tells a call the user alone can make from one an agent would mere
 
 Reason: A rubber stamp costs him the time to understand the question and returns nothing the sources could not.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Fresh):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Fresh):
 
 > Dispatch a fresh captain onto a Question you opened, with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
 
@@ -148,7 +150,7 @@ Layer: The host's question tool is one call away, and the sources that may hold 
 
 Reason: A context full of its own work answers with a bias; a fresh one reads the sources before it says anything.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain):
 
 > Dispatch a fresh captain onto a Question you opened, with `delegate_task`, to research it first; skip this when you already know that only the user can meet the need. A call that only wants the user's approval is never such a need.
 
@@ -164,7 +166,7 @@ Layer: T3 wakes a thread only when something is sent to it; a comment on a ticke
 
 Reason: Without the send, a child that ended its turn on a need would wait on an answer that already exists.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Answered):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Answered):
 
 > When the answer is on the Question ticket, resume what waited; an answer to a child's need you put on the child's sub-ticket and send to the child's thread with `t3_thread_send`.
 
@@ -182,7 +184,7 @@ Layer: T3 wakes the captain when the Question's captain returns; the answer itse
 
 Reason: The answer outlives both threads, for whoever meets the same call next.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain):
 
 > When the answer is on the Question ticket, resume what waited; an answer to a child's need you put on the child's sub-ticket and send to the child's thread with `t3_thread_send`.
 
@@ -198,7 +200,7 @@ Layer: Nothing above a captain learns of a need until the captain sends it.
 
 Reason: His answer is the slowest route there is, so every hour before it is asked for lengthens the wait.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Up):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Up):
 
 > Send what stays open, by its key and with what was found, to your officer's thread, which `t3_thread_list` shows as your own thread's parent, with `t3_thread_send`: at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.
 
@@ -214,7 +216,7 @@ Layer: T3 carries a child's last message back to its dispatcher unasked; a send 
 
 Reason: With a need and no address, an agent ends its turn on it and stops work that one answer from above would have kept moving.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Up):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain, on claim:CaptainNeed.Up):
 
 > Send what stays open, by its key and with what was found, to your officer's thread, which `t3_thread_list` shows as your own thread's parent, with `t3_thread_send`: at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.
 
@@ -232,7 +234,7 @@ Layer: A captain has no tool that opens a thread with the user, and its officer 
 
 Reason: Whether a call is worth his time is weighed once, above, instead of by every captain that meets one.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain):
 
 > Send what stays open, by its key and with what was found, to your officer's thread, which `t3_thread_list` shows as your own thread's parent, with `t3_thread_send`: at once for a need only the user can meet, and for a Question when it comes back unsettled. Leave the sub-ticket open; what waited still waits on its answer.
 
@@ -248,7 +250,7 @@ Layer: T3 refuses the send and names no other way up; a child's return is the on
 
 Reason: Without it a narrower child would sit on a need that nobody above ever hears of.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain):
 
 > If that send is refused, because your thread's mode is narrower than your officer's, end your turn on the message instead; your work then stops until your officer sends to your thread again.
 
@@ -264,7 +266,7 @@ Layer: The tool asks whenever it is called; whether the user is there to answer,
 
 Reason: A ticket and a wait for something the user can answer in a word would be overkill.
 
-**ticket-captain** (NeedRules; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedRules; read by TicketCaptain):
 
 > When the user is already in your thread, you may ask one line there instead, with the host's question tool: never what the sources can answer, and never a call that only wants the user's approval.
 
@@ -280,6 +282,6 @@ Layer: A record's number resolves to a file for an agent, and to nothing for a p
 
 Reason: The user answers the question in front of him without looking anything up.
 
-**ticket-captain** (NeedRules; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedRules; read by TicketCaptain):
 
 > Say what a decision record decides whenever you cite one to the user, never only its number.

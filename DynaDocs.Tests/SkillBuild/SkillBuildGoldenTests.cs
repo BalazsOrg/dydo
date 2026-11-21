@@ -13,14 +13,15 @@ using DynaDocs.Tests.SkillBuild.Fixture;
 public class SkillBuildGoldenTests
 {
     [Fact]
-    [Trait("Job", "contract: K7 golden test over the real repository: the committed role skills, standards, charts and why docs are the production build (B14)")]
+    [Trait("Job", "contract: K7 golden test over the real repository: the committed role skills, standards, charts and why docs are the production build (B14); a hand-written skill's folder is not compared (DYD-1439)")]
     public void CommittedBuiltFiles_AreByteForByteTheProductionBuild()
     {
-        var built = SkillBuilder.Build(ProductionModel.Model).Bytes();
-        var committed = BuiltHeader.Committed(CommittedTree.Root);
+        var tree = SkillBuilder.Build(ProductionModel.Model);
+        var built = tree.Bytes();
+        var committed = tree.Owned(BuiltHeader.Committed(CommittedTree.Root));
 
-        // Never vacuous: the real build holds the seven role spines and both standards (DYD-1082, DYD-1284).
-        Assert.Contains("skills/roles/officers/ticket-captain/SKILL.md", committed.Keys);
+        // Never vacuous: the real build holds the built role spines and both standards (DYD-1082, DYD-1284).
+        Assert.Contains("skills/roles/officers/coordinator/SKILL.md", committed.Keys);
         Assert.Contains("dydo/guides/working-tree-standard.md", committed.Keys);
         var diff = GoldenDiff.Describe(built, committed);
         Assert.True(diff.Length == 0, diff);

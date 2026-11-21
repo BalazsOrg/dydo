@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainImplementBug
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Name
 
 `claim:CaptainImplementBug.Name`: A Bug's writer names the expected and the observed behaviour at the highest stable seam, and what the fix must leave unchanged.
@@ -18,7 +20,7 @@ Layer: A Bug ticket reports a symptom in its reporter's words, wherever the repo
 
 Reason: A defect pinned too low gets a patch where it showed, while its cause goes on failing somewhere else.
 
-**ticket-captain** (ImplementBug; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementBug; read by TicketCaptain):
 
 > Name the expected and the observed behaviour at the highest stable seam, and what the fix must leave unchanged.
 
@@ -34,7 +36,7 @@ Layer: A brief names the skills its dispatcher foresaw, and only the writer find
 
 Reason: Guessing at a fault nobody can trigger produces a change that cannot be shown to cure it.
 
-**ticket-captain** (ImplementBug; read by TicketCaptain, on claim:CaptainImplementBug.Reproduce):
+**ticket-captain** (unwritten; ImplementBug; read by TicketCaptain, on claim:CaptainImplementBug.Reproduce):
 
 > Reproduce it red before you fix it: a test at the product's boundary when the defect shows there, else at that seam; an existing red test is the reproduction. With none yet, load /diagnosing-bugs.
 
@@ -50,7 +52,7 @@ Layer: A test runner reports a green run and cannot say whether the fault was ev
 
 Reason: A fix made before its failure was seen may be curing a different fault, or none.
 
-**ticket-captain** (ImplementBug; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementBug; read by TicketCaptain):
 
 > Reproduce it red before you fix it: a test at the product's boundary when the defect shows there, else at that seam; an existing red test is the reproduction. With none yet, load /diagnosing-bugs.
 
@@ -66,7 +68,7 @@ Layer: No test can fail because of code that nothing calls.
 
 Reason: Dead code kept alive by its own tests looks used to every search that follows.
 
-**ticket-captain** (ImplementBug; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementBug; read by TicketCaptain):
 
 > An unused member needs no test: its definition at `file:line` and a reference search with no caller outside the tests reproduce it, and the fix deletes it with its test-only callers.
 
@@ -82,7 +84,7 @@ Layer: A reproduction that goes green proves the fix only if nothing else change
 
 Reason: The red line shows the test holds this very fault, and gives the reviewer a receipt it need not run again.
 
-**ticket-captain** (ImplementBug; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementBug; read by TicketCaptain):
 
 > After the fix, revert it, watch the reproduction fail, and restore it; return that red line, with the behaviour you kept still green.
 
@@ -98,6 +100,6 @@ Layer: A sleep makes a test pass on a quiet machine and fail on a loaded one, an
 
 Reason: A timing-dependent test flakes under a busy host, and a flake teaches everyone to ignore red.
 
-**ticket-captain** (ImplementBug; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementBug; read by TicketCaptain):
 
 > Force a race with fake timers or a set interleaving: a test that needs a sleep or a timeout is wrong.

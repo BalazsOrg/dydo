@@ -18,10 +18,10 @@ public partial class TicketCaptainPrototypeTests
 
     private static readonly Lazy<BuiltTree> Built = new(() => SkillBuilder.Build(ProductionModel.Model));
 
-    private static string Spine => Built.Value.Files[Folder + "SKILL.md"];
+    private static string Spine => Built.Value.Unwritten[Folder + "SKILL.md"];
 
     private static KeyValuePair<string, string>[] Files =>
-        [.. Built.Value.Files.Where(file => file.Key.StartsWith(Folder, StringComparison.Ordinal))];
+        [.. Built.Value.Unwritten.Where(file => file.Key.StartsWith(Folder, StringComparison.Ordinal))];
 
     // The built lines of the folder that state a claim, each with its file and line number.
     private static MapLine[] Stated => [.. Built.Value.Map.Where(line => line.Path.StartsWith(Folder, StringComparison.Ordinal))];
@@ -298,7 +298,7 @@ public partial class TicketCaptainPrototypeTests
         var table = Toolset.Matrix.Lines.Single().Text;
 
         Assert.Equal(table, CaptainReviewing.Matrix.Lines.Single().Text);
-        Assert.Contains("\n" + table + "\n", Built.Value.Files[Folder + "resources/review.md"]);
+        Assert.Contains("\n" + table + "\n", Built.Value.Unwritten[Folder + "resources/review.md"]);
     }
 
     [Fact]
@@ -320,7 +320,7 @@ public partial class TicketCaptainPrototypeTests
 
     private static MapLine LineOf(string claim) => Stated.Single(line => line.Claims.Contains(claim));
 
-    private static string Resource(string name) => Built.Value.Files[$"{Folder}resources/{name}.md"];
+    private static string Resource(string name) => Built.Value.Unwritten[$"{Folder}resources/{name}.md"];
 
     // A section of the spine: its heading's line through the line before the next "## " heading.
     private static string Section(string heading)

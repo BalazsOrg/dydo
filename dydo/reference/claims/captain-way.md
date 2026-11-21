@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainWay
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Route
 
 `claim:CaptainWay.Route`: A captain sees the route from its ticket to the spec when it can write every part's contract now, and it checks that before it cuts.
@@ -18,7 +20,7 @@ Layer: AGENTS.md says a bigger ticket splits; nothing below this skill says when
 
 Reason: A holder that cuts what nobody can state yet hands its children guesses, and each guess is paid for in rework.
 
-**ticket-captain** (Fog; read by TicketCaptain):
+**ticket-captain** (unwritten; Fog; read by TicketCaptain):
 
 > Before you cut a bigger ticket, check that you see its route to the spec: that you can write every part's contract now.
 
@@ -36,7 +38,7 @@ Layer: The host lists the wayfinder among its skills and loads it only when aske
 
 Reason: A feature cut whole in the fog fixes every later part before the first has shown what the next should be.
 
-**ticket-captain** (Fog; read by TicketCaptain):
+**ticket-captain** (unwritten; Fog; read by TicketCaptain):
 
 > If you cannot, find the way a part at a time with `/wayfinder`, by Finding the way (`resources/wayfind.md`): never cut the whole at once.
 
@@ -52,7 +54,7 @@ Layer: The host loads a skill whole: it cannot load the part on finding a route 
 
 Reason: Two procedures for one call leave its holder to pick, and the one it must not pick sets labels Linear lacks and names a resource nobody built.
 
-**ticket-captain** (WayLead; read by TicketCaptain):
+**ticket-captain** (unwritten; WayLead; read by TicketCaptain):
 
 > Load `/wayfinder` for how to find the way, and for that alone: every ticket you open on the way, every Question and every need goes by this skill's own lines.
 
@@ -70,7 +72,7 @@ Layer: Linear takes a sub-ticket for a part nobody can state yet as readily as f
 
 Reason: Small parts keep the work moving while the rest is still dark (07c86aad: "It keeps the tasks bite sized so it's easy to move forward").
 
-**ticket-captain** (WaySteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WaySteps; read by TicketCaptain):
 
 > Cut only the parts whose contract you can write now, each small enough for one agent, by Sub-tickets (`sub-tickets.md`), and leave the fog uncut. A question whose answer would clear fog is such a part.
 
@@ -88,7 +90,7 @@ Layer: T3 wakes a captain when a child returns, and nothing looks again at what 
 
 Reason: A finished part is the cheapest evidence of what the next one should be (07c86aad: "the wisdom of removing the fog gradually").
 
-**ticket-captain** (WaySteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WaySteps; read by TicketCaptain):
 
 > When a part returns, cut the parts whose contract its result lets you write, and repeat until no fog is left.
 
@@ -104,7 +106,7 @@ Layer: Linear takes a HITL ticket for every single call, and nothing gathers the
 
 Reason: His attention comes in sittings, and a point that could have joined an earlier sitting costs him a second start.
 
-**ticket-captain** (WayUser; read by TicketCaptain):
+**ticket-captain** (unwritten; WayUser; read by TicketCaptain):
 
 > Settle ahead what you can see ahead: gather every call you already know is the user's into one Grilling sub-ticket, Mode HITL, so that one sitting settles the large sections before their parts are cut.
 
@@ -120,7 +122,7 @@ Layer: Linear draws a block wherever it is set; where a look saves the most work
 
 Reason: A look that comes after the work is built can only order it rebuilt.
 
-**ticket-captain** (WayUser; read by TicketCaptain):
+**ticket-captain** (unwritten; WayUser; read by TicketCaptain):
 
 > Give each later point that needs the user, a call to make or a prototype to look at, a HITL sub-ticket of its own, blocking only the parts its answer could change: the user then sees it before that work is built.
 
@@ -136,6 +138,6 @@ Layer: `delegate_task` starts an agent on any ticket, a HITL one included, and a
 
 Reason: A captain that staffs its own HITL ticket gets an agent talking to itself where the user was meant to speak.
 
-**ticket-captain** (WayUser; read by TicketCaptain):
+**ticket-captain** (unwritten; WayUser; read by TicketCaptain):
 
 > Each HITL sub-ticket is a need for the user that already has its ticket: it goes up as it is, by A need for the user (`need-for-the-user.md`).

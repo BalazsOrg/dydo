@@ -14,6 +14,7 @@ public class MusterResourceTests
 {
     private const string Muster = "skills/roles/officers/chief-of-staff/resources/muster.md";
     private const string OpenList = "dydo/reference/claim-review/chief-of-staff-muster-open.md";
+    private const string TicketCaptain = "skills/roles/officers/ticket-captain/";
 
     // The muster resource, the pages that list its claims, and the list that counts its skill's unchecked lines.
     private static readonly string[] Rebuilt =
@@ -109,16 +110,20 @@ public class MusterResourceTests
         var files = Built.Value.Files;
         // DYD-1437: the captain's chart is written by hand. Its four machine files are rendered and not written, and a
         // captain why doc names the hand-written chart's folder where the base named the built module. With those two
-        // put back, the rest is still the base's bytes.
+        // put back, the rest is still the base's bytes. DYD-1439: the ticket-captain skill is written by hand too. Its
+        // files are rendered and not written, and the why docs and its open list name its lines as the model's own.
         var steady = files.Where(file => !Rebuilt.Contains(file.Key)).Concat(Built.Value.Unwritten)
-            .Select(file => KeyValuePair.Create(file.Key, file.Value.Replace(
-                "(the model's own machine, not written; the hand-written chart is in `statechart/captain/`)", "(`claims/statechart/captain/Captain.tla`)")))
+            .Select(file => KeyValuePair.Create(file.Key, file.Value
+                .Replace("(the model's own machine, not written; the hand-written chart is in `statechart/captain/`)", "(`claims/statechart/captain/Captain.tla`)")
+                .Replace(WhyDocs.HandWrittenLead([TicketCaptain]) + "\n\n", "")
+                .Replace("(" + WhyDocs.HandWrittenLine, "(")
+                .Replace(ReviewDocs.HandWrittenNote(TicketCaptain), "")))
             .ToArray();
 
         Assert.All(Rebuilt, path => Assert.Contains(path, files.Keys));
         Assert.NotEqual("851e343231cfb60b2a331d6022157d0a5aa3bb053645f31ae6c3624d88762cb8", TicketCaptainSwapTests.Digest(files.Where(file => file.Key == Muster)));
-        Assert.Equal(4, Built.Value.Unwritten.Count);
-        Assert.All(Built.Value.Unwritten.Keys, path => Assert.StartsWith("claims/statechart/captain/", path));
+        Assert.Equal(22, Built.Value.Unwritten.Count);
+        Assert.All(Built.Value.Unwritten.Keys, path => Assert.True(path.StartsWith("claims/statechart/captain/", StringComparison.Ordinal) || path.StartsWith(TicketCaptain, StringComparison.Ordinal), path));
         Assert.Equal(264, steady.Length);
         Assert.Equal("578691ade739c7ad7ca01b5fb799024348d5fd127114058598c21c2e86d25dde", TicketCaptainSwapTests.Digest(steady));
     }

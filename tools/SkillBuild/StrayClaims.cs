@@ -7,7 +7,8 @@ namespace DynaDocs.SkillBuild;
 /// The stray-claim lint (K24): claim text pasted by hand into a file the builder does not own. Every
 /// built line of at least <see cref="MinimumLength"/> characters, whitespace collapsed, is searched
 /// for in each tracked hand-written <c>.md</c> under <c>skills/</c>, <c>dydo/</c> and <c>Scaffold/</c>
-/// and in the root <c>AGENTS.md</c>.
+/// and in the root <c>AGENTS.md</c>. A skill folder written by hand (<see cref="BuiltTree.HandWritten"/>) states the
+/// model's claims in its own words and is not searched.
 /// </summary>
 public static partial class StrayClaims
 {
@@ -36,6 +37,7 @@ public static partial class StrayClaims
         path.EndsWith(".md", StringComparison.Ordinal)
         && (path == "AGENTS.md" || Roots.Any(prefix => path.StartsWith(prefix, StringComparison.Ordinal)))
         && !tree.Files.ContainsKey(path)
+        && !tree.IsHandWritten(path)
         && !BuiltHeader.Carries(Path.Combine(root, path));
 
     private static IEnumerable<string> Hits(string path, string text, IEnumerable<(string Text, IReadOnlyList<string> Claims)> built)

@@ -79,6 +79,8 @@ public static class CaptainCarrier
     {
         Readers = [Actor.TicketCaptain],
         Ledger = CaptainLedger.Fates,
+        // DYD-1439: the skill's folder is written by hand; this spec stays the model's own, unwritten.
+        HandWritten = true,
         Phases =
         [
             new("Take the ticket", Slot.Paragraph(CaptainSlot.Take), Slot.Paragraph(CaptainSlot.Kinds), Slot.Paragraph(CaptainSlot.Hold))

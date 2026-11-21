@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainReviewSeats
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Columns
 
 `claim:CaptainReviewSeats.Columns`: The four kinds of review are the table's columns: reading its three Read columns, breaking Run tests and Hypothesis, driving Drive, and modelling Formal.
@@ -18,7 +20,7 @@ Layer: The table heads its columns by tool and this page heads its parts by kind
 
 Reason: A holder that cannot tell which part does which column runs a kind twice, or leaves a due cell undone.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Pick):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Pick):
 
 > Work the row of the level your brief names: every **due** cell is owed, and each **if** cell is your call. The kinds above are its columns: Reading, the three Read columns; Trying to break it, Run tests and Hypothesis; Driving the feature, Drive; Modelling it as a statechart, Formal.
 
@@ -34,7 +36,7 @@ Layer: The table marks a cell "if" and leaves whether this candidate warrants it
 
 Reason: One holder decides how much looking a candidate deserves, so no kind is run by habit and none is forgotten.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain):
 
 > Work the row of the level your brief names: every **due** cell is owed, and each **if** cell is your call. The kinds above are its columns: Reading, the three Read columns; Trying to break it, Run tests and Hypothesis; Driving the feature, Drive; Modelling it as a statechart, Formal.
 
@@ -50,7 +52,7 @@ Layer: AGENTS.md allows the lanes; that their findings become one verdict is the
 
 Reason: Reading and driving need different attention, and one verdict still has to answer for both.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain):
 
 > A review that fits you is a leaf: do its kinds yourself, or run them as lanes through native helpers, and put their findings together yourself.
 
@@ -66,7 +68,7 @@ Layer: T3 runs children side by side when asked; that the kinds of one review ne
 
 Reason: The kinds look at one candidate from different sides, so none of them needs another's result to begin.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Prefer):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Prefer):
 
 > Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, each from a model family other than the author's when you can, by phase 3 of the spine.
 
@@ -82,7 +84,7 @@ Layer: T3 seats whichever model it is asked for; the author's family reaches the
 
 Reason: A seat of the author's own family tends to pass the fault that family already let through once.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain):
 
 > Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, each from a model family other than the author's when you can, by phase 3 of the spine.
 
@@ -100,7 +102,7 @@ Layer: The host seats another family only through a dispatched child, and a disp
 
 Reason: A model of the author's own family tends to share the blind spot that let the fault through.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain):
 
 > A seat from a model family other than your own goes out with `delegate_task`, on a leaf sub-ticket of its own under your Review ticket.
 
@@ -116,7 +118,7 @@ Layer: The host starts a helper with its prompt alone: no ticket, no skill and n
 
 Reason: A helper told only to drive the app improvises the recipe its caller had open and never passed on.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.SeatBrief):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.SeatBrief):
 
 > Brief each seat by Briefs (`briefs.md`), at your review's own level, adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
 
@@ -132,7 +134,7 @@ Layer: The briefs resource names the level and the lenses of a review, and has n
 
 Reason: A seat that is not told its kind reads the whole row and does a thin version of every column.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain):
 
 > Brief each seat by Briefs (`briefs.md`), at your review's own level, adding its one kind and the cells of your row it works; a native helper gets no ticket and loads no skill, so put its kind's part in its prompt.
 
@@ -148,7 +150,7 @@ Layer: A reviewer's officer sees only one line back; the record has to be on the
 
 Reason: The verdict is written by the one who formed it, with nothing lost in a relay.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Verdict):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Verdict):
 
 > Post the round's one verdict yourself, by A round's record (`round.md`): with seats, once they are back, from their findings put together, naming each seat. A seat posts none.
 
@@ -166,6 +168,6 @@ Layer: Each seat's findings sit on its own sub-ticket, and nothing gathers them 
 
 Reason: The captain running the rounds routes on a single PASS or FAIL, and four partial answers give it nothing to route.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain):
 
 > Post the round's one verdict yourself, by A round's record (`round.md`): with seats, once they are back, from their findings put together, naming each seat. A seat posts none.

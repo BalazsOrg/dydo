@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainReviewModel
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Own
 
 `claim:CaptainReviewModel.Own`: Where the project has a skill that checks the subject formally, a modeller runs that check first.
@@ -18,7 +20,7 @@ Layer: A passing check says its model still holds, and nothing about whether the
 
 Reason: A model someone already wrote and maintains finds more, for less, than a new one drawn in an afternoon.
 
-**ticket-captain** (ReviewModel; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewModel; read by TicketCaptain):
 
 > Where your project has a skill that checks the subject formally, run that check first, and hold what it describes against the code as it is now.
 
@@ -34,7 +36,7 @@ Layer: The statechart skill is loaded only when it is named, so no seat meets it
 
 Reason: A model finds the order of events nobody tried, which neither a reader nor a driver reaches.
 
-**ticket-captain** (ReviewModel; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewModel; read by TicketCaptain):
 
 > Otherwise write a bounded model of the subject's states, each rule the spec promises as an invariant, and check it with `dydo statechart <spec> --skill <statechart-skill-folder>`; the skill in that folder says how to write the model and how to read its report.
 
@@ -50,7 +52,7 @@ Layer: The checker prints a trace in the model's variables, which mean nothing t
 
 Reason: A pass covers the model's scope alone, and a reader not told that scope takes it for the whole system.
 
-**ticket-captain** (ReviewModel; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewModel; read by TicketCaptain):
 
 > Return each rule that breaks with its shortest path, told as steps in the subject's own words, and say what the model's bounds leave out.
 
@@ -66,6 +68,6 @@ Layer: The checker models whatever it is given, a half-built part as readily as 
 
 Reason: A model of states that are still moving is out of date before its first run ends.
 
-**ticket-captain** (ReviewModel; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewModel; read by TicketCaptain):
 
 > Modelling is due only for a finished subsystem that has a state machine; for anything else, return that it is not due.

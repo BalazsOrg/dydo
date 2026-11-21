@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainResearch
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Phases
 
 `claim:CaptainResearch.Phases`: A Research holder uses the spine's first, second and last phases, and skips dispatch and review.
@@ -18,7 +20,7 @@ Layer: The spine is one text for every kind of ticket, and nothing in it marks t
 
 Reason: A researcher would otherwise wonder who is to check its answer, or open tickets for its lookups.
 
-**ticket-captain** (ResearchMap; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchMap; read by TicketCaptain):
 
 > | Spine phase | You |
 > | -- | -- |
@@ -41,7 +43,7 @@ Layer: A scout is a native helper that loads no skill, so what it must bring bac
 
 Reason: A summary cannot be verified, and an empty report hides whether the family was searched at all.
 
-**ticket-captain** (ResearchSteps; read by TicketCaptain, on claim:CaptainResearch.Scouts):
+**ticket-captain** (unwritten; ResearchSteps; read by TicketCaptain, on claim:CaptainResearch.Scouts):
 
 > Send one scout per family in play, as native helpers in parallel, each with the question and its one family; ask each for exact passages with their citations, from the source that owns the claim, and for what it searched where it found nothing. Read a lone family yourself.
 
@@ -57,7 +59,7 @@ Layer: The ticket states the question; what makes an answer worth trusting is sa
 
 Reason: Whoever waits on the choice acts on the answer without the means to check it.
 
-**ticket-captain** (ResearchLead; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchLead; read by TicketCaptain):
 
 > Your ticket is one question a choice waits on. Answer it with every claim cited to a passage you opened.
 
@@ -73,7 +75,7 @@ Layer: A question arrives in its asker's words, shaped by a context the research
 
 Reason: A misread question is found here, before any source is opened.
 
-**ticket-captain** (ResearchSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchSteps; read by TicketCaptain):
 
 > Restate the question in one sentence, and say what would count as an answer.
 
@@ -89,7 +91,7 @@ Layer: A search returns what it was pointed at and stays silent about the family
 
 Reason: The answer often sits in the one family that was assumed to be empty.
 
-**ticket-captain** (ResearchSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchSteps; read by TicketCaptain):
 
 > Mark each source family in or out, with a reason: decision records, the spec and plans, other docs, code and tests, git history, Linear, outside sources. Read governing docs on the default branch too; a branch can lag.
 
@@ -105,7 +107,7 @@ Layer: The host starts a helper on request; that a lookup is a helper's job and 
 
 Reason: One lookup leaves nothing anyone but the researcher uses, so a ticket for it is overhead.
 
-**ticket-captain** (ResearchSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchSteps; read by TicketCaptain):
 
 > Send one scout per family in play, as native helpers in parallel, each with the question and its one family; ask each for exact passages with their citations, from the source that owns the claim, and for what it searched where it found nothing. Read a lone family yourself.
 
@@ -121,7 +123,7 @@ Layer: A helper's report is a summary, and the researcher sees nothing of how it
 
 Reason: A scout's mistake comes back as confident as its findings.
 
-**ticket-captain** (ResearchSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchSteps; read by TicketCaptain):
 
 > Open the passage behind every load-bearing claim, and confirm it says what the scout said.
 
@@ -137,7 +139,7 @@ Layer: Nothing separates what a source says from what a reader inferred from it.
 
 Reason: An inferred fact that reads like a found one is how a wrong rule gets built on.
 
-**ticket-captain** (ResearchSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchSteps; read by TicketCaptain):
 
 > Where sources conflict, name the conflict and the source that governs; where they are silent, mark the point unsettled rather than reason your way to a fact.
 
@@ -153,7 +155,7 @@ Layer: Only the researcher knows which families it opened and found empty.
 
 Reason: Its reader checks any claim in one step, and sees where nobody looked.
 
-**ticket-captain** (ResearchSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchSteps; read by TicketCaptain):
 
 > Write the answer first, then each claim with its citation (a path at its commit, or a URL) and its exact passage, what stayed unsettled, and every family searched, the empty ones included.
 
@@ -169,7 +171,7 @@ Layer: The too-big scenario saves work as a commit and its SHA, and a holder who
 
 Reason: Parts cut from a written state search only what is still open, and whoever takes the ticket over finds what was already established.
 
-**ticket-captain** (ResearchBig; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchBig; read by TicketCaptain):
 
 > Divide it by Too big to hold (`too-big.md`), what you have answered so far standing in for its commit: write that on your ticket, each claim with its citation, and make each part a Research sub-ticket, one question that can be answered on its own.
 
@@ -187,7 +189,7 @@ Layer: Each part's answer sits on its own ticket, and nothing gathers them onto 
 
 Reason: A part's mistake comes back as confident as a scout's, and an answer stitched from unchecked parts hands it to whoever decides.
 
-**ticket-captain** (ResearchBig; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchBig; read by TicketCaptain):
 
 > When the parts are back, their answers are on their tickets: take each as you would a scout's report, from step 4 on, and write the one answer from theirs and yours.
 
@@ -203,7 +205,7 @@ Layer: Linear takes any text as a Question's body, a recommendation as readily a
 
 Reason: Whoever decides weighs the options without the researcher's leaning, and a mistake in the research poisons no judge.
 
-**ticket-captain** (ResearchQuestion; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchQuestion; read by TicketCaptain):
 
 > Research first, then go by what the facts leave of the call. An open call is laid out the same way wherever it goes: the call, its options unranked and the facts with their sources.
 
@@ -219,7 +221,7 @@ Layer: Linear closes a Question with or without an answer on it.
 
 Reason: Most calls end here, and whoever meets the same one later finds it already answered.
 
-**ticket-captain** (ResearchRoutes; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchRoutes; read by TicketCaptain):
 
 > They settle it: put the answer on the ticket.
 
@@ -235,7 +237,7 @@ Layer: L18 sends a call to the user "only when it is worth his time and attentio
 
 Reason: Whether a call merits his attention is a judgement no notes can settle, and left to the asker it brings him the nod-seeking questions he detests; sent back up, a call that can be undone loses a delay at most, and an officer that holds more weighs it.
 
-**ticket-captain** (ResearchRoutes; read by TicketCaptain, on claim:CaptainResearch.Handed):
+**ticket-captain** (unwritten; ResearchRoutes; read by TicketCaptain, on claim:CaptainResearch.Handed):
 
 > They leave a call that is the user's to make, because it cannot be undone once made or because making it sets or changes a decision record: open a Question sub-ticket under yours, Mode HITL, by Sub-tickets (`sub-tickets.md`), lay the call out on it, and have it block every ticket yours blocks. Your ticket has then handed its call on: close it Done, and return the new ticket's key to your officer. That return is how the call goes up: your officer carries the ticket on as it is, by A need for the user (`need-for-the-user.md`).
 
@@ -253,7 +255,7 @@ Layer: Linear keeps a block on the ticket it was set on: once the research ticke
 
 Reason: Sent back as merely unsettled, such a call is researched again one level up and never reaches the single queue that can end it.
 
-**ticket-captain** (ResearchRoutes; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchRoutes; read by TicketCaptain):
 
 > They leave a call that is the user's to make, because it cannot be undone once made or because making it sets or changes a decision record: open a Question sub-ticket under yours, Mode HITL, by Sub-tickets (`sub-tickets.md`), lay the call out on it, and have it block every ticket yours blocks. Your ticket has then handed its call on: close it Done, and return the new ticket's key to your officer. That return is how the call goes up: your officer carries the ticket on as it is, by A need for the user (`need-for-the-user.md`).
 
@@ -271,6 +273,6 @@ Layer: Where an unsettled call goes next is its route, and the council that take
 
 Reason: An officer often holds what the sources lacked, and it is the one place the remaining routes start from.
 
-**ticket-captain** (ResearchRoutes; read by TicketCaptain):
+**ticket-captain** (unwritten; ResearchRoutes; read by TicketCaptain):
 
 > They leave anything else open, a weighty call that can still be undone among them: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.

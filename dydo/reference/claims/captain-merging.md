@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainMerging
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Mine
 
 `claim:CaptainMerging.Mine`: Only the holder whose brief gives it the merge merges: a holder whose officer merges opens no PR, cuts no Merge sub-ticket and takes none of the merging steps.
@@ -18,7 +20,7 @@ Layer: `dydo merge` merges whatever PR it is given and for whoever runs it; whos
 
 Reason: Run by a part, the command lands that part ahead of the whole its officer was to assemble and have judged.
 
-**ticket-captain** (MergeLead; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeLead; read by TicketCaptain):
 
 > Merge only if your brief gives you the merge: where your officer merges, you open no PR, cut no Merge sub-ticket and take none of these steps.
 
@@ -34,7 +36,7 @@ Layer: `dydo merge` refuses a PR whose body holds no PASS for its head, and read
 
 Reason: Copied into the body by the captain it favours, a verdict stops being the reviewer's word, so the cure is a fresh look where the command can see it.
 
-**ticket-captain** (MergeRules; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeRules; read by TicketCaptain):
 
 > A PASS that stands on a Review ticket alone merges nothing, since `dydo merge` reads only the PR's body: a head reviewed outside its PR needs a round in it.
 
@@ -50,7 +52,7 @@ Layer: Linear leaves a Merge sub-ticket in Todo until someone moves it, and `dyd
 
 Reason: The board then shows a merge under way, and a card left in Todo invites a second captain to begin the same one.
 
-**ticket-captain** (MergeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeSteps; read by TicketCaptain):
 
 > Set your Merge sub-ticket In Progress: the merge is your own step, never dispatched, and you close it yourself. Where your work was not cut into steps, your own ticket is the record instead.
 
@@ -66,7 +68,7 @@ Layer: Hosted CI runs when a PR is pushed and does not run again when its target
 
 Reason: Two branches that are each green can still break each other once they meet.
 
-**ticket-captain** (MergeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeSteps; read by TicketCaptain):
 
 > Run the project's gates, as your brief names them, on the combined tree: your branch merged with the target's current tip.
 
@@ -82,7 +84,7 @@ Layer: The guard and the bare check ask the same of a draft as of any PR, and no
 
 Reason: Opened as a draft, the work can be judged in place while no command will merge it, and the one check that needs a PASS has a later moment to belong to.
 
-**ticket-captain** (MergePr; read by TicketCaptain, on claim:CaptainReview.Pr):
+**ticket-captain** (unwritten; MergePr; read by TicketCaptain, on claim:CaptainReview.Pr):
 
 > Open the PR for your work as a draft once `dydo pr-ready` passes: run with no body file, it checks your tree alone, clean and pushed, and asks for no review. Any check of the PR's body waits for step 3.
 
@@ -98,7 +100,7 @@ Layer: `dydo merge` reads a verdict only inside that section, and the guard stop
 
 Reason: A reviewer finds where its line goes, and a captain is spared a stop that reads as if the review had to come before the PR.
 
-**ticket-captain** (MergePr; read by TicketCaptain):
+**ticket-captain** (unwritten; MergePr; read by TicketCaptain):
 
 > Give its body the heading `## Independent review`: the round's holder writes its PASS under it.
 
@@ -114,7 +116,7 @@ Layer: The PR skill names two moments for its check and cannot know that at the 
 
 Reason: Taken at the opening, the check can never pass, and a captain that obeys both skills waits on a review that waits on its PR.
 
-**ticket-captain** (MergeSteps; read by TicketCaptain, on claim:CaptainMerging.Ready):
+**ticket-captain** (unwritten; MergeSteps; read by TicketCaptain, on claim:CaptainMerging.Ready):
 
 > Make the PR ready, no longer a draft, once its body holds the PASS for its head: `dydo merge` refuses a draft. Where your brief names `/pr`, that skill's check of the body comes here, on the body as the PR now holds it: `dydo pr-ready --body <file>`.
 
@@ -130,7 +132,7 @@ Layer: `dydo merge` refuses a draft and readies none; the guard lets a PR be mad
 
 Reason: Readied only after its PASS, a PR never stands open for merging with nothing but its author's word behind it.
 
-**ticket-captain** (MergeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeSteps; read by TicketCaptain):
 
 > Make the PR ready, no longer a draft, once its body holds the PASS for its head: `dydo merge` refuses a draft. Where your brief names `/pr`, that skill's check of the body comes here, on the body as the PR now holds it: `dydo pr-ready --body <file>`.
 
@@ -146,7 +148,7 @@ Layer: The command prints its reason; nothing tells the captain that the reason 
 
 Reason: A refusal read as a failure gets retried; read as an answer, it gets fixed.
 
-**ticket-captain** (MergeSteps; read by TicketCaptain, on claim:CaptainMerging.Merge):
+**ticket-captain** (unwritten; MergeSteps; read by TicketCaptain, on claim:CaptainMerging.Merge):
 
 > Merge with `dydo merge <pr-number> --match-head-commit <sha> --match-base-commit <sha>`: the reviewed head, and the tip you ran the gates against. When it refuses, its message says why.
 
@@ -162,7 +164,7 @@ Layer: The guard blocks every other way to merge a PR and names this command; th
 
 Reason: The pins tie the merge to what was reviewed and gated, so nothing pushed since can ride along.
 
-**ticket-captain** (MergeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeSteps; read by TicketCaptain):
 
 > Merge with `dydo merge <pr-number> --match-head-commit <sha> --match-base-commit <sha>`: the reviewed head, and the tip you ran the gates against. When it refuses, its message says why.
 
@@ -178,7 +180,7 @@ Layer: CI runs on every push to `feature/**` and reports to GitHub, where no tic
 
 Reason: The merge commit is the first time the combined tree runs on the host everyone trusts.
 
-**ticket-captain** (MergeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeSteps; read by TicketCaptain):
 
 > Close the Merge sub-ticket once hosted CI is green on the merge commit.
 
@@ -194,7 +196,7 @@ Layer: Hosted CI runs its own jobs on the merge commit and keeps no record of th
 
 Reason: A proof keyed by the tree shows the gates passed on exactly what was merged, with nobody's word taken for it.
 
-**ticket-captain** (withheld; MergeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; MergeSteps; read by TicketCaptain):
 
 > Before you close it, wait for DYTEST's green receipt on the merge tree as well.
 
@@ -210,7 +212,7 @@ Layer: T3 makes a child's worktree and leaves it standing: `git worktree list` o
 
 Reason: Merged checkouts pile up on the host, and an archive can be undone where a delete cannot.
 
-**ticket-captain** (withheld; MergeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; MergeSteps; read by TicketCaptain):
 
 > Archive each branch and worktree your dispatches created, with `dydo archive branch <target>` and `dydo archive worktree <target>`; the archive keeps them 30 days.
 
@@ -226,7 +228,7 @@ Layer: `dydo merge` refuses a hand-made conflict resolution's head until it has 
 
 Reason: A clean merge adds no line anyone wrote, so the gates and CI prove it.
 
-**ticket-captain** (MergeRules; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeRules; read by TicketCaptain):
 
 > A clean merge gets no review.
 
@@ -244,7 +246,7 @@ Layer: On a conflict `dydo merge` refuses and merges nothing; it repairs neither
 
 Reason: A captain that repairs the work it is about to merge has written what nobody reviewed.
 
-**ticket-captain** (MergeRules; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeRules; read by TicketCaptain):
 
 > A conflict, or a gate that is really red, goes to an Implement ticket on your branch.
 
@@ -260,7 +262,7 @@ Layer: `dydo merge` refuses a head no PASS names, and a repair always makes a ne
 
 Reason: A fix written to turn a gate green is new code like any other, and unread it would be the one line nobody judged.
 
-**ticket-captain** (MergeRules; read by TicketCaptain):
+**ticket-captain** (unwritten; MergeRules; read by TicketCaptain):
 
 > Either repair comes back the way A merge conflict (`merge-conflict.md`) lays out: a fresh reviewer judges what it changed, and you merge again from step 2, on the new head. A red you cannot get fixed goes to your officer, with the gate.
 
@@ -276,6 +278,6 @@ Layer: Which gates a merge waits on is whatever the brief names, and the brief m
 
 Reason: Mutation runs take hours, and a merge that waits on them holds a lane the whole time.
 
-**ticket-captain** (withheld; MergeRules; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; MergeRules; read by TicketCaptain):
 
 > Nothing waits on mutation testing.

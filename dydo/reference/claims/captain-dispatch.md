@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainDispatch
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Brief
 
 `claim:CaptainDispatch.Brief`: A child starts with only its brief and none of its dispatcher's conversation; the dispatcher writes the brief from the briefs resource.
@@ -18,7 +20,7 @@ Layer: T3 passes the brief on untouched and adds nothing from the dispatcher's o
 
 Reason: Whatever the brief leaves out, the child has to rediscover or guess.
 
-**ticket-captain** (Briefs; read by TicketCaptain):
+**ticket-captain** (unwritten; Briefs; read by TicketCaptain):
 
 > A child starts with your brief and none of your conversation: write it by Briefs (`resources/briefs.md`).
 
@@ -34,7 +36,7 @@ Layer: AGENTS.md tells every agent what it owns; what a dispatcher must therefor
 
 Reason: A brief that carries two outcomes, or a method, leaves the child a task to follow where it was meant to answer for a result.
 
-**ticket-captain** (Briefs; read by TicketCaptain):
+**ticket-captain** (unwritten; Briefs; read by TicketCaptain):
 
 > Give each child one thing to own, its ticket's outcome, and leave how to reach it to the child.
 
@@ -50,7 +52,7 @@ Layer: T3 seats whichever model it is asked for; which family wrote the work is 
 
 Reason: Two models of one family tend to share the blind spot that let the fault through, and a round sized by the captain whose change it judges is no longer impartial.
 
-**ticket-captain** (Seats; read by TicketCaptain):
+**ticket-captain** (unwritten; Seats; read by TicketCaptain):
 
 > Seat each Review ticket's holder from a model family other than the author's when you can; it sizes and seats its own round.
 
@@ -66,7 +68,7 @@ Layer: No tool counts seats; how much review a piece of work deserves is the rev
 
 Reason: Review is expensive, and a pair on everything spends it where it finds nothing.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Prefer):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain, on claim:CaptainReviewSeats.Prefer):
 
 > Scale your round's seats to the breadth and depth of the work, with no fixed pair: seat the kinds you do not do yourself, one seat a kind, in parallel, each from a model family other than the author's when you can, by phase 3 of the spine.
 
@@ -82,7 +84,7 @@ Layer: `orchestrator_capabilities` lists the models a child can run on, and says
 
 Reason: The strongest models are kept for the seats that have something non-obvious to find.
 
-**ticket-captain** (placeholder; Seats; read by TicketCaptain):
+**ticket-captain** (unwritten; placeholder; Seats; read by TicketCaptain):
 
 > Once the user's roster stands below, pick each seat's model from it.
 >
@@ -100,7 +102,7 @@ Layer: No command or tool an agent has reports how much of a vendor account is l
 
 Reason: Quota that resets unused is lost, and a seat on a spent account stalls.
 
-**ticket-captain** (withheld; Seats; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; Seats; read by TicketCaptain):
 
 > Read `dydo usage` and balance vendors across every seat you fill.
 
@@ -116,7 +118,7 @@ Layer: `delegate_task` starts a child on any ticket it is given, a Merge among t
 
 Reason: A second agent sent to run one command has to be briefed on the head, the tip and the gates that its sender already holds.
 
-**ticket-captain** (Sending; read by TicketCaptain, on claim:CaptainDispatch.Send):
+**ticket-captain** (unwritten; Sending; read by TicketCaptain, on claim:CaptainDispatch.Send):
 
 > Dispatch each AFK sub-ticket with `delegate_task` once nothing blocks it, except a Merge: that step is yours.
 
@@ -134,7 +136,7 @@ Layer: T3 offers a native sub-agent as well; only `delegate_task` gives the chil
 
 Reason: A captain needs a thread of its own, one its ticket can be resumed from.
 
-**ticket-captain** (Sending; read by TicketCaptain):
+**ticket-captain** (unwritten; Sending; read by TicketCaptain):
 
 > Dispatch each AFK sub-ticket with `delegate_task` once nothing blocks it, except a Merge: that step is yours.
 
@@ -150,7 +152,7 @@ Layer: T3 tells every agent of a provider or model it cannot reach to say so and
 
 Reason: A child that never began leaves a lane empty while its card looks merely queued, and nobody above can tell the two apart.
 
-**ticket-captain** (WhenThingsGoWrong; read by TicketCaptain):
+**ticket-captain** (unwritten; WhenThingsGoWrong; read by TicketCaptain):
 
 > A dispatch refused for another reason goes to your officer as it reads, its ticket left unstarted.
 
@@ -166,7 +168,7 @@ Layer: T3 makes the checkout, but only the dispatcher knows whether the child wr
 
 Reason: Keeps two writers out of one checkout.
 
-**ticket-captain** (Sending; read by TicketCaptain):
+**ticket-captain** (unwritten; Sending; read by TicketCaptain):
 
 > Give a child its own worktree (`isolation: "worktree"`) when it writes in parallel with others or will open its own PR; serial work shares yours.
 
@@ -182,7 +184,7 @@ Layer: T3 runs as many children as it is given and fills no lane by itself.
 
 Reason: An idle lane is throughput lost; four is the user's goal to strive for, never a cap.
 
-**ticket-captain** (Lanes; read by TicketCaptain):
+**ticket-captain** (unwritten; Lanes; read by TicketCaptain):
 
 > Keep about four lanes full: your sub-tickets first, then filler, by Filler (`resources/filler.md`).
 
@@ -198,7 +200,7 @@ Layer: The survey lists what could be picked up and starts nothing.
 
 Reason: Work near the captain's own ticket is cheaper for it to hold than a stranger's.
 
-**ticket-captain** (FillerLead; read by TicketCaptain):
+**ticket-captain** (unwritten; FillerLead; read by TicketCaptain):
 
 > Filler fills a lane your own sub-tickets cannot: first the side tickets `dydo survey <project>` lists as pickable, then the team's continuous tickets, CI findings and Agent friction.
 
@@ -214,7 +216,7 @@ Layer: The labels sort what may be pulled; nothing stops an agent from pulling t
 
 Reason: Anything riskier is the user's to hand out.
 
-**ticket-captain** (FillerRules; read by TicketCaptain):
+**ticket-captain** (unwritten; FillerRules; read by TicketCaptain):
 
 > Pull unasked only a ticket that is AFK, reversible and free of design calls, oldest first: a Bug or small Feature at should or lower, or an unrated CI finding.
 
@@ -230,7 +232,7 @@ Layer: Linear groups those tickets under no officer, so a pulled one has an owne
 
 Reason: Without it, a pulled ticket's questions and returns would have nowhere to go.
 
-**ticket-captain** (FillerRules; read by TicketCaptain):
+**ticket-captain** (unwritten; FillerRules; read by TicketCaptain):
 
 > A ticket you pull follows your chain from then on.
 
@@ -246,7 +248,7 @@ Layer: A puller reads a ticket's labels, and its captain reads the ticket.
 
 Reason: The one check a label cannot make is made by the first agent that opens the work.
 
-**ticket-captain** (FillerRules; read by TicketCaptain):
+**ticket-captain** (unwritten; FillerRules; read by TicketCaptain):
 
 > Say in its brief that the ticket is filler, so its captain checks what no label shows.
 
@@ -262,7 +264,7 @@ Layer: T3 runs as many children as it is given and never asks a dispatcher for m
 
 Reason: An idle captain that invents tickets spends agents on something nobody asked for, and one that simply stops leaves its outcome unreached.
 
-**ticket-captain** (FillerEmpty; read by TicketCaptain):
+**ticket-captain** (unwritten; FillerEmpty; read by TicketCaptain):
 
 > When you have no ticket left to dispatch or pull, check your contract against the spec. If it is met, finish your ticket. If it is not, find the way to the next part toward the spec and cut it as a sub-ticket, by Finding the way (`wayfind.md`). If all that is left waits on Questions or on the user's calls, wait on them.
 
@@ -278,7 +280,7 @@ Layer: A child reports to its dispatcher only; reaching the owner is the dispatc
 
 Reason: A report that stops at the captain is lost with the captain's thread.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > Send what a child reports outside its scope to the owner's ticket or a new Bug.
 
@@ -294,6 +296,6 @@ Layer: T3 returns the child's words to the dispatcher's thread, and that thread 
 
 Reason: A fresh agent can pick the work up from the ticket alone.
 
-**ticket-captain** (WakeSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; WakeSteps; read by TicketCaptain):
 
 > Post the SHA a child returns on its ticket, to resume from; a return of `too big, re-cut` then goes by Too big to hold (`too-big.md`).

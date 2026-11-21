@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainImplementDocs
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Witness
 
 `claim:CaptainImplementDocs.Witness`: Every sentence of a doc is a claim that needs a witness in the repository: code, configuration or governing intent.
@@ -18,7 +20,7 @@ Layer: `dydo check` reads a doc's frontmatter, names and links, and never whethe
 
 Reason: A plausible sentence with nothing behind it is believed by every agent that reads it afterwards.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain):
 
 > Every sentence you write is a claim that needs a witness in the repository: code, configuration, or governing intent such as the spec, a decision record or a ticket. Where there is none, return the gap instead of the sentence.
 
@@ -34,7 +36,7 @@ Layer: A built file opens in an editor like any other, and its next build silent
 
 Reason: The header names the source, so a change made there is still standing after the next run.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain, on claim:CaptainImplementDocs.OneHome):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain, on claim:CaptainImplementDocs.OneHome):
 
 > Write each meaning in one home and link to it from everywhere else; change a built file only in the source its header names.
 
@@ -50,7 +52,7 @@ Layer: Nothing compares two docs for saying the same thing in different words.
 
 Reason: Two copies drift apart, and a reader cannot tell which of them still holds.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain):
 
 > Write each meaning in one home and link to it from everywhere else; change a built file only in the source its header names.
 
@@ -66,7 +68,7 @@ Layer: A brief names the skills its dispatcher foresaw, and a writer may meet a 
 
 Reason: A text an agent acts on fails in ways ordinary prose never does, and that skill names them.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain):
 
 > Write a skill, its resources or an entry file with /writing-for-agents.
 
@@ -82,7 +84,7 @@ Layer: Nothing stops an agent from adding a doc beside the code it has just writ
 
 Reason: Each uninvited doc is one more text to keep true, about code that will move.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain, on claim:CaptainImplementDocs.Descriptive):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain, on claim:CaptainImplementDocs.Descriptive):
 
 > A descriptive doc explains and never authorises: on what the code does the code wins, and a reason counts only when it links a decision record or a principle. Write a new one only when invited, and only if its subject is solid, important and expensive to rebuild from code.
 
@@ -98,7 +100,7 @@ Layer: A doc and the code it describes can disagree, and nothing in either says 
 
 Reason: A doc treated as authority outlives the code it described and steers work toward what is gone.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain):
 
 > A descriptive doc explains and never authorises: on what the code does the code wins, and a reason counts only when it links a decision record or a principle. Write a new one only when invited, and only if its subject is solid, important and expensive to rebuild from code.
 
@@ -114,7 +116,7 @@ Layer: The check names the doc and the paths that changed; whether the doc is st
 
 Reason: The moment the code moves is the one moment somebody knows what the doc should now say.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain):
 
 > When `dydo check` flags a doc whose `explains:` paths your change touches, update the doc or state in your return that it still holds.
 
@@ -130,7 +132,7 @@ Layer: `dydo check` rejects a doc that breaks a convention and teaches none of t
 
 Reason: A writer that learns the shape from the reference passes the check on its first run.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain):
 
 > Your project's doc conventions, frontmatter and naming among them, are in `dydo/reference/writing-docs.md`.
 
@@ -146,7 +148,7 @@ Layer: The CLI runs both on request and neither by itself after an edit.
 
 Reason: A moved doc leaves dead links behind in files its writer never opened.
 
-**ticket-captain** (ImplementDocs; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementDocs; read by TicketCaptain):
 
 > Prove a docs change with `dydo check` and the checks your brief names, and run `dydo fix` after you add, move or rename a document.
 
@@ -162,6 +164,6 @@ Layer: `dydo check` validates a decision record's status and date, and nothing a
 
 Reason: A decision that names what it weighed can be found again when the same tension returns.
 
-**ticket-captain** (withheld; ImplementDocs; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; ImplementDocs; read by TicketCaptain):
 
 > A new decision record you write carries `applies:` (or `new-ground`) and one `weighed: <slug> over <slug>, because <reason>` for each tension it resolved.

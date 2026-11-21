@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainImplement
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Change
 
 `claim:CaptainImplement.Change`: An Implement-kind ticket is a change: a contract implemented, a review's findings fixed, or a merge conflict resolved.
@@ -18,7 +20,7 @@ Layer: The ticket names which of the three it is; that one resource serves all t
 
 Reason: A writer sees at once that the rest of the page is its whole recipe.
 
-**ticket-captain** (ImplementLead; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementLead; read by TicketCaptain):
 
 > Your ticket is a change: implement a contract, fix a review's findings, or resolve a merge conflict.
 
@@ -34,7 +36,7 @@ Layer: Gates run at the end, and only on what they were told to check.
 
 Reason: A fault caught while the file is open costs a minute; caught at review, a round.
 
-**ticket-captain** (ImplementLead; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementLead; read by TicketCaptain):
 
 > Verify your work while you build it, each file the way it is used: run the code and drive the app, render an image and look at it, hold a doc against its source.
 
@@ -50,7 +52,7 @@ Layer: A page shows every recipe to every reader, and only the reader knows whet
 
 Reason: A writer on a small Fix reaches its three lines without a detour through recipes meant for somebody else.
 
-**ticket-captain** (ImplementLead; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementLead; read by TicketCaptain):
 
 > Below the rules for every change, each part is headed by the work it is for: read the ones that name yours.
 
@@ -66,7 +68,7 @@ Layer: The spine is one text for every kind of ticket, and nothing in it marks t
 
 Reason: A writer told at the top that sending and review belong to others goes straight to the change.
 
-**ticket-captain** (ImplementMap; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementMap; read by TicketCaptain):
 
 > | Spine phase | You |
 > | -- | -- |
@@ -89,7 +91,7 @@ Layer: No gate compares a file with how it read before the change.
 
 Reason: Decay that every change adds a little of is never anyone's ticket.
 
-**ticket-captain** (ImplementRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementRules; read by TicketCaptain):
 
 > Leave what you touched no worse than you found it.
 
@@ -105,7 +107,7 @@ Layer: The size check runs as a gate, after the file is already written.
 
 Reason: A file an agent can read whole is one it can change without missing half of it.
 
-**ticket-captain** (ImplementRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementRules; read by TicketCaptain):
 
 > Keep every file you change, tests included, within the file size limit your brief's gates check, and split one that passes it.
 
@@ -121,7 +123,7 @@ Layer: No shipped gate or setting carries the number yet, so a holder elsewhere 
 
 Reason: A number stated here would bind every adopting project to this repository's choice.
 
-**ticket-captain** (withheld; ImplementRules; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; ImplementRules; read by TicketCaptain):
 
 > Unless your project's configuration says otherwise, the limit is 5k tokens, counted as bytes ÷ 4.
 
@@ -137,7 +139,7 @@ Layer: git takes any path from any writer; the ticket's paths are known only to 
 
 Reason: A commit that strays into another ticket's files is a conflict someone else pays for.
 
-**ticket-captain** (ImplementRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementRules; read by TicketCaptain):
 
 > One writer per worktree: commit only inside the paths your ticket owns.
 
@@ -153,7 +155,7 @@ Layer: A brief names the skills its dispatcher foresaw, and a seam shows up only
 
 Reason: Where a boundary is drawn decides how testable everything behind it will be.
 
-**ticket-captain** (ImplementRules; read by TicketCaptain, on claim:CaptainImplement.Skills):
+**ticket-captain** (unwritten; ImplementRules; read by TicketCaptain, on claim:CaptainImplement.Skills):
 
 > Load /domain-modeling when you touch a glossary term or a Decision Record, and /codebase-design when you design a seam or an interface.
 
@@ -169,7 +171,7 @@ Layer: A brief names the skills its writer foresaw; these depend on what the wor
 
 Reason: Each holds a method the writer would otherwise improvise.
 
-**ticket-captain** (ImplementRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementRules; read by TicketCaptain):
 
 > Load /domain-modeling when you touch a glossary term or a Decision Record, and /codebase-design when you design a seam or an interface.
 
@@ -185,7 +187,7 @@ Layer: Nothing stops a writer from choosing a design by building it.
 
 Reason: A design chosen in passing is found at review, after it has been built on.
 
-**ticket-captain** (ImplementRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementRules; read by TicketCaptain):
 
 > An open design question is a Question sub-ticket, never yours to settle; /prototype is the skill that answers one.
 
@@ -201,7 +203,7 @@ Layer: A fix closes its ticket whether or not anything stops the same mistake ne
 
 Reason: The candidate's lists numbered `1. 1. 1.` reached the user once; the build now fails on one.
 
-**ticket-captain** (ImplementRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementRules; read by TicketCaptain):
 
 > A fix for a mistake that had already landed carries the lint, test or rule that keeps it from coming back.
 
@@ -217,7 +219,7 @@ Layer: T3 prepares a checkout only for a child it starts; a send to a thread tha
 
 Reason: A repair written on a stale tree is judged, a round later, against code it was never built with.
 
-**ticket-captain** (ImplementFix; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementFix; read by TicketCaptain):
 
 > Start from the SHA your brief names: where your checkout is behind it, bring your branch up to it with `git merge <SHA>` before you change anything.
 
@@ -233,7 +235,7 @@ Layer: The Fix ticket carries the reviewer's label and none of the code behind i
 
 Reason: A mislabelled finding is otherwise fixed as the wrong thing.
 
-**ticket-captain** (ImplementFix; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementFix; read by TicketCaptain):
 
 > Check each finding's severity against the source, not its label.
 
@@ -249,7 +251,7 @@ Layer: Nothing bounds what a fixer changes while it is in the file.
 
 Reason: Review never grows the change, so the next round has less to read, not more.
 
-**ticket-captain** (ImplementFix; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementFix; read by TicketCaptain):
 
 > Close only the findings your brief names, preferring the change that deletes or narrows code.
 
@@ -265,7 +267,7 @@ Layer: A severity the fixer silently ignores looks, on the ticket, like a blocke
 
 Reason: The dispute reaches the record, where the next reviewer can weigh it.
 
-**ticket-captain** (ImplementFix; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementFix; read by TicketCaptain):
 
 > Put a label you dispute in your return, with its evidence: file:line, test or output.
 
@@ -281,7 +283,7 @@ Layer: `dydo merge` merges only a head that carries a PASS, so a resolution made
 
 Reason: Both parents keep each side's history readable when the resolution is questioned.
 
-**ticket-captain** (ImplementConflict; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementConflict; read by TicketCaptain):
 
 > Resolve it on the ticket's branch only, as a merge commit that keeps both parents.
 
@@ -297,7 +299,7 @@ Layer: git marks where two sides differ and nothing of what either side meant.
 
 Reason: A hunk resolved by picking a side can drop behaviour the other side was reviewed for.
 
-**ticket-captain** (ImplementConflict; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementConflict; read by TicketCaptain):
 
 > Read both sides, and what changed since the source was reviewed, before you resolve a hunk; one that needs a new product choice is a Question.
 
@@ -313,7 +315,7 @@ Layer: A merge commit holds its parents, and a return that names only the new he
 
 Reason: The fresh reviewer of the hunks compares the resolution with each side it came from.
 
-**ticket-captain** (ImplementConflict; read by TicketCaptain, on claim:CaptainImplement.Intent):
+**ticket-captain** (unwritten; ImplementConflict; read by TicketCaptain, on claim:CaptainImplement.Intent):
 
 > State the behaviour each hunk you resolved is meant to have, and return both parents with the merge commit's SHA.
 
@@ -329,7 +331,7 @@ Layer: A resolved hunk looks like any other code, with nothing to show that two 
 
 Reason: Its reviewer judges the hunk against a stated intent, and need not guess one.
 
-**ticket-captain** (ImplementConflict; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementConflict; read by TicketCaptain):
 
 > State the behaviour each hunk you resolved is meant to have, and return both parents with the merge commit's SHA.
 
@@ -345,7 +347,7 @@ Layer: git accepts any content as a resolution, well beyond the lines that were 
 
 Reason: A conflict is where two designs meet, and the lazy way out keeps the weaker of them.
 
-**ticket-captain** (ImplementConflict; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementConflict; read by TicketCaptain):
 
 > A resolution that refactors leaves the code no worse than either side had it.
 
@@ -361,7 +363,7 @@ Layer: Linear drops the old parent when a ticket is moved.
 
 Reason: The link is the only trace of which review found it.
 
-**ticket-captain** (ImplementShoulds; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementShoulds; read by TicketCaptain):
 
 > Move each should under your ticket, keeping a `related: found in <KEY> rN` link on it.
 
@@ -377,7 +379,7 @@ Layer: Linear cancels a ticket without asking why.
 
 Reason: A should is a real fault, so dropping one has to be answerable.
 
-**ticket-captain** (ImplementShoulds; read by TicketCaptain, on claim:CaptainImplement.Duplicate):
+**ticket-captain** (unwritten; ImplementShoulds; read by TicketCaptain, on claim:CaptainImplement.Duplicate):
 
 > Mark a duplicate Duplicate, and cancel a should only with a one-line reason.
 
@@ -393,7 +395,7 @@ Layer: Shoulds from different reviews can name one fault, and nothing compares t
 
 Reason: One fault is then fixed once and counted once.
 
-**ticket-captain** (ImplementShoulds; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementShoulds; read by TicketCaptain):
 
 > Mark a duplicate Duplicate, and cancel a should only with a one-line reason.
 
@@ -409,7 +411,7 @@ Layer: Linear ties no child's status to its parent's, so a batch closed Done lea
 
 Reason: A should left open after its fix landed is offered again to the next lane that looks for work.
 
-**ticket-captain** (ImplementShoulds; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementShoulds; read by TicketCaptain):
 
 > Close each should Done once its fix is proved, with the proof on it, before you finish the batch.
 
@@ -425,7 +427,7 @@ Layer: git takes any message, and a squash erases the hops a review was run agai
 
 Reason: A reviewer finds the exact commit each hop ended on.
 
-**ticket-captain** (ImplementEnd; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementEnd; read by TicketCaptain):
 
 > End on a commit `<KEY> <hop>: <what>`, `<hop>` being `implement`, `fix` or `merge`, never squashed.
 
@@ -441,6 +443,6 @@ Layer: A return that says only that it passed gives the officer nothing to check
 
 Reason: A reviewer then judges through other lenses instead of running the same thing again.
 
-**ticket-captain** (ImplementEnd; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementEnd; read by TicketCaptain):
 
 > Your receipts are the commands you ran on that commit and their results.
