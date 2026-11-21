@@ -2,13 +2,6 @@ namespace DynaDocs.Utils;
 
 public static partial class PathUtils
 {
-    public static string? FindDydoRoot(string? startPath = null)
-    {
-        var projectRoot = ConfigFileLocator.FindProjectRoot(startPath);
-        if (projectRoot == null) return null;
-        return ConfigFileLocator.GetDydoRoot(projectRoot);
-    }
-
     public static string? FindProjectRoot(string? startPath = null)
     {
         return ConfigFileLocator.FindProjectRoot(startPath);
