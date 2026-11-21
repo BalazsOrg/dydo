@@ -8,7 +8,7 @@ The truth it is checked against is the core page first, then `Spec: dydo 4.0.0`.
 
 | File | What it is |
 |---|---|
-| [chart.mmd](chart.mmd) | The chart: 11 states, 21 arrows. One arrow is one case in plain words. The comment above an arrow names what it rests on. |
+| [chart.mmd](chart.mmd) | The chart: 11 states, 23 arrows. One arrow is one case in plain words. The comment above an arrow names what it rests on. |
 | [positions.md](positions.md) | Who sees what: the skills and context each position on the chart gets, and how to check a skill file against it. |
 | `Captain.tla`, `Captain.cfg` | The same machine for the TLC model checker. One action is one arrow. |
 | `view.mjs`, `chart-words.mjs` | How the statechart tool draws the model. They hold no words: they read them from `chart.mmd`. |
@@ -39,6 +39,8 @@ The first command draws the model and checks `TypeOK` and `NoDeadlock`. The seco
 - A native helper. It holds no ticket.
 - What a captain does inside a state: how a change is written, how a review is run, how a part is briefed.
 - A problem a captain reports to its officer while its own work goes on. It changes no state.
+- When a review happens early. A captain that splits may cut a review of a part as one more sub-ticket, so that wrong work is not built on; the chart draws only the review before a merge.
+- Who does the Fix. `Fixing` is the captain waiting on a Fix ticket, and the Fix's holder is on that ticket's own run of the chart, the same thread or a fresh one.
 - The number of a review round. After a third FAIL the captain writes one line on the Review saying whether it took the Fix or went to its officer (R10, S10). That line is a record on two arrows the chart already has.
 - One more round after a PASS, which R8 lets an officer order, and a cheap should mended before the merge, which S17 allows. A PASS ends the review, and a should becomes a ticket that waits.
 - A merge that a revert cannot undo. That is Balazs's call, and the chart's merge is into a feature branch, which a revert undoes.

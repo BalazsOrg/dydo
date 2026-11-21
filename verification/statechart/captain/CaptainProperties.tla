@@ -16,8 +16,10 @@ WorkPhaseBeforeDone ==
     [][(state' = "Done" /\ state # "Done" => seen \cap {"Leaf", "Waiting"} # {})]_<<vars, seen>>
 
 \* H3, DYD-1295 df6a785e: the first move after a cut dispatches the parts and waits.
+\* H2: a slice that cannot be divided coherently under its own ticket goes back to the officer
+\* above, so a cut that cannot be made is the one other way out.
 H3_WaitAfterSplit ==
-    [][(state = "Cutting" /\ state' # state => state' = "Waiting")]_<<vars, seen>>
+    [][(state = "Cutting" /\ state' # state => state' \in {"Waiting", "HandedBack"})]_<<vars, seen>>
 
 \* core "Who decides what": a call a captain may not decide becomes a Question for a fresh agent.
 \* H16, DYD-1295 519126ab: the work waits on the answer and then goes on; it never ends from the wait.
@@ -30,10 +32,11 @@ Core_SplitOnlyOrchestrates ==
     "Cutting" \in seen => state \notin {"Leaf", "Asking"}
 
 \* H2, H10, R2: after a part returns the captain cuts the next parts, sends the whole to review,
-\* or finishes. It never returns to an untaken ticket.
+\* or finishes. H2 also sends a change to its contract, or to a sibling's, through the officer
+\* above. It never returns to an untaken ticket.
 H10_ReturnedPartContinues ==
     [][(state = "Waiting" /\ state' # state =>
-        state' \in {"Cutting", "InReview", "Done"})]_<<vars, seen>>
+        state' \in {"Cutting", "InReview", "Done", "HandedBack"})]_<<vars, seen>>
 
 \* R8, R23: the review ends on a verdict with no blocker, and a merge needs that PASS. The merge
 \* starts only from the review, and a reviewed ticket closes only from its merge.
@@ -85,7 +88,8 @@ S7_UnstartedReturnHasNoWork ==
     kind = "unread" => seen \subseteq {"Dispatched", "HandedBack"}
 
 \* AGENTS.md "Sort yourself": crew does its one job and returns. H12: what goes up goes to the
-\* officer above. Both ends are final: nothing follows Done or a hand-back.
+\* officer above. Both ends are final: nothing follows Done or a hand-back. This is a structural
+\* check of the two ends; the sources say a captain returns, not what it may do after.
 H1_EndsAreFinal ==
     [][(state \in {"Done", "HandedBack"} => UNCHANGED vars)]_<<vars, seen>>
 ====

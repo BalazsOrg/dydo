@@ -50,6 +50,7 @@ WorkItself ==
     /\ UNCHANGED <<kind, merges>>
 
 \* core "A ticket": it splits the ticket and only orchestrates. H2
+\* The ticket is too big for one agent, or it is a review whose seats go to another model family (R34).
 Split ==
     /\ state = "Taken"
     /\ state' = "Cutting"
@@ -89,8 +90,8 @@ CloseLeaf ==
     /\ state' = "Done"
     /\ UNCHANGED <<kind, merges>>
 
-\* core: a problem outside your ticket goes to your officer. A slice that cannot be divided
-\* coherently under its own ticket goes back for a re-cut. H2
+\* H2: what a holder cannot settle under its own ticket goes back to the officer above.
+\* core: a problem outside your ticket goes to your officer; what matters is that it surfaces.
 HandBackTheWork ==
     /\ state = "Leaf"
     /\ state' = "HandedBack"
@@ -102,11 +103,25 @@ Dispatch ==
     /\ state' = "Waiting"
     /\ UNCHANGED <<kind, merges>>
 
+\* H2: a slice that cannot be divided coherently under its own ticket goes back to the officer
+\* above for a re-cut.
+HandBackTheCut ==
+    /\ state = "Cutting"
+    /\ state' = "HandedBack"
+    /\ UNCHANGED <<kind, merges>>
+
 \* core "A ticket": the route to the spec is found one manageable part at a time; the whole is
 \* never cut at once. H10. A part that comes back too big is cut again the same way. H2
 CutTheNextParts ==
     /\ state = "Waiting"
     /\ state' = "Cutting"
+    /\ UNCHANGED <<kind, merges>>
+
+\* H2: a change to its contract, or to a sibling's, goes through the officer above. R9: what is
+\* fundamental or a new requirement is re-planned by the officer above.
+HandBackTheWhole ==
+    /\ state = "Waiting"
+    /\ state' = "HandedBack"
     /\ UNCHANGED <<kind, merges>>
 
 \* The whole is reviewed once, after wiring and before its merge. R2
@@ -125,7 +140,9 @@ CloseTheWhole ==
     /\ UNCHANGED <<kind, merges>>
 
 \* core "Review severities": FAIL means at least one blocker, and a blocker is fixed now.
-\* The blockers become one Fix. R8, R11, S9
+\* The blockers become one Fix ticket (R8, R11, S9). Its holder is a captain doing a leaf on its
+\* own run of this chart; by default it is the thread that wrote the change. While it works, this
+\* captain waits.
 Fail ==
     /\ state = "InReview"
     /\ state' = "Fixing"
@@ -137,7 +154,7 @@ Pass ==
     /\ state' = "Merging"
     /\ UNCHANGED <<kind, merges>>
 
-\* A blocker that is fundamental or a new requirement goes to the officer above. core, R9
+\* A blocker that is fundamental, a new requirement or a need for Balazs goes to the officer above. R9
 \* After a third FAIL the captain writes one line on the Review saying which of Fail and Replan
 \* it took (R10, S10); the line is a record, not a state.
 Replan ==
@@ -151,7 +168,7 @@ ReviewAgain ==
     /\ state' = "InReview"
     /\ UNCHANGED <<kind, merges>>
 
-\* core: a problem outside your ticket goes to your officer.
+\* The Fix's holder hands it back undone, and this captain passes it on. H2
 HandBackTheFix ==
     /\ state = "Fixing"
     /\ state' = "HandedBack"
@@ -184,7 +201,9 @@ Next ==
     \/ CloseLeaf
     \/ HandBackTheWork
     \/ Dispatch
+    \/ HandBackTheCut
     \/ CutTheNextParts
+    \/ HandBackTheWhole
     \/ SendTheWholeToReview
     \/ CloseTheWhole
     \/ Fail

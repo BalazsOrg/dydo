@@ -6,7 +6,7 @@ explains: ["verification/statechart/captain/**"]
 
 # Captain chart obligations
 
-Hand-written from the core page (`dydo/core.md`), the approved spec and his rulings, never from the model (K3). The model they judge is the hand-written captain chart in [statechart/captain/](../../../statechart/captain/README.md) (DYD-1437): 11 states, 21 arrows, and the variables `state`, `kind` and `merges`. Where the core page and the spec disagree, the core page wins.
+Hand-written from the core page (`dydo/core.md`), the approved spec and his rulings, never from the model (K3). The model they judge is the hand-written captain chart in [statechart/captain/](../../../statechart/captain/README.md) (DYD-1437): 11 states, 23 arrows, and the variables `state`, `kind` and `merges`. Where the core page and the spec disagree, the core page wins.
 
 The properties of the generated chart that came before, and their receipts, are in Git up to `7466727a`.
 
@@ -17,10 +17,10 @@ The properties of the generated chart that came before, and their receipts, are 
 | Property | Source | What it checks |
 |---|---|---|
 | WorkPhaseBeforeDone | core "A ticket"; 7b3d2e3e | Done comes after `Leaf` or `Waiting`. |
-| H3_WaitAfterSplit | H3; df6a785e | `Cutting` exits only to `Waiting`. |
+| H3_WaitAfterSplit | H3; H2; df6a785e | `Cutting` exits only to `Waiting`, or to `HandedBack` when the cut cannot be made. |
 | H16_ResumeLeafAfterQuestion | core "Who decides what"; H16; 519126ab | `Asking` exits only to `Leaf`. |
 | Core_SplitOnlyOrchestrates | core "A ticket" | After `Cutting`, never `Leaf` or `Asking` again. |
-| H10_ReturnedPartContinues | H2, H10, R2 | `Waiting` exits to `Cutting`, `InReview` or `Done`. |
+| H10_ReturnedPartContinues | H2, H10, R2 | `Waiting` exits to `Cutting`, `InReview`, `Done` or `HandedBack`. |
 | R8_PassBeforeMerge | R8, R23 | `Merging` starts only from `InReview`, and a reviewed ticket closes only from `Merging`. |
 | R8_FixBeforeNextRound | core "Review severities"; R8, S9 | A second round starts only from `Fixing`, and `Fixing` exits to `InReview` or `HandedBack`. |
 | R19_ReviewAfterMergeRepair | R19, R21, R22 | `Merging` exits only to `Done` or `Fixing`. |
@@ -30,7 +30,7 @@ The properties of the generated chart that came before, and their receipts, are 
 | K30_KindKnownBeforeWork | K30, S6 | Every state but `Dispatched` and `HandedBack` has a known kind. |
 | K30_KindStaysKnown | K30, S7; AGENTS.md | Once set, the kind never changes. |
 | S7_UnstartedReturnHasNoWork | S6, S7 | A run that never read its kind visits only `Dispatched` and `HandedBack`. |
-| H1_EndsAreFinal | H12; AGENTS.md | `Done` and `HandedBack` only stand still. |
+| H1_EndsAreFinal | H12; AGENTS.md | `Done` and `HandedBack` only stand still. A structural check of the two ends: the sources say a captain returns, not what it may do after. |
 
 `Sees_OnlyAMergerSeesReviewFixMerge` is not a rule of the spec. It checks the states column of the who-sees-what table against the model, so the table cannot say a Question's captain never needs the review, fix and merge text while the model lets it in.
 
@@ -43,9 +43,9 @@ Changed:
 | Property | What changed | Why |
 |---|---|---|
 | WorkPhaseBeforeDone | No longer requires `Finishing` before Done. | `Finishing` is gone: a ticket closes from `Leaf`, `Waiting` or `Merging`. The work-before-Done order stays. |
-| H3_WaitAfterSplit | `Split` is now `Cutting`. | Renamed state. |
+| H3_WaitAfterSplit | `Split` is now `Cutting`, and `HandedBack` is a second way out. | Renamed state. H2 sends a slice that cannot be divided coherently under its own ticket back to the officer above. The old chart had that way out only for a leaf, which left a captain that splits with no way back (review r1). |
 | H16_ResumeLeafAfterQuestion | `Question` is now `Asking`. | Renamed state. |
-| H10_ReturnedPartContinues | Exits are `Cutting`, `InReview`, `Done`. `Wayfinding`, `Finishing` and `Leaf` for an answer are gone. | `Wayfinding` merged into `Cutting`. The core page says a captain that splits only orchestrates, so a research holder no longer goes back to `Leaf`. |
+| H10_ReturnedPartContinues | Exits are `Cutting`, `InReview`, `Done`, `HandedBack`. `Wayfinding`, `Finishing` and `Leaf` for an answer are gone. | `Wayfinding` merged into `Cutting`. The core page says a captain that splits only orchestrates, so a research holder no longer goes back to `Leaf`. H2 sends a change to its contract, or to a sibling's, through the officer above, so `HandedBack` is added (review r1). |
 | R8_ClearBeforeFinish, now R8_PassBeforeMerge | `Clear` and `Finishing` are now the PASS arrow and `Merging`. The exception for a mended part is gone. | `Clear` and `Mending` are gone. |
 | R8_FixBeforeNextRound | Written on order, not on a round number. `Clear` and `Mending` are no longer ways into a new round. | The model no longer counts rounds, and the extra round and the mend are gone. |
 | R19_ReviewAfterMergeRepair | `Repairing` is now `Fixing`. | A broken merge goes to a Fix like any blocker. With R8_FixBeforeNextRound and R8_PassBeforeMerge, a repair still cannot reach Done without a review. |
@@ -60,8 +60,8 @@ Dropped:
 |---|---|
 | R8_ExtraRoundOnlyOnceAfterClear | The arrow "one more round is ordered" is gone. R8 lets an officer order it; the chart leaves it out, because a PASS ends the review and the captain need not decide more. |
 | R10_CheckpointBeforeFourthRound, S10_CheckpointBeforeThirdRoundEscalation, R10_EnterCheckpointFromThirdRound | The `Checkpoint` state is gone. Its two exits are the Fix and the way to the officer, which every FAIL already has. R10's line on the Review is a record on those arrows, and the model no longer counts rounds, so none of the three can be written. |
-| H10_WayfindingLeavesByCut | `Wayfinding` merged into `Cutting`, and H3_WaitAfterSplit already says `Cutting` exits only to `Waiting`. |
-| H10_PartBeforeFogFinish | The same merge. H3_WaitAfterSplit and Core_SplitOnlyOrchestrates cover it: after a cut, the only way on is through `Waiting`. |
+| H10_WayfindingLeavesByCut | `Wayfinding` merged into `Cutting`, and H3_WaitAfterSplit already says `Cutting` exits only to `Waiting` or back to the officer. |
+| H10_PartBeforeFogFinish | The same merge. H3_WaitAfterSplit and Core_SplitOnlyOrchestrates cover it: after a cut, the only way on to Done is through `Waiting`. |
 | R23_ReviewMendedHead | The `Mending` state is gone: a should becomes a ticket that waits. |
 
 Added: Core_SplitOnlyOrchestrates and Sees_OnlyAMergerSeesReviewFixMerge.
@@ -86,7 +86,7 @@ Whether an answer may be reviewed has no source. The model gives an answer's hol
 
 The registered control in [controls.json](../controls.json) is the step `Asking` to `Done` for a change that is not merged. H16_ResumeLeafAfterQuestion must reject it.
 
-Five more controls were run by hand at DYD-1437, each one changed line in a scratch copy of `Captain.tla`, with the committed model untouched:
+Six more controls were run by hand at DYD-1437, each one changed line in a scratch copy of `Captain.tla`, with the committed model untouched:
 
 | Changed line | Property that must reject it |
 |---|---|
@@ -95,6 +95,7 @@ Five more controls were run by hand at DYD-1437, each one changed line in a scra
 | `CutTheNextParts` goes to `Leaf` | Core_SplitOnlyOrchestrates, H10_ReturnedPartContinues |
 | `ReviewAgain` goes to `Merging` | R8_FixBeforeNextRound, R8_PassBeforeMerge |
 | `MergeBroke` goes to `InReview` | R19_ReviewAfterMergeRepair, R8_FixBeforeNextRound |
+| `Dispatch` goes to `Done` | H3_WaitAfterSplit |
 
 ## Receipts
 
