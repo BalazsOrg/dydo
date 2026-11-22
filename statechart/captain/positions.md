@@ -73,7 +73,7 @@ What each row rests on:
 
 ## How to check a skill file against the model
 
-A skill line is checked against the comprehensive model, `Captain.tla`, never against the simple chart alone: a line that tells a step the chart folds inside a state, such as the checkpoint after a third FAIL, is right when the model has that step. A position can take an action when the action leaves a state in its row, or stays inside one, and its guard can hold for that position. Only a captain whose brief says it merges can take the two actions into `InReview`.
+A skill line is checked against the comprehensive model (`CaptainBase.tla` and `Captain.tla`, held to `register.md`), never against the simple chart alone: a line that tells a step the chart folds inside a state, such as the checkpoint after a third FAIL, is right when the model has that step. A position can take an action when the action leaves a state in its row, or stays inside one, and its guard can hold for that position. Only a captain whose brief says it merges can take the two actions into `InReview`.
 
 1. Every action a position can take is told by text that position gets: the brief itself, a skill the brief names, or a text that such a skill names for that state.
 2. No text a position gets tells an action that position cannot take, or a step the model does not have. A leaf's text says nothing of cutting past the one action that leads there, and a reviewer's says nothing of a review of its own work, a Fix or a merge.
@@ -81,17 +81,11 @@ A skill line is checked against the comprehensive model, `Captain.tla`, never ag
 
 ## What the model checks of this page
 
-The properties in `verification/statechart/captain/` check the states column, and the waits and the verdict the rows name, against the model:
+The model is the frame for now (DYD-1504; see the README): its states are the chart's, and the states named in the rows above that the chart folds inside its own (`Mending`, `Repairing`, `AwaitingTurn`, `Held`, `AwaitingClick`, `Landed`, `Rerunning`) come with part 4. The properties in `verification/statechart/captain/` check of this page what the frame holds:
 
-- `R34_VerdictNeverReviewed`: a reviewer and a seat are never in a state of the merger's row.
-- `R34_SeatNeverDelegates`: a seat is never in `Cutting` or `Waiting`.
-- `Sees_OnlyAMergerSeesReviewFixMerge`: only a captain that merges a change is ever in a state of the merger's row.
-- `R4_NoReviewLoopOnACut`: a Wayfinding captain's cut is never reviewed or merged.
-- `Core_SplitOnlyOrchestrates`: a captain that has cut never goes back to `Leaf` or `Asking`.
-- `L18_ACouncilIsNeverOneAgent`: a council's chair is never in `Leaf` or `Asking`.
-- `L18_ChildOnlyAfterResearch`: only a research Question's captain opens a `council` or `his-call` child, and only after its research left the call to one.
-- `H16_TheReceivingOfficerOpensIt`: a captain opens a Question only for a need it receives, and its own need is opened by its officer.
-- `H16_ThePartWaitsOnItsAnswer`: a part whose need its splitter opened as a Question comes back only with the answer.
-- `S8_OneVerdictOnceTheSeatsAreBack`: a reviewer that cut its review into seats writes the verdict only once they are back.
+- `FR26_EachDecidesItsJob`: the verdict on a change is the reviewer's, never its captain's or the Fix's holder's; a reviewer writes its own verdict, and a Question's captain settles its own call.
+- `FR28_AVerdictIsNotReviewedAgain`: a reviewer is dispatched only onto a change, never onto a verdict, a seat's findings, an answer or a cut.
+
+The rest of this page's states column and waits are register rows owed by the parts: a seat never delegates (SP2), only a merger reaches review, fix and merge (RM1), a cut gets no review (IQ24), a captain that has cut never works itself (SP1), a council is never one agent (IQ22), a child Question only after research (IQ16), the receiving officer opens a Question (IQ9, SP13), a part waits on its answer (SP14), and a review's verdict comes once its seats are back (SP19).
 
 The model cannot see which skill an agent loaded or what its brief said. Those are checked by reading, with the three checks above.

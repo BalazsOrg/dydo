@@ -3,10 +3,11 @@ title: "A captain and its ticket"
 ---
 stateDiagram-v2
   %% Written by hand. The simple view of the process the role skills describe, for reading.
-  %% Captain.tla beside it is the comprehensive model, with every state and rule; skills are checked against it.
-  %% view-map.mjs shows each model state as one state here, and puts each model action under one arrow here
-  %% or inside one state; check-chart.mjs proves this view faithful on every step TLC finds the model can take,
-  %% and fails on any change to the words below: they are the words he approved (DYD-1440), pinned by digest.
+  %% Captain.tla on CaptainBase.tla beside it is the comprehensive model, held to register.md; skills are checked against it.
+  %% view-map.mjs shows each model state as one state here, puts each model action under one arrow here or inside
+  %% one state, and gives each arrow the condition its words claim; check-chart.mjs proves this view faithful on
+  %% every step TLC finds the model can take, testing each arrow's condition on every step under it, and fails on
+  %% any change to the words below: they are the words he approved (DYD-1440), pinned by digest.
   %% Each arrow is one case. The comment above an arrow names what it rests on:
   %% "core" is dydo/core.md, a letter and number is a rule of Spec: dydo 4.0.0.
   Dispatched: Dispatched onto a ticket

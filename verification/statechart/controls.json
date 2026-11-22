@@ -10,40 +10,24 @@
     "property": "L12_PageBeforeMerge"
   },
   "captain": {
-    "from": "Asking",
+    "from": "Leaf",
     "to": "Done",
     "variables": {
+      "event": "{[name |-> \"close\", by |-> \"captain\"]}",
       "kind": "\"change\"",
-      "stage": "\"none\"",
       "merges": "FALSE",
-      "filler": "FALSE",
-      "door": "\"none\"",
       "proved": "FALSE",
-      "scouts": "0",
-      "fog": "FALSE",
-      "part": "\"none\"",
-      "partwaits": "FALSE",
-      "hop": "\"live\"",
-      "asked": "\"research\"",
+      "written": "FALSE",
       "call": "\"none\"",
-      "tribunal": "\"none\"",
-      "round": "0",
-      "extra": "FALSE",
-      "lens": "\"none\"",
+      "asked": "\"none\"",
+      "part": "\"none\"",
       "verdict": "\"none\"",
       "blockers": "{}",
-      "cheap": "FALSE",
-      "checkpoint": "\"none\"",
-      "hunks": "FALSE",
-      "target": "\"none\"",
-      "pass": "\"none\"",
       "gates": "\"none\"",
-      "ci": "\"none\"",
-      "behind": "FALSE",
-      "resyncs": "0",
-      "landed": "\"no\""
+      "landed": "\"no\"",
+      "ci": "\"none\""
     },
-    "property": "H16_ResumeLeafAfterQuestion"
+    "property": "FR24_DoneWhenTheContractIsMet"
   },
   "claim-build": {
     "from": "Edited",

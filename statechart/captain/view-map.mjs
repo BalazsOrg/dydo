@@ -1,151 +1,184 @@
-// Written by hand. How the simple view (chart.mmd) relates to the comprehensive model (Captain.tla).
-// The view is a projection: each model state is shown as one chart state, and each model action
-// either stands under one chart arrow or stays inside one chart state, where the chart draws no step.
-// check-chart.mjs checks every reachable step of the model against this map.
+// Written by hand. How the simple view (chart.mmd) relates to the model (Captain.tla on CaptainBase.tla).
+// The view is a projection: each model state is shown as one chart state, and each model action either
+// stands under one chart arrow or stays inside one chart state. Each chart arrow has the condition its
+// words claim, over the step's two states and its events (the event record). check-chart.mjs tests
+// every reachable step against this map and every step under an arrow against its condition.
 
 // Each model state, and the chart state that shows it. Its words must be true of the model state.
 export const states = {
   Dispatched: "Dispatched",
   Taken: "Taken",
-  Leaf: "Leaf", // a his-call envoy with him, a reviewer writing its verdict: still the work itself
-  Asking: "Asking", // at any stage of the Question: research, council or his-call
-  Cutting: "Cutting", // with fog too: then the part in sight is one that brings the next into sight
-  Waiting: "Waiting", // on its parts, their evidence checks, fixes and mends, a part's Question, their wiring; see mismatches
-  InReview: "InReview", // the round's Review hop out with a fresh reviewer; see mismatches for once its verdict is in
-  Mending: "InReview", // NOT TRUE OF IT: see mismatches below
-  Fixing: "Fixing", // on the Fix; and on the Question one of its blockers waits on
-  Repairing: "Fixing", // a conflict or a real red gate is repaired on the ticket branch by a Fix
-  Merging: "Merging", // its evidence: the gates, CI, the PR
-  AwaitingTurn: "Merging", // a two-way PR into master waits on the coordinator's turn
-  Held: "Merging", // a PR re-synced a third time, held while the coordinator sequences
-  AwaitingClick: "Merging", // a one-way PR waits on his click
-  Landed: "Merging", // the merge is in; the Merge hop waits on green on its merge SHA
-  Rerunning: "Merging", // DYTEST reruns a red gate after the merge once
+  Leaf: "Leaf",
+  Asking: "Asking",
+  Cutting: "Cutting",
+  Waiting: "Waiting",
+  InReview: "InReview",
+  Fixing: "Fixing",
+  Merging: "Merging",
   Done: "Done",
   HandedBack: "HandedBack",
 };
 
-// Each model action: the chart arrows it stands under, as "From --> To", and the chart states it
-// stays inside. Every step the model takes must have its place here, and every place listed must be
-// taken by at least one step.
+// Each model action: the chart arrows it stands under, as "From --> To", and the chart states it stays
+// inside. Every step the model takes must have its place here, and every place listed must be taken by
+// at least one step.
 export const actions = {
   CannotTake: ["Dispatched --> HandedBack"],
-  FillerFailsItsCheck: ["Dispatched --> HandedBack"],
   Take: ["Dispatched --> Taken"],
   WorkItself: ["Taken --> Leaf"],
   Split: ["Taken --> Cutting"],
-  FindTheWay: ["Taken --> Cutting"],
   SplitTheRest: ["Leaf --> Cutting"],
-  PassTheNeedUp: ["Leaf", "Waiting"],
-  QuestionOpened: ["Leaf", "Cutting", "Waiting"],
-  WaitOnTheAnswer: ["Leaf --> Asking"],
-  ResearchTheCall: ["Leaf", "Waiting"],
-  AskACouncil: ["Leaf --> Asking", "Waiting"],
-  AskHim: ["Leaf --> Asking", "Waiting"],
-  Answered: ["Asking --> Leaf", "Leaf", "Cutting", "Waiting", "Fixing"],
-  CouncilDecided: ["Asking --> Leaf", "Waiting"],
-  CouncilPrepared: ["Asking --> Leaf", "Waiting"],
-  HeDecides: ["Leaf", "Waiting"],
   ProveTheWork: ["Leaf"],
-  ScoutTheSpec: ["Leaf"],
   WriteTheVerdict: ["Leaf", "Waiting"],
-  SendLeafToReview: ["Leaf --> InReview"],
+  AnswerTheCall: ["Leaf", "Waiting"],
+  WriteTheResult: ["Leaf", "Waiting"],
+  AskAQuestion: ["Leaf --> Asking"],
+  Answered: ["Asking --> Leaf"],
   CloseLeaf: ["Leaf --> Done"],
   HandBackTheWork: ["Leaf --> HandedBack"],
   Dispatch: ["Cutting --> Waiting"],
   HandBackTheCut: ["Cutting --> HandedBack"],
-  SomeHopStops: ["Waiting", "InReview", "Fixing"],
-  SetTheHopBackToTodo: ["Waiting", "InReview", "Fixing"],
-  ResumeTheHop: ["Waiting", "InReview", "Fixing"],
   PartBack: ["Waiting"],
-  PartHandedBack: ["Waiting"],
-  DispatchAReadyPart: ["Waiting"],
-  CheckThePart: ["Waiting"],
-  TheCheckPasses: ["Waiting"],
-  TheCheckFindsACheapShould: ["Waiting"],
-  TheCheckFails: ["Waiting"],
-  NeedFromAPart: ["Waiting"],
-  ThePartIsAnswered: ["Waiting"],
   CutTheNextParts: ["Waiting --> Cutting"],
-  FogRemains: ["Waiting --> Cutting"],
-  TheWayIsFound: ["Waiting"],
   HandBackTheWhole: ["Waiting --> HandedBack"],
   WireTheParts: ["Waiting"],
-  TheWiringIsIn: ["Waiting"],
   SendTheWholeToReview: ["Waiting --> InReview"],
   CloseTheWhole: ["Waiting --> Done"],
-  TheExchange: ["Waiting"],
-  TheJudgesAgree: ["Waiting"],
-  TheJudgesSplit: ["Waiting"],
-  TheCouncilDecides: ["Waiting --> Done"],
-  TheCouncilPrepares: ["Waiting --> Done"],
-  TheReviewPasses: ["InReview"],
-  TheReviewFails: ["InReview"],
-  NoMoreRound: ["InReview --> Merging"],
-  OneMoreRound: ["InReview"],
-  MendACheapShould: ["InReview"],
-  TheMendIsProved: ["InReview"],
-  ReviewTheMendedHead: ["InReview"],
+  SendLeafToReview: ["Leaf --> InReview"],
+  TheReviewerWritesTheVerdict: ["InReview"],
+  Pass: ["InReview --> Merging"],
   Fail: ["InReview --> Fixing"],
   Replan: ["InReview --> HandedBack"],
-  CheckpointOneMoreRound: ["InReview --> Fixing"],
-  CheckpointAsksHim: ["InReview --> Fixing"],
-  CheckpointEscalates: ["InReview --> HandedBack"],
   TheFixIsProved: ["Fixing"],
   ReviewAgain: ["Fixing --> InReview"],
   HandBackTheFix: ["Fixing --> HandedBack"],
   RunTheGates: ["Merging"],
-  WatchTheCi: ["Merging"],
-  RedBeforeLanding: ["Merging --> Fixing"],
-  MergeConflict: ["Merging --> Fixing"],
-  MergeIntoFeature: ["Merging"],
-  OfferForTheTurn: ["Merging"],
-  OpenTheHitlMerge: ["Merging"],
-  MasterMoves: ["Merging"],
-  LandOnTheTurn: ["Merging"],
-  HisClick: ["Merging"],
-  ResyncOnTheRecheck: ["Merging"],
-  ConflictOnTheRecheck: ["Merging"],
-  Sequenced: ["Merging"],
+  Land: ["Merging"],
   GreenOnTheMergeSha: ["Merging --> Done"],
-  GateRed: ["Merging"],
-  Flake: ["Merging --> Done"],
-  RealRed: ["Merging --> Fixing"],
-  TheRepairIsProved: ["Fixing"],
-  RepairReviewed: ["Fixing --> InReview"],
-  RepairFails: ["Fixing --> HandedBack"],
+  Repair: ["Merging --> Fixing"],
 };
 
-// "Ended" is the model's stand-still at an end; it is no step. check-chart.mjs checks that every
-// step it names leaves its state unchanged, at an end.
+// "Ended" is the model's stand-still at an end; it is no step. check-chart.mjs checks that every step
+// it names leaves its state unchanged, at an end.
 export const standStill = "Ended";
 
+// The step has the event named n, taken by actor a when a is given. `to` is the state the step
+// reaches; its `event` is the set of events of the step.
+const has = (to, n, a) => to.event.some((e) => e.name === n && (a === undefined || e.by === a));
+const handsBack = (to) => has(to, "hand back", "captain");
+// The result of a ticket that does not merge is in (register FR24).
+const resultIn = (s) =>
+  s.kind === "change" ? s.proved : s.kind === "verdict" ? ["pass", "fail"].includes(s.verdict) : s.kind === "answer" ? s.call === "settled" : s.written;
+const same = (a, b) => a.length === b.length && a.every((x) => b.includes(x));
+
+// Each chart arrow's condition: what its words claim of every step under it, in plain words (claim),
+// and as a test over the step's two states (holds). Written from the words, never from the model's
+// actions. A part that changes the model keeps every condition true, or brings the arrow to him as a
+// view change.
+export const conditions = {
+  "Dispatched --> HandedBack": {
+    claim: "the captain cannot take the ticket and hands it back untouched: nothing of the ticket is read",
+    holds: (a, b) => has(b, "cannot take", "captain") && handsBack(b) && b.kind === "unread",
+  },
+  "Dispatched --> Taken": {
+    claim: "the captain takes the ticket, and its result is read from it",
+    holds: (a, b) => has(b, "take", "captain") && a.kind === "unread" && b.kind !== "unread",
+  },
+  "Taken --> Leaf": {
+    claim: "the captain sizes the ticket as fitting one agent",
+    holds: (a, b) => has(b, "fits one agent", "captain"),
+  },
+  "Taken --> Cutting": {
+    claim: "the captain sizes the ticket as needing more than one agent",
+    holds: (a, b) => has(b, "needs more than one agent", "captain"),
+  },
+  "Leaf --> Cutting": {
+    claim: "the captain finds the work too big and splits what is left",
+    holds: (a, b) => has(b, "proves too big", "captain"),
+  },
+  "Leaf --> Asking": {
+    claim: "the captain passes up a call it may not decide, a Question is opened for a fresh agent, and the work waits on it",
+    holds: (a, b) => has(b, "pass the need up", "captain") && has(b, "open a Question") && a.asked === "none" && b.asked === "open",
+  },
+  "Asking --> Leaf": {
+    claim: "the answer on the Question it waits on is back",
+    holds: (a, b) => a.asked === "open" && b.asked === "none" && has(b, "answer", "question"),
+  },
+  "Leaf --> InReview": {
+    claim: "a change this captain merges is proved, nothing in it waits on an answer, and a reviewer is dispatched onto a new round",
+    holds: (a, b) =>
+      a.kind === "change" && a.merges && a.proved && a.asked === "none" && b.verdict === "due" && has(b, "dispatch a reviewer", "captain"),
+  },
+  "Leaf --> Done": {
+    claim: "the captain merges nothing, its result is in, nothing waits on an answer, and it closes the ticket",
+    holds: (a, b) => !a.merges && a.asked === "none" && resultIn(a) && has(b, "close", "captain"),
+  },
+  "Leaf --> HandedBack": {
+    claim: "the work cannot be done inside this ticket, and the captain hands it back to its officer",
+    holds: (a, b) => has(b, "cannot be done inside the ticket", "captain") && handsBack(b),
+  },
+  "Cutting --> Waiting": {
+    claim: "the parts are dispatched as sub-tickets, and the captain waits on them",
+    holds: (a, b) => b.part === "out" && has(b, "dispatch the parts", "captain"),
+  },
+  "Cutting --> HandedBack": {
+    claim: "the work cannot be cut inside this ticket, and the captain hands it back to its officer",
+    holds: (a, b) => has(b, "cannot be cut inside the ticket", "captain") && handsBack(b),
+  },
+  "Waiting --> Cutting": {
+    claim: "a part is back and the captain cuts the next parts",
+    holds: (a, b) => a.part === "back" && has(b, "cut the next parts", "captain"),
+  },
+  "Waiting --> HandedBack": {
+    claim: "a part is back and shows the contract cannot be met inside this ticket; the captain hands it back",
+    holds: (a, b) => a.part === "back" && has(b, "a part shows the contract cannot be met", "captain") && handsBack(b),
+  },
+  "Waiting --> InReview": {
+    claim: "the parts are back and wired into a change this captain merges, proved, nothing waits on an answer, and a reviewer is dispatched",
+    holds: (a, b) =>
+      a.part === "wired" && a.merges && a.proved && a.asked === "none" && b.verdict === "due" && has(b, "dispatch a reviewer", "captain"),
+  },
+  "Waiting --> Done": {
+    claim: "the parts are back, the captain merges nothing, its contract is met, and it closes the ticket",
+    holds: (a, b) =>
+      a.part === "back" && !a.merges && a.asked === "none" && (a.kind === "change" || resultIn(a)) && has(b, "close", "captain"),
+  },
+  "InReview --> Fixing": {
+    claim: "the verdict written is FAIL, no blocker is fundamental, and one Fix ticket takes every blocker",
+    holds: (a, b) =>
+      a.verdict === "fail" && a.blockers.length > 0 && !a.blockers.includes("fundamental") && same(a.blockers, b.blockers) &&
+      has(b, "act on FAIL", "captain") && has(b, "open a Fix", "captain"),
+  },
+  "InReview --> Merging": {
+    claim: "the verdict written is PASS, and the captain acts on it",
+    holds: (a, b) => a.verdict === "pass" && a.blockers.length === 0 && has(b, "act on PASS", "captain"),
+  },
+  "InReview --> HandedBack": {
+    claim: "the verdict written is FAIL with a fundamental blocker, which cannot be fixed inside this ticket; the captain hands it back",
+    holds: (a, b) => a.verdict === "fail" && a.blockers.includes("fundamental") && has(b, "act on FAIL", "captain") && handsBack(b),
+  },
+  "Fixing --> InReview": {
+    claim: "the Fix is done, its head proved and nothing waiting on an answer, and a reviewer is dispatched onto a new round",
+    holds: (a, b) => a.proved && a.asked === "none" && b.verdict === "due" && has(b, "dispatch a reviewer", "captain"),
+  },
+  "Fixing --> HandedBack": {
+    claim: "the Fix's holder hands the Fix back undone, and the captain hands the ticket back",
+    holds: (a, b) => has(b, "the Fix comes back undone", "fixer") && handsBack(b),
+  },
+  "Merging --> Done": {
+    claim: "the merge is in, its gates and CI are green on the merge SHA, and the captain closes the ticket",
+    holds: (a, b) => b.landed === "in" && b.gates === "green" && b.ci === "green" && has(b, "close", "captain"),
+  },
+  "Merging --> Fixing": {
+    claim: "the merge is not clean and green: a CONFLICT or a real red is on record, and a Fix ticket repairs it",
+    holds: (a, b) => ["red", "conflict"].includes(a.gates) && has(b, "open a Fix", "captain"),
+  },
+};
+
 // The model cases no chart state or arrow has words true of. The chart is his approved view, so its
-// words are not bent to fit: each case is placed where it least misleads and brought to him for a
-// view change. check-chart.mjs prints them on every run.
-export const mismatches = [
-  {
-    model: "Mending, and the steps MendACheapShould, TheMendIsProved and ReviewTheMendedHead",
-    under: 'InReview, "Waiting on a reviewer\'s verdict"',
-    why:
-      "after a PASS with a cheap should, the captain waits on the should's fix in place before the merge " +
-      "(S17), not on a verdict; the chart has no state for that wait and no arrow out of the review for it",
-  },
-  {
-    model: "Waiting, when all it waits on is its own need (PassTheNeedUp, QuestionOpened)",
-    under: 'Waiting, "Waiting on its sub-tickets"',
-    why:
-      "the officer that received the need opened the Question under its own ticket (H16), so the captain waits on a " +
-      "ticket that is not its sub-ticket; H10 has it wait on it, and after a cut it never goes back to Asking",
-  },
-  {
-    model: "InReview once the round's verdict is written (TheReviewPasses, TheReviewFails), before the captain acts on it",
-    under: 'InReview, "Waiting on a reviewer\'s verdict"',
-    why:
-      "the reviewer on the round's Review hop writes the verdict, and the captain then acts on it (R17, R33, R8); " +
-      "between the two the verdict is in, so the captain no longer waits on it, and the chart has no state for that moment",
-  },
-];
+// words are not bent to fit: each case is placed where it least misleads and brought to him for a view
+// change. check-chart.mjs prints them on every run. The frame has none; the parts list theirs here.
+export const mismatches = [];
 
 // The chart place of one model step: the chart state it stays inside, or the arrow it stands under.
 export function place(from, to) {

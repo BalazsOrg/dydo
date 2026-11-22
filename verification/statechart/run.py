@@ -41,9 +41,10 @@ def checkout_status(root):
 
 
 def selected_models(root, names, parser):
-    # claims/statechart holds the generated machines; statechart holds the hand-written ones.
+    # claims/statechart holds the generated machines; statechart holds the hand-written ones. A
+    # machine is the module with its own .cfg; a module beside it without one is a part it extends.
     machines = sorted(model for folder in ('claims/statechart', 'statechart')
-                      for model in (root / folder).glob('*/*.tla'))
+                      for model in (root / folder).glob('*/*.tla') if model.with_suffix('.cfg').exists())
     if names:
         machines = [p for p in machines if p.parent.name in names]
         if {p.parent.name for p in machines} != set(names):
@@ -52,7 +53,8 @@ def selected_models(root, names, parser):
 
 
 def inject_control(model, entry, control):
-    declarations = re.search(r'^VARIABLES (.+)$', model.read_text(), re.MULTILINE)
+    modules = '\n'.join(p.read_text() for p in sorted(model.parent.glob('*.tla')))
+    declarations = re.search(r'^VARIABLES (.+)$', modules, re.MULTILINE)
     auxiliaries = [v.strip() for v in declarations[1].split(',') if v.strip() != 'state']
     values = control.get('variables', {})
     if set(values) != set(auxiliaries):
