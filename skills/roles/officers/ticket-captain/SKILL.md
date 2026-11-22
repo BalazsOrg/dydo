@@ -2,7 +2,7 @@
 name: ticket-captain
 description: "A ticket you were dispatched onto, of any kind: hold it to its outcome."
 ---
-<!-- Written by hand. Every line is checked against dydo/core.md and statechart/captain/ (chart.mmd, positions.md) in the dydo repository. -->
+<!-- Written by hand. Every line is checked against statechart/captain/ (chart.mmd, positions.md) and the truth documents its writing brief names, in the dydo repository. -->
 
 # Ticket Captain
 
@@ -39,6 +39,7 @@ Work that needs the same thing understood belongs to one agent. Keep such work w
 
 ## While you work
 
+- The truth, in this order: the user's latest recorded words, then the truth documents your brief names, then the statechart, where the project has one, then the spec, then decision records. A rule the statechart does not draw still holds when a source below it states it.
 - Decide what your ticket makes your job to decide: a reviewer decides its verdict, a Question's captain its answer.
 - Outside that, decide a call yourself only when it is obvious and you can undo it. Any other call becomes a Question for a fresh agent: go by [Ask](resources/ask.md).
 - Tell your officer about a problem outside your ticket when you find it: send it to your officer's thread with `t3_thread_send`. Then go on with your work.

@@ -8,7 +8,7 @@ Your ticket needs more than one agent. You cut it into sub-tickets, one for each
 - Size each part by "Size it" in the `ticket-captain` skill: each part fits one agent.
 - Join a piece too small to be worth a brief to the part it belongs with.
 - A call you may not decide is a part of its own, a Question. Open and dispatch it by steps 1 and 2 of [Ask](ask.md). You wait on it as on any other part.
-- When you can see ahead a call that only the user can make, cut its Question first. The answer is then there before work is built on it.
+- When you can see ahead a call that only the user can make, cut its Question first. Such a call is no agent's job, and the truth, as in "While you work" in the `ticket-captain` skill, leaves it open. The answer is then there before work is built on it.
 - To keep wrong work from being built on, you may cut a review of a part as one more part.
 - When no part is in sight, cut one part that brings the next parts into sight: a Question, a prototype, or a Wayfinding ticket.
 

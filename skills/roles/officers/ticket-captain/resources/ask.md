@@ -3,7 +3,7 @@
 1. Open the Question as a sub-ticket of your ticket. Write on it the question in one sentence, the options you see, and what waits on the answer.
 2. Dispatch a fresh agent onto it by [Brief](brief.md).
 3. Wait for the answer. Work that does not depend on it goes on.
-4. When the answer is on the Question, go on with the work that waited.
+4. When the answer is on the Question, go on with the work that waited. If the answer carries a FAIL, first fix its blockers that are in your ticket, and send the rest to your officer's thread with `t3_thread_send`.
 
 **The Question comes back without its answer**
 
