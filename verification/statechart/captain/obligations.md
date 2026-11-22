@@ -45,17 +45,17 @@ The captain's registered control in `verification/statechart/controls.json` star
 
 ## Receipts
 
-Each command ran on the committed frame at `9cd32c056ffc9e8bce7827ff6d74092ff4087616` (the review r1 fix; clean checkout), under the gate lock and the agent memory cap, with dydo 3.6.0's managed Java 21.0.8 and TLC 2.19.
+Each command ran on the committed frame at `a0069241526b3f5877d9bc37e32acc6695c7b855` (the review r2 fix; clean checkout), under the gate lock and the agent memory cap, with dydo 3.6.0's managed Java 21.0.8 and TLC 2.19.
 
-- The statechart tool on the model (`dydo statechart ... --view view.mjs`): exit 0; `TypeOK` and `NoDeadlock` hold; 574 states, more than its chart budget of 500, so it draws no chart.
-- The view check (`node statechart/captain/check-chart.mjs`): exit 0. TLC on `Captain.cfg`: 978 states generated, 574 distinct, depth 13; 795 steps checked; the words are the approved words; 11 model states shown as 11 chart states, 35 actions under 23 arrows or inside a state, each arrow's condition holding on every step under it.
-- The register check (`node statechart/captain/check-register.mjs`): exit 0. 113 rows that order the work (part 1: 23 actions and 6 properties; part 2: 22 and 10; part 3: 14 and 7; part 4: 18 and 13) and 45 lines of sources that order no step; all 200 spec rules and 75 other source keys cited; 35 actions and 6 properties each rest on a row.
-- The mutants (`node statechart/captain/mutants.mjs`): exit 0. On the model as it stands every property holds (2,567 states generated, 1,655 distinct, depth 21). Each of the 23 mutants is caught by the check it names: 15 by the view check, the PASS arrow taken on a FAIL among them, and 8 by the properties.
+- The statechart tool on the model (`dydo statechart ... --view view.mjs`): exit 0; `TypeOK` and `NoDeadlock` hold; 403 states and 686 steps; it draws 11 states and 23 arrows, with no step drawn as not on the map or the chart.
+- The view check (`node statechart/captain/check-chart.mjs`): exit 0. TLC on `Captain.cfg`: 689 states generated, 403 distinct, depth 13; 544 steps checked; the words are the approved words; 11 model states shown as 11 chart states, 35 actions under 23 arrows or inside a state, each arrow's condition holding on every step under it.
+- The register check (`node statechart/captain/check-register.mjs`): exit 0. 115 rows that order the work (part 1: 23 actions and 6 properties; part 2: 22 and 10; part 3: 15 and 7; part 4: 19 and 13) and 44 lines of sources that order no step; all 200 spec rules and 75 other source keys cited; 35 actions and 6 properties each rest on a row.
+- The mutants (`node statechart/captain/mutants.mjs`): exit 0. On the model as it stands every property holds (1,972 states generated, 1,275 distinct, depth 21). Each of the 27 mutants is caught by the check it names: 17 by the view check, the PASS arrow taken on a FAIL among them, and 10 by the properties.
 - The properties (`run.py --machine captain`): exit 0, result pass. `TypeOK`, `NoDeadlock` and the six registered properties hold, none missing.
 - The registered controls (`run.py --controls --machine captain --machine claim-build --machine review`): harness exit 0, each `control_caught` true. For the captain, FR28_AVerdictIsNotReviewedAgain alone rejects the review of a verdict. The other two machines show the runner change holds.
 - `dydo check`: 0 errors, 0 warnings.
 
-Output was written under `/tmp/dyd1504/run2/` and is not kept.
+Output was written under `/tmp/dyd1504/run3/` and is not kept.
 
 ## Related
 
