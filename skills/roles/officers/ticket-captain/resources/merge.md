@@ -4,7 +4,7 @@ Your brief says that you merge your change, and into which branch. A merge needs
 
 **Get it reviewed**
 
-1. If the target your brief names is not a `feature/*` branch, end with `handed back <KEY>: dydo merge merges only into feature/* branches`.
+1. If the target your brief names is not a `feature/*` branch, push your branch, write on your ticket what is done, and end with `handed back <KEY>: dydo merge merges only into feature/* branches`.
 2. Run the gates your brief names on your branch, then push it.
 3. Open a Review sub-ticket under your ticket, and dispatch a fresh agent onto it by [Brief](brief.md).
 4. Wait for the verdict. It is on the Review ticket.
@@ -32,7 +32,7 @@ Each should is already a ticket that waits, and so is each nit the reviewer rule
 
 **Merge**
 
-1. Run the gates your brief names on your branch merged with the tip of the target branch.
+1. Run the gates your brief names on your branch merged with the tip of the target branch. Make that merge on a scratch branch, never on your branch, and never push it: a pushed merge moves your head past the commit the PASS names.
 2. Open the pull request into the target branch, with your ticket's key in its title, and attach its link to your ticket. Write its body with `/pr`: it holds the reviewer's PASS line, word for word.
 3. Merge with `dydo merge <pr-number> --match-head-commit <SHA> --match-base-commit <SHA>`. The first is the full 40-character SHA of the commit the PASS names. The second is that of the target's tip.
 4. When hosted CI is green on the merge, set your ticket Done. End with `done <KEY>: merged <the merge commit>`.
