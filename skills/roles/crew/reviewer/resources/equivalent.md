@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # An equivalent-mutant claim
 
 ## Claimed equivalent

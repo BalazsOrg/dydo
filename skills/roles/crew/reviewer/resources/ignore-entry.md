@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # A new ignore entry
 
 ## Ignore path (a): a file nobody writes by hand

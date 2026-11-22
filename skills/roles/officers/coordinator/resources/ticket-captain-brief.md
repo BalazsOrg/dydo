@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # Ticket-captain brief
 
 Skills: /ticket-captain

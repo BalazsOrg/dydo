@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Edited": "A claim edited in the C# model · K1, K2, K4, K17, K19, K21",
   "Rejected": "The build or its tests refuse · K4, K7, K10, K24",

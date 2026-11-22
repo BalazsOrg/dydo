@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Background": "Background campaigns in spare capacity · T12",
   "Queued": "Landing work queued for the exact tree · T12",

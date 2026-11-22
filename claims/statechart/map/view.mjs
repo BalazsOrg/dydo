@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Closed": "Map not open · S19, H6",
   "Snapshot": "A revisit: the last visit's disposable, machine-local snapshot shown first · S26",

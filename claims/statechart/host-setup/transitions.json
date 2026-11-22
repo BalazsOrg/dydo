@@ -1,5 +1,4 @@
 {
-  "$comment": "built from the model; edit there: tools/SkillBuild",
   "id": "HostSetup",
   "title": "Host settings and the guard",
   "initial": "Uninitialised",

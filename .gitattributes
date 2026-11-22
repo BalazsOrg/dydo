@@ -3,12 +3,10 @@ skills/**/*.md text eol=lf
 skills/**/agents/openai.yaml text eol=lf
 setup-skills.mjs text eol=lf
 
-# The skill builder writes its chart files and why docs with LF, and the golden test compares bytes (K7).
+# The chart files stay LF on every platform.
 claims/statechart/** text eol=lf
-dydo/reference/claims/*.md text eol=lf
 
-# The same for the built role skills and both built standards with their Scaffold copies (K6, K7, K12).
-# skills/roles/README.md, hand-written, also matches; it is markdown, already LF under skills/**/*.md above.
+# The same for the role skills and both standards with their Scaffold copies.
 skills/roles/**/*.md text eol=lf
 skills/roles/**/agents/openai.yaml text eol=lf
 dydo/guides/working-tree-standard.md text eol=lf

@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # A file over the token limit
 
 ## A changed file over the token limit

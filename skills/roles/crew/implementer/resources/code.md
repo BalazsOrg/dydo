@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # Writing code
 
 - Load /codebase-design when you design a seam or an interface.

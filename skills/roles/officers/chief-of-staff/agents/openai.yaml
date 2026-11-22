@@ -1,3 +1,2 @@
-# built from the model; edit there: tools/SkillBuild
 policy:
   allow_implicit_invocation: false

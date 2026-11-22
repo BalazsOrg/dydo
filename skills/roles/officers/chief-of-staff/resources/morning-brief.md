@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # Morning brief
 
 - Fill this in the conversation once `overnight-mode` has verified the shutdown, writing nothing to the repo.

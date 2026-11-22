@@ -15,7 +15,7 @@ SELECTION = Path('DynaDocs.Tests/coverage/dotnet-platforms.json')
 WINDOWS_RESULTS = 'windows-tests.trx'
 _TRX = '{http://microsoft.com/schemas/VisualStudio/TeamTest/2010}'
 PLATFORMS = ('linux', 'windows')
-SOURCE_FACTS = ('dydo', 'GateMetrics', 'SkillBuild')
+SOURCE_FACTS = ('dydo', 'GateMetrics')
 _SUMMARY = re.compile(r'(?:Passed|Failed)!\s+-\s+Failed:\s+(\d+),\s+Passed:\s+(\d+),'
                       r'\s+Skipped:\s+(\d+),\s+Total:\s+(\d+)')
 _TEST = re.compile(r'^(DynaDocs\.Tests(?:\.\w+)+)\.(\w+)\.(\w+)$')

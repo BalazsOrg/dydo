@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "OverLimit": "A changed file over the token limit · T15, T16",
   "Split": "Split under the limit · T15",

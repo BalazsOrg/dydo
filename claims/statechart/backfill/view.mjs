@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Untagged": "Accepted DR, untagged · L12",
   "Drafted": "Tags drafted · L12",

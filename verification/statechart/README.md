@@ -22,8 +22,8 @@ adjacent `.cfg` registers `INVARIANT` and `PROPERTY` checks using the statechart
 skill's configuration interface. The runner copies the original generated
 module and its configuration to scratch, preserves its `CONSTRAINT Bounds`,
 changes only the entry points to the observer wrapper, and appends this property
-registration. Neither properties nor registrations live under the builder's
-`claims/statechart/` output. No model build produces these files.
+registration. Neither properties nor registrations live under
+`claims/statechart/`.
 
 One machine is not generated. The captain's chart and model are written by hand
 in `statechart/captain/` (DYD-1437), and the runner finds them there. Its

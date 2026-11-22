@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Day": "By day · H7",
   "Investigating": "Investigating for him · H7",

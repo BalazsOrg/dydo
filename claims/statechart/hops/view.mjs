@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Cut": "A step is cut · S1, S2, S7",
   "OneTicket": "One ticket, no hops · S4, R12",

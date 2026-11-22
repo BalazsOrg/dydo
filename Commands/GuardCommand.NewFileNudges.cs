@@ -6,25 +6,18 @@ using DynaDocs.Utils;
 /// Write-target nudges. New-file nudges (<c>"match": "new-file"</c>): the pattern is matched against
 /// the project-relative, forward-slash path of each file a write tool is about to create. A target
 /// that already exists as a file or directory never fires, so edits to existing files pass.
-/// Shell-created files are not seen here; they stay with command nudges. Built files: a write to
-/// an existing file that carries the skill builder's header gets the built-file warn
-/// (<see cref="BuiltFileWarns"/>).
+/// Shell-created files are not seen here; they stay with command nudges.
 /// </summary>
 public static partial class GuardCommand
 {
     internal static int? CheckNewFileNudges(IReadOnlyList<string> targets, string? cwd, GuardEnv env)
     {
-        var directory = cwd ?? Environment.CurrentDirectory;
-        var warns = BuiltFileWarns(targets, directory, env.ProjectRoot);
         var nudges = env.Config?.Nudges.Where(n => n.IsNewFileMatch).ToList() ?? [];
-        if (nudges.Count > 0 && env.ProjectRoot != null)
-        {
-            var newPaths = NewProjectPaths(targets, directory, env.ProjectRoot);
-            var verdict = MatchNewFileNudges(nudges, newPaths, warns);
-            if (verdict != null) return verdict;
-        }
+        if (nudges.Count == 0 || env.ProjectRoot == null) return null;
 
-        return EnforceWarns(warns, env);
+        var warns = new List<WarnStep>();
+        var newPaths = NewProjectPaths(targets, cwd ?? Environment.CurrentDirectory, env.ProjectRoot);
+        return MatchNewFileNudges(nudges, newPaths, warns) ?? EnforceWarns(warns, env);
     }
 
     // A block returns its verdict at once; a warn joins the call's warns, which wait until no block

@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Wired": "Parts wired, before the Merge hop · R1, R2, R6",
   "Round": "Review round · R3, R5, R6, R8, R12, R15, R33",
