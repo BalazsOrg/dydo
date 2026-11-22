@@ -9,6 +9,8 @@ date: 2026-10-28
 
 > **Amended 2026-11-18:** [the accepted landing amendment below](#amendment-2026-11-18---walk-the-landing-candidate) replaces §2's after-landing timing and §5's landing on main.
 
+> **§5's nit clause amended** (Balazs, 2026-11-22, [DYD-1440](https://linear.app/bodnar-balazs/issue/DYD-1440/walkthrough-balazs-reads-the-first-proof-in-full), "Unless it's their job to decide a thing. Because then they decide that."): at the landing the walkthrough lists every nit that needs no fix with its reviewer's ruling, bringing the user only rulings already made; "for the user to promote any" is retired. The rest remains in force.
+
 A Project's Linear Milestones are the user's checkpoints. Each one ends on a Walkthrough Ticket that
 walks the whole product as it stands, and only the first, the walking skeleton, holds back the work
 built on it, except overnight. Ruled by Balazs on 2026-10-27 in a co-think and on 2026-10-28 on the

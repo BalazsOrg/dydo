@@ -8,7 +8,8 @@ description: Show me the product as it stands - what changed since the last walk
 Give the user the tour of the whole product as it stands, so it makes sense to him when not close in.
 
 A Project has one Walkthrough Ticket per Milestone, the landing's last. At a Milestone, walk the
-feature branch at the SHA its last merge left; at the landing, walk main after it landed. The map
+feature branch at the SHA its last merge left; at the landing, walk the feature branch with master
+merged in, the exact tree master will get, before it merges. The map
 holder runs the ticket with the user; he walks it, or skips it, and a skip is his verdict to go on.
 The argument names what to walk - a Milestone, a Project's landing, a feature branch, a ticket, a
 diff range. Ask which one when it is missing.
