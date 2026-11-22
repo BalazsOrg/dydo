@@ -22,9 +22,9 @@ Parts 2 to 4 replace the frame's actions in their section of `Captain.tla` with 
 
 ## The event record
 
-Every step sets `event` to the set of events it is, each with its name and who takes it: the captain, its officer, a part's holder, the reviewer on the round's Review hop, the Fix's holder, the captain of the Question it waits on, Balazs, or the tools. A property reads an event from this record, never from the state a step lands in. An arrow's condition reads it too: "the verdict is PASS" holds of a step only when the verdict on record is PASS and the step is the captain acting on it.
+Every step sets `event` to the set of events it is, each with its name and who takes it: the captain, its officer, a part's holder, the reviewer on the round's Review hop, the Fix's holder, the captain of the Question it waits on, Balazs, or the tools. A property reads an event from this record, never from the state a step lands in. An arrow's condition reads it too: "the verdict is PASS" holds of a step only when the verdict on record is PASS and the step is the captain acting on it. An actor named on an event is its only actor: a step that gives the same event to a second position fails both.
 
-The facts a rule decides on (the ticket's result, the proof on the head, the verdict and its blockers, the gates, the landing) are variables beside it, each naming the rows it serves.
+The facts a rule decides on (the ticket as found on dispatch, its result, the proof on the head, a call met that the captain may not decide, what the captain found when it checked its contract, the verdict and its blockers, the gates, the landing) are variables beside it, each naming the rows it serves. `FR29_TheRecordIsFaithful` holds the record to them: each fact changes only in a step whose events name that change.
 
 ## Files
 
@@ -58,7 +58,7 @@ The properties the model must keep are hand-written too, in [verification/statec
 - **a step under an arrow where the arrow's condition is false of it**: each arrow's words are tested on every step under it, over the values of the step's two states and its events, not on its endpoints alone;
 - a place the map gives an action that no step of it takes, a chart arrow no step stands under, a chart state no reachable model state is shown as, and a model state or action never reached.
 
-`mutants.mjs` shows the checks bite. Each mutant changes one line of a copy of the model, and the check it names must fail on it: the view check for the PASS arrow taken on a FAIL, the FAIL arrow on a PASS, a close before the result is in, and six more; a property for each of the frame's five properties.
+`mutants.mjs` shows the checks bite. Each mutant changes one line of a copy of the model, and the check it names must fail on it: the view check for the PASS arrow taken on a FAIL, the FAIL arrow on a PASS, a close before the result is in, a held ticket taken, the next parts cut on a met contract, and ten more; the frame's six properties for eight more, among them a captain's verdict beside the reviewer's and a verdict written under another event's name.
 
 `check-register.mjs` checks that the register stays closed: every spec rule and every source key it defines is cited by a row; every action in `Next` is named by a row of part 1 and its comment cites a row; every registered property is named after its property row; and every row a file cites exists.
 
@@ -80,7 +80,7 @@ node REPO/statechart/captain/check-register.mjs
 /var/tmp/dydo-gate-lock.sh python3 REPO/verification/statechart/run.py --controls --machine captain --skill /tmp/chartroot/skills/engineering/statechart --out /tmp/captain-controls
 ```
 
-The first command checks `TypeOK` and `NoDeadlock` with the statechart tool and draws the chart, and installs the Java and TLC the other checks use; set `JAVA` and `TLA2TOOLS` to use other copies. The next three are the view check, the register check and the mutants. The fifth checks the properties. The sixth runs a deliberately wrong step and passes when the properties catch it. Never commit what the commands write.
+The first command checks `TypeOK` and `NoDeadlock` with the statechart tool, draws the chart when the model has at most 500 states, and installs the Java and TLC the other checks use; set `JAVA` and `TLA2TOOLS` to use other copies. The next three are the view check, the register check and the mutants. The fifth checks the properties. The sixth runs a deliberately wrong step and passes when the properties catch it. Never commit what the commands write.
 
 ## What neither the model nor the view holds
 

@@ -54,8 +54,8 @@ def selected_models(root, names, parser):
 
 def inject_control(model, entry, control):
     modules = '\n'.join(p.read_text() for p in sorted(model.parent.glob('*.tla')))
-    declarations = re.search(r'^VARIABLES (.+)$', modules, re.MULTILINE)
-    auxiliaries = [v.strip() for v in declarations[1].split(',') if v.strip() != 'state']
+    declarations = re.findall(r'^VARIABLES (.+)$', modules, re.MULTILINE)
+    auxiliaries = [v.strip() for line in declarations for v in line.split(',') if v.strip() != 'state']
     values = control.get('variables', {})
     if set(values) != set(auxiliaries):
         raise ValueError('control must explicitly initialize every auxiliary variable: ' + model.stem)

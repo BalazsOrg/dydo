@@ -11,23 +11,25 @@
   },
   "captain": {
     "from": "Leaf",
-    "to": "Done",
+    "to": "InReview",
     "variables": {
-      "event": "{[name |-> \"close\", by |-> \"captain\"]}",
-      "kind": "\"change\"",
+      "event": "{[name |-> \"dispatch a reviewer\", by |-> \"captain\"]}",
+      "ticket": "\"free\"",
+      "kind": "\"verdict\"",
       "merges": "FALSE",
       "proved": "FALSE",
       "written": "FALSE",
       "call": "\"none\"",
       "asked": "\"none\"",
       "part": "\"none\"",
+      "contract": "\"unchecked\"",
       "verdict": "\"none\"",
       "blockers": "{}",
       "gates": "\"none\"",
       "landed": "\"no\"",
       "ci": "\"none\""
     },
-    "property": "FR24_DoneWhenTheContractIsMet"
+    "property": "FR28_AVerdictIsNotReviewedAgain"
   },
   "claim-build": {
     "from": "Edited",
