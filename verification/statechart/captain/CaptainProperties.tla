@@ -68,26 +68,53 @@ FR27_FailHasABlocker ==
 FR28_AVerdictIsNotReviewedAgain ==
     [][Happens("dispatch a reviewer") => kind = "change"]_<<vars, seen>>
 
-\* FR29 (the event record, DYD-1504 contract 3; W1): the record is faithful. Each fact a rule decides
-\* on changes only in a step whose events name that change, so a property that reads the event sees
-\* every such change.
+\* The position each event belongs to, from the register's rows: the officer dispatches and opens a
+\* Question (IQ9), the Question's captain answers (IQ11), a part's holder returns it (SP3), the Fix's
+\* holder proves or hands back the Fix (RM9, RM26), the tools run the gates (RM15, RM17), the reviewer
+\* writes the verdict on a change and a verdict ticket's captain its own (FR26), and the captain takes
+\* every other step of its ticket.
+Owner(n) ==
+    CASE n \in {"dispatched", "open a Question"} -> "officer"
+      [] n = "answer" -> "question"
+      [] n = "a part returns" -> "part"
+      [] n \in {"prove the Fix", "the Fix comes back undone"} -> "fixer"
+      [] n \in {"run the gates", "green on the merge SHA"} -> "tools"
+      [] n = "write the verdict" -> IF kind = "verdict" THEN "captain" ELSE "reviewer"
+      [] OTHER -> "captain"
+
+\* A fact changed in the step, and one of the events named in s is in it.
+By(s) == \E x \in event' : x.name \in s
+
+\* FR29 (the event record, DYD-1504 contract 3; W1): the record is faithful. Every event of a step is
+\* taken by the position it belongs to, and by no other. Each fact a rule decides on changes only in a
+\* step whose events name that change, so a property that reads the events sees every such change.
 FR29_TheRecordIsFaithful ==
-    [][ /\ kind' # kind => Happens("set In Progress")
-        /\ (verdict' \in {"pass", "fail"} /\ verdict' # verdict) => Happens("write the verdict")
-        /\ (verdict' = "due" /\ verdict # "due") => Happens("dispatch a reviewer")
-        /\ (blockers' # blockers /\ blockers' # {}) => Happens("write the verdict")
-        /\ (proved' /\ ~proved) => Happens("prove the work") \/ Happens("prove the Fix") \/ Happens("wire the parts")
-        /\ (call' = "settled" /\ call # "settled") => Happens("answer the call")
-        /\ (written' /\ ~written) => Happens("write the result")
-        /\ (asked' = "needed" /\ asked # "needed") => Happens("meet a call it may not decide")
-        /\ (asked' = "open" /\ asked # "open") => Happens("open a Question")
-        /\ (asked = "open" /\ asked' # "open") => Happens("answer")
-        /\ (part' = "out" /\ part # "out") => Happens("dispatch the parts")
-        /\ (part' = "back" /\ part # "back") => Happens("a part returns")
-        /\ (part' = "wired" /\ part # "wired") => Happens("wire the parts")
-        /\ (contract' \in {"not met", "met", "cannot be met"} /\ contract' # contract) => Happens("check the contract against the spec")
-        /\ (gates' \in {"green", "red", "conflict"} /\ gates' # gates) => Happens("run the gates") \/ Happens("green on the merge SHA")
-        /\ (landed' # landed) => Happens("merge")
-        /\ (ci' # ci) => Happens("green on the merge SHA")
+    [][ /\ \A x \in event' : x.by = Owner(x.name)
+        /\ ticket' = ticket
+        /\ (kind' # kind \/ merges' # merges) => By({"set In Progress"})
+        /\ (proved' /\ ~proved) => By({"prove the work", "prove the Fix", "wire the parts"})
+        /\ (proved /\ ~proved') => By({"open a Fix", "proves too big"})
+        /\ written' # written => By({"write the result"})
+        /\ (call' # call) => By(IF call' = "open" THEN {"set In Progress"} ELSE {"answer the call"})
+        /\ (asked' # asked) =>
+             By(CASE asked' = "needed" -> {"meet a call it may not decide"}
+                  [] asked' = "open" -> {"open a Question"}
+                  [] OTHER -> {"answer"})
+        /\ (part' # part) =>
+             By(CASE part' = "out" -> {"dispatch the parts"}
+                  [] part' = "back" -> {"a part returns"}
+                  [] part' = "wired" -> {"wire the parts"}
+                  [] OTHER -> {"cut the next parts", "dispatch a reviewer", "close"})
+        /\ (contract' # contract) =>
+             By(IF contract' = "unchecked" THEN {"cut the next parts"} ELSE {"check the contract against the spec"})
+        /\ (verdict' # verdict) =>
+             By(CASE verdict' = "due" -> {"dispatch a reviewer"}
+                  [] verdict' \in {"pass", "fail"} -> {"write the verdict"}
+                  [] OTHER -> {"act on PASS", "act on FAIL"})
+        /\ blockers' # blockers => By({"write the verdict", "dispatch a reviewer"})
+        /\ (gates' # gates) =>
+             By(IF gates' = "none" THEN {"merge", "open a Fix"} ELSE {"run the gates", "green on the merge SHA"})
+        /\ landed' # landed => By({"merge"})
+        /\ ci' # ci => By({"green on the merge SHA"})
     ]_<<vars, seen>>
 ====

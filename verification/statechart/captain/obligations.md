@@ -27,7 +27,7 @@ Every step of the model sets `event`, the event record: the set of events the st
 | FR26_EachDecidesItsJob | FR26 | The verdict on a change is written by the reviewer alone, never the captain or the Fix's holder; a verdict ticket's captain writes its own; only an answer's captain settles its call. |
 | FR27_FailHasABlocker | FR27 | A verdict written FAIL has at least one blocker, and one written PASS has none. |
 | FR28_AVerdictIsNotReviewedAgain | FR28 | A reviewer is dispatched only onto a change. |
-| FR29_TheRecordIsFaithful | FR29 | Each fact changes only in a step whose events name the change: the kind with the step that sets the ticket In Progress, a written verdict with its writing, the proof with a proof or the wiring, and so on for each variable. |
+| FR29_TheRecordIsFaithful | FR29 | Every event of a step is taken by the position it belongs to (`Owner`, from the register's rows), and by no other. The ticket as found never changes, and every other fact changes only in a step whose events name that change, each way it can change: the kind with the step that sets the ticket In Progress, a written verdict with its writing, the proof with a proof or the wiring, its loss with a Fix or a split, and so on for each variable. |
 
 The register's other property rows are owed by parts 2 to 4. The properties written for the model before the re-cut, at `9c67651e`, are there for those parts to draw on; each must be rewritten from its register row, reading the event record.
 
@@ -41,7 +41,7 @@ The register's other property rows are owed by parts 2 to 4. The properties writ
 
 The captain's registered control in `verification/statechart/controls.json` starts in `Leaf` on a ticket whose result is a verdict, with a reviewer's dispatch on record, and steps to `InReview`. `FR28_AVerdictIsNotReviewedAgain` must catch it, and no other frame property reads that step as broken. `run.py --controls` keeps every variable but `state` unchanged on its wrong step, so the step's events are the ones its start state records; `run.py` initializes every variable of `CaptainBase.tla` but `state` explicitly.
 
-`statechart/captain/mutants.mjs` adds eight property mutants: a close before the result is in and a second actor on a close (FR24), a step after a close (FR25), the captain writing the verdict on its own change and a captain's verdict beside the reviewer's (FR26), a FAIL with no blocker (FR27), a verdict sent to review (FR28), and a verdict written under another event's name (FR29). Each must be reported broken by TLC.
+`statechart/captain/mutants.mjs` adds ten property mutants: a close before the result is in and a second actor on a close (FR24), a step after a close (FR25), the captain writing the verdict on its own change and a captain's verdict beside the reviewer's (FR26), a FAIL with no blocker (FR27), a verdict sent to review (FR28), and a verdict written under another event's name, an officer's proof beside the captain's, and a Fix that clears the blockers under its proof (FR29). Each must be reported broken by TLC.
 
 ## Receipts
 

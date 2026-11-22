@@ -24,7 +24,7 @@ Parts 2 to 4 replace the frame's actions in their section of `Captain.tla` with 
 
 Every step sets `event` to the set of events it is, each with its name and who takes it: the captain, its officer, a part's holder, the reviewer on the round's Review hop, the Fix's holder, the captain of the Question it waits on, Balazs, or the tools. A property reads an event from this record, never from the state a step lands in. An arrow's condition reads it too: "the verdict is PASS" holds of a step only when the verdict on record is PASS and the step is the captain acting on it. An actor named on an event is its only actor: a step that gives the same event to a second position fails both.
 
-The facts a rule decides on (the ticket as found on dispatch, its result, the proof on the head, a call met that the captain may not decide, what the captain found when it checked its contract, the verdict and its blockers, the gates, the landing) are variables beside it, each naming the rows it serves. `FR29_TheRecordIsFaithful` holds the record to them: each fact changes only in a step whose events name that change.
+The facts a rule decides on (the ticket as found on dispatch, its result, the proof on the head, a call met that the captain may not decide, what the captain found when it checked its contract, the verdict and its blockers, the gates, the landing) are variables beside it, each naming the rows it serves. `FR29_TheRecordIsFaithful` holds the record to them: every event is taken by the position it belongs to, and each fact changes only in a step whose events name that change.
 
 ## Files
 
@@ -58,7 +58,7 @@ The properties the model must keep are hand-written too, in [verification/statec
 - **a step under an arrow where the arrow's condition is false of it**: each arrow's words are tested on every step under it, over the values of the step's two states and its events, not on its endpoints alone;
 - a place the map gives an action that no step of it takes, a chart arrow no step stands under, a chart state no reachable model state is shown as, and a model state or action never reached.
 
-`mutants.mjs` shows the checks bite. Each mutant changes one line of a copy of the model, and the check it names must fail on it: the view check for the PASS arrow taken on a FAIL, the FAIL arrow on a PASS, a close before the result is in, a held ticket taken, the next parts cut on a met contract, and ten more; the frame's six properties for eight more, among them a captain's verdict beside the reviewer's and a verdict written under another event's name.
+`mutants.mjs` shows the checks bite. Each mutant changes one line of a copy of the model, and the check it names must fail on it: the view check for the PASS arrow taken on a FAIL, the FAIL arrow on a PASS, a close before the result is in, a held ticket taken, the next parts cut on a met contract, a hand-back that overwrites its reason, and eleven more; the frame's six properties for ten more, among them a captain's verdict beside the reviewer's, an officer's proof beside the captain's, and a verdict written under another event's name.
 
 `check-register.mjs` checks that the register stays closed: every spec rule and every source key it defines is cited by a row; every action in `Next` is named by a row of part 1 and its comment cites a row; every registered property is named after its property row; and every row a file cites exists.
 

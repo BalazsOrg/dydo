@@ -52,10 +52,12 @@ Split ==
     /\ event' = {Ev("needs more than one agent", "captain")}
     /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* FR5, IQ7: the escape hatch. The work proves too big, so it splits what is left.
+\* FR5, IQ7: the escape hatch. The work proves too big, so it splits what is left: its result is not
+\* in yet.
 SplitTheRest ==
     /\ state = "Leaf"
     /\ asked = "none"
+    /\ ~ResultIn
     /\ state' = "Cutting"
     /\ event' = {Ev("proves too big", "captain")}
     /\ proved' = FALSE

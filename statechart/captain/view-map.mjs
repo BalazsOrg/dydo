@@ -72,6 +72,8 @@ const handsBack = (to) => has(to, "hand back", "captain");
 const resultIn = (s) =>
   s.kind === "change" ? s.proved : s.kind === "verdict" ? ["pass", "fail"].includes(s.verdict) : s.kind === "answer" ? s.call === "settled" : s.written;
 const same = (a, b) => a.length === b.length && a.every((x) => b.includes(x));
+// Nothing of the ticket changed in the step but where the captain is and the step's events.
+const untouched = (a, b) => Object.keys(a).every((k) => k === "state" || k === "event" || JSON.stringify(a[k]) === JSON.stringify(b[k]));
 
 // Each chart arrow's condition: what its words claim of every step under it, in plain words (claim),
 // and as a test over the step's two states (holds). Written from the words, never from the model's
@@ -80,11 +82,13 @@ const same = (a, b) => a.length === b.length && a.every((x) => b.includes(x));
 export const conditions = {
   "Dispatched --> HandedBack": {
     claim: "the ticket is held by another agent or closed, so the captain cannot take it and hands it back untouched, with the reason on record",
-    holds: (a, b) => ["held", "closed"].includes(a.ticket) && has(b, "cannot take", "captain") && handsBack(b) && b.kind === "unread",
+    holds: (a, b) =>
+      ["held", "closed"].includes(a.ticket) && has(b, "cannot take", "captain") && handsBack(b) && b.kind === "unread" && untouched(a, b),
   },
   "Dispatched --> Taken": {
     claim: "the ticket is free, the captain sets it In Progress, and its result is read from it",
-    holds: (a, b) => a.ticket === "free" && has(b, "set In Progress", "captain") && a.kind === "unread" && b.kind !== "unread",
+    holds: (a, b) =>
+      a.ticket === "free" && b.ticket === "free" && has(b, "set In Progress", "captain") && a.kind === "unread" && b.kind !== "unread",
   },
   "Taken --> Leaf": {
     claim: "the captain sizes the ticket as fitting one agent",
@@ -95,8 +99,8 @@ export const conditions = {
     holds: (a, b) => has(b, "needs more than one agent", "captain"),
   },
   "Leaf --> Cutting": {
-    claim: "the captain finds the work too big and splits what is left",
-    holds: (a, b) => has(b, "proves too big", "captain"),
+    claim: "the captain finds the work too big before its result is in, and splits what is left",
+    holds: (a, b) => !resultIn(a) && has(b, "proves too big", "captain"),
   },
   "Leaf --> Asking": {
     claim: "the work has met a call the captain may not decide; it passes the need up, its officer opens a Question for a fresh agent, and the work waits on it",
@@ -129,8 +133,8 @@ export const conditions = {
     holds: (a, b) => has(b, "cannot be cut inside the ticket", "captain") && handsBack(b),
   },
   "Waiting --> Cutting": {
-    claim: "a part is back, the captain has found its contract not met yet, and it cuts the next parts",
-    holds: (a, b) => a.part === "back" && a.contract === "not met" && has(b, "cut the next parts", "captain"),
+    claim: "a part is back, the captain has found its contract not met yet and its result is not in, and it cuts the next parts",
+    holds: (a, b) => a.part === "back" && a.contract === "not met" && !resultIn(a) && has(b, "cut the next parts", "captain"),
   },
   "Waiting --> HandedBack": {
     claim: "a part is back and the captain has found its contract cannot be met inside this ticket; it hands it back",
@@ -173,7 +177,7 @@ export const conditions = {
   },
   "Merging --> Done": {
     claim: "the merge is in, its gates and CI are green on the merge SHA, and the captain closes the ticket",
-    holds: (a, b) => b.landed === "in" && b.gates === "green" && b.ci === "green" && has(b, "close", "captain"),
+    holds: (a, b) => a.landed === "in" && b.landed === "in" && b.gates === "green" && b.ci === "green" && has(b, "close", "captain"),
   },
   "Merging --> Fixing": {
     claim: "the merge is not clean and green: a CONFLICT or a real red is on record, and a Fix ticket repairs it",

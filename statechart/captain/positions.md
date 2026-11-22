@@ -56,7 +56,7 @@ A call a captain may not decide becomes a Question ticket for a fresh agent (cor
   - a call worth his time goes toward his HITL queue: it opens a child Question at stage `his-call`, Mode HITL, with his question made ready on it, every option, each option's trade-off and a recommendation (core, "Who decides what"; H16). The coordinator dispatches an envoy onto that same ticket when its turn comes (H16, H18).
 
   It waits in `Asking` on the child's answer. A council that decided gives the answer; a council that prepared the call for him sends it on to a his-call child (L18, L20). Only a research Question's captain opens a `council` or `his-call` child. A his-call child closes only on his answer (core, "Who decides what").
-- **A council.** Its chair cuts the case to two judges from different families, who take sealed positions; then one exchange follows; then the exits: decided when the judges agree on a two-way call, or overnight on a two-way, seriously blocking DR-grade call as a proposed DR (L21); prepared for him otherwise, and always for a one-way call (L18).
+- **A council.** Its chair cuts the case to two judges from different families, who take sealed positions; with one family out it runs on what is left (L22; register IQ20); then one exchange follows; then the exits: decided when the judges agree on a two-way call, or overnight on a two-way, seriously blocking DR-grade call as a proposed DR (L21); prepared for him otherwise, and always for a one-way call (L18).
 - **A Question that comes back without its answer.** Its officer, the one that opened it, passes it up as a problem outside its ticket (core, "How the process must feel"), or dispatches a fresh agent onto it. The captain that waits on it goes on waiting: `Asking` has one way out, the answer on the Question.
 
 What each row rests on:
@@ -86,6 +86,6 @@ The model is the frame for now (DYD-1504; see the README): its states are the ch
 - `FR26_EachDecidesItsJob`: the verdict on a change is the reviewer's, never its captain's or the Fix's holder's; a reviewer writes its own verdict, and a Question's captain settles its own call.
 - `FR28_AVerdictIsNotReviewedAgain`: a reviewer is dispatched only onto a change, never onto a verdict, a seat's findings, an answer or a cut.
 
-The rest of this page's states column and waits are register rows owed by the parts: a seat never delegates (SP2), only a merger reaches review, fix and merge (RM1), a cut gets no review (IQ24), a captain that has cut never works itself (SP1), a council is never one agent (IQ22), a child Question only after research (IQ16), the receiving officer opens a Question (IQ9, SP13), a part waits on its answer (SP14), and a review's verdict comes once its seats are back (SP19).
+The rest of this page's states column and waits are register rows owed by the parts: a seat never delegates (SP2), only a merger reaches review, fix and merge (RM1), a cut gets no review (IQ24), a captain that has cut never works itself (SP1), a council is never one agent (IQ22), a child Question only after research (IQ16), the receiving officer opens a Question (IQ9, SP13), a part waits on its answer (SP14), and a review's verdict comes once its seats are back (SP20).
 
 The model cannot see which skill an agent loaded or what its brief said. Those are checked by reading, with the three checks above.
