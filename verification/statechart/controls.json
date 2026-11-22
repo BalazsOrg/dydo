@@ -14,7 +14,13 @@
     "to": "Done",
     "variables": {
       "kind": "\"change\"",
-      "merges": "FALSE"
+      "merges": "FALSE",
+      "target": "\"none\"",
+      "filler": "FALSE",
+      "round": "0",
+      "extra": "FALSE",
+      "lens": "\"none\"",
+      "stage": "\"research\""
     },
     "property": "H16_ResumeLeafAfterQuestion"
   },

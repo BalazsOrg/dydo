@@ -2,8 +2,10 @@
 title: "A captain and its ticket"
 ---
 stateDiagram-v2
-  %% Written by hand. This is the picture of the process the role skills describe.
-  %% Captain.tla beside it is the same machine for the model checker: one arrow here is one action there.
+  %% Written by hand. The simple view of the process the role skills describe, for reading.
+  %% Captain.tla beside it is the comprehensive model, with every state and rule; skills are checked against it.
+  %% view-map.mjs shows each model state as one state here, and puts each model action under one arrow here
+  %% or inside one state; check-chart.mjs proves this view faithful to the model.
   %% Each arrow is one case. The comment above an arrow names what it rests on:
   %% "core" is dydo/core.md, a letter and number is a rule of Spec: dydo 4.0.0.
   Dispatched: Dispatched onto a ticket
