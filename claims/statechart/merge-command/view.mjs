@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Invoked": "dydo merge run on a PR · R23",
   "Refused": "Refused with a stated reason · R19, R23, R26, R27",

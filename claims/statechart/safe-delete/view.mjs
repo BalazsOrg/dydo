@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Live": "Branch or worktree in use, a T3 worktree included · N10",
   "Archived": "Archived for 30 days · N10",

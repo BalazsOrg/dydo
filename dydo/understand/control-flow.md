@@ -7,8 +7,7 @@ type: hub
 
 This page described the dydo 3 operating model and is retired. The dydo 4.0.0 flow (who acts, every
 state and every arrow, each citing the spec rules it rests on) is the statechart, at
-`claims/statechart/README.md` from the repository root. Its machines are built from the
-claim model, the same claims the role skills are built from (K1).
+`claims/statechart/README.md` from the repository root.
 
 Cut by the 2026-11-19 walkthrough (DYD-1082 1bc04dce change 13; Q19 in 1b6b6a5d).
 

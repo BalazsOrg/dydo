@@ -3,7 +3,6 @@ name: coordinator
 description: Hold one open Project to its landing, through its spec, map, captains, envoys and merges.
 disable-model-invocation: true
 ---
-<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Coordinator
 

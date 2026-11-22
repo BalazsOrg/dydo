@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Convened": "Council convened · L14, L15, L16",
   "Waiting": "Merge confidence waiting for both families · L22",

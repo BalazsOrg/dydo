@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Invoked": "dydo statechart invoked · N12 DR 062 §1",
   "InvalidOverride": "An explicit invalid override: an error · N12 DR 062 §1",

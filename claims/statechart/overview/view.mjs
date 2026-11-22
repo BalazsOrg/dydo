@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "ClaimArea": "The claim build and the role evaluation · K1, K4, K6, K7, K16, K22, K24",
   "HostArea": "Host settings, the guard and the statechart tool · N12 DR 055 §1, N12 DR 056 §1, N12 DR 062 §1, H20",

@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Staffing": "Staffing a seat · R12, R13, R14, R15, K14",
   "Briefed": "Briefed · H3, K14",

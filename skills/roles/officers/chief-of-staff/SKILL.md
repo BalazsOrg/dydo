@@ -3,7 +3,6 @@ name: chief-of-staff
 description: Your short list across Projects, and the overnight watch.
 disable-model-invocation: true
 ---
-<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Chief of Staff
 

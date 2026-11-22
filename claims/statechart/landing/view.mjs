@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Integrated": "Delivery merged into the feature branch · N5",
   "Mapped": "A round from zero: a fresh feature map · N5",

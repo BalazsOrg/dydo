@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Live": "Hop In Progress, recently changed · S24",
   "Quiet": "A liveness finding · S24, S23",

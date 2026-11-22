@@ -2,11 +2,10 @@
 area: guides
 type: guide
 ---
-<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Working-Tree Standard
 
-- How a Project's work moves through branches, worktrees, hops and merges; every rule here is a claim, built from the same model as the role skills.
+- How a Project's work moves through branches, worktrees, hops and merges; every rule here is a claim.
 
 ## Invariants
 

@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Questioned": "A role skill questioned: should it exist, or fold into another? · K22, K19",
   "Kept": "Kept as a survivor · K22",

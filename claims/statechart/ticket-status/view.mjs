@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "New": "Not yet on the board · S2",
   "FutureFeature": "FutureFeature · S5",

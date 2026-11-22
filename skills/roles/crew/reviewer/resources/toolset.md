@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # Toolset
 
 Legend: **due** every time; **if** when warranted; **–** not at this level.

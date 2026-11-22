@@ -803,8 +803,6 @@ def _campaign_identities(worktree, result_root):
         worktree / "DynaDocs.Tests/bin/Debug/net10.0/DynaDocs.Tests.pdb",
         worktree / "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.dll",
         worktree / "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0/GateMetrics.pdb",
-        worktree / "tools/SkillBuild/bin/Debug/net10.0/SkillBuild.dll",
-        worktree / "tools/SkillBuild/bin/Debug/net10.0/SkillBuild.pdb",
     ]
     reports = [path for path in result_root.rglob("coverage*") if path.is_file()]
     return [*sources, *binaries, *reports]

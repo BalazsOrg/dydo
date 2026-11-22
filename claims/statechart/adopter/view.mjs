@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Released": "A dydo release ships · K18, N1",
   "Updating": "One ordinary update, with its Upgrade note · K18, N8, L2",

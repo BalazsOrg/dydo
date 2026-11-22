@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # A surviving mutant
 
 ## A survivor to fix or claim

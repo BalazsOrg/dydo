@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Watch": "Findings arrive · S22, S26, Y9, Y8",
   "Board": "dydo survey board read · S22, S25, S26, H7",

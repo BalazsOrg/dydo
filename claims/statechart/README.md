@@ -1,23 +1,16 @@
 # The dydo 4.0.0 statechart
 
-The whole of dydo 4.0.0 as 31 machines, generated from the C# claim model in `tools/SkillBuild`
-(DYD-1225, K1). Every state and arrow cites the rules of `Spec: dydo 4.0.0` (approved at updatedAt
+The whole of dydo 4.0.0 as 31 machines (DYD-1225, K1). Every state and arrow cites the rules of `Spec: dydo 4.0.0` (approved at updatedAt
 2026-11-20T01:58:55.576Z) it rests on; an arrow the spec leaves open is drawn as `GAP: …`. The role
 skills' moves are the same claims as these arrows, so the two cannot drift. The skills are kept
 barebones; the chart is not, and it holds behaviour the skills leave unsaid.
 
-Everything here except this README and the `chart.mmd` files is built: in each machine's folder
-its `transitions.json`, `<Machine>.tla`, `<Machine>.cfg` and `view.mjs`. Edit the model, never the
-files.
+The captain's chart is not here. It lives in `statechart/captain/` (DYD-1437).
 
-The captain's chart is not here. It is written by hand, in `statechart/captain/` (DYD-1437), and
-the build writes none of it.
+## Redraw a chart
 
-## Rebuild
-
-1. `dotnet run --project tools/SkillBuild` from the repository root writes every built file.
-2. For each machine, `dydo statechart <abs>/claims/statechart/<machine>/<Machine>.tla --skill <statechart skill> --config <abs>/claims/statechart/<machine>/<Machine>.cfg --view <abs>/claims/statechart/<machine>/view.mjs --out <scratch>/<machine>`, then copy `<scratch>/<machine>/chart.mmd` here.
-3. Never commit `tlc.out`, `report.md` or `chart.svg`: TLC output stays out of tracked evidence (N14).
+1. For each machine, `dydo statechart <abs>/claims/statechart/<machine>/<Machine>.tla --skill <statechart skill> --config <abs>/claims/statechart/<machine>/<Machine>.cfg --view <abs>/claims/statechart/<machine>/view.mjs --out <scratch>/<machine>`, then copy `<scratch>/<machine>/chart.mmd` here.
+2. Never commit `tlc.out`, `report.md` or `chart.svg`: TLC output stays out of tracked evidence (N14).
 
 ## Charts, in the overview's order
 

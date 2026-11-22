@@ -2,7 +2,6 @@
 name: research
 description: A question a choice waits on - pool evidence from every source family that could own the answer, verify each claim at its source, and cite it.
 ---
-<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Research
 

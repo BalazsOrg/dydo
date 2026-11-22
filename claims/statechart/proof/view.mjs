@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Start": "A test enters the suite · T1",
   "Written": "A proof test in the ticket's commits · T5, T4",
