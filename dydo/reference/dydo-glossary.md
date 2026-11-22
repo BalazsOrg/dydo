@@ -122,7 +122,8 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   the fix can wait; the captain files it as its own ticket, and a Project lands only once each is
   `Done` or closed with a reason. A `nit`: an observation that gets a ruling, and may need no fix at
   all; a reviewer rules each one, it is one line on the ticket's record, and the final walkthrough
-  lists it with its ruling, bringing the user only rulings already made; an inquisition's nits go on
+  lists each that needs no fix with its ruling, bringing the user only rulings already made (one
+  ruled to need a fix becomes a `should`, listed as one); an inquisition's nits go on
   its round's nit ticket instead (DR 059). The fix-hop author checks each label against
   the source and may change it with evidence; the captain records the change and its reason.
 - **Merge review** - kept only at the landing, as a Merge-confidence council on the landing
