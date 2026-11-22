@@ -33,9 +33,9 @@ or a review left doubt.
   and its ticket record, and every open inquisition nit ticket, each nit with its ruling.
 
 Bring him only rulings reviewers made and calls truly his: no agent's job, and left open by his
-recorded words, the spec and the statechart, where the project has one. Send a finding with no
-ruling to a fresh reviewer agent, briefed with `/ticket-captain`, for its ruling before the tour;
-never bring it to him. State each item you put to him in plain words, what it does or what it
+recorded words, the spec and the statechart, where the project has one. For a finding with no
+ruling, open a Review ticket that asks only for its ruling and dispatch a fresh agent onto it,
+briefed with `/ticket-captain`, before the tour; never bring it to him. State each item you put to him in plain words, what it does or what it
 changes; a DR's number, a rule ID, a state name, a finding number or a ticket key may follow, never
 stand in its place. Restate a finding he rules on as what is wrong and what the fix would change,
 never only its number or a quote from the review record.
@@ -43,7 +43,7 @@ never only its number or a quote from the review record.
 The tour ends when the user has inspected the files and tried the behavior, or skipped it. Record
 his verdict on the Walkthrough Ticket in his own words, or the skip. Other tours route findings
 through ordinary tickets. A Milestone's or a landing's findings become tickets in the same Project as
-they arrive; after a landing, the map holder commissions the first fix Captain to re-cut its feature
+they arrive; at the landing, the map holder commissions the first fix Captain to re-cut its feature
 branch from main for fixes and another landing/walkthrough. An empty landing walkthrough lets the
 Project close; the map holder commissions spec retirement by
 `dydo/reference/feature-spec-convention.md`, read from the repository root.

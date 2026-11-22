@@ -41,7 +41,7 @@ environment (filesystem, tools, etc.), dispatch a sub-agent to find it; don't as
 anything you could look up yourself. Don't block on it: a running exploration is an unsettled
 prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest
 of the open decisions now. The _decisions_ are the user's: put each to him and wait. Leave out a
-decision his recorded words already settle, or that is another agent's job, such as a reviewer's
+decision his recorded words or the spec already settle, or that is another agent's job, such as a reviewer's
 ruling on a finding.
 
 The session is done when no open decision is left: every branch of the design tree visited, nothing
