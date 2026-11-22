@@ -6,7 +6,7 @@ Your ticket is a review. You judge one candidate, the commit your brief names, a
 
 - If you wrote or fixed any part of the candidate, do not review it. End with `handed back <KEY>: I wrote part of the candidate`.
 - Judge the candidate against the spec's problem statement and goals, not only against the ticket's contract. Judge the behaviour it keeps unchanged against the same goals.
-- If your ticket or brief asks only for rulings on findings, rule on each by step 2 of "Give the verdict" and file by its step 4. Also write each ruling beside its finding, on the ticket where the finding is recorded. Give no PASS or FAIL: set your ticket Done, and end with `done <KEY>: ruled <number> findings`.
+- If your ticket or brief asks only for rulings on findings, rule on each by step 2 of "Give the verdict" and file by its step 4. Also write each ruling beside its finding, where the finding is recorded, a ticket or a pull request. Give no PASS or FAIL: set your ticket Done, and end with `done <KEY>: ruled <number> findings`.
 - Find the row of the level your brief names. Do every **due** cell, decide each **if** cell yourself, and skip each **–**.
 
 Legend: **due** every time; **if** when warranted; **–** not at this level.

@@ -42,9 +42,10 @@ anything you could look up yourself. Don't block on it: a running exploration is
 prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest
 of the open decisions now. The _decisions_ are the user's: put each to him and wait. Leave out a
 decision that his recorded words, the project's truth documents, the statechart, where the project
-has one, or the spec already settle, or that is your own job or another agent's to decide, such as
-a reviewer's ruling on a finding. Decide a call that is your own job yourself, get another agent's
-decision from that agent, then recompute the open decisions.
+has one, the spec or the decision records already settle, or that is your own job or another
+agent's to decide, such as a reviewer's ruling on a finding. Decide a call that is your own job
+yourself, get another agent's decision from the agent whose job it is, dispatching a fresh one when
+none holds that job, then recompute the open decisions.
 
 The session is done when no open decision is left: every branch of the design tree visited, nothing
 left silently assumed. Do not implement the plan until the user confirms you have reached
