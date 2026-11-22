@@ -41,21 +41,21 @@ The register's other property rows are owed by parts 2 to 4. The properties writ
 
 The captain's registered control in `verification/statechart/controls.json` starts in `Leaf` on a ticket whose result is a verdict, with a reviewer's dispatch on record, and steps to `InReview`. `FR28_AVerdictIsNotReviewedAgain` must catch it, and no other frame property reads that step as broken. `run.py --controls` keeps every variable but `state` unchanged on its wrong step, so the step's events are the ones its start state records; `run.py` initializes every variable of `CaptainBase.tla` but `state` explicitly.
 
-`statechart/captain/mutants.mjs` adds ten property mutants: a close before the result is in and a second actor on a close (FR24), a step after a close (FR25), the captain writing the verdict on its own change and a captain's verdict beside the reviewer's (FR26), a FAIL with no blocker (FR27), a verdict sent to review (FR28), and a verdict written under another event's name, an officer's proof beside the captain's, and a Fix that clears the blockers under its proof (FR29). Each must be reported broken by TLC.
+`statechart/captain/mutants.mjs` adds eleven property mutants: a close before the result is in and a second actor on a close (FR24), a step after a close (FR25), the captain writing the verdict on its own change and a captain's verdict beside the reviewer's (FR26), a FAIL with no blocker (FR27), a verdict sent to review (FR28), and a verdict written under another event's name, an officer's proof beside the captain's, a Fix that clears the blockers under its proof, and a dispatch that brings in blockers no verdict wrote (FR29). Each must be reported broken by TLC.
 
 ## Receipts
 
-Each command ran on the committed frame at `a0069241526b3f5877d9bc37e32acc6695c7b855` (the review r2 fix; clean checkout), under the gate lock and the agent memory cap, with dydo 3.6.0's managed Java 21.0.8 and TLC 2.19.
+Each command ran on the committed frame at `0507e88ba0cb6cafa482cfe3fc484e42a788edc8` (the review r3 fix; clean checkout), under the gate lock and the agent memory cap, with dydo 3.6.0's managed Java 21.0.8 and TLC 2.19.
 
-- The statechart tool on the model (`dydo statechart ... --view view.mjs`): exit 0; `TypeOK` and `NoDeadlock` hold; 403 states and 686 steps; it draws 11 states and 23 arrows, with no step drawn as not on the map or the chart.
-- The view check (`node statechart/captain/check-chart.mjs`): exit 0. TLC on `Captain.cfg`: 689 states generated, 403 distinct, depth 13; 544 steps checked; the words are the approved words; 11 model states shown as 11 chart states, 35 actions under 23 arrows or inside a state, each arrow's condition holding on every step under it.
-- The register check (`node statechart/captain/check-register.mjs`): exit 0. 115 rows that order the work (part 1: 23 actions and 6 properties; part 2: 22 and 10; part 3: 15 and 7; part 4: 19 and 13) and 44 lines of sources that order no step; all 200 spec rules and 75 other source keys cited; 35 actions and 6 properties each rest on a row.
-- The mutants (`node statechart/captain/mutants.mjs`): exit 0. On the model as it stands every property holds (1,972 states generated, 1,275 distinct, depth 21). Each of the 27 mutants is caught by the check it names: 17 by the view check, the PASS arrow taken on a FAIL among them, and 10 by the properties.
+- The statechart tool on the model (`dydo statechart ... --view view.mjs`): exit 0; `TypeOK` and `NoDeadlock` hold; 361 states and 581 steps; it draws 11 states and 23 arrows, with no step drawn as not on the map or the chart.
+- The view check (`node statechart/captain/check-chart.mjs`): exit 0. TLC on `Captain.cfg`: 584 states generated, 361 distinct, depth 13; 481 steps checked; the words are the approved words; 11 model states shown as 11 chart states, 35 actions under 23 arrows or inside a state, each arrow's condition holding on every step under it.
+- The register check (`node statechart/captain/check-register.mjs`): exit 0. 116 rows that order the work (part 1: 23 actions and 6 properties; part 2: 22 and 10; part 3: 16 and 7; part 4: 19 and 13) and 44 lines of sources that order no step; all 200 spec rules and 75 other source keys cited; 35 actions and 6 properties each rest on a row.
+- The mutants (`node statechart/captain/mutants.mjs`): exit 0. On the model as it stands every property holds (1,783 states generated, 1,191 distinct, depth 21). Each of the 29 mutants is caught by the check it names: 18 by the view check, the PASS arrow taken on a FAIL among them, and 11 by the properties.
 - The properties (`run.py --machine captain`): exit 0, result pass. `TypeOK`, `NoDeadlock` and the six registered properties hold, none missing.
-- The registered controls (`run.py --controls --machine captain --machine claim-build --machine review`): harness exit 0, each `control_caught` true. For the captain, FR28_AVerdictIsNotReviewedAgain alone rejects the review of a verdict. The other two machines show the runner change holds.
+- The registered controls (`run.py --controls`, for the captain, then for claim-build and review): harness exit 0, each `control_caught` true. For the captain, FR28_AVerdictIsNotReviewedAgain alone rejects the review of a verdict. The other two machines show the runner change holds.
 - `dydo check`: 0 errors, 0 warnings.
 
-Output was written under `/tmp/dyd1504/run3/` and is not kept.
+Output was written under `/tmp/dyd1504/run4/` and is not kept.
 
 ## Related
 
