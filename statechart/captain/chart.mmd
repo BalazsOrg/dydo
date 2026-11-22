@@ -2,8 +2,12 @@
 title: "A captain and its ticket"
 ---
 stateDiagram-v2
-  %% Written by hand. This is the picture of the process the role skills describe.
-  %% Captain.tla beside it is the same machine for the model checker: one arrow here is one action there.
+  %% Written by hand. The simple view of the process the role skills describe, for reading.
+  %% Captain.tla on CaptainBase.tla beside it is the comprehensive model, held to register.md; skills are checked against it.
+  %% view-map.mjs shows each model state as one state here, puts each model action under one arrow here or inside
+  %% one state, and gives each arrow the condition its words claim; check-chart.mjs proves this view faithful on
+  %% every step TLC finds the model can take, testing each arrow's condition on every step under it, and fails on
+  %% any change to the words below: they are the words he approved (DYD-1440), pinned by digest.
   %% Each arrow is one case. The comment above an arrow names what it rests on:
   %% "core" is dydo/core.md, a letter and number is a rule of Spec: dydo 4.0.0.
   Dispatched: Dispatched onto a ticket
@@ -22,25 +26,27 @@ stateDiagram-v2
 
   %% The ticket is held by another agent, is closed, or is a filler that fails its check. S7, H11
   Dispatched --> HandedBack: it cannot take the ticket, so it goes back untouched with the reason
-  %% Whoever starts a step sets it In Progress. S6
+  %% Whoever starts a step sets it In Progress. The brief says the ticket's result and, for a Question, its stage. S6, K30, H23
   Dispatched --> Taken: the ticket is free, so it sets it In Progress
 
   %% core "A ticket": about 100k tokens of context; work that needs the same thing understood is one agent's. S2
   Taken --> Leaf: the ticket fits one agent, so it does the work itself
-  %% core "A ticket": it splits the ticket and only orchestrates. H2
-  %% Too big for one agent, or a review whose seats go to another model family. R34
+  %% core "A ticket": it splits the ticket and only orchestrates. H2. A review may go to seats from another family (R34);
+  %% a council always does, to two judges (L18). When the route is not all in sight it cuts only the parts in sight. H10
   Taken --> Cutting: the ticket needs more than one agent, so it splits it
 
   %% The escape hatch: a holder may still divide a slice that is too big. K30, H2
   Leaf --> Cutting: the work proves too big, so it splits what is left
-  %% core "Who decides what": outside its job a captain decides only obvious, reversible calls. H16
-  %% The captain with the call opens the Question, as a sub-ticket of its own ticket (positions.md, "A Question").
+  %% core "Who decides what": outside its job a captain decides only obvious, reversible calls. It passes the need up,
+  %% and the officer that receives it opens the Question (H16); what does not wait on it goes on (S10). A research
+  %% Question's own call goes to a council or his-call child when its research does not resolve it (H23, L18).
   Leaf --> Asking: a call it may not decide becomes a Question for a fresh agent
-  %% The one way out of the wait. A Question that comes back without its answer goes up to the officer as a report, and the wait goes on.
+  %% The one way out of the wait: the answer on the Question. H16
   Asking --> Leaf: the answer is back, so the work goes on
-  %% core: it never judges its own work, the verdict is another agent's. A merge needs a PASS on its head. R23, R33
+  %% core: it never judges its own work, the verdict is another agent's. Its proof comes first (R5). A merge needs a PASS on its head. R23, R33
   Leaf --> InReview: the change is whole and it merges it, so a reviewer is dispatched
-  %% Nothing to merge: a verdict, an answer, or a part its officer reviews with the whole. core, R2, R34
+  %% Nothing to merge: a verdict, findings, an answer, a cut, or a part its officer reviews with the whole. core, R2, R6, R34
+  %% A verdict closes once written with its PR line (R17); a his-call Question once he has answered it (core, H23).
   Leaf --> Done: the contract is met and it merges nothing, so it closes the ticket
   %% H2: what cannot be settled under its own ticket goes back to the officer above. core: it surfaces.
   Leaf --> HandedBack: the work cannot be done inside this ticket, so it goes to its officer
@@ -49,29 +55,41 @@ stateDiagram-v2
   Cutting --> Waiting: each part is dispatched as a sub-ticket
   %% H2: a slice that cannot be divided coherently under its own ticket goes back for a re-cut.
   Cutting --> HandedBack: the work cannot be cut inside this ticket, so it goes to its officer
+  %% Inside the wait: a ready part is dispatched, a part's evidence check, fix or mend, a part's need opened as a Question
+  %% the part waits on, the way found once a part brings it into sight, the wiring, a stopped hop set back to Todo and
+  %% resumed, and a review's one verdict once its seats are back. H10, R6, S4, S17, H16, S10, R2, S24, S8
   %% core "A ticket": the route is found one manageable part at a time, never the whole cut at once. H10
   Waiting --> Cutting: a part is back and the contract is not met yet, so it cuts the next parts
   %% H2: a change to its contract, or to a sibling's, goes through the officer above. R9
   Waiting --> HandedBack: a part shows the contract cannot be met inside this ticket, so it goes to its officer
   %% The whole is reviewed once, after wiring and before its merge. R2
   Waiting --> InReview: the parts are back and wired and it merges them, so a reviewer is dispatched
-  %% A ticket that only groups its parts, and a review whose seats are back. R6, S8
+  %% A ticket that only groups its parts, a review whose seats are back, a council decided or prepared. R6, S8, L18
   Waiting --> Done: the parts are back, the contract is met and it merges nothing, so it closes the ticket
 
-  %% core "Review severities": FAIL means at least one blocker, and a blocker is fixed now. R8, R11
-  %% The Fix is a ticket of its own. Its holder is a captain doing a leaf, by default the thread that wrote the change. S9
+  %% Inside the review: the fresh reviewer on the round's Review hop writes the verdict, and with a PASS the PR's PASS
+  %% line; the captain then acts on it. R17, R33, S8
+  %% core "Review severities": FAIL means at least one blocker, and a blocker is fixed now. R8, R9, R11
+  %% The Fix is a ticket of its own, by default the thread that wrote the change (S9). Its holder does it as a leaf,
+  %% or splits it when it is big: a sub-ticket for a big blocker, Fix rNb for parallel writers (S9).
+  %% A blocker that needs Balazs becomes a Question the Fix waits on (S10, H16). At round 3 the checkpoint decides (R10).
   InReview --> Fixing: the verdict is FAIL, so one Fix ticket takes every blocker
-  %% PASS means no blocker. A should becomes a ticket that waits; a nit gets a ruling. core, R11, S17
+  %% PASS means no blocker. A should becomes a ticket that waits; a nit gets a ruling. One more round may be
+  %% ordered once (R8), and a cheap should is mended first (S17). core, R11
   InReview --> Merging: the verdict is PASS
-  %% A blocker that is fundamental, a new requirement, or a need for Balazs goes up at once. R9
+  %% A blocker that is fundamental or a new requirement goes up at once, and at round 3 through the checkpoint. R9, R10
+  %% A need for Balazs in the same verdict still becomes a Question, which the re-plan waits on. S10, H16
   InReview --> HandedBack: a blocker cannot be fixed inside this ticket, so it goes to its officer
 
   %% A fix between every two rounds, and the next round is a fresh look. R8, S9
+  %% The Fix is done when its blockers are and proof ran on the head (S9); so is a repair, then its scoped round (R19, R22).
   Fixing --> InReview: the Fix is done, so a reviewer looks again
   %% The Fix's holder hands it back, and the captain passes it on. H2
   Fixing --> HandedBack: the Fix comes back undone, so it goes to its officer
 
-  %% core: the ticket is done when its contract is met. R20, R21, S6
+  %% Inside the merge: the gates, CI, the turn on master or his click, the re-check against master just before landing
+  %% and the re-sync, the landing, the rerun of a red gate. R20 to R31
+  %% core: the ticket is done when its contract is met. R20, R22, S6
   Merging --> Done: the merge is in and its gates are green, so it closes the ticket
-  %% A conflict or a red gate is repaired on the ticket branch and reviewed again. R19, R21, R22
+  %% A CONFLICT or a real red gate on record before the merge, or a real red after it, reverted first. R19, R21, R22
   Merging --> Fixing: the merge is not clean and green, so a Fix ticket repairs it

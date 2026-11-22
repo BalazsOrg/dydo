@@ -6,123 +6,59 @@ explains: ["verification/statechart/captain/**"]
 
 # Captain chart obligations
 
-Hand-written from the core page (`dydo/core.md`), the approved spec and his rulings, never from the model (K3). The model they judge is the hand-written captain chart in [statechart/captain/](../../../statechart/captain/README.md) (DYD-1437): 11 states, 23 arrows, and the variables `state`, `kind` and `merges`. Where the core page and the spec disagree, the core page wins.
+Hand-written from the rows of the captain's rule register ([statechart/captain/register.md](../../../statechart/captain/register.md)), never from the model (K3). The register is the closed list of rules drawn from his recorded words, the spec and the core page; each property here is named after its row and says what that row requires. When the model breaks one, the model is wrong.
 
-The properties of the generated chart that came before, and their receipts, are in Git up to `7466727a`.
+The model they judge is the frame of the captain model (DYD-1504): `CaptainBase.tla` and `Captain.tla` in [statechart/captain/](../../../statechart/captain/README.md), at the chart's level, 11 states and 35 actions. The parts that build the phases (intake and Questions, the split, review and merge) add the properties their rows name, here, and register them in `CaptainProperties.cfg`.
 
-`seen` is the passive set of states this captain has been in. No step is disabled, the model needs no bound, and no fairness is added.
+## How a property reads the model
+
+Every step of the model sets `event`, the event record: the set of events the step is, each with its name and who takes it. A property reads an event from it (`Happens`, and `OnlyBy` when the event is one position's alone) and never infers one from the state a step lands in. The facts a rule decides on are the model's other variables, and FR29 ties each change of a fact to the event that names it.
+
+`seen` is the passive set of the states this captain has been in. Every model step has exactly one observer extension, no step is disabled, the model needs no bound, and no fairness is added.
 
 ## Properties
 
-| Property | Source | What it checks |
+`CaptainProperties.cfg` registers six properties; the property run also checks `TypeOK`, from `Captain.cfg`, and the deadlock check.
+
+| Property | Row | What it checks |
 |---|---|---|
-| WorkPhaseBeforeDone | core "A ticket"; 7b3d2e3e | Done comes after `Leaf` or `Waiting`. |
-| H3_WaitAfterSplit | H3; H2; df6a785e | `Cutting` exits only to `Waiting`, or to `HandedBack` when the cut cannot be made. |
-| H16_ResumeLeafAfterQuestion | core "Who decides what"; H16; 519126ab | `Asking` exits only to `Leaf`. |
-| Core_SplitOnlyOrchestrates | core "A ticket" | After `Cutting`, never `Leaf` or `Asking` again. |
-| H10_ReturnedPartContinues | H2, H10, R2 | `Waiting` exits to `Cutting`, `InReview`, `Done` or `HandedBack`. |
-| R8_PassBeforeMerge | R8, R23 | `Merging` starts only from `InReview`, and a reviewed ticket closes only from `Merging`. |
-| R8_FixBeforeNextRound | core "Review severities"; R8, S9 | A second round starts only from `Fixing`, and `Fixing` exits to `InReview` or `HandedBack`. |
-| R19_ReviewAfterMergeRepair | R19, R21, R22 | `Merging` exits only to `Done` or `Fixing`. |
-| R2_MergingHolderHasReview | core "Who decides what"; R2, R23 | A captain that merges closes only from `Merging`, with `InReview` behind it. |
-| R34_VerdictNeverReviewed | core "Review severities"; R34; 777d396e | A verdict's holder is never in `InReview`, `Fixing` or `Merging`. |
-| Sees_OnlyAMergerSeesReviewFixMerge | `statechart/captain/positions.md` | Only a captain that merges a change is in `InReview`, `Fixing` or `Merging`. |
-| K30_KindKnownBeforeWork | K30, S6 | Every state but `Dispatched` and `HandedBack` has a known kind. |
-| K30_KindStaysKnown | K30, S7; AGENTS.md | Once set, the kind never changes. |
-| S7_UnstartedReturnHasNoWork | S6, S7 | A run that never read its kind visits only `Dispatched` and `HandedBack`. |
-| H1_EndsAreFinal | H12; AGENTS.md | `Done` and `HandedBack` only stand still. A structural check of the two ends: the sources say a captain returns, not what it may do after. |
+| FR24_DoneWhenTheContractIsMet | FR24 | A close is the captain's alone, with nothing waiting on an answer and the contract met: a merger's merge in, with gates and CI green on the merge SHA; any other ticket's result in (a change proved, or its parts back when it only groups them; a verdict written; an answer settled; findings or a cut written). |
+| FR25_EndsAreFinal | FR25 | After a step that closes the ticket or hands it back, nothing changes. |
+| FR26_EachDecidesItsJob | FR26 | The verdict on a change is written by the reviewer alone, never the captain or the Fix's holder; a verdict ticket's captain writes its own; only an answer's captain settles its call. |
+| FR27_FailHasABlocker | FR27 | A verdict written FAIL has at least one blocker, and one written PASS has none. |
+| FR28_AVerdictIsNotReviewedAgain | FR28 | A reviewer is dispatched only onto a change. |
+| FR29_TheRecordIsFaithful | FR29 | Every event of a step is taken by the position it belongs to (`Owner`, from the register's rows), and by no other. The ticket as found never changes, and every other fact changes only in a step whose events name that change, each way it can change: the kind with the step that sets the ticket In Progress, a written verdict with its writing, the proof with a proof or the wiring, its loss with a Fix or a split, and so on for each variable. |
 
-`Sees_OnlyAMergerSeesReviewFixMerge` is not a rule of the spec. It checks the states column of the who-sees-what table against the model, so the table cannot say a Question's captain never needs the review, fix and merge text while the model lets it in.
-
-## Changed and dropped at DYD-1437
-
-The chart was simplified, so each property below changed with the state it named. Old wording is in Git at `7466727a`.
-
-Changed:
-
-| Property | What changed | Why |
-|---|---|---|
-| WorkPhaseBeforeDone | No longer requires `Finishing` before Done. | `Finishing` is gone: a ticket closes from `Leaf`, `Waiting` or `Merging`. The work-before-Done order stays. |
-| H3_WaitAfterSplit | `Split` is now `Cutting`, and `HandedBack` is a second way out. | Renamed state. H2 sends a slice that cannot be divided coherently under its own ticket back to the officer above. The old chart had that way out only for a leaf, which left a captain that splits with no way back (review r1). |
-| H16_ResumeLeafAfterQuestion | `Question` is now `Asking`. | Renamed state. |
-| H10_ReturnedPartContinues | Exits are `Cutting`, `InReview`, `Done`, `HandedBack`. `Wayfinding`, `Finishing` and `Leaf` for an answer are gone. | `Wayfinding` merged into `Cutting`. The core page says a captain that splits only orchestrates, so a research holder no longer goes back to `Leaf`. H2 sends a change to its contract, or to a sibling's, through the officer above, so `HandedBack` is added (review r1). |
-| R8_ClearBeforeFinish, now R8_PassBeforeMerge | `Clear` and `Finishing` are now the PASS arrow and `Merging`. The exception for a mended part is gone. | `Clear` and `Mending` are gone. |
-| R8_FixBeforeNextRound | Written on order, not on a round number. `Clear` and `Mending` are no longer ways into a new round. | The model no longer counts rounds, and the extra round and the mend are gone. |
-| R19_ReviewAfterMergeRepair | `Repairing` is now `Fixing`. | A broken merge goes to a Fix like any blocker. With R8_FixBeforeNextRound and R8_PassBeforeMerge, a repair still cannot reach Done without a review. |
-| R2_MergingHolderHasReview | `merger = "holder"` is now `merges`, and the close is from `Merging`. | The model keeps one fact, whether this captain merges. |
-| R34_VerdictNeverReviewed | The states are `InReview`, `Fixing`, `Merging`. | `Clear`, `Checkpoint`, `Repairing` and `Mending` are gone. |
-| K30_KindKnownBeforeWork, S7_UnstartedReturnHasNoWork | `Returned` is now `HandedBack`. | Renamed state. |
-| H1_ReturnedIsTerminal, now H1_EndsAreFinal | Both ends are final. | `Done` no longer steps to `Returned`: Done is an end, and the line back to the officer is part of it. |
-
-Dropped:
-
-| Property | Why |
-|---|---|
-| R8_ExtraRoundOnlyOnceAfterClear | The arrow "one more round is ordered" is gone. R8 lets an officer order it; the chart leaves it out, because a PASS ends the review and the captain need not decide more. |
-| R10_CheckpointBeforeFourthRound, S10_CheckpointBeforeThirdRoundEscalation, R10_EnterCheckpointFromThirdRound | The `Checkpoint` state is gone. Its two exits are the Fix and the way to the officer, which every FAIL already has. R10's line on the Review is a record on those arrows, and the model no longer counts rounds, so none of the three can be written. |
-| H10_WayfindingLeavesByCut | `Wayfinding` merged into `Cutting`, and H3_WaitAfterSplit already says `Cutting` exits only to `Waiting` or back to the officer. |
-| H10_PartBeforeFogFinish | The same merge. H3_WaitAfterSplit and Core_SplitOnlyOrchestrates cover it: after a cut, the only way on to Done is through `Waiting`. |
-| R23_ReviewMendedHead | The `Mending` state is gone: a should becomes a ticket that waits. |
-
-Added: Core_SplitOnlyOrchestrates and Sees_OnlyAMergerSeesReviewFixMerge.
-
-## Unchanged at DYD-1453 and DYD-1454
-
-No property changed, and no state or arrow did. Both tickets changed words only, in `positions.md`, in the README and in comments of the chart and the model.
-
-- DYD-1453: a position takes only the arrows whose condition it can meet, so the two arrows into `InReview` are the merger's alone. Sees_OnlyAMergerSeesReviewFixMerge already checks that.
-- DYD-1454: `positions.md` now says who opens a Question, what its captain does when the call is Balazs's, and which row a Wayfinding captain is on. An arrow from `Asking` to `HandedBack`, for a Question that comes back without its answer, was weighed and not added. H16_ResumeLeafAfterQuestion and its sources say the work waits on the answer and never ends from the wait, so the captain reports the Question to its officer, which changes no state, and waits on.
-
-Run again at `d8e7035441f2d45dbc420cefb39bc14a4c218125`, each under the gate lock, with dydo 3.6.0's managed Java and TLC: the model draws with `TypeOK` and `NoDeadlock` (exit 0); `check-chart.mjs` exit 0, 11 states and 23 arrows; `run.py --machine captain` exit 0; `run.py --controls --machine captain` harness exit 0 with the control caught. Output went to `/tmp/dyd-1439-chart-run2/` and is not kept.
+The register's other property rows are owed by parts 2 to 4. The properties written for the model before the re-cut, at `9c67651e`, are there for those parts to draw on; each must be rewritten from its register row, reading the event record.
 
 ## What the model cannot show
 
-The properties check order only. The model has no data for any of these, so none is checked:
-
-- Whether the contract is met, and whether a ticket really fits one agent.
-- Who an agent is: that the reviewer is not the author, comes from another model family, or is fresh.
-- Which head a PASS names, whether a merge is clean, and whether a gate is green.
-- What a verdict holds: its blockers, shoulds and nits, and that a should was filed or a nit ruled on.
-- Which skill an agent loaded and what its brief said. `positions.md` is checked by reading.
-- That a sub-ticket was settled before the next parts were cut, and how many parts there are.
-- Whether a call was one the captain may decide.
-- R10's checkpoint line after a third FAIL.
-- That anything ends. Without fairness a captain may wait forever; these are safety checks.
-
-Whether an answer may be reviewed has no source. The model gives an answer's holder no review, because only a change is merged; that is a choice of the model, checked only as part of the who-sees-what table.
+- Who the agents are: the event record names the position that takes a step (the captain, its officer, a part's holder, the reviewer on the round's Review hop, the Fix's holder, the Question's captain, Balazs, the tools), not which agent holds it. FR26 checks the positions; that the reviewer is not the same agent as the author is checked by reading the record.
+- What a brief or a skill says. `statechart/captain/positions.md` is checked by reading.
+- That anything ends: the properties are safety checks.
 
 ## Controls
 
-The registered control in [controls.json](../controls.json) is the step `Asking` to `Done` for a change that is not merged. H16_ResumeLeafAfterQuestion must reject it.
+The captain's registered control in `verification/statechart/controls.json` starts in `Leaf` on a ticket whose result is a verdict, with a reviewer's dispatch on record, and steps to `InReview`. `FR28_AVerdictIsNotReviewedAgain` must catch it, and no other frame property reads that step as broken. `run.py --controls` keeps every variable but `state` unchanged on its wrong step, so the step's events are the ones its start state records; `run.py` initializes every variable of `CaptainBase.tla` but `state` explicitly.
 
-Six more controls were run by hand at DYD-1437, each one changed line in a scratch copy of `Captain.tla`, with the committed model untouched:
-
-| Changed line | Property that must reject it |
-|---|---|
-| `SendTheWholeToReview` loses its `merges` guard | Sees_OnlyAMergerSeesReviewFixMerge, R34_VerdictNeverReviewed |
-| `CloseLeaf` loses its `~merges` guard | R2_MergingHolderHasReview |
-| `CutTheNextParts` goes to `Leaf` | Core_SplitOnlyOrchestrates, H10_ReturnedPartContinues |
-| `ReviewAgain` goes to `Merging` | R8_FixBeforeNextRound, R8_PassBeforeMerge |
-| `MergeBroke` goes to `InReview` | R19_ReviewAfterMergeRepair, R8_FixBeforeNextRound |
-| `Dispatch` goes to `Done` | H3_WaitAfterSplit, WorkPhaseBeforeDone, R2_MergingHolderHasReview |
+`statechart/captain/mutants.mjs` adds eleven property mutants: a close before the result is in and a second actor on a close (FR24), a step after a close (FR25), the captain writing the verdict on its own change and a captain's verdict beside the reviewer's (FR26), a FAIL with no blocker (FR27), a verdict sent to review (FR28), and a verdict written under another event's name, an officer's proof beside the captain's, a Fix that clears the blockers under its proof, and a dispatch that brings in blockers no verdict wrote (FR29). Each must be reported broken by TLC.
 
 ## Receipts
 
-All at `35feddb1e5eef1b7499e9ed45dfe8c699a52f1e7`, each run under the gate lock, with dydo 3.6.0's managed Java and TLC:
+Each command ran on the committed frame at `0507e88ba0cb6cafa482cfe3fc484e42a788edc8` (the review r3 fix; clean checkout), under the gate lock and the agent memory cap, with dydo 3.6.0's managed Java 21.0.8 and TLC 2.19.
 
-- The model alone (`run.py --baseline --machine captain`): exit 0. `TypeOK` and `NoDeadlock` hold; 33 states, 69 steps.
-- `check-chart.mjs` on the chart that run drew: exit 0. `chart.mmd` and the model agree on 11 states and 23 arrows, and no arrow joins two cases with "or".
-- The properties (`run.py --machine captain`): exit 0. All 15 properties, `TypeOK` and `NoDeadlock` hold; 292 states generated, 161 distinct, queue empty, depth 12.
-- The registered control (`run.py --controls --machine captain`): checker 1, harness 0, `control_caught` true. H16_ResumeLeafAfterQuestion rejects `Asking` to `Done`, and so does WorkPhaseBeforeDone.
-- The six hand-run controls: checker 1 on each, and each is rejected by exactly the properties the table above names.
+- The statechart tool on the model (`dydo statechart ... --view view.mjs`): exit 0; `TypeOK` and `NoDeadlock` hold; 361 states and 581 steps; it draws 11 states and 23 arrows, with no step drawn as not on the map or the chart.
+- The view check (`node statechart/captain/check-chart.mjs`): exit 0. TLC on `Captain.cfg`: 584 states generated, 361 distinct, depth 13; 481 steps checked; the words are the approved words; 11 model states shown as 11 chart states, 35 actions under 23 arrows or inside a state, each arrow's condition holding on every step under it.
+- The register check (`node statechart/captain/check-register.mjs`): exit 0. 116 rows that order the work (part 1: 23 actions and 6 properties; part 2: 22 and 10; part 3: 16 and 7; part 4: 19 and 13) and 44 lines of sources that order no step; all 200 spec rules and 75 other source keys cited; 35 actions and 6 properties each rest on a row.
+- The mutants (`node statechart/captain/mutants.mjs`): exit 0. On the model as it stands every property holds (1,783 states generated, 1,191 distinct, depth 21). Each of the 29 mutants is caught by the check it names: 18 by the view check, the PASS arrow taken on a FAIL among them, and 11 by the properties.
+- The properties (`run.py --machine captain`): exit 0, result pass. `TypeOK`, `NoDeadlock` and the six registered properties hold, none missing.
+- The registered controls (`run.py --controls`, for the captain, then for claim-build and review): harness exit 0, each `control_caught` true. For the captain, FR28_AVerdictIsNotReviewedAgain alone rejects the review of a verdict. The other two machines show the runner change holds.
+- `dydo check`: 0 errors, 0 warnings.
 
-No control was run against K30_KindKnownBeforeWork, K30_KindStaysKnown, S7_UnstartedReturnHasNoWork or H1_EndsAreFinal. Their meaning did not change at DYD-1437; only state names did.
-
-The first run of these checks was at `e5c282d9`, on the chart before review r1: 21 arrows, 137 distinct states, all holding. Review r1 found that a captain that splits had no way back to its officer; `35feddb1` adds the two arrows and the runs above repeat every check.
-
-Output was written to `/tmp/dyd-1437/` and is not kept. Only this page changed after these runs.
+Output was written under `/tmp/dyd1504/run4/` and is not kept.
 
 ## Related
 
+- [The register](../../../statechart/captain/register.md)
 - [The captain statechart](../../../statechart/captain/README.md)
-- [Statechart property runner](../README.md)
+- [Who sees what](../../../statechart/captain/positions.md)

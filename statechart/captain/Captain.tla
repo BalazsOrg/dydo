@@ -1,195 +1,379 @@
 ---- MODULE Captain ----
-\* A captain and its ticket: the hand-written twin of the process the role skills describe.
-\* Written by hand; no build step writes this file. chart.mmd beside it is the same machine as a
-\* picture: one action here is one arrow there, and view.mjs takes each arrow's words from the chart.
-\* A comment names what an action rests on: "core" is dydo/core.md, a letter and number is a rule
-\* of Spec: dydo 4.0.0. Where the two disagree, the core page wins.
+\* A captain and its ticket: the model, the hand-written twin of the process the role skills
+\* describe. Written by hand; no build step writes this file.
+\*
+\* This is the frame (DYD-1504). It holds one action for each arrow of the chart he approved
+\* (chart.mmd, DYD-1440), and the few steps inside a chart state that the arrows' conditions need.
+\* Each action names the register rows it rests on (register.md). The phase parts replace the
+\* actions of their section with the full process their register rows name: part 2 intake and
+\* Questions, part 3 the split, part 4 review and merge. Until then the frame is the chart's level,
+\* and no more.
+\*
+\* view-map.mjs shows each model state as one chart state, puts each action under one chart arrow or
+\* inside one chart state, and gives each arrow the condition its words claim. check-chart.mjs runs
+\* TLC on this file and tests those conditions on every step.
+EXTENDS CaptainBase
 
-\* state   where the captain is with its ticket.
-\* kind    what the ticket's result is: a change, a verdict (a review) or an answer (a Question).
-\* merges  whether its brief says this captain merges its change itself.
-VARIABLES state, kind, merges
+\* ==== Part 2: intake and Questions ====
 
-vars == <<state, kind, merges>>
-
-States == {"Dispatched", "Taken", "Leaf", "Asking", "Cutting", "Waiting",
-           "InReview", "Fixing", "Merging", "Done", "HandedBack"}
-
-\* The two ends: the contract is met, or the ticket went back to the officer unfinished.
-Ends == {"Done", "HandedBack"}
-
-TypeOK ==
-    /\ state \in States
-    /\ kind \in {"unread", "change", "verdict", "answer"}
-    /\ merges \in BOOLEAN
-    /\ merges => kind = "change"
-
-Init ==
-    /\ state = "Dispatched"
-    /\ kind = "unread"
-    /\ merges = FALSE
-
-\* The ticket is held by another agent, is closed, or is a filler that fails its check. S7, H11
+\* FR1, IQ1: the ticket is held by another agent or is closed, so it goes back untouched with the
+\* reason. Nobody set it In Progress.
 CannotTake ==
     /\ state = "Dispatched"
+    /\ ticket \in {"held", "closed"}
     /\ state' = "HandedBack"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("cannot take", "captain"), Ev("hand back", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* Whoever starts a step sets it In Progress (S6). The ticket and the brief say what its result is
-\* and whether this captain merges it; only a change is merged.
+\* FR2, IQ2: the ticket is free, and whoever starts a step sets it In Progress; the ticket and its
+\* brief say what its result is and whether this captain merges it. Only a change is merged; an
+\* answer's call is open.
 Take ==
     /\ state = "Dispatched"
+    /\ ticket = "free"
     /\ state' = "Taken"
-    /\ kind' \in {"change", "verdict", "answer"}
+    /\ event' = {Ev("set In Progress", "captain")}
+    /\ kind' \in Kinds
     /\ merges' \in IF kind' = "change" THEN BOOLEAN ELSE {FALSE}
+    /\ call' = IF kind' = "answer" THEN "open" ELSE "none"
+    /\ UNCHANGED <<ticket, proved, written, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* core "A ticket": the right size is what one agent can hold, about 100k tokens of context. S2
+\* FR3, IQ6: the ticket fits one agent, about 100k tokens of context, so it does the work itself.
 WorkItself ==
     /\ state = "Taken"
     /\ state' = "Leaf"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("fits one agent", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* core "A ticket": it splits the ticket and only orchestrates. H2
-\* The ticket is too big for one agent, or it is a review whose seats go to another model family (R34).
+\* FR4, IQ6: the ticket needs more than one agent, so it splits it.
 Split ==
     /\ state = "Taken"
     /\ state' = "Cutting"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("needs more than one agent", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* The escape hatch: a holder may still divide a slice that is too big. K30, H2
+\* FR5, IQ7: the escape hatch. The work proves too big, so it splits what is left: its result is not
+\* in yet.
 SplitTheRest ==
     /\ state = "Leaf"
+    /\ asked = "none"
+    /\ ~ResultIn
     /\ state' = "Cutting"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("proves too big", "captain")}
+    /\ proved' = FALSE
+    /\ UNCHANGED <<ticket, kind, merges, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* core "Who decides what": outside its job a captain decides only obvious, reversible calls;
-\* any other call becomes a Question ticket for a fresh agent. H16
-\* The captain with the call opens the Question, as a sub-ticket of its own ticket (positions.md, "A Question").
-Ask ==
+\* IQ8: the author proves its change with receipts. Nothing in it waits on an answer.
+ProveTheWork ==
     /\ state = "Leaf"
-    /\ state' = "Asking"
-    /\ UNCHANGED <<kind, merges>>
+    /\ kind = "change"
+    /\ ~proved
+    /\ asked = "none"
+    /\ proved' = TRUE
+    /\ event' = {Ev("prove the work", "captain")}
+    /\ UNCHANGED <<ticket, state, kind, merges, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* The one way out of the wait. A Question that comes back without its answer goes up to the officer
-\* as a report, which changes no state, and the wait goes on.
+\* The captain's own result is written in the leaf, or once its parts are back and it has found its
+\* contract met.
+ResultReady == state = "Leaf" \/ (state = "Waiting" /\ part = "back" /\ contract = "met")
+
+\* FR26, FR27: a reviewer decides its verdict, and FAIL has at least one blocker.
+WriteTheVerdict ==
+    /\ kind = "verdict"
+    /\ verdict = "none"
+    /\ asked = "none"
+    /\ ResultReady
+    /\ \/ verdict' = "pass" /\ blockers' = {}
+       \/ verdict' = "fail" /\ blockers' \in (SUBSET Blockers) \ {{}}
+    /\ event' = {Ev("write the verdict", "captain")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, written, call, asked, part, contract, gates, landed, ci>>
+
+\* FR26, IQ14: a Question's captain settles its call.
+AnswerTheCall ==
+    /\ kind = "answer"
+    /\ call = "open"
+    /\ asked = "none"
+    /\ ResultReady
+    /\ call' = "settled"
+    /\ event' = {Ev("answer the call", "captain")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, written, asked, part, contract, verdict, blockers, gates, landed, ci>>
+
+\* FR24: a seat writes its findings, and a Wayfinding captain its cut.
+WriteTheResult ==
+    /\ kind \in {"findings", "cut"}
+    /\ ~written
+    /\ asked = "none"
+    /\ ResultReady
+    /\ written' = TRUE
+    /\ event' = {Ev("write the result", "captain")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
+
+\* IQ9: the work meets a call outside the captain's job that is not obvious and reversible.
+MeetACall ==
+    /\ state = "Leaf"
+    /\ asked = "none"
+    /\ asked' = "needed"
+    /\ event' = {Ev("meet a call it may not decide", "captain")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, written, call, part, contract, verdict, blockers, gates, landed, ci>>
+
+\* FR6, IQ9: a call it may not decide becomes a Question for a fresh agent: the captain passes the
+\* need up, and the officer that receives it opens the Question. The frame folds the two into one step.
+AskAQuestion ==
+    /\ state = "Leaf"
+    /\ asked = "needed"
+    /\ state' = "Asking"
+    /\ asked' = "open"
+    /\ event' = {Ev("pass the need up", "captain"), Ev("open a Question", "officer")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, part, contract, verdict, blockers, gates, landed, ci>>
+
+\* FR7, IQ11: the one way out of the wait, the answer on the Question.
 Answered ==
     /\ state = "Asking"
+    /\ asked = "open"
     /\ state' = "Leaf"
-    /\ UNCHANGED <<kind, merges>>
+    /\ asked' = "none"
+    /\ event' = {Ev("answer", "question")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* core: an agent never judges its own work, the verdict is another agent's.
-\* A merge needs a PASS on its head, so the captain that merges is reviewed first. R23, R33
-SendLeafToReview ==
-    /\ state = "Leaf"
-    /\ merges
-    /\ state' = "InReview"
-    /\ UNCHANGED <<kind, merges>>
-
-\* Nothing to merge: a verdict (never reviewed again: core, R34), an answer, or a part its officer
-\* reviews with the whole (R2).
+\* FR9, FR24, IQ25: the contract is met and it merges nothing, so it closes the ticket.
 CloseLeaf ==
     /\ state = "Leaf"
     /\ ~merges
+    /\ asked = "none"
+    /\ ResultIn
     /\ state' = "Done"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("close", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* H2: what a holder cannot settle under its own ticket goes back to the officer above.
-\* core: a problem outside your ticket goes to your officer; what matters is that it surfaces.
+\* FR10, IQ26: the work cannot be done inside this ticket, so it goes to its officer. Its result is
+\* not in: a leaf whose result is in has done its work.
 HandBackTheWork ==
     /\ state = "Leaf"
+    /\ ~ResultIn
     /\ state' = "HandedBack"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("cannot be done inside the ticket", "captain"), Ev("hand back", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* A sub-ticket goes out by delegate_task, and its brief names the skills its position needs. core, H3, K14
+\* ==== Part 3: the split ====
+
+\* FR11, SP3: each part is dispatched as a sub-ticket.
 Dispatch ==
     /\ state = "Cutting"
     /\ state' = "Waiting"
-    /\ UNCHANGED <<kind, merges>>
+    /\ part' = "out"
+    /\ event' = {Ev("dispatch the parts", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, contract, verdict, blockers, gates, landed, ci>>
 
-\* H2: a slice that cannot be divided coherently under its own ticket goes back to the officer
-\* above for a re-cut.
+\* FR12, SP10: the work cannot be cut inside this ticket, so it goes to its officer.
 HandBackTheCut ==
     /\ state = "Cutting"
     /\ state' = "HandedBack"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("cannot be cut inside the ticket", "captain"), Ev("hand back", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* core "A ticket": the route to the spec is found one manageable part at a time; the whole is
-\* never cut at once. H10. A part that comes back too big is cut again the same way. H2
+\* SP3, SP7: a part returns.
+PartBack ==
+    /\ state = "Waiting"
+    /\ part = "out"
+    /\ part' = "back"
+    /\ event' = {Ev("a part returns", "part")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, written, call, asked, contract, verdict, blockers, gates, landed, ci>>
+
+\* SP7, SP8, SP10: a part is back, and the captain checks its contract against the spec: not met yet,
+\* met, or it cannot be met inside this ticket.
+CheckTheContract ==
+    /\ state = "Waiting"
+    /\ part = "back"
+    /\ contract = "unchecked"
+    /\ contract' \in {"not met", "met", "cannot be met"}
+    /\ event' = {Ev("check the contract against the spec", "captain")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, written, call, asked, part, verdict, blockers, gates, landed, ci>>
+
+\* FR13, SP6, SP7: a part is back and the contract is not met yet, so it cuts the next parts.
 CutTheNextParts ==
     /\ state = "Waiting"
+    /\ part = "back"
+    /\ contract = "not met"
     /\ state' = "Cutting"
-    /\ UNCHANGED <<kind, merges>>
+    /\ part' = "none"
+    /\ contract' = "unchecked"
+    /\ event' = {Ev("cut the next parts", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, verdict, blockers, gates, landed, ci>>
 
-\* H2: a change to its contract, or to a sibling's, goes through the officer above. R9: what is
-\* fundamental or a new requirement is re-planned by the officer above.
+\* FR14, SP10: a part shows the contract cannot be met inside this ticket, so it goes to its officer.
 HandBackTheWhole ==
     /\ state = "Waiting"
+    /\ part = "back"
+    /\ contract = "cannot be met"
     /\ state' = "HandedBack"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("a part shows the contract cannot be met", "captain"), Ev("hand back", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* The whole is reviewed once, after wiring and before its merge. R2
+\* SP16: the parts merge into the parent, proved by their gates on the merge SHA: the whole's receipts.
+WireTheParts ==
+    /\ state = "Waiting"
+    /\ part = "back"
+    /\ contract = "met"
+    /\ merges
+    /\ asked = "none"
+    /\ part' = "wired"
+    /\ proved' = TRUE
+    /\ event' = {Ev("wire the parts", "captain")}
+    /\ UNCHANGED <<ticket, state, kind, merges, written, call, asked, contract, verdict, blockers, gates, landed, ci>>
+
+\* FR15, SP17, RM1: the parts are back and wired and it merges them, so a reviewer is dispatched.
 SendTheWholeToReview ==
     /\ state = "Waiting"
+    /\ part = "wired"
     /\ merges
+    /\ proved
+    /\ asked = "none"
     /\ state' = "InReview"
-    /\ UNCHANGED <<kind, merges>>
+    /\ part' = "none"
+    /\ verdict' = "due"
+    /\ event' = {Ev("dispatch a reviewer", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, contract, blockers, gates, landed, ci>>
 
-\* A ticket that only groups its parts (R6), and a review whose seats are back, which posts the
-\* round's one verdict (S8).
+\* FR16, FR24, SP18: the parts are back, the contract is met and it merges nothing, so it closes the
+\* ticket. A change that only groups its parts is met once they are back; any other has its result in.
 CloseTheWhole ==
     /\ state = "Waiting"
+    /\ part = "back"
+    /\ contract = "met"
     /\ ~merges
+    /\ asked = "none"
+    /\ kind = "change" \/ ResultIn
     /\ state' = "Done"
-    /\ UNCHANGED <<kind, merges>>
+    /\ part' = "none"
+    /\ event' = {Ev("close", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, contract, verdict, blockers, gates, landed, ci>>
 
-\* core "Review severities": FAIL means at least one blocker, and a blocker is fixed now.
-\* The blockers become one Fix ticket (R8, R11, S9). Its holder is a captain doing a leaf on its
-\* own run of this chart; by default it is the thread that wrote the change. While it works, this
-\* captain waits.
-Fail ==
+\* ==== Part 4: review and merge ====
+
+\* FR8, RM1: the change is whole and it merges it, so a reviewer is dispatched onto the round's
+\* Review hop, after the author's proof.
+SendLeafToReview ==
+    /\ state = "Leaf"
+    /\ merges
+    /\ proved
+    /\ asked = "none"
+    /\ state' = "InReview"
+    /\ verdict' = "due"
+    /\ event' = {Ev("dispatch a reviewer", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, blockers, gates, landed, ci>>
+
+\* FR26, FR27, RM3: the fresh reviewer on the round's Review hop writes the verdict. FAIL has at least
+\* one blocker, and PASS none.
+TheReviewerWritesTheVerdict ==
     /\ state = "InReview"
-    /\ state' = "Fixing"
-    /\ UNCHANGED <<kind, merges>>
+    /\ verdict = "due"
+    /\ \/ verdict' = "pass" /\ blockers' = {}
+       \/ verdict' = "fail" /\ blockers' \in (SUBSET Blockers) \ {{}}
+    /\ event' = {Ev("write the verdict", "reviewer")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, written, call, asked, part, contract, gates, landed, ci>>
 
-\* PASS means no blocker. A should becomes a ticket that waits; a nit gets a ruling. core, R11, S17
+\* FR18: the verdict is PASS, so the merge comes next.
 Pass ==
     /\ state = "InReview"
+    /\ verdict = "pass"
     /\ state' = "Merging"
-    /\ UNCHANGED <<kind, merges>>
+    /\ verdict' = "none"
+    /\ event' = {Ev("act on PASS", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, blockers, gates, landed, ci>>
 
-\* A blocker that is fundamental, a new requirement or a need for Balazs goes to the officer above. R9
-\* After a third FAIL the captain writes one line on the Review saying which of Fail and Replan
-\* it took (R10, S10); the line is a record, not a state.
+\* FR17, RM6, RM8: the verdict is FAIL, so one Fix ticket takes every blocker. The Fix moves the
+\* head, so its proof is owed.
+Fail ==
+    /\ state = "InReview"
+    /\ verdict = "fail"
+    /\ "fundamental" \notin blockers
+    /\ state' = "Fixing"
+    /\ verdict' = "none"
+    /\ proved' = FALSE
+    /\ event' = {Ev("act on FAIL", "captain"), Ev("open a Fix", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, written, call, asked, part, contract, blockers, gates, landed, ci>>
+
+\* FR19, RM6, RM12: a blocker is fundamental or a new requirement, so it cannot be fixed inside this ticket
+\* and goes to its officer to re-plan.
 Replan ==
     /\ state = "InReview"
+    /\ verdict = "fail"
+    /\ "fundamental" \in blockers
     /\ state' = "HandedBack"
-    /\ UNCHANGED <<kind, merges>>
+    /\ verdict' = "none"
+    /\ event' = {Ev("act on FAIL", "captain"), Ev("hand back", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, blockers, gates, landed, ci>>
 
-\* A fix between every two rounds, and the next round is a fresh look. R8, S9
+\* RM9: the Fix's holder fixes every blocker and proves the fixed head.
+TheFixIsProved ==
+    /\ state = "Fixing"
+    /\ ~proved
+    /\ proved' = TRUE
+    /\ event' = {Ev("prove the Fix", "fixer")}
+    /\ UNCHANGED <<ticket, state, kind, merges, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
+
+\* FR20, RM4, RM9: the Fix is done, so a fresh reviewer looks again.
 ReviewAgain ==
     /\ state = "Fixing"
+    /\ proved
+    /\ asked = "none"
     /\ state' = "InReview"
-    /\ UNCHANGED <<kind, merges>>
+    /\ verdict' = "due"
+    /\ blockers' = {}
+    /\ event' = {Ev("dispatch a reviewer", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, gates, landed, ci>>
 
-\* The Fix's holder hands it back undone, and this captain passes it on. H2
+\* FR21, RM26: the Fix's holder hands it back undone, its head not proved, and this captain passes it on.
 HandBackTheFix ==
     /\ state = "Fixing"
+    /\ ~proved
     /\ state' = "HandedBack"
-    /\ UNCHANGED <<kind, merges>>
+    /\ event' = {Ev("the Fix comes back undone", "fixer"), Ev("hand back", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* core: a ticket is done when its contract is met. The merge is in and its gates are green. R20, R21, S6
-Merged ==
+\* RM14, RM15: the gates run on the combined tree: a green receipt, a real red, or a CONFLICT.
+RunTheGates ==
     /\ state = "Merging"
+    /\ landed = "no"
+    /\ gates = "none"
+    /\ gates' \in {"green", "red", "conflict"}
+    /\ event' = {Ev("run the gates", "tools")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, landed, ci>>
+
+\* RM14, RM20: the gates are green, so the captain merges.
+Land ==
+    /\ state = "Merging"
+    /\ landed = "no"
+    /\ gates = "green"
+    /\ landed' = "in"
+    /\ gates' = "none"
+    /\ event' = {Ev("merge", "captain")}
+    /\ UNCHANGED <<ticket, state, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, ci>>
+
+\* FR22, FR24, RM17: the merge is in and its gates and CI are green on the merge SHA, so it closes the
+\* ticket.
+GreenOnTheMergeSha ==
+    /\ state = "Merging"
+    /\ landed = "in"
     /\ state' = "Done"
-    /\ UNCHANGED <<kind, merges>>
+    /\ gates' = "green"
+    /\ ci' = "green"
+    /\ event' = {Ev("green on the merge SHA", "tools"), Ev("close", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, landed>>
 
-\* A conflict or a red gate is repaired on the ticket branch and reviewed again. R19, R21, R22
-MergeBroke ==
+\* FR23, RM15: the merge is not clean and green, so a Fix ticket repairs it. The repair moves the head,
+\* so its proof is owed.
+Repair ==
     /\ state = "Merging"
+    /\ landed = "no"
+    /\ gates \in {"red", "conflict"}
     /\ state' = "Fixing"
-    /\ UNCHANGED <<kind, merges>>
+    /\ gates' = "none"
+    /\ proved' = FALSE
+    /\ event' = {Ev("open a Fix", "captain")}
+    /\ UNCHANGED <<ticket, kind, merges, written, call, asked, part, contract, verdict, blockers, landed, ci>>
 
-\* An end has no step out; this keeps the deadlock check for every other state.
+\* An end has no step out (FR25); this keeps the deadlock check for every other state.
 Ended == state \in Ends /\ UNCHANGED vars
 
 Next ==
@@ -198,24 +382,36 @@ Next ==
     \/ WorkItself
     \/ Split
     \/ SplitTheRest
-    \/ Ask
+    \/ ProveTheWork
+    \/ WriteTheVerdict
+    \/ AnswerTheCall
+    \/ WriteTheResult
+    \/ MeetACall
+    \/ AskAQuestion
     \/ Answered
-    \/ SendLeafToReview
     \/ CloseLeaf
     \/ HandBackTheWork
     \/ Dispatch
     \/ HandBackTheCut
+    \/ PartBack
+    \/ CheckTheContract
     \/ CutTheNextParts
     \/ HandBackTheWhole
+    \/ WireTheParts
     \/ SendTheWholeToReview
     \/ CloseTheWhole
-    \/ Fail
+    \/ SendLeafToReview
+    \/ TheReviewerWritesTheVerdict
     \/ Pass
+    \/ Fail
     \/ Replan
+    \/ TheFixIsProved
     \/ ReviewAgain
     \/ HandBackTheFix
-    \/ Merged
-    \/ MergeBroke
+    \/ RunTheGates
+    \/ Land
+    \/ GreenOnTheMergeSha
+    \/ Repair
     \/ Ended
 
 Spec == Init /\ [][Next]_vars

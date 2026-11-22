@@ -1,95 +1,121 @@
 ---- MODULE CaptainProperties ----
 EXTENDS Captain
 
-\* Hand-written from the core page (dydo/core.md), the spec and his rulings, never from the model.
-\* A property says what a source requires; when the model breaks one, the model is wrong.
-\* seen is passive: the set of states this captain has been in. Every model step has exactly one
-\* observer extension, no step is disabled and no fairness is added.
+\* Hand-written from the register's rows (statechart/captain/register.md), never from the model: a
+\* property says what its row requires, and when the model breaks one, the model is wrong. Each
+\* property names its row. These are the frame's properties (part 1, DYD-1504); the parts that build
+\* the phases add the properties their rows name.
+\*
+\* A property reads an event from the event record, `event`: the set of events the step is, each
+\* with its name and who takes it. It never infers an event from the state a step lands in.
+\*
+\* seen is passive: the states this captain has been in. Every model step has exactly one observer
+\* extension, no step is disabled and no fairness is added. run.py replaces PropertyInit and
+\* PropertyNext for its deliberate wrong step.
 VARIABLE seen
 PropertyInit == Init /\ seen = {state}
 PropertyNext == Next /\ seen' = seen \cup {state'}
 
-\* core "A ticket": "it is done when its contract is met". DYD-1295 7b3d2e3e.
-\* Checked as order only: Done comes after the work, its own or its parts'. Whether the contract
-\* is met cannot be seen here.
-WorkPhaseBeforeDone ==
-    [][(state' = "Done" /\ state # "Done" => seen \cap {"Leaf", "Waiting"} # {})]_<<vars, seen>>
+\* The step being checked has an event named n.
+Happens(n) == \E x \in event' : x.name = n
+\* The step has an event named n, and every event of that name in it is taken by actor a.
+OnlyBy(n, a) == Happens(n) /\ \A x \in event' : x.name = n => x.by = a
+\* The step before it ended the ticket: a close or a hand-back.
+EndedBefore == \E x \in event : x.name \in {"close", "hand back"}
 
-\* H3, DYD-1295 df6a785e: the first move after a cut dispatches the parts and waits.
-\* H2: a slice that cannot be divided coherently under its own ticket goes back to the officer
-\* above, so a cut that cannot be made is the one other way out.
-H3_WaitAfterSplit ==
-    [][(state = "Cutting" /\ state' # state => state' \in {"Waiting", "HandedBack"})]_<<vars, seen>>
-
-\* core "Who decides what": a call a captain may not decide becomes a Question for a fresh agent.
-\* H16, DYD-1295 519126ab: the work waits on the answer and then goes on; it never ends from the wait.
-H16_ResumeLeafAfterQuestion ==
-    [][(state = "Asking" /\ state' # state => state' = "Leaf")]_<<vars, seen>>
-
-\* core "A ticket": a captain "either does the work itself, with native helpers, or splits the
-\* ticket and only orchestrates". Once it has cut, it never goes back to doing the work itself.
-Core_SplitOnlyOrchestrates ==
-    "Cutting" \in seen => state \notin {"Leaf", "Asking"}
-
-\* H2, H10, R2: after a part returns the captain cuts the next parts, sends the whole to review,
-\* or finishes. H2 also sends a change to its contract, or to a sibling's, through the officer
-\* above. It never returns to an untaken ticket.
-H10_ReturnedPartContinues ==
-    [][(state = "Waiting" /\ state' # state =>
-        state' \in {"Cutting", "InReview", "Done", "HandedBack"})]_<<vars, seen>>
-
-\* R8, R23: the review ends on a verdict with no blocker, and a merge needs that PASS. The merge
-\* starts only from the review, and a reviewed ticket closes only from its merge.
-R8_PassBeforeMerge ==
-    [][ /\ (state' = "Merging" /\ state # "Merging" => state = "InReview")
-        /\ (state' = "Done" /\ state # "Done" /\ "InReview" \in seen => state = "Merging")
+\* FR24 (core "A ticket", K34): "it is done when its contract is met". A close comes only from the
+\* captain, with nothing waiting on an answer, and with the contract met: a captain that merges has
+\* its merge in, with its gates and CI green on the merge SHA (R20); any other has its result in (a
+\* change proved, or the parts back for a ticket that only groups them, R6; a verdict written; an
+\* answer's call settled; findings or a cut written).
+FR24_DoneWhenTheContractIsMet ==
+    [][Happens("close") =>
+        /\ OnlyBy("close", "captain")
+        /\ asked = "none"
+        /\ IF merges
+           THEN landed' = "in" /\ gates' = "green" /\ ci' = "green"
+           ELSE CASE kind = "change" -> proved \/ part = "back"
+                  [] kind = "verdict" -> verdict \in {"pass", "fail"}
+                  [] kind = "answer" -> call = "settled"
+                  [] OTHER -> written
     ]_<<vars, seen>>
 
-\* core "Review severities": a blocker "needs fixing now". R8: "a fix between every two rounds".
-\* A second round is entered only from the Fix, and the Fix leads to a round or back to the officer,
-\* never straight to the merge.
-R8_FixBeforeNextRound ==
-    [][ /\ (state' = "InReview" /\ state # "InReview" /\ "InReview" \in seen => state = "Fixing")
-        /\ (state = "Fixing" /\ state' # state => state' \in {"InReview", "HandedBack"})
+\* FR25 (AGENTS.md "Sort yourself", H1): crew does its one job and returns; what goes up goes to the
+\* officer above. After a close or a hand-back nothing more happens.
+FR25_EndsAreFinal ==
+    [][EndedBefore => UNCHANGED vars]_<<vars, seen>>
+
+\* FR26 (core "Who decides what", R33, K29): an agent decides what its ticket makes its job to
+\* decide, and never judges its own work. A verdict on a change is written by the fresh reviewer on
+\* the round's Review hop alone, never by the captain or the Fix's holder; a ticket whose result is a
+\* verdict writes its own; a Question's captain alone settles its own call, and only for an answer.
+FR26_EachDecidesItsJob ==
+    [][ /\ Happens("write the verdict") =>
+            IF kind = "verdict" THEN OnlyBy("write the verdict", "captain")
+            ELSE kind = "change" /\ OnlyBy("write the verdict", "reviewer")
+        /\ Happens("answer the call") => kind = "answer" /\ OnlyBy("answer the call", "captain")
     ]_<<vars, seen>>
 
-\* R19: a conflict is resolved "under a fresh review of its hunks". R22: "then a fix-scoped round,
-\* then a re-land". A merge that breaks goes to a Fix, and nothing but a closed ticket or a Fix
-\* follows a merge.
-R19_ReviewAfterMergeRepair ==
-    [][(state = "Merging" /\ state' # state => state' \in {"Done", "Fixing"})]_<<vars, seen>>
+\* FR27 (core "Review severities", R11): FAIL means at least one blocker, and PASS means none.
+FR27_FailHasABlocker ==
+    [][Happens("write the verdict") =>
+        \/ verdict' = "fail" /\ blockers' # {}
+        \/ verdict' = "pass" /\ blockers' = {}
+    ]_<<vars, seen>>
 
-\* core: "It never judges its own work: the verdict is another agent's." R2, R23: the holder that
-\* merges a change closes only after a review, from its merge.
-R2_MergingHolderHasReview ==
-    [][(merges /\ state' = "Done" /\ state # "Done" =>
-        "InReview" \in seen /\ state = "Merging")]_<<vars, seen>>
+\* FR28 (core "Review severities", R34): "A verdict is not reviewed again." A reviewer is dispatched
+\* only onto a change; never onto a verdict, a seat's findings, an answer or a cut.
+FR28_AVerdictIsNotReviewedAgain ==
+    [][Happens("dispatch a reviewer") => kind = "change"]_<<vars, seen>>
 
-\* core "Review severities": "A verdict is not reviewed again." R34, DYD-1372 777d396e.
-\* A verdict's holder is never in the review, fix and merge loop.
-R34_VerdictNeverReviewed ==
-    kind = "verdict" => state \notin {"InReview", "Fixing", "Merging"}
+\* The position each event belongs to, from the register's rows: the officer dispatches and opens a
+\* Question (IQ9), the Question's captain answers (IQ11), a part's holder returns it (SP3), the Fix's
+\* holder proves or hands back the Fix (RM9, RM26), the tools run the gates (RM15, RM17), the reviewer
+\* writes the verdict on a change and a verdict ticket's captain its own (FR26), and the captain takes
+\* every other step of its ticket.
+Owner(n) ==
+    CASE n \in {"dispatched", "open a Question"} -> "officer"
+      [] n = "answer" -> "question"
+      [] n = "a part returns" -> "part"
+      [] n \in {"prove the Fix", "the Fix comes back undone"} -> "fixer"
+      [] n \in {"run the gates", "green on the merge SHA"} -> "tools"
+      [] n = "write the verdict" -> IF kind = "verdict" THEN "captain" ELSE "reviewer"
+      [] OTHER -> "captain"
 
-\* positions.md: only a captain that merges a change gets the review, fix and merge part.
-\* This checks that table against the model; it is the table's rule, not a rule of the spec.
-Sees_OnlyAMergerSeesReviewFixMerge ==
-    state \in {"InReview", "Fixing", "Merging"} => kind = "change" /\ merges
+\* A fact changed in the step, and one of the events named in s is in it.
+By(s) == \E x \in event' : x.name \in s
 
-\* K30, S6: what the ticket's result is, is known before the holder works.
-K30_KindKnownBeforeWork ==
-    state \notin {"Dispatched", "HandedBack"} => kind # "unread"
-
-\* K30, S7 and AGENTS.md: one holder, one ticket. Its kind does not change under it.
-K30_KindStaysKnown ==
-    [][(kind # "unread" => kind' = kind)]_<<vars, seen>>
-
-\* S7, S6: a ticket that cannot be taken goes back with no work done on it.
-S7_UnstartedReturnHasNoWork ==
-    kind = "unread" => seen \subseteq {"Dispatched", "HandedBack"}
-
-\* AGENTS.md "Sort yourself": crew does its one job and returns. H12: what goes up goes to the
-\* officer above. Both ends are final: nothing follows Done or a hand-back. This is a structural
-\* check of the two ends; the sources say a captain returns, not what it may do after.
-H1_EndsAreFinal ==
-    [][(state \in {"Done", "HandedBack"} => UNCHANGED vars)]_<<vars, seen>>
+\* FR29 (the event record, DYD-1504 contract 3; W1): the record is faithful. Every event of a step is
+\* taken by the position it belongs to, and by no other. Each fact a rule decides on changes only in a
+\* step whose events name that change, so a property that reads the events sees every such change.
+FR29_TheRecordIsFaithful ==
+    [][ /\ \A x \in event' : x.by = Owner(x.name)
+        /\ ticket' = ticket
+        /\ (kind' # kind \/ merges' # merges) => By({"set In Progress"})
+        /\ (proved' /\ ~proved) => By({"prove the work", "prove the Fix", "wire the parts"})
+        /\ (proved /\ ~proved') => By({"open a Fix", "proves too big"})
+        /\ written' # written => By({"write the result"})
+        /\ (call' # call) => By(IF call' = "open" THEN {"set In Progress"} ELSE {"answer the call"})
+        /\ (asked' # asked) =>
+             By(CASE asked' = "needed" -> {"meet a call it may not decide"}
+                  [] asked' = "open" -> {"open a Question"}
+                  [] OTHER -> {"answer"})
+        /\ (part' # part) =>
+             By(CASE part' = "out" -> {"dispatch the parts"}
+                  [] part' = "back" -> {"a part returns"}
+                  [] part' = "wired" -> {"wire the parts"}
+                  [] OTHER -> {"cut the next parts", "dispatch a reviewer", "close"})
+        /\ (contract' # contract) =>
+             By(IF contract' = "unchecked" THEN {"cut the next parts"} ELSE {"check the contract against the spec"})
+        /\ (verdict' # verdict) =>
+             By(CASE verdict' = "due" -> {"dispatch a reviewer"}
+                  [] verdict' \in {"pass", "fail"} -> {"write the verdict"}
+                  [] OTHER -> {"act on PASS", "act on FAIL"})
+        /\ blockers' # blockers =>
+             By(IF blockers' = {} THEN {"write the verdict", "dispatch a reviewer"} ELSE {"write the verdict"})
+        /\ (gates' # gates) =>
+             By(IF gates' = "none" THEN {"merge", "open a Fix"} ELSE {"run the gates", "green on the merge SHA"})
+        /\ landed' # landed => By({"merge"})
+        /\ ci' # ci => By({"green on the merge SHA"})
+    ]_<<vars, seen>>
 ====
