@@ -16,7 +16,7 @@ Read the rules for code, comments and tests that your brief names. They differ f
 
 **A doc**
 
-When the change is a doc, state only what you checked in the code.
+When the change is a doc, state only what you checked against its source: the code, or the record that governs it.
 
 **A bug**
 

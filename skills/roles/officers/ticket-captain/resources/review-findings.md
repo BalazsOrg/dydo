@@ -4,7 +4,7 @@ You look at a candidate for what is wrong with it. Each problem you find is a fi
 
 **While you look**
 
-- Accept as proof what the author already proved. Rerun a test or a journey that the author ran the same way on the same commit only when later changes put it in doubt. List what you accepted apart from what you saw yourself.
+- Accept as proof what the author already proved. A test or a journey the author ran the same way on the candidate's commit counts: do not rerun it. Rerun one that ran on an earlier commit only when later changes may have broken it. List what you accepted apart from what you saw yourself.
 - Commit nothing to the candidate's branch, and change no product code.
 
 **Every finding**
@@ -25,7 +25,7 @@ You look at a candidate for what is wrong with it. Each problem you find is a fi
 
 **Trying to break it** (the Run tests and Hypothesis columns)
 
-- Run the tests your row names.
+- Run the tests your row names that no receipt you accepted already covers.
 - Name what you suspect is wrong, then write a test of your own on the candidate's commit. If it fails for the reason you named, put the test and its failing output in the finding.
 
 **Driving** (the Drive column)

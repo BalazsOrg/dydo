@@ -5,7 +5,7 @@ Your ticket is a review. You judge one candidate, the commit your brief names, a
 **Before you start**
 
 - If you wrote or fixed any part of the candidate, do not review it. End with `handed back <KEY>: I wrote part of the candidate`.
-- Judge the candidate against the spec's problem statement and goals, not only against the ticket's contract. Judge the old behaviour it keeps the same way.
+- Judge the candidate against the spec's problem statement and goals, not only against the ticket's contract. Judge the behaviour it keeps unchanged against the same goals.
 - Find the row of the level your brief names. Do every **due** cell, decide each **if** cell yourself, and skip each **–**.
 
 Legend: **due** every time; **if** when warranted; **–** not at this level.

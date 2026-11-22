@@ -8,7 +8,7 @@ Your brief names the files, the one sentence for each file that says who reads i
 
 A line holds only when every answer is yes.
 
-1. **True.** Does the core page, the statechart or a recorded word of the user say it? Name the place: a heading, an arrow, a row, a comment. For a line that names a command, a tool, a file or a heading, run it or open it: that is its source. A line whose source you cannot name fails.
+1. **True.** Does the core page, the statechart or a recorded word of the user say it? Where they are silent, the Project's spec or a decision record counts. Name the place: a heading, an arrow, a row, a comment. For a line that names a command, a tool, a file or a heading, open it, or run its help or a dry run: that is its source. Never run a command that writes, sends or merges. A line whose source you cannot name fails.
 2. **Placed.** Does the statechart give this text to this file's reader? A line that tells its reader an arrow that reader cannot take fails.
 3. **Clear.** Read as the reader, with only this file, the skill that links to it and a brief. Do you know exactly what to do? If you must guess, the line fails.
 4. **General.** Does it hold in a project other than this one?

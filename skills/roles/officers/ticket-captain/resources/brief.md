@@ -9,15 +9,15 @@ Open with these three sentences: `You are the captain of <KEY>. Its contract is 
 Then name:
 
 - `/ticket-captain`, and every other skill the work needs, each with a slash. An agent that merges needs `/pr`.
-- What the ticket's result is: a change, a verdict, findings as one seat of a review, or an answer.
+- What the ticket's result is: a change, a verdict, findings as one seat of a review, an answer, a cut, or a session with the user.
 - How the ticket fits your ticket and the spec.
 - For a change: the branch and the base it works on, the paths it owns, the gates it must pass, and how the work is proved.
 - For a change: the skill that holds the project's rules for code, comments and tests, with a slash, or that the project has none.
-- For a change: whether the agent merges it, and into which branch. A part that you will wire merges nothing.
+- For a change: whether the agent merges it, and into which `feature/*` branch. A part that you will wire merges nothing.
 
 | The ticket | Its brief adds |
 | --- | --- |
-| a review | the candidate and its head commit; the model that wrote it; the ticket judged; the governing spec, or that there is none; the level and its lenses; what the author already proved |
+| a review | the candidate, its head commit and its base commit; the model that wrote it; the ticket judged; the governing spec, or that there is none; the level and its lenses; what the author already proved |
 | one seat of a review | the same, and the one kind of review it does; for Driving or Modelling, the skill for it, with a slash |
 | a Question | the question, and the ticket that waits on it |
 | a Fix | the Review it comes from, and every blocker to fix |
