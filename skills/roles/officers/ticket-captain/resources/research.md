@@ -13,7 +13,7 @@ Your ticket is a Question: a call that another captain may not decide, and that 
 Take the first case that fits. A call goes to the user only when neither of the first two fits:
 
 1. The truth, as in "While you work" in the `ticket-captain` skill, settles the call: that is the answer, even when the call looks like the user's.
-2. The call is another agent's job, such as a reviewer's ruling on a nit: open a sub-ticket of your ticket for that job (for a nit, a Review ticket that asks only for its ruling), dispatch a fresh agent onto it by [Brief](brief.md), wait for its result, and answer with that result.
+2. The call is another agent's job, such as a reviewer's ruling on a nit: open a sub-ticket of your ticket for that job (for a nit, a Review ticket that asks only for its ruling), dispatch a fresh agent onto it by [Brief](brief.md), wait for its result, and answer with that result. If it comes back without its result, dispatch a fresh agent onto it, and keep waiting.
 3. The call cannot be undone, or a record keeps it for the user: decide nothing, and go by "A call for the user".
 4. Otherwise decide it yourself, and give your reason.
 
