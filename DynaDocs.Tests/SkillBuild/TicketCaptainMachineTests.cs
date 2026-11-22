@@ -92,7 +92,7 @@ public class TicketCaptainMachineTests
     [Trait("Job", "contract: DYD-1372 r2b B3 H16 S10 a leaf's Question is left only to resume the leaf: passed up unsettled, it stays a wait; g6 H1 H23 the research resource takes no call to the user itself: the user's call goes up as a ticket, by the need's own resource, through the officer")]
     public void CaptainMachine_LeavesAQuestionOnlyToResumeTheLeaf()
     {
-        var research = Built.Value.Files["skills/roles/officers/ticket-captain/resources/research.md"];
+        var research = Built.Value.Unwritten["skills/roles/officers/ticket-captain/resources/research.md"];
 
         Assert.Contains(Arrow("CaptainNeed.Answered", "Question", "Leaf"), Arrows);
         Assert.Contains(Arrow("CaptainNeed.Up", "Question", "Question"), Arrows);

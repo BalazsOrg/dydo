@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainBriefs
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## NoPeek
 
 `claim:CaptainBriefs.NoPeek`: A dispatcher briefs without loading the child's kind resource; the child loads its own.
@@ -18,7 +20,7 @@ Layer: Nothing stops a dispatcher from reading every resource in the folder.
 
 Reason: A dispatcher that reads the recipe starts steering how the work is done.
 
-**ticket-captain** (BriefLead; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefLead; read by TicketCaptain):
 
 > Brief without loading the child's kind resource: the child loads its own.
 
@@ -34,7 +36,7 @@ Layer: T3 knows the thread and Linear the ticket; the brief is the only thing th
 
 Reason: The kind is how the child picks its resource.
 
-**ticket-captain** (BriefAll; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain):
 
 > The ticket, by its key, and its kind.
 
@@ -50,7 +52,7 @@ Layer: The host lists skills and leaves loading them to the agent's own judgemen
 
 Reason: Named skills get loaded; skills left to judgement get loaded sometimes.
 
-**ticket-captain** (BriefAll; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain):
 
 > `/ticket-captain`, then every other skill the ticket needs, each with a slash.
 
@@ -66,7 +68,7 @@ Layer: A child sees its ticket and never the cut that sized it, so only its disp
 
 Reason: A captain told that it holds a leaf goes straight to the work and reads the orchestration only when the leaf fails to fit.
 
-**ticket-captain** (BriefAll; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain):
 
 > Whether you cut the ticket as a leaf: its captain then does the work itself, and splits it only if it proves too big.
 
@@ -82,7 +84,7 @@ Layer: Nothing in a checkout says whose the merge is.
 
 Reason: It decides how the child finishes, and two agents never both merge.
 
-**ticket-captain** (BriefAll; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain):
 
 > Who merges the work: the child, you, or nobody when it merges nothing. When it is the child, also the branch its PR targets, a `feature/` branch: `dydo merge` takes no other.
 
@@ -98,7 +100,7 @@ Layer: `dydo merge` refuses a PR whose base is no `feature/` branch, and says so
 
 Reason: A child left to pick its base aims at its officer's ticket branch, where the one command that may merge a PR refuses.
 
-**ticket-captain** (BriefAll; read by TicketCaptain, on claim:CaptainBriefs.Merger):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain, on claim:CaptainBriefs.Merger):
 
 > Who merges the work: the child, you, or nobody when it merges nothing. When it is the child, also the branch its PR targets, a `feature/` branch: `dydo merge` takes no other.
 
@@ -114,7 +116,7 @@ Layer: The guard blocks a few paths for everyone and knows nothing of one ticket
 
 Reason: Two writers with stated paths cannot overwrite each other.
 
-**ticket-captain** (BriefAll; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain):
 
 > For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes, each should by its ticket's key, and the SHA it starts from: your branch's head, which holds the candidate they were found at.
 
@@ -130,7 +132,7 @@ Layer: A writer's thread keeps its own last commit, and nothing in a message say
 
 Reason: Told where to begin, a writer whose checkout stayed at its own part does not repair a tree the round never saw.
 
-**ticket-captain** (BriefAll; read by TicketCaptain, on claim:CaptainBriefs.Change):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain, on claim:CaptainBriefs.Change):
 
 > For a change: the paths it owns and the project's gates it must pass. For a Fix, also the findings it closes, each should by its ticket's key, and the SHA it starts from: your branch's head, which holds the candidate they were found at.
 
@@ -146,7 +148,7 @@ Layer: The child cannot see the conversation the question came out of, and its t
 
 Reason: Knowing the choice tells the researcher what would count as an answer, and being told to research sorts it to the right recipe at intake.
 
-**ticket-captain** (BriefAll; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain):
 
 > For a Question you send a child to research, the only Question you brief: the question, the choice that waits on it, and that the child is to research it. A HITL Question goes up unbriefed, by A need for the user (`need-for-the-user.md`).
 
@@ -162,7 +164,7 @@ Layer: A ticket shows that it was started and nothing of who holds it, so a fres
 
 Reason: Without the word, an agent sent to resume dead work sends the dispatch back as a conflict, as it should.
 
-**ticket-captain** (BriefAll; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefAll; read by TicketCaptain):
 
 > Whether the child takes over a ticket another agent started, and then the commit it resumes from.
 
@@ -178,7 +180,7 @@ Layer: A reviewer is handed a SHA and a ticket, and neither names the model that
 
 Reason: A review captain left to guess the writer's family fills its seats blind, and may seat that same family.
 
-**ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Candidate):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Candidate):
 
 > The candidate, by its SHA, and the model family that wrote it.
 
@@ -194,7 +196,7 @@ Layer: `dydo merge` merges only the SHA a PASS names, so the reviewer has to be 
 
 Reason: A verdict on a moving branch is a verdict on nothing.
 
-**ticket-captain** (BriefReview; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain):
 
 > The candidate, by its SHA, and the model family that wrote it.
 
@@ -210,7 +212,7 @@ Layer: Linear gives a Review ticket one parent, and for a leaf's check that is t
 
 Reason: Filed under the wrong card, a finding escapes the duplicate search and whoever later gathers that part's leftovers.
 
-**ticket-captain** (BriefReview; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain):
 
 > The ticket whose work is judged, by its key, apart from the Review ticket's own: the round's holder files each should under it.
 
@@ -226,7 +228,7 @@ Layer: `dydo merge` reads a PASS only from the body of the PR it is given, and a
 
 Reason: A reviewer that knows there is no PR writes its PASS where it will be read, and never hunts for a body to edit.
 
-**ticket-captain** (BriefReview; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain):
 
 > The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by Merging (`merging.md`), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. The candidate is also that PR's head: after a Fix, a mended should or a resolved conflict, push your branch with `git push` and see `dydo pr-ready` pass again, since `dydo merge` refuses a PR whose head is not the reviewed SHA. Only a candidate somebody else will have reviewed in a PR has no PR, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
 
@@ -242,7 +244,7 @@ Layer: `dydo merge` tells a captain that its PR holds no PASS only at the merge,
 
 Reason: A verdict written where the command never looks buys no merge, and the whole is judged a second time for the sake of one line.
 
-**ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Pr):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Pr):
 
 > The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by Merging (`merging.md`), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. The candidate is also that PR's head: after a Fix, a mended should or a resolved conflict, push your branch with `git push` and see `dydo pr-ready` pass again, since `dydo merge` refuses a PR whose head is not the reviewed SHA. Only a candidate somebody else will have reviewed in a PR has no PR, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
 
@@ -258,7 +260,7 @@ Layer: The guard lets a ticket branch be pushed and never asks for it; the tree 
 
 Reason: Left local, the reviewed commit meets the host only at the merge: the command refuses there, and hosted CI has yet to run on what the reviewer passed.
 
-**ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Pr):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Pr):
 
 > The PR the candidate is in, by its number, and the base's SHA: a candidate you will merge is in its PR, a draft you opened by Merging (`merging.md`), before you brief its Review, since `dydo merge` reads a PASS only from that PR's body. The candidate is also that PR's head: after a Fix, a mended should or a resolved conflict, push your branch with `git push` and see `dydo pr-ready` pass again, since `dydo merge` refuses a PR whose head is not the reviewed SHA. Only a candidate somebody else will have reviewed in a PR has no PR, a leaf's evidence check or the round of a part its officer merges, and its brief says so.
 
@@ -274,7 +276,7 @@ Layer: A ticket links its contract; nothing leads a reviewer from there to the s
 
 Reason: A review held only to the contract passes a wrong rule the contract inherited.
 
-**ticket-captain** (BriefReview; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain):
 
 > The governing spec, or that there is none.
 
@@ -290,7 +292,7 @@ Layer: The level table has a row for a leaf, and nothing keeps a dispatcher from
 
 Reason: The review of the whole covers each part, so a full review of one part is paid for twice.
 
-**ticket-captain** (BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Level):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain, on claim:CaptainBriefs.Level):
 
 > The level, which follows the candidate and never the size of the ticket you brief: the evidence check of a leaf's change, a ticket review, or a feature or Milestone review. A leaf's change gets at most the check, never a full review: open the check as a Review ticket of its own beside the leaf's, for a fresh seat.
 
@@ -306,7 +308,7 @@ Layer: The review resource holds a row per level and cannot know which one this 
 
 Reason: The level sets how much review the candidate gets, and review is expensive.
 
-**ticket-captain** (BriefReview; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain):
 
 > The level, which follows the candidate and never the size of the ticket you brief: the evidence check of a leaf's change, a ticket review, or a feature or Milestone review. A leaf's change gets at most the check, never a full review: open the check as a Review ticket of its own beside the leaf's, for a fresh seat.
 
@@ -322,6 +324,6 @@ Layer: Only the dispatcher knows how far up the tree the candidate sits.
 
 Reason: Polishing a first version spends review on code the next part will change.
 
-**ticket-captain** (BriefReview; read by TicketCaptain):
+**ticket-captain** (unwritten; BriefReview; read by TicketCaptain):
 
 > The lenses, which rise up the tree: it works, with a security baseline; then it integrates; then it is optimal, secure, performant and in harmony. A first version never gets a final one's lenses.

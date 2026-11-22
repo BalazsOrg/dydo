@@ -141,18 +141,20 @@ public class StatechartRulesTests
     public void SpecCitation_AcceptsOnlyDrsTheSpecNames(string id, bool valid) => Assert.Equal(valid, SpecCitation.IsValid(id));
 
     [Fact]
-    [Trait("Job", "contract: universal rule 1 and K22 the production model cites the spec and builds the three officer skills, the four crew kinds and both standards")]
+    [Trait("Job", "contract: universal rule 1 and K22 the production model cites the spec and builds two officer skills, the four crew kinds and both standards, and renders the hand-written ticket captain unwritten (DYD-1439)")]
     public void ProductionModel_CitesTheSpecAndBuilds()
     {
         Assert.True(ProductionModel.Model.CitesSpec);
 
-        var files = SkillBuilder.Build(ProductionModel.Model).Files.Keys;
+        var tree = SkillBuilder.Build(ProductionModel.Model);
+        var files = tree.Files.Keys;
 
         Assert.Equal(
         [
             "skills/roles/crew/implementer/SKILL.md", "skills/roles/crew/research/SKILL.md", "skills/roles/crew/reviewer/SKILL.md", "skills/roles/crew/scout/SKILL.md",
-            "skills/roles/officers/chief-of-staff/SKILL.md", "skills/roles/officers/coordinator/SKILL.md", "skills/roles/officers/ticket-captain/SKILL.md"
+            "skills/roles/officers/chief-of-staff/SKILL.md", "skills/roles/officers/coordinator/SKILL.md"
         ], files.Where(path => path.EndsWith("/SKILL.md", StringComparison.Ordinal)).Order(StringComparer.Ordinal));
+        Assert.Contains("skills/roles/officers/ticket-captain/SKILL.md", tree.Unwritten.Keys);
         Assert.Contains("dydo/guides/working-tree-standard.md", files);
         Assert.Contains("Scaffold/dydo/reference/linear-workspace-standard.md", files);
     }

@@ -21,15 +21,17 @@ public class RealSkillShapeTests
 
     // The committed built files are checked as they stand on disk, so a hand edit that breaks a limit fails here.
     [Fact]
-    [Trait("Job", "contract: K10 shape tests over the real committed role skills and their resources (B15)")]
+    [Trait("Job", "contract: K10 shape tests over the real committed built role skills and their resources (B15); the hand-written ticket captain is not built (DYD-1439)")]
     public void RealBuiltFiles_MeetEveryShapeLimit()
     {
         var tree = CommittedTree.BuiltText();
 
-        // Never vacuous: the real tree holds the seven role spines, one of them the truth-checked ticket captain, a
-        // scenario and a template (DYD-1082, DYD-1284, DYD-1372). No real resource links another since DYD-1372 took the
-        // legacy ticket captain's council briefs out of the build; the synthetic trees below keep that rule red.
-        Assert.Equal(7, RoleSpines(tree).Count());
+        // Never vacuous: the real tree holds the six built role spines, a scenario and a template (DYD-1082, DYD-1284,
+        // DYD-1372). The truth-checked ticket captain is written by hand since DYD-1439, so no built spine is shaped here;
+        // the synthetic trees below keep that rule red. No real resource links another since DYD-1372 took the legacy
+        // ticket captain's council briefs out of the build; the synthetic trees keep that rule red too.
+        Assert.Equal(6, RoleSpines(tree).Count());
+        Assert.DoesNotContain(RealCaptain, tree.Keys);
         Assert.Equal([RealCaptain], RealShaped);
         Assert.Contains("skills/roles/officers/coordinator/resources/re-cut.md", RealScenarios);
         Assert.Contains("skills/roles/officers/coordinator/resources/ticket-captain-brief.md", tree.Keys);

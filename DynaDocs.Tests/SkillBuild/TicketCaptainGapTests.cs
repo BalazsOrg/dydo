@@ -123,7 +123,7 @@ public class TicketCaptainGapTests
     public void RefusedDispatch_HasItsLineBelowTheLimits()
     {
         var refused = LineOf("CaptainDispatch.Refused");
-        var section = Array.IndexOf(Built.Value.Files[Spine].Split('\n'), "## " + SkillRenderer.WhenThingsGoWrong) + 1;
+        var section = Array.IndexOf(Built.Value.Unwritten[Spine].Split('\n'), "## " + SkillRenderer.WhenThingsGoWrong) + 1;
 
         Assert.Equal(Spine, refused.Path);
         Assert.True(section > 0 && refused.Line > section, "the refusal stands outside When things go wrong");

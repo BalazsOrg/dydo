@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainReviewing
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## One
 
 `claim:CaptainReviewing.One`: A Review ticket is one candidate judged at the level its brief names, and its verdict is its holder's.
@@ -18,7 +20,7 @@ Layer: The brief names the candidate and the level; that the verdict has one own
 
 Reason: A verdict nobody owns is a list of remarks that nobody acts on.
 
-**ticket-captain** (ReviewLead; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewLead; read by TicketCaptain):
 
 > Your ticket is a review: one candidate, judged at the level your brief names. Hold the review, and its verdict is yours; sit as one seat of it, and your findings are.
 
@@ -34,7 +36,7 @@ Layer: T3 will hand a review to any thread, the writer's included.
 
 Reason: Its own context hides from a writer exactly what a fresh reader would catch.
 
-**ticket-captain** (ReviewLead; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewLead; read by TicketCaptain):
 
 > Never judge work you implemented or fixed.
 
@@ -50,7 +52,7 @@ Layer: The spine is one text for every kind of ticket, and nothing in it marks t
 
 Reason: Without the map a reviewer works out for itself that the phase named for review is about somebody else's change.
 
-**ticket-captain** (ReviewMap; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewMap; read by TicketCaptain):
 
 > | Spine phase | You hold the review | You are one seat of it |
 > | -- | -- | -- |
@@ -73,7 +75,7 @@ Layer: The spine's fourth phase speaks to every captain alike and cannot tell a 
 
 Reason: A judgement sent on to be judged again has no end, and each further pass costs as much as the first.
 
-**ticket-captain** (ReviewAll; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewAll; read by TicketCaptain):
 
 > A verdict is never reviewed: phase 4 is for a change, so no round is opened on your verdict or on a seat's findings, and what you return is your result.
 
@@ -89,7 +91,7 @@ Layer: A contract can pass on a wrong rule, and nothing below a reader of the sp
 
 Reason: Work can meet its contract and still drift from what the Project is for.
 
-**ticket-captain** (ReviewAll; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewAll; read by TicketCaptain):
 
 > Judge the change, and the behaviour it inherits unchanged, against the spec's problem statement and goals, not only the contract.
 
@@ -105,7 +107,7 @@ Layer: Linear holds the three labels; sorting a finding into one is the reviewer
 
 Reason: The severity is what the captain routes on, so a finding without one cannot move.
 
-**ticket-captain** (ReviewAll; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewAll; read by TicketCaptain):
 
 > Give every finding one severity: a blocker, the intended case is wrong; a should, a real bug callers will hit, inside the intent; a nit, everything else.
 
@@ -121,7 +123,7 @@ Layer: Nothing stops a reviewer at the first blocker it finds.
 
 Reason: Blockers handed over one a round cost a fix and a round each.
 
-**ticket-captain** (ReviewAll; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewAll; read by TicketCaptain):
 
 > Report every visible blocker in one pass.
 
@@ -137,7 +139,7 @@ Layer: Each seat sees only its own findings, so none of them can write the round
 
 Reason: Several seats posting each a verdict would leave the round with none.
 
-**ticket-captain** (ReviewSeat; read by TicketCaptain, on claim:CaptainReviewing.SeatLeaf):
+**ticket-captain** (unwritten; ReviewSeat; read by TicketCaptain, on claim:CaptainReviewing.SeatLeaf):
 
 > Your brief names your one kind of review, and you are a leaf that stays one: read the part below headed by your kind, leave "If you hold the review" unread, and return your findings, each with its severity, to the captain holding the round.
 
@@ -153,7 +155,7 @@ Layer: The spine shows every holder how a ticket is split, and only its dispatch
 
 Reason: A reviewer sent to do one thing spends its attention on that thing, and none on orchestration it will never use.
 
-**ticket-captain** (ReviewSeat; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewSeat; read by TicketCaptain):
 
 > Your brief names your one kind of review, and you are a leaf that stays one: read the part below headed by your kind, leave "If you hold the review" unread, and return your findings, each with its severity, to the captain holding the round.
 
@@ -169,7 +171,7 @@ Layer: A reviewer learns how large its slice really is only once it has opened i
 
 Reason: A reader pushed past what it can hold skims, and a skimmed slice passes with its faults unread.
 
-**ticket-captain** (ReviewSeat; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewSeat; read by TicketCaptain):
 
 > A leaf divides only what is too big for one agent, as a large read can be. Divide such a slice by Too big to hold (`too-big.md`), your findings so far standing in for its commit and each part a slice that reads whole on its own, and return the parts' findings with yours.
 
@@ -185,7 +187,7 @@ Layer: Every tool in the row is there for the taking at every level; nothing met
 
 Reason: Review is expensive, so each level spends only what it can find something with.
 
-**ticket-captain** (ReviewRow; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRow; read by TicketCaptain):
 
 > Legend: **due** every time; **if** when warranted; **–** not at this level.
 >
@@ -212,7 +214,7 @@ Layer: The table's bare "due" cannot tell whether a project has the tool, the se
 
 Reason: Without it a reviewer stalls on a cell nothing can run, or builds the tooling and turns its review into a second project.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain):
 
 > A cell is due only as far as the project has what it names: Drive and Formal where the tool is built and the subject is settled, any other cell where its tools, selectors and results exist. Report what is missing to your officer as a finding, instead of building it.
 
@@ -228,6 +230,6 @@ Layer: `dydo merge` refuses a head no PASS names, and a resolution always makes 
 
 Reason: Everything else on the branch already passed, so judging it again spends a round on nothing.
 
-**ticket-captain** (ReviewRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRules; read by TicketCaptain):
 
 > Asked to judge a conflict's resolution: judge its hunks, the only new work on the branch, and name the new head in your PASS.

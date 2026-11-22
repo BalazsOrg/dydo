@@ -6,6 +6,8 @@ type: reference
 
 # Claims: Captain
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Owns
 
 `claim:Captain.Owns`: A captain holds one ticket to its end and answers for its outcome.
@@ -18,7 +20,7 @@ Layer: AGENTS.md gives every agent the frame; only this skill speaks to the agen
 
 Reason: An agent that takes its ticket for a task to attempt stops at the first obstacle instead of at the result.
 
-**ticket-captain** (Job; read by TicketCaptain):
+**ticket-captain** (unwritten; Job; read by TicketCaptain):
 
 > You hold one ticket to its end, and you are responsible for its outcome.
 
@@ -34,7 +36,7 @@ Layer: The host loads one skill by name and knows nothing of kinds.
 
 Reason: A reader told at once that the base is shared looks for its own recipe in a resource, not here.
 
-**ticket-captain** (Job; read by TicketCaptain):
+**ticket-captain** (unwritten; Job; read by TicketCaptain):
 
 > Its kind says what the work is; this skill says how to hold it.
 
@@ -50,7 +52,7 @@ Layer: T3 carries a child's result back to the thread that started it, and names
 
 Reason: Every problem then has one address, up or down, and none is left without an owner.
 
-**ticket-captain** (Job; read by TicketCaptain):
+**ticket-captain** (unwritten; Job; read by TicketCaptain):
 
 > Whoever dispatched you is your officer, and you are the officer of every captain you dispatch.
 
@@ -66,7 +68,7 @@ Layer: Nothing in the host or the guard stops an agent from settling a call that
 
 Reason: A context full of its own work judges with a bias; a fresh one investigates first and then answers.
 
-**ticket-captain** (Job; read by TicketCaptain):
+**ticket-captain** (unwritten; Job; read by TicketCaptain):
 
 > Decide only obvious, reversible calls; any other call becomes a Question sub-ticket for a fresh captain, and you wait on its answer.
 
@@ -82,7 +84,7 @@ Layer: Linear only stores the description; weighing it against the spec is the h
 
 Reason: A holder that works from its contract alone drifts from the intent a little at every hop.
 
-**ticket-captain** (Take; read by TicketCaptain):
+**ticket-captain** (unwritten; Take; read by TicketCaptain):
 
 > Read the ticket's contract, how it fits the ticket above it, and the spec sections it serves; where they disagree, the spec wins.
 
@@ -100,7 +102,7 @@ Layer: `dydo survey <project>` offers a ticket as pickable only while it is unst
 
 Reason: A rejected ticket left In Progress looks held, and no officer is ever offered it again.
 
-**ticket-captain** (StartChecks; read by TicketCaptain, on claim:Captain.Filler):
+**ticket-captain** (unwritten; StartChecks; read by TicketCaptain, on claim:Captain.Filler):
 
 > Your brief calls the ticket filler: if it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
 
@@ -116,7 +118,7 @@ Layer: Whoever pulls filler sorts by labels alone; these three need someone who 
 
 Reason: Work that hides a design call is caught before anyone builds it.
 
-**ticket-captain** (StartChecks; read by TicketCaptain):
+**ticket-captain** (unwritten; StartChecks; read by TicketCaptain):
 
 > Your brief calls the ticket filler: if it is not small, reversible and free of design calls, return it to your officer unstarted and unassigned, with a one-line reason.
 
@@ -132,7 +134,7 @@ Layer: The host lists the skills it has and loads none for a kind of ticket.
 
 Reason: Naming them in the brief keeps the process from resting on an agent's guess at which ones apply.
 
-**ticket-captain** (Take; read by TicketCaptain, on claim:Captain.Start):
+**ticket-captain** (unwritten; Take; read by TicketCaptain, on claim:Captain.Start):
 
 > Set the ticket In Progress, then load your kind's resource and every skill your brief names.
 
@@ -150,7 +152,7 @@ Layer: T3's `link_issue` only shows the ticket beside its thread; it changes no 
 
 Reason: The status is how every other agent sees that someone already has the ticket.
 
-**ticket-captain** (Take; read by TicketCaptain):
+**ticket-captain** (unwritten; Take; read by TicketCaptain):
 
 > Set the ticket In Progress, then load your kind's resource and every skill your brief names.
 
@@ -166,7 +168,7 @@ Layer: T3 links ticket and thread on its own side only; from Linear, nobody can 
 
 Reason: A dead thread can be found and resumed from the ticket it was working.
 
-**ticket-captain** (withheld; Take; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; Take; read by TicketCaptain):
 
 > Attach your thread's link to the ticket, titled `T3 · ticket-captain · <kind> · <model>`.
 
@@ -182,7 +184,7 @@ Layer: The build checks that each linked file exists; choosing among them is the
 
 Reason: Each kind carries only its own recipe, so no captain reads past two others to find it.
 
-**ticket-captain** (Kinds; read by TicketCaptain):
+**ticket-captain** (unwritten; Kinds; read by TicketCaptain):
 
 > | Your ticket is | Load |
 > | -- | -- |
@@ -202,7 +204,7 @@ Layer: Linear shows that a ticket is a Question and nothing of how it is to be s
 
 Reason: A call the user alone can make, sent through the sources once more, costs a pass that cannot answer it and puts off his sitting.
 
-**ticket-captain** (Hold; read by TicketCaptain, on claim:Captain.Jobs):
+**ticket-captain** (unwritten; Hold; read by TicketCaptain, on claim:Captain.Jobs):
 
 > A Grilling, Walkthrough, Wayfinding or Enablement ticket, or any other Question, is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
 
@@ -218,7 +220,7 @@ Layer: The brief names the job's skill, and nothing but this line says the ticke
 
 Reason: One way of holding every kind keeps a job ticket from growing a process of its own.
 
-**ticket-captain** (Hold; read by TicketCaptain):
+**ticket-captain** (unwritten; Hold; read by TicketCaptain):
 
 > A Grilling, Walkthrough, Wayfinding or Enablement ticket, or any other Question, is held the same way, with its job's skill from your brief; its Mode label says whether the user takes part.
 
@@ -234,6 +236,6 @@ Layer: No tool routes a finding to its owner; the one address a captain surely h
 
 Reason: What matters is that it surfaces, even when the finder cannot tell whose it is.
 
-**ticket-captain** (WhenThingsGoWrong; read by TicketCaptain):
+**ticket-captain** (unwritten; WhenThingsGoWrong; read by TicketCaptain):
 
 > Report a problem outside your ticket to your officer.

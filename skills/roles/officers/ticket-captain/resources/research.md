@@ -1,32 +1,25 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # Research
 
-Your ticket is one question a choice waits on. Answer it with every claim cited to a passage you opened.
+Your ticket is a Question: a call that another captain may not decide, and that waits on your answer. Deciding the answer is your job, unless the call is the user's.
 
-| Spine phase | You |
-| -- | -- |
-| 1. Take the ticket | use |
-| 2. Do it or split it | use: a leaf, whose scouts are native helpers and never sub-tickets |
-| 3. Dispatch | skip, unless you split |
-| 4. Get it reviewed | skip: an answer is no change, so no round is opened on it |
-| 5. Finish | use: the Nobody case |
-| When things go wrong | use |
+**Research first**
 
-1. Restate the question in one sentence, and say what would count as an answer.
-2. Mark each source family in or out, with a reason: decision records, the spec and plans, other docs, code and tests, git history, Linear, outside sources. Read governing docs on the default branch too; a branch can lag.
-3. Send one scout per family in play, as native helpers in parallel, each with the question and its one family; ask each for exact passages with their citations, from the source that owns the claim, and for what it searched where it found nothing. Read a lone family yourself.
-4. Open the passage behind every load-bearing claim, and confirm it says what the scout said.
-5. Where sources conflict, name the conflict and the source that governs; where they are silent, mark the point unsettled rather than reason your way to a fact.
-6. Write the answer first, then each claim with its citation (a path at its commit, or a URL) and its exact passage, what stayed unsettled, and every family searched, the empty ones included.
+1. Look where the answer may already be: the user's recorded words, the spec, decision records, other docs, the code and its tests, git history, the tickets. For a wide search, send one native helper to each place, and ask each for exact passages.
+2. Open the passage behind every claim your answer rests on, and confirm that it says what you think.
+3. Where sources disagree, the user's latest recorded words win, then the spec, then decision records.
 
-**If the question is too big for one agent:**
-Divide it by [Too big to hold](too-big.md), what you have answered so far standing in for its commit: write that on your ticket, each claim with its citation, and make each part a Research sub-ticket, one question that can be answered on its own.
-When the parts are back, their answers are on their tickets: take each as you would a scout's report, from step 4 on, and write the one answer from theirs and yours.
+**Then answer**
 
-**On a Question ticket:**
-Research first, then go by what the facts leave of the call. An open call is laid out the same way wherever it goes: the call, its options unranked and the facts with their sources.
+- The sources settle it: that is the answer.
+- They leave a call that is not the user's: decide it, and give your reason.
+- The call is the user's, because it cannot be undone or because a record keeps it for the user: decide nothing, and go by "A call for the user".
 
-- They settle it: put the answer on the ticket.
-- They leave a call that is the user's to make, because it cannot be undone once made or because making it sets or changes a decision record: open a Question sub-ticket under yours, Mode HITL, by [Sub-tickets](sub-tickets.md), lay the call out on it, and have it block every ticket yours blocks. Your ticket has then handed its call on: close it Done, and return the new ticket's key to your officer. That return is how the call goes up: your officer carries the ticket on as it is, by [A need for the user](need-for-the-user.md).
-- They leave anything else open, a weighty call that can still be undone among them: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.
+**Write the answer**
+
+Write on your ticket the answer first. Then give each claim with its source, a path at its commit or a link, and the exact passage. Then say what stayed unsettled.
+
+**A call for the user**
+
+1. Make the user's question ready on your ticket: every option, each option's trade-off, and your recommendation. Give the facts you found with their sources, as in "Write the answer".
+2. Name a decision record by what it says, never only by its number.
+3. Leave the ticket open, and end with `handed back <KEY>: a call for the user`.

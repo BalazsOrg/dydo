@@ -51,3 +51,5 @@ A review's verdict is FAIL when it has at least one blocker. A verdict is not re
 ## The statechart
 
 The statechart is the digital twin of the process the role skills describe. It is written by hand. Every skill file is checked against it, and it shows exactly who sees what: which skills and context each position gets.
+
+The chart for a captain and its ticket is in `statechart/captain/`, read from the repository root: `chart.mmd` is the chart, and `positions.md` beside it says who sees what.

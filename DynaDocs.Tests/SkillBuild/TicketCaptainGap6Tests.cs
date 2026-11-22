@@ -57,7 +57,7 @@ public partial class TicketCaptainGap6Tests
     [Trait("Job", "contract: DYD-1372 g6 H2 R17 the one place the PR's order is written is the merging resource, and every file that has a holder open a PR links it: the spine's review phase, the briefs and the red gate")]
     public void EveryFileThatOpensAPr_LinksTheOneOrder()
     {
-        var review = Built.Value.Files[Folder + "SKILL.md"].Split("\n## ").Single(section => section.StartsWith("4. ", StringComparison.Ordinal));
+        var review = Built.Value.Unwritten[Folder + "SKILL.md"].Split("\n## ").Single(section => section.StartsWith("4. ", StringComparison.Ordinal));
 
         Assert.Contains("](resources/merging.md)", review);
         Assert.Contains("](merging.md)", Resource("briefs"));
@@ -77,7 +77,7 @@ public partial class TicketCaptainGap6Tests
         Assert.InRange(merging.IndexOf(TreeCheck, StringComparison.Ordinal), 0, first);
         Assert.DoesNotContain(BodyCheck, merging[..first]);
         Assert.True(body.Number < merge.Number, $"the body check is step {body.Number} and the merge step {merge.Number}");
-        Assert.All(Built.Value.Files.Where(file => file.Key.StartsWith(Folder, StringComparison.Ordinal) && !file.Key.EndsWith("/merging.md", StringComparison.Ordinal)),
+        Assert.All(Built.Value.Unwritten.Where(file => file.Key.StartsWith(Folder, StringComparison.Ordinal) && !file.Key.EndsWith("/merging.md", StringComparison.Ordinal)),
             file => Assert.DoesNotContain("pr-ready --body", file.Value));
     }
 
@@ -160,7 +160,7 @@ public partial class TicketCaptainGap6Tests
         return stated!;
     }
 
-    private static string Resource(string name) => Built.Value.Files[$"{Folder}resources/{name}.md"];
+    private static string Resource(string name) => Built.Value.Unwritten[$"{Folder}resources/{name}.md"];
 
     // A resource's numbered steps, in order: each line that opens with its number.
     private static (int Number, string Text)[] Steps(string file) =>

@@ -12,6 +12,7 @@ public static class SkillBuilder
     {
         var files = new SortedDictionary<string, string>(StringComparer.Ordinal);
         var unbuilt = new SortedDictionary<string, string>(StringComparer.Ordinal);
+        var unwritten = new SortedDictionary<string, string>(StringComparer.Ordinal);
         var map = new List<MapLine>();
         // Every claim id a line states, built or not: a legacy line a ledger replaces and a withheld open line still state theirs.
         var stated = new HashSet<string>(StringComparer.Ordinal);
@@ -33,15 +34,22 @@ public static class SkillBuilder
             stated.UnionWith(lines.SelectMany(placed => placed.Claims));
             foreach (var (path, file) in rendered.SelectMany(file => skill.PathsOf(file.Local).Select(path => (path, file))))
                 if (replaced.Contains(skill.Id)) unbuilt.Add(path, file.Text);
-                else Emit(skill, path, file, files, map);
+                else Emit(skill, path, file, skill.HandWritten ? unwritten : files, map);
         }
         // A system transition, a move a command or Linear makes, is carried by no role (AR4).
         StatesEveryClaim(claims.Claims.Where(c => c.Claim is not { Transition: not null, Lines.Count: 0 }).Select(c => c.Id), stated);
         model.Envoys?.CheckBuilt(model, claims, files, map);
-        foreach (var (path, text) in chart.Files(claims).Concat(WhyDocs.Render(model.Kinds, claims, chart, replaced)).Concat(Review(bySkill, replaced, layouts, open, claims)))
+        var handWritten = model.Skills.Where(skill => skill.HandWritten).ToArray();
+        foreach (var (path, text) in chart.Files(claims).Concat(WhyDocs.Render(model.Kinds, claims, chart, replaced, handWritten.ToDictionary(skill => skill.Id, skill => skill.Folders[0])))
+                     .Concat(Review(bySkill, replaced, layouts, open, claims)))
             files.Add(path, text);
-        var unwritten = new SortedDictionary<string, string>(chart.Files(claims, handWritten: true).ToDictionary(file => file.Path, file => file.Text), StringComparer.Ordinal);
-        return new BuiltTree(files, map, unbuilt) { Unwritten = unwritten };
+        foreach (var (path, text) in chart.Files(claims, handWritten: true))
+            unwritten.Add(path, text);
+        return new BuiltTree(files, map, unbuilt)
+        {
+            Unwritten = unwritten,
+            HandWritten = [.. handWritten.SelectMany(skill => skill.Folders).Distinct()]
+        };
     }
 
     private static void Emit(SkillSpec skill, string path, RenderedFile file, SortedDictionary<string, string> files, List<MapLine> map)
@@ -62,7 +70,8 @@ public static class SkillBuilder
         foreach (var (skill, lines) in bySkill.Where(pair => pair.Key.TruthChecked))
         {
             // An open claim is stated alone, so its line's own claim is the open one: withheld, or the one placeholder.
-            yield return ReviewDocs.Open(skill.Name, "skill", lines.Where(placed => claims.ById[placed.Owner].Truth!.Evidence.Kind == EvidenceKind.Open), claims);
+            yield return ReviewDocs.Open(skill.Name, "skill", lines.Where(placed => claims.ById[placed.Owner].Truth!.Evidence.Kind == EvidenceKind.Open), claims,
+                skill.HandWritten ? skill.Folders[0] : null);
             if (skill.Ledger is null) continue;
             var legacy = bySkill.Keys.First(other => Equals(other.Id, skill.Ledger.Legacy));
             var carried = lines.SelectMany(placed => placed.Claims.Select(id => (id, Open: open[skill].Contains(placed)))).ToDictionary(pair => pair.id, pair => pair.Open);

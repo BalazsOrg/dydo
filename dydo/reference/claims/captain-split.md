@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainSplit
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Leaf
 
 `claim:CaptainSplit.Leaf`: A ticket that fits one agent is a leaf, done by its holder with native helpers.
@@ -20,7 +22,7 @@ Layer: AGENTS.md sizes a leaf; what its holder then does is said nowhere below t
 
 Reason: Below one agent's size, a split costs more in hand-offs than it saves.
 
-**ticket-captain** (Leaf; read by TicketCaptain):
+**ticket-captain** (unwritten; Leaf; read by TicketCaptain):
 
 > A ticket that fits you is a leaf: do it as your kind's resource says, with native helpers for lookups and side work.
 
@@ -36,7 +38,7 @@ Layer: The host starts the helper; whether its work is recorded and committed is
 
 Reason: A helper's edits are part of the holder's change, so they land under the holder's commit and its review.
 
-**ticket-captain** (ImplementRules; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementRules; read by TicketCaptain):
 
 > You commit what a helper changes.
 
@@ -52,7 +54,7 @@ Layer: Linear takes any ticket anyone files; only the cutter knows who will use 
 
 Reason: A record nobody else reads is bookkeeping that slows the work it describes.
 
-**ticket-captain** (Tickets; read by TicketCaptain):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain):
 
 > Work gets a ticket only when someone other than its asker uses what it leaves.
 
@@ -68,7 +70,7 @@ Layer: Linear takes a ticket for a lookup or a file as readily as for a feature,
 
 Reason: Each of the five is a piece of some ticket's work, and a card for every piece would bury the board.
 
-**ticket-captain** (Tickets; read by TicketCaptain):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain):
 
 > A helper, a lookup, a command, a file and one native seat among several never get a ticket.
 
@@ -84,7 +86,7 @@ Layer: AGENTS.md says one agent holds one ticket; the cutter is who keeps a seco
 
 Reason: An agent that understands something once uses it across every step it was given.
 
-**ticket-captain** (Tickets; read by TicketCaptain):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain):
 
 > Several steps for one agent are one ticket.
 
@@ -102,7 +104,7 @@ Layer: AGENTS.md says to cut along what one agent understands together; opening 
 
 Reason: Each part then has a single owner who answers for it.
 
-**ticket-captain** (Split; read by TicketCaptain):
+**ticket-captain** (unwritten; Split; read by TicketCaptain):
 
 > Cut a bigger ticket into sub-tickets, one per part another captain will hold, by Sub-tickets (`resources/sub-tickets.md`).
 
@@ -118,7 +120,7 @@ Layer: A child starts from its ticket and its brief; what the ticket omits, the 
 
 Reason: A quoted section still says what was meant after the spec has moved on.
 
-**ticket-captain** (Tickets; read by TicketCaptain):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain):
 
 > Write each sub-ticket's contract in its description: its outcome, how it fits your ticket, and the spec sections it serves, quoted and linked.
 
@@ -134,7 +136,7 @@ Layer: Linear holds the label; only the cutter knows whether a part needs the us
 
 Reason: The label tells everyone who the part waits on.
 
-**ticket-captain** (Tickets; read by TicketCaptain):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain):
 
 > Label each sub-ticket's Mode: AFK, or HITL when the user must take part.
 
@@ -150,7 +152,7 @@ Layer: Linear has no label for a Question's stage yet, so the Mode is the only m
 
 Reason: Whoever staffs the Question reads its Mode before anything else, and a wrong one seats a researcher on what only he can say.
 
-**ticket-captain** (Tickets; read by TicketCaptain):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain):
 
 > On a Question sub-ticket the Mode also says how it is settled: AFK, by a captain you send to research it; HITL, by the user, when you already know that the call is the user's alone, and then you dispatch nobody onto it.
 
@@ -166,7 +168,7 @@ Layer: Linear takes a Merge sub-ticket under any ticket, and nothing reads a bri
 
 Reason: A part that opens a Merge it was never given runs a command with no PR to name, or lands work its officer meant to assemble first.
 
-**ticket-captain** (Tickets; read by TicketCaptain, on claim:CaptainSplit.Steps):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain, on claim:CaptainSplit.Steps):
 
 > Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, and a Merge only if your brief gives you the merge, as your own step. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.
 
@@ -182,7 +184,7 @@ Layer: Linear draws the blocking order once it is set; setting it is the cutter'
 
 Reason: The board then shows which step a piece of work has reached without anyone asking its captain.
 
-**ticket-captain** (Tickets; read by TicketCaptain):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain):
 
 > Work with its own review rounds gets a sub-ticket per step, blocked in this order: Implement, Review (one per round), Fix, and a Merge only if your brief gives you the merge, as your own step. You may open them ahead, in Todo. A small leaf or a batched should is one ticket, with no steps.
 
@@ -198,6 +200,6 @@ Layer: AGENTS.md says a splitting captain only orchestrates; this is the one exc
 
 Reason: A captain that wrote the work can no longer be impartial about the findings on it.
 
-**ticket-captain** (Tickets; read by TicketCaptain):
+**ticket-captain** (unwritten; Tickets; read by TicketCaptain):
 
 > A change cheaper to make than to brief, and too small to need review, gets no ticket either: once you have split, it is the only change you write yourself.

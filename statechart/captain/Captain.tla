@@ -64,11 +64,14 @@ SplitTheRest ==
 
 \* core "Who decides what": outside its job a captain decides only obvious, reversible calls;
 \* any other call becomes a Question ticket for a fresh agent. H16
+\* The captain with the call opens the Question, as a sub-ticket of its own ticket (positions.md, "A Question").
 Ask ==
     /\ state = "Leaf"
     /\ state' = "Asking"
     /\ UNCHANGED <<kind, merges>>
 
+\* The one way out of the wait. A Question that comes back without its answer goes up to the officer
+\* as a report, which changes no state, and the wait goes on.
 Answered ==
     /\ state = "Asking"
     /\ state' = "Leaf"

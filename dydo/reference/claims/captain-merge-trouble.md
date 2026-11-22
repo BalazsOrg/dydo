@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainMergeTrouble
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Resolver
 
 `claim:CaptainMergeTrouble.Resolver`: On a conflict the captain dispatches an Implement ticket to resolve it on the ticket's branch.
@@ -18,7 +20,7 @@ Layer: On a conflict `dydo merge` refuses, merges nothing and resolves nothing.
 
 Reason: A resolution is new code, and the captain about to merge it must not be its writer.
 
-**ticket-captain** (ConflictSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ConflictSteps; read by TicketCaptain):
 
 > Dispatch an Implement ticket to resolve the conflict on your ticket's branch.
 
@@ -34,7 +36,7 @@ Layer: The resolver returns its SHA to the captain's thread, which can end befor
 
 Reason: The merge can be resumed from the ticket by whoever holds it next.
 
-**ticket-captain** (ConflictSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ConflictSteps; read by TicketCaptain):
 
 > Post the resolution's commit SHA on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.
 
@@ -52,7 +54,7 @@ Layer: `dydo merge` refuses the new head until a PASS names it, and says nothing
 
 Reason: A resolution is the one part of a merge that somebody wrote by hand.
 
-**ticket-captain** (ConflictSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ConflictSteps; read by TicketCaptain):
 
 > Dispatch a fresh reviewer for the resolution's hunks, the only new work on the branch.
 
@@ -68,7 +70,7 @@ Layer: `dydo merge` merges only the head it is given, and the resolution made a 
 
 Reason: The pin on the old head would refuse, and rightly.
 
-**ticket-captain** (ConflictSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; ConflictSteps; read by TicketCaptain):
 
 > Merge again, on the new head, once that review passes.
 
@@ -86,7 +88,7 @@ Layer: Two tickets that collide have two captains, and neither can re-order the 
 
 Reason: The officer above both is the first one able to sequence them.
 
-**ticket-captain** (ConflictEnd; read by TicketCaptain):
+**ticket-captain** (unwritten; ConflictEnd; read by TicketCaptain):
 
 > Take a conflict you cannot get resolved to your officer, with both sides named.
 
@@ -102,7 +104,7 @@ Layer: Hosted CI reports red and stays red until somebody reruns it.
 
 Reason: One rerun tells a flake from a break at the cost of a few minutes.
 
-**ticket-captain** (RedLead; read by TicketCaptain):
+**ticket-captain** (unwritten; RedLead; read by TicketCaptain):
 
 > Rerun the red run once.
 
@@ -118,7 +120,7 @@ Layer: Hosted CI reruns a job and forgets that it failed the first time.
 
 Reason: A wobble that leaves a trace becomes a ticket once it repeats; an untracked one fails merges for ever.
 
-**ticket-captain** (withheld; RedLead; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; RedLead; read by TicketCaptain):
 
 > Run the rerun through DYTEST, so that a flake is counted.
 
@@ -134,7 +136,7 @@ Layer: CI keeps no count of which runs turned green on a second try.
 
 Reason: A merge that is sound is not reverted for a test that wobbled.
 
-**ticket-captain** (RedLead; read by TicketCaptain):
+**ticket-captain** (unwritten; RedLead; read by TicketCaptain):
 
 > Green on the rerun is a flake: the merge is done.
 
@@ -150,7 +152,7 @@ Layer: Hosted CI shows a rerun's green and forgets the red before it, and nothin
 
 Reason: A wobble that leaves a line can be seen to repeat; one that leaves none fails the next merge as if for the first time.
 
-**ticket-captain** (RedLead; read by TicketCaptain):
+**ticket-captain** (unwritten; RedLead; read by TicketCaptain):
 
 > Note the flake in one line, the red run and the green rerun, on the Merge sub-ticket, or on your own ticket where your work was not cut into steps.
 
@@ -166,7 +168,7 @@ Layer: The guard stops a push to the default branch only, and nothing reverts a 
 
 Reason: Everyone else builds on the feature branch, and every hour it stays red is theirs too.
 
-**ticket-captain** (RedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RedSteps; read by TicketCaptain):
 
 > Revert the merge on the feature branch at once: `git revert -m 1 <merge SHA>`, pushed.
 
@@ -182,7 +184,7 @@ Layer: Linear leaves the Merge sub-ticket open after a revert, as if the merge s
 
 Reason: The record says why the merge is gone, and the break has a ticket of its own.
 
-**ticket-captain** (RedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RedSteps; read by TicketCaptain):
 
 > Cancel the Merge sub-ticket with `reverted: <gate> red on <merge SHA>`, and file what broke as a ticket in the team's CI findings; where your work was not cut into steps, write that line on your own ticket, which stays open.
 
@@ -198,7 +200,7 @@ Layer: Linear keeps a cancelled Merge cancelled and opens no second one, and `dy
 
 Reason: Without a card of its own the second landing is run on a step the board shows as dead, and nothing there says that a merge is under way again.
 
-**ticket-captain** (RedSteps; read by TicketCaptain, on claim:CaptainMergeTrouble.Repair):
+**ticket-captain** (unwritten; RedSteps; read by TicketCaptain, on claim:CaptainMergeTrouble.Repair):
 
 > Open the repair as steps, each blocked by the one before with Linear's `save_issue` (`blockedBy`): an Implement that fixes it on your ticket's branch and brings the reverted change back there, a Review scoped to the fix, and a new Merge, the cancelled one left as it is. Where your work was not cut into steps, open no Merge: your own ticket stays the record.
 
@@ -214,7 +216,7 @@ Layer: `dydo merge` merges only a head with a PASS, and the fix makes a new head
 
 Reason: The rest of the branch already passed, so the round looks at what changed.
 
-**ticket-captain** (RedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RedSteps; read by TicketCaptain):
 
 > Open the repair as steps, each blocked by the one before with Linear's `save_issue` (`blockedBy`): an Implement that fixes it on your ticket's branch and brings the reverted change back there, a Review scoped to the fix, and a new Merge, the cancelled one left as it is. Where your work was not cut into steps, open no Merge: your own ticket stays the record.
 
@@ -230,7 +232,7 @@ Layer: The spec has `dydo merge` revert the revert; the command as built does no
 
 Reason: A re-merge of the old commits would land nothing and still report success.
 
-**ticket-captain** (RedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RedSteps; read by TicketCaptain):
 
 > Dispatch the Implement, and when it returns open a new PR for the branch, a draft again, by Merging (`merging.md`): `dydo merge` undoes no revert, and calls the old PR already integrated.
 
@@ -246,7 +248,7 @@ Layer: `dydo merge` reads a PASS from the body of the PR it is given, and the ol
 
 Reason: A verdict left in the first PR's body is a refusal at the second landing, with the reviewer long gone.
 
-**ticket-captain** (RedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; RedSteps; read by TicketCaptain):
 
 > Dispatch the Review, its brief naming the new PR, and once it passes merge again, by Merging (`merging.md`).
 
@@ -264,6 +266,6 @@ Layer: A reverted merge leaves the ticket open with nobody but its captain watch
 
 Reason: The officer can re-plan around a part that will not go in.
 
-**ticket-captain** (RedEnd; read by TicketCaptain):
+**ticket-captain** (unwritten; RedEnd; read by TicketCaptain):
 
 > Take a red you cannot get fixed to your officer, with the merge SHA and the gate.

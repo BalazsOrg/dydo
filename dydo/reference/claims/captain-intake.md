@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainIntake
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## NewKey
 
 `claim:CaptainIntake.NewKey`: A brief that names a ticket key its reader does not hold is a new dispatch, in a thread the reader has worked in as in a fresh one: it takes phase 1 from its first line.
@@ -18,7 +20,7 @@ Layer: T3 delivers a message to a thread and says nothing of whether it continue
 
 Reason: A Fix read as more of the Implement it follows is never started, so its card stays in Todo while the work is done under a ticket already closed.
 
-**ticket-captain** (Take; read by TicketCaptain, on claim:CaptainIntake.Woken):
+**ticket-captain** (unwritten; Take; read by TicketCaptain, on claim:CaptainIntake.Woken):
 
 > A brief that names a ticket key new to you is a dispatch: take it from here. Any other wake, by a return or a message, goes by Waking (`resources/waking.md`).
 
@@ -34,7 +36,7 @@ Layer: T3 wakes a thread with a return or a message and says nothing of where it
 
 Reason: A holder that runs its intake a second time finds its own ticket started and takes itself for an intruder.
 
-**ticket-captain** (Take; read by TicketCaptain):
+**ticket-captain** (unwritten; Take; read by TicketCaptain):
 
 > A brief that names a ticket key new to you is a dispatch: take it from here. Any other wake, by a return or a message, goes by Waking (`resources/waking.md`).
 
@@ -50,7 +52,7 @@ Layer: Linear sets a started ticket In Progress a second time without a word, an
 
 Reason: One read ahead of the first act is cheap; found later, the same fault has cost two agents' work or a change built on a guess.
 
-**ticket-captain** (Take; read by TicketCaptain):
+**ticket-captain** (unwritten; Take; read by TicketCaptain):
 
 > Then check that the ticket is unstarted and that your brief and its contract give you what the work needs; if either fails, or your brief calls it filler, go by Before you start (`resources/start.md`).
 
@@ -66,7 +68,7 @@ Layer: T3 passes a brief on untouched, whatever it leaves out, and Linear takes 
 
 Reason: A guess at who merges picks the wrong way to finish, and a guess at the owned paths writes into another writer's files.
 
-**ticket-captain** (StartChecks; read by TicketCaptain):
+**ticket-captain** (unwritten; StartChecks; read by TicketCaptain):
 
 > Your brief or the ticket's contract lacks something the work needs, such as who merges, the paths you own or the gates you must pass: ask your officer for exactly that, by the step of A need for the user (`need-for-the-user.md`) that sends to your officer's thread, and start nothing that depends on it.
 
@@ -84,6 +86,6 @@ Layer: Linear shows a ticket's status and nothing of its holder, and sets it In 
 
 Reason: Two agents on one ticket each overwrite what the other built, and neither learns of it before the merge.
 
-**ticket-captain** (StartChecks; read by TicketCaptain):
+**ticket-captain** (unwritten; StartChecks; read by TicketCaptain):
 
 > The ticket is already started, or closed, by someone else: you did not set it In Progress in this thread, and your brief does not say that you take it over. Start nothing, and return the dispatch to your officer as a conflict, with the ticket's key and its status.

@@ -134,7 +134,7 @@ public class TicketCaptainGap7Tests
 
         Assert.Equal(LineOf("CaptainBriefs.Pr"), pushed);
         Assert.All(new[] { "`git push`", "`dydo pr-ready`" }, command => Assert.Contains(command, pushed.Text));
-        Assert.Equal(1, Built.Value.Files.Where(file => file.Key.StartsWith(Folder, StringComparison.Ordinal)).Sum(file => file.Value.Split("`git push`").Length - 1));
+        Assert.Equal(1, Built.Value.Unwritten.Where(file => file.Key.StartsWith(Folder, StringComparison.Ordinal)).Sum(file => file.Value.Split("`git push`").Length - 1));
     }
 
     private static MapLine LineOf(string claim)

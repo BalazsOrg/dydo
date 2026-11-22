@@ -27,7 +27,7 @@ internal static partial class SkillNames
                     throw new InvalidDataException(
                         $"K14: {skill.Name}'s {template.Title} names /{name}, which is no skill under skills/, hand-written or built");
         // Review r1 S7: a skill named in prose, outside the declared sets, is checked as well.
-        var unknown = tree.Files.Where(file => file.Key.EndsWith(".md", StringComparison.Ordinal))
+        var unknown = tree.Files.Concat(tree.Unwritten).Where(file => file.Key.EndsWith(".md", StringComparison.Ordinal))
             .SelectMany(file => file.Value.Split('\n').SelectMany((line, index) => Named().Matches(line)
                 .Select(match => match.Groups["name"].Value)
                 .Where(name => !known.Contains(name))

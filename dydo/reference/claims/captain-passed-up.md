@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainPassedUp
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Own
 
 `claim:CaptainPassedUp.Own`: The officer that receives a Question a child sends up unsettled opens a Question of its own for it, which names the child's by its key, carries what was found and blocks the child's; its fresh captain is dispatched onto that ticket, never onto the child's.
@@ -18,7 +20,7 @@ Layer: `delegate_task` starts a child on any ticket its task names, a held one i
 
 Reason: A second researcher put on a card somebody else began sends the dispatch back as a conflict, or repeats searches the first one already wrote down.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain):
 
 > When the need is an AFK Question a child sent up unsettled, your sub-ticket is a Question of your own: put the child's Question's key and what was found on it, for its captain to start from, and have it block the child's. The next step dispatches onto yours, never onto the child's, which its own captain started and left open.
 
@@ -34,7 +36,7 @@ Layer: Linear leaves the Question In Progress once its captain's turn has ended,
 
 Reason: Left In Progress, an answered card keeps every sub-ticket behind it out of the next dispatch; moved by its officer, it reads as a step ended by its starter, which nobody did.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain):
 
 > A Question of yours whose captain returned it unsettled is still open when its answer comes: send the answer to that captain's thread, under the Question's key, with `t3_thread_send`. That captain started the ticket, so it closes it Done on the answer and returns. If the send does not get through, for another reason than a limit, note the failed delivery on the Question in one line and take its closure to your officer, by the step below.
 
@@ -50,7 +52,7 @@ Layer: T3 reports a send that failed to its sender alone, and nothing in Linear 
 
 Reason: Unrecorded, the card waits for good on an agent that will never hear of it, and what it holds back is never sent out.
 
-**ticket-captain** (NeedSteps; read by TicketCaptain, on claim:CaptainPassedUp.Closes):
+**ticket-captain** (unwritten; NeedSteps; read by TicketCaptain, on claim:CaptainPassedUp.Closes):
 
 > A Question of yours whose captain returned it unsettled is still open when its answer comes: send the answer to that captain's thread, under the Question's key, with `t3_thread_send`. That captain started the ticket, so it closes it Done on the answer and returns. If the send does not get through, for another reason than a limit, note the failed delivery on the Question in one line and take its closure to your officer, by the step below.
 
@@ -66,6 +68,6 @@ Layer: A woken thread holds its old return, and nothing in it says that the tick
 
 Reason: Told at the return what the later wake asks, a researcher ends its step in one move instead of studying an answered question again.
 
-**ticket-captain** (ResearchRoutes; read by TicketCaptain, on claim:CaptainResearch.Question):
+**ticket-captain** (unwritten; ResearchRoutes; read by TicketCaptain, on claim:CaptainResearch.Question):
 
 > They leave anything else open, a weighty call that can still be undone among them: lay the call out on your ticket, and return it to your officer as unsettled, the Question still open. Your officer sends the answer to your thread once there is one: woken with it, close your ticket Done on that answer and return.

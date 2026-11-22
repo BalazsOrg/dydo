@@ -98,7 +98,7 @@ public class TicketCaptainGap3Tests
 
         Assert.Equal(LineOf("CaptainNeed.Up"), address);
         Assert.All(new[] { "`t3_thread_list`", "`t3_thread_send`" }, tool => Assert.Contains(tool, address.Text));
-        Assert.Equal(1, Built.Value.Files.Where(file => file.Key.StartsWith(Folder, StringComparison.Ordinal)).Sum(file => file.Value.Split("t3_thread_list").Length - 1));
+        Assert.Equal(1, Built.Value.Unwritten.Where(file => file.Key.StartsWith(Folder, StringComparison.Ordinal)).Sum(file => file.Value.Split("t3_thread_list").Length - 1));
         Assert.Contains("](need-for-the-user.md)", LineOf("CaptainIntake.Lacking").Text);
     }
 

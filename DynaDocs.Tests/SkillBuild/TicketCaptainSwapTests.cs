@@ -59,15 +59,17 @@ public class TicketCaptainSwapTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1372 A6 the built ticket-captain is the truth-checked prototype, and its folder holds nothing legacy")]
+    [Trait("Job", "contract: DYD-1372 A6 the ticket-captain the model renders is the truth-checked prototype, and its render holds nothing legacy; DYD-1439 it is rendered, never written")]
     public void BuiltTicketCaptain_IsTheTruthCheckedPrototype()
     {
         var prototype = ProductionModel.Model.Skills.Single(skill => skill.Readers.Count > 0);
-        var built = Built.Value.Files.Keys.Where(path => path.StartsWith(Captain, StringComparison.Ordinal)).ToArray();
+        var built = Built.Value.Unwritten.Keys.Where(path => path.StartsWith(Captain, StringComparison.Ordinal)).ToArray();
 
         Assert.Equal((CaptainSkill.TicketCaptain, Skill.TicketCaptain), (prototype.Id, prototype.Ledger!.Legacy));
         Assert.Contains(Captain + "SKILL.md", built);
-        Assert.All(built, path => Assert.NotEqual(Built.Value.Unbuilt.GetValueOrDefault(path), Built.Value.Files[path]));
+        Assert.DoesNotContain(Built.Value.Files.Keys, path => path.StartsWith(Captain, StringComparison.Ordinal));
+        Assert.Equal([Captain], Built.Value.HandWritten);
+        Assert.All(built, path => Assert.NotEqual(Built.Value.Unbuilt.GetValueOrDefault(path), Built.Value.Unwritten[path]));
         Assert.All(Built.Value.Map.Where(line => line.Path.StartsWith(Captain, StringComparison.Ordinal)).SelectMany(line => line.Claims),
             id => Assert.DoesNotContain(id, Built.Value.Map.Where(line => !line.Path.StartsWith(Captain, StringComparison.Ordinal)).SelectMany(line => line.Claims)));
     }

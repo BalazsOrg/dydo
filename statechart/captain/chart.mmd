@@ -34,7 +34,9 @@ stateDiagram-v2
   %% The escape hatch: a holder may still divide a slice that is too big. K30, H2
   Leaf --> Cutting: the work proves too big, so it splits what is left
   %% core "Who decides what": outside its job a captain decides only obvious, reversible calls. H16
+  %% The captain with the call opens the Question, as a sub-ticket of its own ticket (positions.md, "A Question").
   Leaf --> Asking: a call it may not decide becomes a Question for a fresh agent
+  %% The one way out of the wait. A Question that comes back without its answer goes up to the officer as a report, and the wait goes on.
   Asking --> Leaf: the answer is back, so the work goes on
   %% core: it never judges its own work, the verdict is another agent's. A merge needs a PASS on its head. R23, R33
   Leaf --> InReview: the change is whole and it merges it, so a reviewer is dispatched

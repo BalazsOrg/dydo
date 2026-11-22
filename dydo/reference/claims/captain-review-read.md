@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainReviewRead
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Local
 
 `claim:CaptainReviewRead.Local`: A local read takes each changed file, and each function in it, on its own: does it work, and is anything plainly wrong.
@@ -18,7 +20,7 @@ Layer: A compiler and a test run say that code builds and passes, and nothing ab
 
 Reason: Most faults sit inside one function and show themselves to anyone who reads it slowly.
 
-**ticket-captain** (ReviewRead; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRead; read by TicketCaptain):
 
 > Local: read each changed file, and each function in it, on its own. Does it work, and is anything plainly wrong, such as a security hole, a bad practice or waste?
 
@@ -34,7 +36,7 @@ Layer: A diff shows what changed and never the sentence of the spec it was meant
 
 Reason: Drift starts as one reasonable guess, and later parts are built on top of it.
 
-**ticket-captain** (ReviewRead; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRead; read by TicketCaptain):
 
 > Against the spec: read the change beside the governing spec and the code around it, for anything built on an assumption the spec does not make.
 
@@ -50,7 +52,7 @@ Layer: Every tool that reads code reads it a file at a time.
 
 Reason: Two sound parts can still duplicate each other, or pull a design in opposite directions.
 
-**ticket-captain** (ReviewRead; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRead; read by TicketCaptain):
 
 > The whole: read the folders and the structure together, for what no single file shows.
 
@@ -66,7 +68,7 @@ Layer: A lint can see that a tag is there and cannot see whether the test does t
 
 Reason: A tag is a claim about why the test exists, and an unearned one keeps a useless test alive.
 
-**ticket-captain** (ReviewRead; read by TicketCaptain, on claim:CaptainReviewRead.Tests):
+**ticket-captain** (unwritten; ReviewRead; read by TicketCaptain, on claim:CaptainReviewRead.Tests):
 
 > Read the tests as part of the change. One that pins a rule no spec or decision record traces, changes whenever the code does, checks that a deleted feature is gone, or can never fail is a finding; so is a job tag its test does not earn.
 
@@ -82,7 +84,7 @@ Layer: A green run counts a test as proof whatever it asserts.
 
 Reason: A test that asserts the wrong reality cements it, and every later change is made to agree with the mistake.
 
-**ticket-captain** (ReviewRead; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRead; read by TicketCaptain):
 
 > Read the tests as part of the change. One that pins a rule no spec or decision record traces, changes whenever the code does, checks that a deleted feature is gone, or can never fail is a finding; so is a job tag its test does not earn.
 
@@ -98,7 +100,7 @@ Layer: `dydo check` warns that a declared path changed, and cannot tell whether 
 
 Reason: A doc left behind by its code misleads the next agent with more authority than a stale comment.
 
-**ticket-captain** (ReviewRead; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRead; read by TicketCaptain):
 
 > On docs, a reason that links no decision record or principle is a finding; on code, a change to paths that a doc's `explains:` declares means reading that doc too.
 
@@ -114,7 +116,7 @@ Layer: A reader's finding has no failing test or output behind it, only the word
 
 Reason: The Fix's writer checks each severity at the source, and cannot check a paraphrase.
 
-**ticket-captain** (ReviewRead; read by TicketCaptain):
+**ticket-captain** (unwritten; ReviewRead; read by TicketCaptain):
 
 > Write a finding so it can be checked without you: both passages quoted at `file:line`, or, for an unused member, its definition with a reference search that finds no caller outside the tests.
 
@@ -130,6 +132,6 @@ Layer: An entry in an ignore file silences a gate for good, and the gate cannot 
 
 Reason: A hand-written file listed as generated escapes the limit without anyone having decided that it may.
 
-**ticket-captain** (withheld; ReviewRead; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; ReviewRead; read by TicketCaptain):
 
 > Check each new ignore entry: an exact path or a generated-directory glob, for a file nobody writes by hand, with a reason.

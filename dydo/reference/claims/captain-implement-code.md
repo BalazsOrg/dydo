@@ -6,6 +6,8 @@ type: reference
 
 # Claims: CaptainImplementCode
 
+A line marked unwritten is the model's own, of a skill written by hand in `skills/roles/officers/ticket-captain/`: the build writes it nowhere, and the hand-written skill need not hold it.
+
 ## Jobs
 
 `claim:CaptainImplementCode.Jobs`: A suite test does one of three jobs: it guards a trap, pins a traced contract, or reaches an edge that driving cannot.
@@ -18,7 +20,7 @@ Layer: A test runner counts every green test alike, the one that earns its place
 
 Reason: Green tests can cement behaviour nobody wanted, and each needless one is a cost on every later change.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain):
 
 > Write a suite test for one of three jobs only: to guard a trap, to pin a contract the spec or a decision record traces, or to reach an edge that driving the app cannot.
 
@@ -34,7 +36,7 @@ Layer: Nothing stops a writer from testing each private step, which passes today
 
 Reason: One check at the boundary stands in for a thousand inside it, and survives when the inside is rewritten.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain):
 
 > Test at the deepest module boundary, or the product's, that can observe the behaviour; add a unit test only for an edge or trap that test cannot reach cheaply.
 
@@ -50,7 +52,7 @@ Layer: A mocking library replaces any dependency it is pointed at, the writer's 
 
 Reason: A test of mocked collaborators proves how the writer imagines them, never how they behave.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain):
 
 > Mock only at the system's edge, such as an external API, time or randomness; your own modules stay real.
 
@@ -66,7 +68,7 @@ Layer: A test runner reports green; it cannot say whether the test could ever ha
 
 Reason: A test never seen failing proves nothing about the code it sits beside.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain):
 
 > Show every new test failing without the code: set the code aside, run the test, see it fail for the reason it names, and put the code back.
 
@@ -82,7 +84,7 @@ Layer: A lint can demand that a tag is present; what the test is for is known on
 
 Reason: A reviewer checks the tag against the test, and a later reader learns why the test may not be deleted.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain):
 
 > Tag each suite test with its job, the way the tests beside it carry theirs: trap, naming the bug or pitfall; contract, citing the spec or decision record; or edge.
 
@@ -98,7 +100,7 @@ Layer: All three kinds pass, so no run ever points at them.
 
 Reason: Each one adds upkeep and a false sense of cover while guarding nothing.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain):
 
 > Write no test that changes whenever the code does, checks that a deleted feature is gone, or can never fail.
 
@@ -114,7 +116,7 @@ Layer: No gate of the facade asks for either kind of test.
 
 Reason: They pay off on some code and are noise on the rest, which only the writer can tell apart.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain, on claim:CaptainImplementCode.Conformance):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain, on claim:CaptainImplementCode.Conformance):
 
 > A rewrite or wide refactor gets a conformance suite beside its own tests, never in their place; its assertions that only match the old implementation go once the rewrite has replaced it. Property tests for edges and differential tests for rewrites are guidance, never a gate.
 
@@ -130,7 +132,7 @@ Layer: A suite written for a refactor looks like any other, and nothing marks wh
 
 Reason: A writer who takes the suite for the refactor's only tests ships new behaviour with nothing of its own to hold it.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain):
 
 > A rewrite or wide refactor gets a conformance suite beside its own tests, never in their place; its assertions that only match the old implementation go once the rewrite has replaced it. Property tests for edges and differential tests for rewrites are guidance, never a gate.
 
@@ -146,7 +148,7 @@ Layer: Which runner a project's scenarios go through, and in what words, is that
 
 Reason: A scenario is the contract in runnable form, so loosening one changes what was agreed without anyone agreeing.
 
-**ticket-captain** (ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementTests; read by TicketCaptain):
 
 > Where your contract marks an acceptance line for a scenario, write and wire it as `dydo/guides/coding-standards.md` says of a scenario, and never weaken one.
 
@@ -162,7 +164,7 @@ Layer: git keeps every test a commit adds, and nothing tells a proof of one tick
 
 Reason: Evidence nobody will look at again is weight every later run carries.
 
-**ticket-captain** (withheld; ImplementTests; read by TicketCaptain):
+**ticket-captain** (unwritten; withheld; ImplementTests; read by TicketCaptain):
 
 > Keep proof tests in the ticket's commits, record their SHA in your receipt, and make nothing depend on old evidence.
 
@@ -178,7 +180,7 @@ Layer: This skill is one text for every project, and a project's conventions are
 
 Reason: Practice differs between projects, and a writer that knows only the general page breaks the local one.
 
-**ticket-captain** (ImplementCode; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementCode; read by TicketCaptain):
 
 > Your project's rules for writing code are in `dydo/guides/coding-standards.md`: read it before you write.
 
@@ -194,7 +196,7 @@ Layer: No compiler or lint reads a comment for whether it is worth having.
 
 Reason: A model left to its habit narrates every line, and the narration goes stale with the first edit.
 
-**ticket-captain** (ImplementCode; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementCode; read by TicketCaptain):
 
 > Before you write a comment, read Comments in that file: your project says there what a comment is for and what it must never be.
 
@@ -210,7 +212,7 @@ Layer: The CLI has no command that runs a project's tests or its static checks, 
 
 Reason: A writer that runs what was asked proves what its officer will check, and guesses at nothing.
 
-**ticket-captain** (ImplementCode; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementCode; read by TicketCaptain):
 
 > The gates your change must pass are the ones your brief names: run them with your project's own commands, which `dydo/guides/testing-strategy.md` holds.
 
@@ -226,7 +228,7 @@ Layer: A doc is edited by hand and a gate in code, so the two drift apart, and n
 
 Reason: A writer that takes a stale page for law spends its ticket lifting a measure nobody enforces any more.
 
-**ticket-captain** (ImplementCode; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementCode; read by TicketCaptain):
 
 > Where a project doc and those gates disagree, the gates decide what must pass: report the difference to your officer as a finding, and chase no figure that no gate checks.
 
@@ -242,7 +244,7 @@ Layer: An analyzer honours a suppression comment as readily as a fix.
 
 Reason: A gate exists only where a breach is certainly wrong, so an exception to it is a decision above any one ticket.
 
-**ticket-captain** (ImplementCode; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementCode; read by TicketCaptain):
 
 > When your change trips a static gate, such as the one on cognitive complexity, change the code until it passes, splitting or flattening the method it names: a gate takes no suppression, and its limit is never raised.
 
@@ -258,6 +260,6 @@ Layer: A local run passes on the one platform the writer happens to sit on.
 
 Reason: A path separator or a signal that differs elsewhere fails only after the merge, where a revert is the cure.
 
-**ticket-captain** (ImplementCode; read by TicketCaptain):
+**ticket-captain** (unwritten; ImplementCode; read by TicketCaptain):
 
 > Prove platform-specific code, such as processes, paths and signals, on CI's platform too, not only on yours.

@@ -66,6 +66,15 @@ Dropped:
 
 Added: Core_SplitOnlyOrchestrates and Sees_OnlyAMergerSeesReviewFixMerge.
 
+## Unchanged at DYD-1453 and DYD-1454
+
+No property changed, and no state or arrow did. Both tickets changed words only, in `positions.md`, in the README and in comments of the chart and the model.
+
+- DYD-1453: a position takes only the arrows whose condition it can meet, so the two arrows into `InReview` are the merger's alone. Sees_OnlyAMergerSeesReviewFixMerge already checks that.
+- DYD-1454: `positions.md` now says who opens a Question, what its captain does when the call is Balazs's, and which row a Wayfinding captain is on. An arrow from `Asking` to `HandedBack`, for a Question that comes back without its answer, was weighed and not added. H16_ResumeLeafAfterQuestion and its sources say the work waits on the answer and never ends from the wait, so the captain reports the Question to its officer, which changes no state, and waits on.
+
+Run again at `d8e7035441f2d45dbc420cefb39bc14a4c218125`, each under the gate lock, with dydo 3.6.0's managed Java and TLC: the model draws with `TypeOK` and `NoDeadlock` (exit 0); `check-chart.mjs` exit 0, 11 states and 23 arrows; `run.py --machine captain` exit 0; `run.py --controls --machine captain` harness exit 0 with the control caught. Output went to `/tmp/dyd-1439-chart-run2/` and is not kept.
+
 ## What the model cannot show
 
 The properties check order only. The model has no data for any of these, so none is checked:
