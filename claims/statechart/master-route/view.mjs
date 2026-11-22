@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Offered": "PR into master offered · R26, R27",
   "Paced": "Waiting for its turn · R29",

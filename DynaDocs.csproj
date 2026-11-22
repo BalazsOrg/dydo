@@ -66,7 +66,7 @@
         <EmbeddedResource Remove="DynaDocs.Tests\**" />
         <None Remove="DynaDocs.Tests\**" />
         <None Remove="viewer\**" />
-        <!-- dydo's own skill builder and its claims never compile into or ship with dydo (Grilling A D9). -->
+        <!-- dydo's own dev tooling and its statechart claims never compile into or ship with dydo (Grilling A D9). -->
         <Compile Remove="tools\**;claims\**" />
         <Content Remove="tools\**;claims\**" />
         <EmbeddedResource Remove="tools\**;claims\**" />

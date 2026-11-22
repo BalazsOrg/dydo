@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Evidence": "Evidence for the law · L11",
   "Candidate": "Amendment candidate · L7, L11",

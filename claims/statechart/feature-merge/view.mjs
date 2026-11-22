@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "MergeTodo": "Merge hop in Todo · S3, S12",
   "PreGate": "Running dydo test gate on the combined tree · R21, Y4",

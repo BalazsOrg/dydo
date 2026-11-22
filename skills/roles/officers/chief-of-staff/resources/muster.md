@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # Muster
 
 Hold this checklist with him present, after `overnight-mode`'s transition preflight; the night starts only once every line is done.

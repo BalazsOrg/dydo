@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Written": "A new DR: applies: (or new-ground), and one weighed: line per tension it resolved · L8",
   "Valid": "Its slugs valid: dydo check passes · L8",

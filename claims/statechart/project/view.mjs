@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Unheld": "No live coordinator: not started, idle or closed · H4",
   "Charting": "Charting the spec and the map · S14, S15, S16, N12 DR 060 §1, H5",

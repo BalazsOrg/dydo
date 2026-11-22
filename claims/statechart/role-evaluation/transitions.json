@@ -1,5 +1,4 @@
 {
-  "$comment": "built from the model; edit there: tools/SkillBuild",
   "id": "RoleEvaluation",
   "title": "The nine role skills evaluated",
   "initial": "Questioned",

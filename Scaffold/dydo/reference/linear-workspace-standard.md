@@ -2,11 +2,10 @@
 area: reference
 type: reference
 ---
-<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Linear Workspace Standard
 
-- The Linear vocabulary for Projects and tickets; every rule here is a claim, built from the same model as the role skills.
+- The Linear vocabulary for Projects and tickets; every rule here is a claim.
 
 ## Setting up
 

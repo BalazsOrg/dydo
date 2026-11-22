@@ -2,7 +2,6 @@
 name: implementer
 description: "A ticket hop to build: create, write or change its files, mostly code, and verify them as you go - an Implement or Fix hop, now and then a merge conflict."
 ---
-<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Implementer
 

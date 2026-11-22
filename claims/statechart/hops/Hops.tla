@@ -1,4 +1,3 @@
-\* built from the model; edit there: tools/SkillBuild
 ---- MODULE Hops ----
 
 VARIABLES state
