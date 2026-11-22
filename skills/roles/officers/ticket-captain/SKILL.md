@@ -2,7 +2,7 @@
 name: ticket-captain
 description: "A ticket you were dispatched onto, of any kind: hold it to its outcome."
 ---
-<!-- Written by hand. Every line is checked against dydo/core.md and statechart/captain/ (chart.mmd, positions.md) in the dydo repository. -->
+<!-- Written by hand. Every line is checked against statechart/captain/ (chart.mmd, positions.md) and the truth documents its writing brief names, in the dydo repository. -->
 
 # Ticket Captain
 

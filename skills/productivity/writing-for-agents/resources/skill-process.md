@@ -4,12 +4,13 @@ You hold a ticket to write or rewrite a skill: its `SKILL.md` and its resources.
 
 ## The truth
 
-Two documents that the user approved are the truth for the skill. Your brief says where they are.
+The truth for the skill is what the user approved and said. Your brief says where it is.
 
-- The core page: the few ideas every skill must agree with.
+- The truth documents your brief names: the ideas every skill must agree with.
 - The statechart: the process the skill describes, one arrow for each case, with its page that says which position gets which text.
+- The user's recorded words.
 
-If your brief names neither, ask your officer for them before you start. Where an older record disagrees with them, they win. Where the user's words were recorded after them and disagree, those words win: tell your officer, because the document is then stale.
+If your brief names no truth document and no statechart, ask your officer for them before you start. Where an older record disagrees with them, they win. Where the user's words were recorded after them and disagree, those words win: tell your officer, because the document is then stale.
 
 ## Steps
 

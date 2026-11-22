@@ -2,13 +2,13 @@
 
 You check skill files that another agent wrote. You give every line a verdict, and you change no file.
 
-Your brief names the files, the one sentence for each file that says who reads it and for which job, and the truth: the core page and the statechart with its page of who gets which text. Read the truth in full before you read a file.
+Your brief names the files, the one sentence for each file that says who reads it and for which job, and the truth: the truth documents it names, and the statechart with its page of who gets which text. Read the truth in full before you read a file.
 
 ## Check each line
 
 A line holds only when every answer is yes.
 
-1. **True.** Does the core page, the statechart or a recorded word of the user say it? Where they are silent, the Project's spec or a decision record counts. Name the place: a heading, an arrow, a row, a comment. For a line that names a command, a tool, a file or a heading, open it, or run its help or a dry run: that is its source. Never run a command that writes, sends or merges. A line whose source you cannot name fails.
+1. **True.** Does a truth document your brief names, the statechart or a recorded word of the user say it? Where they are silent, the Project's spec or a decision record counts. Name the place: a heading, an arrow, a row, a comment. For a line that names a command, a tool, a file or a heading, open it, or run its help or a dry run: that is its source. Never run a command that writes, sends or merges. A line whose source you cannot name fails.
 2. **Placed.** Does the statechart give this text to this file's reader? A line that tells its reader an arrow that reader cannot take fails.
 3. **Clear.** Read as the reader, with only this file, the skill that links to it and a brief. Do you know exactly what to do? If you must guess, the line fails.
 4. **General.** Does it hold in a project other than this one?

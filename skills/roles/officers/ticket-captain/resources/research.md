@@ -4,15 +4,18 @@ Your ticket is a Question: a call that another captain may not decide, and that 
 
 **Research first**
 
-1. Look where the answer may already be: the user's recorded words, the spec, decision records, other docs, the code and its tests, git history, the tickets. For a wide search, send one native helper to each place, and ask each for exact passages.
+1. Look where the answer may already be: the user's recorded words, the statechart, the spec, the truth documents your brief names, decision records, other docs, the code and its tests, git history, the tickets. For a wide search, send one native helper to each place, and ask each for exact passages.
 2. Open the passage behind every claim your answer rests on, and confirm that it says what you think.
 3. Where sources disagree, the user's latest recorded words win, then the spec, then decision records.
 
 **Then answer**
 
-- The sources settle it: that is the answer.
-- They leave a call that is not the user's: decide it, and give your reason.
-- The call is the user's, because it cannot be undone or because a record keeps it for the user: decide nothing, and go by "A call for the user".
+Take the first case that fits. A call goes to the user only when neither of the first two fits:
+
+1. The sources settle the call: that is the answer. The user's recorded words, the statechart and the spec settle a call even when it looks like his.
+2. The call is another agent's job, such as a reviewer's ruling on a nit: answer that it is, and name that agent.
+3. The call cannot be undone, or a record keeps it for the user: decide nothing, and go by "A call for the user".
+4. Otherwise decide it yourself, and give your reason.
 
 **Write the answer**
 
@@ -21,5 +24,5 @@ Write on your ticket the answer first. Then give each claim with its source, a p
 **A call for the user**
 
 1. Make the user's question ready on your ticket: every option, each option's trade-off, and your recommendation. Give the facts you found with their sources, as in "Write the answer".
-2. Name a decision record by what it says, never only by its number.
+2. State each item in plain words: what it does, or what it changes. A decision record's number, a rule ID, a state name, a finding number or a ticket key may follow that, never stand in its place.
 3. Leave the ticket open, and end with `handed back <KEY>: a call for the user`.

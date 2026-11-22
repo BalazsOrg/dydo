@@ -31,8 +31,18 @@ or a review left doubt.
   once by you so it is true when he types it.
 - **What reviewers flagged or deferred** - in the severities the **Severity** entry of
   `dydo/reference/dydo-glossary.md` defines: each `should` deferred and the ticket
-  where it now lives, reported as it stands. At the landing, also every unaddressed `nit` with the
-  ticket record where it sits, and every open inquisition nit ticket, for the user to promote any.
+  where it now lives, reported as it stands. At the landing, also every `nit` that needs no fix,
+  with its ruling and the ticket record where it sits, and every open inquisition nit ticket.
+
+Bring the user only the rulings reviewers already made, and the calls that are truly his. Before you
+put a call to him, check that the user's recorded words, the statechart and the spec leave it open,
+and that it is no agent's job. A finding that has no ruling goes to a fresh reviewer agent for its
+ruling before the tour, never to him.
+
+In every question or call you put to him, state each item in plain words: what it does, or what it
+changes. A DR's number, a rule ID, a state name, a finding number or a ticket key may follow that,
+never stand in its place. A reviewer's finding put to him for a ruling is restated as what is wrong
+and what the fix would change; its number or a quote from the review record is not enough.
 
 The tour ends when the user has inspected the files and tried the behavior, or skipped it. Record
 his verdict on the Walkthrough Ticket in his own words, or the skip. Other tours route findings
