@@ -10,7 +10,7 @@ Your parts are out, each on its sub-ticket.
 | `done`, and its result is the findings of a seat of your review | when every seat is back, go to "Give the verdict" in [Review](review.md) |
 | `done`, and its result is a verdict on a part | on a FAIL, cut a part that fixes its blockers, and after it a fresh review of the part with its fix, at the same level. For a finding it leaves without a ruling, cut a review part that rules on it |
 | `done`, and its result is an answer | go on with what waited on it |
-| `done`, and its result is rulings on findings | go on with what waited on them |
+| `done`, and its result is rulings on findings | go on with what waited on them. If it ended with FAIL, do as for a FAIL verdict on a part |
 | `handed back`, and it is a Question you asked | go by "The Question comes back without its answer" in [Ask](ask.md) |
 | `handed back`, and it is any other part | cut it another way, dispatch a fresh agent onto it, or hand your own ticket back |
 
