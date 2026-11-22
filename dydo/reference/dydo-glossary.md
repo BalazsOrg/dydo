@@ -121,9 +121,9 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   now; only a blocker FAILs a review and sends a fix hop. A `should`: a problem that needs a fix, but
   the fix can wait; the captain files it as its own ticket, and a Project lands only once each is
   `Done` or closed with a reason. A `nit`: an observation that gets a ruling, and may need no fix at
-  all; it is one line on the ticket's record, listed at the final walkthrough for the user to
-  promote; an inquisition's nits go on its round's nit
-  ticket instead (DR 059). The fix-hop author checks each label against
+  all; a reviewer rules each one, it is one line on the ticket's record, and the final walkthrough
+  lists it with its ruling, bringing the user only rulings already made; an inquisition's nits go on
+  its round's nit ticket instead (DR 059). The fix-hop author checks each label against
   the source and may change it with evidence; the captain records the change and its reason.
 - **Merge review** - kept only at the landing, as a Merge-confidence council on the landing
   candidate before the user's walkthrough (R20, L16, N6). A merge into the feature branch has none;
@@ -154,8 +154,8 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   mid-round on its Bug's own branch, reviewed once in the Bug's chain. The Bug stays assigned to
   the inquisition's captain until the patch is attached, then becomes pickable.
 - **Nit ticket** - the one `Feature` per round that holds the round's nits, held by the map holder
-  and linked to its Inquisition; a nit needs no proof, and the user decides each at the Project's
-  final walkthrough.
+  and linked to its Inquisition; a nit needs no proof, a reviewer rules each one, and the Project's
+  final walkthrough brings the user the rulings already made.
 - **Group Sub-ticket** - up to about 10 slices of a feature map above about 10, held by a
   sub-captain; the root captain stitches the groups' results and keeps the seams between groups as
   slices of its own (N5).
