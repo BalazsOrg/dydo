@@ -35,10 +35,11 @@ or a review left doubt.
 Bring him only rulings reviewers made and calls truly his: no agent's job, and left open by his
 recorded words, the spec and the statechart, where the project has one. For a finding with no
 ruling, open a Review ticket that asks only for its ruling and dispatch a fresh agent onto it,
-briefed with `/ticket-captain`, before the tour; never bring it to him. State each item you put to him in plain words, what it does or what it
-changes; a DR's number, a rule ID, a state name, a finding number or a ticket key may follow, never
-stand in its place. Restate a finding he rules on as what is wrong and what the fix would change,
-never only its number or a quote from the review record.
+briefed with `/ticket-captain`, and wait for the ruling before the tour; never bring it to him.
+State each item you put to him in plain words, what it does or what it changes; a DR's number, a
+rule ID, a state name, a finding number or a ticket key may follow, never stand in its place.
+Restate a finding he rules on as what is wrong and what the fix would change, never only its number
+or a quote from the review record.
 
 The tour ends when the user has inspected the files and tried the behavior, or skipped it. Record
 his verdict on the Walkthrough Ticket in his own words, or the skip. Other tours route findings
