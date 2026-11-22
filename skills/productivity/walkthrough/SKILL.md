@@ -5,13 +5,11 @@ description: Show me the product as it stands - what changed since the last walk
 
 # Walkthrough
 
-Give the user the tour of the whole product as it stands, so it makes sense to him even when he is
-not close in.
+Give the user the tour of the whole product as it stands, so it makes sense to him when not close in.
 
 A Project has one Walkthrough Ticket per Milestone, the landing's last. At a Milestone, walk the
 feature branch at the SHA its last merge left; at the landing, walk main after it landed. The map
 holder runs the ticket with the user; he walks it, or skips it, and a skip is his verdict to go on.
-
 The argument names what to walk - a Milestone, a Project's landing, a feature branch, a ticket, a
 diff range. Ask which one when it is missing.
 
@@ -27,31 +25,28 @@ or a review left doubt.
 - **Where to look first** - a route for his own file-by-file pass: the parts marked for a careful
   look, the files that drew findings, then the ones a crew member left an open doubt on, then the
   seams the change moved.
-- **How to try it** - the exact commands to build it and see the new behaviour, in order, each one run
-  once by you so it is true when he types it.
+- **How to try it** - the exact commands to build it and see the new behaviour, in order, each one
+  run once by you so it is true when he types it.
 - **What reviewers flagged or deferred** - in the severities the **Severity** entry of
-  `dydo/reference/dydo-glossary.md` defines: each `should` deferred and the ticket
-  where it now lives, reported as it stands. At the landing, also every `nit` that needs no fix,
-  with its ruling and the ticket record where it sits, and every open inquisition nit ticket.
+  `dydo/reference/dydo-glossary.md` defines: each `should` deferred and the ticket where it now
+  lives, reported as it stands. At the landing, also every `nit` that needs no fix, with its ruling
+  and its ticket record, and every open inquisition nit ticket, each nit with its ruling.
 
-Bring the user only the rulings reviewers already made, and the calls that are truly his. Before you
-put a call to him, check that the user's recorded words, the statechart and the spec leave it open,
-and that it is no agent's job. A finding that has no ruling goes to a fresh reviewer agent for its
-ruling before the tour, never to him.
-
-In every question or call you put to him, state each item in plain words: what it does, or what it
-changes. A DR's number, a rule ID, a state name, a finding number or a ticket key may follow that,
-never stand in its place. A reviewer's finding put to him for a ruling is restated as what is wrong
-and what the fix would change; its number or a quote from the review record is not enough.
+Bring him only rulings reviewers made and calls truly his: no agent's job, and left open by his
+recorded words, the spec and the statechart, where the project has one. Send a finding with no
+ruling to a fresh reviewer agent, briefed with `/ticket-captain`, for its ruling before the tour;
+never bring it to him. State each item you put to him in plain words, what it does or what it
+changes; a DR's number, a rule ID, a state name, a finding number or a ticket key may follow, never
+stand in its place. Restate a finding he rules on as what is wrong and what the fix would change,
+never only its number or a quote from the review record.
 
 The tour ends when the user has inspected the files and tried the behavior, or skipped it. Record
 his verdict on the Walkthrough Ticket in his own words, or the skip. Other tours route findings
-through ordinary tickets. A Milestone's findings become tickets in the same Project as they arrive.
-At the landing, record findings as tickets in the same Project; the map holder commissions the
-first fix Captain to re-cut its feature branch from main for fixes and another landing/walkthrough.
-An empty landing walkthrough lets the Project close; the map holder commissions spec retirement
-following `dydo/reference/feature-spec-convention.md`, read from the repository root.
+through ordinary tickets. A Milestone's or a landing's findings become tickets in the same Project as
+they arrive; after a landing, the map holder commissions the first fix Captain to re-cut its feature
+branch from main for fixes and another landing/walkthrough. An empty landing walkthrough lets the
+Project close; the map holder commissions spec retirement by
+`dydo/reference/feature-spec-convention.md`, read from the repository root.
 
-Keep the brief in the terminal, or in a scratch file when the user wants to read it beside the diff.
-The durable record stays where it already is: the tickets, the review blocks and the DRs the tour
-points at.
+Keep the brief in the terminal, or in a scratch file when the user wants it beside the diff. The
+durable record stays in the tickets, the review blocks and the DRs the tour points at.

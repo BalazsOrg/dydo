@@ -6,6 +6,7 @@ Your ticket is a review. You judge one candidate, the commit your brief names, a
 
 - If you wrote or fixed any part of the candidate, do not review it. End with `handed back <KEY>: I wrote part of the candidate`.
 - Judge the candidate against the spec's problem statement and goals, not only against the ticket's contract. Judge the behaviour it keeps unchanged against the same goals.
+- If your brief asks only for rulings on findings, rule on each by step 2 of "Give the verdict" and file by its step 4. Give no PASS or FAIL: set your ticket Done, and end with `done <KEY>: ruled <number> findings`.
 - Find the row of the level your brief names. Do every **due** cell, decide each **if** cell yourself, and skip each **–**.
 
 Legend: **due** every time; **if** when warranted; **–** not at this level.
@@ -27,7 +28,7 @@ Legend: **due** every time; **if** when warranted; **–** not at this level.
 **Give the verdict**
 
 1. The verdict is FAIL when at least one finding is a blocker. Otherwise it is PASS.
-2. Write it on your ticket: PASS or FAIL, the level, and every blocker, should and nit. Rule on each nit there yourself, by the user's recorded words, the statechart and the spec: it needs a fix, or it needs none, and why. The ruling is your job, never a question for the user. With seats, name each seat's model beside its findings.
+2. Write it on your ticket: PASS or FAIL, the level, and every blocker, should and nit. Rule on each nit there yourself, by the user's recorded words, the spec and the statechart, where the project has one: it needs a fix, or it needs none, and why. The ruling is your job, never a question for the user. With seats, name each seat's model beside its findings.
 3. On a PASS, add this line: `PASS - rubric/type: <code, docs or merge>; candidate <full head SHA>; base <full base SHA>`.
 4. Open a sub-ticket under the ticket you judged for each should. File a nit you ruled needs a fix the same way, as a should. Shoulds in the same code may share one. First check the open shoulds under that ticket and the tickets above it for one that says the same.
 5. Set your ticket Done. End with `done <KEY>: PASS` or `done <KEY>: FAIL, <number> blockers`.

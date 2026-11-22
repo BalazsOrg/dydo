@@ -13,7 +13,9 @@ tree**: every decision branches into the decisions that hang off it.
 Work the tree in **rounds**. The **open decisions** are those whose prerequisites are already
 settled: the questions you can ask _now_ without guessing at answers you haven't heard yet. Ask all the
 open decisions in one round: number each question and give your recommended answer. Then wait for
-the user's answers before the next round.
+the user's answers before the next round. State each item in plain words, what it does or what it
+changes; a rule ID, a state name, a finding number or a ticket key may follow, never stand in its
+place.
 
 Format a round like so:
 
@@ -38,7 +40,9 @@ Finding _facts_ is your job, never the user's. When an open question needs a fac
 environment (filesystem, tools, etc.), dispatch a sub-agent to find it; don't ask the user for
 anything you could look up yourself. Don't block on it: a running exploration is an unsettled
 prerequisite, so only the questions downstream of it wait for the sub-agent to report; ask the rest
-of the open decisions now. The _decisions_ are the user's: put each to him and wait.
+of the open decisions now. The _decisions_ are the user's: put each to him and wait. Leave out a
+decision his recorded words already settle, or that is another agent's job, such as a reviewer's
+ruling on a finding.
 
 The session is done when no open decision is left: every branch of the design tree visited, nothing
 left silently assumed. Do not implement the plan until the user confirms you have reached

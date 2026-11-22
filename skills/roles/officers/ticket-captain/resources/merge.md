@@ -22,13 +22,13 @@ Your brief says that you merge your change, and into which branch. A merge needs
 
 Write why on your ticket, and end with `handed back <KEY>: <reason>`, in two cases:
 
-- A blocker cannot be fixed inside your ticket: the approach is wrong at the root, it asks for a new requirement, or it needs a call only the user can make, one that the user's recorded words, the statechart and the spec leave open and that is no agent's job.
+- A blocker cannot be fixed inside your ticket: the approach is wrong at the root, it asks for a new requirement, or it needs a call only the user can make, one that is no agent's job and that the user's recorded words, the spec and the statechart, where the project has one, leave open.
 - The Fix is handed back to you undone.
 
 **The verdict is PASS**
 
 Each should is already a ticket that waits, and so is each nit the reviewer ruled needs a fix: the reviewer opened them. Leave them open, and merge.
-A finding that has no ruling, such as a nit left on the pull request, is a reviewer's to rule, never yours or the user's: open a Review sub-ticket that asks for its ruling, dispatch a fresh agent onto it by [Brief](brief.md), and merge without waiting.
+A finding that has no ruling, such as a nit left on the pull request, is a reviewer's to rule, never yours or the user's: open a Review sub-ticket that asks only for its ruling, dispatch a fresh agent onto it by [Brief](brief.md), and wait for the ruling before you merge. A nit ruled to need a fix becomes a should that the reviewer files, and it does not block the merge.
 
 **Merge**
 
