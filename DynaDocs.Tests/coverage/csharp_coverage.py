@@ -14,12 +14,11 @@ from pathlib import Path
 from release_proof import coverage_filter
 
 
-ASSEMBLY_NAMES = {"dydo", "DynaDocs.Tests", "GateMetrics", "SkillBuild"}
+ASSEMBLY_NAMES = {"dydo", "DynaDocs.Tests", "GateMetrics"}
 ASSEMBLY_PROJECTS = {
     "dydo": "DynaDocs.csproj",
     "DynaDocs.Tests": "DynaDocs.Tests/DynaDocs.Tests.csproj",
     "GateMetrics": "DynaDocs.Tests/coverage/metrics/GateMetrics.csproj",
-    "SkillBuild": "tools/SkillBuild/SkillBuild.csproj",
 }
 GATE_METRICS_PREBUILT_ENV = "DYNADOCS_GATE_METRICS_PREBUILT_DLL"
 CAMPAIGN_ENVIRONMENT = ("DOTNET_CLI_USE_MSBUILD_SERVER", "MSBUILDDISABLENODEREUSE",
@@ -96,12 +95,12 @@ def altcover_commands(root, output, tests=None):
     root, output = Path(root).resolve(), Path(output).resolve()
     selected = [] if tests is None else ["--tests", tests, "--results", str(output / WINDOWS_RESULTS)]
     inputs = [root / "bin/Debug/net10.0", root / "DynaDocs.Tests/bin/Debug/net10.0",
-              root / "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0", root / "tools/SkillBuild/bin/Debug/net10.0"]
+              root / "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0"]
     prepare = ["dotnet", "tool", "run", "altcover", "--",
                *(f"--inputDirectory={path}" for path in inputs), "--inplace",
                f"--report={output / 'template.opencover.xml'}", "--reportFormat=OpenCover",
                "--eager", "--localSource", "--visibleBranches",
-               "--assemblyFilter=^(?!(dydo|DynaDocs.Tests|GateMetrics|SkillBuild)$).*"]
+               "--assemblyFilter=^(?!(dydo|DynaDocs.Tests|GateMetrics)$).*"]
     runner = ["dotnet", "tool", "run", "altcover", "--", "runner",
               f"--recorderDirectory={root / 'DynaDocs.Tests/bin/Debug/net10.0'}",
               f"--workingDirectory={root}", f"--executable={sys.executable}",
@@ -165,7 +164,7 @@ def _identity_classes(root, producer, paths):
 
 def _candidate_assemblies(root):
     directories = [root / "bin/Debug/net10.0", root / "DynaDocs.Tests/bin/Debug/net10.0",
-                   root / "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0", root / "tools/SkillBuild/bin/Debug/net10.0"]
+                   root / "DynaDocs.Tests/coverage/metrics/bin/Debug/net10.0"]
     paths = [path for directory in directories for path in directory.glob("*.dll")
              if path.stem in ASSEMBLY_NAMES and path.with_suffix(".pdb").is_file()]
     if {path.stem for path in paths} != ASSEMBLY_NAMES:
@@ -380,7 +379,7 @@ def _join_campaign(root, result_root, report, pre, producer):
             xml, root, equivalence["facts"], _altcover_aliases(equivalence["aliases"]),
             excluded_physical_tokens(sources[name], equivalence["facts"]))
     targets = []
-    for name in ("dydo", "GateMetrics", "SkillBuild"):
+    for name in ("dydo", "GateMetrics"):
         assembly = next(row["facts"] for row in pre if row["facts"]["assembly_name"] == name)
         targets.append({"project": ASSEMBLY_PROJECTS[name], "assembly": name,
                         **join_methods(root, sources[name], assembly, normalized[name])})

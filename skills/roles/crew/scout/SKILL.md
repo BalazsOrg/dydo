@@ -2,7 +2,6 @@
 name: scout
 description: "One question, one lookup, off the record - one source family for research, or a spec's Questions pass."
 ---
-<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Scout
 

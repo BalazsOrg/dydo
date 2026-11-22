@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "HardCall": "A Question's call, after its research · L18, H16, H23",
   "DrSettled": "Settled by a DR · L18",

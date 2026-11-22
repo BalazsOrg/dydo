@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # Night survey
 
 - Each watch tick, read `dydo survey board` across the Projects and compare it with your last observation; keep no shadow board.

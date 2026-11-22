@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Need": "A need, where it arises · H16, H22",
   "Decided": "Decided where it arises: obvious and reversible · H16, H5",

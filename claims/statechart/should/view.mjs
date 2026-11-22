@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Found": "A round finds a should · R11, S17",
   "Known": "Already open · S17",

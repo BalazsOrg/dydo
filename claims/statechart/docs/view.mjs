@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Start": "A descriptive doc · D1, D2",
   "Proposed": "A new descriptive doc proposed · D4",

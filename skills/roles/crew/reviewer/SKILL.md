@@ -2,7 +2,6 @@
 name: reviewer
 description: "One candidate to judge at the level your brief names - a leaf's evidence check, a ticket review, a feature or Milestone review, or an inquisition slice; also a conflict's hunks, an equivalent-mutant claim or a new ignore entry."
 ---
-<!-- built from the model; edit there: tools/SkillBuild -->
 
 # Reviewer
 

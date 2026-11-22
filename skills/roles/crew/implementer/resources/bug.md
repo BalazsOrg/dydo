@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # A Bug
 
 - Name the expected and the observed behaviour at the highest stable seam, and what the fix must leave unchanged.

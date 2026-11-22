@@ -1,4 +1,3 @@
-// built from the model; edit there: tools/SkillBuild
 const states = {
   "Uninitialised": "A project before dydo init · N12 DR 056 §1",
   "Initialised": "Settings written: native memory off, the Claude guard committed, the allow list local · N12 DR 055 §1, N12 DR 056 §1–2",

@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # A third forced re-sync
 
 ## Held after a third forced re-sync

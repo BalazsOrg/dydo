@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # A conflict's hunks
 
 ## Judging a resolution's hunks

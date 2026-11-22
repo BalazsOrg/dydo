@@ -1,5 +1,3 @@
-<!-- built from the model; edit there: tools/SkillBuild -->
-
 # A merge conflict
 
 ## Resolving a CONFLICT on the ticket branch
