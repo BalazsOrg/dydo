@@ -35,6 +35,8 @@ const mutants = [
   ["a proved Fix comes back undone", "HandBackTheFix", "    /\\ ~proved\n", "", "view"],
   ["a hand-back overwrites the ticket's reason", "CannotTake", "/\\ UNCHANGED <<ticket, ", "/\\ ticket' = \"free\"\n    /\\ UNCHANGED <<", "view"],
   ["a verdict ticket splits after its verdict is written", "SplitTheRest", "    /\\ ~ResultIn\n", "", "view"],
+  ["a leaf hands back work whose result is in", "HandBackTheWork", "    /\\ ~ResultIn\n", "", "view"],
+  ["a dispatch brings in blockers no verdict wrote", "ReviewAgain", "/\\ blockers' = {}", "/\\ blockers' = {\"fundamental\"}", "FR29_TheRecordIsFaithful"],
   ["an officer's proof rides beside the captain's", "ProveTheWork", 'Ev("prove the work", "captain")', 'Ev("prove the work", "captain"), Ev("prove the work", "officer")', "FR29_TheRecordIsFaithful"],
   ["the Fix clears the blockers under its proof", "TheFixIsProved", "verdict, blockers, gates, landed, ci>>", "verdict, gates, landed, ci>>\n    /\\ blockers' = {}", "FR29_TheRecordIsFaithful"],
   ["a leaf closes before its result is in", "CloseLeaf", "    /\\ ResultIn\n", "", "FR24_DoneWhenTheContractIsMet"],

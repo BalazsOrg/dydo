@@ -111,7 +111,8 @@ FR29_TheRecordIsFaithful ==
              By(CASE verdict' = "due" -> {"dispatch a reviewer"}
                   [] verdict' \in {"pass", "fail"} -> {"write the verdict"}
                   [] OTHER -> {"act on PASS", "act on FAIL"})
-        /\ blockers' # blockers => By({"write the verdict", "dispatch a reviewer"})
+        /\ blockers' # blockers =>
+             By(IF blockers' = {} THEN {"write the verdict", "dispatch a reviewer"} ELSE {"write the verdict"})
         /\ (gates' # gates) =>
              By(IF gates' = "none" THEN {"merge", "open a Fix"} ELSE {"run the gates", "green on the merge SHA"})
         /\ landed' # landed => By({"merge"})

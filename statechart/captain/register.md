@@ -221,6 +221,7 @@ The frame's steps inside a chart state, which the arrows' conditions need, rest 
 | SP19 | A review's captain works the matrix row its brief names, fills its seats preferring a family other than the author's, and posts the round's one verdict, naming each seat (model and provider) and its blockers. | R34, S8, R15, W30 | action | owed |
 | SP20 | A review's one verdict comes only once all its seats are back. | S8, R34; found at review r1 | property | owed |
 | SP22 | A sub-ticket the captain cuts carries its contract, the one ticket's expected outcome, in its description. The contract quotes and links the spec sections it derives from, and says how the ticket fits the ticket above it and the spec. | S15, K34; found at review r2 | action | owed |
+| SP23 | A captain that dispatches reads `dydo usage` and balances vendors for every seat it fills, captains and crew as well as reviewers, from the roster's models in the seat's tier, so that no seat stops for usage. | R14, H21; found at review r3 | action | owed |
 | SP21 | When this captain re-cuts, after a part's hand-back or a fundamental blocker in a part, its own ticket stays In Progress, the open hops that no longer apply go Canceled with a one-line reason, and the re-cut appears as new sub-tickets. | S10, R9, G6; found at review r1 | action | owed |
 
 ## Part 4: review and merge
@@ -273,7 +274,7 @@ Each source line below orders no step of a captain's run, or is carried by a row
 | R1 | The principle behind review placement; R2 and R6 carry its steps (SP11, SP17, RM1). |
 | R3 | What a review judges, inside the round: its content, not a step. |
 | R7 | Which tools a reviewer uses, inside the round. |
-| R13, R14 | Which model holds which seat, and the usage balance: who the agents are, which the model cannot see. |
+| R13 | Which model holds which seat: who the agents are, which the model cannot see. Its usage balance is SP23. |
 | R16 | Its splitter's own small change is superseded by his later words (see "Conflicts settled", 1); its no-self-review sentence is FR26. |
 | R28 | Release tags are his, per Project: the landing's, not a captain's run. |
 | R32 | The shape of commits and merges: not observable as a step. |

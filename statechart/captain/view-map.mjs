@@ -121,8 +121,8 @@ export const conditions = {
     holds: (a, b) => !a.merges && a.asked === "none" && resultIn(a) && has(b, "close", "captain"),
   },
   "Leaf --> HandedBack": {
-    claim: "the work cannot be done inside this ticket, and the captain hands it back to its officer",
-    holds: (a, b) => has(b, "cannot be done inside the ticket", "captain") && handsBack(b),
+    claim: "the work, its result not in, cannot be done inside this ticket, and the captain hands it back to its officer",
+    holds: (a, b) => !resultIn(a) && has(b, "cannot be done inside the ticket", "captain") && handsBack(b),
   },
   "Cutting --> Waiting": {
     claim: "the parts are dispatched as sub-tickets, and the captain waits on them",

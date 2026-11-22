@@ -145,9 +145,11 @@ CloseLeaf ==
     /\ event' = {Ev("close", "captain")}
     /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
 
-\* FR10, IQ26: the work cannot be done inside this ticket, so it goes to its officer.
+\* FR10, IQ26: the work cannot be done inside this ticket, so it goes to its officer. Its result is
+\* not in: a leaf whose result is in has done its work.
 HandBackTheWork ==
     /\ state = "Leaf"
+    /\ ~ResultIn
     /\ state' = "HandedBack"
     /\ event' = {Ev("cannot be done inside the ticket", "captain"), Ev("hand back", "captain")}
     /\ UNCHANGED <<ticket, kind, merges, proved, written, call, asked, part, contract, verdict, blockers, gates, landed, ci>>
