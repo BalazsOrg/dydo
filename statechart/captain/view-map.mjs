@@ -7,11 +7,11 @@
 export const states = {
   Dispatched: "Dispatched",
   Taken: "Taken",
-  Leaf: "Leaf",
+  Leaf: "Leaf", // a his-call envoy with him, a reviewer writing its verdict: still the work itself
   Asking: "Asking", // at any stage of the Question: research, council or his-call
   Cutting: "Cutting", // with fog too: then the part in sight is one that brings the next into sight
-  Waiting: "Waiting", // on its parts, their evidence checks, fixes and mends, their wiring, a Question; see mismatches
-  InReview: "InReview",
+  Waiting: "Waiting", // on its parts, their evidence checks, fixes and mends, a part's Question, their wiring; see mismatches
+  InReview: "InReview", // the round's Review hop out with a fresh reviewer; see mismatches for once its verdict is in
   Mending: "InReview", // NOT TRUE OF IT: see mismatches below
   Fixing: "Fixing", // on the Fix; and on the Question one of its blockers waits on
   Repairing: "Fixing", // a conflict or a real red gate is repaired on the ticket branch by a Fix
@@ -45,8 +45,10 @@ export const actions = {
   Answered: ["Asking --> Leaf", "Leaf", "Cutting", "Waiting", "Fixing"],
   CouncilDecided: ["Asking --> Leaf", "Waiting"],
   CouncilPrepared: ["Asking --> Leaf", "Waiting"],
+  HeDecides: ["Leaf", "Waiting"],
   ProveTheWork: ["Leaf"],
   ScoutTheSpec: ["Leaf"],
+  WriteTheVerdict: ["Leaf", "Waiting"],
   SendLeafToReview: ["Leaf --> InReview"],
   CloseLeaf: ["Leaf --> Done"],
   HandBackTheWork: ["Leaf --> HandedBack"],
@@ -63,8 +65,10 @@ export const actions = {
   TheCheckFindsACheapShould: ["Waiting"],
   TheCheckFails: ["Waiting"],
   NeedFromAPart: ["Waiting"],
+  ThePartIsAnswered: ["Waiting"],
   CutTheNextParts: ["Waiting --> Cutting"],
   FogRemains: ["Waiting --> Cutting"],
+  TheWayIsFound: ["Waiting"],
   HandBackTheWhole: ["Waiting --> HandedBack"],
   WireTheParts: ["Waiting"],
   TheWiringIsIn: ["Waiting"],
@@ -75,15 +79,19 @@ export const actions = {
   TheJudgesSplit: ["Waiting"],
   TheCouncilDecides: ["Waiting --> Done"],
   TheCouncilPrepares: ["Waiting --> Done"],
+  TheReviewPasses: ["InReview"],
+  TheReviewFails: ["InReview"],
   NoMoreRound: ["InReview --> Merging"],
   OneMoreRound: ["InReview"],
   MendACheapShould: ["InReview"],
+  TheMendIsProved: ["InReview"],
   ReviewTheMendedHead: ["InReview"],
   Fail: ["InReview --> Fixing"],
   Replan: ["InReview --> HandedBack"],
   CheckpointOneMoreRound: ["InReview --> Fixing"],
   CheckpointAsksHim: ["InReview --> Fixing"],
   CheckpointEscalates: ["InReview --> HandedBack"],
+  TheFixIsProved: ["Fixing"],
   ReviewAgain: ["Fixing --> InReview"],
   HandBackTheFix: ["Fixing --> HandedBack"],
   RunTheGates: ["Merging"],
@@ -93,20 +101,23 @@ export const actions = {
   MergeIntoFeature: ["Merging"],
   OfferForTheTurn: ["Merging"],
   OpenTheHitlMerge: ["Merging"],
+  MasterMoves: ["Merging"],
   LandOnTheTurn: ["Merging"],
-  ResyncOnTheTurn: ["Merging"],
-  ConflictOnTheTurn: ["Merging --> Fixing"],
-  Sequenced: ["Merging"],
   HisClick: ["Merging"],
+  ResyncOnTheRecheck: ["Merging"],
+  ConflictOnTheRecheck: ["Merging"],
+  Sequenced: ["Merging"],
   GreenOnTheMergeSha: ["Merging --> Done"],
   GateRed: ["Merging"],
   Flake: ["Merging --> Done"],
   RealRed: ["Merging --> Fixing"],
+  TheRepairIsProved: ["Fixing"],
   RepairReviewed: ["Fixing --> InReview"],
   RepairFails: ["Fixing --> HandedBack"],
 };
 
-// "Ended" is the model's stand-still at an end; it is no step.
+// "Ended" is the model's stand-still at an end; it is no step. check-chart.mjs checks that every
+// step it names leaves its state unchanged, at an end.
 export const standStill = "Ended";
 
 // The model cases no chart state or arrow has words true of. The chart is his approved view, so its
@@ -114,7 +125,7 @@ export const standStill = "Ended";
 // view change. check-chart.mjs prints them on every run.
 export const mismatches = [
   {
-    model: "Mending, and the steps MendACheapShould and ReviewTheMendedHead",
+    model: "Mending, and the steps MendACheapShould, TheMendIsProved and ReviewTheMendedHead",
     under: 'InReview, "Waiting on a reviewer\'s verdict"',
     why:
       "after a PASS with a cheap should, the captain waits on the should's fix in place before the merge " +
@@ -126,6 +137,13 @@ export const mismatches = [
     why:
       "the officer that received the need opened the Question under its own ticket (H16), so the captain waits on a " +
       "ticket that is not its sub-ticket; H10 has it wait on it, and after a cut it never goes back to Asking",
+  },
+  {
+    model: "InReview once the round's verdict is written (TheReviewPasses, TheReviewFails), before the captain acts on it",
+    under: 'InReview, "Waiting on a reviewer\'s verdict"',
+    why:
+      "the reviewer on the round's Review hop writes the verdict, and the captain then acts on it (R17, R33, R8); " +
+      "between the two the verdict is in, so the captain no longer waits on it, and the chart has no state for that moment",
   },
 ];
 

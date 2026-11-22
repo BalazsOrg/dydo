@@ -4,7 +4,9 @@
 //
 // Every line must be one this reader knows: the frontmatter, the diagram header, a comment, a blank
 // line, a state with its words, the one start arrow, or an arrow between two states with its words.
-// Anything else is a problem, so no Mermaid edge in the file goes unread.
+// Anything else is a problem, so no Mermaid edge in the file goes unread. It also returns the visible
+// text: every line Mermaid renders, trimmed, in file order; that is every line but blanks and "%%"
+// comments.
 import { readFileSync } from "node:fs";
 
 const plain = (text) => text.replace(/#(\d+);/g, (_, code) => String.fromCodePoint(Number(code))).trim();
@@ -13,17 +15,21 @@ export function read(path) {
   const states = {};
   const arrows = {};
   const problems = [];
+  const visible = [];
   let start;
   const lines = readFileSync(path, "utf8").split("\n");
   let i = 0;
   if (lines[0]?.trim() === "---") {
     for (i = 1; i < lines.length && lines[i].trim() !== "---"; i++);
     i++;
+    visible.push(...lines.slice(0, Math.min(i, lines.length)).map((line) => line.trim()).filter((line) => line !== ""));
   }
   for (; i < lines.length; i++) {
     const line = lines[i].trim();
     const where = "chart.mmd:" + (i + 1) + ": ";
-    if (line === "" || line.startsWith("%%") || line === "stateDiagram-v2") continue;
+    if (line === "" || line.startsWith("%%")) continue;
+    visible.push(line);
+    if (line === "stateDiagram-v2") continue;
     if (line.includes("-->")) {
       const arrow = /^(\[\*\]|[A-Za-z]\w*)\s*-->\s*([A-Za-z]\w*|\[\*\])\s*(?::\s*(.*))?$/.exec(line);
       if (!arrow) {
@@ -59,5 +65,5 @@ export function read(path) {
       if (!(end in states)) problems.push("chart.mmd: an arrow from or to a state it does not declare: " + ends);
   if (start && !(start in states)) problems.push("chart.mmd: the start arrow goes to a state it does not declare: " + start);
   if (!start) problems.push("chart.mmd: no start arrow");
-  return { states, arrows, start, problems };
+  return { states, arrows, start, problems, visible };
 }
