@@ -294,11 +294,11 @@ The view controls run `check-chart.mjs` on the scratch copy, which must exit 1 (
 | View | v3 | `view-map.mjs`: `RepairFails: ["Fixing --> HandedBack"],` → (removed) | exit 1: model action the map gives no place: RepairFails |
 | View | v4 (two actions off, as before (v4 with v4b)) | `HandBackTheFix`: `/\ state = "Fixing"` → `/\ FALSE`; `RepairFails`: `/\ state = "Repairing"` → `/\ FALSE` | exit 1: model action no reachable step takes: HandBackTheFix |
 | View | v5 | `ReviewTheMendedHead`: `/\ state' = "InReview"` → `/\ state' = "Fixing"` | exit 1: a model step the map does not place there: ReviewTheMendedHead, Mending to Fixing, at InReview --> Fixing |
-| View | v6 | `chart.mmd`: `[*] --> Dispatched` → `[*] --> Dispatched Taken --> Done` | exit 1: chart.mmd:24: an arrow with no words: Taken --> Done |
+| View | v6 | `chart.mmd`: `[*] --> Dispatched` → `[*] --> Dispatched Taken --> Done` | exit 1: chart.mmd:25: an arrow with no words: Taken --> Done |
 | View | v7 | `view-map.mjs`: `OneMoreRound: ["InReview"],` → `OneMoreRound: ["Merging"],` | exit 1: a model step the map does not place there: OneMoreRound, InReview to InReview, at InReview |
 | View | v8 | `chart.mmd`: `[*] --> Dispatched` → `[*] --> Dispatched Taken --> Done: it is done` | exit 1: chart.mmd's visible words are not the words Balazs approved (sha256 a85cccc881963fdfc05ae81d3dff749f6f73402438be3a39aab19cc754843a57, approved f5a0b99c11799be14 |
 | View | v9 | `view-map.mjs`: `RunTheGates: ["Merging"],` → `RunTheGates: ["Fixing"],` | exit 1: a model step the map does not place there: RunTheGates, Merging to Merging, at Merging |
-| View | v10 | `chart.mmd`: `[*] --> Dispatched` → `[*] --> Dispatched state Taken { }` | exit 1: chart.mmd:24: a line the check cannot read: state Taken { |
+| View | v10 | `chart.mmd`: `[*] --> Dispatched` → `[*] --> Dispatched state Taken { }` | exit 1: chart.mmd:25: a line the check cannot read: state Taken { |
 | r2 probe | p-false-label | `chart.mmd`: `InReview --> Merging: the verdict is PASS` → `InReview --> Merging: the verdict is FAIL` | exit 1: chart.mmd's visible words are not the words Balazs approved (sha256 a64bf2f35be26490583cddf14ae68593a2da04b8105423894716482a5cf57162, approved f5a0b99c11799be14 |
 | r2 probe | p-end-hides-step | `Ended`: `state \in Ends /\ UNCHANGED vars` → `(state \in Ends /\ UNCHANGED vars) \/ (state = "Taken" /\ state' = "Done" /\ UNCHANGED <<ticket, work, split, hop, question, review, merge>>)` | exit 1: a step named Ended that is not standing still at an end: Taken to Done, a different state |
 | r2 probe | p-stale-model | `WorkItself`: `/\ stage # "council"` → `/\ FALSE` | exit 1: TLC did not complete without error (exit 11): |
@@ -322,8 +322,8 @@ Each command ran under the gate lock and the agent memory cap, with dydo 3.6.0's
 
 - The view check (`node statechart/captain/check-chart.mjs`): exit 0. TLC on `Captain.cfg`: `TypeOK` and `NoDeadlock` hold; 80,275 states generated, 43,324 distinct, depth 46; 72,003 steps checked; the words are the approved words; 18 model states shown as 11 chart states, 85 actions under 23 arrows or inside a state. It lists three cases for Balazs: `Mending` under `InReview`, `Waiting` on the captain's own need, and `InReview` once its verdict is in.
 - The statechart tool on the model (`dydo statechart ... --view view.mjs`): exit 0, `TypeOK` and `NoDeadlock` hold; more than 500 states, so no chart is drawn.
-- The properties (`run.py --machine captain`): exit 0. All 62 registered properties, `TypeOK` and `NoDeadlock` hold; 233,998 states generated, 127,534 distinct, queue empty, depth 50.
-- The registered control (`run.py --controls --machine captain`): harness exit 0, `control_caught` true. H16_ResumeLeafAfterQuestion rejects `Asking` to `Done`.
+- The properties (`run.py --machine captain`): exit 0, result pass. All 62 registered properties, `TypeOK` and `NoDeadlock` hold: 64 rules; 233,998 states generated, 127,534 distinct, queue empty, depth 50.
+- The registered control (`run.py --controls --machine captain`): harness exit 0, `control_caught` true. H16_ResumeLeafAfterQuestion rejects `Asking` to `Done`, and so do WorkPhaseBeforeDone and H16_NothingGoesOnPastTheWait.
 - The 138 hand-run model controls and the 24 view controls: each as its table says. The graph witnesses: as above.
 
 Output was written under `/tmp/dyd1492/fix2/` and is not kept.
