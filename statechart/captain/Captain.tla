@@ -422,13 +422,13 @@ SomeHopStops ==
     /\ hop' = "stopped"
     /\ UNCHANGED <<state, ticket, work, split, question, review, merge>>
 
-\* S24: "stopped sets the hop back to Todo,
+\* S24: "stopped sets the hop back to Todo", first.
 SetTheHopBackToTodo ==
     /\ hop = "stopped"
     /\ hop' = "todo"
     /\ UNCHANGED <<state, ticket, work, split, question, review, merge>>
 
-\* then resumes the thread or dispatches a fresh agent that attaches a new thread link."
+\* S24: "then resumes the thread or dispatches a fresh agent that attaches a new thread link."
 ResumeTheHop ==
     /\ hop = "todo"
     /\ hop' = "live"
@@ -472,7 +472,7 @@ CheckThePart ==
     /\ part' = "checking"
     /\ UNCHANGED <<state, ticket, work, fog, tribunal, hop, question, review, merge>>
 
-\* The evidence check finds no blocker and no cheap should: the part stands.
+\* R6, S4: the evidence check finds no blocker and no cheap should, so the part stands.
 TheCheckPasses ==
     /\ state = "Waiting"
     /\ part = "checking"
@@ -605,7 +605,7 @@ TheExchange ==
     /\ tribunal' = "exchange"
     /\ UNCHANGED <<state, ticket, work, fog, hop, question, review, merge>>
 
-\* L18: after the exchange the judges agree,
+\* L18: after the exchange the judges agree.
 TheJudgesAgree ==
     /\ state = "Waiting"
     /\ tribunal = "exchange"
@@ -615,7 +615,7 @@ TheJudgesAgree ==
     /\ tribunal' = "agreed"
     /\ UNCHANGED <<state, ticket, work, fog, hop, question, review, merge>>
 
-\* or they disagree, or the precedent points both ways.
+\* L18: after the exchange the judges disagree, or the precedent points both ways.
 TheJudgesSplit ==
     /\ state = "Waiting"
     /\ tribunal = "exchange"
