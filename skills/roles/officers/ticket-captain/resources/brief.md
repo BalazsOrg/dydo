@@ -11,6 +11,7 @@ Then name:
 - `/ticket-captain`, and every other skill the work needs, each with a slash. An agent that merges needs `/pr`.
 - What the ticket's result is: a change, a verdict, findings as one seat of a review, an answer, a cut, or a session with the user.
 - How the ticket fits your ticket and the spec.
+- The truth documents the project keeps beside the spec, or that there are none.
 - For a change: the branch and the base it works on, the paths it owns, the gates it must pass, and how the work is proved.
 - For a change: the skill that holds the project's rules for code, comments and tests, with a slash, or that the project has none.
 - For a change: whether the agent merges it, and into which `feature/*` branch. A part that you will wire merges nothing.

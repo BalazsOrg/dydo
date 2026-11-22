@@ -33,9 +33,10 @@ or a review left doubt.
   and its ticket record, and every open inquisition nit ticket, each nit with its ruling.
 
 Bring him only rulings reviewers made and calls truly his: no agent's job, and left open by his
-recorded words, the spec and the statechart, where the project has one. For a finding with no
-ruling, open a Review ticket that asks only for its ruling and dispatch a fresh agent onto it,
-briefed with `/ticket-captain`, and wait for the ruling before the tour; never bring it to him.
+recorded words, the project's truth documents, the spec and the statechart, where the project has
+one. For a finding with no ruling, open a Review ticket that asks only for its ruling and dispatch a
+fresh agent onto it, briefed with `/ticket-captain`, and wait for the ruling before the tour; never
+bring it to him.
 State each item you put to him in plain words, what it does or what it changes; a DR's number, a
 rule ID, a state name, a finding number or a ticket key may follow, never stand in its place.
 Restate a finding he rules on as what is wrong and what the fix would change, never only its number

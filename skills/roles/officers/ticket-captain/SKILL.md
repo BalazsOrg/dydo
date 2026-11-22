@@ -39,6 +39,7 @@ Work that needs the same thing understood belongs to one agent. Keep such work w
 
 ## While you work
 
+- The truth, in this order: the user's latest recorded words, then the truth documents your brief names, then the spec, then decision records. The statechart, where the project has one, is drawn from these: where it disagrees with them, tell your officer.
 - Decide what your ticket makes your job to decide: a reviewer decides its verdict, a Question's captain its answer.
 - Outside that, decide a call yourself only when it is obvious and you can undo it. Any other call becomes a Question for a fresh agent: go by [Ask](resources/ask.md).
 - Tell your officer about a problem outside your ticket when you find it: send it to your officer's thread with `t3_thread_send`. Then go on with your work.

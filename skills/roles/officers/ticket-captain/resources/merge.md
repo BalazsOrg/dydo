@@ -22,7 +22,7 @@ Your brief says that you merge your change, and into which branch. A merge needs
 
 Write why on your ticket, and end with `handed back <KEY>: <reason>`, in two cases:
 
-- A blocker cannot be fixed inside your ticket: the approach is wrong at the root, it asks for a new requirement, or it needs a call only the user can make, one that is no agent's job and that the user's recorded words, the spec and the statechart, where the project has one, leave open.
+- A blocker cannot be fixed inside your ticket: the approach is wrong at the root, it asks for a new requirement, or it needs a call only the user can make, one that is no agent's job and that the truth, as in "While you work" in the `ticket-captain` skill, leaves open.
 - The Fix is handed back to you undone.
 
 **The verdict is PASS**
