@@ -30,7 +30,7 @@ You look at a candidate for what is wrong with it. Each problem you find is a fi
 
 **Driving** (the Drive column)
 
-- Use the feature as its user would, with the verification skill your brief names. Say for each journey whether it does what the spec's problem statement intends.
+- Drive each journey that no receipt you accepted already covers. Use the feature as its user would, with the verification skill your brief names. Say for each journey whether it does what the spec's problem statement intends.
 - Write each journey as steps anyone can rerun, with what you saw beside what the spec expects.
 
 **Modelling** (the Formal column)

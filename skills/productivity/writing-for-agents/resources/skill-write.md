@@ -4,7 +4,7 @@ You write or rewrite one skill file so that the agent who loads it can act on ev
 
 Your reader is an agent holding a ticket in a project you have never seen. It has this file, the skill that links to it, and its brief. It has none of your context.
 
-Your brief gives you the file's one sentence, which says who reads it and for which job, and the truth: the core page and the statechart.
+Your brief gives you the file's one sentence, which says who reads it and for which job, and the truth: the truth documents it names, and the statechart with its page of who gets which text.
 
 ## Method
 
@@ -13,7 +13,7 @@ Your brief gives you the file's one sentence, which says who reads it and for wh
    - A competent agent would get this wrong without being told.
    - The linking skill does not already say it.
    - It holds in a project other than the one it was written in.
-   - The core page, the statechart or the user's recorded words say it. Where they are silent, the Project's spec or a decision record counts. A rule in the old file is not a source.
+   - A source says it, and no source before it in this order says otherwise: the user's latest recorded words, the truth documents your brief names, the statechart, the Project's spec, the decision records. A rule in the old file is not a source.
    - The statechart gives this text to this file's reader.
 3. Rewrite each line that stays as an action the reader can take.
 4. Read the result as the reader. For each line ask "what exactly do I do now?" If you have to guess, rewrite the line or delete it.

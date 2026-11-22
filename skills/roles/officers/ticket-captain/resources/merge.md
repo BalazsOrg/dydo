@@ -6,8 +6,7 @@ Your brief says that you merge your change, and into which branch. A merge needs
 
 1. If the target your brief names is not a `feature/*` branch, push your branch, write on your ticket what is done, and end with `handed back <KEY>: dydo merge merges only into feature/* branches`.
 2. Run the gates your brief names on your branch, then push it.
-3. Open a Review sub-ticket under your ticket, and dispatch a fresh agent onto it by [Brief](brief.md).
-4. Wait for the verdict. It is on the Review ticket.
+3. Open a Review sub-ticket under your ticket, and dispatch a fresh agent onto it by [Brief](brief.md). Wait for the verdict on the Review ticket.
 
 **The verdict is FAIL**
 
@@ -23,18 +22,19 @@ Your brief says that you merge your change, and into which branch. A merge needs
 
 Write why on your ticket, and end with `handed back <KEY>: <reason>`, in two cases:
 
-- A blocker cannot be fixed inside your ticket: the approach is wrong at the root, it asks for a new requirement, or it needs the user.
+- A blocker cannot be fixed inside your ticket: the approach is wrong at the root, it asks for a new requirement, or it needs a call only the user can make, one that is no agent's job and that the truth, as in "While you work" in the `ticket-captain` skill, leaves open.
 - The Fix is handed back to you undone.
 
 **The verdict is PASS**
 
 Each should is already a ticket that waits, and so is each nit the reviewer ruled needs a fix: the reviewer opened them. Leave them open, and merge.
+A finding that has no ruling, such as a nit left on the pull request, is a reviewer's to rule, never yours or the user's: write it on your ticket, open a Review sub-ticket that asks only for its ruling, dispatch a fresh agent onto it by [Brief](brief.md), and wait for the ruling before you merge. A nit ruled to need a fix becomes a should that the reviewer files, and it does not block the merge. A ruling that ends as a FAIL goes by "The verdict is FAIL".
 
 **Merge**
 
-1. Run the gates your brief names on your branch merged with the tip of the target branch. Make that merge on a scratch branch, never on your branch, and never push it: a pushed merge moves your head past the commit the PASS names.
+1. Note the full SHA of the target branch's tip. Run the gates your brief names on your branch merged with that commit. Make that merge on a scratch branch, never on your branch, and never push it: a pushed merge moves your head past the commit the PASS names.
 2. Open the pull request into the target branch, with your ticket's key in its title, and attach its link to your ticket. Write its body with `/pr`: it holds the reviewer's PASS line, word for word.
-3. Merge with `dydo merge <pr-number> --match-head-commit <SHA> --match-base-commit <SHA>`. The first is the full 40-character SHA of the commit the PASS names. The second is that of the target's tip.
+3. Merge with `dydo merge <pr-number> --match-head-commit <SHA> --match-base-commit <SHA>`. The first is the full 40-character SHA of the commit the PASS names. The second is the target SHA you noted in step 1. If the target's tip has moved since, run step 1 again on the new tip first.
 4. When hosted CI is green on the merge, set your ticket Done. End with `done <KEY>: merged <the merge commit>`.
 
 **The merge is not clean and green**

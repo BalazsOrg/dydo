@@ -7,6 +7,8 @@ type: reference
 
 Every line here comes from Balazs's recorded words. Every skill file is checked against this page, together with the statechart.
 
+This page serves the dydo 4.0.0 Project (P-DYD-51) and retires when that Project lands; the Project's landing ticket lists the citations of this page to repoint before it goes.
+
 ## The truth, in order
 
 The [Axioms](law/dydo/axioms.md) and [Principles](law/dydo/_dydo.md) are always a good source. When records disagree, this order wins:
