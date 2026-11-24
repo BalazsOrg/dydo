@@ -73,7 +73,7 @@ Each sign is a lead, not a verdict; §1's order decides.
 | **Changes whenever the code does.** It is coupled to the implementation, not to what is observed. Signal: it is edited in most commits that edit its subject without changing behaviour. | A test at the deepest observing boundary survives refactors. | smell 1; T4 |
 | **Checks that a deleted feature is gone.** | It does none of T1's jobs, unless the absence is itself a traced contract (a removed security route that must stay removed), tagged `contract` with its source. | smell 2 |
 | **Can never fail.** It asserts nothing the code under test controls. | Vacuous. "a reviewer flags an assertion that no plausible edit could break." | smell 3; T3 |
-| **Redundant.** [§5](#5-the-evidence-a-removal-needs) shows kept tests covering every protection it carries. Rows of one equivalence class (the same branch to the same outcome) are the usual lead; collapsing keeps one row per distinct behaviour, the first by its §6 ordinal. | It adds run time and no protection. "the best performance improvement for tests is probably the tests which we never write." | T4; T1 |
+| **Redundant.** [§5](#5-the-evidence-a-removal-needs) shows kept tests covering every protection it carries. Rows that reach the same branch and outcome are the usual lead; §5 decides. A collapse keeps, of the rows that cover under §5 every row it drops, the first by its §6 ordinal. | It adds run time and no protection. "the best performance improvement for tests is probably the tests which we never write." | T4; T1 |
 | **Covers nothing a user could hit.** No entry point a person or agent uses reaches the path it covers. | It protects no behaviour. | contract 3 |
 | **States a trap a lint rule could state.** | "a trap that can be stated syntactically becomes a lint rule, not a test", because "lint is cheaper and quicker." | T2 |
 | **Tests behaviour 4.0.0 drops.** | "All the tests about a certain roles and these kind of things must go." | purge; DYD-1199 |
@@ -88,9 +88,10 @@ Each sign is a lead, not a verdict; §1's order decides.
 - **Named techniques, as guidance, not a requirement:** property tests for edges; differential tests
   for rewrites, with the old implementation as the oracle and an approved-changes list. "naming
   thing is having power of them" (T7).
-- **A lint-shaped trap** (§3) has no suite job, so it is never rewritten; it is recorded as a lint
-  candidate. A lint rule is not a kept test, and naming one proves neither redundancy nor
-  unreachability, so the test stays until §5 evidence covers it (T2; contract 3).
+- **A lint-shaped trap** (§3) has no suite job. The assertion that states it is recorded as a lint
+  candidate; its case's verdict still comes from §1. A lint rule is not a kept test, and naming one
+  proves neither redundancy nor unreachability, so that assertion stays until §5 evidence covers it
+  (T2; contract 3).
 
 ## 5. The evidence a removal needs
 
@@ -101,11 +102,16 @@ available, is the evidence. Where none is available, say so per batch."
 
 The evidence covers each protection the batch drops: every removed case and every assertion a
 rewrite drops. A protection is what a dropped assertion fails on: its observable (an exit code,
-output, file or git state), for an input of its equivalence class (§3), wherever its case runs
-(§1). A kept test covers it only when it asserts that observable for that class at least as
-strictly, exact where the dropped one was exact, and runs there too. An exact exit code `0` and a
-kept test that rejects only `1` both kill a `0 → 1` mutant, but only the exact one fails on `2`, so
-the looser test does not cover it.
+output, file or git state), wherever its case runs (§1). A kept test covers it only when it
+asserts that observable at least as strictly, exact where the dropped one was exact, and runs there
+too. An exact exit code `0` and a kept test that rejects only `1` both kill a `0 → 1` mutant, but
+only the exact one fails on `2`, so the looser test does not cover it. Two cases are
+interchangeable only if they differ in no input feature that the code under test reads. Where they
+do differ, a mutant or planted bug keyed to that feature must fail both the dropped assertion and a
+kept case, or the assertion stays (contract 3). The Node collisions with a link elsewhere in the
+project and with a foreign link outside it reach the same refusal, but `setup-skills.mjs` reads
+where the link points, so dropping either needs such a bug; one that treats every link inside the
+project as its own would turn only the first red.
 
 - **Mutation, where a tool runs on the batch's code** (dydo's C# product code). The batch's tests
   run under mutation at base and again on the candidate: every mutant killed at base is still killed
@@ -141,7 +147,7 @@ Each audit file in this folder uses one table, one line per case (§1).
 
 | Test | Runs | Verdict | Reason | Evidence |
 |---|---|---|---|---|
-| C#: `<Namespace>.<Class>.<Method>`, a data row adding `[<n>]`, its 0-based ordinal in the order the method's data declares or yields its rows at the audited commit; a row's arguments, generated values such as temp paths and GUIDs included, are never part of the id. Gherkin: `<file>.feature: <scenario>`, an Examples row adding `[<n>]` the same way. Python: `<file>: <Class>.<test_name>`. Node: `<file>: <registered test name>`. A `<file>` is its path from the repository root | `all`, or the platform, skip condition or environment variable its assertions need | keep, rewrite or remove | One line: the §2 row it meets or fails, the §3 sign it shows, or `unsure` | keep: its tag. keep `unsure`: `only: <mutant id or planted bug>` and what is unresolved, with no tag required. rewrite: the job it will carry. remove, or a rewrite that drops a protection: per protection, `kept: <test id> fails on <mutant id or planted bug>`, or `unreachable: <why>`, plus the batch's mutation result or "mutation unavailable" |
+| C#: `<Namespace>.<Class>.<Method>`, a data row adding `[<n>]`, its 0-based ordinal in the order the method's data declares or yields its rows at the audited commit; a row's arguments, generated values such as temp paths and GUIDs included, are never part of the id. Gherkin: `<file>.feature: <scenario>`, an Examples row adding `[<n>]` the same way. Python: `<file>: <Class>.<test_name>`. Node: `<file>: <registered test name>`. A `<file>` is its path from the repository root | `all`, or the platform, skip condition or environment variable its assertions need | keep, rewrite or remove | One line: the §2 row it meets or fails, the §3 sign it shows, or `unsure` | keep: its tag. keep `unsure`, with no tag required: `only: <mutant id or planted bug>` that no other kept test fails on, and what is unresolved; with none known yet, the observable, the condition it is asserted under and the evidence still missing. rewrite: the job it will carry. remove, or a rewrite that drops a protection: per protection, `kept: <test id> fails on <mutant id or planted bug>`, or `unreachable: <why>`, plus the batch's mutation result or "mutation unavailable" |
 
 ## 7. Where the older guides disagree
 
