@@ -8,156 +8,152 @@ type: reference
 The docs batch of the [DYD-1520](https://linear.app/bodnar-balazs/issue/DYD-1520) audit: `dydo check`,
 `fix`, `index`, `graph`, `help` and `validate`, the link and off-limits rules, `explains:`, changelog
 evidence, path collapsing, JSON text, the optional-summaries feature, and the Python and Node tooling
-tests under `DynaDocs.Tests/coverage/tests/`. Each case is sorted against the
-[rubric](./rubric.md) at `937a46014`. The record is the table `docs.tsv` beside this page, one §6 line
-per case, audited at base `07642b1f3` (`dydo check` accepts no link to a `.tsv`).
+tests under `DynaDocs.Tests/coverage/tests/`. Each case is sorted against the [rubric](./rubric.md)
+at `937a46014`. The record is `docs.tsv` beside this page, one §6 line per case, audited at base
+`07642b1f3` (`dydo check` accepts no link to a `.tsv`).
 
 ## Totals
 
 | Cases | Keep | Keep `unsure` | Rewrite | Remove |
 |---|---|---|---|---|
-| 299 C# and Gherkin | 236 | 9 | 38 | 16 |
-| 15 Python | 15 | 0 | 0 | 0 |
-| 5 Node | 5 | 0 | 0 | 0 |
-| **319** | **256** | **9** | **38** | **16** |
+| 299 C# and Gherkin | 245 | 9 | 38 | 7 |
+| 15 Python, 5 Node | 20 | 0 | 0 | 0 |
+| **319** | **265** | **9** | **38** | **7** |
 
-Most of this batch already drives `dydo` at the command line and carries true tags, so most of it is
-kept. What goes is the rule-level and resolver-level units on hand-built `DocFile`s
-(`BrokenLinksRuleTests`, `RelativeLinksRuleTests`, `LinkResolverTests`), which fail §2 row 3, plus
-exact duplicates of the optional-summaries feature and of other kept tests.
+- **Rewritten (38):** 28 rule-level link cases become `dydo check` cases:
+  `CheckDocValidatorTests.Check_LinkFindings_AreExactlyTheOnesReported` (`LinkFindings`),
+  `Check_LegacyHubMarker_SkipsLinkChecksOnlyOnAMarkedPage` (`LegacyHub`) and
+  `Check_AnchorOnlyLink_ToAMissingHeadingOnItsPage_IsReportedOnce`. Each asserts the whole finding
+  list and the exit code. The nine `LinkResolverTests` cases keep their names and rows, but drive
+  `dydo check` and `dydo graph`, the two commands whose agreement is trap #0187.
+  `FixCommandIntegrationTests.Check_IgnoresObsidianFolder` stays byte for byte with a method tag.
+- **Removed (7):** five link-rule cases with a kept case of the same input or shape, one whose input
+  no parser produces, and one identical to a rewritten case.
+- **Restored in review round 2 (9), byte for byte:** `Check_ReportsTheDocumentsFinding` rows 1 and
+  27-30, `Fix_ValidDocument_KeepsItsBytes` rows 0-1, `CollapseRelativeSegments_ResolvesDotDot` rows
+  7-8.
 
-- **Removed (16):** 4 `BrokenLinksRuleTests` and 3 `RelativeLinksRuleTests` cases whose input shape a
-  kept `dydo check` or `dydo graph` case already supplies; `CheckDocValidatorTests` rows 1, 27, 28, 29
-  and 30 and `FixFileHandlerTests.Fix_ValidDocument_KeepsItsBytes` rows 0 and 1, which the feature
-  asserts at least as strictly; and `CollapseRelativeSegments_ResolvesDotDot` rows 7 and 8, which
-  `BothReadings` rows 30 and 29 repeat with both readings.
-- **Rewritten (38):** the other 28 link-rule cases become rows of one `dydo check` theory,
-  `CheckDocValidatorTests.Check_LinkFindings_AreExactlyTheOnesReported`. Each row keeps its case's
-  input shape (the source's folder, the target path, the target's anchors, the other links in the
-  document) and asserts the whole list of findings, each message once, and the exit. The nine
-  `LinkResolverTests` cases keep their names and rows but drive `dydo check` and `dydo graph`, the
-  two commands whose agreement is trap #0187. `FixCommandIntegrationTests.Check_IgnoresObsidianFolder`
-  is kept verbatim with a method tag naming `dydo check`, which its class tag does not.
-- **Restored after review round 1:** `Fix_IgnoresObsidianFolder`, `Check_IgnoresObsidianFolder`,
-  `Fix_PreservesHandwrittenNavigationFiles` and `Graph_UnknownFile_IsAToolError` carry inputs no kept
-  test supplies: an `.obsidian/` folder of JSON, a sibling document beside handwritten navigation pages
-  under an explicit root, and an unknown bare filename, which graph's lookup matches by basename.
-- **Tags:** every kept case's tag was swept against §2 row 2 (review lesson 6). A class tag that
-  claimed more than some of its methods observe became method tags: `CheckDocValidatorTests`,
-  `FixFileHandlerTests`, `ValidateCommandTests`, `OffLimitsRuleTests`, `FixCommandIntegrationTests`,
-  `DocumentationTests`, `ChangelogEvidenceTests`, `DocGraphTests`, `LinkResolverTests` (its anchor-only
-  case cites #0186, not #0187), `JsonTextTests` and `PathUtilsTests` (only `BothReadings` claims both
-  host readings). Narrowed: the help tag (it checks `dydo help`, not the reference), the `explains:`
-  tags (rule 4; no test shows rule 6's grandfathering), the feature tag (it now names the title, link
-  and frontmatter findings its rows assert), four Python tags and the Node collision tag (each claimed
-  a case its assertions never drive). `Graph_AnyDegree_GetsAnAnswer` and the `GetMainProjectRoot`
-  rows, kept `unsure`, carry no tag. The `setup-skills.test.cjs` tags cite README "Install the skills",
-  its real heading (`README.md:164`); they cited "Adopting the skills". Each kept row's Evidence in
-  `docs.tsv` is its tag as the tree now carries it.
+## Input Audit
+
+Every case the batch rewrote, merged, moved or replaced, against its base case. Compared are the
+inputs the code under test reads. For `BrokenLinksRule` and `LinkResolver`: the page's path, its lines
+(the marker check), each link's type, target and anchor, the source and target anchors, the pages
+present and the files on disk. For `RelativeLinksRule`: each link's type, target and raw text; it
+never reads the page (`RelativeLinksRule.cs:14-41`). Markdig reads a frontmatter block's closing
+`---` right after its last field as a setext heading, so such a page has one more anchor. A page
+whose anchors a link reads therefore ends its frontmatter with a blank line, which the frontmatter
+parser accepts.
+
+| Base case | Now | Against base | Outcome |
+|---|---|---|---|
+| BrokenLinks `ReportsBrokenLink`, `ReportsMultipleBrokenLinks`, `ReportsMissingNonMarkdownAsset…`, `AcceptsCrossFolderLink…`, `AcceptsParentDirectoryLink` | `LinkFindings` 0, 1, 9, 4, 3 | identical; targets' anchors are unread (no anchor) | kept |
+| BrokenLinks `ReportsInvalidAnchor`, `AcceptsValidAnchor` | `LinkFindings` 2, 21 | the target carried two more anchors (its frontmatter's and its title's) and no `section-2`; now exactly `[section-1]`, `[section-1, section-2]` | restored (H1, H5) |
+| BrokenLinks `SkipsExternalLinks`; RelativeLinks `AcceptsExternalLinks` | `LinkFindings` 5 | the latter linked `https://github.com` from `test.md`: both rules read only the type and the `http` prefix (`LinkExtractor.cs:62`, `RelativeLinksRule.cs:22`) | same features |
+| BrokenLinks `SkipsWikilinks`; RelativeLinks `RejectsWikilinks` | `LinkFindings` 6 | `[[my-doc]]` is the latter's input; `BrokenLinksRule.cs:26` skips a wikilink before its target | same features |
+| RelativeLinks `RejectsAbsolutePaths`, `RejectsMissingMdExtension` | `LinkFindings` 7, 8 | linked from `guide.md` (`./guide` named itself); now the base `test.md` | restored |
+| RelativeLinks `AcceptsImageMarkdownSyntax`, `AcceptsAssetLinks` 0-8 | `LinkFindings` 10, 12-20 | were `./assets/<name>` from `guides/doc.md`, the svg in image syntax; now the base links from `test.md`; the file on disk is read only by `BrokenLinksRule` | restored |
+| BrokenLinks `SkipsAutoGeneratedFiles`, `ReportsBrokenLinksInNonGeneratedFiles`, `…ProseQuotesAutoGeneratedMarker` | `LegacyHub` 0-2 | were `guide.md` under frontmatter and a title; now the base path and bytes, no anchors | restored (H2) |
+| BrokenLinks `ReportsAnchorOnlyLink…`, `DoesNotEmitEmptyTargetError…` (same input) | `Check_AnchorOnlyLink_…` | the source carried two more anchors (frontmatter, title); now exactly `[section]` | restored (H5) |
+| `LinkResolverTests`, 9 cases | same names | paths identical; the anchored targets and the anchor-only page carried two more anchors (frontmatter, title); now exactly `[anchor]`, `[section]` | restored (H5) |
+| `Check_IgnoresObsidianFolder` | itself | byte-identical | kept |
+| removed BrokenLinks `AcceptsValidRelativeLink`; RelativeLinks `AcceptsValidRelativeLinks` | kept `Resolve_HandlesEveryRelativeShape…` 5 | a root-level page links an existing root-level `./<name>.md`; names reach the code only through `Path.Combine` and the path lookup | same shape |
+| removed BrokenLinks `AcceptsLinkToNestedFile` | kept `CheckCommandTests.RootOption…` 0 | `index.md` links `./guides/intro.md` (base `./guides/how-to.md`) | same shape |
+| removed BrokenLinks `AcceptsTwoLevelParentLink…` | kept `Resolve_HandlesEveryRelativeShape…` 4 | identical paths | same input (G5) |
+| removed BrokenLinks `AcceptsAnchorOnlyLink_WhenAnchorExistsOnSamePage` | kept `Resolve_DisagreesIntentionallyOnAnchorOnlyLinks` | identical: `guide.md`, `[section]`, `#section` | same input (H5) |
+| removed RelativeLinks `AcceptsAnchorOnlyLinks` | kept `Resolve_DisagreesIntentionally…` | its Target `#section` is unreachable: `LinkExtractor.cs:85-90` splits every target at its first `#` | unreachable |
+| removed RelativeLinks `StillRejectsMissingExtensionForNonAssets` | `LinkFindings` 8 | identical to `RejectsMissingMdExtension` | same input |
+| removed `Check_ReportsTheDocumentsFinding` 1, 27-30, `Fix_ValidDocument_KeepsItsBytes` 0-1, `ResolvesDotDot` 7-8 | themselves | their feature and `BothReadings` stand-ins differ in folder, frontmatter, body bytes or overload | restored |
 
 ## Mutation
 
-Targeted two-phase Stryker 5.1.0 (`/var/tmp/dyd1520/tools/stryker-targeted.sh`).
-
-- **Phase 1**, base `07642b1f3`, the 96 cases of every method that loses a case or is rewritten
-  (`BrokenLinksRuleTests`, `RelativeLinksRuleTests`, `LinkResolverTests`, and the methods
-  `Check_ReportsTheDocumentsFinding`, `Fix_ValidDocument_KeepsItsBytes`,
-  `Fix_PreservesHandwrittenNavigationFiles`, both `.obsidian` tests, `Graph_UnknownFile_IsAToolError`,
-  `CollapseRelativeSegments_ResolvesDotDot`): **504 killed** (3 timeouts not counted), 781 s.
-- **Phase 2**, fix candidate `6b17ea167`, the 279 kept cases of the batch filter, over phase 1's 130
-  killed spans: 542 killed, 341 s; **501 of the 504 still killed**, comparison exit 1 on the same
-  three mutants as the apply hop's run on `797d3ec88`:
-
-| Mutant | After | Justification |
-|---|---|---|
-| `Rules/BrokenLinksRule.cs:12:43` String → `""` (`Description`) | NoCoverage | unreachable: no command prints a rule's `Description` (no production read of `.Description` in Commands, Services, Rules or Utils) |
-| `Rules/TitleRule.cs:14:43` String → `""` (the title message) | NoCoverage | covered: the feature's Examples row 4 asserts the exact message and fails on P2; it runs `dydo` as a child process, which Stryker's coverage does not see |
-| `Rules/TitleRule.cs:14:13` Statement → `;` (the title violation) | NoCoverage | covered: the same row fails on P8, which drops the violation, and is the only batch test that does |
-
-The Python and Node tooling tests: mutation unavailable. None is removed, so no protection needs a
-planted bug there.
+Targeted two-phase Stryker 5.1.0 (`/var/tmp/dyd1520/tools/stryker-targeted.sh`). Phase 1, base
+`07642b1f3`, the 96 cases of every method that loses a case or is rewritten: **504 killed**. Phase 2,
+candidate `3cace6b40`, the 290 kept cases of the batch filter over phase 1's 130 spans: 548 killed,
+309 s; **503 of the 504 still killed**, comparison exit 1 on one mutant:
+`Rules/BrokenLinksRule.cs:12:43`, String to `""` on the rule's `Description`, NoCoverage after.
+Unreachable: no command prints a rule's `Description` (no production read of `.Description` in
+Commands, Services, Rules or Utils). The restored rows kill again the two `TitleRule.cs:14` mutants
+round 1 lost. The Python and Node tooling tests: mutation unavailable; none is removed.
 
 ## Counts
 
 | | Cases | Summed duration |
 |---|---|---|
 | Before, base `07642b1f3` | 299 passed | 4.8 s |
-| After, candidate `6b17ea167` | 279 passed | 5.8 s |
+| After, candidate `3cace6b40` | 290 passed | 4.6 s |
 
-The full suite on `6b17ea167`: 4,566 passed and 44 skipped (the base's known skips), 4,610 cases, 248 s.
+The full suite on `3cace6b40`: 4,577 passed and 44 skipped (the base's known skips), 4,621 cases, 209 s wall.
 
 ## Keep `unsure`
 
-- `DocumentationTests.Graph_AnyDegree_GetsAnAnswer` rows 0 to 2 (`--degree` 0, -1, 100).
-  Protection: `dydo graph <file> --degree N` exits 0. Unresolved: `dydo-commands-core.md` shows only
-  `--degree 2`, so whether an out-of-range degree should answer or be a tool error is undecided, and
-  no kept test covers another N. The rows carry no tag.
-- `PathUtilsTests.GetMainProjectRoot_WorktreeCwd_ReturnsMainRoot` rows 0 to 2. Protection:
-  `OffLimitsService` maps a cwd under `dydo/_system/.local/worktrees/` to the main checkout, so
-  off-limits patterns still match from a legacy dydo worktree. Unresolved: 4.0.0 creates no worktree
-  there (`WorktreeCleaner` uses `~/.t3/worktrees`), yet the guard still reads it, and no record keeps
-  or drops that layout. The rows carry no tag.
-- `PathUtilsTests.GetMainProjectRoot_NonWorktreeCwd_ReturnsNull` rows 0 to 2. Protection: an ordinary
-  cwd maps to no main checkout, so `OffLimitsService.cs:125` falls back to the cwd's own project root
-  and reads that project's off-limits file. Unresolved: no kept guard or off-limits test is shown
-  failing when an ordinary cwd maps to another root, and while the legacy layout is undecided, so is
-  whether this fallback needs a test of its own. The rows carry no tag.
-
-## Planted Bugs
-
-Each is a production edit the dropped assertion fails on, planted in a scratch checkout of
-`797d3ec88`, built, run over the batch filter and reverted (`plant.py` sets A to F; the tree was clean
-after). Every named kept test was red.
-
-| Bug | Set | Kept test red on it |
-|---|---|---|
-| P1: no `Missing frontmatter` violation | C | feature: A document without frontmatter is left for a manual repair |
-| P2: the title message becomes `Missing heading` | A | feature: Checking needs a title, row 4 |
-| P3: a title must be followed by a paragraph (DYD-98's bug) | D | feature: Checking needs a title, rows 1 and 2, each naming `document.md` |
-| P4: `Broken link:` becomes `Dead link:` | C | feature: Checking needs a title, row 5 |
-| P5: fix appends a summary to every document | D | feature: Fixing leaves a document's bytes alone, rows 0 and 1; `Fix_OnAnInitialisedProject_WritesNoFileAndChangesNoByte` |
-| P8: the missing-title violation is dropped | F | feature: Checking needs a title, row 4, the only red case |
+- `DocumentationTests.Graph_AnyDegree_GetsAnAnswer` rows 0-2 (`--degree` 0, -1, 100). Protection:
+  `dydo graph <file> --degree N` exits 0. Unresolved: `dydo-commands-core.md` shows only `--degree
+  2`, so whether an out-of-range degree should answer or be a tool error is undecided. No tag.
+- `PathUtilsTests.GetMainProjectRoot_WorktreeCwd_ReturnsMainRoot` rows 0-2. Protection:
+  `OffLimitsService` maps a cwd under `dydo/_system/.local/worktrees/` to the main checkout.
+  Unresolved: 4.0.0 creates no worktree there, yet the guard still reads it, and no record keeps or
+  drops that layout. No tag.
+- `PathUtilsTests.GetMainProjectRoot_NonWorktreeCwd_ReturnsNull` rows 0-2. Protection: an ordinary
+  cwd maps to no main checkout, so `OffLimitsService.cs:125` reads the cwd's own project. Unresolved:
+  no kept test fails when an ordinary cwd maps elsewhere, and the legacy layout is undecided. No tag.
 
 ## Red Proofs
 
-Each rewritten or restored case went red on a planted break of the behaviour it guards. `G` sets
-(`plant2.py`) ran on scratch checkouts of the fix candidate (`9230903ba` for G1 to G14, `6b17ea167`
-for G15); `A` to `C` (`plant.py`) are the
-apply hop's breaks, rerun on the same checkout. `Check_LinkFindings_AreExactlyTheOnesReported` is
-`LinkFindings` below, its rows by ordinal.
+Every planted bug ran on scratch checkouts of `faf33ddb7` over the 290-case batch filter, then was
+reverted (each checkout clean after; later commits change only tags and this audit). H1-H5 are this
+hop's (`/var/tmp/dyd1520/docs-fix2/plant3.py`); G1-G15 (`docs-fix1/plant2.py`) and A-F
+(`docs-work/plant.py`) rerun unchanged. "Red" lists every failing case, collateral included.
 
-| Break | Set | Red |
+| Set | Break | Red |
 |---|---|---|
-| every finding is printed twice | G1 | `LinkFindings` 0, 1, 2, 5, 7, 8, 9, 10, 12, 22: every row with a finding, and no other batch test |
-| a document's first broken link is dropped when it has more links | G2 | `LinkFindings` 1 only |
-| a sibling link's anchor is never checked | G3 | `LinkFindings` 2 only |
-| a parent link to the root index is rejected | G4 | `LinkFindings` 3 only |
-| a two-level climb into another folder is rejected | G5 | `LinkFindings` 4 (and `LinkResolverTests` row 4); row 3's climb to a root-level file stays green |
-| a missing same-page anchor passes when it is the document's only link | G6 | `LinkFindings` 5 and 22; the kept two-link `#nowhere` row stays green |
-| an anchor-only finding loses its anchor | G7 | `LinkFindings` 5 and 22 |
-| a wikilink is also reported as a broken link | G8 | `LinkFindings` 7 only |
-| image syntax is not extracted as a link | G9 | `LinkFindings` 12 only (the missing svg) |
-| after an existing asset, a document's later links go unchecked | G10 | `LinkFindings` 10 only (both assets in one document) |
-| a missing asset gets another message | G11 | `LinkFindings` 9, 10, 12 |
-| the scanner reads `.json` under the docs root | G12 | `Fix_IgnoresObsidianFolder`, `Check_IgnoresObsidianFolder` |
-| an unknown bare filename exits 0 from graph | G13 | `Graph_UnknownFile_IsAToolError` only; `DocGraphTests.Graph_UnknownDocument_IsAToolError` stays green |
-| a sibling link's existing anchor is rejected | G15 | `LinkFindings` 23 (the root-level sibling), with `LinkResolverTests` anchored row 0 |
-| fix appends a newline to `_*.md` pages | G14 | `Fix_PreservesHandwrittenNavigationFiles`, `Fix_OnAnInitialisedProject_WritesNoFileAndChangesNoByte` |
-| external links are link-checked; wikilinks are link-checked; absolute paths are not reported; no extension counts as an asset | A | `LinkFindings` 6, 7, 8, 10 to 20 |
-| a non-markdown target is never checked on disk; only the first broken link is reported; a link without `.md` is not reported; no document counts as generated | B | `LinkFindings` 1, 9, 10, 12, 21 |
-| prose quoting the marker marks the file generated; a cross-document anchor is never checked; `Broken link:` becomes `Dead link:` | C | `LinkFindings` 0, 1, 2, 5, 8, 22 |
-| graph resolves no relative link, and an anchor-only link to the hub | E | all nine `LinkResolverTests` cases |
+| H1 | another page's anchor is checked against its last anchor only | `LinkFindings` 21; collateral `Index_RegeneratesTheRoot_AndThatRootPassesCheck`, `Check_IgnoresObsidianFolder`. Base: `AcceptsValidAnchor` (and the same two). Round-1 candidate `4197436cb`: only the two |
+| H2 | every `_index.md` is exempt from broken-link checks | `LegacyHub` 1. Base: `ReportsBrokenLinksInNonGeneratedFiles`. Round 1: none |
+| H3 | the public wrapper drops a `..` that climbs above the path's start | `ResolvesDotDot` 7; `BothReadings` 30 green. Base: `ResolvesDotDot` 7. Round 1: none |
+| H4 | the public wrapper reads a rooted path climbing above its root as relative | `ResolvesDotDot` 8; `BothReadings` 29 green. Base: `ResolvesDotDot` 8. Round 1: none |
+| H5 | a page's first anchor never matches | `LinkFindings` 21, `Resolve_AgreesOnAnchoredCrossFolderLinks` 0-1, `Resolve_DisagreesIntentionallyOnAnchorOnlyLinks`. Base: `AcceptsValidAnchor`, `AcceptsAnchorOnlyLink_WhenAnchorExistsOnSamePage`, the same three resolver cases. Round 1 and `da0d3f1a1`: none |
+| G1 | every finding is printed twice | `LinkFindings` 0, 1, 2, 6, 7, 8, 9, 11; `LegacyHub` 1-2; `Check_AnchorOnlyLink_…` |
+| G2 | a document's first broken link is dropped when it has more | `LinkFindings` 1 |
+| G3 | a sibling link's anchor is never checked | `LinkFindings` 2 |
+| G4 | a parent link to the root index is rejected | `LinkFindings` 3 |
+| G5 | a two-level climb into another folder is rejected | `LinkFindings` 4, `Resolve_HandlesEveryRelativeShape…` 4; collateral `Index_Regenerates…`, `Check_IgnoresObsidianFolder` |
+| G6 | a missing same-page anchor passes when it is the only link | `Check_AnchorOnlyLink_…`, `LegacyHub` 1-2 |
+| G7 | an anchor-only finding loses its anchor | `Check_AnchorOnlyLink_…`, `LegacyHub` 1-2, `Check_ReportsTheDocumentsFinding` 34 |
+| G8 | a wikilink is also reported as a broken link | `LinkFindings` 6 |
+| G9 | image syntax is not extracted as a link | `LinkFindings` 11 |
+| G10 | after an existing asset, later links go unchecked | `LinkFindings` 9 |
+| G11 | a missing asset gets another message | `LinkFindings` 8, 9, 11 |
+| G12 | the scanner reads `.json` under the docs root | `Fix_IgnoresObsidianFolder`, `Check_IgnoresObsidianFolder`; collateral `Check_TypeVocabulary…` 0, 1, 3, 4, `Index_Regenerates…` |
+| G13 | an unknown bare filename exits 0 from graph | `Graph_UnknownFile_IsAToolError` |
+| G14 | fix appends a newline to `_*.md` pages | `Fix_PreservesHandwrittenNavigationFiles`, `Fix_OnAnInitialisedProject_WritesNoFileAndChangesNoByte` |
+| G15 | a sibling link's existing anchor is rejected | `LinkFindings` 21, `Resolve_AgreesOnAnchored…` 0; collateral `Index_Regenerates…`, `Check_IgnoresObsidianFolder` |
+| A | external links and wikilinks link-checked; absolute paths unreported; no asset extension; the title message changed (P2) | `LinkFindings` 5-7, 9-20; `LegacyHub` 0-2; `Check_ReportsTheDocumentsFinding` 27; feature title row 4 |
+| B | non-markdown targets never checked on disk; only the first broken link; no missing-`.md` finding; no page counts as generated | `LinkFindings` 1, 8, 9, 11; `LegacyHub` 0 |
+| C | prose quoting the marker marks a page generated; cross-page anchors unchecked; `Dead link:` (P4); no `Missing frontmatter` (P1) | `LinkFindings` 0-2, 7; `LegacyHub` 0-2; `Check_AnchorOnlyLink_…`; `Check_ScopedToAFolder…`; `Check_ReportsTheDocumentsFinding` 1, 20, 21, 30; feature row 5 and the manual-repair scenario |
+| D | a title must be followed by a paragraph (P3); fix appends a summary (P5) | `Check_ReportsTheDocumentsFinding` 28, 29; `Fix_ValidDocument_KeepsItsBytes` 0-1; feature check rows 0-3, fix rows 0-1, manual repair; collateral `LinkFindings` 21, `FixFileHandlerTests`' two Facts, three `FutureFeatureRuleTests` rows, `Fix_OnAnInitialised…`, `Index_Regenerates…`, `Check_IgnoresObsidianFolder`, all eight relative-shape and anchored resolver rows |
+| E | fix rewrites `_*.md` pages; an unknown graph document exits 0; graph resolves no relative link | all nine `LinkResolverTests` cases, `Graph_UnknownFile…`, `Graph_UnknownDocument_IsAToolError`, `Fix_PreservesHandwritten…`, `Fix_OnAnInitialised…`; collateral `RootOption…` 11, six of `Graph_ShowsTheLinkedDocuments`' seven rows |
+| F | the missing-title violation is dropped (P8) | `Check_ReportsTheDocumentsFinding` 27, feature title row 4; collateral `LegacyHub` 0-2 |
+
+Round 1's G15 table omitted its collateral `Check_IgnoresObsidianFolder` and
+`Index_RegeneratesTheRoot_AndThatRootPassesCheck`; the table above lists them.
+
+## Tag Clauses
+
+Every tag in the batch split into clauses, each clause with the assertion line that fails, in every
+case the tag covers, if the clause were false: [Docs Batch Tag Clauses](./docs-tags.md), a page of
+its own to keep this one under 20 KB.
 
 ## Deviations
 
-- `viewer/dist` was copied from `/var/tmp/dyd1520/mut-setup`, a checkout whose `viewer/` tree is the
-  same object (`36d5f73`), instead of rebuilt; the gate lock's three slots were held by other batches'
-  Stryker runs.
-- `.static-gates/python` is a link to a prepared CPython 3.14.4 environment whose `pip freeze`
-  matches `requirements.lock` exactly, as `coverage-tools-provisioning.md` allows; the checkout had
-  none, and the Python static gate is invalid without it.
-- The tooling tests run outside the gate lock, under the memory cap: they are not .NET builds, test
-  runs or Stryker.
+- The fix commits are on local branch `t3/fix-docs-review-round2` and pushed to `DYD-1520-docs`, which
+  a stale worktree of an earlier hop holds.
+- `viewer/dist` was copied from a checkout whose `viewer/` tree is the same object (`36d5f73`).
+- `.static-gates/python` links a prepared CPython 3.14.4 environment whose `pip freeze` matches
+  `requirements.lock` exactly, as `coverage-tools-provisioning.md` allows.
+- The clause-to-line map is the sibling page `docs-tags.md`, not a section here: with it this page
+  is 27 KB, over the brief's 20 KB.
+- The feature file carries one `# Job:` line for all nine cases (rubric §2 row 2), so its tag names
+  DYD-98's Outcome and its clause map gives each scenario's line. A split into two files would rename
+  the generated class the batch filter selects.
 
 ## Related
 
