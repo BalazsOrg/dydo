@@ -27,7 +27,7 @@ Each batch's PR replaces its own line with a link to its audit.
 
 - setup: audit pending
 
-- docs: audit pending
+- [docs](./docs.md) - The docs batch: check, fix, index, graph, help, validate, the link rules and the tooling tests
 
 - statechart: audit pending
 
