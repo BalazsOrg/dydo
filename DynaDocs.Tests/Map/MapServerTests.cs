@@ -9,7 +9,6 @@ using static LinearJson;
 /// The map server over real HTTP on localhost, with a fake Linear behind it: DR 052 §1 and §3 and its
 /// 2026-10-04 amendment (<c>/api/saved</c> reads only the cache, <c>/api/graph</c> always reads Linear).
 /// </summary>
-[Trait("Job", "contract: DR 052 §1 §3 and its 2026-10-04 amendment; dydo-commands-linear.md dydo map: GET only, /api/graph reads Linear afresh, /api/saved answers a null snapshot on a miss without Linear, a missing parameter is 400 without Linear, a Linear failure answers its status and code, the key never reaches the browser")]
 public sealed class MapServerTests : IAsyncLifetime
 {
     private readonly FakeLinear _linear = new();
@@ -46,7 +45,7 @@ public sealed class MapServerTests : IAsyncLifetime
         JsonDocument.Parse(body).RootElement.GetProperty("error").GetProperty("code").GetString()!;
 
     [Fact]
-    [Trait("Job", "trap: the server holds the user's Linear key, so the URL it starts on names localhost and a real port (DR 052 §3)")]
+    [Trait("Job", "contract: DR 052 §3, the CLI serves the viewer on localhost (the URL the server starts on names localhost and a port it picked)")]
     public void Start_BindsLocalhostOnAFreePort()
     {
         Assert.Equal("localhost", _url.Host);
@@ -54,7 +53,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Fact]
-    [Trait("Job", "edge: the probed free port is taken before the listener binds it")]
+    [Trait("Job", "edge: the probed free port is taken before the listener binds it: the server starts on the next probed port")]
     public void Start_RetriesWithAFreshListener_WhenTheFirstProbedPortIsTaken()
     {
         var occupied = FreeTcpPort();
@@ -79,6 +78,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 052 2026-10-04 amendment, /api/saved reads only the cache; dydo-commands-linear.md dydo map, `{ \"snapshot\": null }` on a miss (a first /api/saved answers 200 with a null snapshot, and Linear is not called)")]
     public async Task Saved_FirstVisitIsAnExplicitMiss_WithoutReadingLinear()
     {
         var (status, body) = await Get("/api/saved?project=p-map");
@@ -89,6 +89,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 052 §3, the browser talks only to localhost and the key stays in the CLI (GET /api/graph answers 200 with the graph read from Linear, its issue, external far end and blocks relation, and the body does not hold the key)")]
     public async Task Graph_AnswersTheReadGraph_WithoutTheKey()
     {
         _linear.Serve(_ => IssuesPage(
@@ -107,6 +108,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 052 2026-10-04 amendment, /api/graph always reads Linear (two requests each answer Linear's state at the time: Todo, then In Progress)")]
     public async Task Graph_IsNotCached_EachRequestReadsLinearAgain()
     {
         var state = "Todo";
@@ -121,6 +123,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Theory]
+    [Trait("Job", "contract: DYD-264 Outcome, the plan §3 HTTP API contract and its error envelope (a request missing its team or project parameter, by row, answers 400 missing_parameter, and Linear is not called)")]
     [InlineData("/api/projects")]
     [InlineData("/api/projects?team=")]
     [InlineData("/api/graph")]
@@ -133,6 +136,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Theory]
+    [Trait("Job", "contract: DYD-264 Outcome, the error envelope; DR 052 §3, the key stays in the CLI (the row's Linear failure answers its HTTP status and error code in the envelope, and the body does not hold the key)")]
     [InlineData(HttpStatusCode.OK, """{"data":{"project":null}}""", HttpStatusCode.NotFound, "not_found")]
     [InlineData(HttpStatusCode.BadRequest,
         """{"errors":[{"message":"Authentication required, not authenticated","extensions":{"type":"authentication error"}}]}""",
@@ -156,6 +160,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Theory]
+    [Trait("Job", "contract: DYD-264 Outcome, the server only answers GET and the API exactly as plan §3 fixes it (by row, an unknown API path, a missing asset and each non-GET method answer 404 not_found, and Linear is not called)")]
     [InlineData("GET", "/api/nothing")]
     [InlineData("GET", "/assets/missing.js")]
     [InlineData("POST", "/api/teams")]

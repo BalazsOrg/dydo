@@ -1,4 +1,4 @@
-# Job: contract: DR 061 §4; DYD-618; DYD-624 (one PASS grammar for pr-ready and merge)
+# Job: contract: dydo-commands-delivery.md dydo pr-ready, which uses the merge parser, and dydo merge Review; DYD-618; DYD-624 (pr-ready and a pinned merge dry run give each scenario's PASS line the same answer: by scenario, both exit 0 for canonical or colon fields and for an absent or unparsed base, and both exit 1 for a prose-only PASS)
 @DYD-624 @DYD-618
 Feature: Shared independent review PASS grammar
   PR readiness and merge read the same review fields.

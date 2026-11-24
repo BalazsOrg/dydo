@@ -15,7 +15,6 @@ using System.Diagnostics;
 /// - Startup crashes
 /// </summary>
 [Collection("EndToEnd")]
-[Trait("Job", "edge: the built dydo.dll run as a subprocess, so startup, command construction and the process exit code are real (in-process parsing cannot reach them)")]
 public class CliEndToEndTests : IDisposable
 {
     private readonly string _testDir;
@@ -51,6 +50,7 @@ public class CliEndToEndTests : IDisposable
     #region Startup / Help Tests
 
     [Fact]
+    [Trait("Job", "edge: the built dydo.dll run as a subprocess, where startup and command construction are real and in-process parsing cannot reach them (dydo --help exits 0 and prints text naming dydo)")]
     public async Task Help_DoesNotCrash()
     {
         var result = await RunDydoAsync("--help");
@@ -61,6 +61,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "edge: the built dydo.dll run as a subprocess, where startup and command construction are real and in-process parsing cannot reach them (the row's subcommand with --help exits 0)")]
     [InlineData("init")]
     [InlineData("adopt")]
     [InlineData("check")]
@@ -81,7 +82,7 @@ public class CliEndToEndTests : IDisposable
     #region Init Tests
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init (dydo.json and the dydo/ tree)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init, every mode writes dydo.json and scaffolds the dydo/ folders (through the built dll, init with the row's integration, claude or none, exits 0 and creates dydo.json and dydo/)")]
     [InlineData("claude")]
     [InlineData("none")]
     public async Task Init_CreatesProject(string integration)
@@ -97,7 +98,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init (a fresh init records the running dydo version)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init, a fresh init records the running dydo version as dydoVersion (through the built dll, after init none, dydoVersion is the version `dydo version` prints)")]
     public async Task Init_RecordsTheVersionTheCliReports()
     {
         var initResult = await RunDydoAsync("init none");
@@ -109,7 +110,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init then dydo check exits 0")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init scaffolds the framework documents, and dydo check exit 0 means no errors (through the built dll, init none then check . exits 0)")]
     public async Task Init_ThenCheck_Passes()
     {
         var initResult = await RunDydoAsync("init none");
@@ -122,7 +123,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init and --join (init all writes Claude's subagent spawn depth and Codex's per-session thread limit; a join keeps config.toml's bytes)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init, the claude and codex rows; DYD-86, repeated-run identity (through the built dll, init all exits 0, writing CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH into .claude/settings.json and max_concurrent_threads_per_session = 16 into .codex/config.toml; init all --join then exits 0 and leaves config.toml byte for byte)")]
     public async Task Init_All_WritesAndRetainsHostAgentSettingsThroughJoin()
     {
         var init = await RunDydoAsync("init all");
@@ -138,7 +139,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "trap: #0185-#0188 (dydo check on a subfolder reported every cross-folder link broken; fixed in 578386730)")]
+    [Trait("Job", "trap: #0185-#0188, fixed in 578386730, dydo check on a subfolder reported every cross-folder link broken (through the built dll, check of a nested subfolder whose docs link outside it exits 0 or 1 and reports no broken link)")]
     public async Task Check_Subfolder_AcceptsLinksToTargetsOutsideSubfolder()
     {
         var initResult = await RunDydoAsync("init none");
@@ -162,7 +163,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo check exit 2 (a tool error)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check, exit 2 means a tool error (through the built dll, a <path> that does not exist exits 2, saying Path not found)")]
     public async Task Check_NonExistentPath_ReturnsToolError()
     {
         var initResult = await RunDydoAsync("init none");
@@ -175,7 +176,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo check exit 2 (a path outside the docs tree)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check, exit 2 for a <path> outside the docs tree (through the built dll, such a path exits 2, saying it is outside the docs tree)")]
     public async Task Check_PathOutsideDocsTree_ReturnsToolError()
     {
         var initResult = await RunDydoAsync("init none");

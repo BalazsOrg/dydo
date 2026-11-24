@@ -6,7 +6,6 @@ using System.Reflection.Metadata;
 using System.Reflection.PortableExecutable;
 using System.Xml.Linq;
 
-[Trait("Job", "trap: DYD-687 (a tool package without the embedded map viewer)")]
 public sealed class ViewerPackTests : IDisposable
 {
     private readonly string _directory = Directory.CreateTempSubdirectory("dydo-viewer-pack-").FullName;
@@ -34,9 +33,15 @@ public sealed class ViewerPackTests : IDisposable
 
     public void Dispose() => TestDirectory.Delete(_directory);
 
-    [Fact]
-    public void Pack_WithoutViewer_FailsWithBuildInstructions()
+    [Theory]
+    [Trait("Job", "trap: DYD-687, a tool package without the embedded map viewer (pack with no built viewer, by row no viewer/dist or an empty one, fails with both pnpm build lines and writes no package)")]
+    [InlineData(false)]
+    [InlineData(true)]
+    public void Pack_WithoutViewer_FailsWithBuildInstructions(bool emptyDist)
     {
+        if (emptyDist)
+            Directory.CreateDirectory(Path.Combine(_directory, "viewer", "dist"));
+
         Succeeds("build", "--no-restore");
         var (exitCode, output) = Run("pack", "--no-restore");
 
@@ -47,6 +52,7 @@ public sealed class ViewerPackTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-687, a tool package without the embedded map viewer (pack --no-build of an assembly built before viewer/dist existed fails, saying to rebuild without --no-build, and writes no package)")]
     public void Pack_NoBuild_RejectsAViewerlessAssemblyEvenWhenDistNowExists()
     {
         Succeeds("build", "--no-restore");
@@ -61,6 +67,7 @@ public sealed class ViewerPackTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-687, a tool package without the embedded map viewer (pack --no-build whose publish output holds a viewerless dll fails with DYDO002, though the build output has the viewer, and writes no package)")]
     public void Pack_NoBuild_RejectsAViewerlessPublishOutputEvenWhenBuildOutputHasTheViewer()
     {
         Succeeds("build", "--no-restore");
@@ -78,6 +85,7 @@ public sealed class ViewerPackTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "trap: DYD-687, a tool package without the embedded map viewer (with a built viewer, pack, by row directly or with --no-build after a build, writes one package whose tool dll embeds the viewer's index.html and its asset)")]
     [InlineData(false)]
     [InlineData(true)]
     public void Pack_WithViewer_EmbedsTheBundleInTheTool(bool noBuild)

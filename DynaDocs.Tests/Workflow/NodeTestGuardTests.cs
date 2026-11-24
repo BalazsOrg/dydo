@@ -7,7 +7,6 @@ using System.Diagnostics;
 // read the TAP summary. These tests run the committed guard under pwsh against reports shaped like
 // node's own. pwsh is found on PATH. Without it they skip locally and fail on a GitHub Actions runner,
 // where every dotnet test leg already runs its own pwsh steps.
-[Trait("Job", "trap: DYD-622 (node exits 0 when a test skips): assert-node-tests-ran.ps1 passes only a TAP report in which at least the required number of tests ran and all passed, and names why it fails")]
 public sealed class NodeTestGuardTests : IDisposable
 {
     private const int MinimumTests = 6;
@@ -17,6 +16,7 @@ public sealed class NodeTestGuardTests : IDisposable
     public void Dispose() => TestDirectory.Delete(_directory);
 
     [SkippableFact]
+    [Trait("Job", "trap: DYD-622, node exits 0 when a test skips (assert-node-tests-ran.ps1 passes a TAP report in which the six required tests ran and passed: exit 0, the line naming every counter)")]
     public void Guard_AcceptsAReportInWhichEveryTestRanAndPassed()
     {
         var (exitCode, output) = RunGuard(Report(tests: 6, pass: 6));
@@ -26,6 +26,7 @@ public sealed class NodeTestGuardTests : IDisposable
     }
 
     [SkippableFact]
+    [Trait("Job", "trap: DYD-622, node exits 0 when a test skips (assert-node-tests-ran.ps1 fails without a TAP report: a non-zero exit, saying there is no TAP report)")]
     public void Guard_RejectsAMissingReport()
     {
         var (exitCode, output) = RunGuard(Path.Combine(_directory, "absent.tap"));
@@ -35,6 +36,7 @@ public sealed class NodeTestGuardTests : IDisposable
     }
 
     [SkippableTheory]
+    [Trait("Job", "trap: DYD-622, node exits 0 when a test skips (assert-node-tests-ran.ps1 fails a TAP report missing summary counters, by row all six or only todo: a non-zero exit naming the missing ones)")]
     [InlineData("TAP version 13\nok 1 - case 1\n1..1\n", "tests, pass, fail, cancelled, skipped, todo")]
     [InlineData("TAP version 13\n1..6\n# tests 6\n# pass 6\n# fail 0\n# cancelled 0\n# skipped 0\n", "todo")]
     public void Guard_RejectsAReportWithoutEverySummaryCounter(string report, string missing)
@@ -46,6 +48,7 @@ public sealed class NodeTestGuardTests : IDisposable
     }
 
     [SkippableTheory]
+    [Trait("Job", "trap: DYD-622, node exits 0 when a test skips (assert-node-tests-ran.ps1 fails a TAP report in which, by row, fewer than six tests ran, a test skipped or was todo, or one failed or was cancelled: a non-zero exit naming that reason with every counter)")]
     [InlineData(0, 0, 0, 0, 0, 0, "Fewer than 6 tests ran")]
     [InlineData(2, 2, 0, 0, 0, 0, "Fewer than 6 tests ran")]
     [InlineData(6, 5, 0, 0, 1, 0, "A test skipped instead of running")]

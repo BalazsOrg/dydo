@@ -31,7 +31,7 @@ Each batch's PR replaces its own line with a link to its audit.
 
 - statechart: audit pending
 
-- [Merge, map and survey audit](./merge-map-survey.md) - dydo merge, map and survey, the CI workflow and viewer packaging, and the built CLI: 395 cases kept or removed
+- [Merge, map and survey audit](./merge-map-survey.md) - dydo merge, map and survey, the CI workflow and viewer packaging, and the built CLI: 395 cases kept, each with its own job tag
 
 ## Related
 

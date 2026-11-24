@@ -14,7 +14,6 @@ using static MergeScenario;
 /// (DYD-523) only refuses.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-delivery.md dydo merge: a refusal exits 1, writing nothing before the merge call; a tool error exits 2; a merge exits 0 and lands once, as a merge commit or a two-parent commit on the pin; a dry run writes nothing; a SHA already integrated exits 0 (DR 061 §1-§5 and its 2026-11-04 target-pin amendment, DYD-424, DYD-523; DYD-535 for GitHub's late merged flag)")]
 public sealed class PullRequestMergeTests : IDisposable
 {
     private const string ZeroSha = "0000000000000000000000000000000000000000";
@@ -43,6 +42,7 @@ public sealed class PullRequestMergeTests : IDisposable
     #region Refusals: exit 1, nothing written
 
     [Theory]
+    [Trait("Job", "contract: DR 061 §2 and its 2026-11-04 amendment; dydo-commands-delivery.md dydo merge (the row's input fails one of the checks dydo merge makes, in order, before it merges, or the tip reread just before the POST: a refusal exits 1 with a `refused:` line on stderr, and nothing is written to GitHub)")]
     [InlineData("no dydo project", null)]
     [InlineData("git top level is not the project root", null)]
     [InlineData("no origin", null)]
@@ -74,7 +74,9 @@ public sealed class PullRequestMergeTests : IDisposable
     [InlineData("no review section", null)]
     [InlineData("a FAIL for the SHA", null)]
     [InlineData("rubric", "spec")]
+    [InlineData("rubric", "project-plan")]
     [InlineData("review base not in target", """{ "status": "diverged" }""")]
+    [InlineData("review base not in target", """{ "status": "behind" }""")]
     [InlineData("review base not in target", null)]
     [InlineData("no checks", null)]
     [InlineData("checks not green", null)]
@@ -242,6 +244,7 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // GitHub itself refuses the landing; the command exits 1 and nothing merges.
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 1 (GitHub refusing the merge POST, by row a 409 conflict or a 404 for a base gone and so off the pin, is a refusal: exit 1, and that POST is the only write)")]
     [InlineData("conflict")]
     [InlineData("base gone when the merge arrives")]
     public void GitHubRefusingThePost_ExitsOne_AndNothingElseIsWritten(string refusal)
@@ -261,6 +264,7 @@ public sealed class PullRequestMergeTests : IDisposable
     #region Tool errors: exit 2, the target does not move
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (an unexpected answer to the merge POST, the row's 403 or 422, is a tool error: exit 2)")]
     [InlineData(403, "Resource not accessible by integration")]
     [InlineData(422, "Validation Failed")]
     [InlineData(422, "Repository rule violations found")]
@@ -272,6 +276,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (gh that cannot reach GitHub for the PR, through the row's HTTPS origin or SSH origin, is a tool error: exit 2, nothing written)")]
     [InlineData("https://github.com/acme/widgets.git")]
     [InlineData("git@github.com-work:acme/widgets.git")]
     public void GhThatCannotReachGitHub_IsAToolError_WithNothingWritten(string origin)
@@ -284,6 +289,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge (a two-parent ref move that fails with the row's GraphQL answer while the base is still at the pin is a tool error: exit 2, the base still on the pin)")]
     [InlineData(200, """{ "data": { "updateRefs": null }, "errors": [ { "message": "Repository rule violations found" } ] }""")]
     [InlineData(200, """{ "data": { "updateRefs": null }, "errors": [ { "message": "one" }, { "type": "FORBIDDEN" } ] }""")]
     [InlineData(200, """{ "data": null }""")]
@@ -305,6 +311,7 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // An all-zero afterOid would delete the ref, so only a real commit SHA reaches the move.
     [Theory]
+    [Trait("Job", "trap: an all-zero afterOid would delete the ref: a two-parent commit answer naming the row's non-SHA, all zeros, short or none, is an unexpected GitHub answer and a tool error (dydo-commands-delivery.md dydo merge exit 2): exit 2, no ref move sent, the base on the pin")]
     [InlineData(ZeroSha)]
     [InlineData("3333")]
     [InlineData(null)]
@@ -319,6 +326,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (on the two-parent path, a repository answer without the node id the ref move needs is a tool error: exit 2, nothing written)")]
     public void ARepositoryWithoutANodeId_IsAToolError_BeforeAnyWrite()
     {
         FastForwardEligible();
@@ -330,6 +338,7 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // The merge landed, but its first parent cannot be shown to be the pin: exit 2 for merge review.
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (a merge whose first parent is not shown to be the pin, by the row's commit answer: another first parent, no parents, or unreadable, exits 2)")]
     [InlineData("moved")]
     [InlineData("no parents")]
     [InlineData("unreadable")]
@@ -348,6 +357,7 @@ public sealed class PullRequestMergeTests : IDisposable
     #region Landing
 
     [Theory]
+    [Trait("Job", "contract: DR 061 §1 §3; dydo-commands-delivery.md dydo merge (a reviewed green PR, its SHA given in the row's letter case, lands once: exit 0, gh asked on origin's host, one write, a POST /merges naming the base and the SHA)")]
     [InlineData(Sha)]
     [InlineData("0123456789ABCDEF0123456789ABCDEF01234567")]
     public void AReviewedGreenPr_LandsOnceAsAMergeIntoItsFeatureBase(string sha)
@@ -360,6 +370,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (a PASS naming no base still lands: exit 0, one write, a POST /merges naming the base and the SHA)")]
     public void APassNamingNoBase_StillLands()
     {
         _s.PullJson["body"] = Body(PassLine(reviewBase: null));
@@ -371,6 +382,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge --dry-run (a dry run exits 0 when the checks pass and 1 when a run failed, by row, and writes nothing)")]
     [InlineData(false, 0)]
     [InlineData(true, 1)]
     public void ADryRun_ChecksLikeAMerge_AndWritesNothing(bool failingChecks, int expected)
@@ -383,6 +395,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 061 §3; dydo-commands-delivery.md dydo merge (when the pin is an ancestor of the SHA, one commit with parents the pin then the SHA is written and the base moves onto it: exit 0)")]
     public void BaseTipAncestorOfTheSha_LandsATwoParentCommit_OnThePin()
     {
         var target = FastForwardEligible();
@@ -398,6 +411,7 @@ public sealed class PullRequestMergeTests : IDisposable
     // DYD-523 review round 1: another merge landing first fails the move, even when its tip is in the SHA's
     // history, where an unforced fast-forward from that tip to the merge commit would still have been allowed.
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge (a base another merge moved before the ref move, by row to a commit in the SHA's history or not, fails the move and refuses: exit 1, the base left where that merge put it)")]
     [InlineData(true)]
     [InlineData(false)]
     public void ATargetThatMovesBeforeTheRefMove_RefusesAndNothingMerges(bool movedIsInTheShasHistory)
@@ -411,6 +425,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge (a ref move rejected while the base was deleted, the reread finding it gone, refuses: exit 1)")]
     public void ABaseGoneBeforeTheRefMove_RefusesAndNothingMerges()
     {
         FastForwardEligible();
@@ -422,6 +437,7 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // The re-read finds the ref on the merge commit: the move landed, though its answer was lost.
     [Fact]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 0 (a merge that succeeded exits 0: the ref move's answer was lost, and the reread ref is on the merge commit)")]
     public void ARefMoveWhoseAnswerWasLost_ButLanded_ExitsZero()
     {
         FastForwardEligible();
@@ -435,13 +451,18 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // GitHub marks a PR merged asynchronously (DYD-535): whatever the rereads after a good write say, it landed once.
     [Theory]
-    [InlineData("marked at once")]
-    [InlineData("marked on the second reread")]
-    [InlineData("never marked")]
-    [InlineData("reread fails")]
-    [InlineData("reread fails after not yet")]
-    public void AfterALanding_WhateverTheRereadsSay_ItExitsZero(string rereads)
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 0; DYD-535 (whatever the row's PR rereads after a landing say, marked at once or on the second reread, never marked, or failing, the run exits 0; on a POST row that POST /merges is the only write, on a two-parent row the base is on the merge commit)")]
+    [InlineData("marked at once", false)]
+    [InlineData("marked on the second reread", false)]
+    [InlineData("marked on the second reread", true)]
+    [InlineData("never marked", false)]
+    [InlineData("never marked", true)]
+    [InlineData("reread fails", false)]
+    [InlineData("reread fails", true)]
+    [InlineData("reread fails after not yet", false)]
+    public void AfterALanding_WhateverTheRereadsSay_ItExitsZero(string rereads, bool twoParent)
     {
+        var target = twoParent ? FastForwardEligible() : null;
         switch (rereads)
         {
             case "marked on the second reread":
@@ -461,7 +482,10 @@ public sealed class PullRequestMergeTests : IDisposable
         var (exit, _, stderr) = _s.Merge();
 
         Assert.True(exit == 0, stderr);
-        AssertLandedOnce();
+        if (target == null)
+            AssertLandedOnce();
+        else
+            Assert.Equal(MergeSha, target.Tip);
     }
 
     #endregion
@@ -469,6 +493,7 @@ public sealed class PullRequestMergeTests : IDisposable
     #region Reconcile first: already integrated exits 0 and writes nothing new
 
     [Theory]
+    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge (a closed PR whose SHA its feature base holds is already integrated whatever the pin, by row the tip or a stale one: exit 0, nothing written)")]
     [InlineData(Tip)]
     [InlineData(Stale)]
     public void AClosedPrAlreadyInItsFeatureBase_ExitsZero_WithoutAWrite_WhateverThePin(string pin)
@@ -484,6 +509,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 0 (a merge POST GitHub answers 204, nothing to merge, is a SHA already integrated: exit 0)")]
     public void AMergeGitHubAnswers204_IsAlreadyIntegrated_AndExitsZero()
     {
         _s.GitHub.On("POST", Merges, Reply(204));
@@ -494,6 +520,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge A closed PR first (a rerun after a lost merge answer is safe: the lost answer exits 2, the rerun exits 0, and the writes are the row's: one POST when the PR reads closed and integrated, a second POST answered 204 when it still shows open)")]
     [InlineData("closed and integrated")]
     [InlineData("still shows open, GitHub answers 204")]
     public void ARerunAfterALostMergeAnswer_ExitsZero_WithoutASecondMerge(string rerun)
@@ -523,6 +550,7 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // GitHub's PR metadata may keep a tip from before the ref advanced; only the ref decides.
     [Fact]
+    [Trait("Job", "contract: DR 061 2026-11-04 amendment; dydo-commands-delivery.md dydo merge Target tip (a stale PR base.sha with the pin on the branch ref lands: exit 0, one write, a POST /merges naming the base and the SHA)")]
     public void AStaleBaseShaWithThePinOnTheActualRef_LandsOntoTheRef()
     {
         _s.PullJson["base"]!["sha"] = Stale;
@@ -534,12 +562,15 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 061 §2 and its 2026-11-04 amendment (the pin only refuses, by row: on the tip a real run exits 0 and writes, each write on the base and the pin, the POST /merges naming the base and the SHA, the two-parent commit's first parent the pin, the ref move taking the base from the pin to the merge commit; a dry run on the tip exits 0 and writes nothing; a pin off the tip, stale or moved, exits 1 and writes nothing)")]
     [InlineData(false, Tip, false)]
     [InlineData(true, Tip, false)]
     [InlineData(false, Tip, true)]
     [InlineData(false, Stale, false)]
     [InlineData(true, Stale, false)]
     [InlineData(false, Stale, true)]
+    [InlineData(false, Moved, false)]
+    [InlineData(true, Moved, false)]
     public void ThePinOnlyRefuses_EveryWriteTargetsTheBaseRefAndAPinOffTheTipWritesNothing(bool twoParent, string pin, bool dryRun)
     {
         if (twoParent)

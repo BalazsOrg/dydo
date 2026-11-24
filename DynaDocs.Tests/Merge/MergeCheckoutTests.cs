@@ -10,7 +10,6 @@ using static MergeScenario;
 /// names, whatever <c>GH_REPO</c>, <c>GH_HOST</c> or <c>GIT_DIR</c> say.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the repository origin names, the checkout rooted at dydo.json, the local origin/HEAD name, an SSH alias host a tool error, GH_REPO, GH_HOST and GIT_DIR ignored)")]
 public sealed class MergeCheckoutTests : IDisposable
 {
     private readonly MergeScenario _s = new();
@@ -18,6 +17,7 @@ public sealed class MergeCheckoutTests : IDisposable
     public void Dispose() => _s.Dispose();
 
     [Theory]
+    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the row's origin URL, HTTPS or SSH, names HOST/OWNER/REPO: the host, acme, widgets, and whether it is SSH)")]
     [InlineData("https://github.com/acme/widgets.git", "github.com", false)]
     [InlineData("https://github.com/acme/widgets", "github.com", false)]
     [InlineData("https://github.com/acme/widgets.git/", "github.com", false)]
@@ -33,6 +33,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the row's origin, a local path, a file URL, an empty one, or a URL without exactly an owner and a repository, names no HOST/OWNER/REPO)")]
     [InlineData("C:/repositories/widgets.git")]
     [InlineData("/srv/git/widgets.git")]
     [InlineData("file:///srv/git/widgets.git")]
@@ -45,6 +46,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2, an origin on an SSH alias host (by row: an scp-like or ssh:// SSH host without a dot reads as an alias; an SSH host with a dot and an HTTPS host without one do not)")]
     [InlineData("git@work-gh:acme/widgets.git", true)]
     [InlineData("ssh://git@work-gh/acme/widgets.git", true)]
     [InlineData("git@github.com:acme/widgets.git", false)]
@@ -55,6 +57,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the repository is the one origin names as git reads it, its insteadOf rewrite applied: github.com, acme, widgets over HTTPS)")]
     public void OriginsInsteadOfRewrite_IsHonoured()
     {
         Git(_s.Root, "config", "url.https://github.com/.insteadOf", "gh:");
@@ -67,6 +70,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Base (the local origin/HEAD name a base is refused by is read without its remote: trunk)")]
     public void TheLocalOriginHead_IsReadWithoutItsRemoteName()
     {
         Git(_s.Root, "symbolic-ref", "refs/remotes/origin/HEAD", "refs/remotes/origin/trunk");
@@ -75,6 +79,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the repository is the located project's checkout: a nested repository without dydo.json, with its own origin, refuses, exit 1 and a `refused:` line, before gh is set up)")]
     public void ANestedRepository_IsNotTheProjectsCheckout()
     {
         var nested = Path.Combine(_s.Root, "vendor", "lib");
@@ -90,6 +95,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Repository (run from a subdirectory of the checkout, dydo merge locates the project: a dry run exits 0)")]
     public void ASubdirectoryOfTheCheckout_FindsTheProject()
     {
         var sub = Path.Combine(_s.Root, "src");
@@ -101,6 +107,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (an origin on an SSH alias host is a tool error: exit 2, an `error:` line naming the alias host, no GitHub call)")]
     public void AnSshAlias_IsAToolError()
     {
         Git(_s.Root, "remote", "set-url", "origin", "git@work-gh:acme/widgets.git");
@@ -113,6 +120,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Repository (with GH_REPO, GH_HOST and GIT_DIR pointing elsewhere, a dry run exits 0 asking only origin's host and repository; gh runs as `gh api` with --hostname origin's host and without GH_REPO or GH_HOST)")]
     public void GhRepoGhHostAndGitDirPointingElsewhere_ChangeNothing()
     {
         var elsewhere = Path.Combine(_s.Root, "..", Path.GetFileName(_s.Root) + "-elsewhere");

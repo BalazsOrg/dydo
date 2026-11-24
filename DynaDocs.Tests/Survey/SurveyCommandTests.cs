@@ -6,7 +6,6 @@ using DynaDocs.Utils;
 using static DynaDocs.Tests.Map.LinearJson;
 
 /// <summary>DR 063 §1, §2 and §5 at the command boundary: exit codes, the shared key help, and a read-only digest.</summary>
-[Trait("Job", "contract: DR 063 §1 §2 §4 §5; dydo-commands-linear.md dydo survey (the UTC header line)")]
 public sealed class SurveyCommandTests : IDisposable
 {
     private readonly FakeLinear _linear = new();
@@ -25,6 +24,7 @@ public sealed class SurveyCommandTests : IDisposable
             arguments, FakeLinear.ApiKey, _server.Endpoint.ToString(), new FixedClock(), CancellationToken.None));
 
     [Theory]
+    [Trait("Job", "contract: DR 063 §5 (arguments that are not one Project UUID, slugId or Project URL, by row none, two, or a name, are a usage error: exit 2, a message on stderr, nothing on stdout)")]
     [InlineData]
     [InlineData("25acbbb9a90b", "25acbbb9a90c")]
     [InlineData("map")]
@@ -38,11 +38,14 @@ public sealed class SurveyCommandTests : IDisposable
         Assert.Empty(_linear.Calls);
     }
 
-    [Fact]
-    public async Task MissingKey_PrintsMapsKeyHelp_BeforeAnyRequest()
+    [Theory]
+    [Trait("Job", "contract: DR 063 §1 (without a key, by row none or a blank one, it prints the missing-key help it shares with dydo map and exits 2 before any request: exit 2, stderr exactly that help, nothing on stdout, Linear not called)")]
+    [InlineData(null)]
+    [InlineData(" ")]
+    public async Task MissingKey_PrintsMapsKeyHelp_BeforeAnyRequest(string? key)
     {
         var (exitCode, stdout, stderr) = await ConsoleCapture.AllAsync(() => SurveyCommand.RunAsync(
-            ["25acbbb9a90b"], " ", _server.Endpoint.ToString(), new FixedClock(), CancellationToken.None));
+            ["25acbbb9a90b"], key, _server.Endpoint.ToString(), new FixedClock(), CancellationToken.None));
 
         Assert.Equal(ExitCodes.ToolError, exitCode);
         Assert.Equal(MapCommand.MissingKeyHelp, stderr);
@@ -51,6 +54,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 063 §4 §5; dydo-commands-linear.md dydo survey, the first line (a successful read exits 0 with nothing on stderr; stdout starts with the header naming the Project and the clock's time in UTC; the one finding of a kept kind is `pickable DYD-1`, on a line of its own)")]
     public async Task ARead_ExitsZero_WithAUtcHeader_AndOneLinePerFinding()
     {
         _linear.Serve(call => call.Operation == "ProjectIssues"
@@ -66,6 +70,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 063 §2 §4; DR 052 §5, archived issues are excluded with every relation touching one (the issue an archived Done issue blocked has no blocker: its one finding of a kept kind is `pickable DYD-1`, not unblocked)")]
     public async Task AnArchivedBlocker_IsNoBlocker()
     {
         _linear.Serve(call => call.Operation == "ProjectIssues"
@@ -79,6 +84,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 063 §5 (a ticket that vanishes mid-read exits 2, named as that ticket and not with the unknown-Project message, with nothing on stdout)")]
     public async Task ATicketMissingMidRead_IsNamed_NotCalledAnUnknownProject()
     {
         _linear.Serve(call => call.Operation switch
@@ -97,6 +103,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 063 §5, an API failure exits 2 (an answer missing what the read needs, by row a Project without its fields or an issue without its title, exits 2 with a message on stderr and no digest on stdout)")]
     [InlineData("""{"data":{"project":{"id":"p-map"}}}""")]
     [InlineData(null)]
     public async Task AnUnexpectedAnswer_IsAToolError_WithNoDigest(string? answer)
