@@ -32,9 +32,10 @@ public sealed class CompletionsCommandTests
     }
 
     // Completion does not offer every registered command yet (`mode` and `statechart` are missing;
-    // reported on DYD-1199), so the first word is checked against the documented core commands.
+    // reported on DYD-1199), so the first word is checked against the registered commands it does offer.
     [Theory]
-    [InlineData("1", "dydo", "init", "check", "fix", "graph", "validate", "clean", "completions")]
+    [InlineData("1", "dydo", "init", "check", "fix", "graph", "validate", "clean", "completions",
+        "index", "adopt", "guard", "version", "help", "map", "survey")]
     [InlineData("2", "init", "claude", "codex", "all", "none")]
     [InlineData("2", "completions", "bash", "zsh", "powershell")]
     [InlineData("2", "graph", "stats")]

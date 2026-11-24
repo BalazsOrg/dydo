@@ -12,8 +12,8 @@ public sealed class ModeStateTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-mode-" + Guid.NewGuid().ToString("N"));
 
+    // A missing store is machine-mode.feature's "Show lists every flag" (DYD-1520 setup audit).
     [Theory]
-    [InlineData(null)]
     [InlineData("{ not json")]
     [InlineData("""{"overnight":"maybe"}""")]
     [InlineData("null")]
@@ -27,12 +27,11 @@ public sealed class ModeStateTests : IDisposable
         Assert.Equal("overnight: off", stdout.Trim());
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("{ not json")]
-    public async Task Set_PersistsForTheNextReader(string? store)
+    // Over a missing store this is machine-mode.feature's "Set changes a flag" (DYD-1520 setup audit).
+    [Fact]
+    public async Task Set_PersistsForTheNextReader()
     {
-        WriteStore(store);
+        WriteStore("{ not json");
 
         await Mode("set", "overnight", "on");
         var (code, stdout) = await Mode("show");

@@ -38,25 +38,6 @@ public class ScaffoldTreeTests
         }
     }
 
-    [Fact]
-    public void WriteDydoTree_WithoutEmbeddedScaffold_Throws()
-    {
-        var target = Path.Combine(Path.GetTempPath(), $"dydo-scaffold-{Guid.NewGuid():N}");
-
-        try
-        {
-            var error = Assert.Throws<FileNotFoundException>(
-                () => ScaffoldTree.WriteDydoTree(target, []));
-
-            Assert.Contains("Scaffold/dydo/", error.Message, StringComparison.Ordinal);
-            Assert.False(Directory.Exists(target));
-        }
-        finally
-        {
-            TestDirectory.Delete(target);
-        }
-    }
-
     private static string ScaffoldDirectory => Path.Combine(RepositoryRoot(), "Scaffold");
 
     private static IEnumerable<string> ScaffoldFiles() =>

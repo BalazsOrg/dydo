@@ -875,18 +875,6 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
-    public async Task Init_Claude_GuardHookCarriesTheHostMarker()
-    {
-        var result = await InitProjectAsync("claude");
-
-        result.AssertSuccess();
-        var settings = Assert.IsType<JsonObject>(JsonNode.Parse(ReadFile(".claude/settings.json")));
-        var preToolUse = Assert.IsType<JsonArray>(settings["hooks"]?["PreToolUse"]);
-        Assert.Equal(1, HookTestAssertions.Count(preToolUse, "dydo guard --host claude"));
-        Assert.Equal(0, HookTestAssertions.Count(preToolUse, "dydo guard"));
-    }
-
-    [Fact]
     public async Task Init_Claude_ReplacesAnUnmarkedGuardHook()
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -907,16 +895,6 @@ public class InitCommandTests : IntegrationTestBase
         var preToolUse = Assert.IsType<JsonArray>(settings["hooks"]?["PreToolUse"]);
         Assert.Equal(0, HookTestAssertions.Count(preToolUse, "dydo guard"));
         Assert.Equal(1, HookTestAssertions.Count(preToolUse, "dydo guard --host claude"));
-    }
-
-    [Fact]
-    public async Task Init_All_OnlyTheClaudeHookCarriesTheHostMarker()
-    {
-        var result = await InitProjectAsync("all");
-
-        result.AssertSuccess();
-        Assert.Contains("\"dydo guard --host claude\"", ReadFile(".claude/settings.json"));
-        Assert.DoesNotContain("--host", ReadFile(".codex/hooks.json"));
     }
 
     // dydo-commands-core.md, dydo init's host table: what each integration writes, and a repeat join
@@ -952,7 +930,10 @@ public class InitCommandTests : IntegrationTestBase
         Assert.Equal(claude, File.Exists(Path.Combine(TestDir, ".claude", "settings.json")));
         if (claude)
         {
-            Assert.Contains("dydo guard --host claude", ReadFile(".claude/settings.json"));
+            // Only the Claude hook carries the host marker, exactly once.
+            var preToolUse = Assert.IsType<JsonArray>(JsonNode.Parse(ReadFile(".claude/settings.json"))?["hooks"]?["PreToolUse"]);
+            Assert.Equal(1, HookTestAssertions.Count(preToolUse, ClaudeGuard));
+            Assert.Equal(0, HookTestAssertions.Count(preToolUse, CodexGuard));
             Assert.DoesNotContain("dydo guard", ReadFile(".claude/settings.local.json"));
             var allow = AllowEntries();
             foreach (var entry in DydoAllowEntries)

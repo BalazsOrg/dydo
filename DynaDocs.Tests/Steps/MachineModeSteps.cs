@@ -68,7 +68,8 @@ public sealed class MachineModeSteps : IntegrationTestBase
     {
         var shown = await RunAsync(ModeCommand.Create(State), "show");
         shown.AssertSuccess();
-        Assert.Contains($"{flag}: {value}", shown.Stdout.Split(Environment.NewLine));
+        // Overnight is the one flag, so the whole output is that one line.
+        Assert.Equal($"{flag}: {value}", shown.Stdout.Trim());
     }
 
     /// <summary>

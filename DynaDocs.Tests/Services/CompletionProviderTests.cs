@@ -2,23 +2,13 @@ namespace DynaDocs.Tests.Services;
 
 using DynaDocs.Services;
 
+// Kept `unsure` by the DYD-1520 setup audit (dydo/project/reviews/dyd-1520-test-audit/setup.md):
+// each pins a first-word candidate no kept test covers. The other first words are asserted at the
+// `dydo _complete` boundary in CompletionsCommandTests.
 public class CompletionProviderTests
 {
     [Theory]
-    [InlineData("check")]
-    [InlineData("fix")]
-    [InlineData("index")]
-    [InlineData("init")]
-    [InlineData("adopt")]
-    [InlineData("graph")]
-    [InlineData("guard")]
-    [InlineData("version")]
-    [InlineData("help")]
-    [InlineData("completions")]
     [InlineData("complete")]
-    [InlineData("validate")]
-    [InlineData("map")]
-    [InlineData("survey")]
     public void TopLevelCommands_ContainsCommand(string command)
     {
         var completions = CompletionProvider.GetCompletions(1, ["dydo"]).ToList();
