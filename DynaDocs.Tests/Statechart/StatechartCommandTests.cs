@@ -8,10 +8,10 @@ using DynaDocs.Services.Statechart;
 /// <c>dydo statechart doctor</c> and <c>install-skill</c> as a caller sees them: the exit code and what is left on disk.
 /// Doctor diagnoses and never claims readiness or installs; install-skill places a skill that validates.
 /// </summary>
-[Trait("Job", "contract: DR 062 §1 §3 §5")]
 public class StatechartCommandTests
 {
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §1 §3 (doctor claims no readiness it has not verified, and installs no prerequisite outside the host-authorized continuation)")]
     public async Task InstalledDoctorExtractsPayloadAndNeverClaimsChartReadinessOrInstallsPrerequisites()
     {
         using var scope = new StatechartTestDirectory();
@@ -42,6 +42,7 @@ public class StatechartCommandTests
 
     // With no runtime on PATH the Windows diagnosis still completes, naming each runtime missing instead of probing it.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §1 (doctor claims no readiness when no runtime is found)")]
     public async Task InstalledDoctorNamesMissingRuntimesWithoutProbingThem()
     {
         Skip.IfNot(OperatingSystem.IsWindows(), "statechart doctor is Windows-only.");
@@ -57,6 +58,7 @@ public class StatechartCommandTests
 
     // Native diagnostics still need platform validation outside Windows, so doctor declines before touching anything.
     [SkippableFact]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart doctor (outside Windows, doctor exits 2 and changes nothing under its roots)")]
     public async Task DoctorDeclinesOutsideWindowsBeforeExtractingOrProbing()
     {
         Skip.If(OperatingSystem.IsWindows(), "Windows runs the native diagnosis.");
@@ -68,6 +70,7 @@ public class StatechartCommandTests
 
     // A fake Node stands in for the embedded projection installer; the skill placement and owned probe are real.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §3 (install-skill places the skill that submits the continuation, and it validates)")]
     [UnsupportedOSPlatform("windows")]
     public async Task InstallSkillPlacesAValidSkill_RunsTheProjection_AndLeavesNoScratch()
     {
@@ -88,6 +91,7 @@ public class StatechartCommandTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §3 §5 (install-skill without Node is non-success and keeps the placed skill, which validates)")]
     public async Task InstallSkillWithoutNode_Fails_AndKeepsThePlacedSkill()
     {
         using var scope = new StatechartTestDirectory();
@@ -99,6 +103,7 @@ public class StatechartCommandTests
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart (a subcommand run without its required option exits 2, prints nothing and changes nothing)")]
     [InlineData("install-skill")]
     [InlineData("resume")]
     public async Task ASubcommandWithoutItsRequiredOptionChangesNothing(string subcommand)
@@ -112,6 +117,7 @@ public class StatechartCommandTests
 
     // The npm lifetime pipe closes while another run holds the payload extraction lock, so the wait ends in cancellation.
     [Fact]
+    [Trait("Job", "contract: DR 062 §5 (a run cancelled by losing its npm lifetime is non-success and saves no request)")]
     public async Task LosingTheNpmLifetimeCancelsAWaitingRunWithoutAPlan()
     {
         using var scope = new StatechartTestDirectory();

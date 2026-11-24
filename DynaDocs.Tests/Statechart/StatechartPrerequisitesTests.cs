@@ -2,10 +2,10 @@ namespace DynaDocs.Tests.Statechart;
 
 using DynaDocs.Services.Statechart;
 
-[Trait("Job", "contract: DR 062 §1 §2")]
 public class StatechartPrerequisitesTests
 {
     [Theory]
+    [Trait("Job", "contract: DR 062 §1 (each runtime version is judged compatible or not at its boundary)")]
     [InlineData("node", "v22.17.1", false)]
     [InlineData("node", "v22.18.0", true)]
     [InlineData("node", "v23.5.0", false)]
@@ -22,6 +22,7 @@ public class StatechartPrerequisitesTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §1 (explicit invalid overrides are errors, and no override means no explicit checker)")]
     public void InvalidExplicitOverridesCannotFallBackToOtherCandidates()
     {
         using var scope = new StatechartTestDirectory();
@@ -33,6 +34,7 @@ public class StatechartPrerequisitesTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §1 (an explicit JAVA path override resolves against the caller's directory)")]
     public void CallerRelativeJavaAndBareJavaUseTheOriginalDirectoryAndPath()
     {
         using var scope = new StatechartTestDirectory();

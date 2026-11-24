@@ -178,7 +178,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 Clarification (TLC launches through the loopback bootstrap that matches its sealed build lock, with the verified owned jar)")]
+    [Trait("Job", "contract: DR 062 Clarification (TLC launches through the loopback bootstrap that matches its sealed build lock, with the owned jar)")]
     [MemberData(nameof(Sealed))]
     public void BootstrapResolutionUsesSealedIdentityAndNeverFallsBackToRawTlc(string state, bool pinned) => Bootstrap(state, pinned);
 

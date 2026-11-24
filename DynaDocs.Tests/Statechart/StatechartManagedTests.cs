@@ -10,7 +10,6 @@ using System.Runtime.Versioning;
 /// The managed dependency store, judged by what it reads as ready: an approved install is ready, content that does not
 /// verify is not, and nothing the store did not prove is adopted, repaired or deleted (DR 062 §4 §5).
 /// </summary>
-[Trait("Job", "contract: DR 062 §4 §5")]
 public class StatechartManagedTests
 {
     private static readonly string[] All = ["node", "java", "tlc", "pele"];
@@ -18,6 +17,7 @@ public class StatechartManagedTests
     // Stand-in archives arrive from loopback under a test-built lock and face the real fetch, integrity check, extraction,
     // readiness and placement; a later release finds them stale and re-stamps them without reinstalling.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §4 (an approved install places the locked components and reads as ready)")]
     [UnsupportedOSPlatform("windows")]
     public async Task AnApprovedInstall_IsReady_AndStaysReadyForALaterRelease()
     {
@@ -49,6 +49,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §4 §5 (an install whose archive differs from its lock fails, and nothing becomes ready)")]
     public async Task AServedArchiveThatDiffersFromItsLock_IsRejected_AndNothingBecomesReady()
     {
         using var scope = new StatechartTestDirectory();
@@ -65,6 +66,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §4 (a store with nothing installed proves no component ready)")]
     public void AMissingStoreIsMissingEverything_AndIsNotCreated()
     {
         using var scope = new StatechartTestDirectory();
@@ -74,6 +76,7 @@ public class StatechartManagedTests
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 062 §4 (a store root the store cannot prove it owns is refused, and its content kept)")]
     [InlineData("valid")]
     [InlineData("foreign")]
     [InlineData("missing")]
@@ -91,6 +94,7 @@ public class StatechartManagedTests
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 062 §4 (managed content that fails verification is not ready, and is left in place)")]
     [InlineData("tampered")]
     [InlineData("receipt missing")]
     [InlineData("receipt unreadable")]
@@ -111,6 +115,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §4 (a component without a readiness receipt is not ready, and is left in place)")]
     public void AComponentWithoutAReadinessReceipt_IsNotAdopted_AndIsLeftInPlace()
     {
         using var scope = new StatechartTestDirectory();
@@ -124,6 +129,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §4 (verified content from an earlier release or payload reads as ready)")]
     public void VerifiedContentFromAnEarlierReleaseOrPayload_IsReady()
     {
         using var scope = new StatechartTestDirectory();
@@ -133,6 +139,7 @@ public class StatechartManagedTests
 
     // The receipt records content hashes, not modes, so a runtime that cannot start still matches it.
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §4")]
     [InlineData(false)]
     [InlineData(true)]
     [UnsupportedOSPlatform("windows")]
@@ -148,6 +155,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §5 (a cancelled install is non-success and leaves nothing behind)")]
     public async Task CancellingAWaitingInstall_LeavesNothingBehind()
     {
         using var scope = new StatechartTestDirectory();
@@ -168,7 +176,7 @@ public class StatechartManagedTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    [Trait("Job", "trap: DYD-415 crash-left install stages and receipt temp files are swept under the install lock")]
+    [Trait("Job", "trap: DYD-415 an install sweeps the crash-left install stages and receipt temp files of its own RID, and keeps another RID's")]
     public async Task CrashLeftStagesAndReceiptTempFiles_AreSweptUnderTheLock_WhetherTheInstallSucceedsOrFails(bool fails)
     {
         using var scope = new StatechartTestDirectory();

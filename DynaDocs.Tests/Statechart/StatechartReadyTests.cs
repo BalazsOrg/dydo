@@ -10,12 +10,12 @@ using System.Runtime.Versioning;
 /// gate and their exit is the verdict; a component that does not prove itself is refused; a failed or cancelled run
 /// leaves no scratch (DR 062 §6).
 /// </summary>
-[Trait("Job", "contract: DR 062 §6")]
 public class StatechartReadyTests
 {
     // A fake runtime speaks the native bootstrap's startup gate, so the owned launch runs without Node, Java or TLC. It exits
     // 9 unless released with the exact go frame, and 1 (its verdict) when it was.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §6 (the owned runtime passes its startup gate only on the exact go frame, and its exit is the verdict)")]
     [UnsupportedOSPlatform("windows")]
     public async Task TheNativeBootstrapStartsOnlyAfterGo_AndItsExitIsTheVerdict()
     {
@@ -50,6 +50,7 @@ public class StatechartReadyTests
 
     // The exec fails here, so the handoff error reaches this process and the independent owner still drains and cleans up.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §6 (a failed runtime handoff surfaces its error, and no scratch or output is left)")]
     public async Task AFailedRuntimeHandoffSurfacesAndTheOwnerStillCleansUp()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "POSIX ownership runs on Linux.");
@@ -71,6 +72,7 @@ public class StatechartReadyTests
 
     // Cancellation before the handoff stops the run before any runtime starts; the owner still drains and cleans up.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §5 §6 (a cancelled run is non-success, and no scratch or output is left)")]
     public async Task ACancelledRunNeverHandsOffAndTheOwnerStillCleansUp()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "POSIX ownership runs on Linux.");
@@ -90,6 +92,7 @@ public class StatechartReadyTests
     // Readiness under a real owned lifetime and the real payload's sealed bootstrap: stand-in runtimes answer the version,
     // render, SANY and TLC calls, TLC replaying an upstream recording; the stand-in jar passes only under its own pin.
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §6 (readiness runs under registered ownership, and its scratch is cleaned)")]
     [UnsupportedOSPlatform("windows")]
     [InlineData(true)]
     [InlineData(false)]
@@ -104,6 +107,7 @@ public class StatechartReadyTests
     }
 
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §6 (a readiness check that fails still runs under registered ownership, and its scratch is cleaned)")]
     [UnsupportedOSPlatform("windows")]
     [InlineData("checker")]
     [InlineData("node")]
