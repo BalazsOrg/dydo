@@ -85,13 +85,12 @@ The red proofs for the other 15 rewrites are phase-1 kills at base, one mutant n
 
 ## Deviations
 
-- **The apply step is not done (blocker).** The captain relayed that the host's permission classifier
-  refuses edits that delete test rows, and told writers to finish the audit, phase 1 and the planted bugs,
-  then return. So this commit holds the audit only. The three removals and the 22 tag rewrites are
-  prepared outside the repository, and nothing under `DynaDocs.Tests/` changes. No CI or
-  `dotnet-platforms.json` line names a case this audit removes or renames.
-- **Phase 2 ran on the base tree with an exclusion filter, not on a candidate** (see Mutation). When the
-  apply step runs, phase 2 should be repeated on the real candidate.
+- **The audit commit came before the apply step, which then waited.** A permission question (test-row
+  deletions on this host) held the apply step until the captain cleared it. The removals and tag
+  rewrites then landed in their own commit, as audited. No CI or `dotnet-platforms.json` line names a
+  case this audit removes or renames, and no helper is left without a caller.
+- **Phase 2 first ran on the base tree with an exclusion filter** (see Mutation), because the apply step
+  was waiting. It is repeated on the candidate below.
 - **Red proofs for tag-only rewrites** are a mutant or planted bug the unchanged case fails on, observed at
   base. That is the same break-and-watch-red check, automated, and the test bodies do not change.
 

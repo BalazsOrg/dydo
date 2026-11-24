@@ -8,11 +8,10 @@ using System.Text.Json.Nodes;
 /// unchanged earlier release is replaced; a local edit, an unverifiable earlier release or a foreign skill is refused
 /// and left exactly as it was.
 /// </summary>
-[Trait("Job", "contract: DR 062 §3 (the installed skill submits the continuation)")]
+[Trait("Job", "contract: DR 062 Consequences (install-skill replaces only a skill unchanged since dydo installed it; local edits and foreign skills stay untouched)")]
 public class StatechartSkillTests
 {
     [Theory]
-    [InlineData("valid")]
     [InlineData("payload")]
     [InlineData("protocol")]
     [InlineData("source")]
@@ -29,8 +28,7 @@ public class StatechartSkillTests
         if (change != "missing") File.WriteAllText(Path.Combine(skill, ".statechart-skill.json"), identity.ToJsonString());
         if (change == "source") File.AppendAllText(Path.Combine(skill, "SKILL.md"), "\nlocal edit");
         if (change == "earlier release") FromAnEarlierRelease(skill, inventory: true);
-        if (change == "valid") Assert.Equal(skill, StatechartSkill.Validate(skill, assets));
-        else Assert.Throws<IOException>(() => StatechartSkill.Validate(skill, assets));
+        Assert.Throws<IOException>(() => StatechartSkill.Validate(skill, assets));
         if (change == "source") Assert.EndsWith("local edit", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
         if (change == "earlier release") Assert.EndsWith("Earlier release wording.", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
     }

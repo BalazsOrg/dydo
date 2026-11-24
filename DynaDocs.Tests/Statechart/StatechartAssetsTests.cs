@@ -6,12 +6,12 @@ using DynaDocs.Services.Statechart;
 /// The payload embedded in dydo, through an offline <c>dydo statechart</c> run: damaged extracted assets are restored
 /// from the embedded bytes and the run still reaches its outcome; a directory this payload did not write is retained.
 /// </summary>
-[Trait("Job", "contract: DR 062 §1 (a ready invocation runs offline)")]
 public class StatechartAssetsTests
 {
     private const string Helper = "skills/engineering/statechart/scripts/java/statechart-tlc-bootstrap.jar";
 
     [Theory]
+    [Trait("Job", "contract: DR 062 Consequences (extracted assets that fail verification are extracted again offline from the embedded payload)")]
     [InlineData("changed")]
     [InlineData("deleted")]
     [InlineData("added")]
@@ -37,6 +37,7 @@ public class StatechartAssetsTests
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 062 §4 (assets extract only into a root this payload owns; a foreign directory is retained)")]
     [InlineData(false)]
     [InlineData(true)]
     public async Task ADirectoryWithoutThisPayloadsReceipt_IsRetained_AndTheRunFails(bool otherReceipt)

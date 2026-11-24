@@ -4,10 +4,10 @@ using System.Formats.Tar;
 using System.IO.Compression;
 using DynaDocs.Services.Statechart;
 
-[Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
 public class StatechartArchiveTests
 {
     [Fact]
+    [Trait("Job", "contract: DR 062 §4 (a locked archive installs as its exact bytes in fresh owned staging, the archive untouched)")]
     public void LockedZipExtractsExactBytesToFreshOwnedStagingWithoutTouchingArchive()
     {
         using var scope = new StatechartTestDirectory();
@@ -22,6 +22,7 @@ public class StatechartArchiveTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §4 (a locked JRE keeps its layout, modes and contained hardlink content)")]
     public void GzipTarRetainsMacJreLayoutAndMaterializesOnlyContainedHardlinkContent()
     {
         using var scope = new StatechartTestDirectory();
@@ -49,6 +50,7 @@ public class StatechartArchiveTests
     }
 
     [Theory]
+    [Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
     [InlineData("../escape")]
     [InlineData("/absolute")]
     [InlineData("C:/drive")]
@@ -68,6 +70,7 @@ public class StatechartArchiveTests
     }
 
     [Theory]
+    [Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
     [InlineData("same", "same")]
     [InlineData("Node/file", "node/FILE")]
     [InlineData("node", "node/child")]
@@ -80,6 +83,7 @@ public class StatechartArchiveTests
     }
 
     [Theory]
+    [Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
     [InlineData(false)]
     [InlineData(true)]
     public void ExpandedBytesAndEntryCountAreStreamedBounds(bool count)
@@ -95,6 +99,7 @@ public class StatechartArchiveTests
     }
 
     [Theory]
+    [Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
     [InlineData("../escape")]
     [InlineData("/absolute")]
     [InlineData("C:/drive")]
@@ -113,6 +118,7 @@ public class StatechartArchiveTests
 
     // The filesystem follows a link before it applies `..`; each lexical target names an existing decoy entry.
     [Theory]
+    [Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
     [InlineData("a,a/b,d", "a/outside", "a/b/l", "../../d", "escape", "a/b/l/../../outside")]
     [InlineData("p,p/q,r", "z", "p/q/x", "../../r", "p/q/y", "x/../../../z")]
     public void ComposedLinksThatLeaveTheRootRejectBeforeAnyLinkExists(string directories, string decoy,
@@ -132,6 +138,7 @@ public class StatechartArchiveTests
     }
 
     [Fact]
+    [Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
     public void LinksThatLoopThroughEachOtherReject()
     {
         using var scope = new StatechartTestDirectory();
@@ -144,6 +151,7 @@ public class StatechartArchiveTests
     }
 
     [Fact]
+    [Trait("Job", "edge: a link through another link that stays inside the staging still extracts")]
     public void ALinkThroughAnotherLinkThatStaysInsideExtracts()
     {
         using var scope = new StatechartTestDirectory();
@@ -156,6 +164,7 @@ public class StatechartArchiveTests
     }
 
     [Fact]
+    [Trait("Job", "trap: a locked archive must never write outside its owned staging (traversal, escaping links, bombs); DR 062 §4")]
     public void ForeignStagingAndCancellationAreRetainedWithoutOverwrite()
     {
         using var scope = new StatechartTestDirectory();

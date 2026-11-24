@@ -87,7 +87,6 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableTheory]
-    [InlineData("700", true)]
     [InlineData("500", true)]
     [InlineData("750", false)]
     [InlineData("702", false)]

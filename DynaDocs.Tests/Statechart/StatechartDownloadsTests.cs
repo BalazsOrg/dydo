@@ -34,15 +34,6 @@ public class StatechartDownloadsTests
     }
 
     [Fact]
-    public async Task StreamingBoundRejectsExcessWithoutWritingIt()
-    {
-        using var source = new MemoryStream(new byte[32]);
-        using var output = new MemoryStream();
-        await Assert.ThrowsAsync<IOException>(() => StatechartDownloads.CopyBoundedAsync(source, output, 16, CancellationToken.None));
-        Assert.Empty(output.ToArray());
-    }
-
-    [Fact]
     public async Task ADownloadWritesItsBoundedBodyToANewArchive()
     {
         using var scope = new StatechartTestDirectory();

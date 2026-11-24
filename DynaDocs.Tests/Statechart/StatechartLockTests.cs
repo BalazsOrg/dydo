@@ -2,10 +2,10 @@ namespace DynaDocs.Tests.Statechart;
 
 using DynaDocs.Services.Statechart;
 
-[Trait("Job", "edge: two processes contend for one install or extraction lock")]
 public class StatechartLockTests
 {
     [Fact]
+    [Trait("Job", "edge: two processes contend for one install or extraction lock")]
     public async Task AWaiterTakesTheLockOnceItsHolderReleasesIt()
     {
         using var scope = new StatechartTestDirectory();
@@ -19,6 +19,7 @@ public class StatechartLockTests
     }
 
     [Fact]
+    [Trait("Job", "edge: two processes contend for one install or extraction lock")]
     public async Task AHolderPastTheBoundIsReportedByItsPath()
     {
         using var scope = new StatechartTestDirectory();
@@ -29,6 +30,7 @@ public class StatechartLockTests
     }
 
     [Fact]
+    [Trait("Job", "edge: two processes contend for one install or extraction lock")]
     public async Task CancellationEndsTheWait()
     {
         using var scope = new StatechartTestDirectory();
@@ -41,6 +43,7 @@ public class StatechartLockTests
     }
 
     [Fact]
+    [Trait("Job", "edge: a lock whose directory is missing fails at once instead of waiting out its bound")]
     public async Task AMissingDirectoryIsAnErrorNotAWait()
     {
         using var scope = new StatechartTestDirectory();

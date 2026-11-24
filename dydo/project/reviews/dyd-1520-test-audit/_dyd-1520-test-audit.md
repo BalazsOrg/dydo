@@ -29,7 +29,7 @@ Each batch's PR replaces its own line with a link to its audit.
 
 - docs: audit pending
 
-- [Statechart audit](./statechart.md) - 225 cases: 200 kept, 22 rewritten, 3 removed; the apply step waits on test-deletion permission
+- [Statechart audit](./statechart.md) - 225 cases: 200 kept, 22 rewritten, 3 removed
 
 - merge-map-survey: audit pending
 
