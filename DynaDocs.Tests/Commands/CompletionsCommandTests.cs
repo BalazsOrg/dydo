@@ -22,8 +22,8 @@ public sealed class CompletionsCommandTests
         Assert.Contains("_complete", stdout);
     }
 
+    // Kept `unsure` by the DYD-1520 setup audit: no spec line says what an unsupported shell gets.
     [Fact]
-    [Trait("Job", "contract: dydo-commands-utilities.md dydo completions (a script for bash, zsh or powershell; exit 2 is a tool error); DR 015 (completions keep code): dydo completions fish exits 2 and prints nothing to stdout")]
     public void Completions_UnknownShell_IsAToolError()
     {
         var (code, stdout, _) = DydoCli.Run("completions", "fish");
@@ -48,8 +48,8 @@ public sealed class CompletionsCommandTests
         Assert.All(expected, value => Assert.Contains(value, candidates));
     }
 
+    // Kept `unsure` by the DYD-1520 setup audit: no spec line says what _complete does for an unknown command.
     [Theory]
-    [Trait("Job", "contract: DR 015 (completions keep code): dydo _complete on an unknown command, at position 2 or past the end, prints nothing and exits 0")]
     [InlineData("2", "dydo", "nonexistent")]
     [InlineData("999", "dydo", "nonexistent", "garbage")]
     public void Complete_UnknownInput_OffersNothingAndExitsZero(params string[] words)

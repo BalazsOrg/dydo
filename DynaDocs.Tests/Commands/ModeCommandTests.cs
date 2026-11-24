@@ -75,7 +75,7 @@ public sealed class ModeCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-linear.md dydo mode (set takes a flag and a value): set with no value exits nonzero and creates no store folder")]
+    [Trait("Job", "contract: dydo-commands-linear.md dydo mode (set takes a flag and a value); dydo-commands-utilities.md exit codes (a failed command exits 1 or 2): set with no value exits nonzero")]
     public async Task Set_WithoutAValue_IsAParseError()
     {
         var (exitCode, _, _) = await Run("set", "overnight");
