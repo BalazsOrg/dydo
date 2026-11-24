@@ -42,8 +42,10 @@ seven class tags were not:
 
 Four rewrites change a body:
 
-- `Guard_ChainedIndirectDydo_StillCaught`: its `cd` input was also refused by the cd-chain rule,
-  so a broken nudge could not turn it red. PB27 left it green at base.
+- `Guard_ChainedIndirectDydo_StillCaught`: the cd-chain rule also refused its `cd` input, so it
+  did not show its job. PB27 broke the nudge and left it green at base. The dropped
+  `cd /tmp &&` input stays held: PB35 (a command starting `cd /tmp && ` is allowed) turned it red
+  together with the kept `Guard_CdNonGitCompound_Blocked`.
 - `Guard_CdGitCompound_BlocksWithCoachingMessage`: it never asserted the coaching text. PB28
   left it green at base.
 - The three `HookInputExtensionsTests` methods: a unit test of the patch parser, which the hook
@@ -166,6 +168,31 @@ recorded against one removed case. Stryker bails at a mutant's first failing tes
 Targeted phase 1 ran on the base tree over the 30 methods that lose a case or change a body.
 Tag-only rewrites change no executable line, so they are left out of phase 1; phase 2 runs them
 anyway as kept tests. Phase 2 on the candidate is the after-check.
+
+## Open against the candidate
+
+A self-check against the first batch review's lessons found three things the candidate
+`d06e0e00` still needs. Each is a test edit, held while the permission question is open:
+
+- **Tags that claim more than their cases show.** Each should be narrowed to what it shows:
+  - `Guard_OffLimitsPath_Blocks` says "every operation".
+  - `Guard_ProtectedPath_ReadAllowed` says "every tool".
+  - `Guard_ProtectedPath_BashMutatingOperationBlocked` says "no shell operation".
+  - `Guard_IndirectDydo_IsBlocked` says "every indirect dydo invocation".
+  - `Guard_SearchTool_WithPath_Allows` and `Guard_SearchTool_NoPath_Allows` say "only the
+    off-limits tier".
+  - `Guard_OtherGitCommands_NotBlocked` says "only the named … git calls".
+  - The `GuardWarnOrderTests` class tag says "every hard block", but the merge-route and
+    PR-ready blocks are not exercised.
+- **The parser rewrite is not as strict as the unit tests it replaces.** The unit tests
+  asserted exact target lists on their own inputs. The boundary rows assert one line's verdict
+  each, and some inputs changed shape: `/abs/dydo.json\t` became `dydo.json\t`, and the indented
+  Add header became a Delete header. The rewrite also drops the backslash absolute path and the
+  Move-to element of that input. PB29 to PB34 show the line-level protection, but not on the
+  original inputs. Fix it by restoring those inputs as boundary rows, or by keeping the unit
+  rows `unsure`.
+- **Three rows are not applied:** `DeleteFileOfProtectedIndex_Denied[1]`, `[3]` and `[4]` (see
+  the totals).
 
 ## Deviations
 
