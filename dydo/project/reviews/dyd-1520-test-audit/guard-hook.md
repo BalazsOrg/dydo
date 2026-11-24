@@ -165,9 +165,12 @@ recorded against one removed case. Stryker bails at a mutant's first failing tes
   the host-memory word, `BashCommandAnalyzer.cs` line 99. Each one's kept cases run the same
   input.
 
-Targeted phase 1 ran on the base tree over the 30 methods that lose a case or change a body.
-Tag-only rewrites change no executable line, so they are left out of phase 1; phase 2 runs them
-anyway as kept tests. Phase 2 on the candidate is the after-check.
+Targeted phase 1 ran on the base tree over the 30 methods that lose a case or change a body (78
+cases, the Rejoining fact included as a superset). Stryker killed 658 mutants (2,253 s, rc 0;
+`/var/tmp/dyd1520/guard-hook/mut/phase1/`). Tag-only rewrites change no executable line, so
+they are left out of phase 1; phase 2 runs them anyway as kept tests. Phase 2 on the candidate
+is the after-check. It has not run: it waits on the permission decision, since the candidate may
+change.
 
 ## Open against the candidate
 
