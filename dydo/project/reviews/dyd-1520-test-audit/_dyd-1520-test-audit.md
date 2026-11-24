@@ -21,7 +21,7 @@ Each batch's PR replaces its own line with a link to its audit.
 
 - guard-hook: audit pending
 
-- guard-routes: audit pending
+- [Guard-routes audit](./guard-routes.md) - PR-ready, merge-route, mode-set, worker-lane and worktree-removal routes
 
 - safe-delete: audit pending
 
