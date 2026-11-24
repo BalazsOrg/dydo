@@ -146,7 +146,23 @@ clean `07642b1f` checkout in two chunks:
 Two exclusions, both deviations below: the `Raw destructive Git…` outline, which is tag-only and loses no
 row, and `DefaultAllocationVolume_Identifies…`, which Stryker cannot run.
 
-Phase 2 runs on the candidate once the removals and rewrites are committed; its result is recorded here.
+Phase 2 ran on the candidate `1c19e068` over the batch's 309 kept cases. The random-row
+`DefaultAllocationVolume_Identifies…` was excluded, because Stryker refuses to start with it. The later
+commits change only `Job` traits and the audit files, not test bodies.
+
+- **feature**: exit 0. All 1,097 phase-1 kills are still killed (1,233 killed after). Every removed case
+  is in this chunk.
+- **rest**: 878 phase-1 kills, 874 still killed, 997 killed after. Four mutants were Timeout after, not
+  Killed: `SafeDeleteFiles.cs:100` (the `ValidateKind` call removed), `:197` (the Linux guard negated),
+  `:203` (`||` to `&&`) and `:204` (the throw removed). Each disables the Linux file-kind refusal, so a
+  kept FIFO refusal row then blocks reading its pipe. At base the unit form of `NestedGitDirectory…`
+  killed them quickly. A timeout is not a kill (review lesson 7). So each mutant was planted exactly
+  (`DYD1520_PLANT=m100`, `m197`, `m203`, `m204`, on a scratch copy of `8d2bf92f`). The rewritten,
+  kept `NestedGitDirectory…` case fails on each in about 0.1 s, on
+  `Assert.Contains("Special files and hard links", …)`, and passes with none. Its output is
+  "Initialized nested repository" instead. Results: `/var/tmp/dyd1520/sd/mut-timeouts/result.txt`.
+
+Every mutant phase 1 killed is still killed by a kept case.
 
 ## Planted bugs
 
