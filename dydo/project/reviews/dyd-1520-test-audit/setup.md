@@ -82,9 +82,11 @@ another platform.
 Targeted two-phase Stryker.NET (`/var/tmp/dyd1520/tools/stryker-targeted.sh`). Phase 1 ran on a
 clean detached checkout of the base `07642b1f3` over every method that loses a case or is rewritten
 (35 executed cases, including the kept rows of those methods): 700 mutants Killed, 7 Timeout, wall
-1067 s. Phase 2 ran on a clean detached checkout of the candidate `8d6424f04` (production code
-identical), mutating the 239 line spans of those 700 kills and running all 408 kept cases of the
-batch: 750 Killed, wall 774 s, `compare exit=1` with two mutants not killed after:
+1067 s. Phase 2 ran on a clean detached checkout of the candidate (production code identical),
+mutating the 239 line spans of those 700 kills and running every kept case of the batch: on
+`8d6424f04`, 408 cases, 750 Killed, wall 774 s; after review round 1, on `74f105028`, 410 cases,
+750 Killed, wall 932 s. Both give `compare exit=1` with the same two mutants not killed after, and
+no phase-1 kill that is only a Timeout after:
 
 | Mutant | Where | After | Justification |
 |---|---|---|---|
@@ -100,6 +102,7 @@ names that test.
 |---|---|---|---|
 | base `07642b1f3` | 429 passed | 15.06 s | batch filter, `--logger trx`, `MaxCpuCount=2` |
 | candidate `8d6424f04` | 408 passed | 16.28 s | the same |
+| candidate `74f105028` (review round 1) | 410 passed | 15.98 s | the same |
 
 The cases removed here were cheap ones, so the summed time does not drop measurably; the
 difference is the shared host's load.
