@@ -5,9 +5,9 @@ using System.Diagnostics;
 using System.Text.Json.Nodes;
 
 [Collection("Integration")]
-[Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
 public sealed class SafeDeleteGitHubTests
 {
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (a proved closed-world state passes the remote eligibility check)")]
     [Theory]
     [InlineData("public",false,0)]
     [InlineData("public",true,12)]
@@ -20,9 +20,11 @@ public sealed class SafeDeleteGitHubTests
         Assert.Equal("R_selected",target.Metadata?.Id);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (on a proved closed-world state the remote ref is deleted with the archived worktree)")]
     [Fact]
     public void PrivateClosedWorld_RealCliAndBareRemoteArchiveAndRestore() => Journey("private",false,0);
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (on a proved closed-world state the remote ref is deleted with the archived worktree)")]
     [Fact]
     public void PublicFork_LeasedOwnDeletionAuthorizesRemainingLocalSteps() => Journey("public",true,12);
 
@@ -41,6 +43,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
     [Theory]
     [InlineData("upstream/repo")]
     [InlineData("other-fork/repo")]
@@ -54,6 +57,7 @@ public sealed class SafeDeleteGitHubTests
         },"open PR head");
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
     [Theory]
     [InlineData("head")]
     [InlineData("base")]
@@ -67,6 +71,7 @@ public sealed class SafeDeleteGitHubTests
         },"open PR " + side);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
     [Theory]
     [InlineData("private fork","closed-world")]
     [InlineData("private forks","closed-world")]
@@ -111,6 +116,7 @@ public sealed class SafeDeleteGitHubTests
     public void InvalidAuthorityOrResponse_RefusesIntact(string defect, string reason)
         => Refusal((start,target) => Damage(Response(start,target),start,defect),reason);
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
     [Theory]
     [InlineData("fork")]
     [InlineData("forks")]
@@ -135,6 +141,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.True(Directory.Exists(fixture.Entry));
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
     [Theory]
     [InlineData("fork")]
     [InlineData("forks")]
@@ -153,6 +160,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.Contains("closed-world",fixture.Output);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (after the remote step, a failed recheck keeps the remaining local targets)")]
     [Theory]
     [InlineData("recreated")]
     [InlineData("API failure")]
@@ -190,6 +198,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.Contains("\"complete\": true",File.ReadAllText(Path.Combine(fixture.Entry,"manifest.json")),StringComparison.OrdinalIgnoreCase);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (after the remote step, a failed recheck keeps the remaining local targets)")]
     [Theory]
     [InlineData("before-local-delete")]
     [InlineData("before-worktree-delete")]
@@ -211,6 +220,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (after the remote step, a failed recheck keeps the remaining local targets)")]
     [Fact]
     public void AfterOwnDeletion_ApiRefSurvivesWhileGitIsAbsent_RetainsVerifiedArchiveAndLocalTarget()
     {
@@ -255,6 +265,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.Equal("receipt witness bytes\n",File.ReadAllText(Path.Combine(fixture.Entry,"files","unique.txt")));
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
     [Theory]
     [InlineData("missing metadata","own-deletion receipt is invalid")]
     [InlineData("unrelated repository","metadata changed")]
@@ -273,6 +284,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.Contains(reason,result);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (a proved closed-world state passes the remote eligibility check)")]
     [Theory]
     [InlineData("public")]
     [InlineData("private")]
@@ -284,6 +296,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.Equal("R_selected",target.Metadata?.Id);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (a proved closed-world absence of the remote ref lets the local targets be deleted)")]
     [Theory]
     [InlineData("public",true)]
     [InlineData("private",true)]
@@ -337,6 +350,7 @@ public sealed class SafeDeleteGitHubTests
         return response;
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (with the remote ref initially absent, an unproved or changed closed-world state keeps every local target)")]
     [Theory]
     [InlineData("public","head")]
     [InlineData("public","base")]
@@ -359,6 +373,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.False(Directory.Exists(fixture.ArchiveRoot));
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (with the remote ref initially absent, an unproved or changed closed-world state keeps every local target)")]
     [Theory]
     [InlineData("public",true,0)]
     [InlineData("public",false,1)]
@@ -376,6 +391,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.False(Directory.Exists(fixture.ArchiveRoot));
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (with the remote ref initially absent, an unproved or changed closed-world state keeps every local target)")]
     [Theory]
     [InlineData("public","before-worktree-delete","ref")]
     [InlineData("private","before-worktree-delete","ref")]
@@ -418,6 +434,7 @@ public sealed class SafeDeleteGitHubTests
         return response;
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (with the remote ref initially absent, an unproved or changed closed-world state keeps every local target)")]
     [Theory]
     [InlineData("public",true,"fork")]
     [InlineData("public",true,"forks")]
@@ -464,6 +481,7 @@ public sealed class SafeDeleteGitHubTests
             OperatingSystem.IsWindows() ? StringComparer.OrdinalIgnoreCase : StringComparer.Ordinal);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (with the remote ref initially absent, an unproved or changed closed-world state keeps every local target)")]
     [Theory]
     [InlineData("errors")]
     [InlineData("data null")]
@@ -490,6 +508,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.False(Directory.Exists(fixture.ArchiveRoot));
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (own-PR pagination proves eligibility only when it is terminal, unique and complete)")]
     [Theory]
     [InlineData("complete",false,false)]
     [InlineData("late base",true,false)]
@@ -544,6 +563,7 @@ public sealed class SafeDeleteGitHubTests
         if (variant == "repeated cursor") connection["pageInfo"]!["endCursor"] = "cursor";
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (remote cleanup only on proved closed-world state)")]
     [Fact]
     public void ProcessFailuresAndMalformedOrOversizedOutput_Refuse()
     {

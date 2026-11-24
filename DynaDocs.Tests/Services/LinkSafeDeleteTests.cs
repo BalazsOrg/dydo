@@ -20,7 +20,7 @@ public sealed class LinkSafeDeleteTests : IDisposable
         Assert.True(File.Exists(Path.Combine(target, "keep.txt")));
     }
 
-    [Trait("Job", "trap: DYD-362 (unlinking a tree before its removal removes each link, never its target or a real file)")]
+    [Trait("Job", "trap: DYD-362 (unlinking a tree before its removal never touches a link's target or a real file)")]
     [Fact]
     public void UnlinkAll_RemovesOnlyLinks()
     {
