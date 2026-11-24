@@ -89,7 +89,7 @@ Each sign is a lead, not a verdict; §1's order decides.
   for rewrites, with the old implementation as the oracle and an approved-changes list. "naming
   thing is having power of them" (T7).
 - **A lint-shaped trap** (§3) has no suite job. The assertion that states it is recorded as a lint
-  candidate; its case's verdict still comes from §1. A lint rule is not a kept test, and naming one
+  candidate in its case's Reason (§6); its case's verdict still comes from §1. A lint rule is not a kept test, and naming one
   proves neither redundancy nor unreachability, so that assertion stays until §5 evidence covers it
   (T2; contract 3).
 
@@ -147,7 +147,7 @@ Each audit file in this folder uses one table, one line per case (§1).
 
 | Test | Runs | Verdict | Reason | Evidence |
 |---|---|---|---|---|
-| C#: `<Namespace>.<Class>.<Method>`, a data row adding `[<n>]`, its 0-based ordinal in the order the method's data declares or yields its rows at the audited commit; a row's arguments, generated values such as temp paths and GUIDs included, are never part of the id. Gherkin: `<file>.feature: <scenario>`, an Examples row adding `[<n>]` the same way. Python: `<file>: <Class>.<test_name>`. Node: `<file>: <registered test name>`. A `<file>` is its path from the repository root | `all`, or the platform, skip condition or environment variable its assertions need | keep, rewrite or remove | One line: the §2 row it meets or fails, the §3 sign it shows, or `unsure` | keep: its tag. keep `unsure`, with no tag required: `only: <mutant id or planted bug>` that no other kept test fails on, and what is unresolved; with none known yet, the observable, the condition it is asserted under and the evidence still missing. rewrite: the job it will carry. remove, or a rewrite that drops a protection: per protection, `kept: <test id> fails on <mutant id or planted bug>`, or `unreachable: <why>`, plus the batch's mutation result or "mutation unavailable" |
+| C#: `<Namespace>.<Class>.<Method>`, a data row adding `[<n>]`, its 0-based ordinal in the order the method's data declares or yields its rows at the audited commit; a row's arguments, generated values such as temp paths and GUIDs included, are never part of the id. Gherkin: `<file>.feature: <scenario>`, an Examples row adding `[<n>]` the same way. Python: `<file>: <Class>.<test_name>`. Node: `<file>: <registered test name>`. A `<file>` is its path from the repository root | `all`, or the platform, skip condition or environment variable its assertions need | keep, rewrite or remove | One line: the §2 row it meets or fails, the §3 sign it shows, or `unsure`; a lint-shaped trap (§4) adds `lint candidate: <assertion>` | keep: its tag. keep `unsure`, with no tag required: `only: <mutant id or planted bug>` that no other kept test fails on, and what is unresolved; with none known yet, the observable, the condition it is asserted under and the evidence still missing. rewrite: the job it will carry. remove, or a rewrite that drops a protection: per protection, `kept: <test id> fails on <mutant id or planted bug>`, a demonstrated broken revision recorded in the planted bug's place as `kept: <test id> fails on <broken behaviour, with its evidence>` (contract 3: "the same broken behaviour"), or `unreachable: <why>`, plus the batch's mutation result or "mutation unavailable" |
 
 ## 7. Where the older guides disagree
 
