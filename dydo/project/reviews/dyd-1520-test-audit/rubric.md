@@ -16,6 +16,7 @@ This page says what a good dydo test is and what makes a test bad. The
 | Cite | Where it is recorded |
 |---|---|
 | T1-T8, G1-G6 | [Grilling G](https://linear.app/bodnar-balazs/document/400-grilling-g-what-tests-are-for-the-gate-set-the-file-token-limit-8efeb2de16b6), recorded with Balazs's words verbatim in the [DYD-971 DECIDED](https://linear.app/bodnar-balazs/issue/DYD-971#comment-022a5db3-9f53-4ab1-aec8-d88569caab56) comment |
+| DYD-971 2026-11-12 | Balazs's 2026-11-12 paragraph in the [DYD-971](https://linear.app/bodnar-balazs/issue/DYD-971) description |
 | DR 067, smells 1-3, purge | [DR 067](../../decisions/067-what-tests-are-for.md) (T1-T8) and its two accepted 2026-11-18 amendments: the three smells, and the purge that replaces T8 |
 | DR 068 | [DR 068](../../decisions/068-gate-set-mutation-over-coverage-changed-files-only.md) (G1-G6, D1-D2) |
 | DYD-1199 | Balazs's purge ruling, [DYD-1199](https://linear.app/bodnar-balazs/issue/DYD-1199) |
@@ -26,42 +27,55 @@ Where `testing-strategy.md`, `coding-standards.md` or the glossary disagree, gri
 
 ## 1. The unit and the verdicts
 
-- **A test is one executed case:** a `[Fact]`; each row of a `[Theory]`; a Gherkin scenario, and each
-  Examples row of a Scenario Outline; a Python `test_*`; a Node `test()` call.
-- **The audit records one line per test method or scenario,** with its row count. Where rows of one
-  method earn different verdicts, it gives a verdict per row.
+- **A test is one case the runner discovers,** counted on every platform it runs on: a `[Fact]`; each
+  data row of a `[Theory]`, a platform-conditional `[SkippableTheory]` row included; a Gherkin
+  scenario, and each Examples row of a Scenario Outline, counted once; a Python `test_*` method that
+  unittest discovers; each `test()` registration under `node --test`, so a `test()` call in a loop
+  over three inputs is three tests.
+- **The audit records one line per test method, scenario, outline or registering call,** with its
+  case count, under a stable id ([§6](#6-the-record-line)). Where its cases earn different verdicts,
+  it gives a line per case.
 - **The verdicts are keep, rewrite and remove.** "measure them against the new test requirements and
-  either keep them if they match or rewrite them to match. And have the rest deleted" (purge).
+  either keep them if they match or rewrite them to match. And have the rest deleted" (purge). The
+  purge replaces T8's grandfathering: no test is exempt for already existing, and the purge does not
+  wait for DYTEST Mutation.
+- **Which verdict wins:**
+  1. **Remove** when the test shows a §3 sign and [§5](#5-the-evidence-a-removal-needs)'s evidence
+     covers every protection it drops, even when it has a valid job and would otherwise need a
+     rewrite.
+  2. **Rewrite** when it is not removed and the behaviour has a real job ([§4](#4-rewrite-not-remove)).
+  3. **Keep** otherwise. A test with no job found that is still the only guard of user-reachable
+     behaviour is kept with the reason `unsure` (§5), for the captain's final report.
 - **Helpers and fixtures are not tests.** A helper or fixture that a removal leaves with no caller is
   deleted with it: dead code is a static finding (G3).
 
 ## 2. A good test (keep)
 
-A test is kept only when it meets every row.
+A test is kept as is only when it meets every row.
 
 | # | It | Source |
 |---|---|---|
-| 1 | **Does one T1 job.** A trap names the real bug or pitfall it guards. A contract cites the spec or DR it pins. An edge reaches a case driving can't. | T1 |
-| 2 | **Carries a true job tag** that names that job and its cite. C#: `[Trait("Job", "<trap\|contract\|edge>: <cite>")]`, on the class only when it is true of every test in the class. Python: a `Job: <kind>: <cite>` line in the docstring. Gherkin: a `# Job:` comment heading the feature file. Node: a `// Job:` comment above the `test()` call. "The reviewer checks each tag." | T5 |
-| 3 | **Drives the deepest boundary that observes the behaviour:** the `dydo` CLI or the guard hook entry first. A unit test stays only for an edge or trap that boundary can't reach cheaply. "the idea of one 10ms green check amounting to 1000*1ms green checks is a really powerful one." | T4 |
+| 1 | **Does one T1 job.** A trap names the real bug, or the pitfall no lint rule can express, that it guards. A contract cites the spec or DR it pins; pinning current behaviour counts only with that cite. An edge reaches a case driving can't. Walking a journey is not a job of its own: driving owns journeys and review owns intent, both against the spec. | T1; T2 |
+| 2 | **Carries a true job tag** that names that job and its cite. The syntax is this repository's convention; no lint enforces it yet. C#: `[Trait("Job", "<trap\|contract\|edge>: <cite>")]`. Python: a `Job: <kind>: <cite>` line in the docstring. Gherkin: a `# Job:` comment heading the feature file. Node: a `// Job:` comment above the `test()` call. A tag on a class or feature file is true only when it is true of every test or scenario it covers. "The reviewer checks each tag." The tag replaces DR 048's "every non-trivial module has a test file": a test is never kept to give a module a test file. | T5 |
+| 3 | **Drives the deepest module boundary, or the product boundary, that can observe the behaviour.** The product boundary is a `dydo` command, the guard hook entry or a shipped script entry point. A unit test stays only for an edge or trap that boundary can't reach cheaply. "the idea of one 10ms green check amounting to 1000*1ms green checks is a really powerful one." | T4 |
 | 4 | **Asserts the outcome a person or agent sees, not the steps.** It "should test the behavior in an end-to-end integration test way. So not assert the the at each step but rather the outcome so if the code changes the test shouldn't need to change they constrain the outcome not the way to get there". | DYD-1199; smell 1 |
 | 5 | **Can fail.** It asserts something the code under test controls, and it goes red when that code is removed or broken. | T3; smell 3 |
 | 6 | **Guards behaviour 4.0.0 keeps.** "I only want the tests to remain which test something that is going to stay. For example, state chart, guard behavior". | purge; DYD-1199 |
-| 7 | **Is not redundant.** No other kept test already fails on the same planted bug or mutant. | T4; contract 3 |
+| 7 | **Is not redundant.** No set of other kept tests already fails on every planted bug and mutant it catches. | T4; contract 3 |
 
 ## 3. A bad test
 
-A test that shows any of these is removed, or rewritten under [§4](#4-rewrite-not-remove).
-Removal still needs the evidence in [§5](#5-the-evidence-a-removal-needs).
+A test that shows any of these is removed, or rewritten under [§4](#4-rewrite-not-remove). Each sign
+is a lead: removal still needs the evidence in [§5](#5-the-evidence-a-removal-needs).
 
 | Sign | Why it is bad | Source |
 |---|---|---|
 | **No T1 job.** It exists for a gate number, design feedback, or ticket proof that never graduated. | "Design feedback and ticket proof are real work, but they don't earn a place in the suite. A gate number never does." Coverage is a report, not a gate: "one of the big mistakes I made is that I set a coverage gate." Old evidence is never load-bearing: "No one is going to check an evidence of a ticket from 6 months ago". | T1; G1; T5 |
-| **An untraced pin of current behaviour.** It asserts what the code does today, with no spec, DR or named trap behind it. | "an untraced pin is a finding, not proof" ([DYD-1120](https://linear.app/bodnar-balazs/issue/DYD-1120)). "having tests green can actually cement incorrect behavior because the test itself asserts a truth or a reality that we do not really want." | T1 |
+| **An untraced pin of current behaviour.** It asserts what the code does today, with no spec or DR behind it. | "an untraced pin is a finding, not proof" ([DYD-1120](https://linear.app/bodnar-balazs/issue/DYD-1120)). "having tests green can actually cement incorrect behavior because the test itself asserts a truth or a reality that we do not really want." | T1 |
 | **Changes whenever the code does.** It is coupled to the implementation, not to what is observed. Signal: it is edited in most commits that edit its subject without changing behaviour. | A test at the deepest observing boundary survives refactors. | smell 1; T4 |
 | **Checks that a deleted feature is gone.** | It does none of T1's jobs, unless the absence is itself a traced contract (a removed security route that must stay removed), tagged `contract` with its source. | smell 2 |
 | **Can never fail.** It asserts nothing the code under test controls. | Vacuous. "a reviewer flags an assertion that no plausible edit could break." | smell 3; T3 |
-| **Redundant.** Another kept test fails on the same planted bug or mutant. | It adds run time and no protection. "the best performance improvement for tests is probably the tests which we never write." | T4; T1 |
+| **Redundant.** Other kept tests fail on every planted bug and mutant it catches. | It adds run time and no protection. "the best performance improvement for tests is probably the tests which we never write." | T4; T1 |
 | **Covers nothing a user could hit.** No entry point a person or agent uses reaches the path it covers. | It protects no behaviour. | contract 3 |
 | **States a trap a lint rule could state.** | "a trap that can be stated syntactically becomes a lint rule, not a test", because "lint is cheaper and quicker." | T2 |
 | **Tests behaviour 4.0.0 drops.** | "All the tests about a certain roles and these kind of things must go." | purge; DYD-1199 |
@@ -71,13 +85,20 @@ Removal still needs the evidence in [§5](#5-the-evidence-a-removal-needs).
 - **Rewrite when the behaviour has a real job but the test fails rows 2-5 of §2:** the wrong
   boundary, steps instead of an outcome, a missing or false tag, or no way to fail.
 - **A rewrite** drives the boundary (row 3), asserts the outcome (row 4) and carries a true tag
-  (row 2). It is shown red: it fails without the code it guards, before it counts as kept (T3).
-- **Collapse rows.** Many rows in one equivalence class (the same branch to the same outcome) collapse
-  to one row per distinct behaviour (T4).
-- **Property tests** are named guidance for edges, not a requirement: "naming thing is having power
-  of them" (T7).
-- **A lint-shaped trap** (§3) is removed only when a lint rule already states it, and the rule's name
-  is its evidence. Until one exists, keep the test and record it as a lint candidate (T2; contract 3).
+  (row 2). It graduates like a new test: its red check is observed, failing without the code it
+  guards, before it counts as kept. A trap for a bug keeps the Bug rule: red reproduction first,
+  then revert the fix and watch it fail (T3).
+- **A rewrite drops no protection without evidence.** An assertion the rewrite drops needs the same
+  §5 evidence as a removed test.
+- **Collapse rows.** Rows that look like one equivalence class (the same branch to the same outcome)
+  are a lead for collapsing to one row per distinct behaviour (T4). Each dropped row needs §5
+  evidence.
+- **Named techniques, as guidance, not a requirement:** property tests for edges; differential tests
+  for rewrites, with the old implementation as the oracle and an approved-changes list. "naming
+  thing is having power of them" (T7).
+- **A lint-shaped trap** (§3) is recorded as a lint candidate. A lint rule is not a kept test, and
+  naming one proves neither redundancy nor unreachability, so the test stays until §5 evidence
+  covers it (T2; contract 3).
 
 ## 5. The evidence a removal needs
 
@@ -86,34 +107,47 @@ either shown to be redundant (another kept test fails on the same planted bug or
 behaviour), or covers nothing a user could hit. Mutation on the batch's code, where a tool is
 available, is the evidence. Where none is available, say so per batch."
 
-- **Redundant.** Name the kept test that fails on the same planted bug or mutant. Where a mutation
-  tool runs on the batch's production code, the evidence is that run before and after the removal:
-  no mutant the suite killed before survives after. Where none runs, plant the bug by hand, show
-  the kept test red, and record "mutation unavailable" for the batch. Unavailable is never a pass
-  (G4; DR 068 rule 4).
+The evidence covers each distinct protection the batch drops: every removed test, every dropped row
+and every assertion a rewrite drops. One shared red result proves overlap for that failure only.
+
+- **Where a mutation tool runs on the batch's code** (dydo's C# product code), the batch's tests run
+  under mutation at base and again on the candidate. The batch holds when every mutant killed at base
+  is still killed on the candidate, or is shown unreachable. It binds removals and rewrites alike.
+- **Where the mutants don't reach.** An assertion no generated mutant exercises (code the tool can't
+  mutate, or output the mutants never change), and every dropped protection where no tool runs (the
+  Python and Node tooling tests), gets its own evidence: a planted bug that a named kept test fails
+  on, or unreachable. A batch with no tool records "mutation unavailable".
 - **Unreachable.** Name why no entry point (a `dydo` command, the guard hook, a shipped script)
   reaches the path the test covers.
 - **Dropped behaviour.** Cite the record that drops it: the spec, a DR or the ticket. While the
-  dropped code still ships, a user can still hit it, so contract 3 still asks for redundant or
-  unreachable evidence. Without it, the test stays until that code goes.
+  dropped code still ships, a user can still hit it, so contract 3 still asks for the evidence
+  above. Without it, the test stays until that code goes.
 - **No job, but the only guard.** A test with no T1 job that is still the only thing catching a mutant
   or planted bug in user-reachable code is not removed under this ticket. It is rewritten with a
-  real job: a trace to the spec or a DR, or a named trap. Where no job can be found, it is kept and
-  listed as "kept, unsure" for the captain's final report.
+  real job: a trace to the spec or a DR, a named trap, or an edge. Where no job can be found, it is
+  kept with the reason `unsure`.
 
-Why mutation is the evidence: "Mutation testing owns 'do the tests catch bugs'" (T2). It "changes
-product code so that doesn't depend on the number of tests being written" (T4). It is the
-test-quality gate, "no surviving mutant in changed code" (G4; DR 068 rule 4). T8's original pruning
-rule, which the purge replaces but DR 067 keeps as history, used the same evidence: "an untagged
-test that kills no mutant the other tests don't already kill is deleted."
+Why mutation is the evidence: "what does that say about the quality of the tests? Nothing
+(mutation testing is for that)" (DYD-971 2026-11-12). "Mutation testing owns 'do the tests catch
+bugs'" (T2). It "changes product code so that doesn't depend on the number of tests being written"
+(T4). T8's original pruning rule, which the purge replaces but DR 067 keeps as history, used the
+same evidence: "an untagged test that kills no mutant the other tests don't already kill is
+deleted."
+
+This before/after evidence is DYD-1520's own. G4's test-quality gate is separate and later, out of
+this ticket's scope: no surviving mutant in changed code at the final candidate, with equivalent
+mutants approved one at a time, each with a reason, never by a threshold. Until DYTEST Mutation
+lands, that gate reports "unavailable", which never counts as a pass, and the red check (T3) plus
+review against the spec carry test quality (G4; DR 068 rule 4).
 
 ## 6. The record line
 
-Each audit file in this folder uses one table, one line per test method or scenario.
+Each audit file in this folder uses one table, one line per test method, scenario, outline or
+registering call, or per case where its cases differ (§1).
 
-| Test | Rows | Verdict | Reason | Evidence |
+| Test | Cases | Verdict | Reason | Evidence |
 |---|---|---|---|---|
-| `<Class>.<Method>` or `<file>.feature: <scenario>` | `1`, or `n` with the rows that differ | keep, rewrite, remove, or kept, unsure | One line: the §2 row it meets or fails, or the §3 sign it shows | keep: its tag. rewrite: the job it will carry. remove: `kept: <test id>`, `mutant: <id>`, `planted: <bug>` or `unreachable: <why>` |
+| C#: `<Namespace>.<Class>.<Method>`, a case as `[<n>] (<data>)`. Gherkin: `<file>.feature: <scenario>`, an Examples row as `[<n>]`. Python: `<file>: <Class>.<test_name>`. Node: `<file>: <registered test name>`, one line per registered name | `1`, or `n` with any platform-conditional cases named | keep, rewrite or remove | One line: the §2 row it meets or fails, the §3 sign it shows, or `unsure` | keep: its tag. rewrite: the job it will carry. remove, or a rewrite that drops a protection: per protection, `kept: <test id> fails on <mutant id or planted bug>`, or `unreachable: <why>`, plus the batch's mutation result or "mutation unavailable" |
 
 ## 7. Where the older guides disagree
 
