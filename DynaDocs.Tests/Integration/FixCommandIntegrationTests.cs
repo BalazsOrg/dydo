@@ -261,4 +261,64 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     #endregion
+
+    #region Obsidian Compatibility
+
+    [Fact]
+    public async Task Fix_IgnoresObsidianFolder()
+    {
+        var initResult = await InitProjectAsync();
+        initResult.AssertSuccess();
+
+        WriteFile("dydo/.obsidian/app.json", "{\"alwaysUpdateLinks\": true}");
+        WriteFile("dydo/.obsidian/appearance.json", "{\"theme\": \"obsidian\"}");
+        WriteFile("dydo/.obsidian/workspace.json", "{\"main\": {}}");
+
+        var fixCommand = FixCommand.Create();
+        var fixResult = await RunAsync(fixCommand, DydoDir);
+
+        fixResult.AssertSuccess();
+        Assert.DoesNotContain(".obsidian", fixResult.Stdout);
+        AssertFileNotExists("dydo/.obsidian/_index.md");
+    }
+
+    [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check validates documentation; an Obsidian vault's .obsidian/ settings are not")]
+    public async Task Check_IgnoresObsidianFolder()
+    {
+        var initResult = await InitProjectAsync();
+        initResult.AssertSuccess();
+
+        WriteFile("dydo/.obsidian/app.json", "{\"alwaysUpdateLinks\": true}");
+        WriteFile("dydo/.obsidian/appearance.json", "{\"theme\": \"obsidian\"}");
+        WriteFile("dydo/.obsidian/workspace.json", "{\"main\": {}}");
+
+        var fixCommand = FixCommand.Create();
+        await RunAsync(fixCommand, DydoDir);
+
+        var checkResult = await CheckAsync(DydoDir);
+
+        checkResult.AssertSuccess();
+        Assert.DoesNotContain(".obsidian", checkResult.Stdout);
+    }
+
+    #endregion
+
+    [Fact]
+    public async Task Fix_PreservesHandwrittenNavigationFiles()
+    {
+        (await InitProjectAsync()).AssertSuccess();
+        const string hub = "# Custom hub\n";
+        const string meta = "---\narea: guides\ntype: folder-meta\n---\n\n# Custom\n";
+        WriteFile("dydo/guides/custom/_index.md", hub);
+        WriteFile("dydo/guides/custom/_custom.md", meta);
+        WriteFile("dydo/guides/custom/note.md", "---\narea: guides\ntype: guide\n---\n\n# Note\n");
+
+        (await RunAsync(FixCommand.Create(), DydoDir)).AssertSuccess();
+
+        Assert.Equal(hub, ReadFile("dydo/guides/custom/_index.md"));
+        Assert.Equal(meta, ReadFile("dydo/guides/custom/_custom.md"));
+        AssertFileExists("dydo/guides/custom/note.md");
+    }
+
 }

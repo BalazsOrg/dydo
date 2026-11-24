@@ -10,7 +10,7 @@ using Xunit;
 /// </summary>
 public class PathUtilsTests
 {
-    private const string CollapseJob = "trap: DYD-396, DYD-547 ('..' and UNC/device roots in guarded paths); edge: both host readings on any host";
+    private const string CollapseJob = "trap: DYD-396, DYD-547 ('..' and UNC/device roots in guarded paths)";
 
     [Theory]
     [Trait("Job", CollapseJob)]
@@ -67,7 +67,7 @@ public class PathUtilsTests
     // The host-independent seam runs both readings on every host, so a Linux run exercises the
     // Windows root forms too (DYD-547).
     [Theory]
-    [Trait("Job", CollapseJob)]
+    [Trait("Job", CollapseJob + "; edge: both host readings on any host")]
     [MemberData(nameof(RootForms))]
     public void CollapseRelativeSegments_BothReadings_OnAnyHost(string input, string windowsExpected, string otherExpected)
     {

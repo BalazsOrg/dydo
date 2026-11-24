@@ -1,5 +1,7 @@
 namespace DynaDocs.Tests.Commands;
 
+using System.Text.RegularExpressions;
+
 /// <summary>
 /// `dydo check` on one document: the finding it reports and the exit code. Every row is a whole
 /// project run through the CLI, so frontmatter parsing, scanning, link extraction and the rules
@@ -48,14 +50,6 @@ public sealed class CheckDocValidatorTests
     [InlineData("guides/doc.md", Guide + Body + "\nSee `[Missing](./missing.md)` and `[[Wiki]]`.\n", 0, null)]
     [InlineData("guides/doc.md", Guide + Body + "\n```\nnot code\n```\n\n```md\n[Missing](./missing.md)\n[[Wiki]]\n```\n", 0, null)]
     [InlineData("guides/doc.md", Guide + Body + "\n## Section\n\n[Here](#section) and [there](#nowhere)\n", 1, "#nowhere")]
-    [InlineData("guides/doc.md", Guide + Body + "\n[Site](https://example.com/page)\n", 0, null)]
-    [InlineData("guides/doc.md", Guide + Body + "\n[Hub](../index.md#nowhere)\n", 1, "Broken link: ../index.md#nowhere")]
-    [InlineData("guides/doc.md", Guide + Body + "\n[One](./one.md)\n[Two](./two.md)\n", 1, "Broken link: ./two.md")]
-    [InlineData("guides/doc.md", Guide + Body + "\n[Doc](/guides/doc.md)\n", 1, "Absolute path found: /guides/doc.md")]
-    [InlineData("guides/doc.md", Guide + Body + "\n[Doc](./guide)\n", 1, "Link missing .md extension: ./guide")]
-    // a legacy hub that `dydo fix` once generated carries its marker line and is not link-checked; prose quoting it is
-    [InlineData("guides/doc.md", Guide + Body + "\n" + LegacyMarker + "\n[x](#missing)\n", 0, null)]
-    [InlineData("guides/doc.md", Guide + Body + "\nThe marker is `" + LegacyMarker + "`.\n[x](#missing)\n", 1, "#missing")]
     // scan excludes: these are not documentation, so nothing in them is reported
     [InlineData("agents/workspace/Scratch Notes.md", "[Missing](./missing.md)\n", 0, null)]
     [InlineData("_system/.local/worktrees/foo/Bar.md", "[Missing](./missing.md)\n", 0, null)]
@@ -111,44 +105,53 @@ public sealed class CheckDocValidatorTests
             Assert.Contains(expectedFinding, output);
     }
 
-    [Fact]
-    public void Check_Wikilink_IsReportedAsAWikilinkNotABrokenLink()
-    {
-        using var project = new DocsProject();
-        project.Write("guides/doc.md", Guide + Body + "\n[[Wiki]]\n");
-
-        var (code, output) = DydoCli.RunCombined("check");
-
-        Assert.True(code == 1, $"exit {code}:\n{output}");
-        Assert.Contains("Wikilink found: [[Wiki]]", output);
-        Assert.DoesNotContain("Broken link", output);
-    }
-
     [Theory]
-    // An asset link is checked on disk and needs no .md extension; the svg row uses image syntax.
-    [InlineData("![Diagram](./assets/diagram.svg)", "diagram.svg", 0, null)]
-    [InlineData("[Asset](./assets/image.png)", "image.png", 0, null)]
-    [InlineData("[Asset](./assets/photo.jpg)", "photo.jpg", 0, null)]
-    [InlineData("[Asset](./assets/photo.jpeg)", "photo.jpeg", 0, null)]
-    [InlineData("[Asset](./assets/animation.gif)", "animation.gif", 0, null)]
-    [InlineData("[Asset](./assets/modern.webp)", "modern.webp", 0, null)]
-    [InlineData("[Asset](./assets/favicon.ico)", "favicon.ico", 0, null)]
-    [InlineData("[Asset](./assets/document.pdf)", "document.pdf", 0, null)]
-    [InlineData("[Asset](./assets/archive.zip)", "archive.zip", 0, null)]
-    [InlineData("[Asset](./assets/missing.png)", "logo.png", 1, "Broken link: ./assets/missing.png")]
-    public void Check_LinkedAsset_IsValidOnlyWhenItExists(string link, string existing, int expectedExit, string? expectedFinding)
+    // Every finding `dydo check` reports, exactly and once each. The resolver reads the source's
+    // folder, the target path and the target's anchors, so each row keeps its link case's shape.
+    // one broken link, and two
+    [InlineData("guide.md", "[Missing](./nonexistent.md)", null, "Broken link: ./nonexistent.md")]
+    [InlineData("guide.md", "[One](./missing1.md)\n[Two](./missing2.md)", null, "Broken link: ./missing1.md|Broken link: ./missing2.md")]
+    // a sibling with a missing anchor, a parent link to the root index, a cross-folder climb, a missing same-page anchor
+    [InlineData("guide.md", "[Ref](./reference.md#nonexistent-section)", "reference.md", "Broken link: ./reference.md#nonexistent-section")]
+    [InlineData("guides/how-to.md", "[Home](../index.md)", null, "")]
+    [InlineData("project/decisions/0001-foo.md", "[Architecture](../../understand/architecture.md)", "understand/architecture.md", "")]
+    [InlineData("guide.md", "## Section\n\n[x](#missing)", null, "Broken link: #missing")]
+    // link kinds: external, wikilink, absolute, no extension
+    [InlineData("guide.md", "[Site](https://example.com)", null, "")]
+    [InlineData("guide.md", "[[my-doc]]", null, "Wikilink found: [[my-doc]]")]
+    [InlineData("guide.md", "[Doc](/absolute/path.md)", null, "Absolute path found: /absolute/path.md|Broken link: /absolute/path.md")]
+    [InlineData("guide.md", "[Doc](./guide)", null, "Link missing .md extension: ./guide|Broken link: ./guide")]
+    // an asset is checked on disk and needs no .md extension; the svg rows use image syntax
+    [InlineData("guide.md", "[Logo](assets/logo.png)\n[Missing](assets/missing.png)", "assets/logo.png", "Broken link: assets/missing.png")]
+    [InlineData("guides/doc.md", "![Diagram](./assets/diagram.svg)", "guides/assets/diagram.svg", "")]
+    [InlineData("guides/doc.md", "![Diagram](./assets/missing.svg)", "guides/assets/diagram.svg", "Broken link: ./assets/missing.svg")]
+    [InlineData("guides/doc.md", "[Asset](./assets/image.png)", "guides/assets/image.png", "")]
+    [InlineData("guides/doc.md", "[Asset](./assets/photo.jpg)", "guides/assets/photo.jpg", "")]
+    [InlineData("guides/doc.md", "[Asset](./assets/photo.jpeg)", "guides/assets/photo.jpeg", "")]
+    [InlineData("guides/doc.md", "[Asset](./assets/animation.gif)", "guides/assets/animation.gif", "")]
+    [InlineData("guides/doc.md", "[Asset](./assets/modern.webp)", "guides/assets/modern.webp", "")]
+    [InlineData("guides/doc.md", "[Asset](./assets/favicon.ico)", "guides/assets/favicon.ico", "")]
+    [InlineData("guides/doc.md", "[Asset](./assets/document.pdf)", "guides/assets/document.pdf", "")]
+    [InlineData("guides/doc.md", "[Asset](./assets/archive.zip)", "guides/assets/archive.zip", "")]
+    // a legacy hub that `dydo fix` once generated carries its marker line and is not link-checked; prose quoting it is
+    [InlineData("guide.md", LegacyMarker + "\n[x](#missing)", null, "")]
+    [InlineData("guide.md", "The marker is `" + LegacyMarker + "`.\n[x](#missing)", null, "Broken link: #missing")]
+    public void Check_LinkFindings_AreExactlyTheOnesReported(string source, string links, string? existing, string expected)
     {
         using var project = new DocsProject();
-        project.Write("guides/assets/" + existing, "fixture");
-        project.Write("guides/doc.md", Guide + Body + "\n" + link + "\n");
+        if (existing is not null)
+            project.Write(existing, existing.EndsWith(".md") ? Guide + "\n# Target\n\n## Section 1\n\nText.\n" : "fixture");
+        var frontmatter = source.StartsWith("project/decisions/")
+            ? "---\narea: project\ntype: decision\nstatus: accepted\ndate: 2025-01-15\n---\n"
+            : Guide;
+        project.Write(source, frontmatter + Body + "\n" + links + "\n");
 
         var (code, output) = DydoCli.RunCombined("check");
 
-        Assert.True(expectedExit == code, $"exit {code}, expected {expectedExit}:\n{output}");
-        if (expectedFinding is null)
-            Assert.DoesNotContain("doc.md", output);
-        else
-            Assert.Contains(expectedFinding, output);
+        var findings = Regex.Matches(output, @"^    - (?:Line \d+: )?(.*?)\r?$", RegexOptions.Multiline)
+            .Select(m => m.Groups[1].Value);
+        Assert.Equal(expected.Length == 0 ? [] : expected.Split('|'), findings);
+        Assert.True(code == (expected.Length == 0 ? 0 : 1), $"exit {code}:\n{output}");
     }
 
     [Fact]

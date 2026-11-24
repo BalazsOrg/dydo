@@ -98,6 +98,16 @@ public partial class DocumentationTests : IntegrationTestBase
         Assert.Equal(2, result.ExitCode);
     }
 
+    [Fact]
+    public async Task Graph_UnknownFile_IsAToolError()
+    {
+        await InitProjectAsync("none");
+
+        var result = await RunAsync(GraphCommand.Create(), "nonexistent.md");
+
+        Assert.Equal(2, result.ExitCode);
+    }
+
     private SortedDictionary<string, string> Snapshot() => new(
         Directory.GetFiles(TestDir, "*", SearchOption.AllDirectories)
             .ToDictionary(path => Path.GetRelativePath(TestDir, path), path => Convert.ToBase64String(File.ReadAllBytes(path))),
