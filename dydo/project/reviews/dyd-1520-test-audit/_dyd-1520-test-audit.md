@@ -17,7 +17,7 @@ removed with a one-line reason.
 
 Each batch's PR replaces its own line with a link to its audit.
 
-- guard-shell: audit pending
+- [Guard-shell test audit](./guard-shell.md) - The guard's shell corpus, security, culture and off-limits cases
 
 - guard-hook: audit pending
 
