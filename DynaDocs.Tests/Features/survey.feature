@@ -1,4 +1,4 @@
-# Job: contract: DR 063 §1 §4 §5 (each scenario pins one of their rules through the command: by scenario, §4's findings one line each sorted by kind then key; §5's argument shapes with their exits, the unknown Project, and a Linear failure exiting 2 and named; §1's shared key help with no request, and a read whose every request is a query)
+# Job: contract: DR 063 - dydo survey, a read-only, on-demand digest of one Project's lanes, at its command boundary
 @survey
 Feature: Survey a Project's lanes
   dydo survey reads one Linear Project on demand, with the user's key, and prints a short digest:

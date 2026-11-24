@@ -7,7 +7,7 @@ using DynaDocs.Utils;
 public class MapCommandTests
 {
     [Theory]
-    [Trait("Job", "contract: DR 052 §2; dydo-commands-linear.md dydo map (without a key, by row null, empty or blank, it prints how to create one and exits 2: exit 2, stderr exactly the key help)")]
+    [Trait("Job", "contract: dydo-commands-linear.md dydo map - without a key it prints how to create one and exits 2")]
     [InlineData(null)]
     [InlineData("")]
     [InlineData("   ")]
@@ -25,7 +25,7 @@ public class MapCommandTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 052 §2; dydo-commands-linear.md dydo map (with LINEAR_API_KEY unset, the command line `dydo map --no-browser` exits 2)")]
+    [Trait("Job", "contract: DR 052 §2 - when the key is missing, the command exits 2")]
     public async Task MissingKey_ThroughTheCommandLine_Exits2()
     {
         var saved = Environment.GetEnvironmentVariable("LINEAR_API_KEY");
@@ -45,7 +45,7 @@ public class MapCommandTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 052 §3; dydo-commands-linear.md dydo map (with a key it serves on localhost and prints that URL: exit 0 once stopped, stdout holding `http://localhost:` and not the key; on the browser row it opens one localhost URL)")]
+    [Trait("Job", "contract: dydo-commands-linear.md dydo map - it prints its http://localhost URL")]
     [InlineData(true)]
     [InlineData(false)]
     public async Task WithAKey_ServesOnLocalhost_OpensTheBrowserUnlessToldNot_AndStopsOnCancel(bool browser)

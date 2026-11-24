@@ -44,7 +44,7 @@ public class SurveyRulesTests
         [.. findings.Where(finding => finding.Kind == kind).Select(finding => finding.Key)];
 
     [Theory]
-    [Trait("Job", "contract: DR 063 §4, unblocked and what open means (an unassigned Project issue in the row's open state, backlog and triage included, whose every blocker is closed, completed or canceled, is unblocked, listed once though two relations name the same blocker: exactly DYD-1)")]
+    [Trait("Job", "contract: DR 063 §4 - unblocked: an open, unassigned issue with at least one blocks relation into it, where every blocker is closed")]
     [InlineData("triage")]
     [InlineData("backlog")]
     [InlineData("unstarted")]
@@ -59,7 +59,7 @@ public class SurveyRulesTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §4, unblocked (an open, unassigned issue linked from the Project, outside it, whose blocker in the graph is closed as a duplicate, is unblocked: exactly DYD-9)")]
+    [Trait("Job", "contract: DR 063 §4 - unblocked: an open, unassigned issue in the Project or linked from it, where every blocker is closed")]
     public void Unblocked_IncludesAnIssueLinkedFromTheProject()
     {
         var findings = Survey([Issue(1, "duplicate")], external: [Issue(9, "backlog", external: true)],
@@ -69,7 +69,7 @@ public class SurveyRulesTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §4, unblocked (no issue is unblocked: not one with an open blocker beside a closed one, an assigned one, a closed one, nor one only related to a closed issue)")]
+    [Trait("Job", "contract: DR 063 §4 - unblocked: an open, unassigned issue with at least one blocks relation into it, where every blocker is closed")]
     public void Unblocked_NotWhileABlockerIsOpen_NorWhenAssigned_Closed_OrOnlyRelated()
     {
         var findings = Survey(
@@ -80,7 +80,7 @@ public class SurveyRulesTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §4, pickable (the map viewer's rule, unstarted, unassigned, no open blocker, minus issues listed as unblocked: beside backlog, started, assigned, openly blocked, closed-blocked and linked issues, pickable is exactly DYD-1 and unblocked exactly DYD-2)")]
+    [Trait("Job", "contract: DR 063 §4 - pickable: the map viewer's rule, minus issues already listed as unblocked")]
     public void Pickable_IsTheViewersRule_MinusIssuesAlreadyUnblocked()
     {
         var findings = Survey(
@@ -93,7 +93,7 @@ public class SurveyRulesTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §4, uncontracted (an unassigned backlog Project issue with no open blocker is uncontracted, with the reason `Backlog, unassigned, no open blocker`, and never pickable: beside openly blocked, assigned and linked backlog issues, uncontracted is exactly DYD-1 and DYD-5, and pickable exactly DYD-7)")]
+    [Trait("Job", "contract: DR 063 §4 - uncontracted: an unassigned Project issue in a backlog-type state with no open blocker, never pickable")]
     public void Uncontracted_AnUnassignedBacklogProjectIssue_WithNoOpenBlocker_IsNeverPickable()
     {
         var findings = Survey(
@@ -109,7 +109,7 @@ public class SurveyRulesTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §4, question-no-priority (an open Project issue labelled Question with no priority is listed: beside a prioritised Question, a closed one and an open issue without the label, exactly DYD-1)")]
+    [Trait("Job", "contract: DR 063 §4 - question-no-priority: an open Project issue labelled Question with no priority")]
     public void QuestionNoPriority_AnOpenQuestionWithNoPriority()
     {
         var findings = Survey(
@@ -121,7 +121,7 @@ public class SurveyRulesTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §4, sorted by kind and then key (the kept findings come in exactly that order, DYD-10 after DYD-3)")]
+    [Trait("Job", "contract: DR 063 §4 - sorted by kind and then key")]
     public void Findings_AreSortedByKind_ThenByKeyNumber()
     {
         var findings = Survey(
@@ -133,7 +133,7 @@ public class SurveyRulesTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §4 (a Project of an assigned started issue and a closed one has no finding of a kept kind)")]
+    [Trait("Job", "contract: DR 063 §4 - a finding only where its kind's rule holds")]
     public void AQuietProject_HasNoFindings() =>
         Assert.Empty(Survey([Issue(1, "started", "Ada"), Issue(2, "completed")]));
 }

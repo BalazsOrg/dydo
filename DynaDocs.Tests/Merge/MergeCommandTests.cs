@@ -18,7 +18,7 @@ public sealed class MergeCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §1; dydo-commands-delivery.md dydo merge (the command line `<pr> --match-head-commit <sha> --match-base-commit <tip> --dry-run`, run in the project's checkout, merges nothing: exit 0, PR #7 read, nothing written)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge - --dry-run makes every read and check and merges nothing")]
     public void TheCommand_MergesThePrItParsesFromTheCurrentDirectory()
     {
         Environment.CurrentDirectory = _s.Root;
@@ -34,7 +34,7 @@ public sealed class MergeCommandTests : IDisposable
 
     // Proof (e): the base pin is validated like the head pin, before any GitHub call.
     [Theory]
-    [Trait("Job", "contract: DR 061 2026-11-04 amendment; dydo-commands-delivery.md dydo merge (a base pin that is not a full 40-character SHA, by row missing, short, long, non-hex or a branch name, refuses before any network call: exit 1, a `refused:` line, no GitHub call)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge - both pins are required and validated before any network call")]
     [InlineData(null)]
     [InlineData("1111111")]
     [InlineData("111111111111111111111111111111111111111")]
@@ -52,7 +52,7 @@ public sealed class MergeCommandTests : IDisposable
 
     // As with the head pin, upper-case hex names the same commit.
     [Fact]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge (--match-base-commit takes the full SHA of the tip: the tip's SHA in upper-case hex is that tip, so a dry run exits 0 and writes nothing)")]
+    [Trait("Job", "edge: a base pin in upper-case hex")]
     public void AnUpperCaseBasePin_IsTheSameTip()
     {
         const string tip = "abcdef1111111111111111111111111111111111";
@@ -73,7 +73,7 @@ public sealed class MergeCommandTests : IDisposable
 
     // The released command, with the real gh behind it: no pins refuses before gh is ever asked.
     [Fact]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge (both pins are required: the released command given neither refuses, exit 1, a `refused:` line)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge - both are required")]
     public void WithoutPins_TheReleasedCommandRefuses()
     {
         var (exit, _, stderr) = ConsoleCapture.All(() => MergeCommand.Create().Parse(["7"]).Invoke());

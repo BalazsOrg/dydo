@@ -12,7 +12,7 @@ public class LinearGraphQLTests
         _linear.Transport().QueryAsync("query Teams { teams { nodes { id } } }", new() { ["after"] = null }, CancellationToken.None);
 
     [Fact]
-    [Trait("Job", "trap: a Linear personal API key is rejected with the Bearer scheme, so it goes bare (DYD-264)")]
+    [Trait("Job", "contract: the visual Linear project map plan §3, which DYD-264 builds - Authorization: <LINEAR_API_KEY> (no Bearer)")]
     public async Task TheKeyIsSentBare()
     {
         _linear.Serve(_ => """{"data":{"teams":{"nodes":[]}}}""");
@@ -23,7 +23,7 @@ public class LinearGraphQLTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 052 §3; DR 063 §5 (a Linear failure is named, never the key)")]
+    [Trait("Job", "contract: the visual Linear project map plan §3 HTTP API contract, which DYD-264 serves - each Linear failure is one of its error codes, with that code's status")]
     [InlineData(HttpStatusCode.OK, """{"errors":[{"message":"Field 'x' is unknown"}],"data":null}""", "linear_error", 502)]
     [InlineData(HttpStatusCode.OK, """{"errors":[{"message":"partial"}],"data":{"teams":null}}""", "linear_error", 502)]
     [InlineData(HttpStatusCode.BadRequest,
@@ -49,7 +49,7 @@ public class LinearGraphQLTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 063 §5 (a network failure is named: by row, an unreachable and a slow Linear each raise the one linear_error failure)")]
+    [Trait("Job", "edge: Linear unreachable, or too slow to answer")]
     [InlineData("unreachable")]
     [InlineData("slow")]
     public async Task UnreachableOrSlowLinear_IsALinearError(string failure)

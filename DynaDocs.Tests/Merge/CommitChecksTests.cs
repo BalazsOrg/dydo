@@ -25,14 +25,14 @@ public sealed class CommitChecksTests : IDisposable
     private void SuitesAre(params JsonObject[] suites) => _s.GitHub.On("GET", Suites, Reply(200, SuitePage(suites)));
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (a suite and a run that finished success, with no legacy status listed, are green: no refusal)")]
+    [Trait("Job", "contract: DYD-417 design e6a6affe §2 CI rule - the combined status counts only when its total_count is above 0")]
     public void GreenSuiteAndRunWithNoLegacyStatuses_IsGreen()
     {
         Assert.Null(Refusal());
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §5 (every latest check run must finish green, and unknown states always refuse: a run in the row's unfinished status, a known one or an unknown one, refuses)")]
+    [Trait("Job", "contract: DR 061 §5 - every latest check run must finish green")]
     [InlineData("queued")]
     [InlineData("in_progress")]
     [InlineData("pending")]
@@ -47,7 +47,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §5 (any unfinished suite refuses whatever its run count, and unknown states always refuse: a suite holding runs in the row's status, a known one or an unknown one, refuses, the refusal naming that status)")]
+    [Trait("Job", "contract: DR 061 §5 - any unfinished suite then refuses, whatever its run count")]
     [InlineData("queued")]
     [InlineData("in_progress")]
     [InlineData("pending")]
@@ -62,7 +62,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §5 (a suite and a run that completed with the row's green conclusion, success, neutral or skipped, pass: no refusal)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Checks - suites and runs must finish with success, neutral or skipped")]
     [InlineData("success")]
     [InlineData("neutral")]
     [InlineData("skipped")]
@@ -75,7 +75,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §5 (runs must finish with success, neutral or skipped, and unknown states always refuse: a completed run with the row's other conclusion, a known one or an unknown one, refuses)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Checks - suites and runs must finish with success, neutral or skipped")]
     [InlineData("failure")]
     [InlineData("cancelled")]
     [InlineData("timed_out")]
@@ -91,7 +91,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (runs must finish with success, neutral or skipped: a completed run with no conclusion refuses)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Checks - suites and runs must finish with success, neutral or skipped")]
     public void ACompletedRunWithoutAConclusion_IsNotGreen()
     {
         RunsAre(Run("build", "completed", null));
@@ -100,7 +100,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (every latest check run must finish green: a failed run and an unfinished run beside a green one refuse)")]
+    [Trait("Job", "contract: DR 061 §5 - every latest check run must finish green")]
     public void EveryProblemIsNamed()
     {
         RunsAre(Run("build", "completed", "failure"), Run("lint", "completed", "success"), Run("e2e", "in_progress", null));
@@ -109,7 +109,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Checks (every latest check run is read to the last page: a failed run on page two, after a full green page one, refuses)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Checks - every latest check run is read to the last page")]
     public void AFailureBeyondPageOne_IsRead()
     {
         var green = Enumerable.Range(0, 100).Select(i => Run($"shard {i}", "completed", "success")).ToArray();
@@ -122,7 +122,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §5 (legacy statuses must be success, and unknown states always refuse: a legacy status in the row's other state, a known one or an unknown one, refuses beside a success one)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Checks - legacy statuses must be success")]
     [InlineData("pending")]
     [InlineData("failure")]
     [InlineData("error")]
@@ -135,7 +135,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (every check enforced branch protection requires must be present: the one no run or status provides refuses, and the two a run and a status provide are not reported missing)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Checks - every check the target's branch protection requires must be present")]
     public void ARequiredCheckMissing_IsNotGreen()
     {
         var required = _s.BranchJson["protection"]!["required_status_checks"]!;
@@ -147,7 +147,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (only checks branch protection requires must be present: protection whose enforcement is off requires none, so a context it lists that no check provides does not refuse)")]
+    [Trait("Job", "edge: branch protection that is off while it still lists a required context")]
     public void RequiredChecksOfProtectionThatIsOff_AreNotRequired()
     {
         _s.BranchJson["protection"]!["required_status_checks"]!["contexts"] = new JsonArray("deploy-preview");
@@ -156,7 +156,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (every check a ruleset requires must be present: the one no run provides refuses, and the one a run provides is not reported missing)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Checks - every check the target's rulesets require must be present")]
     public void ARulesetsRequiredCheckMissing_IsNotGreen()
     {
         _s.GitHub.On("GET", Rules, Reply(200, """
@@ -171,7 +171,7 @@ public sealed class CommitChecksTests : IDisposable
 
     // bodnarbalazs/LC is private on GitHub's free plan, which has no rulesets and answers 403 for them.
     [Fact]
-    [Trait("Job", "trap: bodnarbalazs/LC, private on GitHub's free plan, answers rulesets with a 403 asking for an upgrade; that answer requires no ruleset check and does not refuse")]
+    [Trait("Job", "trap: a private repository on GitHub's free plan answers rulesets with a 403 (bodnarbalazs/LC, DYD-424)")]
     public void ARepositoryWhosePlanHasNoRulesets_RequiresNoRulesetChecks()
     {
         _s.GitHub.On("GET", Rules, Reply(403, """{ "message": "Upgrade to GitHub Pro or make this repository public to enable this feature.", "status": "403" }"""));
@@ -180,7 +180,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (an unexpected 403 for the rulesets, not the plan's upgrade answer, is a tool error: exit code 2, with GitHub's message)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge - an unexpected GitHub answer such as a 403 is a tool error, with GitHub's message")]
     public void RulesetsGitHubWillNotShow_AreAToolError()
     {
         _s.GitHub.On("GET", Rules, Reply(403, """{ "message": "Resource not accessible by integration" }"""));
@@ -192,7 +192,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (with no suite left, it refuses `no checks reported`: no suite on the SHA)")]
+    [Trait("Job", "contract: DR 061 §5 - with no suite left, the command refuses no checks reported")]
     public void ZeroSuites_IsNoChecks()
     {
         SuitesAre();
@@ -203,7 +203,7 @@ public sealed class CommitChecksTests : IDisposable
 
     // blacksmith-sh leaves a queued suite with no runs on every bodnarbalazs/dydo and LC commit.
     [Theory]
-    [Trait("Job", "contract: DR 061 §5 (blacksmith-sh's suite in the row's status, one of the five the exception lists, with a valid zero run count is ignored: beside a green suite, no refusal)")]
+    [Trait("Job", "contract: DR 061 §5 - the inert app's suite is ignored only when its status is queued, in_progress, pending, requested or waiting and latest_check_runs_count is a valid integer zero")]
     [InlineData("queued")]
     [InlineData("in_progress")]
     [InlineData("pending")]
@@ -217,7 +217,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (with no suite left after the exception, it refuses `no checks reported`: blacksmith-sh's ignored queued suite was the only one)")]
+    [Trait("Job", "contract: DR 061 §5 - with no suite left after the exception, the command refuses no checks reported")]
     public void OnlyAnInertAppsQueuedSuiteThatHoldsNoRun_IsNoChecks()
     {
         SuitesAre(Suite("blacksmith.sh", "queued", null, runs: 0, slug: "blacksmith-sh"));
@@ -227,7 +227,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (blacksmith-sh's unfinished suite that holds a run is not exempt and refuses, the refusal naming its slug and status)")]
+    [Trait("Job", "contract: DR 061 §5 - every non-exempt suite is judged normally")]
     public void AnInertAppsSuiteWithARun_IsJudged()
     {
         SuitesAre(Suite("blacksmith.sh", "in_progress", null, runs: 1, slug: "blacksmith-sh"), Suite("GitHub Actions", "completed", "success"));
@@ -236,7 +236,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §5 (an app off the inert list whose suite holds no run refuses in the row's unfinished status, a known one or an unknown one, the refusal naming its slug and that status)")]
+    [Trait("Job", "contract: DR 061 Consequences - an unlisted app's unfinished suite refuses even with zero runs")]
     [InlineData("queued")]
     [InlineData("requested")]
     [InlineData("mystery")]
@@ -248,7 +248,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §5 (every non-exempt suite is judged normally: a completed suite that holds no run and concluded startup_failure refuses)")]
+    [Trait("Job", "contract: DR 061 §5 - every non-exempt suite is judged normally")]
     public void ACompletedSuiteThatHoldsNoRun_StillCounts()
     {
         SuitesAre(Suite("GitHub Actions", "completed", "startup_failure", runs: 0));
@@ -258,7 +258,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §5 (blacksmith-sh's completed suite with zero runs is not exempt and is judged normally: the success row passes, the failure and no-conclusion rows refuse)")]
+    [Trait("Job", "contract: DR 061 §5 - every non-exempt suite is judged normally")]
     [InlineData("success", null)]
     [InlineData("failure", "blacksmith-sh failure")]
     [InlineData(null, "blacksmith-sh no conclusion")]
@@ -270,7 +270,7 @@ public sealed class CommitChecksTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (check runs gh cannot reach GitHub for are a tool error: exit code 2, an `error:` line)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge - the network is a tool error")]
     public void UnreadableChecks_AreAToolError()
     {
         _s.GitHub.On("GET", Runs, Reply(0));

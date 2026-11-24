@@ -22,7 +22,7 @@ public class LinearReaderTests
         Assert.Equal(expected.ToHashSet(), actual.ToHashSet());
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-linear.md dydo map, GET /api/teams (the teams the page reads are every team, across Linear's two pages)")]
+    [Trait("Job", "edge: a workspace whose teams span two of Linear's pages")]
     public async Task Teams_AreReadAcrossEveryPage()
     {
         _linear.Serve(call => call.Var("after") == null
@@ -35,7 +35,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo 3.1.1 changelog, the Project combobox grouped by status and sorted by target date, completion and cancellation (a team's Projects carry their status, target date, completedAt and canceledAt, each null when unset)")]
+    [Trait("Job", "contract: dydo 3.1.1 changelog - Projects group by status, each sorted by target date with undated last, and completed Projects list newest-first")]
     public async Task Projects_OfOneTeam_CarryTheirStatusAndDates_OrNullWhenUnset()
     {
         _linear.Serve(_ => """
@@ -56,7 +56,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §5, an unknown Project (a team and a Project Linear answers null for are each the not_found failure, status 404)")]
+    [Trait("Job", "contract: the visual Linear project map plan §3 HTTP API contract, which DYD-264 serves - the not_found (404) error")]
     public async Task AnUnknownTeamOrProject_IsNotFound()
     {
         _linear.Serve(call => call.Operation == "TeamProjects" ? """{"data":{"team":null}}""" : """{"data":{"project":null}}""");
@@ -69,7 +69,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §2, the Project's non-archived issues (a Project's issues are read across all three of Linear's pages: all 43)")]
+    [Trait("Job", "contract: DR 063 §2 - the Project's non-archived issues")]
     public async Task Graph_ReadsEveryIssuePage()
     {
         static string Page(int from, int count) =>
@@ -87,7 +87,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §2 §4, the one reader the map and the survey share; DYD-264 Outcome, the plan §3 contract (the graph names its Project, and each issue carries its identifier, title, URL, state and state type, assignee, team, Project, labels and parent; an absent, null or empty label connection reads as no labels)")]
+    [Trait("Job", "contract: the visual Linear project map plan §3 HTTP API contract, which DYD-264 serves - the Graph's project and an Issue's fields")]
     public async Task Graph_CarriesEachIssuesFields()
     {
         _linear.Serve(_ => IssuesPage(
@@ -110,7 +110,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §2, their blocks and related relations (of four relation types, only blocks and related are kept, a blocks relation listed from both ends once: exactly two relations, no external issue)")]
+    [Trait("Job", "contract: DYD-264 Outcome - dedupe relations by id; keep blocks and related only")]
     public async Task Graph_KeepsBlocksAndRelatedOnce_DropsDuplicateAndSimilar()
     {
         _linear.Serve(_ => IssuesPage(
@@ -130,7 +130,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §2, the linked far ends outside it; DR 052 §5, an external blocker outside every Project (far ends in another Project and in none are external, with their Project or none, and their relations are kept; the Project's issues are only its own)")]
+    [Trait("Job", "contract: DYD-264 Outcome - external far-end issues go in external")]
     public async Task Graph_FarEndsOutsideTheProject_AreExternal_WithOrWithoutAProject()
     {
         _linear.Serve(_ => IssuesPage(
@@ -154,7 +154,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 052 §5, archived issues are excluded with every relation touching one (an archived member and an archived far end are dropped, and so are both relations touching them)")]
+    [Trait("Job", "contract: DR 052 §5 - archived issues are excluded, together with every relation touching one")]
     public async Task Graph_DropsArchivedIssues_AndEveryRelationTouchingOne()
     {
         const string archived = "\"2026-09-01T00:00:00.000Z\"";
@@ -173,7 +173,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 052 §5, a resolved blocker keeps its blocks edge (a Done blocker's relation is the one blocks relation, from the blocker to the blocked)")]
+    [Trait("Job", "contract: DR 052 §5 - a resolved blocker keeps its blocks edge")]
     public async Task Graph_AResolvedBlocker_StaysABlocksRelation()
     {
         _linear.Serve(_ => IssuesPage(
@@ -186,7 +186,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "edge: an issue whose relation lists run past their first page is read through IssueRelationsPage until both lists end, the finished one answering an empty page (DYD-264): every relation and far end on every page")]
+    [Trait("Job", "contract: DYD-264 Outcome - an IssueRelationsPage follow-up when nested hasNextPage is true")]
     public async Task Graph_RelationOverflow_IsReadUntilBothListsEnd()
     {
         _linear.Serve(call => (call.Operation, call.Var("after"), call.Var("invAfter")) switch
@@ -215,7 +215,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §5, a ticket that vanishes mid-read (an issue whose relation overflow page answers no issue is the not_found failure)")]
+    [Trait("Job", "edge: an issue Linear no longer has when its relation overflow is read")]
     public async Task Graph_OverflowOnAnIssueLinearNoLongerHas_IsNotFound()
     {
         _linear.Serve(call => call.Operation == "ProjectIssues"
@@ -228,7 +228,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §2, the survey adds the Project body, each issue's priority and each Project issue's parent identifier (the read names the Project and carries its body, the priority of each issue, a linked far end's included, and the parent identifier of the one Project issue that has one)")]
+    [Trait("Job", "contract: DR 063 §2 - the survey adds the Project body, each issue's priority, and each Project issue's parent identifier")]
     public async Task ReadProject_CarriesTheBody_EveryIssuesPriority_AndEachParentIdentifier()
     {
         _linear.Serve(call => call.Operation == "ProjectIssues"
@@ -246,7 +246,7 @@ public class LinearReaderTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 063 §2 §5 (by row: a Project with no body reads as an empty body, and a Project Linear answers null for is the not_found failure)")]
+    [Trait("Job", "edge: Linear answering null for the Project, or for its body")]
     [InlineData("""{"data":{"project":{"content":null}}}""", null)]
     [InlineData("""{"data":{"project":null}}""", "not_found")]
     public async Task ReadProject_WithoutABody_IsEmpty_AndWithoutAProject_IsNotFound(string answer, string? code)

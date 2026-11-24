@@ -15,7 +15,7 @@ public sealed class FeatureBranchTests : IDisposable
     public void Dispose() => _s.Dispose();
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Base (a base of feature/ and the row's segments, each starting with a letter or digit, that passes git's branch-name rule is a feature branch)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Base - it must be feature/ and one or more /-separated segments, each starting with a letter or digit, and pass git check-ref-format --branch")]
     [InlineData("feature/x")]
     [InlineData("feature/a/b")]
     [InlineData("feature/DYD-417_lane.A")]
@@ -25,7 +25,7 @@ public sealed class FeatureBranchTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Base (a base that fails the fixed feature/ segment pattern or git's branch-name rule, by row, is not a feature branch)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Base - it must be feature/ and one or more /-separated segments, each starting with a letter or digit, and pass git check-ref-format --branch")]
     [InlineData("feature/../master")]
     [InlineData("refs/heads/feature/x")]
     [InlineData("master")]
