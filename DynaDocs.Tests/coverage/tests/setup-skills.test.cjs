@@ -45,7 +45,7 @@ function snapshot(root) {
   return entries;
 }
 
-// Job: contract: README "Adopting the skills" step 3, every skill linked flat into both host roots (DYD-219)
+// Job: contract: README "Install the skills" step 3, every skill linked flat into both host roots (DYD-219)
 test('both host roots link every skill flat, whatever category depth holds it', () => {
   inRoot((root) => {
     const skills = { alpha: 'engineering', beta: 'productivity', gamma: 'roles/crew' };
@@ -63,7 +63,7 @@ test('both host roots link every skill flat, whatever category depth holds it', 
   });
 });
 
-// Job: contract: README "Adopting the skills", the script is safe to rerun
+// Job: contract: README "Install the skills", the script is safe to rerun
 test('a rerun exits zero and leaves every link exactly as it was', () => {
   inRoot((root) => {
     writeSkill(root, 'engineering', 'alpha');
@@ -78,7 +78,7 @@ test('a rerun exits zero and leaves every link exactly as it was', () => {
   });
 });
 
-// Job: trap: README "Adopting the skills", it checks its whole plan before creating anything and
+// Job: trap: README "Install the skills", it checks its whole plan before creating anything and
 // never replaces host configuration or unrelated skills (DYD-91, DYD-225)
 for (const [kind, occupy] of [
   ['a human-owned directory', (root, target) => {

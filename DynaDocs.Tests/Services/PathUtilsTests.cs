@@ -8,10 +8,12 @@ using Xunit;
 /// that climbs above a root, or a UNC share root read as a plain folder, is a bypass. The main
 /// project root is how a worktree finds the checkout that owns its shared state.
 /// </summary>
-[Trait("Job", "trap: DYD-396, DYD-547 ('..' and UNC/device roots in guarded paths); edge: both host readings on any host")]
 public class PathUtilsTests
 {
+    private const string CollapseJob = "trap: DYD-396, DYD-547 ('..' and UNC/device roots in guarded paths); edge: both host readings on any host";
+
     [Theory]
+    [Trait("Job", CollapseJob)]
     [InlineData("a/b/c", "a/b/c")]
     [InlineData("a/./b", "a/b")]
     [InlineData("a/b/../c", "a/c")]
@@ -19,8 +21,6 @@ public class PathUtilsTests
     [InlineData("C:/x/y/../z", "C:/x/z")]
     [InlineData("C:\\x\\y\\..\\z", "C:/x/z")]
     [InlineData("/home/u/.claude/projects/p/memory/../../../../etc/secret", "/home/u/etc/secret")]
-    [InlineData("a/../../escape", "../escape")]      // relative escape kept (can't be mistaken for a trusted root)
-    [InlineData("/a/../../escape", "/escape")]        // rooted '..' at top is dropped
     public void CollapseRelativeSegments_ResolvesDotDot(string input, string expected)
     {
         Assert.Equal(expected, PathUtils.CollapseRelativeSegments(input));
@@ -60,13 +60,14 @@ public class PathUtilsTests
         { "//?/x/../..", "//?/", "/" },
         { "C:", "C:", "C:" },
         { "c:..", "c:..", "c:.." },
-        { "/a/../../escape", "/escape", "/escape" },
-        { "a/../../escape", "../escape", "../escape" },
+        { "/a/../../escape", "/escape", "/escape" },        // rooted '..' at top is dropped
+        { "a/../../escape", "../escape", "../escape" },     // relative escape kept (can't be mistaken for a trusted root)
     };
 
     // The host-independent seam runs both readings on every host, so a Linux run exercises the
     // Windows root forms too (DYD-547).
     [Theory]
+    [Trait("Job", CollapseJob)]
     [MemberData(nameof(RootForms))]
     public void CollapseRelativeSegments_BothReadings_OnAnyHost(string input, string windowsExpected, string otherExpected)
     {
