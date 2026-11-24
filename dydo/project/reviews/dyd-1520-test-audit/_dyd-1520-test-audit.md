@@ -19,7 +19,7 @@ Each batch's PR replaces its own line with a link to its audit.
 
 - guard-shell: audit pending
 
-- guard-hook: audit pending
+- [Guard-hook audit](./guard-hook.md) - The hook entry, apply_patch, the @ argument, refusal, warn order, new-file nudges, host memory, Claude wiring
 
 - guard-routes: audit pending
 
