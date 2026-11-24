@@ -10,7 +10,7 @@ using static MergeScenario;
 /// names, whatever <c>GH_REPO</c>, <c>GH_HOST</c> or <c>GIT_DIR</c> say.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DR 061 §2 (the repository is the one origin names)")]
+[Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the repository origin names, the checkout rooted at dydo.json, the local origin/HEAD name, an SSH alias host a tool error, GH_REPO, GH_HOST and GIT_DIR ignored)")]
 public sealed class MergeCheckoutTests : IDisposable
 {
     private readonly MergeScenario _s = new();

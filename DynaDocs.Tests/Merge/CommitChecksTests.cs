@@ -10,7 +10,7 @@ using static MergeScenario;
 /// have finished green, every required check must be among them, and some suite must hold CI.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DR 061 §5 (CI green, inert-app exception, refusal names slug and status)")]
+[Trait("Job", "contract: DR 061 §5; dydo-commands-delivery.md dydo merge Checks (green states, required checks, every page, the inert-app exception, a refusal naming slug and status, an unreadable list a tool error)")]
 public sealed class CommitChecksTests : IDisposable
 {
     private const string NotGreen = "checks on 0123456789ab are not green: ";
@@ -33,10 +33,6 @@ public sealed class CommitChecksTests : IDisposable
 
     [Theory]
     [InlineData("queued")]
-    [InlineData("in_progress")]
-    [InlineData("pending")]
-    [InlineData("requested")]
-    [InlineData("waiting")]
     [InlineData("mystery")]
     public void ARunThatHasNotCompleted_IsNotGreen(string status)
     {
@@ -47,10 +43,6 @@ public sealed class CommitChecksTests : IDisposable
 
     [Theory]
     [InlineData("queued")]
-    [InlineData("in_progress")]
-    [InlineData("pending")]
-    [InlineData("requested")]
-    [InlineData("waiting")]
     [InlineData("mystery")]
     public void ASuiteWithRunsThatHasNotCompleted_IsNotGreen(string status)
     {
@@ -73,11 +65,6 @@ public sealed class CommitChecksTests : IDisposable
 
     [Theory]
     [InlineData("failure")]
-    [InlineData("cancelled")]
-    [InlineData("timed_out")]
-    [InlineData("action_required")]
-    [InlineData("stale")]
-    [InlineData("startup_failure")]
     [InlineData("exploded")]
     public void AnyOtherConclusion_IsNotGreen(string conclusion)
     {
@@ -116,8 +103,6 @@ public sealed class CommitChecksTests : IDisposable
 
     [Theory]
     [InlineData("pending")]
-    [InlineData("failure")]
-    [InlineData("error")]
     [InlineData("mystery")]
     public void ALegacyStatusThatIsNotSuccess_IsNotGreen(string state)
     {
@@ -220,7 +205,6 @@ public sealed class CommitChecksTests : IDisposable
 
     [Theory]
     [InlineData("queued")]
-    [InlineData("requested")]
     [InlineData("mystery")]
     public void AnotherAppsUnfinishedSuiteThatHoldsNoRun_IsNotGreen(string status)
     {

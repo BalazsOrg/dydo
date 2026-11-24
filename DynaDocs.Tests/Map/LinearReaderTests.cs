@@ -9,7 +9,7 @@ using static LinearJson;
 /// issues dropped with their relations, only <c>blocks</c> and <c>related</c> kept (DR 052 §1 and §5,
 /// DR 063 §2). Order is not part of the read; each assertion compares sets.
 /// </summary>
-[Trait("Job", "contract: DR 052 §1 §5; DR 063 §2")]
+[Trait("Job", "contract: DR 052 §1 §5; DR 063 §2; dydo-commands-linear.md (the teams, a team's Projects and a Project's graph the map page reads; the priorities, parents and body the survey reads)")]
 public class LinearReaderTests
 {
     private const string Done = """{"name":"Done","type":"completed","color":"#5e6ad2"}""";

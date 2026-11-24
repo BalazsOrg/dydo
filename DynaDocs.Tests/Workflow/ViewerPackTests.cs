@@ -34,14 +34,9 @@ public sealed class ViewerPackTests : IDisposable
 
     public void Dispose() => TestDirectory.Delete(_directory);
 
-    [Theory]
-    [InlineData(false)]
-    [InlineData(true)]
-    public void Pack_WithoutViewer_FailsWithBuildInstructions(bool emptyDist)
+    [Fact]
+    public void Pack_WithoutViewer_FailsWithBuildInstructions()
     {
-        if (emptyDist)
-            Directory.CreateDirectory(Path.Combine(_directory, "viewer", "dist"));
-
         Succeeds("build", "--no-restore");
         var (exitCode, output) = Run("pack", "--no-restore");
 

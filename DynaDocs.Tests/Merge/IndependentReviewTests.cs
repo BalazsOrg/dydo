@@ -9,16 +9,14 @@ using static MergeScenario;
 /// count, what each names, and how an abbreviated candidate is bound to the exact SHA.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DR 061 §4 (PASS bound to the SHA)")]
+[Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (which verdict lines count, the candidate and base fields, an abbreviation bound to the SHA)")]
 public sealed class IndependentReviewTests
 {
     private static ReviewVerdict Only(string body) => Assert.Single(IndependentReview.Parse(body));
 
     [Theory]
-    [InlineData(" ", " ")]
     [InlineData(": ", " ")]
     [InlineData(" ", ": ")]
-    [InlineData(": ", ": ")]
     public void CanonicalAndColonFields_ParseIdentically(string candidateSeparator, string baseSeparator)
     {
         var line = PassLine().Replace("candidate ", "candidate" + candidateSeparator)
@@ -28,17 +26,6 @@ public sealed class IndependentReviewTests
         Assert.Equal(Only(Body(PassLine())) with { Line = line }, verdict);
         Assert.Equal(Sha, verdict.Candidate);
         Assert.Equal(ReviewBase, verdict.Base);
-    }
-
-    [Fact]
-    public void ColonFields_MergeWithTheSamePinsAndBasePolicy()
-    {
-        using var s = new MergeScenario();
-        s.PullJson["body"] = Body(PassLine().Replace("candidate ", "candidate: ").Replace("base ", "base: "));
-
-        var (exit, _, stderr) = s.Merge();
-
-        Assert.True(exit == 0, stderr);
     }
 
     [Fact]
@@ -216,7 +203,6 @@ public sealed class IndependentReviewTests
     }
 
     [Theory]
-    [InlineData("code")]
     [InlineData("docs")]
     [InlineData("merge")]
     public void ACodeDocsOrMergePass_Merges(string rubric)

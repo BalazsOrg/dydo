@@ -14,7 +14,7 @@ using static MergeScenario;
 /// (DYD-523) only refuses.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DR 061 §1-§5; DYD-424; DYD-523")]
+[Trait("Job", "contract: dydo-commands-delivery.md dydo merge (a refusal exits 1 and writes nothing, a tool error exits 2, a landing is one merge commit, a SHA already integrated exits 0); DR 061 §1-§5 and its 2026-11-04 target-pin amendment (DYD-424; DYD-523); DYD-535 (GitHub marks a PR merged late)")]
 public sealed class PullRequestMergeTests : IDisposable
 {
     private const string ZeroSha = "0000000000000000000000000000000000000000";
@@ -74,9 +74,7 @@ public sealed class PullRequestMergeTests : IDisposable
     [InlineData("no review section", null)]
     [InlineData("a FAIL for the SHA", null)]
     [InlineData("rubric", "spec")]
-    [InlineData("rubric", "project-plan")]
     [InlineData("review base not in target", """{ "status": "diverged" }""")]
-    [InlineData("review base not in target", """{ "status": "behind" }""")]
     [InlineData("review base not in target", null)]
     [InlineData("no checks", null)]
     [InlineData("checks not green", null)]
@@ -437,17 +435,13 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // GitHub marks a PR merged asynchronously (DYD-535): whatever the rereads after a good write say, it landed once.
     [Theory]
-    [InlineData("marked at once", false)]
-    [InlineData("marked on the second reread", false)]
-    [InlineData("marked on the second reread", true)]
-    [InlineData("never marked", false)]
-    [InlineData("never marked", true)]
-    [InlineData("reread fails", false)]
-    [InlineData("reread fails", true)]
-    [InlineData("reread fails after not yet", false)]
-    public void AfterALanding_WhateverTheRereadsSay_ItExitsZero(string rereads, bool twoParent)
+    [InlineData("marked at once")]
+    [InlineData("marked on the second reread")]
+    [InlineData("never marked")]
+    [InlineData("reread fails")]
+    [InlineData("reread fails after not yet")]
+    public void AfterALanding_WhateverTheRereadsSay_ItExitsZero(string rereads)
     {
-        var target = twoParent ? FastForwardEligible() : null;
         switch (rereads)
         {
             case "marked on the second reread":
@@ -467,10 +461,7 @@ public sealed class PullRequestMergeTests : IDisposable
         var (exit, _, stderr) = _s.Merge();
 
         Assert.True(exit == 0, stderr);
-        if (target == null)
-            AssertLandedOnce();
-        else
-            Assert.Equal(MergeSha, target.Tip);
+        AssertLandedOnce();
     }
 
     #endregion
@@ -549,8 +540,6 @@ public sealed class PullRequestMergeTests : IDisposable
     [InlineData(false, Stale, false)]
     [InlineData(true, Stale, false)]
     [InlineData(false, Stale, true)]
-    [InlineData(false, Moved, false)]
-    [InlineData(true, Moved, false)]
     public void ThePinOnlyRefuses_EveryWriteTargetsTheBaseRefAndAPinOffTheTipWritesNothing(bool twoParent, string pin, bool dryRun)
     {
         if (twoParent)

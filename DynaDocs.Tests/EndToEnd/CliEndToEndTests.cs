@@ -15,7 +15,7 @@ using System.Diagnostics;
 /// - Startup crashes
 /// </summary>
 [Collection("EndToEnd")]
-[Trait("Job", "edge: the built dydo.dll run as a subprocess (startup, option construction, real exit codes) that in-process parsing cannot reach; contract: dydo-commands-core.md exit codes")]
+[Trait("Job", "edge: the built dydo.dll run as a subprocess, so startup, command construction and the process exit code are real (in-process parsing cannot reach them)")]
 public class CliEndToEndTests : IDisposable
 {
     private readonly string _testDir;
@@ -81,6 +81,7 @@ public class CliEndToEndTests : IDisposable
     #region Init Tests
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (dydo.json and the dydo/ tree)")]
     [InlineData("claude")]
     [InlineData("none")]
     public async Task Init_CreatesProject(string integration)
@@ -96,6 +97,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a fresh init records the running dydo version)")]
     public async Task Init_RecordsTheVersionTheCliReports()
     {
         var initResult = await RunDydoAsync("init none");
@@ -107,6 +109,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init then dydo check exits 0")]
     public async Task Init_ThenCheck_Passes()
     {
         var initResult = await RunDydoAsync("init none");
@@ -119,6 +122,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init and --join (the Claude and Codex agent settings; a join keeps config.toml's bytes)")]
     public async Task Init_All_WritesAndRetainsHostAgentSettingsThroughJoin()
     {
         var init = await RunDydoAsync("init all");
@@ -134,6 +138,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "trap: #0185-#0188 (dydo check on a subfolder reported every cross-folder link broken; fixed in 578386730)")]
     public async Task Check_Subfolder_AcceptsLinksToTargetsOutsideSubfolder()
     {
         var initResult = await RunDydoAsync("init none");
@@ -157,6 +162,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check exit 2 (a tool error)")]
     public async Task Check_NonExistentPath_ReturnsToolError()
     {
         var initResult = await RunDydoAsync("init none");
@@ -169,6 +175,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check exit 2 (a path outside the docs tree)")]
     public async Task Check_PathOutsideDocsTree_ReturnsToolError()
     {
         var initResult = await RunDydoAsync("init none");

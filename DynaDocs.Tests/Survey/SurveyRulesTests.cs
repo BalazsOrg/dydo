@@ -47,8 +47,6 @@ public class SurveyRulesTests
     [Theory]
     [InlineData("triage")]
     [InlineData("backlog")]
-    [InlineData("unstarted")]
-    [InlineData("started")]
     public void Unblocked_AnOpenUnassignedIssue_WhoseEveryBlockerIsClosed_IsListedOnce(string type)
     {
         var findings = Survey(

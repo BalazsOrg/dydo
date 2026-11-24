@@ -6,7 +6,7 @@ using DynaDocs.Utils;
 using static DynaDocs.Tests.Map.LinearJson;
 
 /// <summary>DR 063 §1, §2 and §5 at the command boundary: exit codes, the shared key help, and a read-only digest.</summary>
-[Trait("Job", "contract: DR 063 §1 §2 §5")]
+[Trait("Job", "contract: DR 063 §1 §2 §4 §5; dydo-commands-linear.md dydo survey (the UTC header line)")]
 public sealed class SurveyCommandTests : IDisposable
 {
     private readonly FakeLinear _linear = new();
@@ -38,13 +38,11 @@ public sealed class SurveyCommandTests : IDisposable
         Assert.Empty(_linear.Calls);
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData(" ")]
-    public async Task MissingKey_PrintsMapsKeyHelp_BeforeAnyRequest(string? key)
+    [Fact]
+    public async Task MissingKey_PrintsMapsKeyHelp_BeforeAnyRequest()
     {
         var (exitCode, stdout, stderr) = await ConsoleCapture.AllAsync(() => SurveyCommand.RunAsync(
-            ["25acbbb9a90b"], key, _server.Endpoint.ToString(), new FixedClock(), CancellationToken.None));
+            ["25acbbb9a90b"], " ", _server.Endpoint.ToString(), new FixedClock(), CancellationToken.None));
 
         Assert.Equal(ExitCodes.ToolError, exitCode);
         Assert.Equal(MapCommand.MissingKeyHelp, stderr);

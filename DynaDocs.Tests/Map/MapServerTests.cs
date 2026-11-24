@@ -9,7 +9,7 @@ using static LinearJson;
 /// The map server over real HTTP on localhost, with a fake Linear behind it: DR 052 §1 and §3 and its
 /// 2026-10-04 amendment (<c>/api/saved</c> reads only the cache, <c>/api/graph</c> always reads Linear).
 /// </summary>
-[Trait("Job", "contract: DR 052 §1 §3, amendment 2026-10-04")]
+[Trait("Job", "contract: DR 052 §1 §3 and its 2026-10-04 amendment; dydo-commands-linear.md dydo map (GET only, /api/graph reads Linear afresh, /api/saved answers a null snapshot on a miss)")]
 public sealed class MapServerTests : IAsyncLifetime
 {
     private readonly FakeLinear _linear = new();
@@ -46,7 +46,7 @@ public sealed class MapServerTests : IAsyncLifetime
         JsonDocument.Parse(body).RootElement.GetProperty("error").GetProperty("code").GetString()!;
 
     [Fact]
-    [Trait("Job", "trap: the server holds the user's Linear key, so it must bind localhost only (DR 052 §3)")]
+    [Trait("Job", "trap: the server holds the user's Linear key, so the URL it starts on names localhost and a real port (DR 052 §3)")]
     public void Start_BindsLocalhostOnAFreePort()
     {
         Assert.Equal("localhost", _url.Host);

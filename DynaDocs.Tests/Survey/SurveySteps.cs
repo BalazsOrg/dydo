@@ -109,7 +109,11 @@ public sealed class SurveySteps
     }
 
     [Then("the error is dydo map's missing-key help")]
-    public void MissingKeyHelp() => Assert.Equal(MapCommand.MissingKeyHelp, _run.Stderr);
+    public void MissingKeyHelp()
+    {
+        Assert.Equal(MapCommand.MissingKeyHelp, _run.Stderr);
+        Assert.Empty(_run.Stdout);
+    }
 
     [Then("Linear was asked for Project {string}")]
     public void AskedFor(string project)
