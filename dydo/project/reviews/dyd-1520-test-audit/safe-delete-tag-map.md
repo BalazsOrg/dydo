@@ -65,6 +65,26 @@ Paths are under `DynaDocs.Tests/`.
 | `LinkSafeDeleteTests` link cases (DYD-362: "the target must survive") | deleting a tree, or a root that is a link, removes the link and keeps its target | `DeleteTree_LinkInside` `Services/LinkSafeDeleteTests.cs:19`, `:20`; `RootThatIsALink` `:64`, `:65` |
 | `UnlinkAll_RemovesOnlyLinks` | unlinking a tree's links leaves each link's target in place | `:34` |
 
+## Cites
+
+A helper read DYD-362, DYD-1029 (description, and its comments by keyword), DYD-1133, DYD-1134, DYD-1142,
+DYD-1172 and spec N10 ("Spec: dydo 4.0.0"), and judged every clause against them. Spec N10 sets only the
+scope: "archive a branch or worktree for 30 days, then purge", T3 included. DYD-1029 states the
+archive, refusal, restore, retention, dry-run, upstream, guard, Codex-rule and T3 clauses in its
+description. Six cites were only partly supported and were fixed:
+
+- **Public remotes:** eligible by the PR route, not closed-world proof. The GitHub tags now say
+  "eligibility state".
+- **Redaction:** DYD-1029 promises userinfo and query, not fragment. The tag drops "fragment".
+- **Version-1 archives:** only DYD-1142 says "v1 branch archives stay readable". That cite is added.
+- **"refusal output complete":** DYD-1172 is a test-diagnostic change. The clause is replaced by
+  DYD-1029's refusal rule.
+- **Rooted and backslash paths:** only DYD-1142 states them. `UnsafePaths` adds DYD-1029 and DYD-1142.
+- **The space probe:** DYD-1029 has the reserve rule only. The tag adds the root-volume fix commit
+  `6b46ce6b`.
+
+DYD-362 states only that a link's target survives, so the two cases above are `unsure`.
+
 ## Related
 
 - [Safe-delete audit](./safe-delete.md) - The batch this map belongs to

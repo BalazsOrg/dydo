@@ -122,6 +122,41 @@ commits change only `Job` traits and the audit files, not test bodies.
 
 Every mutant phase 1 killed is still killed by a kept case.
 
+## Each removed case's mutants, killed by its replacement (lesson 11)
+
+Stryker stops at the first failing test, so phase 1's `killedBy` lists only some killers. Two further runs
+used `--disable-bail` over the feature chunk's 1,097 killed spans:
+
+- **A:** at base, the six outlines. 1,744 s.
+- **B:** on `271cd889`, only the named replacements. 1,416 s.
+
+For each of the 17 removed cases, every mutant it killed in A was checked against B, and B had to show the
+named replacement itself killing it (`/var/tmp/dyd1520/sd/replacement_check.py`). 12 removed cases lose
+nothing. The rest:
+
+- **Policy `[20]`** (init rules): 14 mutants not killed by `InitGeneratedCodexRules`. All 14 are in
+  `GitRunner`, `GitResult` and `LinkSafeDelete`. The row hits them through its `SafeDeleteTests` fixture
+  (git setup, `Dispose`), not through its rule assertions. `InitializedNestedGitDirectory…[0]`, on the same
+  fixture, kills all 14 in B. Planted bug `codex-rules` covers the assertions.
+- **`SafeDeleteGit.cs:55`** (a `WaitForExit` removed), from the exclude/attributes scenario. Planted exactly
+  (`g55`), it fails the named `CommonInputs…[2]` on 3 of 3 runs.
+- **`SafeDeleteHistory.cs:152`** (a `WaitForExit` removed), from refusal journey `[1]` and both unpushed
+  rows. It is a race. Planted exactly (`h152`, `/var/tmp/dyd1520/sd/parity`, three runs at base), it fails
+  each removed row and its byte-identical replacement only sometimes:
+
+  | Removed | Failed | Replacement | Failed |
+  |---|---|---|---|
+  | journey `[1]` | 1 of 3 | `UnfetchedRemote` | 0 of 6 (base and candidate) |
+  | unpushed public | 2 of 3 | `InitiallyAbsent…[0]` | 3 of 6 |
+  | unpushed private | 0 of 3 | `…[2]` | 0 of 6 |
+
+  The pairs run the same code, so the protection is the same race either way. Kept cases also catch it:
+  `LocalBranch` and `CommonInputs` in B.
+- **`SafeDeleteFiles.cs:108`** (the nested-`.git` refusal removed from the file walk), from journey `[5]`.
+  The detached-HEAD fixture has no nested `.git` directory. Planted exactly (`f108`), it fails neither the
+  removed row nor `DetachedHead` in 3 runs, so A's kill does not reproduce. All six
+  `InitializedNestedGitDirectory…` rows kill it in B.
+
 ## Mutation method (coordinator ruling 1)
 
 > The targeted two-phase run complies with §5 when both conditions hold: phase 1 covers every method that
@@ -169,23 +204,7 @@ assertions, so their red checks ran here.
 
 ## Cites
 
-A helper read DYD-362, DYD-1029 (description, and its comments by keyword), DYD-1133, DYD-1134, DYD-1142,
-DYD-1172 and spec N10 ("Spec: dydo 4.0.0"), and judged every clause against them. Spec N10 sets only the
-scope: "archive a branch or worktree for 30 days, then purge", T3 included. DYD-1029 states the
-archive, refusal, restore, retention, dry-run, upstream, guard, Codex-rule and T3 clauses in its
-description. Six cites were only partly supported and were fixed:
-
-- **Public remotes:** eligible by the PR route, not closed-world proof. The GitHub tags now say
-  "eligibility state".
-- **Redaction:** DYD-1029 promises userinfo and query, not fragment. The tag drops "fragment".
-- **Version-1 archives:** only DYD-1142 says "v1 branch archives stay readable". That cite is added.
-- **"refusal output complete":** DYD-1172 is a test-diagnostic change. The clause is replaced by
-  DYD-1029's refusal rule.
-- **Rooted and backslash paths:** only DYD-1142 states them. `UnsafePaths` adds DYD-1029 and DYD-1142.
-- **The space probe:** DYD-1029 has the reserve rule only. The tag adds the root-volume fix commit
-  `6b46ce6b`.
-
-DYD-362 states only that a link's target survives, so the two cases above are `unsure`.
+Every cite was checked against its ticket; the result is in [the tag map](./safe-delete-tag-map.md#cites).
 
 ## Planted bugs
 
