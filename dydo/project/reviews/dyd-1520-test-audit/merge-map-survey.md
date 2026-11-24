@@ -112,7 +112,7 @@ records. Each ran in a scratch checkout with base production code plus the bug, 
 | Bug | Production edit | Kept cases red | What it proves |
 |---|---|---|---|
 | PB5 | `dydo check <path>` validates from the path instead of the docs root (#0185's bug) | only `Check_Subfolder_AcceptsLinksToTargetsOutsideSubfolder` (`Broken link:` found) | its trap tag (run at round 1, where this case's body equals this hop's) |
-| PB7 | `dydo check` with no docs folder returns a tool error (`CheckCommand.cs`, the `No docs folder found.` branch returns `DocsOutcome(true, …)`) | over the full suite at this hop's candidate, only `Check_WithoutInit_ShowsError` | the `unsure` case's `only` |
+| PB7 | `dydo check` with no docs folder returns a tool error (`CheckCommand.cs`, the `No docs folder found.` branch returns `DocsOutcome(true, …)`) | over the full suite at `e3ac39919` (4,630 cases, the same test bodies as the final commit), only `Check_WithoutInit_ShowsError` (1 failed, 4,585 passed, 44 skipped) | the `unsure` case's `only` |
 
 ## Kept `unsure`
 
@@ -126,15 +126,16 @@ records. Each ran in a scratch checkout with base production code plus the bug, 
 
 ## Gates
 
-Each ran behind `/var/tmp/dydo-gate-lock.sh` under `systemd-run` with `MemoryMax=8G`, recorded in
-`/var/tmp/dyd1520/mms-fix/`.
+Each ran behind `/var/tmp/dydo-gate-lock.sh` under `systemd-run` with `MemoryMax=8G`, on
+`2d1cd5a78`, whose code and tests the page-only commit after it leaves unchanged. Output is in
+`/var/tmp/dyd1520/mms-fix/gates-2d1cd5a78/`.
 
 | Gate | Result |
 |---|---|
-| `dotnet build DynaDocs.sln -m:2 --warnaserror` | see the hop's return |
-| batch filter, `--logger trx`, `MaxCpuCount=2` | 395 cases, as at base (385 passed, 10 skipped) |
-| full suite, `MaxCpuCount=2` | see the hop's return |
-| `dydo check` | see the hop's return |
+| `dotnet build DynaDocs.sln -m:2 --warnaserror` | exit 0, 0 warnings, 0 errors |
+| batch filter, `--logger trx`, `MaxCpuCount=2` | exit 0: 395 cases, 385 passed, 10 skipped; summed duration 22.51 s (base 23.52 s, the same 395 cases) |
+| full suite, `--logger trx`, `MaxCpuCount=2` | exit 0: 4,630 cases, 4,586 passed, 44 skipped (the base's skips), 0 failed; 3 m 33 s, 217 s wall with the lock wait |
+| `dydo check` | exit 0, 0 errors, 0 warnings in 943 files |
 
 ## Deviations
 
