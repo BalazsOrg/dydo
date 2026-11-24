@@ -7,7 +7,7 @@ using DynaDocs.Services.Statechart;
 public class StatechartArchiveTests
 {
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 (a locked archive installs as its exact bytes in fresh owned staging, the archive untouched)")]
+    [Trait("Job", "contract: DR 062 §4 (a locked ZIP archive installs its members' exact bytes into fresh owned staging)")]
     public void LockedZipExtractsExactBytesToFreshOwnedStagingWithoutTouchingArchive()
     {
         using var scope = new StatechartTestDirectory();

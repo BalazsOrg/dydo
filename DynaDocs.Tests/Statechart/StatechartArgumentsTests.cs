@@ -13,7 +13,7 @@ public class StatechartArgumentsTests
     }
 
     [Fact]
-    [Trait("Job", "edge: non-ASCII and empty arguments reach exec intact and NULL-terminated, and the vector is freed")]
+    [Trait("Job", "edge: the native argument vector keeps non-ASCII and empty arguments as UTF-8, ends with NULL, and clears its pointer when freed")]
     public void NativeArgumentVectorsPreserveUtf8AndTerminateWithNull()
     {
         using var arguments = new PosixStatechartArguments(["spaces and é", ""]);

@@ -8,10 +8,10 @@ using System.Text.Json.Nodes;
 /// unchanged earlier release is replaced; a local edit, an unverifiable earlier release or a foreign skill is refused
 /// and left exactly as it was.
 /// </summary>
-[Trait("Job", "contract: DR 062 Consequences (install-skill replaces only a skill unchanged since dydo installed it; local edits and foreign skills stay untouched)")]
 public class StatechartSkillTests
 {
     [Theory]
+    [Trait("Job", "contract: DR 062 Consequences (the installed skill binds the payload and release: another payload or protocol, a missing receipt, a local edit or an earlier release does not validate)")]
     [InlineData("payload")]
     [InlineData("protocol")]
     [InlineData("source")]
@@ -34,6 +34,7 @@ public class StatechartSkillTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 Consequences (install-skill replaces an installed skill unchanged since its install)")]
     public async Task AnUnchangedSkillFromAnEarlierReleaseIsReplacedWithThisRelease()
     {
         using var scope = new StatechartTestDirectory();
@@ -46,6 +47,7 @@ public class StatechartSkillTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 Consequences (install-skill leaves local edits untouched)")]
     public async Task LocalEditsToAnEarlierReleaseAreRefusedUntouched()
     {
         using var scope = new StatechartTestDirectory();
@@ -60,6 +62,7 @@ public class StatechartSkillTests
 
     // Receipts written before the inventory existed record no files, so only this release's exact bytes are safe to keep.
     [Theory]
+    [Trait("Job", "contract: DR 062 Consequences (without an install inventory, install-skill replaces a skill only when its files are this release's, and otherwise leaves it untouched)")]
     [InlineData(true)]
     [InlineData(false)]
     public async Task AnEarlierReceiptWithoutAnInventoryIsReplacedOnlyWhenItsFilesAreThisRelease(bool thisReleaseBytes)
@@ -79,6 +82,7 @@ public class StatechartSkillTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 Consequences (install-skill leaves a skill dydo did not install untouched, before any projection or prerequisite launch)")]
     public async Task ForeignCanonicalSkillIsPreservedBeforeProjectionOrPrerequisiteLaunch()
     {
         using var scope = new StatechartTestDirectory();
