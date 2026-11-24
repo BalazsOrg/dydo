@@ -9,194 +9,197 @@ The setup batch of the [DYD-1520](https://linear.app/bodnar-balazs/issue/DYD-152
 `dydo init`, `dydo clean`, `dydo adopt`, dydo.json, `dydo mode` and shell completion, 429 executed
 cases at `07642b1f3`. Each case's verdict is one line of `setup.tsv` beside this page
 ([on the feature branch](https://github.com/BalazsOrg/dydo/blob/feature/dydo-4-0-0/dydo/project/reviews/dyd-1520-test-audit/setup.tsv);
-`dydo check` accepts only `.md` relative links), judged by the [rubric](./rubric.md).
+`dydo check` accepts only `.md` relative links), judged by the [rubric](./rubric.md). Every tag
+clause is mapped to the assertion line that proves it in [setup-tags.md](./setup-tags.md), a page
+of its own so each stays under the 20 KB file limit.
 
 ## Totals
 
 | Verdict | Cases |
 |---|---|
-| keep | 400 |
-| keep `unsure` | 10 |
+| keep | 394 |
+| keep `unsure` | 16 |
 | rewrite | 7 |
 | remove | 12 |
 | **total** | **429** |
 
 After the batch, 410 cases run (429 less the 12 removed and the 7 rewritten rows, whose assertions
-now live in a kept case). Almost all of the batch already met the rubric: every case but the
-`unsure` ones carries a job tag (narrowed in review round 1, below), each case drives `dydo init`,
-`dydo clean`, `dydo adopt`, `dydo mode`, the guard hook or `dydo _complete`, or an edge those cannot
-stage (injected save failures, a fake `/proc`, a stranded probe), and the large theories are corpora
-whose rows differ in an input feature the code under test reads (a TOML form, an encoding, a
-command form), so none collapse.
-
-In CI the batch runs on Linux only: `dotnet-coverage`'s Windows leg runs just
-`DynaDocs.Tests/coverage/dotnet-platforms.json`'s `windows_tests`, and `guard-windows` names none of
-these classes. No case of the batch is removed, rewritten or collapsed whose assertions run only on
-another platform.
+now live in a kept case). Each case drives `dydo init`, `dydo clean`, `dydo adopt`, `dydo mode`, the
+guard hook or `dydo _complete`, or an edge those cannot stage (injected save failures, an injected
+mover, a simulated `/proc`), and the large theories are corpora whose rows differ in an input
+feature the code under test reads, so none collapse. In CI the batch runs on Linux only
+(`dotnet-platforms.json`'s `windows_tests` and `guard-windows` name none of these classes); no case
+is removed, rewritten or collapsed whose assertions run only on another platform, and none runs
+only on Windows (coordinator ruling 2 lists none here).
 
 ## What changed
 
 - **Removed as redundant (11).** Both rows of `VerificationModeTests` (machine-mode.feature's
   warning-and-retry outline), `ModeStateTests.Set_PersistsForTheNextReader[0]` (machine-mode.feature's
-  set scenario),
-  `InitCommandTests.Init_Claude_GuardHookCarriesTheHostMarker` and
+  set scenario), `Init_Claude_GuardHookCarriesTheHostMarker` and
   `Init_All_OnlyTheClaudeHookCarriesTheHostMarker` (`Init_WritesEachHostsFiles_AndARepeatJoinChangesNoByte`
-  rows 1 and 3), and six `CompletionProviderTests.TopLevelCommands_ContainsCommand` rows (the words
-  `CompletionsCommandTests.Complete_OffersTheWordsValues[0]` already asserts).
-- **Removed as unreachable (1).** `ScaffoldTreeTests.WriteDydoTree_WithoutEmbeddedScaffold_Throws`
-  drives an internal overload with an empty resource set no entry point passes.
-- **Rewritten (7).** Seven `TopLevelCommands_ContainsCommand` rows (`index`, `adopt`, `guard`,
-  `version`, `help`, `map`, `survey`) move to the `dydo _complete` boundary in
+  rows 1 and 3), and six `CompletionProviderTests.TopLevelCommands_ContainsCommand` rows.
+- **Removed as unreachable (1).** `ScaffoldTreeTests.WriteDydoTree_WithoutEmbeddedScaffold_Throws`.
+- **Rewritten (7).** Seven `TopLevelCommands_ContainsCommand` rows move to `dydo _complete` in
   `Complete_OffersTheWordsValues[0]`.
-- **Assertions made stricter in kept tests, so the removed ones are covered.**
-  `Init_WritesEachHostsFiles_AndARepeatJoinChangesNoByte` counts exactly one marked Claude guard and no
-  bare one in the committed `PreToolUse`, where it only searched the file for the marked text. The
-  machine-mode step `the mode shows {flag} as {value}` asserts the whole output is the one line and
-  its newline, byte for byte, where it only looked for the line among the output's lines.
-- **Kept after review round 1.** `InitCheckIntegrationTests.FreshInit_PassesCheck[0]` and
-  `ModeStateTests.Show_MissingOrUnusableStore_ReadsTheDefault[0]` stay. The named replacements miss
-  what they guard: fresh-installation.feature accepts any warning on a fresh install (PB10), and
-  machine-mode.feature's show scenario discards its first `show` (PB12).
-- **Tags narrowed in review round 1.** Each tag now claims only what every case it covers asserts.
-  A class tag that claimed more than some of its methods show became method tags: in
-  `WorktreeProcessProbeTests`, the idle-folder and missing-path cases test the Windows rename probe,
-  which `dydo clean` calls only on Windows, so they no longer carry the held-folder tag. The same
-  split was made in `AdoptCommandTests` (a recorded release under an exit-2 tag),
-  `InstallNudgeTests` (the never-nudged commands under "installing needs permission"),
-  `DownstreamConfigTests` (the local-settings case and the cases that assert no BOM),
-  `ConfigServiceTests` (the strict-load and helper cases under the failed-save tag),
-  `ShellCompletionInstallerTests`, `CompletionsCommandTests` and `InitCommandTests`, whose class tag
-  claimed foreign bytes kept and "a refused init writes nothing" for all 60 methods: each refusal
-  case's tag now names the files it checks, and issue 0300 is named for what it was (`--join` did
-  not record the joined integration). The tags of `ConfigFactoryTests`,
-  `InitCheckIntegrationTests`, `ModeCommandTests`, machine-mode.feature and
-  `CleanCommandTests.BusyProbeThatCannotMoveTheTreeBack_FailsThatTree_LocksIt_AndTheRunGoesOn` were
-  reworded to what their cases assert. `CleanCommandTests.KeepMineMergeDriverFromTheEnvironment_DoesNotHideAnUnmergedChange`
-  [0] and [2], the dry-run rows, could not fail on the trap their tag names (a dry run deletes no
-  branch), so they now assert the printed verdict `branch feature would be kept` (red on PB13).
-  `CleanCommandTests.Archive_ListsEntriesNewestFirst` is now kept `unsure` (below).
-- A single-row theory that lost a row became a Fact under the same method name:
-  `ModeStateTests.Set_PersistsForTheNextReader` (row 1). `VerificationModeTests.cs` is deleted. No helper or fixture was orphaned. No CI or
-  tooling line names a removed test or class; the names that remain in
-  `dydo/project/changelog/` and `dydo/project/inquisitions/` are history and stay.
+- **Stricter kept assertions.** The Claude guard counts in `Init_WritesEachHostsFiles_...`, and the
+  machine-mode step `the mode shows {flag} as {value}`, now byte-exact.
+- **Review round 1.** `InitCheckIntegrationTests.FreshInit_PassesCheck[0]` and
+  `ModeStateTests.Show_MissingOrUnusableStore_ReadsTheDefault[0]` stay (PB10, PB12); tags were
+  narrowed and class tags split; the dry-run rows of `KeepMineMergeDriverFromTheEnvironment` assert
+  their printed verdict (PB13).
+- **Review round 2.** Each finding closed as asked:
+  1. `WorktreeProcessProbeTests`: the held-folder tag is gone. The move-back cases are tagged as an
+     injected mover, the scans as a simulated `/proc` tree, and the own-process exclusion, which
+     the fixture's cwd-less own-PID folder cannot exercise, is no longer claimed.
+  2. machine-mode.feature's show scenario: its Reason records the narrower observation (a first
+     show runs unchecked, the Then step's second show is exact); the first show's own result is
+     `Show_MissingOrUnusableStore_ReadsTheDefault[0]`'s (PB12).
+  3. `LoadConfigStrict_RejectsInvalidTestingRunner`: the tag and each row name the invalid form,
+     and the NUL row cites DYD-117 (`2f06421af`), since configuration.md does not forbid NUL.
+  4. `InstallNudgeTests`: the tag names the classes the rows cover, each row is traced to DYD-499
+     in [setup-tags.md](./setup-tags.md#the-install-nudge-rows-traced-to-dyd-499), and PB15 shows
+     the denial on line 54 is the install nudge's for every row.
+  5. The PowerShell completions row, the downstream local-settings case and the stale-rule case
+     claim only what they assert.
+  6. The should: `Archive_ListsEntriesNewestFirst` asserts both entries are listed before their
+     order (red on PB14).
+- **The lesson-10 and lesson-11 pass over every tag.** All 159 methods and the three feature
+  files: each clause now names what an assertion checks (`setup-tags.md`). Class tags some methods
+  did not prove became method tags (`ModeStateTests`, `ModeCommandTests`, `DownstreamConfigTests`);
+  `CleanCommandTests`' class tag is now the bare cite, its method tags say what each case checks.
+  Cites were checked against their sources: traps first fixed under DYD-86 (host settings) and
+  DYD-134 (atomic save, late failures) now cite them, not DYD-392, and DYD-368 for the failed
+  preflight. Three methods (six cases) whose claim no source states moved to keep `unsure`, their
+  tags dropped (below). Reason cells that claimed more than the case checks were narrowed.
+- `ModeStateTests.Set_PersistsForTheNextReader` became a Fact (row 1). `VerificationModeTests.cs`
+  is deleted. No helper or fixture was orphaned, and no CI or tooling line names a removed test.
 
 ## Mutation
 
-Targeted two-phase Stryker.NET (`/var/tmp/dyd1520/tools/stryker-targeted.sh`). Phase 1 ran on a
-clean detached checkout of the base `07642b1f3` over every method that loses a case or is rewritten
-(35 executed cases, including the kept rows of those methods): 700 mutants Killed, 7 Timeout, wall
-1067 s. Phase 2 ran on a clean detached checkout of the candidate (production code identical),
-mutating the 239 line spans of those 700 kills and running every kept case of the batch: on
-`8d6424f04`, 408 cases, 750 Killed, wall 774 s; after review round 1, on `74f105028`, 410 cases,
-750 Killed, wall 932 s. Both give `compare exit=1` with the same two mutants not killed after, and
-no phase-1 kill that is only a Timeout after:
+Targeted two-phase Stryker.NET (`/var/tmp/dyd1520/tools/stryker-targeted.sh`) on identical
+production code. Phase 1 on the base `07642b1f3` over every method that loses a case or is
+rewritten: 35 cases, 700 Killed, 7 Timeout. Phase 2 mutates those 239 spans and runs every kept case:
+
+| Phase 2 | Cases | Killed | Wall | Compare |
+|---|---|---|---|---|
+| `8d6424f04` (round 0) | 408 | 750 | 774 s | exit 1, the two below |
+| `74f105028` (round 1) | 410 | 750 | 932 s | exit 1, the two below |
+| `3d73677f2` (round 2) | 410 | 751 | 732 s | exit 1, the two below |
 
 | Mutant | Where | After | Justification |
 |---|---|---|---|
-| #12522 statement removal | `Services/ScaffoldTree.cs:36`, the empty-set `throw` | NoCoverage | unreachable: only the removed `WriteDydoTree_WithoutEmbeddedScaffold_Throws` passes an empty resource set; the one production caller passes the compiled manifest, which `EmbeddedScaffoldResources_AreExactlyTheTreeOnDisk` pins to the non-empty `Scaffold/` tree |
+| #12522 statement removal | `Services/ScaffoldTree.cs:36`, the empty-set `throw` | NoCoverage | unreachable: only the removed `WriteDydoTree_WithoutEmbeddedScaffold_Throws` passes an empty set; the one caller passes the compiled manifest, which `EmbeddedScaffoldResources_AreExactlyTheTreeOnDisk` pins to the non-empty `Scaffold/` tree |
 | #12523 string mutation | the same `throw`'s message | NoCoverage | the same |
 
-Every other phase-1 kill is Killed on the candidate. Stryker stops a mutant's run at its first
-failing test, so a report's `killedBy` names only some killers; the status comparison is exact, and
-each removal's named kept test is backed by a planted bug or by a mutant whose phase-2 `killedBy`
-names that test.
+The batch filter's summed test duration: base 15.06 s (429 cases), round 1 15.98 s, round 2
+15.55 s (410); the cases removed were cheap, so the difference is the shared host's load.
 
-| Run | Cases | Summed test duration | Command |
-|---|---|---|---|
-| base `07642b1f3` | 429 passed | 15.06 s | batch filter, `--logger trx`, `MaxCpuCount=2` |
-| candidate `8d6424f04` | 408 passed | 16.28 s | the same |
-| candidate `74f105028` (review round 1) | 410 passed | 15.98 s | the same |
+## Mutation method (coordinator ruling 1)
 
-The cases removed here were cheap ones, so the summed time does not drop measurably; the
-difference is the shared host's load.
+> **1. Option A.** The targeted two-phase run complies with §5 when both conditions hold:
+> - phase 1 covers every method that was removed or whose body changed;
+> - the diff changes no shared helper or fixture that an untouched test uses.
+>
+> Each batch PR states both conditions, with the diff evidence for the second. If either condition
+> fails, the batch re-runs phase 2 over every test that uses the changed helper, including
+> untouched ones.
+
+**Condition 1.** `git diff 07642b1f3 3d73677f2 -- DynaDocs.Tests` changes the bodies of
+these methods: `VerificationModeTests.ModeSet_...`
+(deleted), `ModeStateTests.Set_PersistsForTheNextReader`, `InitCommandTests.Init_Claude_GuardHookCarriesTheHostMarker`
+and `Init_All_OnlyTheClaudeHookCarriesTheHostMarker` (deleted), `Init_WritesEachHostsFiles_AndARepeatJoinChangesNoByte`,
+`CompletionProviderTests.TopLevelCommands_ContainsCommand` (rows removed),
+`CompletionsCommandTests.Complete_OffersTheWordsValues` (row widened),
+`ScaffoldTreeTests.WriteDydoTree_WithoutEmbeddedScaffold_Throws` (deleted), and
+`CleanCommandTests.KeepMineMergeDriverFromTheEnvironment_DoesNotHideAnUnmergedChange` (round 1)
+and `Archive_ListsEntriesNewestFirst` (round 2). Every other change is a `Trait`, a comment, a
+class-level tag or a feature file's `# Job:` line. The round-0 phase 1 covered the first eight
+(with `FreshInit_PassesCheck` and `Show_MissingOrUnusableStore_ReadsTheDefault`), not the last
+two, so a supplementary phase 1b on the base ran over them: with the six scenarios below, 11 cases, 420
+Killed, 5 Timeout, wall 1263 s.
+
+**Condition 2.** The one changed non-test-method file is `DynaDocs.Tests/Steps/MachineModeSteps.cs`
+(the `the mode shows` step, now byte-exact). Its untouched users are machine-mode.feature's Show
+lists every flag, Set changes a flag, Set refuses [0]-[1] and Warning and retry [0]-[1] (that
+scenario also through `the owned mode state is unchanged`); no other feature uses the step.
+`CompletionProviderTests.cs` changed only a header comment, and no fixture or data file changed.
+Phase 1b covered those six scenarios too, and its phase 2 over the whole batch on `3d73677f2`
+keeps every one of its 420 kills Killed (471 Killed in its 153 spans, compare exit 0, wall 578 s,
+none only a Timeout), so the changed step loses no protection. The candidate's test tree differs
+from `3d73677f2` only in `Trait` and comment lines.
+
+**Review lesson 11 (a removal's replacement kills its mutants itself).** Stryker stops a mutant at
+its first failures, so `killedBy` undercounts. Phase 1 reran over the removed and rewritten methods
+alone with `--disable-bail` (20 cases, 342 Killed, wall 843 s), and phase 2 over the named
+replacements alone, also without bail, on `3d73677f2` (11 cases: Warning and retry [0]-[1], Set
+changes a flag, `Init_WritesEachHostsFiles` [0]-[3], `Complete_OffersTheWordsValues` [0]-[3];
+wall 168 s). For each removal or rewrite, every mutant it killed is killed by its own named
+replacement: `VerificationModeTests` [0] 231 of 231 and [1] 235 of 235 (Warning and retry [0], [1]),
+`Set_PersistsForTheNextReader[0]` 26 of 26 (Set changes a flag), `Init_Claude_GuardHookCarriesTheHostMarker`
+48 of 48 (row [1]), `Init_All_OnlyTheClaudeHookCarriesTheHostMarker` 90 of 90 (row [3]), and each of
+the 13 completion rows 4 of 4 (`Complete_OffersTheWordsValues[0]`). The one p1r kill
+the replacements miss is `CompletionProvider.cs:10`'s `complete` string, killed only by the kept
+`unsure` row [10].
 
 ## Red proofs and planted bugs
 
-Two runs of all 408 kept cases on the round-0 candidate: PB1-PB4 together, then PB2' and PB5-PB7
-together. Review round 1 ran four more, each over all 410 kept cases of the batch: PB8, PB9 and
-PB10 together; PB11 and PB12 together; PB1 alone on the final step; PB13 alone. Each planted bug
-in a run touches a different observable, so each failure is attributed by its assertion and line.
-The logs are in `/var/tmp/dyd1520-fix/` (`runA` to `runD`).
+Each planted bug was built into this worktree, the batch's kept cases run, and production code
+restored (`git status` clean). Runs with several bugs touch different observables, so each
+failure is attributed by its assertion line. Logs: `/var/tmp/dyd1520-fix/` (rounds 0-1) and
+`/var/tmp/dyd1520-fix2/` (round 2).
 
-| Bug | Production edit | Kept cases red | What it proves |
+| Bug | Production edit | Kept cases red | Proves |
 |---|---|---|---|
-| PB1 | `ModeCommand.Print` writes a second line | machine-mode.feature: Show lists every flag, Set changes a flag, Set refuses [0] and [1], Warning and retry [0] and [1]; ModeStateTests rows; ModeCommandTests.Set_PrintsEveryFlagAfterTheChange | red proof of the exact show step; covers the removed exact-output assertions of ModeStateTests.Set_PersistsForTheNextReader[0] and VerificationModeTests |
-| PB2 | a fresh Claude guard entry (no earlier guard) also carries `dydo guard` | Init_WritesEachHostsFiles [1] and [3], Init_HostAgentSettings_PreserveSatisfyingValuesAndRepeatBytes | red at the repeat-join byte check, not at the new count line, so PB2' below |
-| PB2' | every Claude guard entry also carries `dydo guard` | Init_WritesEachHostsFiles [1] and [3] red at the new `Count(CodexGuard) == 0` line (`InitCommandTests.cs:936`, expected 0, actual 1), and six other Claude wiring cases | red proof of the strengthened guard counts; covers both removed host-marker cases |
-| PB3 | `TopLevelCommands` drops index, adopt, guard, version, help, map and survey | Complete_OffersTheWordsValues[0]: `Assert.All` 7 of 14 not found, exactly those seven | red proof of the seven rewritten rows |
-| PB4 | `dydo check` exits 1 when `dydo/agents/` holds no file | fresh-installation.feature [0]-[3]; the kept scratch-file `FreshInit_PassesCheck` stays green | superseded: review round 1 kept `FreshInit_PassesCheck[0]` (PB10) |
-| PB8 | `ModeCommand.Print` writes `overnight: off ` (a trailing space) | machine-mode.feature: Show lists every flag, Set changes a flag, Set refuses [0] and [1], Warning and retry [0] and [1], all at `MachineModeSteps.cs:72` (expected `overnight: off\n`, actual `overnight: off \n`) | red proof of the byte-exact show step, which the round-1 `Trim()` step accepted |
-| PB1 again | as PB1, on the final step | the same six scenarios at `MachineModeSteps.cs:72`, and ModeStateTests' Show rows, Set_PersistsForTheNextReader, ModeCommandTests.Set_PrintsEveryFlagAfterTheChange | the byte-exact step still rejects a second line |
-| PB9 | `dydo init`'s Claude guard is written unmarked (`dydo guard`) | Init_WritesEachHostsFiles [1] and [3] at `InitCommandTests.cs:935` (expected 1, actual 0), and eight other Claude wiring cases | breaks the removed `Init_All_OnlyTheClaudeHookCarriesTheHostMarker`'s Contains of the marked command; row [3] covers it |
-| PB10 | `dydo check` also prints `WARNINGS:` and `dydo/agents/sample/bad-doc.md: stale scratch warning`, exit unchanged | FreshInit_PassesCheck [0] and [1] at `InitCheckIntegrationTests.cs:23`; fresh-installation.feature's warnings-only step passes it (its rows fail only after customising, at `OptionalSummarySteps.cs:48`) | the reviewer's counterexample: row [0] stays |
-| PB11 | the Codex guard is written as `dydo guard --host claude` | Init_WritesEachHostsFiles [2] and [3] at `InitCommandTests.cs:950` (`--host` found in .codex/hooks.json), and Codex wiring cases | breaks the removed `Init_All_OnlyTheClaudeHookCarriesTheHostMarker`'s DoesNotContain(`--host`); row [3] covers it |
-| PB12 | the first `dydo mode show` over a missing store creates it and prints `created the mode store` | Show_MissingOrUnusableStore_ReadsTheDefault[0] at `ModeStateTests.cs:27`; machine-mode.feature's Show lists every flag stays green (its first show is discarded); Set refuses [0] and [1] and two mode-store-failure rows red where a later show meets a missing store | the reviewer's counterexample: row [0] stays |
-| PB13 | the isolated git run keeps every inherited `GIT_*` variable | KeepMineMergeDriverFromTheEnvironment [1] and [3] at `CleanCommandTests.cs:355` (branch deleted), [0] and [2] at `:358` (no `branch feature would be kept`), and ScratchGitEnvironment_ShutsOutSystemAttributesAndConfig_WhateverIsInherited | red proof of the dry-run rows' new verdict assertion |
-| PB5 | `TopLevelCommands` also lists `task` | only TopLevelCommands_ExcludesRetiredWorkCommands | the `unsure` case's `only` |
-| PB6 | `TopLevelCommands` drops `complete` | only TopLevelCommands_ContainsCommand (`complete`) | the `unsure` case's `only` |
-| PB7 | a default warn nudge `git\s+worktree\s+add` | only Guard_DefaultNudges_WarnOnTheCommand (`digit worktree add foo`) | the `unsure` case's `only` |
-
-Afterwards `git checkout -- Commands Services` restored production code and `git status` was clean.
+| PB1 | `ModeCommand.Print` writes a second line | machine-mode Show, Set changes, Set refuses [0]-[1], Warning and retry [0]-[1] (`MachineModeSteps.cs:72`); ModeStateTests; `ModeCommandTests.Set_PrintsEveryFlagAfterTheChange` | the exact step; covers the removed exact-output assertions |
+| PB2' | every Claude guard entry also carries `dydo guard` | `Init_WritesEachHostsFiles` [1], [3] at the bare-guard count (expected 0, actual 1) | the strengthened counts; both removed host-marker cases |
+| PB3 | `TopLevelCommands` drops the seven rewritten words | `Complete_OffersTheWordsValues[0]`, exactly those seven | the seven rewrites |
+| PB8 | `overnight: off ` (trailing space) | the same six scenarios at `MachineModeSteps.cs:72` | the byte-exact step |
+| PB9 | the Claude guard written unmarked | `Init_WritesEachHostsFiles` [1], [3] at the marked count | `Init_All_OnlyTheClaudeHookCarriesTheHostMarker`'s Contains |
+| PB10 | check also prints a `bad-doc.md` warning | `FreshInit_PassesCheck` [0], [1]; fresh-installation.feature stays green | row [0] stays |
+| PB11 | the Codex guard gets `--host claude` | `Init_WritesEachHostsFiles` [2], [3] | the removed DoesNotContain(`--host`) |
+| PB12 | the first show over a missing store creates it and prints a line | `Show_MissingOrUnusableStore_ReadsTheDefault[0]`; machine-mode Show stays green | row [0] stays |
+| PB13 | the isolated git run keeps inherited `GIT_*` | `KeepMineMergeDriverFromTheEnvironment` [0]-[3], `ScratchGitEnvironment_...` | the dry-run verdict |
+| PB14 | `CleanArchive.List` leaves out the newest entry | only `Archive_ListsEntriesNewestFirst`, at the new presence check (`CleanCommandTests.cs:535`); the old order check alone passes it (index -1) | the should's assertions; the `unsure` case's `only` |
+| PB15 | `ConfigFactory.DefaultNudges` drops `InstallNudge` | all 54 `Install_MeetsTheNudgeOnce_...` rows at `InstallNudgeTests.cs:54`; the 35 others stay green | the denial is the install nudge's |
+| PB5, PB6, PB7 | completion offers `task`; drops `complete`; a `git worktree add` nudge | only the matching `unsure` case | their `only` |
 
 ## Kept `unsure`
 
-- `CompletionProviderTests.TopLevelCommands_ContainsCommand[10]` (`complete`). Protection: the first
-  word `complete` is offered. It pins a defect: the command is `_complete`
-  (`Commands/CompleteCommand.cs:21`), so `dydo complete` is a parse error. Unresolved: whether
-  completion should offer it; fixing `CompletionProvider` is a product change outside this ticket,
-  after which this case goes.
-- `CompletionProviderTests.TopLevelCommands_ExcludesRetiredWorkCommands`. Protection: `task`,
-  `issue` and `review` are not offered. It checks a deleted feature is gone, with no traced
-  contract. Unresolved: a boundary property "every first-word candidate is a registered command"
-  would cover it, but that property is red today on `complete`, and completion also misses `mode`
-  and `statechart` (reported on DYD-1199).
-- `ConfigFactoryTests.Guard_DefaultNudges_WarnOnTheCommand[10]` (`digit worktree add foo`).
-  Protection: no default nudge fires on a word that merely contains `git`. No default nudge names
-  `git` or `worktree` any more (`Services/ConfigFactory.cs`), so the row asserts the absence of a
-  retired nudge, and the method's tag (DYD-736, issue 0177) does not cover it. Unresolved: no record
-  says whether a git nudge returns.
-- `CleanCommandTests.Archive_ListsEntriesNewestFirst`. Protection: `dydo clean --archive` lists the
-  newer entry before the older one. dydo-commands-worktrees.md names no order; only the
-  `Services/CleanArchive.cs:84` comment says newest first. Unresolved: whether the order is a
-  contract. No mutant or planted bug is recorded yet that only this case fails on.
-
-Six `InitCommandTests` cases pin behaviour that conflicts with dydo-commands-core.md; each is a
-product question, and its assertions stay as they are:
-
-- `Init_Codex_WritesTheExecPolicyRuleForDydoAndDydoExe[0]` and `[1]`: the clean rule is written for
-  `dydo` only (`Commands/InitCommand.cs:726`), where the host table allows `dydo clean` under `dydo`
-  or `dydo.exe`; nothing asserts the archive rule.
-- `Join_All_TurnsNativeMemoryOffOverTrueAndSaysSo`: `--join` overrides `autoMemoryEnabled: true` and
-  `memories = true`, where the spec stops init on a conflicting managed value; DR 055 says only that
-  init writes them off.
-- `Join_Codex_LeavesACrlfRuleWithTheSameContentByteForByte`: a CRLF `dydo.rules` holding dydo's
-  rules is left alone, where the spec rewrites it on every init and `--join` (DYD-403, `3c1a0f776`,
-  changed the code, not the spec).
-- `Join_Claude_DoesNotWarnAboutAnEntryFileThatImportsAgentsMdFirst[2]` and `[3]`: `CLAUDE.local.md`
-  and `.claude/CLAUDE.md` that open with their import get no warning, where the spec gives each its
-  own warning (DYD-403 again).
+- `CompletionProviderTests.TopLevelCommands_ContainsCommand[10]` (`complete`): pins a defect, the
+  command is `_complete`; `only` PB6. Unresolved: whether completion should offer it.
+- `CompletionProviderTests.TopLevelCommands_ExcludesRetiredWorkCommands`: a deleted feature is
+  gone, untraced; `only` PB5. Unresolved: a "every candidate is registered" property, red today.
+- `ConfigFactoryTests.Guard_DefaultNudges_WarnOnTheCommand[10]` (`digit worktree add foo`): the
+  absence of a retired git nudge; `only` PB7. Unresolved: whether a git nudge returns.
+- `CleanCommandTests.Archive_ListsEntriesNewestFirst`: newest first is only a code comment
+  (`CleanArchive.cs:84`); `only` PB14. Unresolved: whether the order is a contract.
+- Round 2, no source states the claim (lesson 11), tags dropped:
+  `InitCommandTests.Init_Refused_ExitsTwoAndOverwritesNothing` [0]-[2] (init's refusals and their
+  exit 2), `CompletionsCommandTests.Completions_UnknownShell_IsAToolError` (fish exits 2) and
+  `Complete_UnknownInput_OffersNothingAndExitsZero` [0]-[1]. Each records its observable; missing
+  is a spec line, or a mutant or planted bug only it fails on.
+- Six `InitCommandTests` cases pin behaviour that conflicts with dydo-commands-core.md, each a
+  product question with its assertions unchanged: `Init_Codex_WritesTheExecPolicyRuleForDydoAndDydoExe`
+  [0]-[1] (clean under `dydo` only; nothing of archive), `Join_All_TurnsNativeMemoryOffOverTrueAndSaysSo`
+  (`--join` overrides a managed value the spec says stops init), `Join_Codex_LeavesACrlfRuleWithTheSameContentByteForByte`
+  (the spec rewrites `dydo.rules` every time) and `Join_Claude_DoesNotWarnAboutAnEntryFileThatImportsAgentsMdFirst`
+  [2]-[3] (the spec warns for every `CLAUDE.local.md` and `.claude/CLAUDE.md`).
 
 ## Deviations
 
-- Review lesson 9 (a rewritten, merged or moved case against its base inputs): the seven
-  `TopLevelCommands_ContainsCommand` rows moved to `dydo _complete 1 dydo`, the same position and
-  words, backed by PB3 keyed to exactly those seven words. The removed host-marker cases ran
-  `init claude` and `init all`, which rows [1] and [3] run before their repeat join, and that join
-  changes no byte, so their assertions see the init's files. `VerificationModeTests` and
-  `Set_PersistsForTheNextReader[0]` match their machine-mode scenarios' inputs: the same set
-  commands, the Codex `shell_command` hook in default permission mode, a missing store. The two
-  restored rows are byte-identical to base, and the rest of the round changed only tags and the
-  `KeepMineMergeDriverFromTheEnvironment` dry-run assertion.
-
-- A strengthened assertion in a kept test (the guard counts, the exact show step) is recorded as
-  keep with the absorbed assertion named in its Reason, not as a rewrite: its job and boundary are
-  unchanged, and its red proof is recorded here.
-- `ScaffoldTree.WriteDydoTree(string, IEnumerable<string>)` is internal and its comment says it
-  exists so a test can witness the empty-set throw; with that test gone it is a seam with no test
-  purpose. Production code is out of scope here, so it stays; a follow-up can fold it into the
-  public overload.
+- Lesson 9: every moved case keeps its base input. The seven completion rows run
+  `dydo _complete 1 dydo` (PB3); the host-marker cases' inits are rows [1] and [3]'s own, before a
+  byte-identical join; the mode removals match their scenarios' inputs. Round 2 changed no input:
+  the archive case gained two assertions, everything else is tags.
+- A strengthened assertion in a kept test is recorded as keep, the absorbed assertion named in its
+  Reason.
+- The clause map is its own page, `setup-tags.md`, so both pages stay under 20 KB.
+- `ScaffoldTree.WriteDydoTree(string, IEnumerable<string>)` exists for the removed test; production
+  code is out of scope, so it stays for a follow-up.
 
 ## Related
 
 - [DYD-1520 test audit](./_dyd-1520-test-audit.md) - The audit files of every batch
 - [DYD-1520 test rubric](./rubric.md) - What each verdict here applies
+- [DYD-1520 setup tag clauses](./setup-tags.md) - Each tag clause and the line that proves it
