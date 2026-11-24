@@ -8,7 +8,6 @@ using DynaDocs.Tests.Integration;
 /// A chain after cd is the cd-chain coaching's, so no row starts with cd.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DYD-499 installing a library or tool needs the user's permission")]
 public class InstallNudgeTests : GuardHookTestBase
 {
     private static readonly string[] Installs =
@@ -46,6 +45,7 @@ public class InstallNudgeTests : GuardHookTestBase
     public static TheoryData<string> OtherCommands => [.. NoInstalls];
 
     [Theory]
+    [Trait("Job", "contract: DYD-499 installing a library or tool needs the user's permission (an install or add meets the nudge once, and the identical retry passes)")]
     [MemberData(nameof(InstallCommands))]
     public async Task Install_MeetsTheNudgeOnce_AndTheSameRetryPasses(string command)
     {
@@ -56,6 +56,7 @@ public class InstallNudgeTests : GuardHookTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: DYD-499 (a command that restores locked dependencies or installs nothing never meets the library-install nudge)")]
     [MemberData(nameof(OtherCommands))]
     public async Task RestoreOrOtherCommand_NeverMeetsTheNudge(string command)
     {

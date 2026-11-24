@@ -3,7 +3,7 @@ namespace DynaDocs.Tests.Commands;
 using DynaDocs.Commands;
 using DynaDocs.Services;
 
-[Trait("Job", "contract: DYD-351 (dydo mode show/set); dydo-commands.md dydo mode")]
+[Trait("Job", "contract: DYD-351 (dydo mode set: a valid set prints every flag, a refused or failed set exits nonzero and writes nothing); dydo-commands-linear.md dydo mode; DYD-644 (an unwritable store fails with one error)")]
 public sealed class ModeCommandTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-mode-cmd-" + Guid.NewGuid().ToString("N"));

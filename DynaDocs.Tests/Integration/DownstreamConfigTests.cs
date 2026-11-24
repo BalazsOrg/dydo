@@ -11,9 +11,11 @@ namespace DynaDocs.Tests.Integration;
 /// hooks). Each command may change only dydo's own lines.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "trap: DYD-392 (init --join and adopt must change only dydo's own lines of a downstream project's committed config, keeping BOMs and encodings)")]
 public class DownstreamConfigTests : IntegrationTestBase
 {
+    private const string OwnLines = "trap: DYD-392 (init --join and adopt must change only dydo's own lines of a downstream project's committed config)";
+    private const string OwnLinesAndBom = "trap: DYD-392 (init --join and adopt must change only dydo's own lines of a downstream project's committed config, keeping its BOM and encoding)";
+
     private static readonly string Fixture = Path.Combine(AppContext.BaseDirectory, "TestData", "downstream-lc");
 
     private const string ClaudeSettings = ".claude/settings.json";
@@ -39,6 +41,7 @@ public class DownstreamConfigTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", OwnLinesAndBom)]
     public async Task JoinClaude_RewritesOnlyDydosOwnLinesInTheCommittedSettings()
     {
         var original = Text(ClaudeSettings);
@@ -61,6 +64,7 @@ public class DownstreamConfigTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 056 (the guard rides the committed settings and the allow list stays machine-local, so a downstream join leaves no dydo hook in .claude/settings.local.json and puts the allow entries there)")]
     public async Task JoinClaude_LeavesNoDydoHookInTheLocalSettings()
     {
         (await JoinProjectAsync("claude")).AssertSuccess();
@@ -72,6 +76,7 @@ public class DownstreamConfigTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", OwnLinesAndBom)]
     public async Task JoinCodex_ReadsTheBomConfigAndRewritesOnlyDydosOwnHookLines()
     {
         var hooks = Text(CodexHooks);
@@ -94,6 +99,7 @@ public class DownstreamConfigTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", OwnLines)]
     public async Task Adopt_AddsOnlyTheVersionAndTheReleaseNudge()
     {
         var original = Text(ConfigService.ConfigFileName);
@@ -114,6 +120,7 @@ public class DownstreamConfigTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (a repeated init --join and adopt on a downstream project change no byte of any config file)")]
     public async Task RepeatedJoinAndAdopt_LeaveEveryFileByteIdentical()
     {
         (await JoinProjectAsync("all")).AssertSuccess();
@@ -132,6 +139,7 @@ public class DownstreamConfigTests : IntegrationTestBase
     public static TheoryData<string> BomEncodings => ["utf-16le", "utf-8", "utf-16be", "utf-32le", "utf-32be"];
 
     [Theory]
+    [Trait("Job", OwnLinesAndBom)]
     [MemberData(nameof(BomEncodings))]
     public async Task Adopt_NothingToChange_LeavesABomEncodedConfigByteIdentical(string encoding)
     {
@@ -144,6 +152,7 @@ public class DownstreamConfigTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", OwnLinesAndBom)]
     [MemberData(nameof(BomEncodings))]
     public async Task Adopt_Upgrade_KeepsTheEncodingBomAndUnknownKeysOfTheConfig(string encoding)
     {
@@ -163,6 +172,7 @@ public class DownstreamConfigTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", OwnLinesAndBom)]
     public async Task JoinAll_Utf16LeHookFiles_KeepTheirEncodingBomAndForeignContent()
     {
         var settings = Text(ClaudeSettings).TrimStart('﻿');

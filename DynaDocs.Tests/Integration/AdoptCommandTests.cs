@@ -9,12 +9,12 @@ namespace DynaDocs.Tests.Integration;
 /// file's bytes as they were.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo adopt (exit 2 leaves the file as it was); trap: a failed adopt must not rewrite dydo.json")]
 public class AdoptCommandTests : IntegrationTestBase
 {
     private string ConfigPath => Path.Combine(TestDir, "dydo.json");
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo adopt (a release is recorded as dydoVersion)")]
     [InlineData("1.2.3", "3.6.0", "3.6.0")]
     [InlineData("1.2.3", "3.6.0-beta.3", "3.6.0-beta.3")]
     [InlineData("1.2.3", "v3.6.0", "3.6.0")]
@@ -31,6 +31,7 @@ public class AdoptCommandTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo adopt (anything that is not a release exits 2 and leaves dydo.json's bytes as they were)")]
     [InlineData("latest")]
     [InlineData("3.6")]
     [InlineData("vv3.6.0")]
@@ -48,6 +49,7 @@ public class AdoptCommandTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo adopt (a missing dydo.json, or one that does not parse, exits 2 and leaves the file as it was)")]
     [InlineData(null)]
     [InlineData("{ not json")]
     public async Task Adopt_NoUsableConfig_ExitsTwoAndWritesNothing(string? config)

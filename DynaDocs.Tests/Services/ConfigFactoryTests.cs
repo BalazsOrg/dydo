@@ -10,13 +10,13 @@ using DynaDocs.Tests.Integration;
 /// Bounded polls and words that merely contain "git" pass.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "trap: DYD-736 (prefixed gh pr create slipped past the review-block nudge); trap: issue 0177 (open-ended until-loops crashed agents)")]
 public sealed class ConfigFactoryTests : IntegrationTestBase
 {
     private const string NoReviewBlock = "carries no review block";
     private const string PollLoop = "poll-loop";
 
     [Theory]
+    [Trait("Job", "trap: DYD-736 (prefixed gh pr create slipped past the review-block nudge) and issue 0177 (open-ended until-loops crashed agents): each row asserts the default nudges' verdict at the hook, the named warning or a pass")]
     [InlineData("gh pr create --title x --body 'ships the fix'", NoReviewBlock)]
     [InlineData("FOO=1 gh pr create --fill", NoReviewBlock)]
     [InlineData("env gh pr create --fill", NoReviewBlock)]

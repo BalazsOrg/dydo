@@ -5,15 +5,17 @@ namespace DynaDocs.Tests.Integration;
 /// `dydo/agents/` never fails it.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo init then dydo check exits 0; trap: the scanExclude invariant keeps dydo/agents/ scratch out of check")]
+[Trait("Job", "contract: dydo-commands-core.md dydo init then dydo check exits 0 with no diagnostic naming bad-doc.md; trap: the scanExclude invariant keeps dydo/agents/ scratch out of check (the scratch-file row)")]
 public class InitCheckIntegrationTests : IntegrationTestBase
 {
-    // A fresh init without the scratch file is fresh-installation.feature's (DYD-1520 setup audit).
-    [Fact]
-    public async Task FreshInit_PassesCheck()
+    [Theory]
+    [InlineData(null)]
+    [InlineData("dydo/agents/sample/bad-doc.md")]
+    public async Task FreshInit_PassesCheck(string? agentScratchFile)
     {
         await InitProjectAsync("none");
-        WriteFile("dydo/agents/sample/bad-doc.md", "no frontmatter at all, [broken](./nowhere.md)");
+        if (agentScratchFile != null)
+            WriteFile(agentScratchFile, "no frontmatter at all, [broken](./nowhere.md)");
 
         var check = await CheckAsync();
 

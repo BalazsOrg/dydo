@@ -1,4 +1,4 @@
-# Job: contract: DYD-351 (dydo mode show/set; a mode set through the guard is warned once, then its retry passes; a quoted, pathed or indirect mode set is still a mode set)
+# Job: contract: DYD-351 (dydo mode show/set; a mode set through the guard is warned once, then its retry passes; a quoted, pathed or indirect mode set is still a mode set, and a command that only mentions mode set passes)
 @machine-mode
 Feature: Machine mode
   A machine mode flag is read by every agent on this machine; overnight is the one flag.

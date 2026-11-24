@@ -2,9 +2,13 @@ namespace DynaDocs.Tests.Services;
 
 using DynaDocs.Services;
 
-[Trait("Job", "edge: DYD-362 (in-use worktree detection needs a held folder or a live process, which driving cannot stage)")]
 public sealed class WorktreeProcessProbeTests : IDisposable
 {
+    private const string HeldOrLive = "edge: DYD-362 (in-use worktree detection needs a held folder or a live process, which driving cannot stage)";
+
+    // dydo clean reaches the rename probe only on Windows, and CI runs this class only on Linux.
+    private const string WindowsProbe = "edge: DYD-362 (the Windows rename probe, which dydo clean runs only on Windows, where CI does not run this class: ";
+
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-probe-" + Guid.NewGuid().ToString("N")[..8]);
 
     public WorktreeProcessProbeTests() => Directory.CreateDirectory(_root);
@@ -12,6 +16,7 @@ public sealed class WorktreeProcessProbeTests : IDisposable
     public void Dispose() => LinkSafeDelete.DeleteTree(_root);
 
     [Fact]
+    [Trait("Job", WindowsProbe + "an idle folder reads not in use and is moved back with its contents, leaving no probe sibling)")]
     public void RenameProbe_IdleFolder_IsNotInUse_AndStaysWhereItWas()
     {
         var tree = Directory.CreateDirectory(Path.Combine(_root, "tree")).FullName;
@@ -23,12 +28,14 @@ public sealed class WorktreeProcessProbeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", WindowsProbe + "a refused rename reads in use; a missing path is the refused rename Linux can stage)")]
     public void RenameProbe_FolderThatCannotBeRenamed_ReportsInUse()
     {
         Assert.Contains("cannot be renamed", WorktreeProcessProbe.RenameProbe(Path.Combine(_root, "missing")));
     }
 
     [Fact]
+    [Trait("Job", HeldOrLive)]
     public void RenameProbe_RetriesAMoveBackThatFailsOnce()
     {
         var tree = Directory.CreateDirectory(Path.Combine(_root, "tree")).FullName;
@@ -45,6 +52,7 @@ public sealed class WorktreeProcessProbeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", HeldOrLive)]
     public void RenameProbe_MoveBackThatKeepsFailing_NamesWhereTheFolderIs()
     {
         var tree = Directory.CreateDirectory(Path.Combine(_root, "tree")).FullName;
@@ -64,6 +72,7 @@ public sealed class WorktreeProcessProbeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", HeldOrLive)]
     public void ProcScan_FindsAProcessWhoseWorkingDirectoryIsInside()
     {
         var tree = Directory.CreateDirectory(Path.Combine(_root, "tree")).FullName;
@@ -79,6 +88,7 @@ public sealed class WorktreeProcessProbeTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", HeldOrLive)]
     public void ProcScan_IgnoresUnreadableAndUnrelatedProcesses()
     {
         var tree = Directory.CreateDirectory(Path.Combine(_root, "tree")).FullName;

@@ -349,10 +349,13 @@ public sealed class CleanCommandTests : IDisposable
                 ["GIT_CONFIG_PARAMETERS"] = "'merge.default'='keep' 'merge.keep.driver'='true'"
             };
 
-        var (exit, _, _) = await WithEnvironment(keepMine, () => dryRun ? Clean("feature", "--dry-run") : Clean("feature"));
+        var (exit, stdout, _) = await WithEnvironment(keepMine, () => dryRun ? Clean("feature", "--dry-run") : Clean("feature"));
 
         Assert.Equal(0, exit);
         Assert.True(HasBranch("feature"));
+        // A dry run deletes nothing, so its verdict is the line it prints.
+        if (dryRun)
+            Assert.Contains("branch feature would be kept", stdout);
     }
 
     // A builtin driver needs no config, so system gitattributes ($(prefix)/etc/gitattributes) must be shut out too:
@@ -748,7 +751,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.True(Directory.Exists(tree));
     }
 
-    [Trait("Job", "trap: DYD-362 (a busy probe strands a tree)")]
+    [Trait("Job", "trap: DYD-362 (a probe that strands a tree fails that tree with exit 2, locks it with its files kept in the probe folder, and the run goes on)")]
     [Fact]
     public async Task BusyProbeThatCannotMoveTheTreeBack_FailsThatTree_LocksIt_AndTheRunGoesOn()
     {

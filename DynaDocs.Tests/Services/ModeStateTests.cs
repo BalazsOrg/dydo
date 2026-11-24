@@ -12,8 +12,8 @@ public sealed class ModeStateTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-mode-" + Guid.NewGuid().ToString("N"));
 
-    // A missing store is machine-mode.feature's "Show lists every flag" (DYD-1520 setup audit).
     [Theory]
+    [InlineData(null)]
     [InlineData("{ not json")]
     [InlineData("""{"overnight":"maybe"}""")]
     [InlineData("null")]
