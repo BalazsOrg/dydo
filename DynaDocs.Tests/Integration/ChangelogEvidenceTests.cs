@@ -5,7 +5,6 @@ using DynaDocs.Services;
 using static DynaDocs.Tests.Integration.PushedRepository;
 
 [Collection("Integration")]
-[Trait("Job", "trap: DYD-1206 committed gate receipts passed check and pr-ready")]
 public sealed class ChangelogEvidenceTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-evidence-" + Guid.NewGuid().ToString("N"));
@@ -23,6 +22,7 @@ public sealed class ChangelogEvidenceTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "trap: DYD-1206 committed gate receipts passed check and pr-ready")]
     [InlineData("gate.log", 0)]
     [InlineData("results.trx", 0)]
     [InlineData("coverage.xml", 0)]
@@ -53,6 +53,7 @@ public sealed class ChangelogEvidenceTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "trap: DYD-1206 committed gate receipts passed check and pr-ready (here behind a symlinked project path)")]
     [InlineData(false)]
     [InlineData(true)]
     public async Task SymlinkedProjectPath_CannotHideCommittedEvidence(bool linkedParent)
@@ -75,6 +76,7 @@ public sealed class ChangelogEvidenceTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-1206 (pr-ready refuses a docs root linked in from another repository, so that repository's receipts cannot pass)")]
     public async Task OwnDocsLinkedIntoAnotherRepository_AreStillRefused()
     {
         var nested = Path.Combine(_tree, "nested");
@@ -93,6 +95,7 @@ public sealed class ChangelogEvidenceTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "trap: DYD-1206 (pr-ready in a nested repository refuses a receipt committed in it and passes without one)")]
     [InlineData(false)]
     [InlineData(true)]
     public async Task NestedRepository_UsesItsOwnChangelogInsteadOfTheOuterProject(bool receipt)
@@ -118,6 +121,7 @@ public sealed class ChangelogEvidenceTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-1206 (its refusal covers receipts only: a human-written changelog record and gitignored local output pass check and pr-ready)")]
     public async Task HumanMarkdownAndIgnoredLocalOutput_AreAllowed()
     {
         File.WriteAllText(Path.Combine(_tree, "dydo", "project", "changelog", "record.md"),

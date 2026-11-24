@@ -6,7 +6,6 @@ namespace DynaDocs.Tests.Services;
 /// start document.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo graph (--incoming, --degree) and dydo graph stats")]
 public sealed class DocGraphTests : IDisposable
 {
     private const string Guide = "---\narea: guides\ntype: guide\n---\n";
@@ -22,6 +21,7 @@ public sealed class DocGraphTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo graph (--incoming, --degree) and dydo graph stats")]
     [InlineData("guides/a.md", "guides/b.md", "guides/deep/c.md")]
     [InlineData("guides/a.md --degree 2", "guides/deep/c.md", "guides/a.md")]
     [InlineData("guides/a.md --degree 2", "guides/b.md", "example.com")]
@@ -39,6 +39,7 @@ public sealed class DocGraphTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-utilities.md Exit Codes (2 is a tool error): dydo graph on an unknown document path, named in the output")]
     public void Graph_UnknownDocument_IsAToolError()
     {
         var (code, output) = DydoCli.RunCombined("graph", "guides/missing.md");

@@ -4,12 +4,15 @@ using System.Text;
 using System.Text.Json.Nodes;
 using DynaDocs.Serialization;
 
-[Trait("Job", "trap: DYD-392 (JSON writes keep the file's bytes, encoding and BOM)")]
 public class JsonTextTests
 {
+    private const string LayoutJob = "trap: DYD-392 (a JSON write changes only what changed and keeps the file's layout)";
+    private const string FreshJob = "edge: DYD-392 (a JSON write with no parseable original is a fresh LF document; a new file is UTF-8 without BOM)";
+    private const string MergeJob = "trap: DYD-392 (a JSON write merges into the file's own value only the change the model made from baseline to updated)";
     private static JsonNode Parse(string json) => JsonText.Parse(json)!;
 
     [Fact]
+    [Trait("Job", LayoutJob)]
     public void Render_UnchangedTarget_ReturnsTheOriginalText()
     {
         const string original = "﻿{\r\n  \"a\" :  [1,2],\r\n  \"s\": \"it\\u0027s\"\r\n}\r\n";
@@ -18,6 +21,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", LayoutJob)]
     public void Render_ChangedValue_RewritesOnlyThatValueWithRelaxedEscaping()
     {
         const string original = "{\"a\": 1,\n \"b\": {\"c\": \"x\"}}";
@@ -28,6 +32,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", LayoutJob)]
     public void Render_AddedMember_TakesTheFileIndentAndNewline()
     {
         const string original = "{\r\n\t\"a\": 1\r\n}";
@@ -39,6 +44,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", LayoutJob)]
     public void Render_RemovedItem_LeavesTheOthersVerbatim()
     {
         const string original = "[\n  {\"k\":1},\n  {\"k\": 2},\n  { \"k\" : 3 }\n]\n";
@@ -49,6 +55,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", "edge: DYD-392 (an empty object gaining a member opens it on its own lines)")]
     public void Render_EmptyObjectGainingAMember_OpensOnItsOwnLines()
     {
         var target = Parse("{}");
@@ -58,6 +65,7 @@ public class JsonTextTests
     }
 
     [Theory]
+    [Trait("Job", FreshJob)]
     [InlineData(null)]
     [InlineData("{ nope")]
     [InlineData("{} {}")]
@@ -67,6 +75,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", MergeJob)]
     public void Merge_AppliesOnlyTheChangeFromBaselineToUpdated()
     {
         var original = Parse("{\"x\": 1, \"unknown\": true, \"list\": [1, 2, 3], \"gone\": 0}");
@@ -81,6 +90,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", MergeJob)]
     public void Merge_ArrayTheModelReshaped_TakesTheUpdate()
     {
         var merged = JsonText.Merge(Parse("[1, 2]"), Parse("[1]"), Parse("[3]"));
@@ -89,6 +99,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", MergeJob)]
     public void Merge_AppendedItem_IsAddedToTheOriginal()
     {
         var original = Parse("[1]");
@@ -100,6 +111,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (a JSON write keeps the file's encoding and BOM, even over an unparseable body)")]
     public void Write_MalformedUtf16File_RendersFreshAndKeepsTheEncodingAndBom()
     {
         var path = Path.Combine(Path.GetTempPath(), $"jsontext-{Guid.NewGuid():N}.json");
@@ -119,6 +131,7 @@ public class JsonTextTests
     }
 
     [Fact]
+    [Trait("Job", FreshJob)]
     public void Encode_NewFile_IsUtf8WithoutBom()
     {
         Assert.Equal("{}"u8.ToArray(), JsonText.Encode(null, "{}"));

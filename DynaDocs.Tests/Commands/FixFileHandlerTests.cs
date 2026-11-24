@@ -6,12 +6,12 @@ namespace DynaDocs.Tests.Commands;
 /// only resolved against. A valid document's bytes: optional-summaries.feature.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "trap: dydo fix rename onto an existing file loses it; contract: dydo-commands-core.md dydo fix (filename normalization, wikilink conversion)")]
 public sealed class FixFileHandlerTests
 {
     private const string Guide = "---\narea: guides\ntype: guide\n---\n";
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo fix (wikilink conversion: a resolvable wikilink becomes a relative link, an unresolvable one stays)")]
     public void Fix_ConvertsResolvableWikilinks_AndLeavesTheTargetUntouched()
     {
         using var project = new DocsProject();
@@ -28,6 +28,7 @@ public sealed class FixFileHandlerTests
     }
 
     [Fact]
+    [Trait("Job", "trap: dydo fix rename onto an existing file loses it; contract: dydo-commands-core.md dydo fix (filename normalization)")]
     public void Fix_RenamesNonKebabFiles_ButNeverOntoAnExistingFile()
     {
         using var project = new DocsProject();

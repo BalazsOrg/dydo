@@ -4,7 +4,7 @@ using DynaDocs.Commands;
 
 /// <summary>`dydo help` names every command the CLI registers, so a new command cannot ship undocumented.</summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-utilities.md dydo help; dydo-commands.md (every command documented)")]
+[Trait("Job", "contract: dydo-commands.md (`dydo help` prints the one-screen summary): it names every registered command")]
 public sealed class HelpCommandTests
 {
     [Fact]

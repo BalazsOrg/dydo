@@ -6,13 +6,14 @@ namespace DynaDocs.Tests.Services;
 /// passes the check without becoming a graph edge.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "trap: #0187 (check and graph resolved the same relative link to different documents)")]
 public sealed class LinkResolverTests : IDisposable
 {
     private const string Frontmatter = "---\narea: guides\ntype: guide\n---\n";
+    private const string AgreementJob = "trap: #0187 (check and graph resolved the same relative link to different documents)";
     private readonly DocsProject _project = new();
 
     [Theory]
+    [Trait("Job", AgreementJob)]
     [InlineData("a/source.md", "./sibling.md", "a/sibling.md")]
     [InlineData("a/source.md", "./_index.md", "a/_index.md")]
     [InlineData("a/b/source.md", "../parent.md", "a/parent.md")]
@@ -29,6 +30,7 @@ public sealed class LinkResolverTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", AgreementJob)]
     [InlineData("./sibling.md#anchor", "a/sibling.md")]
     [InlineData("../sibling.md#anchor", "sibling.md")]
     public void Resolve_AgreesOnAnchoredCrossFolderLinks(string target, string expectedKey)
@@ -41,6 +43,7 @@ public sealed class LinkResolverTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "trap: #0186 (an anchor-only link is checked on its own page, exit 0, and is no graph edge)")]
     public void Resolve_DisagreesIntentionallyOnAnchorOnlyLinks()
     {
         _project.Write("guide.md", Frontmatter + "\n# Guide\n\n## Section\n\n[Here](#section)\n");

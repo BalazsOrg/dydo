@@ -5,7 +5,7 @@ using DynaDocs.Services;
 using static DynaDocs.Tests.Integration.PushedRepository;
 
 [Collection("Integration")]
-[Trait("Job", "contract: DYD-1100 DECIDED bdb6b643 §3 rules 4/6; DYD-1187")]
+[Trait("Job", "contract: DYD-1100 DECIDED bdb6b643 §3 rule 4 (DR 072: a doc declares the paths it explains, and dydo check / pr-ready flag a change to them); DYD-1187")]
 public sealed class ExplainsCommandTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-explains-" + Guid.NewGuid().ToString("N"));
@@ -175,7 +175,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1189; DYD-1100 DECIDED bdb6b643 §3 rules 4/6 (advisory explains check)")]
+    [Trait("Job", "contract: DYD-1189; DYD-1100 DECIDED bdb6b643 §3 rule 4 (advisory explains check)")]
     public async Task PrReady_MissingBaseWarnsWithoutBlocking()
     {
         var (exit, stdout, stderr) = await ConsoleCapture.AllAsync(() => PrReadyCommand.Create()
@@ -187,7 +187,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1189; DYD-1100 DECIDED bdb6b643 §3 rules 4/6 (advisory explains check)")]
+    [Trait("Job", "contract: DYD-1189; DYD-1100 DECIDED bdb6b643 §3 rule 4 (advisory explains check)")]
     public void Check_MissingBaseWarnsWithoutBlocking()
     {
         var (exit, stdout, stderr) = Check("--base", "refs/heads/missing-explains-base");

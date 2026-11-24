@@ -126,7 +126,7 @@ class StatechartJavaBuildTests(unittest.TestCase):
         self.assertFalse(self.receipt.exists(), 'a refused build published a receipt')
 
     def test_a_verified_build_publishes_the_artifact_and_its_receipt(self):
-        """Job: contract: DYD-415, a verified JDK and TLC build one reproducible helper jar with its receipt"""
+        """Job: contract: DYD-415, a verified JDK and TLC build a helper jar holding exactly the locked classes, with a receipt naming its hash"""
         result = self.build(*self.jdk())
 
         self.assertEqual(0, result.returncode, result.stderr)
@@ -165,7 +165,7 @@ class StatechartJavaBuildTests(unittest.TestCase):
                 self.assertFalse((self.root / 'escape').exists())
 
     def test_a_foreign_release_is_refused_before_its_javac_runs(self):
-        """Job: trap: DYD-415, only the pinned Eclipse Adoptium 21.0.8+9 JDK builds the helper"""
+        """Job: trap: DYD-415, a JDK whose release names a vendor other than Eclipse Adoptium is refused before its javac runs"""
         foreign = self.toolchain(release=RELEASE.replace(b'Eclipse Adoptium', b'Other Vendor'))
 
         self.assert_refused(self.build(*self.jdk(foreign)))

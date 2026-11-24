@@ -8,10 +8,12 @@ using DynaDocs.Commands;
 /// and exit codes. Document findings are in CheckDocValidatorTests; link graph shape in DocGraphTests.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo fix, dydo index, dydo graph and graph stats; exit 2 is a tool error")]
 public partial class DocumentationTests : IntegrationTestBase
 {
+    private const string ToolErrorJob = "contract: dydo-commands-utilities.md Exit Codes (2 is a tool error)";
+
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo fix (supported repairs only: an initialised project, its navigation pages and a document needing a manual fix gain no file and change no byte, exit 0)")]
     public async Task Fix_OnAnInitialisedProject_WritesNoFileAndChangesNoByte()
     {
         await InitProjectAsync("none");
@@ -29,6 +31,7 @@ public partial class DocumentationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo index (regenerates the root index from the configured structure, and dydo check passes it)")]
     public async Task Index_RegeneratesTheRoot_AndThatRootPassesCheck()
     {
         await InitProjectAsync("none");
@@ -45,6 +48,7 @@ public partial class DocumentationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo index; writing-docs.md Rules Enforced (navigation pages are optional, so a missing one is not linked)")]
     public async Task Index_SectionWithoutItsOptionalNavigationPage_IsNotLinkedToIt()
     {
         await InitProjectAsync("none");
@@ -70,6 +74,7 @@ public partial class DocumentationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo graph stats --top N (ranks at most N documents)")]
     public async Task GraphStats_Top_RanksAtMostThatManyDocuments()
     {
         await InitProjectAsync("none");
@@ -81,6 +86,7 @@ public partial class DocumentationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", ToolErrorJob + ": check, index and graph stats where no docs folder is found")]
     [InlineData("check", "nonexistent/path")]
     [InlineData("index", "nonexistent")]
     [InlineData("graph", "stats")]
@@ -99,6 +105,7 @@ public partial class DocumentationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ToolErrorJob + ": dydo graph on an unknown bare filename")]
     public async Task Graph_UnknownFile_IsAToolError()
     {
         await InitProjectAsync("none");

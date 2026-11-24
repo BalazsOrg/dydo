@@ -5,10 +5,14 @@ using DynaDocs.Services;
 using DynaDocs.Utils;
 
 [Collection("Integration")]
-[Trait("Job", "trap: DYD-134 (a failed or no-op dydo fix keeps dydo.json bytes); contract: dydo-commands-core.md dydo fix")]
 public class FixCommandIntegrationTests : IntegrationTestBase
 {
+    private const string ConfigBytesJob = "trap: DYD-134 (a failed or no-op dydo fix keeps dydo.json bytes)";
+    private const string ScanExcludeJob = "contract: dydo-commands-core.md dydo fix (restoration of required scan exclusions)";
+    private const string ScopeJob = "contract: dydo-commands-core.md dydo fix <path> (repairs only the given file or folder)";
+
     [Fact]
+    [Trait("Job", ConfigBytesJob)]
     public async Task Fix_ValidationErrorsPreserveOriginalConfigBytes()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -29,6 +33,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ConfigBytesJob)]
     public async Task Fix_PostWorkFailure_PreservesOriginalConfigBytes()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -51,6 +56,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ConfigBytesJob)]
     public async Task Fix_NoConfigChange_LeavesConfigBytesUntouched()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -68,6 +74,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ScanExcludeJob)]
     public async Task Fix_StaleAuditScanExcludeEntry_IsKeptAlongsideRestoredInvariants()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -87,6 +94,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ScanExcludeJob)]
     public async Task Fix_ConfigWithoutAuditScanExcludeEntry_DoesNotAddOne()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -120,6 +128,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     #region Explicit File Scope
 
     [Fact]
+    [Trait("Job", ScopeJob)]
     public async Task Fix_ExplicitStandaloneFile_Succeeds()
     {
         var filePath = Path.Combine(TestDir, "standalone.md");
@@ -134,6 +143,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ScopeJob)]
     public async Task Fix_ExplicitFile_OnlyFixesSelectedFileAfterRename()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -165,6 +175,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ScopeJob)]
     public async Task Fix_ExplicitFileBesideProjectConfig_UsesParentCorpus()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -181,6 +192,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ScopeJob)]
     public async Task Fix_ExplicitFileInLegacyDocs_UsesContainingRoot()
     {
         WriteFile("docs/index.md", "---\narea: docs\ntype: hub\n---\n\n# Docs\n\nDocumentation root.");
@@ -207,6 +219,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     #region Explicit Directory Scope
 
     [Fact]
+    [Trait("Job", ScopeJob)]
     public async Task Fix_ExplicitDirectory_ResolvesSiblingLinksWithoutChangingOutsideDocs()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -229,6 +242,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", ScopeJob + "; configuration.md scanExclude (an excluded path is not repaired)")]
     public async Task Fix_ExplicitDirectory_HonorsRootRelativeScanExclude()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -248,6 +262,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo fix <path>; dydo-commands-utilities.md Exit Codes (a <path> outside the docs tree is a tool error, exit 2)")]
     public async Task Fix_ExplicitDirectoryOutsideDocsTree_ReturnsToolError()
     {
         (await InitProjectAsync()).AssertSuccess();
@@ -265,6 +280,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     #region Obsidian Compatibility
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo fix applies documentation repairs; an Obsidian vault's .obsidian/ settings are not documentation; DYD-112 (fix writes no hub)")]
     public async Task Fix_IgnoresObsidianFolder()
     {
         var initResult = await InitProjectAsync();
@@ -305,6 +321,7 @@ public class FixCommandIntegrationTests : IntegrationTestBase
     #endregion
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo fix; DYD-112 hub retirement (handwritten _index.md and _custom.md pages keep their bytes, and the folder's documents stay)")]
     public async Task Fix_PreservesHandwrittenNavigationFiles()
     {
         (await InitProjectAsync()).AssertSuccess();

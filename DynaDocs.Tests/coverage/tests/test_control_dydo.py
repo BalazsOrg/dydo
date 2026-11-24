@@ -105,7 +105,7 @@ class ControlDydoTests(unittest.TestCase):
         self.assertTrue((self.run_path / "scratch/project/file.txt").exists())
 
     def test_doctor_on_a_changed_candidate_refuses_before_the_candidate_runs(self):
-        """Job: contract: verify-dydo SKILL.md doctor, editing or committing the candidate invalidates the run"""
+        """Job: contract: verify-dydo SKILL.md doctor, a run whose recorded candidate no longer matches the checkout is refused before the candidate runs"""
         project = self.run_path / "scratch/project"
         (project / ".git").mkdir()
         (project / ".claude").mkdir()

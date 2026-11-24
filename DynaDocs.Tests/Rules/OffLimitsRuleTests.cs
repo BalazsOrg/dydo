@@ -6,12 +6,12 @@ namespace DynaDocs.Tests.Rules;
 /// which would hide every pattern after it from the guard, is an error.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo check (validates the off-limits file); trap: an unclosed fence silently drops off-limits patterns")]
 public sealed class OffLimitsRuleTests
 {
     private const string Head = "---\ntype: config\n---\n\n# Files Off-Limits\n\n";
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check (validates the off-limits file); trap: an unclosed fence silently drops off-limits patterns")]
     [InlineData(null, 0, "files-off-limits.md not found")]
     [InlineData(Head + "```\n.env*\n", 1, "Unclosed code block")]
     [InlineData(Head + "```\n.env*\n.env*\n```\n", 0, "Duplicate pattern")]
@@ -35,6 +35,7 @@ public sealed class OffLimitsRuleTests
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check <path> (a <path> inside the docs tree scopes the report, so the root's off-limits file is not reported)")]
     public void Check_ScopedBelowTheDocsRoot_DoesNotReportTheOffLimitsFile()
     {
         using var project = new DocsProject();

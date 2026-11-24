@@ -8,7 +8,6 @@ using System.Runtime.Versioning;
 /// `--root` is covered with check and graph in <see cref="CheckCommandTests"/>.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-utilities.md dydo validate (nudge fields, exit 1 on errors); DYD-501 / DR 056 (Claude guard wiring warning, exit 0)")]
 public sealed class ValidateCommandTests : IDisposable
 {
     private const string Base = "\"version\":1,\"structure\":{\"root\":\"dydo\"}";
@@ -32,6 +31,7 @@ public sealed class ValidateCommandTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo validate (dydo.json deserialization and nudge fields, exit 1 on errors); DYD-501 / DR 056 (Claude guard wiring warning, exit 0)")]
     // dydo.json itself
     [InlineData(1, "not found", null)]
     [InlineData(1, "Invalid JSON", "{not valid json}")]
@@ -83,6 +83,7 @@ public sealed class ValidateCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo validate (dydo.json deserialization, exit 1 on errors)")]
     public void Validate_InvalidDydoJson_ReportsItWithoutCheckingClaudeSettings()
     {
         File.WriteAllText(Path.Combine(_dir, "dydo.json"), """{"integrations":{"claude":true},"testing":{"runner":[]}}""");
@@ -95,6 +96,7 @@ public sealed class ValidateCommandTests : IDisposable
     }
 
     [SkippableFact]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo validate; DYD-501 / DR 056 (unreadable Claude settings warn, exit 0)")]
     [UnsupportedOSPlatform("windows")]
     public void Validate_UnreadableClaudeSettings_WarnsToMakeThemReadable()
     {

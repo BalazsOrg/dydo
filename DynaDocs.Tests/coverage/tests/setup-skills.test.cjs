@@ -78,8 +78,8 @@ test('a rerun exits zero and leaves every link exactly as it was', () => {
   });
 });
 
-// Job: trap: README "Install the skills", it checks its whole plan before creating anything and
-// never replaces host configuration or unrelated skills (DYD-91, DYD-225)
+// Job: trap: README "Install the skills", a collision at a planned link is refused before any link is
+// created and both host skill roots stay unchanged (DYD-91, DYD-225)
 for (const [kind, occupy] of [
   ['a human-owned directory', (root, target) => {
     fs.mkdirSync(target, { recursive: true });
