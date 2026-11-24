@@ -204,8 +204,20 @@ recorded against one removed case. Stryker bails at a mutant's first failing tes
 Targeted phase 1 ran on the base tree over the 30 methods that lose a case or change a body (78
 cases, the Rejoining fact included as a superset). Stryker killed 658 mutants (2,253 s, rc 0;
 `/var/tmp/dyd1520/guard-hook/mut/phase1/`). Tag-only rewrites change no executable line, so
-they are left out of phase 1; phase 2 runs them anyway as kept tests. Phase 2 on the final
-candidate is the after-check (below).
+they are left out of phase 1; phase 2 runs them anyway as kept tests.
+
+Phase 2 ran on `9f29bff4`, which differs from the final `c0fbf730` only in `[Trait]` strings. It
+mutated phase 1's 196 spans and ran the 277 kept cases (723 s), with 727 killed. The comparison
+exits 1, with one mutant killed before and not after: `ShellReader.cs:732` (`_i++` to `_i--`,
+mutant 13361), a Timeout on the candidate. A Timeout is not a kill (lesson 7), so it was planted
+as PB36 on `c0fbf730`, each class alone with a 60 s hang timeout. It failed three kept cases fast,
+with no hang:
+
+- `GuardA02bProofTests.HereStringClosedBacktick_AtEndOfCommand_IsDenied[3]`
+- `GuardRefusalContractTests.Refusal_IsExitZeroWithOneDenyObject` (the `$OUT` row)
+- `GuardWarnOrderTests.HardBlock…` (the `$OUT` row, marker unarmed)
+
+The Timeout came from the order Stryker ran the covering tests in, and no protection is lost.
 
 ## Self-check against the first review's lessons
 
