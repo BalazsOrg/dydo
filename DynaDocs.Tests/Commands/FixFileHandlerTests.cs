@@ -2,8 +2,8 @@ namespace DynaDocs.Tests.Commands;
 
 /// <summary>
 /// `dydo fix` repairs files on disk: a resolvable wikilink becomes a relative link and a
-/// non-kebab file is renamed. It never overwrites an existing file and never touches a document it
-/// only resolved against. A valid document's bytes: optional-summaries.feature.
+/// non-kebab file is renamed. It never overwrites an existing file, never touches a document it
+/// only resolved against, and leaves a valid document's bytes alone.
 /// </summary>
 [Collection("Integration")]
 public sealed class FixFileHandlerTests
@@ -42,5 +42,21 @@ public sealed class FixFileHandlerTests
         Assert.Equal(Guide + "\n# Existing\n", project.Read("guides/my-task.md"));
         Assert.False(File.Exists(project.DocPath("guides/Other Thing.md")));
         Assert.Equal(Guide + "\n# Other\n", project.Read("guides/other-thing.md"));
+    }
+
+    [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo fix (applies supported repairs only, so a valid document keeps its bytes, exit 0)")]
+    [InlineData("## Details\n\nUseful content.\n")]
+    [InlineData("A useful navigation description.\n")]
+    public void Fix_ValidDocument_KeepsItsBytes(string body)
+    {
+        using var project = new DocsProject();
+        var path = project.Write("guides/valid.md", Guide + "\n# Document\n\n" + body);
+        var before = File.ReadAllBytes(path);
+
+        var (code, output) = DydoCli.RunCombined("fix");
+
+        Assert.True(code == 0, $"exit {code}:\n{output}");
+        Assert.Equal(before, File.ReadAllBytes(path));
     }
 }

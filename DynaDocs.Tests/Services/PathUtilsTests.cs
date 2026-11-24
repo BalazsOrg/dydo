@@ -10,10 +10,8 @@ using Xunit;
 /// </summary>
 public class PathUtilsTests
 {
-    private const string CollapseJob = "trap: DYD-396, DYD-547 ('..' and UNC/device roots in guarded paths)";
-
     [Theory]
-    [Trait("Job", CollapseJob)]
+    [Trait("Job", "trap: DYD-396 (a guarded path collapsed to the wrong form escaped its check): the exact path the public CollapseRelativeSegments(path) returns on the running host")]
     [InlineData("a/b/c", "a/b/c")]
     [InlineData("a/./b", "a/b")]
     [InlineData("a/b/../c", "a/c")]
@@ -21,6 +19,8 @@ public class PathUtilsTests
     [InlineData("C:/x/y/../z", "C:/x/z")]
     [InlineData("C:\\x\\y\\..\\z", "C:/x/z")]
     [InlineData("/home/u/.claude/projects/p/memory/../../../../etc/secret", "/home/u/etc/secret")]
+    [InlineData("a/../../escape", "../escape")]      // relative escape kept (can't be mistaken for a trusted root)
+    [InlineData("/a/../../escape", "/escape")]        // rooted '..' at top is dropped
     public void CollapseRelativeSegments_ResolvesDotDot(string input, string expected)
     {
         Assert.Equal(expected, PathUtils.CollapseRelativeSegments(input));
@@ -60,14 +60,14 @@ public class PathUtilsTests
         { "//?/x/../..", "//?/", "/" },
         { "C:", "C:", "C:" },
         { "c:..", "c:..", "c:.." },
-        { "/a/../../escape", "/escape", "/escape" },        // rooted '..' at top is dropped
-        { "a/../../escape", "../escape", "../escape" },     // relative escape kept (can't be mistaken for a trusted root)
+        { "/a/../../escape", "/escape", "/escape" },
+        { "a/../../escape", "../escape", "../escape" },
     };
 
     // The host-independent seam runs both readings on every host, so a Linux run exercises the
     // Windows root forms too (DYD-547).
     [Theory]
-    [Trait("Job", CollapseJob + "; edge: both host readings on any host")]
+    [Trait("Job", "trap: DYD-396 (a guarded path collapsed to the wrong form escaped its check): each path's exact Windows reading and exact other-host reading, both on any host (DYD-547)")]
     [MemberData(nameof(RootForms))]
     public void CollapseRelativeSegments_BothReadings_OnAnyHost(string input, string windowsExpected, string otherExpected)
     {

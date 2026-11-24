@@ -35,7 +35,8 @@ public sealed class LinkResolverTests : IDisposable
     [InlineData("../sibling.md#anchor", "sibling.md")]
     public void Resolve_AgreesOnAnchoredCrossFolderLinks(string target, string expectedKey)
     {
-        _project.Write(expectedKey, Frontmatter + "\n# Target\n\n## Anchor\n\nText.\n");
+        // The target's one heading gives it exactly the rule case's anchors: ["anchor"].
+        _project.Write(expectedKey, Frontmatter + "\n# Anchor\n");
         _project.Write("a/source.md", Frontmatter + $"\n# Source\n\n[Target]({target})\n");
 
         AssertCheckPasses();
@@ -43,10 +44,11 @@ public sealed class LinkResolverTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "trap: #0186 (an anchor-only link is checked on its own page, exit 0, and is no graph edge)")]
+    [Trait("Job", "trap: #0186 (an anchor-only link to a heading on its own page was an empty-target broken link; it passes check, exit 0, and is no graph edge)")]
     public void Resolve_DisagreesIntentionallyOnAnchorOnlyLinks()
     {
-        _project.Write("guide.md", Frontmatter + "\n# Guide\n\n## Section\n\n[Here](#section)\n");
+        // The page's one heading gives it exactly the rule case's anchors: ["section"].
+        _project.Write("guide.md", Frontmatter + "\n# Section\n\n[Here](#section)\n");
 
         AssertCheckPasses();
         var (code, output) = DydoCli.RunCombined("graph", "guide.md");
