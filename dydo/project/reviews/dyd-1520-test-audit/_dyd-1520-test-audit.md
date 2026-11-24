@@ -23,7 +23,7 @@ Each batch's PR replaces its own line with a link to its audit.
 
 - guard-routes: audit pending
 
-- safe-delete: audit pending
+- [Safe-delete audit](./safe-delete.md) - 328 cases: 217 kept, 94 rewritten, 17 removed
 
 - setup: audit pending
 
