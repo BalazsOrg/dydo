@@ -69,7 +69,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
-    [Trait("Job", "trap: a TMPDIR too long for sun_path sends the socket to one private directory per user under /tmp")]
+    [Trait("Job", "trap: a TMPDIR too long for sun_path sends the socket to a directory under /tmp named for the effective user")]
     public void ALongTempDirFallsBackToOnePrivateDirectoryPerUser()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
@@ -83,7 +83,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
-    [Trait("Job", "edge: a missing socket directory is created with mode 0700 and used")]
+    [Trait("Job", "edge: a socket directory that does not exist yet is accepted for use")]
     public void AMissingSocketDirectoryIsCreatedPrivate()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
@@ -95,11 +95,11 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
-    [Trait("Job", "edge: an existing socket directory only its owner can enter is used, even without the owner's write bit")]
+    [Trait("Job", "edge: an existing socket directory with mode 0500 is used, even without the owner's write bit")]
     public void AnExistingSocketDirectoryOnlyItsOwnerCanEnterIsUsed() => ExistingSocketDirectory("500", used: true);
 
     [SkippableTheory]
-    [Trait("Job", "trap: an existing socket directory with any mode bit beyond owner-only access is refused, naming the directory and TMPDIR")]
+    [Trait("Job", "trap: an existing socket directory with a group, other or special mode bit set is refused")]
     [InlineData("750")]
     [InlineData("702")]
     [InlineData("1700")]
@@ -116,7 +116,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
-    [Trait("Job", "trap: a socket directory another user owns is refused, naming the directory and TMPDIR")]
+    [Trait("Job", "trap: a socket directory another user owns is refused")]
     public void ASocketDirectoryOwnedBySomeoneElseIsRefused()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
@@ -127,7 +127,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
-    [Trait("Job", "trap: a link and a file in place of the socket directory are each refused, naming the path and TMPDIR")]
+    [Trait("Job", "trap: a link and a file in place of the socket directory are each refused")]
     public void ALinkOrFileInPlaceOfTheSocketDirectoryIsRefused()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");

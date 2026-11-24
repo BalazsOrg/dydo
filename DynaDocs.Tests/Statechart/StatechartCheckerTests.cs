@@ -47,7 +47,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §4 (the prepared checker is an exact copy of the pinned jar, alone in its own directory)")]
+    [Trait("Job", "edge: after preparation, Verify returns a copy holding the input jar's exact bytes")]
     [MemberData(nameof(Inputs))]
     public void OwnedCopyRetainsOfficialBytesAndManifestWithoutChangingOriginal(bool pinned)
     {
@@ -66,9 +66,9 @@ public class StatechartCheckerTests
                 Convert.ToHexStringLower(SHA256.HashData(manifest)));
     }
 
-    // The digest is the lock's pin: the payload's own lock names the real jar, and nothing else passes for it.
+    // The digest is the lock's pin: the payload's own lock names the real jar.
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §4 (a checker input other than the pinned jar is refused, naming it, before any copy)")]
+    [Trait("Job", "trap: preparation refuses a checker input whose bytes do not match the digest it is given, and no checker directory exists afterwards")]
     [MemberData(nameof(Inputs))]
     public void AnInputOtherThanThePinnedJarIsRefusedBeforeAnyCopy(bool pinned)
     {
@@ -83,7 +83,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §4 (a CommunityModules.jar entry beside the checker input is refused by discovery and by preparation, which copies nothing)")]
+    [Trait("Job", "trap: a CommunityModules.jar entry beside the checker input is refused by explicit discovery and by preparation, and no checker directory exists afterwards")]
     [MemberData(nameof(Companions))]
     public void CompanionIsRejectedByExplicitDiscoveryAndPreparationWithoutChangingForeignBytes(string kind, bool pinned)
     {
@@ -116,7 +116,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §4 (a linked checker input resolves to the actual jar, and a companion beside that jar refuses it)")]
+    [Trait("Job", "trap: a checker input reached through a file link or a directory link resolves to the jar's own path, and is refused once a companion is beside that jar")]
     [MemberData(nameof(Inputs))]
     public void AliasedFileAndDirectoryInputsCheckTheActualJarCompanion(bool pinned)
     {
@@ -135,7 +135,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §4 (any change, after preparation, to what the checker launches from is refused at the next launch)")]
+    [Trait("Job", "trap: a change after preparation to the source, the copy, the copy's directory or its ancestors, or a companion beside the source, makes the next Verify refuse")]
     [MemberData(nameof(Changes))]
     public void EveryLaunchRechecksSourceDestinationMembershipAndPlainAncestors(string change, bool pinned)
     {
@@ -163,7 +163,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §4 (preparation never adopts an existing checker directory, and keeps its content)")]
+    [Trait("Job", "trap: preparation refuses, with a Win32Exception, a checker directory that already exists")]
     [MemberData(nameof(Inputs))]
     public void ExistingCheckerDirectoryIsRetainedWithoutOverwrite(bool pinned)
     {
@@ -178,12 +178,12 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 Clarification (TLC launches through the loopback bootstrap that matches its sealed build lock, with the owned jar)")]
+    [Trait("Job", "contract: skills/engineering/statechart/references/runtime.md Checking transport (with a bootstrap helper matching its sealed build lock, TlcArguments puts the helper and the owned copy on the classpath with the LoopbackTlc main class)")]
     [MemberData(nameof(Sealed))]
     public void BootstrapResolutionUsesSealedIdentityAndNeverFallsBackToRawTlc(string state, bool pinned) => Bootstrap(state, pinned);
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 Clarification (a bootstrap helper that does not match its sealed build lock is refused, with no raw TLC fallback)")]
+    [Trait("Job", "trap: TlcArguments throws, returning no raw TLC arguments, when the bootstrap helper is missing or changed or its build lock is not sealed")]
     [MemberData(nameof(Unsealed))]
     public void AnUnsealedBootstrapIsRefusedWithoutFallingBackToRawTlc(string state, bool pinned) => Bootstrap(state, pinned);
 
@@ -210,9 +210,9 @@ public class StatechartCheckerTests
         else Assert.Equal(["-cp", helper + Path.PathSeparator + checker.Verify(), "dydo.statechart.LoopbackTlc"], checker.TlcArguments(root));
     }
 
-    // A linked build lock could point resolution at another helper, so it is refused before it is read.
+    // A linked build lock could point resolution at another helper, so it is refused.
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 Clarification (a linked bootstrap build lock is refused before it is read, with no raw TLC fallback)")]
+    [Trait("Job", "trap: TlcArguments refuses a bootstrap build lock that is a symbolic link, with its exact linked-lock error message")]
     public void ALinkedBootstrapBuildLockIsRefusedWithoutAFallback()
     {
         Skip.If(OperatingSystem.IsWindows(), "Creating symbolic links needs Windows developer mode.");

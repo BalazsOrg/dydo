@@ -4,14 +4,12 @@ using DynaDocs.Services.Statechart;
 using System.Text.Json.Nodes;
 
 /// <summary>
-/// The statechart skill <c>install-skill</c> places, judged by what is on disk: this release's skill validates; an
-/// unchanged earlier release is replaced; a local edit, an unverifiable earlier release or a foreign skill is refused
-/// and left exactly as it was.
+/// The statechart skill <c>install-skill</c> places, judged by what is on disk.
 /// </summary>
 public class StatechartSkillTests
 {
     [Theory]
-    [Trait("Job", "contract: DR 062 Consequences (the installed skill binds the payload and release: a skill that does not match them as installed does not validate)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart install-skill (Validate refuses a skill whose receipt names another payload or protocol, whose SKILL.md was edited, that has no receipt, or that is an earlier release's)")]
     [InlineData("payload")]
     [InlineData("protocol")]
     [InlineData("source")]
@@ -34,7 +32,7 @@ public class StatechartSkillTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 Consequences (install-skill replaces an installed skill unchanged since its install)")]
+    [Trait("Job", "contract: DR 062 Consequences (Place replaces an earlier release's skill whose files match its receipt's inventory: the skill then validates as this release's and no longer holds the earlier wording)")]
     public async Task AnUnchangedSkillFromAnEarlierReleaseIsReplacedWithThisRelease()
     {
         using var scope = new StatechartTestDirectory();
@@ -47,7 +45,7 @@ public class StatechartSkillTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 Consequences (install-skill leaves local edits untouched)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart install-skill (Place refuses an earlier release's skill whose SKILL.md was edited after its inventory was recorded, SKILL.md still ends with the edit, and the receipt keeps its bytes)")]
     public async Task LocalEditsToAnEarlierReleaseAreRefusedUntouched()
     {
         using var scope = new StatechartTestDirectory();
@@ -62,7 +60,7 @@ public class StatechartSkillTests
 
     // Receipts written before the inventory existed record no files, so only this release's exact bytes are safe to keep.
     [Fact]
-    [Trait("Job", "contract: dydo-commands-utilities.md install-skill (a receipt without an inventory is replaced when its files are already this release's)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart install-skill (after Place, a skill whose receipt has no inventory and whose files are this release's validates as this release's)")]
     public async Task AnEarlierReceiptWithoutAnInventoryIsReplacedWhenItsFilesAreThisRelease()
     {
         using var scope = new StatechartTestDirectory();
@@ -73,7 +71,7 @@ public class StatechartSkillTests
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-utilities.md install-skill (a receipt without an inventory whose files are not this release's is refused and its skill left untouched)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart install-skill (Place refuses a skill whose receipt has no inventory and whose files are not this release's, and its SKILL.md still ends with the earlier wording)")]
     public async Task AnEarlierReceiptWithoutAnInventoryIsRefusedUntouchedWhenItsFilesAreNotThisRelease()
     {
         using var scope = new StatechartTestDirectory();
@@ -84,7 +82,7 @@ public class StatechartSkillTests
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-utilities.md install-skill (a foreign skill stays untouched: install-skill refuses it and leaves its file as it was)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart install-skill (after InstallAsync, a skill directory with no receipt keeps its SKILL.md text)")]
     public async Task ForeignCanonicalSkillIsPreservedBeforeProjectionOrPrerequisiteLaunch()
     {
         using var scope = new StatechartTestDirectory();

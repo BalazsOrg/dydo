@@ -5,9 +5,8 @@ using System.Diagnostics;
 using DynaDocs.Services.Statechart;
 
 /// <summary>
-/// The scratch a statechart check runs in, judged by what is left: after a drained success nothing; after a cancel,
-/// an owner loss or a forged drain the registered scratch is retained; a foreign replacement is never deleted
-/// (DR 062 §6). The cleanup helper is driven through its own process; only its native owner is Windows-only.
+/// The scratch a statechart check runs in, judged by what is left (DR 062 §6). The cleanup helper is driven through its
+/// own process; only its native owner is Windows-only.
 /// </summary>
 public class StatechartLifecycleTests
 {
@@ -42,7 +41,7 @@ public class StatechartLifecycleTests
     }
 
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §6 (on Windows, once the native owner seals and drains, the registered scratch is deleted)")]
+    [Trait("Job", "contract: DR 062 §6 (on Windows, after the native owner's CompleteAsync returns true, its stage and temp directories no longer exist)")]
     public async Task IndependentCleanupDeletesRegisteredScratchOnlyAfterNativeOwnerSealsAndDrains()
     {
         using var scope = new StatechartTestDirectory();
@@ -55,7 +54,7 @@ public class StatechartLifecycleTests
     }
 
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §6 (only authoritative drain authorizes cleanup)")]
+    [Trait("Job", "contract: DR 062 §6 (on Windows, an owner's EOF after registration, with no drain, leaves the registered stage and a scratch journal)")]
     public async Task OwnerEofRetainsRegisteredScratchWithDurableUncertaintyReason()
     {
         using var scope = new StatechartTestDirectory();
@@ -72,9 +71,9 @@ public class StatechartLifecycleTests
         Assert.NotEmpty(Directory.GetFiles(scope.Path, "scratch-*.journal"));
     }
 
-    // A helper that answers anything but the cleanup protocol is released, and nothing is reserved.
+    // A helper that answers anything but the cleanup protocol is rejected, as is one that cannot start.
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §6 (on Windows, a cleanup helper that does not speak the protocol, or cannot start, is rejected and reserves nothing)")]
+    [Trait("Job", "trap: on Windows, a lifetime whose cleanup helper does not speak the protocol fails with InvalidDataException, one whose helper cannot start fails with Win32Exception, and the directory holding its roots is empty after both")]
     public async Task AHelperThatDoesNotSpeakTheCleanupProtocolIsReleasedAndRejected()
     {
         Skip.IfNot(OperatingSystem.IsWindows(), "Windows Job Object lifetime runs only on Windows.");
@@ -89,10 +88,10 @@ public class StatechartLifecycleTests
         Assert.Empty(Directory.EnumerateFileSystemEntries(scope.Path));
     }
 
-    // An attached check is owned until it exits and its scratch is then cleaned; a check on a lost helper stops with
-    // its scratch retained.
+    // A wait on an attached check returns once it exits, and completion then cleans the scratch; after completion, a
+    // wait on an unattached process fails.
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §6 (on Windows, a lifetime owns an attached check until it exits and then cleans its scratch, and a wait on a check it does not own fails)")]
+    [Trait("Job", "trap: on Windows, a lifetime's wait on an attached check whose input closed returns once the check has exited; CompleteAsync then returns true and the stage no longer exists; after completion, a wait on an unattached process throws IOException")]
     public async Task ALifetimeOwnsAttachedChecksInOrderAndReportsALostHelper()
     {
         using var scope = new StatechartTestDirectory();
@@ -121,11 +120,11 @@ public class StatechartLifecycleTests
     };
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §6 (a cleanup helper whose owner is lost before any reservation exits 2 and creates nothing)")]
+    [Trait("Job", "trap: a cleanup helper whose owner is lost with no reservation made exits 2 and leaves no scratch directory")]
     public Task OwnerLossBeforeAnyReservation_ExitsWithoutCreatingScratch() => OwnerLoss(reserve: false);
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §6 (only authoritative drain authorizes cleanup)")]
+    [Trait("Job", "contract: DR 062 §6 (a cleanup helper whose owner is lost once it has reserved, without registering, leaves two scratch directories)")]
     public Task OwnerLossBeforeOrDuringRegistration_NeverDeletesAmbiguousDirectories() => OwnerLoss(reserve: true);
 
     private static async Task OwnerLoss(bool reserve)
@@ -146,7 +145,7 @@ public class StatechartLifecycleTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §6 (after an authoritative drain the cleanup helper deletes its registered scratch and exits 0)")]
+    [Trait("Job", "contract: DR 062 §6 (after an authoritative drain, the cleanup helper leaves no scratch directory)")]
     public async Task ADrainedSuccess_LeavesNoScratch()
     {
         using var scope = new StatechartTestDirectory();
@@ -163,7 +162,7 @@ public class StatechartLifecycleTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 062 §6 (only authoritative drain authorizes cleanup)")]
+    [Trait("Job", "contract: DR 062 §6 (a registered cleanup helper whose owner is lost, after a drain frame with a foreign nonce or none, leaves its stage and temp directories)")]
     [InlineData(true)]
     [InlineData(false)]
     public async Task AForgedDrainOrALostOwner_RetainsTheRegisteredScratch(bool forged)
@@ -181,7 +180,7 @@ public class StatechartLifecycleTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §6 (only authoritative drain authorizes cleanup)")]
+    [Trait("Job", "contract: DR 062 §6 (on Linux, a drained cleanup helper whose registered stage path was replaced leaves the replacement's file and the moved stage)")]
     public async Task AReplacedScratchPathIsRetainedEvenAfterTheDrain()
     {
         using var scope = new StatechartTestDirectory();
@@ -205,7 +204,7 @@ public class StatechartLifecycleTests
     }
 
     // Windows refuses the replacement itself: the registered handle denies delete sharing, and a directory above an
-    // open handle cannot be renamed. So nothing foreign can take the path, and only the drain deletes the scratch.
+    // open handle cannot be renamed.
     private static async Task ARegisteredScratchPathCannotBeReplacedOnWindows(StatechartTestDirectory scope, string nonce)
     {
         var parent = Directory.CreateDirectory(Path.Combine(scope.Path, "parent")).FullName;
@@ -223,7 +222,7 @@ public class StatechartLifecycleTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §6 (a cleanup helper started without a valid channel nonce exits 2 and creates nothing)")]
+    [Trait("Job", "trap: a cleanup helper started without a valid channel nonce exits 2 and leaves the directory it was given empty")]
     public async Task AHelperWithoutAValidChannelNonceReservesNothing()
     {
         using var scope = new StatechartTestDirectory();

@@ -6,14 +6,14 @@ using DynaDocs.Services.Statechart;
 public class StatechartArgumentsTests
 {
     [Fact]
-    [Trait("Job", "trap: a NUL inside a native argument vector would silently truncate the argument")]
+    [Trait("Job", "trap: a NUL inside a native argument would silently truncate it, so building the vector refuses it")]
     public void NativeArgumentVectorsRejectTruncatingNulBeforeAllocation()
     {
         Assert.Throws<ArgumentException>(() => new PosixStatechartArguments(["before\0after"]));
     }
 
     [Fact]
-    [Trait("Job", "edge: the native argument vector keeps non-ASCII and empty arguments as UTF-8, ends with NULL, and clears its pointer when freed")]
+    [Trait("Job", "edge: the native argument vector holds non-ASCII and empty arguments as UTF-8, ends with NULL, and reads 0 as its pointer once disposed")]
     public void NativeArgumentVectorsPreserveUtf8AndTerminateWithNull()
     {
         using var arguments = new PosixStatechartArguments(["spaces and é", ""]);

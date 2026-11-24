@@ -9,13 +9,12 @@ using System.Runtime.Versioning;
 
 /// <summary>
 /// <c>dydo statechart</c> and <c>dydo statechart resume</c> as a caller sees them (DR 062 §1-§5): the exit code, whether
-/// a chart was published, and whether the saved request was kept or consumed. Missing prerequisites exit 3 with a saved
-/// request; an error exits 2 and saves nothing; nothing installs or publishes without proof.
+/// a chart was published, and whether the saved request was kept or consumed.
 /// </summary>
 public class StatechartPublicFlowTests
 {
     [Fact]
-    [Trait("Job", "contract: DR 062 §2 §3 (missing prerequisites exit 3 with a saved request, and nothing is installed without the host-authorized continuation)")]
+    [Trait("Job", "contract: DR 062 §2 and dydo-commands-utilities.md dydo statechart (a run missing prerequisites exits 3 with its request saved, and creates no dependency root)")]
     public async Task MissingPrerequisites_Exit3_SaveTheRequest_AndInstallAndPublishNothing()
     {
         using var scope = new StatechartTestDirectory();
@@ -29,7 +28,7 @@ public class StatechartPublicFlowTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 §5 (a resume whose saved inputs changed is refused, the request is kept and nothing is installed)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart resume (a resume whose saved model changed fails, exiting 2, its request file is still there, and no dependency root is created)")]
     public async Task ChangedSavedInputs_RefuseTheResume_AndKeepTheRequest()
     {
         using var scope = new StatechartTestDirectory();
@@ -42,10 +41,10 @@ public class StatechartPublicFlowTests
         Assert.False(Directory.Exists(Path.Combine(scope.Path, "dependencies")));
     }
 
-    // Only managed content is repaired; a JAVA the caller named that is missing, cannot start or is too old stays the
-    // caller's error, before any plan.
+    // Managed content is repaired; a JAVA the caller named that is missing, cannot start or is too old stays the
+    // caller's error, not a plan.
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §1 (an invalid explicit JAVA is an error, with no plan and no saved request)")]
+    [Trait("Job", "contract: DR 062 §1 (a missing, non-executable or too-old explicit JAVA is an error, not a plan: it exits 2, prints nothing to stdout, creates no dependency root, and saves no request)")]
     [UnsupportedOSPlatform("windows")]
     [InlineData("missing")]
     [InlineData("not executable")]
@@ -104,7 +103,7 @@ public class StatechartPublicFlowTests
 
     // Fake runtimes answer the version probes, so discovery runs its real owned probes without Node or Java.
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §1 §2 (the plan lists exactly the prerequisites no compatible runtime provides)")]
+    [Trait("Job", "contract: DR 062 §2 and skills/engineering/statechart/references/runtime.md Prerequisites (with Node v26.13.0 and Java 21.0.1 on PATH the plan lists exactly tlc and pele, and with Node v22.17.0 and Java 1.8.0_402 it lists exactly node, java, tlc and pele)")]
     [UnsupportedOSPlatform("windows")]
     [InlineData("v26.13.0", "21.0.1", "tlc,pele")]
     [InlineData("v22.17.0", "1.8.0_402", "node,java,tlc,pele")]
@@ -120,7 +119,7 @@ public class StatechartPublicFlowTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §2 and Consequences (a managed component that fails verification is in the plan, and is left in place)")]
+    [Trait("Job", "contract: DR 062 Consequences (a damaged managed checker is in the plan, and its file keeps its text)")]
     public async Task ADamagedManagedComponent_IsPlannedForRepair_AndLeftInPlace()
     {
         using var scope = new StatechartTestDirectory();
@@ -138,7 +137,7 @@ public class StatechartPublicFlowTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 (resuming a completed request exits with its recorded verdict and installs nothing)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart resume and DR 062 §1 (resuming a completed request exits with its recorded verdict, 1, and creates no dependency root)")]
     public async Task ResumingACompletedRequest_ExitsWithItsRecordedVerdict_WithoutPreparingAgain()
     {
         using var scope = new StatechartTestDirectory();
@@ -154,9 +153,9 @@ public class StatechartPublicFlowTests
         Assert.False(Directory.Exists(Path.Combine(scope.Path, "dependencies")));
     }
 
-    // The approved continuation installs only through the network; offline, it fails without placing any component.
+    // The approved continuation installs through the network; offline, it fails with every component still missing.
     [Fact]
-    [Trait("Job", "contract: DR 062 §5 (an approved resume whose install fails is non-success, keeps the request and installs nothing)")]
+    [Trait("Job", "contract: DR 062 §4 §5 (an approved resume whose install cannot download is non-success, exiting 2, its request file is still there, and every component still reads missing)")]
     public async Task AnApprovedResumeWithoutNetwork_KeepsTheRequest_AndInstallsNothing()
     {
         using var scope = new StatechartTestDirectory();
@@ -169,10 +168,10 @@ public class StatechartPublicFlowTests
         Assert.Equal(["node", "java", "tlc", "pele"], StatechartManaged.Missing(managed.Read()));
     }
 
-    // A framework-dependent dydo runs under the dotnet host; the continuation it proposes must start that same host and
+    // A framework-dependent dydo runs under the dotnet host; the continuation it proposes must name a dotnet host and its
     // assembly, or the approved resume would launch nothing.
     [SkippableFact]
-    [Trait("Job", "trap: a framework-dependent dydo's continuation must name its dotnet host and assembly (DR 062 §2)")]
+    [Trait("Job", "trap: a framework-dependent dydo's continuation must name a host whose file name is dotnet, then this dydo's assembly path")]
     public async Task AFrameworkDependentLaunchContinuesThroughTheSameHostAndAssembly()
     {
         var assembly = Path.ChangeExtension(StatechartTestBinary.Start().FileName, ".dll");
@@ -192,10 +191,10 @@ public class StatechartPublicFlowTests
         Assert.Equal(assembly, continuation[1]);
     }
 
-    // The flow in-process under a test-built lock: stand-in components arrive from loopback and face every real check. Only
+    // The flow in-process under a test-built lock: stand-in components arrive from loopback and face the real checks. Only
     // the run is substituted, because the real one replaces the calling process with the checking runtime.
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §4 (an approved resume installs the missing components and continues the saved request, and later runs reuse the store)")]
+    [Trait("Job", "contract: DR 062 §4 and Consequences (the approved resume runs the saved request and records its verdict, 1, with every component then ready; later runs, also after the receipts name an earlier release, exit 0 with the run's status)")]
     [UnsupportedOSPlatform("windows")]
     public async Task AnApprovedResume_InstallsAndContinues_ThenLaterRunsReuseTheStore()
     {
@@ -245,10 +244,10 @@ public class StatechartPublicFlowTests
         }));
     }
 
-    #region Publication: only a complete verdict the checker's exit agrees with reaches the caller's destination
+    #region Publication: what reaches the caller's destination
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart (a complete checker verdict of 0 or 1 publishes the chart)")]
+    [Trait("Job", "edge: a complete stage whose verdict, 0 or 1, the checker's exit matches or a render error excuses puts the chart's report at the destination")]
     [InlineData(1, 1, false, 1)]
     [InlineData(0, 0, false, 0)]
     [InlineData(1, 0, true, 0)]
@@ -256,7 +255,7 @@ public class StatechartPublicFlowTests
         Publication(verdict, status, renderError, expected);
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart (a verdict that is not a complete checker verdict publishes nothing and exits 2)")]
+    [Trait("Job", "edge: a stage verdict that the checker's exit contradicts with no render error, or one outside 0 and 1, exits 2 and puts no report at the destination")]
     [InlineData(1, 0, false, 2)]
     [InlineData(7, 7, false, 2)]
     public Task AnIncompleteVerdictIsNotPublished(int verdict, int status, bool renderError, int expected) =>
@@ -276,7 +275,7 @@ public class StatechartPublicFlowTests
     }
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart (a run that cannot publish a complete checker verdict creates no destination)")]
+    [Trait("Job", "edge: publication from a stage missing its verdict or its report exits 2, a cancelled publication throws a cancellation, and none of them leaves a directory at the destination")]
     [InlineData("verdict.json")]
     [InlineData("done/report.md")]
     [InlineData("cancelled")]
@@ -299,11 +298,11 @@ public class StatechartPublicFlowTests
     }
 
     [SkippableFact]
-    [Trait("Job", "edge: publication replaces an empty plain destination directory with the finished chart")]
+    [Trait("Job", "edge: publishing to an empty plain destination directory puts the finished chart's report there")]
     public void PublicationReplacesAnEmptyPlainDestination() => Destination("an empty directory", published: true);
 
     [SkippableTheory]
-    [Trait("Job", "trap: publication refuses a destination that holds anything foreign, and keeps both it and the finished chart")]
+    [Trait("Job", "trap: publication refuses a destination that is a directory holding a file, a file, or a dangling link; the finished chart's report keeps its text, and the foreign file keeps its text or the dangling link stays a link")]
     [InlineData("a directory holding a foreign file")]
     [InlineData("a foreign file")]
     [InlineData("a dangling link")]

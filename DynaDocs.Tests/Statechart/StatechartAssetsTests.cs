@@ -3,8 +3,7 @@ namespace DynaDocs.Tests.Statechart;
 using DynaDocs.Services.Statechart;
 
 /// <summary>
-/// The payload embedded in dydo, through an offline <c>dydo statechart</c> run: damaged extracted assets are restored
-/// from the embedded bytes and the run still reaches its outcome; a directory this payload did not write is retained.
+/// The payload embedded in dydo, judged through an offline <c>dydo statechart</c> run.
 /// </summary>
 public class StatechartAssetsTests
 {
@@ -37,7 +36,7 @@ public class StatechartAssetsTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 062 §4 (assets extract only into a root this payload owns; a foreign directory is retained)")]
+    [Trait("Job", "trap: an asset root without this payload's receipt fails the run with exit 2, and the file in it keeps its text")]
     [InlineData(false)]
     [InlineData(true)]
     public async Task ADirectoryWithoutThisPayloadsReceipt_IsRetained_AndTheRunFails(bool otherReceipt)
@@ -59,7 +58,7 @@ public class StatechartAssetsTests
 
     // Every extraction runs under the extract lock, so a staging directory the next run finds there was left by a crash.
     [Fact]
-    [Trait("Job", "trap: DYD-415 an extraction a crash left behind is swept by the next run")]
+    [Trait("Job", "trap: an extraction staging directory a crash left behind is gone after the next run")]
     public async Task AnExtractionACrashLeftBehind_IsSweptByTheNextRun()
     {
         using var scope = new StatechartTestDirectory();

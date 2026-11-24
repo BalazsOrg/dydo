@@ -7,17 +7,16 @@ using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
 /// <summary>
-/// The managed dependency store, judged by what it reads as ready: an approved install is ready, content that does not
-/// verify is not, and nothing the store did not prove is adopted, repaired or deleted (DR 062 §4 §5).
+/// The managed dependency store, judged by what it reads as ready (DR 062 §4 §5).
 /// </summary>
 public class StatechartManagedTests
 {
     private static readonly string[] All = ["node", "java", "tlc", "pele"];
 
     // Stand-in archives arrive from loopback under a test-built lock and face the real fetch, integrity check, extraction,
-    // readiness and placement; a later release finds them stale and re-stamps them without reinstalling.
+    // readiness and placement; a later release re-stamps them.
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §4 (an approved install places the locked components and reads as ready)")]
+    [Trait("Job", "contract: DR 062 §4 (an install from the lock's served archives reads every component ready, and the installed checker holds the served jar's bytes)")]
     [UnsupportedOSPlatform("windows")]
     public async Task AnApprovedInstall_IsReady_AndStaysReadyForALaterRelease()
     {
@@ -49,7 +48,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 §5 (an install whose archive differs from its lock fails, and nothing becomes ready)")]
+    [Trait("Job", "contract: DR 062 §4 §5 (an install whose served node archive differs from its lock throws, and every component still reads missing)")]
     public async Task AServedArchiveThatDiffersFromItsLock_IsRejected_AndNothingBecomesReady()
     {
         using var scope = new StatechartTestDirectory();
@@ -66,7 +65,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 (a store with nothing installed proves no component ready)")]
+    [Trait("Job", "contract: DR 062 §4 (a store with nothing installed reads every component missing)")]
     public void AMissingStoreIsMissingEverything_AndIsNotCreated()
     {
         using var scope = new StatechartTestDirectory();
@@ -76,7 +75,7 @@ public class StatechartManagedTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 062 §4 (a store root the store cannot prove it owns is refused, and its content kept)")]
+    [Trait("Job", "contract: DR 062 §4 (Read refuses a store root holding an unexpected file, under a valid, foreign or missing marker)")]
     [InlineData("valid")]
     [InlineData("foreign")]
     [InlineData("missing")]
@@ -94,7 +93,7 @@ public class StatechartManagedTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 062 §4 (managed content that fails verification is not ready, and is left in place)")]
+    [Trait("Job", "contract: DR 062 §4 and Consequences (a managed checker whose bytes or receipt fail verification reads not ready, and its jar keeps its bytes)")]
     [InlineData("tampered")]
     [InlineData("receipt missing")]
     [InlineData("receipt unreadable")]
@@ -115,7 +114,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 (a component without a readiness receipt is not ready, and is left in place)")]
+    [Trait("Job", "contract: DR 062 §4 and Consequences (a component without a readiness receipt reads not ready, and its file keeps its text)")]
     public void AComponentWithoutAReadinessReceipt_IsNotAdopted_AndIsLeftInPlace()
     {
         using var scope = new StatechartTestDirectory();
@@ -129,7 +128,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 (verified content from an earlier release or payload reads as ready)")]
+    [Trait("Job", "contract: DR 062 Consequences (a verified checker whose receipt names an earlier release and payload reads ready at its path)")]
     public void VerifiedContentFromAnEarlierReleaseOrPayload_IsReady()
     {
         using var scope = new StatechartTestDirectory();
@@ -139,7 +138,7 @@ public class StatechartManagedTests
 
     // The receipt records content hashes, not modes, so a runtime that cannot start still matches it.
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §4")]
+    [Trait("Job", "contract: DR 062 §4 (a managed Java whose file cannot execute reads not ready, and one that can reads ready at its path)")]
     [InlineData(false)]
     [InlineData(true)]
     [UnsupportedOSPlatform("windows")]
@@ -155,7 +154,7 @@ public class StatechartManagedTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §5 (a cancelled install is non-success and leaves nothing behind)")]
+    [Trait("Job", "contract: DR 062 §5 (an install cancelled while it waits on the install lock throws a cancellation)")]
     public async Task CancellingAWaitingInstall_LeavesNothingBehind()
     {
         using var scope = new StatechartTestDirectory();
@@ -176,7 +175,7 @@ public class StatechartManagedTests
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
-    [Trait("Job", "trap: DYD-415 an install sweeps the crash-left install stages and receipt temp files of its own RID, and keeps another RID's")]
+    [Trait("Job", "trap: an install sweeps the crash-left install stage and receipt temp file of its own RID, whether the install succeeds or fails")]
     public async Task CrashLeftStagesAndReceiptTempFiles_AreSweptUnderTheLock_WhetherTheInstallSucceedsOrFails(bool fails)
     {
         using var scope = new StatechartTestDirectory();
@@ -201,7 +200,7 @@ public class StatechartManagedTests
     // Another run re-stamped while this one waited on the lock. The components are fakes, so a re-stamp that trusted its
     // pre-wait scan would verify them and fail the run.
     [Fact]
-    [Trait("Job", "trap: DYD-415 a run that waited on the install lock rescans before it re-stamps")]
+    [Trait("Job", "trap: a re-stamp that waited on the install lock while its holder re-stamped returns false and leaves the holder's receipt as written")]
     public async Task ARestampThatWaitedOnTheLock_FindsTheHoldersRestamp_AndDoesNothing()
     {
         using var scope = new StatechartTestDirectory();

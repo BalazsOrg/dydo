@@ -7,7 +7,7 @@ using DynaDocs.Services.Statechart;
 public class StatechartArchiveTests
 {
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 (a locked ZIP archive extracts its members' exact bytes)")]
+    [Trait("Job", "edge: a locked ZIP archive's members extract to their own paths with their text")]
     public void LockedZipExtractsExactBytesToFreshOwnedStagingWithoutTouchingArchive()
     {
         using var scope = new StatechartTestDirectory();
@@ -22,7 +22,7 @@ public class StatechartArchiveTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 (a locked JRE tar keeps its layout and its contained hardlink's content, and outside Windows its file modes)")]
+    [Trait("Job", "edge: a locked JRE tar extracts its file to its path with its text, its contained hardlink with the same text, and outside Windows the file's mode")]
     public void GzipTarRetainsMacJreLayoutAndMaterializesOnlyContainedHardlinkContent()
     {
         using var scope = new StatechartTestDirectory();
@@ -50,7 +50,7 @@ public class StatechartArchiveTests
     }
 
     [Theory]
-    [Trait("Job", "trap: an archive entry name that is not one plain, canonical relative path is refused; DR 062 §4")]
+    [Trait("Job", "trap: an archive entry name that is not one plain, canonical relative path is refused")]
     [InlineData("../escape")]
     [InlineData("/absolute")]
     [InlineData("C:/drive")]
@@ -70,7 +70,7 @@ public class StatechartArchiveTests
     }
 
     [Theory]
-    [Trait("Job", "trap: an archive holding two entries that cannot both exist in one case-insensitive tree is refused; DR 062 §4")]
+    [Trait("Job", "trap: an archive holding two entries that cannot both exist in one case-insensitive tree is refused")]
     [InlineData("same", "same")]
     [InlineData("Node/file", "node/FILE")]
     [InlineData("node", "node/child")]
@@ -83,7 +83,7 @@ public class StatechartArchiveTests
     }
 
     [Theory]
-    [Trait("Job", "trap: an archive past one of its streamed bounds fails with a bound error before its next member is written; DR 062 §4")]
+    [Trait("Job", "trap: an archive past one of its streamed bounds is refused, and its second member is not at the staging path afterwards")]
     [InlineData(false)]
     [InlineData(true)]
     public void ExpandedBytesAndEntryCountAreStreamedBounds(bool count)
@@ -99,7 +99,7 @@ public class StatechartArchiveTests
     }
 
     [Theory]
-    [Trait("Job", "trap: a tar link whose target leaves the owned staging is refused before the link is created; DR 062 §4")]
+    [Trait("Job", "trap: a tar link whose target leaves the owned staging is refused, and no link is left at its path")]
     [InlineData("../escape")]
     [InlineData("/absolute")]
     [InlineData("C:/drive")]
@@ -118,7 +118,7 @@ public class StatechartArchiveTests
 
     // The filesystem follows a link before it applies `..`; each lexical target names an existing decoy entry.
     [Theory]
-    [Trait("Job", "trap: links that leave the owned staging only when followed through each other are refused before any link is created, and the file outside stays as it was; DR 062 §4")]
+    [Trait("Job", "trap: links whose lexical targets stay inside the owned staging but which leave it when followed through each other are refused, and neither link is left at its path")]
     [InlineData("a,a/b,d", "a/outside", "a/b/l", "../../d", "escape", "a/b/l/../../outside")]
     [InlineData("p,p/q,r", "z", "p/q/x", "../../r", "p/q/y", "x/../../../z")]
     public void ComposedLinksThatLeaveTheRootRejectBeforeAnyLinkExists(string directories, string decoy,
@@ -138,7 +138,7 @@ public class StatechartArchiveTests
     }
 
     [Fact]
-    [Trait("Job", "trap: tar links that loop through each other are refused before any link is created; DR 062 §4")]
+    [Trait("Job", "trap: tar links that loop through each other are refused, and no link is left at the first one's path")]
     public void LinksThatLoopThroughEachOtherReject()
     {
         using var scope = new StatechartTestDirectory();
@@ -151,7 +151,7 @@ public class StatechartArchiveTests
     }
 
     [Fact]
-    [Trait("Job", "edge: a link through another link that stays inside the staging still extracts")]
+    [Trait("Job", "edge: a link through another link that stays inside the staging extracts, and reading it gives the inside file's text")]
     public void ALinkThroughAnotherLinkThatStaysInsideExtracts()
     {
         using var scope = new StatechartTestDirectory();
@@ -164,7 +164,7 @@ public class StatechartArchiveTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §4 (extraction refuses a staging path that already exists and keeps its content, and a cancelled extraction creates no staging)")]
+    [Trait("Job", "trap: extraction refuses a staging path that already exists, and a cancelled extraction leaves no directory at its staging path")]
     public void ForeignStagingAndCancellationAreRetainedWithoutOverwrite()
     {
         using var scope = new StatechartTestDirectory();

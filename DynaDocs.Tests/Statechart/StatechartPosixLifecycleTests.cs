@@ -5,13 +5,12 @@ using System.Runtime.InteropServices;
 using DynaDocs.Services.Statechart;
 
 /// <summary>
-/// The POSIX statechart owner, judged by what it leaves: a drained success, a failed handoff and a lost parent all clean
-/// their scratch; an unproven completion records no verdict; a drain stops the checking child it owns (DR 062 §6).
+/// The POSIX statechart owner, judged by what it leaves (DR 062 §6).
 /// </summary>
 public class StatechartPosixLifecycleTests
 {
     [Fact]
-    [Trait("Job", "contract: DR 062 §6 (on Linux, a registered lifetime cleans its scratch after the drain)")]
+    [Trait("Job", "contract: DR 062 §6 (on Linux, once a registered lifetime's CompleteAsync returns true, no scratch directory is left)")]
     public async Task ARegisteredLifetime_CleansItsScratchAfterTheDrain()
     {
         using var scope = new StatechartTestDirectory();
@@ -30,7 +29,7 @@ public class StatechartPosixLifecycleTests
 
     // The socket path only serves the first connection; the connected pair no longer needs it.
     [SkippableFact]
-    [Trait("Job", "trap: a POSIX channel must not leave its socket file in the temp directory")]
+    [Trait("Job", "trap: once a POSIX channel pair is connected, no file is left at its CoreFxPipe path in the temp directory")]
     public async Task AConnectedChannelLeavesNoSocketFileBehind()
     {
         Skip.If(OperatingSystem.IsWindows(), "Windows pipes leave no socket file.");
@@ -46,7 +45,7 @@ public class StatechartPosixLifecycleTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 §6 (on Linux, a lifetime whose parent is lost still drains and cleans its scratch)")]
+    [Trait("Job", "trap: on Linux, a registered lifetime disposed without completing still leaves no stage or temp directory")]
     public async Task ALostParent_StillDrainsAndCleansTheScratch()
     {
         using var scope = new StatechartTestDirectory();
@@ -70,7 +69,7 @@ public class StatechartPosixLifecycleTests
 
     // The exec fails here, so the handoff returns its error and this process keeps the owner to drain and clean up.
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §6 (after a failed handoff the owner still drains and cleans the scratch)")]
+    [Trait("Job", "contract: DR 062 §6 (after a handoff whose exec fails with Win32Exception, CompleteAsync returns true and no stage or temp directory is left)")]
     public async Task AFailedHandoffLeavesTheOwnerToDrainAndCleanUp()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
@@ -87,8 +86,8 @@ public class StatechartPosixLifecycleTests
     // The exec fails here, so a process started after the handoff stands in for the runtime: the execution lock it
     // would hold is open in it. A continued request whose runtime never starts records no verdict, and the owner cleans up.
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §5 §6 (a continued request whose runtime never starts records no verdict, and the owner cleans the scratch)")]
-    [Trait("Job", "trap: DYD-548 the execution lock survives exec into the continued runtime")]
+    [Trait("Job", "contract: DR 062 §5 §6 (a continued request whose runtime cannot start has no verdict once the owner completes, and its stage is gone)")]
+    [Trait("Job", "trap: the execution lock must survive exec into the continued runtime: after the handoff, a child process inherits its descriptor")]
     public async Task AContinuedHandoff_HandsTheRuntimeItsExecutionLock_AndAFailedOneRecordsNoVerdict()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
@@ -108,9 +107,9 @@ public class StatechartPosixLifecycleTests
         Assert.False(Directory.Exists(lifetime.Stage));
     }
 
-    // The owner validates a continued request before it acknowledges the handoff; one outside its store stops it.
+    // The owner validates a continued request at the handoff; one outside its store is refused.
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §6 (the owner refuses a continued request outside its store, and cleans the scratch)")]
+    [Trait("Job", "contract: DR 062 §4 §6 (the owner refuses a continued request outside its store with InvalidDataException, and its stage and temp directories are then gone)")]
     public async Task AContinuationOutsideTheOwnersStoreIsRefusedBeforeExec()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
@@ -153,7 +152,7 @@ public class StatechartPosixLifecycleTests
     }
 
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §6 (a handed-off request has no verdict until the owner reports one after the drain, and the owner then cleans the scratch)")]
+    [Trait("Job", "trap: a handed-off request has no verdict after the drain until a result frame arrives, then has that verdict; the owner then exits 0 and leaves no stage or temp directory")]
     public async Task AHandedOffRequestRecordsItsVerdictOnlyAfterTheGroupDrains()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
@@ -176,7 +175,7 @@ public class StatechartPosixLifecycleTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §5 §6 (an unproven completion frame records no verdict, the owner exits non-success, and the scratch is cleaned)")]
+    [Trait("Job", "trap: after an unproven result frame the request has no verdict, the owner exits 2, and its stage is gone")]
     [InlineData("out-of-range")]
     [InlineData("changed")]
     [InlineData("anonymous")]
@@ -204,7 +203,7 @@ public class StatechartPosixLifecycleTests
     }
 
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §6 (the drain stops the checking child the owner attached)")]
+    [Trait("Job", "trap: after the drain, the checking child the owner attached ends killed by SIGKILL, exit 137, not at its input's EOF")]
     public async Task OnlyACheckingChildInsideTheOwnedGroupIsAttachedAndTheDrainStopsIt()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
@@ -227,7 +226,7 @@ public class StatechartPosixLifecycleTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §6 (a malformed or foreign control frame stops the owner with exit 2, and the scratch is cleaned)")]
+    [Trait("Job", "trap: a malformed or foreign control frame stops the owner with exit 2, and its stage is then gone")]
     [InlineData("handoff:{0}:a:b")]
     [InlineData("attach:{0}:checker")]
     [InlineData("attach:{0}:1")]
@@ -246,7 +245,7 @@ public class StatechartPosixLifecycleTests
     }
 
     [SkippableFact]
-    [Trait("Job", "contract: DR 062 §5 §6 (losing the npm lifetime ends the owner non-success, and the scratch is still cleaned)")]
+    [Trait("Job", "contract: DR 062 §5 §6 (losing the npm lifetime ends the owner non-success, exiting 2, and no stage or temp directory is left)")]
     public async Task LosingTheNpmLifetimeStopsControlAndStillCleansAfterTheDrain()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), LinuxOnly);
@@ -260,7 +259,7 @@ public class StatechartPosixLifecycleTests
     }
 
     [SkippableTheory]
-    [Trait("Job", "contract: DR 062 §6 (a private mode without a valid channel exits 2, prints nothing and creates nothing)")]
+    [Trait("Job", "trap: a private mode started without a valid channel exits 2, writes nothing to stdout, and leaves the directory holding its roots empty")]
     [InlineData("__statechart-posix-owner")]
     [InlineData("__statechart-posix-anchor")]
     [InlineData("__statechart-posix-child")]

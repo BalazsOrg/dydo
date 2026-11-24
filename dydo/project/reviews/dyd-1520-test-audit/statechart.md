@@ -13,48 +13,52 @@ under `FullyQualifiedName~DynaDocs.Tests.Statechart.` at `07642b1f`, judged agai
 
 | Verdict | Cases |
 |---|---|
-| keep | 95 |
-| rewrite | 128 |
+| keep | 84 |
+| rewrite | 133 |
 | remove | 2 |
-| keep `unsure` | 0 |
+| keep `unsure` | 6 |
 | **all** | **225** at base (110 methods); the candidate runs 223 cases in 117 methods |
 
 Before, at `07642b1f`: 225 cases, 198 ran and 27 skipped, 14.4 s summed. After, on the candidate: 223 cases, 217
-ran and 6 skipped (the Windows-only cases), 12.7 s summed. The 21 rows that read the pinned `tla2tools.jar` ran
-here too: `TLA2TOOLS` named a local copy of it (SHA-256 `936a2620…0e88`, the payload lock's pin). No Java runs.
+ran and 6 skipped (the Windows-only cases), 13.1 s summed. The after run sets `TLA2TOOLS` to a local copy of the
+pinned `tla2tools.jar` (SHA-256 `936a2620…0e88`), so the 21 rows that read it run too. No Java runs.
 
 - **Removed (2):** `StatechartSkillTests.OnlyThisReleasesUneditedSkillValidates[0]` (the valid row) and
   `StatechartPosixChannelTests.AnExistingSocketDirectoryIsUsedOnlyWhenNoOneElseCanEnterIt[0]` (mode 700).
-- **Restored after review round 1:** `StatechartDownloadsTests.StreamingBoundRejectsExcessWithoutWritingIt`,
-  byte-identical to base. Its 32-byte first read against a 16-byte limit is an input no kept case drives (the
-  HTTP case sends five bytes against four, which may arrive in short reads).
-- **Rewritten (128), every one a tag rewrite:** no assertion and no input changed. Each case's base job tag
-  claimed something its own assertions do not show (§2 row 2). Each new tag keeps only the clauses its lines
-  prove (see the tag map below), and each case has a red proof that breaks the behaviour its tag names.
-  Three Windows-only rewrites still owe that red check (see Open). Seven theories whose rows reach opposite
-  outcomes are split by outcome into a fact or theory each, so one tag can be true of every row they cover.
-- **Kept, not removed, after a candidate failed §5 (2):** `StatechartPrerequisitesTests.RuntimeCompatibilityPreservesExistingBoundaries[5]`
-  (v26.13.0) and `StatechartManagedTests.AMissingStoreIsMissingEverything_AndIsNotCreated`. Planted bugs
-  turn kept cases red, but only cases that run outside Windows, and both candidates run on Windows too.
+- **Rewritten (133), every one a tag rewrite:** no assertion and no input changed. Each base tag claimed something
+  its case does not show (§2 row 2). Each new tag keeps only the clauses its lines prove, and each clause has a red
+  proof that breaks it. Seven theories whose rows reach opposite outcomes are split by outcome, so one tag can be true
+  of every row it covers.
+- **Kept `unsure` (6):** the six Windows-only cases, per coordinator ruling 2 (see Open).
+- **Kept after a removal candidate failed §5 (2):** `StatechartPrerequisitesTests.RuntimeCompatibilityPreservesExistingBoundaries[5]`
+  (v26.13.0) and `StatechartManagedTests.AMissingStoreIsMissingEverything_AndIsNotCreated`. Planted bugs turn kept
+  cases red, but only cases that run outside Windows, and both run on Windows too.
 
 Nothing here tests behaviour 4.0.0 drops, since the purge ruling keeps statechart.
 
-## Reading the tags
+## Review round 2
 
-Review round 1 FAILed tags that claimed more than their cases show. The fix reads every tag the same way:
+Round 2 FAILed tags and map clauses wider than the assertions that check them. This hop narrowed every tag in the
+batch, not only the ones named. Test bodies and inputs are unchanged; only `Trait` attributes, comments and these
+records changed.
 
-- **A clause counts only when an assertion line of every case the tag covers fails if the clause is false.**
-  A listed item is a clause of its own, and a theory's method tag must hold for each of its rows. Clauses no
-  line proves are dropped; no assertion was added.
-- **A bare section cite at base** (`contract: DR 062 §4 §5`) was read as true of a case that pins a sentence of
-  a cited section, as round 1 passed them. Such a case stays `keep`, and its method tag now names only the
-  sections its lines prove. A case that pins no cited section is a rewrite (doctor's decline outside Windows,
-  a subcommand without its required option).
-- **No class tag remains.** A class tag true of every case moved to each method unchanged.
-- **Split theories:** the Skill inventory-less receipt, the 108/109-byte sun_path boundary, the existing
-  socket directory (0500 used; 0750, 0702 and 01700 refused), the Checker bootstrap (sealed; unsealed), the
-  Lifecycle owner loss (before a reservation; after it), the publication verdict (complete; not) and the
-  publication destination (empty; foreign).
+- **Every clause is the observation:** "no link is left at its path" for "before the link is created", "writes
+  nothing to stdout" for "prints nothing", "a host whose file name is dotnet" for "the same host". A clause names the
+  call the case makes (`Verify`, `TlcArguments`, `Place`, `InstallAsync`), not the launch or command it feeds.
+- **Every contract cite states its clause.** A contract cites DR 062, `dydo-commands-utilities.md` or the shipped
+  `skills/engineering/statechart/references/runtime.md`. A rule no source states is a trap or an edge, with no cite.
+  The DYD-548 and DYD-415 trap cites were dropped: DYD-548 is a coverage ticket, and no record here shows DYD-415
+  describing the sweep or re-stamp trap.
+- **Every rewrite clause has its own red proof.** Clauses no recorded bug breaks were dropped from the tag, and
+  their assertions stay. One red proof was replaced: round 1's `skill-no-replace` failed in setup, at the first
+  install, not at the replacement.
+- **Base tags re-judged:** eight keeps whose base tag no assertion proves became rewrites with a red proof:
+  `UnsafeNames…[1]` to `[4]` (the outside-path assertion reads only where `../escape` lands), `InstallSkillPlaces…`,
+  `InstallSkillWithoutNode…`, `CallerRelativeJava…` and `AFrameworkDependentLaunch…`. The six Windows-only cases,
+  three keeps and three rewrites, are now keep `unsure`.
+
+The clause-to-line map, each contract's source sentence and each rewrite clause's red proof are in
+[statechart tag clauses](./statechart-tags.md).
 
 ## Base inputs
 
@@ -64,41 +68,109 @@ the same rows in the same pinned-then-stand-in order as base `Both("valid", "mis
 The Skill inventory-less theory's two branches are unrolled verbatim. No input moved, so none needed a keyed
 plant or a restore.
 
-## Mutation
+## Mutation method (coordinator ruling 1)
 
-Targeted two-phase mutation (`/var/tmp/dyd1520/tools/stryker-targeted.sh`, Stryker 5.1.0):
+> **1. Option A.** The targeted two-phase run complies with §5 when both conditions hold:
+> - phase 1 covers every method that was removed or whose body changed;
+> - the diff changes no shared helper or fixture that an untouched test uses.
+>
+> Each batch PR states both conditions, with the diff evidence for the second. If either condition fails, the
+> batch re-runs phase 2 over every test that uses the changed helper, including untouched ones.
 
-- **Phase 1** on a clean `07642b1f` checkout, over the 17 methods that lose a case or are rewritten
-  (40 executed cases): 321 killed, 984 survived, 10 timeout, 12,608 no coverage, 1,689 compile error.
-  Phase 1 mutates the whole product, so most no-coverage mutants are outside statechart code. The rest
-  sit in code that only the dydo child process runs, which Stryker cannot see. The planted bugs below
-  cover the dropped protections there.
-- **Phase 2 on the candidate** (`ecefb2d7`, the batch's 223 cases, run without `TLA2TOOLS` like phase 1):
-  347 killed. Of the 321 phase-1 kills, only `PosixStatechartArguments.cs:22` (statement removal) is not Killed,
-  and the comparison exits 1 on it. It times out: the lifecycle cases that spawn a process with the unwritten
-  vector hang first. A timeout is not a kill, so the mutant was planted by hand as `no-argv-write` and the kept
-  `StatechartArgumentsTests` run alone. The test host crashes with an `AccessViolationException` when
-  `NativeArgumentVectorsPreserveUtf8AndTerminateWithNull` reads the vector, its only reader in that class.
-  Phase 1's killer was that same case.
-- The final commit after `ecefb2d7` changes only `Trait` attributes and the audit files. No assertion, input or
-  production line changes, so phase 2 ran the final assertions against the final production code.
-- Phase 1 and phase 2 cover only the 17 phase-1 methods' spans. The 128 tag rewrites get their red proofs from
-  mutants of those runs where one breaks the tagged behaviour, and from planted bugs otherwise.
+Targeted two-phase mutation (`/var/tmp/dyd1520/tools/stryker-targeted.sh`, Stryker 5.1.0), phase 1 on a clean
+`07642b1f` checkout:
+
+- **Chunk 1, round 0 (17 methods, 40 cases, no `TLA2TOOLS`):** `StatechartDownloadsTests.StreamingBound…`,
+  `StatechartManagedTests.AMissingStore…`, `StatechartSkillTests.OnlyThisReleasesUneditedSkillValidates`,
+  `…AnUnchangedSkill…`, `…LocalEdits…`, `…AnEarlierReceiptWithoutAnInventoryIsReplacedOnlyWhenItsFilesAreThisRelease`,
+  `…ForeignCanonicalSkill…`, `StatechartPrerequisitesTests.RuntimeCompatibility…`,
+  `StatechartPosixChannelTests.AnExistingSocketDirectoryIsUsedOnlyWhenNoOneElseCanEnterIt`,
+  `StatechartArgumentsTests.NativeArgumentVectorsPreserveUtf8…`, `StatechartArchiveTests.LockedZip…`, `…GzipTar…`,
+  `…ALinkThroughAnother…`, the three `StatechartAssetsTests` methods and `StatechartLockTests.AMissingDirectory…`.
+  321 killed.
+- **Chunk 2, this hop (5 methods, 21 cases, `TLA2TOOLS` set, so the pinned rows ran):** the methods round 1 split
+  after chunk 1 ran: `StatechartCheckerTests.BootstrapResolutionUsesSealedIdentityAndNeverFallsBackToRawTlc`,
+  `StatechartLifecycleTests.OwnerLossBeforeOrDuringRegistration_NeverDeletesAmbiguousDirectories`,
+  `StatechartPosixChannelTests.TheCoreFxPipePathStaysWhileItFits`,
+  `StatechartPublicFlowTests.OnlyACompleteVerdictTheCheckerExitAgreesWithIsPublished` and
+  `…PublicationReplacesOnlyAnEmptyPlainDestination_AndRetainsAnythingForeign`. 120 killed.
+
+**Condition 1 holds.** Comparing every member of each changed file between `07642b1f` and the candidate (`Trait`
+lines, comments and blank lines ignored) finds these base members removed or changed: the five chunk-2 methods,
+chunk 1's `OnlyThisReleasesUneditedSkillValidates`, `AnExistingSocketDirectoryIsUsedOnlyWhenNoOneElseCanEnterIt`
+and `AnEarlierReceiptWithoutAnInventoryIsReplacedOnlyWhenItsFilesAreThisRelease`, and the data member
+`StatechartCheckerTests.Bootstraps`, used only by the bootstrap method. Every one is in chunk 1 or 2.
+
+**Condition 2 holds.** The diff under `DynaDocs.Tests/` changes 16 files, all `*Tests.cs` test classes. No helper,
+fixture or data file changes: `StatechartLeftovers`, `StatechartOfflineProcess`, `StatechartStandIns`,
+`StatechartTestBinary`, `StatechartTestDirectory` and `dotnet-platforms.json` are unchanged. Inside the classes, the
+new private helpers `Bootstrap`, `OwnerLoss`, `CoreFxPipePath`, `ExistingSocketDirectory`, `Publication` and
+`Destination` and the data members `Sealed` and `Unsealed` have no caller but the split methods. Unchanged helpers
+(the Skill class's `Installed`, `FromAnEarlierRelease` and `Restamp`, the Checker's `CopyInput` and `Both`) did not
+change. No untouched test uses a changed helper.
+
+**Phase 2** mutates phase 1's killed spans on the candidate and runs the batch's kept cases:
+
+- Chunk 1 (round 1, on `ecefb2d7`, no `TLA2TOOLS`): 347 killed. Of the 321 phase-1 kills, only
+  `PosixStatechartArguments.cs:22` (statement removal) is not Killed. It times out, which is no kill. Planted by hand
+  as `no-argv-write`, it crashes the test host in the kept `NativeArgumentVectorsPreserveUtf8AndTerminateWithNull`.
+- Chunk 2 (this hop, on `e3ab8651`, `TLA2TOOLS` set, 217 cases run and 6 skipped): 127 killed. Of the 120 phase-1
+  kills, three are not Killed. They are `PosixStatechartSocket.cs:15` (the `CoreFxPipe_` prefix emptied) and `:16`
+  (`<` turned to `>`, and the comparison negated), and all three time out. Planted by hand as `m-sun-name`,
+  `m-sun-gt` and `m-sun-negate`, each turns kept cases red when the PosixChannel class runs alone (12 cases, all
+  passing with no plant). `TheCoreFxPipePathStaysWhileItFits` fails on all three, and
+  `TheCoreFxPipePathIsReplacedOneBytePastSunPath` also fails on `m-sun-negate`.
+
+Both phase-2 runs ran on production code and test bodies identical to the final commit: `ecefb2d7` and `e3ab8651`
+differ from it only in `Trait` attributes, comments, a `#region` label and these records.
+
+## Removal replacements (lesson 11)
+
+Each removed case ran alone under phase 1 at base, from a scratch copy of the base class holding only its row. Phase 2
+then ran only the replacements named in its `.tsv` line:
+
+- `OnlyThisReleasesUneditedSkillValidates[0]` killed 89 alone (65 in `StatechartAssets.cs`, 16 in
+  `StatechartSkill.cs`, 8 in `StatechartPaths.cs`). `AnUnchangedSkill…`,
+  `AnEarlierReceiptWithoutAnInventoryIsReplaced…` and `InstallSkillWithoutNode…` kill all 89 (compare exit 0).
+- `AnExistingSocketDirectoryIsUsedOnlyWhenNoOneElseCanEnterIt[0]` killed 10 alone (8 in `PosixStatechartSocket.cs`,
+  1 each in `PosixStatechartFiles.cs` and `PosixStatechartNative.cs`). `ALongTempDirFallsBack…`,
+  `AMissingSocketDirectoryIsCreatedPrivate` and `AChildInheritingALongTempDir…` kill all 10 (compare exit 0).
+
+## Other lesson 11 checks
+
+- **Attribution:** no tag ties a finding to one document; plans and diagnostics are parsed as JSON, not searched.
+- **"Only" and "nothing else":** no tag uses them. "Exactly" is claimed only where the assertion is exact equality.
+- **Fixtures that cannot tell a clause from its nearest wrong behaviour drop the clause:** the second download
+  writes the same bytes (L59), and an adopted staging, checker directory or store root would leave the foreign file
+  as it was (Archive L178, Checker L177, Managed L92). The outside sentinel is unreachable from the second composed
+  link (L137).
+- **Timeouts:** every child-process case asserts its exit code exactly after an unbounded wait, so a timeout cannot
+  pass as a success or failure. The lock cases name their exception exactly, so the bound's `IOException` fails them.
+- **Failure paths:** a tag names the exception its case asserts (`Win32Exception` for a failed exec or exclusive
+  create, `InvalidDataException` for a protocol refusal, `DirectoryNotFoundException`).
 
 ## Planted bugs
 
-Round 2 planted every bug in two scratch checkouts of the candidate `ecefb2d7`, each gated by `DYD1520_PLANT`
-and built with analyzers off, since only the scratch code trips them. The whole batch ran once per bug and once
-with none; with none, 217 passed and 6 skipped. Four bugs ran one class alone, because their bug hangs other
-classes' child processes or locks: `utf16`, `no-zero` and `no-argv-write` ran Arguments, and
-`lock-ignore-cancel` ran Lock. The cases each bug turned red are in the `.tsv` Evidence cells. Each bug is
-keyed to one tagged behaviour, and where a tag names several behaviours each has its own bug or mutant.
+Round 2 planted these in a scratch checkout of `e3ab8651`, each gated by `DYD1520_PLANT`, built with analyzers off
+(the `m-sun-*` results are under Mutation above):
+
+| Bug | Change | Result |
+|---|---|---|
+| skill-keep-earlier | `Place` returns an unchanged earlier-release skill instead of replacing it | `AnUnchangedSkill…` and `AnEarlierReceiptWithoutAnInventoryIsReplaced…` fail at their `Validate` assertions; the other 8 Skill cases pass, as all 10 do with no plant |
+| continuation-other-host | the continuation names `other-host` beside dotnet | `AFrameworkDependentLaunch…` fails at its host-name assertion; it passes with no plant |
+| continuation-no-assembly | the continuation's assembly argument dropped | `AFrameworkDependentLaunch…` fails at its assembly assertion |
+| m-sun-name, m-sun-gt, m-sun-negate | phase 2's three Timeout mutants in `PosixStatechartSocket.For` | kept channel cases fail on each, the class run alone |
+
+Round 1 planted every other bug in two scratch checkouts of `ecefb2d7`, with the same gating. The whole batch ran once
+per bug and once with none, which passed 217 and skipped 6. `utf16`, `no-zero` and `no-argv-write` ran Arguments
+alone, and `lock-ignore-cancel` ran Lock alone, because those bugs hang other classes' child processes or locks.
+Each `.tsv` Evidence cell names the bug that turns its case red and the assertion it fails at.
 
 | Bugs | Change (one per name) |
 |---|---|
-| names, collisions, bounds, loops | entry names unchecked; duplicates, case collisions and file ancestors pass, a later entry overwriting; no entry or byte bound; a link loop resolves |
+| names, collisions, bounds, loops | entry names unchecked; duplicates, case collisions and file ancestors pass, a later entry overwriting; no entry or byte bound; a link cycle resolves |
 | adopt-staging, no-cancel-extract | an existing staging path is extracted into; cancellation is checked only after staging exists |
-| utf16, no-zero, no-argv-write | the argument vector stores UTF-16; Dispose keeps its pointer (the host aborts on the double free, the observed result); the per-argument pointer write is removed (phase 2's timeout mutant; the host crashes) |
+| utf16, no-zero, no-argv-write | the vector stores UTF-16; Dispose keeps its pointer (the host aborts on the double free); the per-argument pointer write is removed (the host crashes) |
 | lock-no-wait, lock-message, lock-ignore-cancel, held-missing | a held lock fails at once; the bound error omits the path; the wait ignores its token; a missing directory counts as held |
 | write-first, overwrite, no-declared, no-status, file-before-status, no-integrity, delete-on-mismatch | a chunk is written before its bound check; the archive opens with `FileMode.Create`; the `Content-Length` check is skipped; the status check is skipped; the archive is created before the status check; the digest comparison is skipped; a failing archive is deleted |
 | sun-overflow, sun-chars, sun-strict, sun-lenient | the CoreFxPipe path is kept at any length; sun_path counted in characters; the limit one byte short; one byte long |
@@ -106,59 +178,47 @@ keyed to one tagged behaviour, and where a tag names several behaviours each has
 | checker-copy, checker-digest, checker-companion, checker-noresolve, checker-noverify, checker-adopt, checker-linked-lock, bootstrap-raw, bootstrap-fallback | an empty copy; no digest check; no companion check; links unresolved; `Verify` unchecked; the checker directory reused; a linked build lock read; raw TLC arguments; raw TLC when the helper does not match |
 | cleanup-reserve-early, cleanup-exit0, cleanup-keep, cleanup-bad-nonce-exit0, cleanup-bad-nonce-litter | scratch reserved before the reserve frame; owner loss exits 0; the drain retains scratch; an invalid channel exits 0; an invalid channel creates a directory |
 | publish-never, publish-always, publish-incomplete, publish-ignore-cancel, publish-refuse-empty, publish-clobber | nothing publishes; the verdict checks are skipped; an incomplete stage publishes; cancellation is ignored; an empty destination is refused; a foreign destination is deleted |
-| skill-missing-current, skill-current-refused, m-16, m-18, foreign-overwrite, skill-no-replace, skill-bytes-unchecked, skill-edits-ignored | a receiptless skill validates; this release's skill is refused; `Validate` skips `Verify`; an unchanged earlier release is not refused; a foreign SKILL.md is overwritten before the refusal; `Place` keeps the old skill; inventory-less bytes go unchecked; recorded changes are ignored |
+| skill-missing-current, skill-current-refused, m-16, m-18, foreign-overwrite, skill-bytes-unchecked, skill-edits-ignored | a receiptless skill validates; this release's skill is refused; `Validate` skips `Verify`; an unchanged earlier release is not refused; a foreign SKILL.md is overwritten before the refusal; inventory-less bytes go unchecked; recorded changes are ignored |
 | no-repair, adopt-foreign, no-sweep, no-install-sweep, node26, missing-root-created, missing-root-ready | damaged assets returned unrepaired; the asset receipt check skipped; crash-left `.extract-*` kept; the install sweep skipped; Node 26 rejected; a missing store is created; a missing store reports `tlc` ready |
 | doctor-exit0, doctor-extract-first, options-exit0, options-print, options-litter, java-process-cwd | doctor's decline exits 0; doctor extracts before its platform check; a missing required option exits 0, writes stdout, or creates a directory; a relative JAVA resolves against the process directory |
 
-Round 1's bugs, as recorded at base. Round 2 re-ran all of them except m-124a/b/c, m-151 and m-152, which no
-round 2 red proof relies on:
-
-| Bug | Change | Kept cases red (and the dropped one) |
-|---|---|---|
-| write-first | `CopyBoundedAsync` writes a chunk before its bound check | `StatechartDownloadsTests.ABodyOverItsBoundIsRefusedWhetherDeclaredOrStreamed[1]` (dropped `StreamingBound…` also red) |
-| skill-current-refused | `Validate` throws for this release's unedited skill | `StatechartSkillTests.AnUnchangedSkill…`, `…AnEarlierReceiptWithoutAnInventory…[0]`, `StatechartCommandTests.InstallSkillWithoutNode…`, `…InstallSkillPlacesAValidSkill…` (dropped `[0]` also red) |
-| socket700 | `PosixStatechartSocket.Private` refuses a directory with the owner write bit | `StatechartPosixChannelTests.ALongTempDirFallsBack…`, `…AMissingSocketDirectoryIsCreatedPrivate`, `…AChildInheritingALongTempDir…`, `…ASocketPathFitsSunPath…`, `…TheCoreFxPipePathStaysWhileItFits[1]` (dropped `[0]` also red) |
-| node26 | `Compatible` rejects Node major 26 | `StatechartPublicFlowTests.ADiscoveredRuntime…[0]`, `StatechartReadyTests.ReadinessProves…[0]` `[1]`, `StatechartManagedTests.AnApprovedInstall…`, `StatechartPublicFlowTests.AnApprovedResume_InstallsAndContinues…`: none runs on Windows, so row `[5]` stays |
-| missing-root-created | reading a missing managed store creates its root | `StatechartPublicFlowTests.MissingPrerequisites…` (every platform) and 13 more |
-| missing-root-ready | a missing managed store reports `tlc` ready | `StatechartPublicFlowTests.ADiscoveredRuntime…[0]` `[1]`, `…AnApprovedResume…`, `StatechartManagedTests.AnApprovedInstall…`: none runs on Windows, so `AMissingStore…` stays |
-| no-repair | asset extraction returns a damaged target unrepaired | red proof: `StatechartAssetsTests.DamagedAssets…[0]`–`[3]` |
-| adopt-foreign | asset extraction skips the receipt check and extracts over a foreign directory | red proof: `StatechartAssetsTests.ADirectoryWithoutThisPayloadsReceipt…[0]` `[1]` |
-| no-sweep | asset extraction leaves crash-left `.extract-*` staging | red proof: `StatechartAssetsTests.AnExtractionACrashLeftBehind…` |
-| m-16 | `Validate` skips `Verify` for a current receipt | `StatechartSkillTests.OnlyThisReleasesUneditedSkillValidates[3]` (source) |
-| m-18 | `Validate` no longer refuses an unchanged earlier release | `…OnlyThisReleasesUneditedSkillValidates[1]` `[2]` `[5]` |
-| m-124a/b/c | one `&&` of `Current` becomes `\|\|` | `…[2]` (a); `…[1]` `[2]` (b, c) |
-| m-151, m-152 | `Verify` skips `VerifySkill`, or swallows its failure | `…[3]` (source) |
-| utf16 | the argument vector stores UTF-16, not UTF-8 | red proof: `StatechartArgumentsTests.NativeArgumentVectorsPreserveUtf8AndTerminateWithNull` |
-| no-zero | disposing the vector keeps its pointer | red proof: the test host aborts with a double free (`free(): double free detected in tcache 2`); that abort is the observed result |
-| held-missing | a missing lock directory counts as a held lock | red proof: `StatechartLockTests.AMissingDirectoryIsAnErrorNotAWait`, after it waits out its 1-minute bound |
-
-## Tag clauses
-
-The clause-to-line map, every tag split into its clauses with the assertion line that proves each, is in
-[statechart tag clauses](./statechart-tags.md); it would push this page past its size limit.
+Round 0's removal evidence, unchanged: `write-first` also turns the restored `StreamingBound…` red;
+`skill-current-refused` turns `AnUnchangedSkill…`, `AnEarlierReceiptWithoutAnInventoryIsReplaced…` and
+`InstallSkillWithoutNode…` red (the removed valid row's protection); `socket700` turns `ALongTempDirFallsBack…`,
+`AMissingSocketDirectoryIsCreatedPrivate` and `AChildInheritingALongTempDir…` red (the removed 0700 row's); `node26`
+and `missing-root-ready` turn red only cases that skip on Windows, so `[5]` and `AMissingStore…` stay.
 
 ## Open
 
-- **Three Windows-only rewrites owe their red check:**
-  `StatechartLifecycleTests.IndependentCleanupDeletesRegisteredScratchOnlyAfterNativeOwnerSealsAndDrains`,
-  `…AHelperThatDoesNotSpeakTheCleanupProtocolIsReleasedAndRejected` and
-  `…ALifetimeOwnsAttachedChecksInOrderAndReportsALostHelper`. Their base tag (only authoritative drain
-  authorizes cleanup) is a restriction their positive or empty cases do not show, so the tag was narrowed. The
-  break-and-watch-red check needs Windows (`statechart-windows`), and this host is Linux.
+**Six Windows-only cases are kept `unsure`, "Windows-only; tag narrowed; red check owed to a Windows run"**
+(coordinator ruling 2). Each tag was narrowed, and the break-and-watch-red check needs Windows: this host is Linux.
+On CI the Windows leg of `dotnet-coverage` runs them, selected by `DynaDocs.Tests/coverage/dotnet-platforms.json`
+`windows_tests`; `statechart-windows` runs the skill's TypeScript Windows tests, not these.
+
+- `StatechartCommandTests.InstalledDoctorExtractsPayloadAndNeverClaimsChartReadinessOrInstallsPrerequisites`: on
+  fresh roots, doctor exits 2, reports ready false and creates no dependency root.
+- `StatechartCommandTests.InstalledDoctorNamesMissingRuntimesWithoutProbingThem`: with no runtime on PATH, doctor
+  exits 2, reports ready false, and reports node and java as null.
+- `StatechartLifecycleTests.IndependentCleanupDeletesRegisteredScratchOnlyAfterNativeOwnerSealsAndDrains`: after
+  `CompleteAsync` returns true, the stage and temp directories are gone.
+- `StatechartLifecycleTests.OwnerEofRetainsRegisteredScratchWithDurableUncertaintyReason`: after the owner's EOF with
+  no drain, the stage and a scratch journal remain.
+- `StatechartLifecycleTests.AHelperThatDoesNotSpeakTheCleanupProtocolIsReleasedAndRejected`: a non-protocol helper
+  gives `InvalidDataException`, an unstartable one `Win32Exception`, and the roots' directory stays empty.
+- `StatechartLifecycleTests.ALifetimeOwnsAttachedChecksInOrderAndReportsALostHelper`: the attached wait returns with
+  the check exited, completion cleans the stage, and a later unattached wait throws `IOException`.
 
 ## Deviations
 
 - **Round 1's audit and apply steps were separate commits,** because a permission question held the apply step.
-  No CI or `dotnet-platforms.json` line names a case this audit removes, renames or splits. The renamed and split
-  methods are Linux or all-platform cases, and no helper is left without a caller.
-- **The `.tsv` is generated:** `audit.py` reads each tag from the candidate's source, with red proofs from a JSON
-  file written from the runs (both under `/var/tmp/dyd1520/scfix/`). Its output was copied into place byte for
-  byte, not retyped.
-- **Red proofs for tag-only rewrites** are a mutant or planted bug that the unchanged case fails on. That is the
-  same break-and-watch-red check, automated, and the test bodies do not change.
+  No CI or `dotnet-platforms.json` line names a case this audit removes, renames or splits.
+- **The `.tsv` is generated:** `audit2.py` reads each tag from the candidate's source, with red proofs from a JSON file
+  written from the runs (both under `/var/tmp/dyd1520/scfix2/`). Its output was copied into place byte for byte.
+- **Red proofs for tag-only rewrites** are a mutant or planted bug that the unchanged case fails on: the same
+  break-and-watch-red check, automated, with the test bodies unchanged.
 
 ## Related
 
 - [Test rubric](./rubric.md) - The verdicts and evidence this audit applies
-- [Statechart tag clauses](./statechart-tags.md) - Each tag's clauses and the assertion line proving each
+- [Statechart tag clauses](./statechart-tags.md) - Each tag's clauses, sources and red proofs
 - [DYD-1520 test audit](./_dyd-1520-test-audit.md) - The other batches

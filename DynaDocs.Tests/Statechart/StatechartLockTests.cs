@@ -5,7 +5,7 @@ using DynaDocs.Services.Statechart;
 public class StatechartLockTests
 {
     [Fact]
-    [Trait("Job", "edge: a lock waiter keeps waiting while another handle holds the lock file, then takes it exclusively once it is released")]
+    [Trait("Job", "edge: a lock waiter has not completed while another handle holds the lock file, and acquires the lock once that handle is released")]
     public async Task AWaiterTakesTheLockOnceItsHolderReleasesIt()
     {
         using var scope = new StatechartTestDirectory();
@@ -19,7 +19,7 @@ public class StatechartLockTests
     }
 
     [Fact]
-    [Trait("Job", "edge: a lock file still held when the wait bound runs out fails with an error naming its path")]
+    [Trait("Job", "edge: when a lock file is still held past the wait bound, the IOException names its path")]
     public async Task AHolderPastTheBoundIsReportedByItsPath()
     {
         using var scope = new StatechartTestDirectory();
