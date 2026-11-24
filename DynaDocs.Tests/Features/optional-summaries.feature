@@ -1,4 +1,4 @@
-# Job: contract: DYD-98 (a document needs no opening summary; check and fix never demand or insert one); writing-docs.md Rules Enforced (Title, Links, Frontmatter: the findings check still reports)
+# Job: contract: DYD-98 Outcome: each scenario's `dydo check` or `dydo fix` run ends with the result that Outcome gives its document
 @DYD-98
 Feature: Optional document summaries
   A document may begin with useful content after its title.

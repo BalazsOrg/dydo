@@ -11,7 +11,7 @@ public sealed class OffLimitsRuleTests
     private const string Head = "---\ntype: config\n---\n\n# Files Off-Limits\n\n";
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-core.md dydo check (validates the off-limits file); trap: an unclosed fence silently drops off-limits patterns")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check (validates the off-limits file)")]
     [InlineData(null, 0, "files-off-limits.md not found")]
     [InlineData(Head + "```\n.env*\n", 1, "Unclosed code block")]
     [InlineData(Head + "```\n.env*\n.env*\n```\n", 0, "Duplicate pattern")]

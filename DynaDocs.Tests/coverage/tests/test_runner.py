@@ -72,7 +72,7 @@ class IsolatedRunnerTests(unittest.TestCase):
         return [Path(line[len("worktree "):]).resolve() for line in listed.splitlines() if line.startswith("worktree ")]
 
     def test_the_test_runs_exit_code_is_the_runners_exit_code(self):
-        """Job: contract: run_tests.py docstring, the isolated run's exit code is the runner's exit code"""
+        """Job: contract: run_tests.run_tests docstring, the runner exits with the isolated dotnet run's exit code"""
         for code in (0, 1, 7):
             with self.subTest(exit_code=code):
                 result, _seen = self.run_tests(exit_code=code)
@@ -99,7 +99,7 @@ class IsolatedRunnerTests(unittest.TestCase):
                                  [path.read_text() for path in sorted(self.home.iterdir())])
 
     def test_the_worktree_is_gone_after_a_passing_or_failing_run(self):
-        """Job: contract: run_tests.py docstring, the temporary worktree is removed and unregistered after a passing or failing run"""
+        """Job: contract: run_tests.remove_worktree docstring, the temporary worktree is removed and unregistered after a passing and after a failing run"""
         for code in (0, 1):
             with self.subTest(exit_code=code):
                 _result, seen = self.run_tests(exit_code=code)

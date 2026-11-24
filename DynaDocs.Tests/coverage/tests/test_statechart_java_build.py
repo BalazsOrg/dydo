@@ -145,7 +145,7 @@ class StatechartJavaBuildTests(unittest.TestCase):
         self.assert_refused(self.build(*trojan, archive_pin=pin))
 
     def test_an_extracted_jdk_unlike_its_archive_is_refused_before_its_javac_runs(self):
-        """Job: trap: DYD-415, the extracted JDK is verified member by member against its pinned archive"""
+        """Job: trap: DYD-415, a traversal member, a link escaping the JDK root and a javac changed after packing are each refused before javac runs"""
         def traversal(jdk, bundle):
             member = tarfile.TarInfo('jdk/bin/../../escape')
             bundle.addfile(member)

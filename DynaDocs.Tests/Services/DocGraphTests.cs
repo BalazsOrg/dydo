@@ -21,7 +21,7 @@ public sealed class DocGraphTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-core.md dydo graph (--incoming, --degree) and dydo graph stats")]
+    [Trait("Job", "contract: dydo-commands-core.md Documentation Commands (`dydo graph` shows the document link graph as the docs hold it)")]
     [InlineData("guides/a.md", "guides/b.md", "guides/deep/c.md")]
     [InlineData("guides/a.md --degree 2", "guides/deep/c.md", "guides/a.md")]
     [InlineData("guides/a.md --degree 2", "guides/b.md", "example.com")]

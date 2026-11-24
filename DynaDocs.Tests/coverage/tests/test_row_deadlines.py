@@ -94,7 +94,7 @@ class RowDeadlineTests(unittest.TestCase):
                 self.assertEqual(1, launch.call_count)
 
     def test_other_rows_keep_the_original_deadline(self):
-        """Job: contract: DYD-1157, only Windows Python coverage gets the extended row budget."""
+        """Job: contract: coverage-tools-running.md Operations (DYD-1157), a row other than Windows Python coverage keeps the 1800-second execution budget."""
         for runner in (RUNNER, PORTABLE):
             for platform, name, capability in (
                     ('linux', 'python', 'coverage'), ('darwin', 'python', 'coverage'),

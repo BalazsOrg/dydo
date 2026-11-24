@@ -31,7 +31,7 @@ public sealed class ValidateCommandTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-utilities.md dydo validate (dydo.json deserialization and nudge fields, exit 1 on errors); DYD-501 / DR 056 (Claude guard wiring warning, exit 0)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo validate (it reports a configuration's outcome, and exits with the code for that outcome)")]
     // dydo.json itself
     [InlineData(1, "not found", null)]
     [InlineData(1, "Invalid JSON", "{not valid json}")]
@@ -96,7 +96,7 @@ public sealed class ValidateCommandTests : IDisposable
     }
 
     [SkippableFact]
-    [Trait("Job", "contract: dydo-commands-utilities.md dydo validate; DYD-501 / DR 056 (unreadable Claude settings warn, exit 0)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo validate (unreadable Claude settings: a warning to make them readable, exit 0)")]
     [UnsupportedOSPlatform("windows")]
     public void Validate_UnreadableClaudeSettings_WarnsToMakeThemReadable()
     {

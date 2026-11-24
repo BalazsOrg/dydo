@@ -5,7 +5,7 @@ namespace DynaDocs.Tests.Commands;
 /// directory or file, never the current one, and a root in no dydo project is a tool error.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo check/dydo graph --root; dydo-commands-utilities.md dydo validate --root; exit codes 0/1/2")]
+[Trait("Job", "contract: dydo-commands-utilities.md Exit Codes (a run's exit code matches its outcome)")]
 public sealed class CheckCommandTests : IDisposable
 {
     private static string Hub(string guide) => $"---\narea: general\ntype: hub\n---\n\n# Index\n\n[Guide](./guides/{guide})\n";

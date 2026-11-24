@@ -5,7 +5,6 @@ using DynaDocs.Services;
 using static DynaDocs.Tests.Integration.PushedRepository;
 
 [Collection("Integration")]
-[Trait("Job", "contract: DYD-1100 DECIDED bdb6b643 §3 rule 4 (DR 072: a doc declares the paths it explains, and dydo check / pr-ready flag a change to them); DYD-1187")]
 public sealed class ExplainsCommandTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-explains-" + Guid.NewGuid().ToString("N"));
@@ -38,6 +37,7 @@ public sealed class ExplainsCommandTests : IDisposable
     public void Dispose() => LinkSafeDelete.DeleteTree(_root);
 
     [Theory]
+    [Trait("Job", "contract: DYD-1187 item 1 (dydo check validates the explains: frontmatter): an invalid declaration is a check error")]
     [InlineData("[]")]
     [InlineData("[Services/Auth/**,]")]
     [InlineData("[Services/Auth/**")]
@@ -59,6 +59,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: DYD-1187 acceptance contract (an explains: glob that matches no file is a dydo check error naming that glob)")]
     [InlineData("Missing/**/*.cs")]
     [InlineData("Services?Other.cs")]
     public void Check_EveryGlobMustMatchAFile(string unmatched)
@@ -73,6 +74,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: DYD-1187 (a valid explains: declaration passes dydo check, and fails it once nothing matches)")]
     [InlineData("Services/Auth/**")]
     [InlineData("'./Services/Auth/**/*.cs'")]
     [InlineData("[\"Services/Auth/*.cs\", 'Services/Auth/Nested/Keys.c?']")]
@@ -97,6 +99,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1187 item 2 (pr-ready warns without blocking when explained paths change and their doc does not, naming the doc and every touched path)")]
     public async Task PrReady_UnchangedDocWarnsForAllTouchedPathsWithoutBlocking()
     {
         WriteCode("Services/Auth/Login.cs", "changed");
@@ -115,6 +118,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1187 item 2 (pr-ready's explains warning clears once the doc changes, and a change outside the declared paths raises none)")]
     public async Task PrReady_UpdatedDocAndUnrelatedCodeKeepNormalSuccessOutput()
     {
         WriteCode("Services/Auth/Login.cs", "changed");
@@ -141,6 +145,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-1187 item 2 (pr-ready flags a renamed and a deleted explained file, naming the doc and both paths)")]
     public async Task PrReady_ExplicitFeatureBaseAndSubdirectoryIncludeDeletedAndRenamedSources()
     {
         Git(_tree, "mv", "Services/Auth/Login.cs", "Services/Moved.cs");
@@ -158,6 +163,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check --base (a changed explained path without its doc is a warning that keeps exit 0, and updating the doc clears it)")]
     public void Check_DiffWarningIsAdvisoryAndClearedByUpdatingDoc()
     {
         WriteCode("Services/Auth/Login.cs", "changed");
@@ -175,7 +181,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1189; DYD-1100 DECIDED bdb6b643 §3 rule 4 (advisory explains check)")]
+    [Trait("Job", "contract: DYD-1189 (pr-ready --base <missing ref> warns that the explains comparison is unavailable and stays ready)")]
     public async Task PrReady_MissingBaseWarnsWithoutBlocking()
     {
         var (exit, stdout, stderr) = await ConsoleCapture.AllAsync(() => PrReadyCommand.Create()
@@ -187,7 +193,7 @@ public sealed class ExplainsCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DYD-1189; DYD-1100 DECIDED bdb6b643 §3 rule 4 (advisory explains check)")]
+    [Trait("Job", "contract: DYD-1189 (check --base <missing ref> warns that the explains comparison is unavailable, exit 0)")]
     public void Check_MissingBaseWarnsWithoutBlocking()
     {
         var (exit, stdout, stderr) = Check("--base", "refs/heads/missing-explains-base");

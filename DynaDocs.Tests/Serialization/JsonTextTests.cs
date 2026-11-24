@@ -7,7 +7,6 @@ using DynaDocs.Serialization;
 public class JsonTextTests
 {
     private const string LayoutJob = "trap: DYD-392 (a JSON write changes only what changed and keeps the file's layout)";
-    private const string FreshJob = "edge: DYD-392 (a JSON write with no parseable original is a fresh LF document; a new file is UTF-8 without BOM)";
     private const string MergeJob = "trap: DYD-392 (a JSON write merges into the file's own value only the change the model made from baseline to updated)";
     private static JsonNode Parse(string json) => JsonText.Parse(json)!;
 
@@ -65,7 +64,7 @@ public class JsonTextTests
     }
 
     [Theory]
-    [Trait("Job", FreshJob)]
+    [Trait("Job", "edge: DYD-392 (a JSON write with no parseable original renders a fresh LF document)")]
     [InlineData(null)]
     [InlineData("{ nope")]
     [InlineData("{} {}")]
@@ -90,7 +89,7 @@ public class JsonTextTests
     }
 
     [Fact]
-    [Trait("Job", MergeJob)]
+    [Trait("Job", "trap: DYD-392 (a JSON write takes the model's update for an array the model reshaped)")]
     public void Merge_ArrayTheModelReshaped_TakesTheUpdate()
     {
         var merged = JsonText.Merge(Parse("[1, 2]"), Parse("[1]"), Parse("[3]"));
@@ -131,7 +130,7 @@ public class JsonTextTests
     }
 
     [Fact]
-    [Trait("Job", FreshJob)]
+    [Trait("Job", "edge: DYD-392 (a new JSON file is encoded as UTF-8 without BOM)")]
     public void Encode_NewFile_IsUtf8WithoutBom()
     {
         Assert.Equal("{}"u8.ToArray(), JsonText.Encode(null, "{}"));

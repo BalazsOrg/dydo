@@ -6,7 +6,6 @@ namespace DynaDocs.Tests.Rules;
 /// field, or a missing Rationale or Related section is an error. Sections inside code do not count.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo check (legacy FutureFeature shape under project/future-features/)")]
 public sealed class FutureFeatureRuleTests
 {
     private const string Idea = "---\narea: project\ntype: concept\nstatus: idea\n---\n\n# Idea\n";
@@ -15,6 +14,7 @@ public sealed class FutureFeatureRuleTests
     private const string Fenced = "\n```md\n## Rationale\n\nExample.\n\n## Related\n\n[Decision](../decisions/001-one.md)\n```\n";
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check (legacy FutureFeature shape under project/future-features/)")]
     [InlineData(Idea + Sections, 0, null)]
     [InlineData(Promoted + "linear-reference: https://linear.app/example/issue/DYD-34/close-validators\n---\n\n# Idea\n" + Sections, 0, null)]
     [InlineData(Promoted + "linear-reference: https://linear.app/example/project/dydo-30-123456789abc\n---\n\n# Idea\n" + Sections, 0, null)]
@@ -45,6 +45,7 @@ public sealed class FutureFeatureRuleTests
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check (legacy FutureFeature shape under project/future-features/: a document in another folder is not held to it)")]
     [InlineData("project/future-features/nested/idea.md")]
     [InlineData("project/ideas/idea.md")]
     public void Check_DocumentOutsideTheFutureFeaturesFolder_IsNotAFutureFeature(string path)

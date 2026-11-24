@@ -86,7 +86,7 @@ public partial class DocumentationTests : IntegrationTestBase
     }
 
     [Theory]
-    [Trait("Job", ToolErrorJob + ": check, index and graph stats where no docs folder is found")]
+    [Trait("Job", ToolErrorJob + ": a documentation command run where no docs folder is found")]
     [InlineData("check", "nonexistent/path")]
     [InlineData("index", "nonexistent")]
     [InlineData("graph", "stats")]

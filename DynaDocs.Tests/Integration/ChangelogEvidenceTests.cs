@@ -76,7 +76,7 @@ public sealed class ChangelogEvidenceTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "trap: DYD-1206 (pr-ready refuses a docs root linked in from another repository, so that repository's receipts cannot pass)")]
+    [Trait("Job", "trap: DYD-1206 (pr-ready fails closed on a docs root linked in from another repository)")]
     public async Task OwnDocsLinkedIntoAnotherRepository_AreStillRefused()
     {
         var nested = Path.Combine(_tree, "nested");
@@ -95,7 +95,7 @@ public sealed class ChangelogEvidenceTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "trap: DYD-1206 (pr-ready in a nested repository refuses a receipt committed in it and passes without one)")]
+    [Trait("Job", "trap: DYD-1206 (pr-ready in a repository nested in a dydo project inspects that repository's own changelog, not the outer project's)")]
     [InlineData(false)]
     [InlineData(true)]
     public async Task NestedRepository_UsesItsOwnChangelogInsteadOfTheOuterProject(bool receipt)
