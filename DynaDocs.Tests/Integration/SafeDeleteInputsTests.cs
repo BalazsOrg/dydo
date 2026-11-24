@@ -198,7 +198,7 @@ public sealed class SafeDeleteInputsTests
             SafeDeleteTests.Git(fixture.Tree,"check-attr","archive-proof","--","file.txt"));
     }
 
-    private static void Prepare(SafeDeleteTests fixture, bool exclude = true, bool attributes = true)
+    internal static void Prepare(SafeDeleteTests fixture, bool exclude = true, bool attributes = true)
     {
         SafeDeleteTests.Git(fixture.Main,"config","core.autocrlf","false");
         if (exclude) File.WriteAllBytes(Input(fixture,"exclude"),System.Text.Encoding.UTF8.GetBytes("# local rules\r\nlocal-only.log\r\n"));

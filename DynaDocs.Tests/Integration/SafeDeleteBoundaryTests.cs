@@ -20,7 +20,7 @@ public sealed class SafeDeleteBoundaryTests
         AssertNestedRepositoryRefused(fixture,layout,name)();
     }
 
-    private static Action AssertNestedRepositoryRefused(SafeDeleteTests fixture, string layout, string name)
+    internal static Action AssertNestedRepositoryRefused(SafeDeleteTests fixture, string layout, string name)
     {
         SafeDeleteTests.Git(fixture.Main,"switch","-c","nested-unique");
         File.WriteAllText(Path.Combine(fixture.Main,"nested.txt"),"unique nested work\n");
