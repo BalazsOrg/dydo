@@ -7,7 +7,7 @@ using System.Diagnostics;
 // read the TAP summary. These tests run the committed guard under pwsh against reports shaped like
 // node's own. pwsh is found on PATH. Without it they skip locally and fail on a GitHub Actions runner,
 // where every dotnet test leg already runs its own pwsh steps.
-[Trait("Job", "trap: DYD-622 (node exits 0 when a test skips, so the hosted Windows statechart leg relies on assert-node-tests-ran.ps1 to prove every required node test ran and passed)")]
+[Trait("Job", "trap: DYD-622 (node exits 0 when a test skips): assert-node-tests-ran.ps1 passes only a TAP report in which at least the required number of tests ran and all passed, and names why it fails")]
 public sealed class NodeTestGuardTests : IDisposable
 {
     private const int MinimumTests = 6;

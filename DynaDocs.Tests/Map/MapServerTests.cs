@@ -9,7 +9,7 @@ using static LinearJson;
 /// The map server over real HTTP on localhost, with a fake Linear behind it: DR 052 §1 and §3 and its
 /// 2026-10-04 amendment (<c>/api/saved</c> reads only the cache, <c>/api/graph</c> always reads Linear).
 /// </summary>
-[Trait("Job", "contract: DR 052 §1 §3 and its 2026-10-04 amendment; dydo-commands-linear.md dydo map (GET only, /api/graph reads Linear afresh, /api/saved answers a null snapshot on a miss)")]
+[Trait("Job", "contract: DR 052 §1 §3 and its 2026-10-04 amendment; dydo-commands-linear.md dydo map: GET only, /api/graph reads Linear afresh, /api/saved answers a null snapshot on a miss without Linear, a missing parameter is 400 without Linear, a Linear failure answers its status and code, the key never reaches the browser")]
 public sealed class MapServerTests : IAsyncLifetime
 {
     private readonly FakeLinear _linear = new();

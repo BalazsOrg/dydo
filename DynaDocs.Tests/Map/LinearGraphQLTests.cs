@@ -49,7 +49,7 @@ public class LinearGraphQLTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 052 §3; DR 063 §5 (a Linear failure is named, never the key)")]
+    [Trait("Job", "contract: DR 063 §5 (an unreachable or a slow Linear is a named failure, linear_error 502)")]
     [InlineData("unreachable")]
     [InlineData("slow")]
     public async Task UnreachableOrSlowLinear_IsALinearError(string failure)

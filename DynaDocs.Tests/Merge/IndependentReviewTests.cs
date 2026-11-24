@@ -9,7 +9,7 @@ using static MergeScenario;
 /// count, what each names, and how an abbreviated candidate is bound to the exact SHA.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (which verdict lines count, the candidate and base fields, an abbreviation bound to the SHA)")]
+[Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review: which verdict lines count, the candidate and base fields, an abbreviation bound to the SHA, the rubric code, docs or merge")]
 public sealed class IndependentReviewTests
 {
     private static ReviewVerdict Only(string body) => Assert.Single(IndependentReview.Parse(body));

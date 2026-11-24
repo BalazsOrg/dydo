@@ -14,7 +14,7 @@ using static MergeScenario;
 /// (DYD-523) only refuses.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-delivery.md dydo merge (a refusal exits 1 and writes nothing, a tool error exits 2, a landing is one merge commit, a SHA already integrated exits 0); DR 061 §1-§5 and its 2026-11-04 target-pin amendment (DYD-424; DYD-523); DYD-535 (GitHub marks a PR merged late)")]
+[Trait("Job", "contract: dydo-commands-delivery.md dydo merge: a refusal exits 1, writing nothing before the merge call; a tool error exits 2; a merge exits 0 and lands once, as a merge commit or a two-parent commit on the pin; a dry run writes nothing; a SHA already integrated exits 0 (DR 061 §1-§5 and its 2026-11-04 target-pin amendment, DYD-424, DYD-523; DYD-535 for GitHub's late merged flag)")]
 public sealed class PullRequestMergeTests : IDisposable
 {
     private const string ZeroSha = "0000000000000000000000000000000000000000";

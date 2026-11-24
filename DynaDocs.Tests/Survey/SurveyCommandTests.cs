@@ -112,7 +112,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "edge: a canceled run must not print a digest as Linear's answer (DYD-530)")]
+    [Trait("Job", "edge: a canceled run throws OperationCanceledException instead of finishing (DYD-530)")]
     public async Task ACanceledRun_IsNotReportedAsLinearsAnswer()
     {
         await Assert.ThrowsAnyAsync<OperationCanceledException>(() => SurveyCommand.RunAsync(

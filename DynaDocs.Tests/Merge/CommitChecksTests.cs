@@ -10,7 +10,7 @@ using static MergeScenario;
 /// have finished green, every required check must be among them, and some suite must hold CI.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DR 061 §5; dydo-commands-delivery.md dydo merge Checks (green states, required checks, every page, the inert-app exception, a refusal naming slug and status, an unreadable list a tool error)")]
+[Trait("Job", "contract: DR 061 §5; dydo-commands-delivery.md dydo merge Checks: only finished green suites, runs and statuses pass, every problem named by slug or name and state; every required check present; every page read; the inert-app exception; no suite left is no checks reported; an unreadable list is a tool error")]
 public sealed class CommitChecksTests : IDisposable
 {
     private const string NotGreen = "checks on 0123456789ab are not green: ";

@@ -9,7 +9,7 @@ using static LinearJson;
 /// issues dropped with their relations, only <c>blocks</c> and <c>related</c> kept (DR 052 §1 and §5,
 /// DR 063 §2). Order is not part of the read; each assertion compares sets.
 /// </summary>
-[Trait("Job", "contract: DR 052 §1 §5; DR 063 §2; dydo-commands-linear.md (the teams, a team's Projects and a Project's graph the map page reads; the priorities, parents and body the survey reads)")]
+[Trait("Job", "contract: DR 052 §5; DR 063 §2; dydo-commands-linear.md: the reader reads every page of the teams and of a Project's issues and relations, a team's Projects with their status and dates, each issue's fields, drops archived issues with their relations and keeps only blocks and related; the survey's priorities, parents and body; an unknown team, Project or issue is not found")]
 public class LinearReaderTests
 {
     private const string Done = """{"name":"Done","type":"completed","color":"#5e6ad2"}""";

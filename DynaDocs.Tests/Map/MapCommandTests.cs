@@ -4,7 +4,7 @@ using DynaDocs.Commands;
 using DynaDocs.Utils;
 
 /// <summary>DR 052 §2 and §3 at the command: no key exits 2 before any server; a key serves on localhost and never prints it.</summary>
-[Trait("Job", "contract: DR 052 §2 §3")]
+[Trait("Job", "contract: DR 052 §2 (a missing key exits 2, prints nothing on stdout and opens no browser) §3 (with a key it serves a localhost URL and never prints the key)")]
 public class MapCommandTests
 {
     [Theory]

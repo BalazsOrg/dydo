@@ -122,7 +122,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init and --join (the Claude and Codex agent settings; a join keeps config.toml's bytes)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init and --join (init all writes Claude's subagent spawn depth and Codex's per-session thread limit; a join keeps config.toml's bytes)")]
     public async Task Init_All_WritesAndRetainsHostAgentSettingsThroughJoin()
     {
         var init = await RunDydoAsync("init all");
