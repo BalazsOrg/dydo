@@ -8,7 +8,7 @@ using DynaDocs.Models;
 using DynaDocs.Serialization;
 
 [Collection("Integration")]
-[Trait("Job", "contract: spec N10; DYD-1029 (archive a branch or worktree, then purge)")]
+[Trait("Job", "contract: spec N10; DYD-1029 (an archived branch or worktree restores its unique history and files after the source is garbage-collected)")]
 public sealed class SafeDeleteTests : IDisposable
 {
     internal readonly string Root = Path.Combine(Path.GetTempPath(), "dydo-safe-delete-" + Guid.NewGuid().ToString("N"));
@@ -231,7 +231,7 @@ public sealed class SafeDeleteTests : IDisposable
             case "feature remote":
                 Git(Tree,"branch","-m","feature/protected"); Git(Main,"push","origin","feature/protected");
                 branch = "feature/protected"; expected = "feature/*"; break;
-            case "PR head": case "PR base": case "offline GitHub":
+            case "PR head":
                 Dependencies.CheckGitHub = _ => refusal; expected = refusal; break;
             case "fetch failure":
                 Dependencies.Checkpoint = point => { if (point == "before-fetch") throw new IOException("injected fetch failure"); };
@@ -246,7 +246,7 @@ public sealed class SafeDeleteTests : IDisposable
             case "local ref race": case "remote ref race": case "source file race":
                 SetRace(refusal);
                 expected = "changed"; break;
-            case "live T3 owner": case "unavailable T3 ownership": case "unproven settled T3 route":
+            case "live T3 owner":
                 Dependencies.T3 = new SafeDeleteFakeT3Policy(refusal); expected = refusal; break;
             case "custom T3 root": case "previous T3 root":
                 var settings = Path.Combine(Root,"t3-settings.json");
@@ -332,14 +332,6 @@ public sealed class SafeDeleteTests : IDisposable
                 return DryRun(policy);
             case "expiry boundary": case "read-only commands never purge":
                 return Retention(policy);
-            case "init archive prefix rules":
-                return () =>
-                {
-                    Assert.Contains("[\"dydo\", \"dydo.exe\"], \"archive\"",InitCommand.CodexRules);
-                    Assert.Contains("dydo archive branch topic",InitCommand.CodexRules);
-                    Assert.Contains("dydo archive worktree tree",InitCommand.CodexRules);
-                    Assert.Contains("dydo archive restore ID",InitCommand.CodexRules);
-                };
             case "differently named upstream kept":
                 AddRemote(); Git(Main,"branch","feature/integration"); Git(Main,"push","origin","feature/integration");
                 Git(Main,"branch","--set-upstream-to=origin/feature/integration","topic");

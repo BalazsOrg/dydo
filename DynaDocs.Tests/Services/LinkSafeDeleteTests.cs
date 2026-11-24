@@ -2,13 +2,13 @@ namespace DynaDocs.Tests.Services;
 
 using DynaDocs.Services;
 
-[Trait("Job", "trap: DYD-362 (deleting a tree removes a link, never its target)")]
 public sealed class LinkSafeDeleteTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-linksafe-" + Guid.NewGuid().ToString("N")[..8]);
 
     public void Dispose() => LinkSafeDelete.DeleteTree(_root);
 
+    [Trait("Job", "trap: DYD-362 (deleting a tree removes a link, never its target)")]
     [Fact]
     public void DeleteTree_LinkInside_RemovesTheLinkAndKeepsItsTarget()
     {
@@ -20,6 +20,7 @@ public sealed class LinkSafeDeleteTests : IDisposable
         Assert.True(File.Exists(Path.Combine(target, "keep.txt")));
     }
 
+    [Trait("Job", "trap: DYD-362 (unlinking a tree before its removal removes each link, never its target or a real file)")]
     [Fact]
     public void UnlinkAll_RemovesOnlyLinks()
     {
@@ -33,6 +34,7 @@ public sealed class LinkSafeDeleteTests : IDisposable
         Assert.True(File.Exists(Path.Combine(target, "keep.txt")));
     }
 
+    [Trait("Job", "trap: DYD-362 (deleting a tree also removes read-only files, deep in a long path)")]
     [Fact]
     public void DeleteTree_ReadOnlyFilesAndLongPaths_AreDeleted()
     {
@@ -48,6 +50,7 @@ public sealed class LinkSafeDeleteTests : IDisposable
         Assert.False(Directory.Exists(LinkSafeDelete.Extended(tree)));
     }
 
+    [Trait("Job", "trap: DYD-362 (deleting a tree removes a link, never its target)")]
     [Fact]
     public void DeleteTree_RootThatIsALink_RemovesOnlyTheLink()
     {
@@ -63,6 +66,7 @@ public sealed class LinkSafeDeleteTests : IDisposable
         Assert.True(File.Exists(Path.Combine(target, "keep.txt")));
     }
 
+    [Trait("Job", "trap: DYD-362 (deleting an absent tree is a no-op, not an error)")]
     [Fact]
     public void DeleteTree_MissingRoot_IsANoOp()
     {

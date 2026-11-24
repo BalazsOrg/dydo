@@ -26,7 +26,7 @@ public sealed class SafeDeleteGitHubTests
     [Fact]
     public void PublicFork_LeasedOwnDeletionAuthorizesRemainingLocalSteps() => Journey("public",true,12);
 
-    internal static void Journey(string visibility, bool fork, int forks)
+    private static void Journey(string visibility, bool fork, int forks)
     {
         using var fixture = new SafeDeleteTests(); fixture.AddRemote(); fixture.AddTree();
         File.WriteAllText(Path.Combine(fixture.Tree,"unique.txt"),"unique working bytes\n");
@@ -311,7 +311,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.Empty(SafeDeleteTests.Git(fixture.Remote,"for-each-ref","refs/heads/topic"));
     }
 
-    internal static void PrepareInitiallyAbsent(SafeDeleteTests fixture, string visibility, bool worktree)
+    private static void PrepareInitiallyAbsent(SafeDeleteTests fixture, string visibility, bool worktree)
     {
         fixture.AddRemote();
         SafeDeleteTests.Git(fixture.Remote,"update-ref","-d","refs/heads/topic");

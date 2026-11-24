@@ -3,10 +3,10 @@ namespace DynaDocs.Tests.Integration;
 using DynaDocs.Services;
 
 [Collection("Integration")]
-[Trait("Job", "contract: spec N10; DYD-1029 (unproven PR heads are refused)")]
 public sealed class SafeDeletePolicyTests
 {
 
+    [Trait("Job", "contract: spec N10; DYD-1029 (T3 settings without a worktree root, or with an empty one, refuse nothing; invalid or unreadable settings refuse an ordinary tree)")]
     [Theory]
     [InlineData("{}",false)]
     [InlineData("{\"worktreesDirectory\":\"\"}",false)]
@@ -24,6 +24,7 @@ public sealed class SafeDeletePolicyTests
         if (refused) Assert.Contains("authoritative settings",reason);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029 (a tree under a .t3/worktrees path is refused as T3-owned with no settings file)")]
     [Fact]
     public void T3HistoryPathRecognition_RequiresNoSettingsFile()
     {
@@ -32,6 +33,7 @@ public sealed class SafeDeletePolicyTests
         Assert.Contains("T3 ownership/activity unavailable",new SafeDeleteT3Policy(settings).Refusal(Path.Combine(fixture.Root,".t3","worktrees","project","tree")));
     }
 
+    [Trait("Job", "trap: DYD-1029 (credentials in a remote URL never reach archive output: userinfo, query and fragment are dropped)")]
     [Fact]
     public void Redaction_DropsUserinfoQueryAndFragment()
     {

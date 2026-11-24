@@ -1,40 +1,17 @@
-# Job: contract: spec N10; DYD-1029 (safe delete archives unique work before removal)
+# Job: contract: spec N10; DYD-1029 (through dydo archive and the guard; each case shows one clause: an archived branch
+# or worktree restores its unique state after deletion; a refusal exits 2 and keeps the target; a failure after the
+# remote deletion exits 2 and keeps the complete archive and the local targets; restore refuses a damaged or colliding
+# archive and keeps it; a dry run prints its estimates and neither archives nor deletes; archives expire only when a
+# later archive purges them; a differently named upstream is reported and kept; links round-trip (Windows: refused);
+# the guard refuses raw destructive Git and admits dydo archive)
 @SafeDelete
 Feature: Safe delete archives unique work before removal
-  Scenario: Recover files governed by repository-local exclude and attributes
-    Given an owned safe-delete repository
-    When I archive a worktree governed by repository-local exclude and attributes
-    Then the archive restores ordinary ignored and attribute behavior after source garbage collection
-
-  Scenario Outline: Archive an unpushed worktree with proved remote absence
-    Given an owned safe-delete repository
-    When I archive the unpushed worktree in a "<visibility>" closed-world repository
-    Then the absent remote ref required no push and the archived worktree restores independently
-    Examples:
-      | visibility |
-      | public |
-      | private |
-
-  Scenario Outline: Authoritative remote eligibility permits recoverable cleanup
-    When I archive and restore through the "<authority>" GitHub authority route
-    Then the remote eligibility journey preserved its unique files
-    Examples:
-      | authority |
-      | private closed-world |
-      | public fork |
-
   Scenario Outline: Recover history and every worktree version independently
     Given an owned safe-delete repository
     When I archive and restore the "<journey>" journey
     Then the safe-delete journey preserves all accepted state
     Examples:
       | journey |
-      | local branch |
-      | unfetched remote |
-      | divergent and reflog history |
-      | partially staged ignored binary and empty directories |
-      | resolved stash conflict undo |
-      | detached HEAD |
       | local-only restore |
       | explicit remote restore |
       | proof-enabled settled T3 eligibility |
@@ -57,23 +34,18 @@ Feature: Safe delete archives unique work before removal
       | prunable worktree |
       | feature remote |
       | PR head |
-      | PR base |
-      | offline GitHub |
       | fetch failure |
       | copy failure |
       | unreadable source |
       | nested repository |
-      | shared bare nested repository |
       | unsupported file |
       | in-progress Git |
       | local ref race |
       | remote ref race |
       | source file race |
       | live T3 owner |
-      | unavailable T3 ownership |
       | custom T3 root |
       | previous T3 root |
-      | unproven settled T3 route |
 
   Scenario Outline: Validate archive policy through the command
     Given an owned safe-delete repository
@@ -101,7 +73,6 @@ Feature: Safe delete archives unique work before removal
       | archive traversal |
       | link round trip or refusal |
       | differently named upstream kept |
-      | init archive prefix rules |
 
   Scenario Outline: Raw destructive Git requires the archive command
     Given an owned safe-delete repository

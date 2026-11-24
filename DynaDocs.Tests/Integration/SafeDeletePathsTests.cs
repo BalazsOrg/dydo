@@ -3,9 +3,9 @@ namespace DynaDocs.Tests.Integration;
 using DynaDocs.Services;
 
 [Collection("Integration")]
-[Trait("Job", "trap: DYD-1134 (native Linux colon filenames)")]
 public sealed class SafeDeletePathsTests
 {
+    [Trait("Job", "trap: DYD-1134 (an archive entry path never resolves outside its root: dot, empty, rooted, drive and backslash forms refuse)")]
     [Theory]
     [InlineData("../escape")]
     [InlineData("nested/../../escape")]
@@ -23,6 +23,7 @@ public sealed class SafeDeletePathsTests
         Assert.Throws<InvalidDataException>(() => SafeDeletePaths.Child(root, relative));
     }
 
+    [Trait("Job", "trap: DYD-1134 (native Linux colon filenames)")]
     [Theory]
     [InlineData("logs/run-2026-11-16T21:25:15.log")]
     [InlineData("logs:today/run.log")]
@@ -40,6 +41,7 @@ public sealed class SafeDeletePathsTests
             Assert.Equal(Path.Combine(root, relative), SafeDeletePaths.Child(root, relative));
     }
 
+    [Trait("Job", "trap: DYD-1134 (native Linux colon filenames)")]
     [Fact]
     public void LinuxIgnoredTimestamp_ArchivesDeletesAndRestoresExactNameAndBytes()
     {

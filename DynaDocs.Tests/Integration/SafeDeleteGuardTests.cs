@@ -3,9 +3,9 @@ namespace DynaDocs.Tests.Integration;
 using System.Text.Json;
 
 [Collection("Integration")]
-[Trait("Job", "contract: spec N10; DYD-1029 (safe-delete through the guard)")]
 public sealed class SafeDeleteGuardTests : IntegrationTestBase
 {
+    [Trait("Job", "contract: spec N10; DYD-1029 (safe-delete through the guard)")]
     [Theory]
     [InlineData("claude-bash",false)]
     [InlineData("claude-powershell",false)]
@@ -56,6 +56,7 @@ public sealed class SafeDeleteGuardTests : IntegrationTestBase
         return JsonSerializer.Serialize(value);
     }
 
+    [Trait("Job", "contract: spec N10; DYD-1029 (dydo init's Codex rules admit every dydo archive form)")]
     [Fact]
     public async Task InitGeneratedCodexRules_AdmitAllArchiveForms()
     {
