@@ -12,10 +12,10 @@ using System.Runtime.Versioning;
 /// a chart was published, and whether the saved request was kept or consumed. Missing prerequisites exit 3 with a saved
 /// request; an error exits 2 and saves nothing; nothing installs or publishes without proof.
 /// </summary>
-[Trait("Job", "contract: DR 062 §1-§5")]
 public class StatechartPublicFlowTests
 {
     [Fact]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     public async Task MissingPrerequisites_Exit3_SaveTheRequest_AndInstallAndPublishNothing()
     {
         using var scope = new StatechartTestDirectory();
@@ -29,6 +29,7 @@ public class StatechartPublicFlowTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     public async Task ChangedSavedInputs_RefuseTheResume_AndKeepTheRequest()
     {
         using var scope = new StatechartTestDirectory();
@@ -44,6 +45,7 @@ public class StatechartPublicFlowTests
     // Only managed content is repaired; a JAVA the caller named that is missing, cannot start or is too old stays the
     // caller's error, before any plan.
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     [UnsupportedOSPlatform("windows")]
     [InlineData("missing")]
     [InlineData("not executable")]
@@ -85,6 +87,7 @@ public class StatechartPublicFlowTests
     // The IDE runtime lives under Program Files, which Linux lacks, so a JetBrains folder in the caller's directory is no Java.
     [SkippableFact]
     [UnsupportedOSPlatform("windows")]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     [Trait("Job", "trap: a JetBrains runtime in the caller's directory must not be taken for Java outside Windows")]
     public async Task AnIdeJavaIsNeverLookedForOutsideWindows()
     {
@@ -102,6 +105,7 @@ public class StatechartPublicFlowTests
 
     // Fake runtimes answer the version probes, so discovery runs its real owned probes without Node or Java.
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     [UnsupportedOSPlatform("windows")]
     [InlineData("v26.13.0", "21.0.1", "tlc,pele")]
     [InlineData("v22.17.0", "1.8.0_402", "node,java,tlc,pele")]
@@ -117,6 +121,7 @@ public class StatechartPublicFlowTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     public async Task ADamagedManagedComponent_IsPlannedForRepair_AndLeftInPlace()
     {
         using var scope = new StatechartTestDirectory();
@@ -134,6 +139,7 @@ public class StatechartPublicFlowTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     public async Task ResumingACompletedRequest_ExitsWithItsRecordedVerdict_WithoutPreparingAgain()
     {
         using var scope = new StatechartTestDirectory();
@@ -151,6 +157,7 @@ public class StatechartPublicFlowTests
 
     // The approved continuation installs only through the network; offline, it fails without placing any component.
     [Fact]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     public async Task AnApprovedResumeWithoutNetwork_KeepsTheRequest_AndInstallsNothing()
     {
         using var scope = new StatechartTestDirectory();
@@ -166,6 +173,7 @@ public class StatechartPublicFlowTests
     // A framework-dependent dydo runs under the dotnet host; the continuation it proposes must start that same host and
     // assembly, or the approved resume would launch nothing.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     [Trait("Job", "trap: a framework-dependent dydo's continuation must name its dotnet host and assembly (DR 062 §2)")]
     public async Task AFrameworkDependentLaunchContinuesThroughTheSameHostAndAssembly()
     {
@@ -189,6 +197,7 @@ public class StatechartPublicFlowTests
     // The flow in-process under a test-built lock: stand-in components arrive from loopback and face every real check. Only
     // the run is substituted, because the real one replaces the calling process with the checking runtime.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 §1-§5")]
     [UnsupportedOSPlatform("windows")]
     public async Task AnApprovedResume_InstallsAndContinues_ThenLaterRunsReuseTheStore()
     {
@@ -241,12 +250,21 @@ public class StatechartPublicFlowTests
     #region Publication: only a complete verdict the checker's exit agrees with reaches the caller's destination
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart (a complete checker verdict of 0 or 1 publishes the chart)")]
     [InlineData(1, 1, false, 1)]
     [InlineData(0, 0, false, 0)]
     [InlineData(1, 0, true, 0)]
+    public Task OnlyACompleteVerdictTheCheckerExitAgreesWithIsPublished(int verdict, int status, bool renderError, int expected) =>
+        Publication(verdict, status, renderError, expected);
+
+    [Theory]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart (a verdict that is not a complete checker verdict publishes nothing and exits 2)")]
     [InlineData(1, 0, false, 2)]
     [InlineData(7, 7, false, 2)]
-    public async Task OnlyACompleteVerdictTheCheckerExitAgreesWithIsPublished(int verdict, int status, bool renderError, int expected)
+    public Task AnIncompleteVerdictIsNotPublished(int verdict, int status, bool renderError, int expected) =>
+        Publication(verdict, status, renderError, expected);
+
+    private static async Task Publication(int verdict, int status, bool renderError, int expected)
     {
         using var scope = new StatechartTestDirectory();
         var done = Directory.CreateDirectory(Path.Combine(scope.Path, "stage", "done")).FullName;
@@ -260,6 +278,7 @@ public class StatechartPublicFlowTests
     }
 
     [Theory]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo statechart (a run that cannot publish a complete checker verdict creates no destination)")]
     [InlineData("verdict.json")]
     [InlineData("done/report.md")]
     [InlineData("cancelled")]
@@ -281,12 +300,19 @@ public class StatechartPublicFlowTests
         Assert.False(Directory.Exists(destination));
     }
 
+    [SkippableFact]
+    [Trait("Job", "edge: publication replaces an empty plain destination directory with the finished chart")]
+    public void PublicationReplacesAnEmptyPlainDestination() => Destination("an empty directory", published: true);
+
     [SkippableTheory]
-    [InlineData("an empty directory", true)]
-    [InlineData("a directory holding a foreign file", false)]
-    [InlineData("a foreign file", false)]
-    [InlineData("a dangling link", false)]
-    public void PublicationReplacesOnlyAnEmptyPlainDestination_AndRetainsAnythingForeign(string destinationState, bool published)
+    [Trait("Job", "trap: publication refuses a destination that holds anything foreign, and keeps both it and the finished chart")]
+    [InlineData("a directory holding a foreign file")]
+    [InlineData("a foreign file")]
+    [InlineData("a dangling link")]
+    public void PublicationReplacesOnlyAnEmptyPlainDestination_AndRetainsAnythingForeign(string destinationState) =>
+        Destination(destinationState, published: false);
+
+    private static void Destination(string destinationState, bool published)
     {
         Skip.If(destinationState == "a dangling link" && OperatingSystem.IsWindows(), "Creating symbolic links needs Windows developer mode.");
         using var scope = new StatechartTestDirectory();

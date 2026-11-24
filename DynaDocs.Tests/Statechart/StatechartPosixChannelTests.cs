@@ -6,13 +6,13 @@ using System.Text;
 using DynaDocs.Services.Statechart;
 
 [SupportedOSPlatform("linux")]
-[Trait("Job", "trap: a long TMPDIR overflows sun_path, and a socket directory others can enter is refused")]
 public class StatechartPosixChannelTests
 {
     private const int SunPath = 108; // Linux sockaddr_un.sun_path, NUL included.
 
     // The connector is a separate dydo process; it finds the socket only through the TMPDIR it inherits.
     [SkippableFact]
+    [Trait("Job", "trap: a TMPDIR too long for sun_path still lets a child process that inherits it connect to the socket")]
     public async Task AChildInheritingALongTempDirConnectsAndLeavesNoSocketBehind()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
@@ -37,6 +37,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
+    [Trait("Job", "trap: sun_path is counted in UTF-8 bytes, so a TMPDIR that fits in characters but not in bytes gets a socket path that fits")]
     public void ASocketPathFitsSunPathCountedInUtf8Bytes()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
@@ -49,10 +50,15 @@ public class StatechartPosixChannelTests
     }
 
     // The old path, today's for every short TMPDIR, stays while it fits with its NUL.
-    [SkippableTheory]
-    [InlineData(108, true)]
-    [InlineData(109, false)]
-    public void TheCoreFxPipePathStaysWhileItFits(int bytes, bool kept)
+    [SkippableFact]
+    [Trait("Job", "edge: a CoreFxPipe socket path that fills sun_path exactly, NUL included, stays the socket path")]
+    public void TheCoreFxPipePathStaysWhileItFits() => CoreFxPipePath(108, kept: true);
+
+    [SkippableFact]
+    [Trait("Job", "edge: a CoreFxPipe socket path one byte past sun_path, NUL included, is replaced")]
+    public void TheCoreFxPipePathIsReplacedOneBytePastSunPath() => CoreFxPipePath(109, kept: false);
+
+    private static void CoreFxPipePath(int bytes, bool kept)
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
         var name = "statechart-" + Guid.NewGuid().ToString("N");
@@ -63,6 +69,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
+    [Trait("Job", "trap: a TMPDIR too long for sun_path sends the socket to one private directory per user under /tmp")]
     public void ALongTempDirFallsBackToOnePrivateDirectoryPerUser()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
@@ -76,6 +83,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
+    [Trait("Job", "edge: a missing socket directory is created with mode 0700 and used")]
     public void AMissingSocketDirectoryIsCreatedPrivate()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
@@ -86,12 +94,18 @@ public class StatechartPosixChannelTests
             File.GetUnixFileMode(directory));
     }
 
+    [SkippableFact]
+    [Trait("Job", "edge: an existing socket directory only its owner can enter is used, even without the owner's write bit")]
+    public void AnExistingSocketDirectoryOnlyItsOwnerCanEnterIsUsed() => ExistingSocketDirectory("500", used: true);
+
     [SkippableTheory]
-    [InlineData("500", true)]
-    [InlineData("750", false)]
-    [InlineData("702", false)]
-    [InlineData("1700", false)]
-    public void AnExistingSocketDirectoryIsUsedOnlyWhenNoOneElseCanEnterIt(string mode, bool used)
+    [Trait("Job", "trap: an existing socket directory with any mode bit beyond owner-only access is refused, naming the directory and TMPDIR")]
+    [InlineData("750")]
+    [InlineData("702")]
+    [InlineData("1700")]
+    public void AnExistingSocketDirectoryIsUsedOnlyWhenNoOneElseCanEnterIt(string mode) => ExistingSocketDirectory(mode, used: false);
+
+    private static void ExistingSocketDirectory(string mode, bool used)
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
         using var scope = new StatechartTestDirectory();
@@ -102,6 +116,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
+    [Trait("Job", "trap: a socket directory another user owns is refused, naming the directory and TMPDIR")]
     public void ASocketDirectoryOwnedBySomeoneElseIsRefused()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");
@@ -112,6 +127,7 @@ public class StatechartPosixChannelTests
     }
 
     [SkippableFact]
+    [Trait("Job", "trap: a link and a file in place of the socket directory are each refused, naming the path and TMPDIR")]
     public void ALinkOrFileInPlaceOfTheSocketDirectoryIsRefused()
     {
         Skip.IfNot(OperatingSystem.IsLinux(), "The POSIX statechart channel runs on Linux.");

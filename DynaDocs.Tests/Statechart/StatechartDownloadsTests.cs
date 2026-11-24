@@ -3,10 +3,10 @@ namespace DynaDocs.Tests.Statechart;
 using System.Security.Cryptography;
 using DynaDocs.Services.Statechart;
 
-[Trait("Job", "contract: DR 062 §2 §4 (locked, bounded, integrity-checked downloads)")]
 public class StatechartDownloadsTests
 {
     [Fact]
+    [Trait("Job", "contract: DR 062 §2 (the download plan comes from the platform's row in the commissioned lock, and a RID the lock lacks is refused)")]
     public void SelectUsesTheCommissionedLockAndRejectsUnsupportedRidsBeforeDownloading()
     {
         var assets = new StatechartAssets();
@@ -20,6 +20,7 @@ public class StatechartDownloadsTests
 
     // Official nodejs.org SHASUMS256.txt for v26.13.0, signed by a Node.js release key.
     [Theory]
+    [Trait("Job", "contract: DR 062 §2 (each platform's managed Node is locked to its official v26.13.0 archive and checksum)")]
     [InlineData("win-x64", "node-v26.13.0-win-x64.zip", "dcc60d59a0746999f99064a01c020445d54d84228c691cdbf25b49ac3b59150a")]
     [InlineData("linux-x64", "node-v26.13.0-linux-x64.tar.gz", "5848553868b402d3fabb5b09270649977780a390f832155721025a08b5104455")]
     [InlineData("linux-arm64", "node-v26.13.0-linux-arm64.tar.gz", "439e9c438acdf6a6ffe47418da709153d66c4bed812e30a473faacb107dd2791")]
@@ -34,6 +35,17 @@ public class StatechartDownloadsTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §4 (a body that passes its byte bound in its first read is refused before any of it is written)")]
+    public async Task StreamingBoundRejectsExcessWithoutWritingIt()
+    {
+        using var source = new MemoryStream(new byte[32]);
+        using var output = new MemoryStream();
+        await Assert.ThrowsAsync<IOException>(() => StatechartDownloads.CopyBoundedAsync(source, output, 16, CancellationToken.None));
+        Assert.Empty(output.ToArray());
+    }
+
+    [Fact]
+    [Trait("Job", "contract: DR 062 §4 (a download writes its body to a new archive that verifies, and never overwrites an existing archive)")]
     public async Task ADownloadWritesItsBoundedBodyToANewArchive()
     {
         using var scope = new StatechartTestDirectory();
@@ -48,6 +60,7 @@ public class StatechartDownloadsTests
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 062 §4 (a download body over its byte bound is refused and none of it is written)")]
     [InlineData("Content-Length: 5")]
     [InlineData("Connection: close")]
     public async Task ABodyOverItsBoundIsRefusedWhetherDeclaredOrStreamed(string header)
@@ -62,6 +75,7 @@ public class StatechartDownloadsTests
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 062 §5 (a failed download response is an error and leaves no archive)")]
     public async Task AFailedResponseIsAnErrorAndWritesNothing()
     {
         using var scope = new StatechartTestDirectory();
@@ -99,6 +113,7 @@ public class StatechartDownloadsTests
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 062 §4 (an archive whose bytes differ from its pinned digest fails verification and is left in place)")]
     [InlineData(false)]
     [InlineData(true)]
     public void IntegrityRejectsChangedOrOversizedArchivesWithoutRemovingThem(bool sha512)

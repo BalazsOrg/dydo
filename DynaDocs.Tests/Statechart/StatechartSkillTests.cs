@@ -11,7 +11,7 @@ using System.Text.Json.Nodes;
 public class StatechartSkillTests
 {
     [Theory]
-    [Trait("Job", "contract: DR 062 Consequences (the installed skill binds the payload and release: another payload or protocol, a missing receipt, a local edit or an earlier release does not validate)")]
+    [Trait("Job", "contract: DR 062 Consequences (the installed skill binds the payload and release: a skill that does not match them as installed does not validate)")]
     [InlineData("payload")]
     [InlineData("protocol")]
     [InlineData("source")]
@@ -61,28 +61,30 @@ public class StatechartSkillTests
     }
 
     // Receipts written before the inventory existed record no files, so only this release's exact bytes are safe to keep.
-    [Theory]
-    [Trait("Job", "contract: DR 062 Consequences (without an install inventory, install-skill replaces a skill only when its files are this release's, and otherwise leaves it untouched)")]
-    [InlineData(true)]
-    [InlineData(false)]
-    public async Task AnEarlierReceiptWithoutAnInventoryIsReplacedOnlyWhenItsFilesAreThisRelease(bool thisReleaseBytes)
+    [Fact]
+    [Trait("Job", "contract: dydo-commands-utilities.md install-skill (a receipt without an inventory is replaced when its files are already this release's)")]
+    public async Task AnEarlierReceiptWithoutAnInventoryIsReplacedWhenItsFilesAreThisRelease()
     {
         using var scope = new StatechartTestDirectory();
         var (project, payload, skill) = await Installed(scope.Path);
-        if (thisReleaseBytes) Restamp(skill, inventory: false);
-        else FromAnEarlierRelease(skill, inventory: false);
-        if (thisReleaseBytes)
-        {
-            StatechartSkill.Place(project, payload, new StatechartAssets());
-            Assert.Equal(skill, StatechartSkill.Validate(skill, new StatechartAssets()));
-            return;
-        }
+        Restamp(skill, inventory: false);
+        StatechartSkill.Place(project, payload, new StatechartAssets());
+        Assert.Equal(skill, StatechartSkill.Validate(skill, new StatechartAssets()));
+    }
+
+    [Fact]
+    [Trait("Job", "contract: dydo-commands-utilities.md install-skill (a receipt without an inventory whose files are not this release's is refused and its skill left untouched)")]
+    public async Task AnEarlierReceiptWithoutAnInventoryIsRefusedUntouchedWhenItsFilesAreNotThisRelease()
+    {
+        using var scope = new StatechartTestDirectory();
+        var (project, payload, skill) = await Installed(scope.Path);
+        FromAnEarlierRelease(skill, inventory: false);
         Assert.Throws<IOException>(() => StatechartSkill.Place(project, payload, new StatechartAssets()));
         Assert.EndsWith("Earlier release wording.", File.ReadAllText(Path.Combine(skill, "SKILL.md")));
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 062 Consequences (install-skill leaves a skill dydo did not install untouched, before any projection or prerequisite launch)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md install-skill (a foreign skill stays untouched: install-skill refuses it and leaves its file as it was)")]
     public async Task ForeignCanonicalSkillIsPreservedBeforeProjectionOrPrerequisiteLaunch()
     {
         using var scope = new StatechartTestDirectory();

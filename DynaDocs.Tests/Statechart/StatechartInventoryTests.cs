@@ -2,11 +2,11 @@ namespace DynaDocs.Tests.Statechart;
 
 using DynaDocs.Services.Statechart;
 
-[Trait("Job", "trap: an installed link whose followed path leaves the root must be rejected")]
 public class StatechartInventoryTests
 {
     // The filesystem follows a link before it applies `..`; each lexical target names an existing decoy entry.
     [SkippableTheory]
+    [Trait("Job", "trap: an installed link whose followed path leaves the root must be rejected")]
     [InlineData("a/b/l", "../../d", "escape", "a/b/l/../../outside")]
     [InlineData("p/q/x", "../../r", "p/q/y", "x/../../../z")]
     public void AnInstalledLinkWhoseFollowedPathLeavesTheRootIsRejected(string first, string firstTarget,
@@ -25,6 +25,7 @@ public class StatechartInventoryTests
     }
 
     [SkippableFact]
+    [Trait("Job", "edge: an installed link that stays inside the root through another link is recorded, and installed links that loop through each other are rejected")]
     public void InstalledLinksThatLoopOrStayInsideAreJudgedByTheFollowedPath()
     {
         Skip.If(OperatingSystem.IsWindows(), "Creating symbolic links needs Windows developer mode.");

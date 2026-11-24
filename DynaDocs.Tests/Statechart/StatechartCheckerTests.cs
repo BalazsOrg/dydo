@@ -5,7 +5,6 @@ using System.Security.Cryptography;
 using System.Text.Json;
 using DynaDocs.Services.Statechart;
 
-[Trait("Job", "contract: DR 062 §4 (the sealed checker is verified, never raw TLC)")]
 public class StatechartCheckerTests
 {
     public static TheoryData<bool> Inputs => new() { true, false };
@@ -22,7 +21,8 @@ public class StatechartCheckerTests
     public static TheoryData<string, bool> Companions => Both("file", "directory", "dangling", "file-link", "directory-link");
     public static TheoryData<string, bool> Changes =>
         Both("source", "destination", "missing", "extra", "file-link", "directory-link", "ancestor-link", "late-companion");
-    public static TheoryData<string, bool> Bootstraps => Both("valid", "missing", "changed", "unbuilt");
+    public static TheoryData<string, bool> Sealed => Both("valid");
+    public static TheoryData<string, bool> Unsealed => Both("missing", "changed", "unbuilt");
 
     private static (string Jar, string Digest) CopyInput(string root, bool pinned)
     {
@@ -47,6 +47,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §4 (the prepared checker is an exact copy of the pinned jar, alone in its own directory)")]
     [MemberData(nameof(Inputs))]
     public void OwnedCopyRetainsOfficialBytesAndManifestWithoutChangingOriginal(bool pinned)
     {
@@ -67,6 +68,7 @@ public class StatechartCheckerTests
 
     // The digest is the lock's pin: the payload's own lock names the real jar, and nothing else passes for it.
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §4 (a checker input other than the pinned jar is refused, naming it, before any copy)")]
     [MemberData(nameof(Inputs))]
     public void AnInputOtherThanThePinnedJarIsRefusedBeforeAnyCopy(bool pinned)
     {
@@ -81,6 +83,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §4 (a CommunityModules.jar entry beside the checker input is refused by discovery and by preparation, which copies nothing)")]
     [MemberData(nameof(Companions))]
     public void CompanionIsRejectedByExplicitDiscoveryAndPreparationWithoutChangingForeignBytes(string kind, bool pinned)
     {
@@ -113,6 +116,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §4 (a linked checker input resolves to the actual jar, and a companion beside that jar refuses it)")]
     [MemberData(nameof(Inputs))]
     public void AliasedFileAndDirectoryInputsCheckTheActualJarCompanion(bool pinned)
     {
@@ -131,6 +135,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §4 (any change, after preparation, to what the checker launches from is refused at the next launch)")]
     [MemberData(nameof(Changes))]
     public void EveryLaunchRechecksSourceDestinationMembershipAndPlainAncestors(string change, bool pinned)
     {
@@ -158,6 +163,7 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
+    [Trait("Job", "contract: DR 062 §4 (preparation never adopts an existing checker directory, and keeps its content)")]
     [MemberData(nameof(Inputs))]
     public void ExistingCheckerDirectoryIsRetainedWithoutOverwrite(bool pinned)
     {
@@ -172,8 +178,16 @@ public class StatechartCheckerTests
     }
 
     [SkippableTheory]
-    [MemberData(nameof(Bootstraps))]
-    public void BootstrapResolutionUsesSealedIdentityAndNeverFallsBackToRawTlc(string state, bool pinned)
+    [Trait("Job", "contract: DR 062 Clarification (TLC launches through the loopback bootstrap that matches its sealed build lock, with the verified owned jar)")]
+    [MemberData(nameof(Sealed))]
+    public void BootstrapResolutionUsesSealedIdentityAndNeverFallsBackToRawTlc(string state, bool pinned) => Bootstrap(state, pinned);
+
+    [SkippableTheory]
+    [Trait("Job", "contract: DR 062 Clarification (a bootstrap helper that does not match its sealed build lock is refused, with no raw TLC fallback)")]
+    [MemberData(nameof(Unsealed))]
+    public void AnUnsealedBootstrapIsRefusedWithoutFallingBackToRawTlc(string state, bool pinned) => Bootstrap(state, pinned);
+
+    private static void Bootstrap(string state, bool pinned)
     {
         using var scope = new StatechartTestDirectory();
         var (source, digest) = CopyInput(scope.Path, pinned);
@@ -198,6 +212,7 @@ public class StatechartCheckerTests
 
     // A linked build lock could point resolution at another helper, so it is refused before it is read.
     [SkippableFact]
+    [Trait("Job", "contract: DR 062 Clarification (a linked bootstrap build lock is refused before it is read, with no raw TLC fallback)")]
     public void ALinkedBootstrapBuildLockIsRefusedWithoutAFallback()
     {
         Skip.If(OperatingSystem.IsWindows(), "Creating symbolic links needs Windows developer mode.");
