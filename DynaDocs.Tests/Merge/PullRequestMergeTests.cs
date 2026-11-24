@@ -244,7 +244,7 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // GitHub itself refuses the landing; the command exits 1 and nothing merges.
     [Theory]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 1 (GitHub refusing the merge POST, by row a 409 conflict or a 404 for a base gone and so off the pin, is a refusal: exit 1, and that POST is the only write)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 1 (GitHub refusing the merge POST, by row a 409 conflict or a 404 for a base gone and so off the pin, is a refusal: exit 1)")]
     [InlineData("conflict")]
     [InlineData("base gone when the merge arrives")]
     public void GitHubRefusingThePost_ExitsOne_AndNothingElseIsWritten(string refusal)
@@ -326,7 +326,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (on the two-parent path, a repository answer without the node id the ref move needs is a tool error: exit 2, nothing written)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (on the two-parent path, a repository answer without the node id the ref move needs is a tool error: exit 2)")]
     public void ARepositoryWithoutANodeId_IsAToolError_BeforeAnyWrite()
     {
         FastForwardEligible();
@@ -357,7 +357,7 @@ public sealed class PullRequestMergeTests : IDisposable
     #region Landing
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §1 §3; dydo-commands-delivery.md dydo merge (a reviewed green PR, its SHA given in the row's letter case, lands once: exit 0, gh asked on origin's host, one write, a POST /merges naming the base and the SHA)")]
+    [Trait("Job", "contract: DR 061 §1 §3; dydo-commands-delivery.md dydo merge (a reviewed green PR, its SHA given in the row's letter case, lands: exit 0, gh asked on origin's host, a POST /merges naming the base and the SHA)")]
     [InlineData(Sha)]
     [InlineData("0123456789ABCDEF0123456789ABCDEF01234567")]
     public void AReviewedGreenPr_LandsOnceAsAMergeIntoItsFeatureBase(string sha)
@@ -370,7 +370,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (a PASS naming no base still lands: exit 0, one write, a POST /merges naming the base and the SHA)")]
+    [Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (a PASS naming no base still lands: exit 0, a POST /merges naming the base and the SHA)")]
     public void APassNamingNoBase_StillLands()
     {
         _s.PullJson["body"] = Body(PassLine(reviewBase: null));
@@ -520,7 +520,7 @@ public sealed class PullRequestMergeTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge A closed PR first (a rerun after a lost merge answer is safe: the lost answer exits 2, the rerun exits 0, and the writes are the row's: one POST when the PR reads closed and integrated, a second POST answered 204 when it still shows open)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge A closed PR first (a rerun after a lost merge answer is safe, by row whether the PR then reads closed and integrated or still shows open: the lost answer exits 2, the rerun exits 0)")]
     [InlineData("closed and integrated")]
     [InlineData("still shows open, GitHub answers 204")]
     public void ARerunAfterALostMergeAnswer_ExitsZero_WithoutASecondMerge(string rerun)
@@ -550,7 +550,7 @@ public sealed class PullRequestMergeTests : IDisposable
 
     // GitHub's PR metadata may keep a tip from before the ref advanced; only the ref decides.
     [Fact]
-    [Trait("Job", "contract: DR 061 2026-11-04 amendment; dydo-commands-delivery.md dydo merge Target tip (a stale PR base.sha with the pin on the branch ref lands: exit 0, one write, a POST /merges naming the base and the SHA)")]
+    [Trait("Job", "contract: DR 061 2026-11-04 amendment; dydo-commands-delivery.md dydo merge Target tip (a stale PR base.sha with the pin on the branch ref lands: exit 0, a POST /merges naming the base and the SHA)")]
     public void AStaleBaseShaWithThePinOnTheActualRef_LandsOntoTheRef()
     {
         _s.PullJson["base"]!["sha"] = Stale;

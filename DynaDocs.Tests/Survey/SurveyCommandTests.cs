@@ -24,7 +24,7 @@ public sealed class SurveyCommandTests : IDisposable
             arguments, FakeLinear.ApiKey, _server.Endpoint.ToString(), new FixedClock(), CancellationToken.None));
 
     [Theory]
-    [Trait("Job", "contract: DR 063 §5 (arguments that are not one Project UUID, slugId or Project URL, by row none, two, or a name, are a usage error: exit 2, a message on stderr, nothing on stdout)")]
+    [Trait("Job", "contract: DR 063 §5 (arguments that are not one Project UUID, slugId or Project URL, by row none, two, or a name, are a usage error: exit 2)")]
     [InlineData]
     [InlineData("25acbbb9a90b", "25acbbb9a90c")]
     [InlineData("map")]
@@ -39,7 +39,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 063 §1 (without a key, by row none or a blank one, it prints the missing-key help it shares with dydo map and exits 2 before any request: exit 2, stderr exactly that help, nothing on stdout, Linear not called)")]
+    [Trait("Job", "contract: DR 063 §1 (without a key, by row none or a blank one, it prints the missing-key help it shares with dydo map and exits 2 before any request: exit 2, stderr exactly that help, Linear not called)")]
     [InlineData(null)]
     [InlineData(" ")]
     public async Task MissingKey_PrintsMapsKeyHelp_BeforeAnyRequest(string? key)
@@ -54,7 +54,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §4 §5; dydo-commands-linear.md dydo survey, the first line (a successful read exits 0 with nothing on stderr; stdout starts with the header naming the Project and the clock's time in UTC; the one finding of a kept kind is `pickable DYD-1`, on a line of its own)")]
+    [Trait("Job", "contract: DR 063 §4 §5; dydo-commands-linear.md dydo survey, the first line (a successful read exits 0; stdout starts with the header naming the Project and the clock's time in UTC; the one finding of a kept kind is `pickable DYD-1`, on a line of its own)")]
     public async Task ARead_ExitsZero_WithAUtcHeader_AndOneLinePerFinding()
     {
         _linear.Serve(call => call.Operation == "ProjectIssues"
@@ -84,7 +84,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §5 (a ticket that vanishes mid-read exits 2, named as that ticket and not with the unknown-Project message, with nothing on stdout)")]
+    [Trait("Job", "contract: DR 063 §5 (a ticket that vanishes mid-read exits 2, named as that ticket and not with the unknown-Project message)")]
     public async Task ATicketMissingMidRead_IsNamed_NotCalledAnUnknownProject()
     {
         _linear.Serve(call => call.Operation switch
@@ -103,7 +103,7 @@ public sealed class SurveyCommandTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 063 §5, an API failure exits 2 (an answer missing what the read needs, by row a Project without its fields or an issue without its title, exits 2 with a message on stderr and no digest on stdout)")]
+    [Trait("Job", "contract: DR 063 §5, an API failure exits 2 (an answer missing what the read needs, by row a Project without its fields or an issue without its title, exits 2 with a message on stderr)")]
     [InlineData("""{"data":{"project":{"id":"p-map"}}}""")]
     [InlineData(null)]
     public async Task AnUnexpectedAnswer_IsAToolError_WithNoDigest(string? answer)

@@ -123,7 +123,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Theory]
-    [Trait("Job", "contract: DYD-264 Outcome, the plan §3 HTTP API contract and its error envelope (a request missing its team or project parameter, by row, answers 400 missing_parameter, and Linear is not called)")]
+    [Trait("Job", "contract: DYD-264 Outcome, the plan §3 HTTP API contract and its error envelope (a request missing its team or project parameter, by row, answers 400 missing_parameter)")]
     [InlineData("/api/projects")]
     [InlineData("/api/projects?team=")]
     [InlineData("/api/graph")]
@@ -160,7 +160,7 @@ public sealed class MapServerTests : IAsyncLifetime
     }
 
     [Theory]
-    [Trait("Job", "contract: DYD-264 Outcome, the server only answers GET and the API exactly as plan §3 fixes it (by row, an unknown API path, a missing asset and each non-GET method answer 404 not_found, and Linear is not called)")]
+    [Trait("Job", "contract: DYD-264 Outcome, the server only answers GET and the API exactly as plan §3 fixes it (by row, an unknown API path, a missing asset and each non-GET method answer 404 not_found)")]
     [InlineData("GET", "/api/nothing")]
     [InlineData("GET", "/assets/missing.js")]
     [InlineData("POST", "/api/teams")]

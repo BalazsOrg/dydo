@@ -17,7 +17,7 @@ public sealed class MergeCheckoutTests : IDisposable
     public void Dispose() => _s.Dispose();
 
     [Theory]
-    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the row's origin URL, HTTPS or SSH, names HOST/OWNER/REPO: the host, acme, widgets, and whether it is SSH)")]
+    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the row's origin URL, HTTPS or SSH, names HOST/OWNER/REPO: the row's host, acme and widgets)")]
     [InlineData("https://github.com/acme/widgets.git", "github.com", false)]
     [InlineData("https://github.com/acme/widgets", "github.com", false)]
     [InlineData("https://github.com/acme/widgets.git/", "github.com", false)]
@@ -46,7 +46,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2, an origin on an SSH alias host (by row: an scp-like or ssh:// SSH host without a dot reads as an alias; an SSH host with a dot and an HTTPS host without one do not)")]
+    [Trait("Job", "trap: an SSH config alias such as `Host work-gh` resolves only through ssh, while gh knows a host only by its real, dotted name (DYD-424; dydo-commands-delivery.md makes an origin on an SSH alias host a tool error): by row, an scp-like or ssh:// SSH host without a dot reads as an alias, and an SSH host with a dot or an HTTPS host without one does not")]
     [InlineData("git@work-gh:acme/widgets.git", true)]
     [InlineData("ssh://git@work-gh/acme/widgets.git", true)]
     [InlineData("git@github.com:acme/widgets.git", false)]
@@ -79,7 +79,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the repository is the located project's checkout: a nested repository without dydo.json, with its own origin, refuses, exit 1 and a `refused:` line, before gh is set up)")]
+    [Trait("Job", "contract: DR 061 §2; dydo-commands-delivery.md dydo merge Repository (the repository is the located project's checkout: a nested repository without dydo.json, with its own origin, refuses: exit 1, a `refused:` line)")]
     public void ANestedRepository_IsNotTheProjectsCheckout()
     {
         var nested = Path.Combine(_s.Root, "vendor", "lib");
@@ -107,7 +107,7 @@ public sealed class MergeCheckoutTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (an origin on an SSH alias host is a tool error: exit 2, an `error:` line naming the alias host, no GitHub call)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge exit 2 (an origin on an SSH alias host is a tool error: exit 2, an `error:` line)")]
     public void AnSshAlias_IsAToolError()
     {
         Git(_s.Root, "remote", "set-url", "origin", "git@work-gh:acme/widgets.git");

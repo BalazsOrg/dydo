@@ -163,7 +163,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo check, exit 2 means a tool error (through the built dll, a <path> that does not exist exits 2, saying Path not found)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check, exit 2 means a tool error (through the built dll, a <path> that does not exist exits 2)")]
     public async Task Check_NonExistentPath_ReturnsToolError()
     {
         var initResult = await RunDydoAsync("init none");
@@ -176,7 +176,7 @@ public class CliEndToEndTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo check, exit 2 for a <path> outside the docs tree (through the built dll, such a path exits 2, saying it is outside the docs tree)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check, exit 2 for a <path> outside the docs tree (through the built dll, such a path exits 2)")]
     public async Task Check_PathOutsideDocsTree_ReturnsToolError()
     {
         var initResult = await RunDydoAsync("init none");

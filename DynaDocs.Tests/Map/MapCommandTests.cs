@@ -7,7 +7,7 @@ using DynaDocs.Utils;
 public class MapCommandTests
 {
     [Theory]
-    [Trait("Job", "contract: DR 052 §2; dydo-commands-linear.md dydo map (without a key, by row null, empty or blank, it prints how to create one and exits 2: exit 2, stderr exactly the key help, nothing on stdout, no browser opened)")]
+    [Trait("Job", "contract: DR 052 §2; dydo-commands-linear.md dydo map (without a key, by row null, empty or blank, it prints how to create one and exits 2: exit 2, stderr exactly the key help)")]
     [InlineData(null)]
     [InlineData("")]
     [InlineData("   ")]
@@ -25,7 +25,7 @@ public class MapCommandTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 052 §2; dydo-commands-linear.md dydo map (with LINEAR_API_KEY unset, the command line `dydo map --no-browser` exits 2 and prints nothing on stdout)")]
+    [Trait("Job", "contract: DR 052 §2; dydo-commands-linear.md dydo map (with LINEAR_API_KEY unset, the command line `dydo map --no-browser` exits 2)")]
     public async Task MissingKey_ThroughTheCommandLine_Exits2()
     {
         var saved = Environment.GetEnvironmentVariable("LINEAR_API_KEY");

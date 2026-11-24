@@ -87,7 +87,7 @@ public class LinearReaderTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 063 §2 §4, the one reader the map and the survey share (the graph names its Project, and each issue carries its identifier, title, URL, state and state type, assignee, team, Project, labels and parent; an absent, null or empty label connection reads as no labels)")]
+    [Trait("Job", "contract: DR 063 §2 §4, the one reader the map and the survey share; DYD-264 Outcome, the plan §3 contract (the graph names its Project, and each issue carries its identifier, title, URL, state and state type, assignee, team, Project, labels and parent; an absent, null or empty label connection reads as no labels)")]
     public async Task Graph_CarriesEachIssuesFields()
     {
         _linear.Serve(_ => IssuesPage(

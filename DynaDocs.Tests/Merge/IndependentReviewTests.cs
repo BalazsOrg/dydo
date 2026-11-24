@@ -114,7 +114,7 @@ public sealed class IndependentReviewTests
     }
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-delivery.md dydo merge Review (a candidate counts from 7 hex digits up to the full SHA: by row, 6 digits, 41 digits, or a candidate named only in the prose after the fields leave the one verdict with no candidate)")]
+    [Trait("Job", "contract: dydo-commands-delivery.md dydo pr-ready, the candidate SHA must contain 7-40 hex digits, with fields after semicolons, through the merge parser (by row, 6 digits, 41 digits, or a candidate named only in the prose after the fields leave the one verdict with no candidate)")]
     [InlineData("PASS - rubric/type: code; candidate 012345.")]
     [InlineData("PASS - rubric/type: code; candidate 0123456789abcdef0123456789abcdef012345678.")]
     [InlineData("PASS - rubric/type: code; reviewer/model: r. Checks: the candidate 0123456 holds.")]
@@ -178,7 +178,7 @@ public sealed class IndependentReviewTests
     #region Binding the candidate to the SHA (through dydo merge)
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §4 (the PASS must be for the SHA: a PASS for another full SHA is none, and dydo merge refuses, exit 1, its `refused:` line naming the SHA)")]
+    [Trait("Job", "contract: DR 061 §4 (the PASS must be for the SHA: a PASS for another full SHA is none, and dydo merge refuses: exit 1, a `refused:` line)")]
     public void AFullShaMustEqualTheHead()
     {
         using var s = new MergeScenario();
@@ -204,7 +204,7 @@ public sealed class IndependentReviewTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (an abbreviation GitHub does not resolve to the SHA, answering 422, does not count: exit 1, its `refused:` line naming the SHA, nothing written)")]
+    [Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (an abbreviation GitHub does not resolve to the SHA, answering 422, does not count, and dydo merge refuses before it merges: exit 1, a `refused:` line, nothing written)")]
     public void AnAmbiguousPrefix_DoesNotCount()
     {
         using var s = new MergeScenario();
@@ -219,7 +219,7 @@ public sealed class IndependentReviewTests
     }
 
     [Fact]
-    [Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (a FAIL line for the same candidate refuses, its abbreviation resolving to the SHA, beside a PASS for it: exit 1, its `refused:` line naming the FAIL)")]
+    [Trait("Job", "contract: DR 061 §4; dydo-commands-delivery.md dydo merge Review (a FAIL line for the same candidate refuses, its abbreviation resolving to the SHA, beside a PASS for it: exit 1, a `refused:` line)")]
     public void AFailWhosePrefixResolvesToTheSha_Refuses()
     {
         using var s = new MergeScenario();
