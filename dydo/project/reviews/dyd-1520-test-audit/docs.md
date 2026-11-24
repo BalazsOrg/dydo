@@ -75,6 +75,42 @@ Unreachable: no command prints a rule's `Description` (no production read of `.D
 Commands, Services, Rules or Utils). The restored rows kill again the two `TitleRule.cs:14` mutants
 round 1 lost. The Python and Node tooling tests: mutation unavailable; none is removed.
 
+## Mutation Method (Coordinator Ruling 1)
+
+> **1. Option A.** The targeted two-phase run complies with §5 when both conditions hold:
+> - phase 1 covers every method that was removed or whose body changed;
+> - the diff changes no shared helper or fixture that an untouched test uses.
+>
+> Each batch PR states both conditions, with the diff evidence for the second. If either condition
+> fails, the batch re-runs phase 2 over every test that uses the changed helper, including untouched
+> ones. Quote this ruling in each PR body so the reviewer judges the conditions, not the method.
+
+**Condition 1 holds.** Phase 1's filter (`/var/tmp/dyd1520/docs-work/p1-filter.txt`) is the classes
+`BrokenLinksRuleTests`, `RelativeLinksRuleTests` and `LinkResolverTests`, and the methods
+`CollapseRelativeSegments_ResolvesDotDot`, `Check_ReportsTheDocumentsFinding`,
+`Fix_ValidDocument_KeepsItsBytes`, `Fix_PreservesHandwrittenNavigationFiles`,
+`Fix_IgnoresObsidianFolder`, `Check_IgnoresObsidianFolder` and `Graph_UnknownFile_IsAToolError`. In
+`git diff 07642b1f3 f1354344f -- DynaDocs.Tests`, the removed methods are every case of the first two
+classes, and the only base methods whose body changed are the three `LinkResolverTests` methods; all
+are in phase 1. Every other base method differs from base in its job tag only. The listed methods
+with rows are back to their base rows, and the ones restored in round 1 are byte-identical.
+`Check_LinkFindings_…`, `Check_AnchorOnlyLink_…` and `Check_LegacyHubMarker_…` are new methods holding the
+rewritten cases.
+
+**Condition 2 holds.** The changed files under `DynaDocs.Tests/` that are not test methods:
+
+| File | Change | Untouched tests that use it |
+|---|---|---|
+| `LinkTestFactory.cs` | deleted | none: at base only `BrokenLinksRuleTests` and `LinkResolverTests` used it, both in phase 1 |
+| `Commands/CheckDocValidatorTests.cs` | new private `LegacyMarker`, `GuideWithoutAnchor`, `Findings` | none: only the three new methods use them (lines 158-198) |
+| `Services/LinkResolverTests.cs` | its private helpers rewritten, `FrontmatterWithoutAnchor` added | none outside its own three methods, in phase 1 |
+| `Integration/FixCommandIntegrationTests.cs`, `Serialization/JsonTextTests.cs` | the tag constants `ScopeJob`, `FreshJob` removed | none: tag text only |
+
+No step definition, fixture (`DocsProject`, `DydoCli`, `CliScenario`, `Steps/`) or data file changed.
+The feature file and the Python and Node files change only their `Job:` comment lines. So phase 2
+needs no extra tests. Ruling 2: the batch has no Windows-only case (the one platform-gated case,
+`Validate_UnreadableClaudeSettings_…`, runs everywhere but Windows).
+
 ## Counts
 
 | | Cases | Summed duration |
