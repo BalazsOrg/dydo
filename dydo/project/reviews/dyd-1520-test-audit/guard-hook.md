@@ -122,7 +122,32 @@ by planted bugs at base:
 - PB25 (an allow answers with an allow object) turned 87 cases red, `AllowedCall_ExitsZero…`
   among them.
 
-The body-changing rewrites are shown red on the candidate in the apply commit. The seven
+The body-changing rewrites were shown red on the candidate `d06e0e00`, with the unplanted run
+green (244 passed, 7 Windows skips):
+
+- PB27 (the npx nudge matches only at a command's start) turned
+  `Guard_ChainedIndirectDydo_StillCaught` red; at base it left every case green.
+- PB28 (the coaching names the whole command) turned
+  `Guard_CdGitCompound_BlocksWithCoachingMessage` red; at base it left every case green.
+- PB04 turned all eight refusing `PatchGrammar_DecidesWhichLinesAreTargets` rows red.
+- PB29 (header paths not trimmed) turned the indented, tab and CRLF rows red.
+- PB30 (no hunk body) turned the space-quoted rows red.
+- PB34 (an Add body line's `+` is stripped and read as a header) turned row [3] and the
+  `+`-quoted row red.
+- PB31 (an unparseable patch falls back to `file_path`) turned all four
+  `UnparseablePatch_NamesNoTarget` rows red. No kept case caught PB31 at base, so this rewrite
+  closes a gap.
+- PB09 and PB22 turned the two E2E Facts red.
+
+The parser unit tests also asserted two things no entry point shows:
+
+- PB32 (a header matches without its trailing space, so `*** Add File:` names an empty target)
+  turned only unit `Unparseable[2]` and `[3]` red at base, and nothing on the candidate.
+- PB33 (targets in reverse order) turned only the unit rows red at base, and nothing on the
+  candidate.
+
+Neither changes a verdict, an output, a file or a git state, so neither is a protection a user
+could hit. The seven
 Windows-only UNC rows ([2] to [8]) have no red run here: they skip on Linux, and no Windows host
 or CI run is available to this hop. Their red check is owed to `guard-windows`.
 
@@ -146,9 +171,15 @@ anyway as kept tests. Phase 2 on the candidate is the after-check.
 
 - Tag-only rewrites take a baseline mutant kill as their red check instead of a fresh planted
   run: the body is byte-identical, and the kill was observed with the same assertions.
-- The parser test's order assertion ("every target, in call order") is dropped, not moved. No
-  spec or DR names the order. A reversed order changes no verdict, only which of two refused
-  targets a refusal names, so it is an untraced pin (rubric §3).
+- The parser tests' order assertion and their empty-header assertion are dropped, not moved. No
+  spec or DR names either, and PB33 and PB32 show neither reaches an observable at the hook.
+  The reviewer judges whether that counts as "covers nothing a user could hit".
+- The first whole-file rewrite of `GuardIntegrationTests.cs` was refused by the host's
+  permission classifier. The same changes then went in as targeted edits, which it allowed one
+  by one. Only the `DeleteFileOfProtectedIndex_Denied` row deletion stayed refused, and it was
+  not retried in any form.
+- Tests run through `dotnet test` as the brief names, behind a script, not through the guard's
+  suggested `run_tests.py` (a warn; each worktree has its own `bin`).
 - `GuardIntegrationTests`' `DirectDydo` and `CommandOption_Parses`, and the E2E rows, had no
   baseline kill: their evidence is planted bugs alone.
 
