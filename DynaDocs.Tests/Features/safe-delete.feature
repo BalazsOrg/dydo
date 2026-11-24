@@ -1,8 +1,8 @@
 # Job: contract: spec N10; DYD-1029 (through dydo archive and the guard; each case shows one clause: an archived branch
 # or worktree restores its unique state after deletion; a refusal exits 2 and keeps the target; a failure after the
 # remote deletion exits 2 and keeps the complete archive and the local targets; restore refuses a damaged or colliding
-# archive and keeps it; a dry run prints its estimates and neither archives nor deletes; archives expire only when a
-# later archive purges them; a differently named upstream is reported and kept; links round-trip (Windows: refused);
+# archive and keeps it; a dry run prints its estimates and neither archives nor deletes; an expired archive is purged
+# by a later archive, not by list, dry-run or restore; a differently named upstream is reported and kept; links round-trip (Windows: refused);
 # the guard refuses raw destructive Git and admits dydo archive)
 @SafeDelete
 Feature: Safe delete archives unique work before removal

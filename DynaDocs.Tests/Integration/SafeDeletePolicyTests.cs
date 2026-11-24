@@ -6,7 +6,7 @@ using DynaDocs.Services;
 public sealed class SafeDeletePolicyTests
 {
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (T3 settings without a worktree root, or with an empty one, refuse nothing; invalid or unreadable settings refuse an ordinary tree)")]
+    [Trait("Job", "contract: spec N10; DYD-1029 (T3 settings without a worktree root, or with an empty one, leave an ordinary tree unrefused; invalid or unreadable settings refuse it)")]
     [Theory]
     [InlineData("{}",false)]
     [InlineData("{\"worktreesDirectory\":\"\"}",false)]
@@ -33,7 +33,7 @@ public sealed class SafeDeletePolicyTests
         Assert.Contains("T3 ownership/activity unavailable",new SafeDeleteT3Policy(settings).Refusal(Path.Combine(fixture.Root,".t3","worktrees","project","tree")));
     }
 
-    [Trait("Job", "trap: DYD-1029 (credentials in a remote URL never reach archive output: userinfo, query and fragment are dropped)")]
+    [Trait("Job", "trap: DYD-1029 (Redact drops a remote URL's userinfo and query, where credentials travel)")]
     [Fact]
     public void Redaction_DropsUserinfoQueryAndFragment()
     {

@@ -520,7 +520,7 @@ public sealed class SafeDeleteBoundaryTests
         Path.Combine(Path.GetTempPath(),"dydo-missing-" + Guid.NewGuid().ToString("N"),"child")
     };
 
-    [Trait("Job", "edge: DYD-1029 (the default space probe finds the containing volume of a missing target, on the root volume and under the temp path)")]
+    [Trait("Job", "edge: DYD-1029, 6b46ce6b (the default space probe returns figures for a missing target, on the root volume and under the temp path, instead of throwing)")]
     [Theory]
     [MemberData(nameof(AllocationTargets))]
     public void DefaultAllocationVolume_IdentifiesTheContainingVolumeOfMissingTargets(string target)
