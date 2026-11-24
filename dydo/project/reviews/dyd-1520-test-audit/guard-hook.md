@@ -15,8 +15,8 @@ order, new-file nudges, host memory and the Claude guard wiring). One line per c
 
 | Verdict | Cases | Applied | Pending |
 |---|---|---|---|
-| keep | 98 | 98 | 0 |
-| rewrite | 137 | 72 | 65 |
+| keep | 52 | 52 | 0 |
+| rewrite | 183 | 118 | 65 |
 | remove | 43 | 24 | 19 |
 | keep `unsure` | 10 | 10 | 0 |
 
@@ -32,8 +32,9 @@ the permission call:
 
 The 10 `HookInputExtensionsTests` rows are kept `unsure`; see below.
 
-Most rewrites are tag fixes. A tag is true only when it is true of every case it covers, and
-seven class tags were not:
+Most rewrites are tag fixes. A tag is true only when it is true of every case it covers. Every
+kept case's tag was swept against what its case shows (review lessons 6 to 8), and these were
+not true:
 
 - `GuardIntegrationTests` listed four jobs and was false of its plan-mode, search and git cases.
 - `GuardWarnOrderTests` said warns run after hard blocks, which is false of the warn-only cases.
@@ -43,7 +44,13 @@ seven class tags were not:
   which is false of `--path`, `--action` and stdin.
 - `GuardA02ProofTests` said the guard failed open, which is false of its DYD-881 must-allow
   twin.
-- `GuardNewFileNudgeIntegrationTests` pinned behaviour with no spec or DR cite.
+- `GuardNewFileNudgeIntegrationTests` pinned behaviour with no spec or DR cite. Its new class tag
+  leaves the ordering to the method tags of the cases that show it: the LC-759 tier order and the
+  DYD-386 block-before-warn.
+- `GuardHostMemoryTests` said native memory "is off and guarded", but no case checks that it is
+  off.
+- `GuardCodexApplyPatchTests` said "every target by kind", but most cases send one target.
+- `GuardRefusalContractTests` is split into five method tags, one per observable.
 - The UNC tag in `GuardCommandTests` said "through '..'", which is false of five rows
   (the captain's note).
 

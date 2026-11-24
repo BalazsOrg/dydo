@@ -10,7 +10,7 @@ using DynaDocs.Tests.Integration;
 /// {A} the project's autoMemoryDirectory.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DR 055 native agent memory is off and guarded")]
+[Trait("Job", "contract: DR 055 a file-tool write into a host memory folder is refused, a write beside one is not")]
 public class GuardHostMemoryTests : GuardHookTestBase
 {
     [Theory]

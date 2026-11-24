@@ -8,7 +8,7 @@ using System.Text.Json;
 /// Delete File included, in the main and the worker lane.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DYD-396 the guard judges every Codex apply_patch target by kind")]
+[Trait("Job", "contract: DYD-396 the guard judges each target of Codex's real apply_patch payload")]
 public class GuardCodexApplyPatchTests : IntegrationTestBase
 {
     private string CodexApplyPatch(string patch, string? agentId = null, string? cwd = null, bool omitCwd = false)

@@ -9,7 +9,7 @@ using DynaDocs.Services;
 /// including Codex's real apply_patch shape: the whole patch in tool_input.command, no file_path.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md, a new-file nudge matches a file a tool is about to create, after the path tiers")]
+[Trait("Job", "contract: dydo-commands-core.md, a new-file nudge matches only a file a tool is about to create")]
 public class GuardNewFileNudgeIntegrationTests : IntegrationTestBase
 {
     private const string ToolsPattern = "^tools/(?!one-off/)";
@@ -177,6 +177,7 @@ public class GuardNewFileNudgeIntegrationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: LC-759 a path tier's refusal wins over a new-file nudge on the same write")]
     [InlineData(null, ".env", "off-limits")]
     [InlineData("wkr-1", ".env", "off-limits")]
     [InlineData(null, "dydo/index.md", "protected")]
@@ -304,7 +305,7 @@ public class GuardNewFileNudgeIntegrationTests : IntegrationTestBase
     // neither arms nor spends its pass meanwhile: once the block is gone the warn still meets the
     // first try, and only then does the retry pass.
     [Fact]
-    [Trait("Job", "contract: DYD-386 warn nudges run after every hard block")]
+    [Trait("Job", "contract: DYD-386 a new-file block refuses every try and leaves a new-file warn on the same path unspent")]
     public async Task BlockAfterWarnInConfigOrder_RefusesEveryTry_AndLeavesTheWarnUnspent()
     {
         await InitWithNudges(ToolsNudge("warn"),
