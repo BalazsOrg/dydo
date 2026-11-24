@@ -15,8 +15,8 @@ cases at `07642b1f3`. Each case's verdict is one line of `setup.tsv` beside this
 
 | Verdict | Cases |
 |---|---|
-| keep | 406 |
-| keep `unsure` | 4 |
+| keep | 400 |
+| keep `unsure` | 10 |
 | rewrite | 7 |
 | remove | 12 |
 | **total** | **429** |
@@ -65,7 +65,10 @@ another platform.
   `InstallNudgeTests` (the never-nudged commands under "installing needs permission"),
   `DownstreamConfigTests` (the local-settings case and the cases that assert no BOM),
   `ConfigServiceTests` (the strict-load and helper cases under the failed-save tag),
-  `ShellCompletionInstallerTests` and `CompletionsCommandTests`. The tags of `ConfigFactoryTests`,
+  `ShellCompletionInstallerTests`, `CompletionsCommandTests` and `InitCommandTests`, whose class tag
+  claimed foreign bytes kept and "a refused init writes nothing" for all 60 methods: each refusal
+  case's tag now names the files it checks, and issue 0300 is named for what it was (`--join` did
+  not record the joined integration). The tags of `ConfigFactoryTests`,
   `InitCheckIntegrationTests`, `ModeCommandTests`, machine-mode.feature and
   `CleanCommandTests.BusyProbeThatCannotMoveTheTreeBack_FailsThatTree_LocksIt_AndTheRunGoesOn` were
   reworded to what their cases assert. `CleanCommandTests.KeepMineMergeDriverFromTheEnvironment_DoesNotHideAnUnmergedChange`
@@ -157,13 +160,33 @@ Afterwards `git checkout -- Commands Services` restored production code and `git
   `Services/CleanArchive.cs:84` comment says newest first. Unresolved: whether the order is a
   contract. No mutant or planted bug is recorded yet that only this case fails on.
 
+Six `InitCommandTests` cases pin behaviour that conflicts with dydo-commands-core.md; each is a
+product question, and its assertions stay as they are:
+
+- `Init_Codex_WritesTheExecPolicyRuleForDydoAndDydoExe[0]` and `[1]`: the clean rule is written for
+  `dydo` only (`Commands/InitCommand.cs:726`), where the host table allows `dydo clean` under `dydo`
+  or `dydo.exe`; nothing asserts the archive rule.
+- `Join_All_TurnsNativeMemoryOffOverTrueAndSaysSo`: `--join` overrides `autoMemoryEnabled: true` and
+  `memories = true`, where the spec stops init on a conflicting managed value; DR 055 says only that
+  init writes them off.
+- `Join_Codex_LeavesACrlfRuleWithTheSameContentByteForByte`: a CRLF `dydo.rules` holding dydo's
+  rules is left alone, where the spec rewrites it on every init and `--join` (DYD-403, `3c1a0f776`,
+  changed the code, not the spec).
+- `Join_Claude_DoesNotWarnAboutAnEntryFileThatImportsAgentsMdFirst[2]` and `[3]`: `CLAUDE.local.md`
+  and `.claude/CLAUDE.md` that open with their import get no warning, where the spec gives each its
+  own warning (DYD-403 again).
+
 ## Deviations
 
-- The review-round-1 tag sweep narrowed every tag of the batch except `InitCommandTests`'. A read of
-  that class found false or over-broad tags whose fixes need calls this hop does not make (a cited
-  spec line the case contradicts, refused-init cases that check only some files, a row whose
-  data shows no merge). Those findings went to the DYD-1520 captain, and the class's tags stand as
-  audited until they are settled.
+- Review lesson 9 (a rewritten, merged or moved case against its base inputs): the seven
+  `TopLevelCommands_ContainsCommand` rows moved to `dydo _complete 1 dydo`, the same position and
+  words, backed by PB3 keyed to exactly those seven words. The removed host-marker cases ran
+  `init claude` and `init all`, which rows [1] and [3] run before their repeat join, and that join
+  changes no byte, so their assertions see the init's files. `VerificationModeTests` and
+  `Set_PersistsForTheNextReader[0]` match their machine-mode scenarios' inputs: the same set
+  commands, the Codex `shell_command` hook in default permission mode, a missing store. The two
+  restored rows are byte-identical to base, and the rest of the round changed only tags and the
+  `KeepMineMergeDriverFromTheEnvironment` dry-run assertion.
 
 - A strengthened assertion in a kept test (the guard counts, the exact show step) is recorded as
   keep with the absorbed assertion named in its Reason, not as a rewrite: its job and boundary are

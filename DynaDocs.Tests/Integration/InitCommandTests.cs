@@ -11,7 +11,6 @@ using DynaDocs.Commands;
 /// files dydo did not write, and nothing at all when a preflight refuses.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo init and --join; DR 056 (committed guard); trap: DYD-392 (init and join keep foreign hook, settings and TOML bytes; a refused init writes nothing)")]
 public class InitCommandTests : IntegrationTestBase
 {
     private const string CustomHooks = """
@@ -31,6 +30,7 @@ public class InitCommandTests : IntegrationTestBase
         """;
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (init and --join keep dydo.json's bytes and unknown keys): a --join whose post-work fails exits with a tool error naming the failure, keeps dydo.json byte for byte with its unknown keys and leaves no temporary sibling; the Codex hooks wired before that point stay")]
     public async Task Join_PostWorkFailure_PreservesOriginalConfigBytes()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -51,6 +51,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (a file with nothing to change is not written): a --join of an integration dydo.json already records leaves dydo.json byte for byte, unknown keys included, with no temporary sibling")]
     public async Task Join_AlreadyRecordedIntegration_LeavesConfigBytesUntouched()
     {
         (await InitProjectAsync("codex")).AssertSuccess();
@@ -69,6 +70,7 @@ public class InitCommandTests : IntegrationTestBase
     #region Adopted dydo version
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a fresh init records the running dydo version in dydo.json as dydoVersion)")]
     public async Task Init_Fresh_RecordsRunningCliVersion()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -78,6 +80,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init --join (leaves dydoVersion alone)")]
     public async Task Join_ExistingDydoVersion_StaysUntouched()
     {
         (await InitProjectAsync("codex")).AssertSuccess();
@@ -89,6 +92,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init --join (leaves dydoVersion alone when it joins a new integration)")]
     public async Task Join_RecordingNewIntegration_PreservesDydoVersion()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -101,6 +105,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init --join (never adds dydoVersion)")]
     public async Task Join_WithoutDydoVersion_WritesNone()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -139,6 +144,7 @@ public class InitCommandTests : IntegrationTestBase
     #region Host wiring
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init host table (settings.json env CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH = 3 and autoMemoryEnabled false; config.toml [agents] max_depth = 3 and max_concurrent_threads_per_session = 16); DR 055 (memories = false under [features])")]
     public async Task Init_All_WritesHostAgentSettings()
     {
         var result = await InitProjectAsync("all");
@@ -153,6 +159,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 055 (init and --join turn native memory off): --join all over autoMemoryEnabled true and memories = true sets both off, keeping the files' other values and text")]
     public async Task Join_All_TurnsNativeMemoryOffOverTrueAndSaysSo()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -174,6 +181,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 055 (memories = false under [features] in .codex/config.toml): --join adds it inside an existing [features] table, keeping the rest of the text")]
     public async Task Join_Codex_AddsMemoriesIntoExistingFeaturesTable()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -192,6 +200,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("features = { memories = true }\n")]
     [InlineData("features.memories = true\n")]
     [InlineData("[features]\n\"memories\" = true\n")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a conflicting value for a key init manages stops init with an error before it writes): a memories = true in a form init cannot edit exits 2 naming .codex/config.toml, keeps that file's bytes and writes no dydo.json")]
     public async Task Init_Codex_RejectsMemoriesFormItCannotEditBeforeAnySideEffect(string toml)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".codex"));
@@ -207,6 +216,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (init and --join keep host settings' text): satisfying values keep settings.json's lines beside one marked guard and config.toml's bytes, and a repeat --join changes neither file")]
     public async Task Init_HostAgentSettings_PreserveSatisfyingValuesAndRepeatBytes()
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -231,6 +241,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (--join stopped on a config.toml led by a BOM): it reads it, keeps the BOM and the [agents] table's text, and adds [features] memories = false")]
     public async Task Join_Codex_BomAgentsTable_IsReadAndTheBomKept()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -244,6 +255,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (--join stopped on a config.toml led by a BOM): it keeps the BOM, sets memories = false inside the one [features] table and adds [agents]")]
     public async Task Join_Codex_BomFeaturesTable_GetsMemoriesInsideItsOneTable()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -262,6 +274,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("\" 3\"")]
     [InlineData("\"2\"")]
     [InlineData("3")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a conflicting value for a key init manages stops init with an error before it writes): a CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH other than the string 3 exits 2 naming the file and the key, keeps settings.json's bytes and writes no dydo.json or settings.local.json")]
     public async Task Init_ClaudeHostSetting_RejectsNoncanonicalOrIncompatibleValue(string value)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -286,6 +299,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("max_depth = \"3\"\nmax_concurrent_threads_per_session = 16")]
     [InlineData("max_depth = 3.0\nmax_concurrent_threads_per_session = 16")]
     [InlineData("max_depth = true\nmax_concurrent_threads_per_session = 16")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a conflicting value for a key init manages stops init with an error before it writes): a conflicting [agents] table exits 2 naming .codex/config.toml and agents, keeps its bytes and writes no dydo.json, .codex/hooks.json or AGENTS.md")]
     public async Task Init_CodexHostSetting_RejectsConflictWithoutPartialInit(string agents)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".codex"));
@@ -312,6 +326,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("agents.max_depth = 3\n")]
     [InlineData("[ agents ]\nmax_depth = 3\nmax_concurrent_threads_per_session = 16\n")]
     [InlineData("[\"agents\"]\nmax_depth = 3\nmax_concurrent_threads_per_session = 16\n")]
+    [Trait("Job", "trap: DYD-392 (a refused init writes nothing): an [agents] form init cannot edit safely exits 2 naming .codex/config.toml, keeps its bytes and writes no dydo.json, .codex/hooks.json or AGENTS.md")]
     public async Task Init_CodexHostSetting_RejectsAmbiguousTomlBeforePartialInit(string toml)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".codex"));
@@ -331,6 +346,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("{ \"env\": null }")]
     [InlineData("{ \"env\": { \"CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH\": null } }")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a conflicting value for a key init manages stops init with an error before it writes): a null env or a null CLAUDE_CODE_MAX_SUBAGENT_SPAWN_DEPTH exits 2 naming .claude/settings.json, keeps its bytes and writes no dydo.json or settings.local.json")]
     public async Task Init_ClaudeHostSetting_RejectsNullManagedMembersBeforePartialInit(string json)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -349,6 +365,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("claude")]
     [InlineData("codex")]
+    [Trait("Job", "trap: DYD-392 (a refused init writes nothing): init all with one host file it refuses exits 2, keeps both host files' bytes and writes no dydo.json, CLAUDE.md, AGENTS.md, settings.local.json, .codex/hooks.json or .gitignore")]
     public async Task Init_All_PreflightsBothHostsBeforeAnyProjectMutation(string invalidHost)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -376,6 +393,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a conflicting value for a key init manages stops init with an error before it writes): --join all over a conflicting [agents] exits 2, keeps dydo.json, both host files, AGENTS.md and a generated CLAUDE.md byte for byte and writes no settings.local.json or .codex/hooks.json")]
     public async Task Join_All_PreflightFailurePreservesExistingProjectAndBothHosts()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -405,6 +423,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("unrelated = true\nunrelated = false\n")]
     [InlineData("unrelated = \"unterminated\n")]
     [InlineData("[agents]\nmax_depth = 9223372036854775808\n")]
+    [Trait("Job", "trap: DYD-392 (a refused init writes nothing): init all over a malformed config.toml exits 2 naming it malformed, keeps both host files' bytes and writes no dydo.json, CLAUDE.md, AGENTS.md, settings.local.json, .codex/hooks.json or .gitignore")]
     public async Task Init_All_MalformedCodexTomlPreservesBothHostsAndAllSideEffects(string toml)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -433,6 +452,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("unrelated = true\nunrelated = false\n")]
     [InlineData("unrelated = \"unterminated\n")]
     [InlineData("[agents]\nmax_depth = 9223372036854775808\n")]
+    [Trait("Job", "trap: DYD-392 (a refused init writes nothing): --join all over a malformed config.toml exits 2 naming it malformed, keeps dydo.json, .gitignore, AGENTS.md and both host files byte for byte and writes no CLAUDE.md, settings.local.json or .codex/hooks.json")]
     public async Task Join_All_MalformedCodexTomlPreservesBothHostsAndAllSideEffects(string toml)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -457,6 +477,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("agents . max_depth = 3\n")]
     [InlineData("\"agents\".max_depth = 3\n")]
+    [Trait("Job", "trap: DYD-392 (a refused init writes nothing): init all over a dotted agents key init cannot edit exits 2 naming .codex/config.toml, keeps both host files' bytes and writes no dydo.json, CLAUDE.md, AGENTS.md, settings.local.json, .codex/hooks.json or .gitignore")]
     public async Task Init_All_RejectsSemanticDottedAgentsBeforeAnySideEffect(string toml)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -483,6 +504,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("agents . max_depth = 3\n")]
     [InlineData("\"agents\".max_depth = 3\n")]
+    [Trait("Job", "trap: DYD-392 (a refused init writes nothing): --join all over a dotted agents key init cannot edit exits 2 naming .codex/config.toml, keeps dydo.json, .gitignore, AGENTS.md and both host files byte for byte and writes no CLAUDE.md, settings.local.json or .codex/hooks.json")]
     public async Task Join_All_RejectsSemanticDottedAgentsBeforeAnySideEffect(string toml)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -504,6 +526,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (init keeps foreign TOML): an unrelated [[agents_history]] array survives init, and a repeat --join changes no byte of config.toml")]
     public async Task Init_Codex_PreservesUnrelatedAgentsHistoryArrayAndRepeatBytes()
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".codex"));
@@ -523,6 +546,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("0x3", "0x10")]
     [InlineData("0o3", "0o20")]
     [InlineData("0b11", "0b10000")]
+    [Trait("Job", "trap: DYD-392 (a file with nothing to change is not written): [agents] integers that already satisfy init, in a TOML integer form, keep config.toml's bytes through init and --join")]
     public async Task Init_Codex_RetainsIntegerAgentCapacityValuesAndRepeatBytes(string depth, string concurrency)
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".codex"));
@@ -536,6 +560,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md host table codex row (.codex/hooks.json: one PreToolUse entry running dydo guard, and no Stop entry); trap: issue 0295 (the matcher names Codex's shell tools)")]
     public async Task Init_Codex_HooksContainPreToolUseDydoGuard()
     {
         var result = await InitProjectAsync("codex");
@@ -565,6 +590,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (leaves hooks it did not write alone): foreign hooks and settings in .codex/hooks.json survive beside dydo guard, with no Stop entry added")]
     public async Task Init_Codex_PreservesExistingHooks()
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".codex"));
@@ -584,6 +610,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (keeps one dydo guard entry, removes other dydo guard entries and Stop entries running dydo guard --stop, leaves hooks it did not write alone): a foreign command that merely contains dydo guard, or shares an entry with it, survives")]
     public async Task Init_Codex_PreservesCustomHooksWhenRemovingDydoHooks()
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".codex"));
@@ -673,6 +700,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (leaves hooks it did not write alone); DR 056 (the guard rides the committed settings.json): settings.local.json keeps its lines and gets no dydo guard, and settings.json keeps the foreign hooks and settings beside the guard")]
     public async Task Init_Claude_PreservesExistingHooks()
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -700,6 +728,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (removes any dydo hook in settings.local.json and leaves hooks it did not write alone); DR 056 (one marked guard in the committed settings.json)")]
     public async Task Join_Claude_MovesDydosGuardOutOfTheLocalSettings_KeepingForeignHooks()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -729,6 +758,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (keeps one dydo guard entry, removes other dydo guard entries and the Stop entry running dydo guard --stop, leaves hooks it did not write alone): one marked guard with the full matcher, and the foreign entry's bytes")]
     public async Task Join_Claude_LeavesExactlyOneDydoGuardInTheCommittedSettings()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -774,6 +804,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("claude", ".claude/settings.json", ClaudeGuard)]
     [InlineData("codex", ".codex/hooks.json", CodexGuard)]
+    [Trait("Job", "trap: DYD-392 (init and --join keep foreign hook bytes): a foreign command that shared an entry with dydo guard keeps its entry's bytes, beside one dydo guard entry")]
     public async Task Join_MixedGuardEntry_KeepsTheForeignHookBytes(string host, string file, string guard)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -788,6 +819,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("claude", ".claude/settings.json", ClaudeGuard)]
     [InlineData("codex", ".codex/hooks.json", CodexGuard)]
+    [Trait("Job", "trap: DYD-392 (init and --join keep foreign hook bytes): duplicate dydo guard entries around foreign ones become one guard entry where the first stood, and the foreign entries keep their bytes")]
     public async Task Join_GuardDuplicatesAroundForeignEntries_KeepTheForeignEntriesBytes(string host, string file, string guard)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -806,6 +838,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("claude", ".claude/settings.json", ClaudeGuard)]
     [InlineData("codex", ".codex/hooks.json", CodexGuard)]
+    [Trait("Job", "trap: DYD-392 (init and --join keep foreign hook bytes): an already-empty foreign entry keeps its bytes and stays before the one guard entry")]
     public async Task Join_AlreadyEmptyForeignEntry_StaysBeforeTheGuard(string host, string file, string guard)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -821,6 +854,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (init and --join keep foreign hook bytes): an already-empty foreign entry in settings.local.json keeps its bytes while dydo's guard leaves that file")]
     public async Task Join_Claude_KeepsAnAlreadyEmptyForeignEntryInTheLocalSettings()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -837,6 +871,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("claude", ".claude/settings.local.json")]
     [InlineData("codex", ".codex/hooks.json")]
+    [Trait("Job", "trap: DYD-392 (a trailing JSON root in a hooks file): --join on a settings.local.json or .codex/hooks.json holding {} {} succeeds and leaves one parsable JSON object")]
     public async Task Join_TrailingRootInAHooksFile_StartsItFresh(string host, string file)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -848,6 +883,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (a trailing JSON root in a hooks file): --join claude over a committed settings.json holding {} {} fails naming it malformed and keeps its bytes")]
     public async Task Join_Claude_TrailingRootInTheCommittedSettings_IsRefusedAndLeftUntouched()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -875,6 +911,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md host table claude row (the committed PreToolUse runs dydo guard --host claude); DR 056: an unmarked dydo guard is replaced by exactly one marked guard")]
     public async Task Init_Claude_ReplacesAnUnmarkedGuardHook()
     {
         Directory.CreateDirectory(Path.Combine(TestDir, ".claude"));
@@ -900,7 +937,7 @@ public class InitCommandTests : IntegrationTestBase
     // dydo-commands-core.md, dydo init's host table: what each integration writes, and a repeat join
     // that changes no byte of any of it.
     [Theory]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init host table (files per host; --join rewrites nothing it already wrote)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init host table (per integration: dydo.json's integrations, AGENTS.md and no CLAUDE.md, the .gitignore lines, Claude's settings files with one marked guard, no bare guard and the allow entries, Codex's hooks.json without --host and dydo.rules, and no file of an unselected host; a repeat --join changes no byte)")]
     [InlineData("none")]
     [InlineData("claude")]
     [InlineData("codex")]
@@ -957,7 +994,7 @@ public class InitCommandTests : IntegrationTestBase
     ];
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init (settings.local.json carries the allow entries); trap: existing local settings are merged, not replaced")]
+    [Trait("Job", "contract: dydo-commands-core.md host table claude row (settings.local.json carries each dydo allow entry once, also when the file already exists); trap: an existing allow list is merged, not replaced (the row that has one)")]
     [InlineData("""{ "permissions": { "allow": [ "Bash(git:*)", "Read(**)" ] } }""", "Bash(git:*)", "Read(**)")]
     [InlineData("""{ "hooks": {} }""")]
     public async Task Init_Claude_MergesTheAllowListIntoExistingLocalSettings(string existing, params string[] kept)
@@ -973,7 +1010,7 @@ public class InitCommandTests : IntegrationTestBase
 
     // Issue 0300 and 0303: joining a second host records both and gitignores what the new host needs.
     [Theory]
-    [Trait("Job", "trap: issue 0300 (a joined second host replaced the first in dydo.json); trap: issue 0303 (the Claude local settings rode a commit)")]
+    [Trait("Job", "trap: issue 0300 (--join did not record the joined integration in dydo.json): both hosts end recorded and wired; trap: issue 0303 (the Claude local settings rode a commit): .gitignore names .claude/settings.local.json")]
     [InlineData("claude", "codex")]
     [InlineData("codex", "claude")]
     [InlineData("none", "all")]
@@ -1012,7 +1049,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init codex row (.codex/rules/dydo.rules allows dydo archive, clean and merge under dydo or dydo.exe)")]
+    [Trait("Job", "contract: dydo-commands-core.md host table codex row (.codex/rules/dydo.rules holds an allow rule for dydo merge under dydo or dydo.exe and one for dydo clean under dydo)")]
     [InlineData("codex")]
     [InlineData("all")]
     public async Task Init_Codex_WritesTheExecPolicyRuleForDydoAndDydoExe(string integration)
@@ -1026,6 +1063,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md host table codex row (dydo rewrites .codex/rules/dydo.rules on every --join): a stale file is restored to dydo's rules, and another --join leaves them")]
     public async Task Join_Codex_RestoresTheDydoCleanRuleIdempotently()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1039,6 +1077,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: DYD-403 (dydo.rules keeps its bytes and line endings): --join leaves a CRLF dydo.rules that holds dydo's rules byte for byte")]
     public async Task Join_Codex_LeavesACrlfRuleWithTheSameContentByteForByte()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1052,6 +1091,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md host table codex row (dydo rewrites .codex/rules/dydo.rules on every --join); DYD-403 (in the file's own line endings): a stale CRLF file is rewritten to dydo's rules with CRLF")]
     public async Task Join_Codex_RewritesAStaleCrlfRuleWithCrlf()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1068,6 +1108,7 @@ public class InitCommandTests : IntegrationTestBase
     #region Entry file
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (with claude, --join removes a CLAUDE.md equal to AGENTS.md): one equal but for line endings and trailing blank lines goes, and AGENTS.md keeps its bytes")]
     public async Task Join_Claude_RemovesClaudeMdIdenticalToAgentsMd()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1082,6 +1123,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (with claude, --join removes a CLAUDE.md equal to the template): it goes even when AGENTS.md differs, and AGENTS.md keeps its text")]
     public async Task Join_Claude_RemovesClaudeMdMatchingTheTemplateEvenWhenAgentsMdDiffers()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1096,6 +1138,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a CLAUDE.md you wrote is kept, with a warning that it hides AGENTS.md and that @AGENTS.md at its top fixes it)")]
     public async Task Join_Claude_KeepsUserWrittenClaudeMdAndWarns()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1123,6 +1166,7 @@ public class InitCommandTests : IntegrationTestBase
 
     [Theory]
     [MemberData(nameof(ReleasedClaudeMds))]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (with claude, --join removes a CLAUDE.md that is dydo's own generated copy); DYD-372 (a copy any released dydo generated, LF or CRLF, counts)")]
     public async Task Join_Claude_RemovesClaudeMdAnOlderReleaseGenerated(string release, string claudeMd)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1135,6 +1179,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a CLAUDE.md you wrote is kept, with a warning that it hides AGENTS.md); DYD-372: an older release's copy with text added counts as written")]
     public async Task Join_Claude_KeepsCustomisedCopyOfAnOlderReleaseAndWarns()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1149,6 +1194,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a CLAUDE.md you wrote is kept, with a warning that it hides AGENTS.md); DYD-372: a released body under a first line of your own counts as written")]
     public async Task Join_Claude_KeepsReleasedBodyUnderANonTitleFirstLine()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1163,6 +1209,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (init claude keeps a CLAUDE.md you wrote, with a warning that it hides AGENTS.md)")]
     public async Task Init_Claude_KeepsUserWrittenClaudeMdAndWarns()
     {
         WriteFile("CLAUDE.md", "# My own rules\n");
@@ -1178,6 +1225,7 @@ public class InitCommandTests : IntegrationTestBase
     [Theory]
     [InlineData("CLAUDE.local.md", "CLAUDE.local.md stops Claude Code reading AGENTS.md")]
     [InlineData(".claude/CLAUDE.md", ".claude/CLAUDE.md stops Claude Code reading AGENTS.md. Put @../AGENTS.md at its top.")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (CLAUDE.local.md and .claude/CLAUDE.md are never removed, and each gets its own warning)")]
     public async Task Join_Claude_WarnsAboutOtherFilesThatHideAgentsMd(string path, string warning)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1196,6 +1244,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("CLAUDE.md", "\uFEFF@AGENTS.md\r\n\r\nAlways run the tests.\r\n")]
     [InlineData("CLAUDE.local.md", "@AGENTS.md\n\nMy local notes.\n")]
     [InlineData(".claude/CLAUDE.md", "@../AGENTS.md\n")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (@AGENTS.md at the top of a CLAUDE.md you wrote is the fix); DYD-403 (no warning on a leading AGENTS.md import): an entry file that opens with its AGENTS.md import is kept byte for byte and gets no hide warning")]
     public async Task Join_Claude_DoesNotWarnAboutAnEntryFileThatImportsAgentsMdFirst(string path, string content)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1214,6 +1263,7 @@ public class InitCommandTests : IntegrationTestBase
     [InlineData("CLAUDE.md", "# Notes for Claude\n\n@AGENTS.md\n", "CLAUDE.md hides AGENTS.md from Claude Code")]
     [InlineData("CLAUDE.local.md", "@../AGENTS.md\n", "CLAUDE.local.md stops Claude Code reading AGENTS.md")]
     [InlineData(".claude/CLAUDE.md", "@AGENTS.md\n", ".claude/CLAUDE.md stops Claude Code reading AGENTS.md")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (a CLAUDE.md you wrote, CLAUDE.local.md and .claude/CLAUDE.md are kept, each with its own warning); DYD-403: a file whose import is not first, or names the wrong path, is kept byte for byte and gets its warning")]
     public async Task Join_Claude_WarnsAboutAnEntryFileWithoutTheLeadingImport(string path, string content, string warning)
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1228,6 +1278,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (only claude or all remove a generated CLAUDE.md): --join codex keeps it byte for byte and says nothing about it")]
     public async Task Join_Codex_LeavesClaudeMdAlone()
     {
         (await InitProjectAsync("none")).AssertSuccess();
@@ -1242,6 +1293,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (--join writes the entry point when it is missing; with claude it removes a generated CLAUDE.md): a CLAUDE.md-only project gets AGENTS.md from the template and loses the generated CLAUDE.md")]
     public async Task Join_Claude_MigratesLegacyClaudeOnlyProject()
     {
         await MakeLegacyClaudeOnlyProjectAsync();
@@ -1255,6 +1307,7 @@ public class InitCommandTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: DYD-392 (a refused init writes nothing): --join all over a malformed config.toml exits 2, keeps a legacy generated CLAUDE.md byte for byte and writes no AGENTS.md")]
     public async Task Join_All_FailedPreflightKeepsLegacyClaudeMdAndCreatesNoAgentsMd()
     {
         await MakeLegacyClaudeOnlyProjectAsync();
