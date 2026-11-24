@@ -8,7 +8,7 @@ public sealed class LinkSafeDeleteTests : IDisposable
 
     public void Dispose() => LinkSafeDelete.DeleteTree(_root);
 
-    [Trait("Job", "trap: DYD-362 (deleting a tree, or a root that is a link, removes the link and keeps its target)")]
+    [Trait("Job", "contract: DYD-362 - the target must survive")]
     [Fact]
     public void DeleteTree_LinkInside_RemovesTheLinkAndKeepsItsTarget()
     {
@@ -20,7 +20,7 @@ public sealed class LinkSafeDeleteTests : IDisposable
         Assert.True(File.Exists(Path.Combine(target, "keep.txt")));
     }
 
-    [Trait("Job", "trap: DYD-362 (unlinking a tree's links before its removal leaves each link's target in place)")]
+    [Trait("Job", "contract: DYD-362 - the target must survive")]
     [Fact]
     public void UnlinkAll_RemovesOnlyLinks()
     {
@@ -49,7 +49,7 @@ public sealed class LinkSafeDeleteTests : IDisposable
         Assert.False(Directory.Exists(LinkSafeDelete.Extended(tree)));
     }
 
-    [Trait("Job", "trap: DYD-362 (deleting a tree, or a root that is a link, removes the link and keeps its target)")]
+    [Trait("Job", "contract: DYD-362 - the target must survive")]
     [Fact]
     public void DeleteTree_RootThatIsALink_RemovesOnlyTheLink()
     {

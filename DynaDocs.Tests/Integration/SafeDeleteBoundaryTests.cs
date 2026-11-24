@@ -6,7 +6,7 @@ using System.Diagnostics;
 [Collection("Integration")]
 public sealed class SafeDeleteBoundaryTests
 {
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - initialized nested repositories without complete independent preservation are refused")]
     [Theory]
     [InlineData("shared clone", "nested.git")]
     [InlineData("independent", "repository without suffix")]
@@ -100,7 +100,7 @@ public sealed class SafeDeleteBoundaryTests
     private static string[] Snapshot(string root) => Directory.GetFiles(root,"*",SearchOption.AllDirectories)
         .Order(StringComparer.Ordinal).Select(path => Path.GetRelativePath(root,path) + ":" + Convert.ToHexString(File.ReadAllBytes(path))).ToArray();
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - unsupported filesystem objects are refused before any delete")]
     [Fact]
     public void NestedGitDirectory_ValidatesFileKindsBeforeGitDiscovery()
     {
@@ -122,7 +122,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(files,Snapshot(fixture.Tree));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - restore recreates the working files and index")]
     [Theory]
     [InlineData("HEAD")]
     [InlineData("objects")]
@@ -144,7 +144,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(before,Snapshot(fixture.Tree));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - case collisions round-trip correctly or cause a pre-delete refusal")]
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -169,7 +169,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal("user content, not administrative metadata\n",File.ReadAllText(file));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - Git administrative metadata is preserved")]
     [Fact]
     public void WorktreeFilemodeOverride_OrdinaryStatusRemainsCleanAfterSourceGcAndRestore()
     {
@@ -194,7 +194,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(commonConfig,File.ReadAllBytes(Path.Combine(fixture.Main,".git","config")));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - restore fails on unsupported metadata without overwriting user work")]
     [Fact]
     public void RestoreWithChangedSharedSettings_RefusesWithoutRewritingCommonConfig()
     {
@@ -211,7 +211,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.True(fixture.Manifest().Complete);
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - case collisions round-trip correctly or cause a pre-delete refusal")]
     [Fact]
     public void BranchNameCasing_PreservesDistinctRefsOrRefusesAliases()
     {
@@ -232,7 +232,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(original,SafeDeleteTests.Git(fixture.Main,"rev-parse","topic"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - a tip named only by a per-worktree ref is recreated under refs/dydo-restored")]
     [Fact]
     public void PerWorktreeRefTip_RemainsRecoverableAfterRegistrationAndSourceGc()
     {
@@ -252,7 +252,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(primary,SafeDeleteTests.Git(fixture.Tree,"rev-parse","HEAD"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "edge: an allocation volume whose free space cannot be read")]
     [Fact]
     public void AllocationVolumeUnavailable_RefusesWithoutArchiveOrDeletion()
     {
@@ -262,7 +262,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.False(Directory.Exists(fixture.ArchiveRoot)); Assert.Contains("volume unavailable",fixture.Output);
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - restore validates the manifest and hashes first")]
     [Theory]
     [InlineData("files",null)]
     [InlineData("tips",null)]
@@ -278,7 +278,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(2,fixture.Run("restore",fixture.Id)); Assert.False(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - archive entries are traversed without following links")]
     [Fact]
     public void LinkedIncompleteEntry_ListRefusesWithoutFollowingTarget()
     {
@@ -290,7 +290,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.True(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - the original same-name remote tip is the sole source for explicit --remote republishing")]
     [Fact]
     public void ExplicitRemoteRestore_UsesOriginalRemoteTipAndRenamesOnlyPrimary()
     {
@@ -309,7 +309,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.False(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - restore fails on unsupported metadata without overwriting user work")]
     [Fact]
     public void CorruptManifestGitConfiguration_RefusesWithoutCreatingRefs()
     {
@@ -319,7 +319,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(2,fixture.Run("restore",fixture.Id)); Assert.False(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - restore fails on existing paths without overwriting user work")]
     [Fact]
     public void RestorePathCollision_PreservesSentinelAndRefAbsence()
     {
@@ -332,7 +332,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal("new owner",File.ReadAllText(sentinel)); Assert.False(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - branches checked out elsewhere are refused")]
     [Fact]
     public void FinalBranchRecheck_RefusesNewlyCheckedOutBranch()
     {
@@ -342,7 +342,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.True(fixture.Has("refs/heads/topic")); Assert.True(Directory.Exists(fixture.Tree));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - a change detected in the source snapshot before destructive steps aborts")]
     [Theory]
     [InlineData("reflog")]
     [InlineData("index")]
@@ -365,7 +365,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(2,fixture.Run("worktree",fixture.Tree));
         Assert.True(fixture.Has("refs/heads/topic")); Assert.True(Directory.Exists(fixture.Tree));
     }
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - in-use worktrees are refused")]
     [Fact]
     public void NativeBusyProbe_KeepsRefsAndFiles()
     {
@@ -385,7 +385,7 @@ public sealed class SafeDeleteBoundaryTests
         finally { child.StandardInput.Close(); child.WaitForExit(); }
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "edge: a ref that moves after the final query")]
     [Theory]
     [InlineData("before-remote-delete")]
     [InlineData("before-local-delete")]
@@ -406,7 +406,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.True(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "edge: a reserve shortfall that appears only after the fetch")]
     [Fact]
     public void PostFetchReserveShortfall_KeepsLocalRemoteAndFiles()
     {
@@ -419,7 +419,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Contains("reserve would be violated",fixture.Output);
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - restore recreates the working files and index")]
     [Fact]
     public void IndexConflictStagesAndIntentToAdd_SurviveSourceGc()
     {
@@ -456,7 +456,7 @@ public sealed class SafeDeleteBoundaryTests
         return oids;
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - restore recreates the working files and index")]
     [Fact]
     public void EveryResolveUndoStage_SurvivesSourceGcAndRecreatesTheConflict()
     {
@@ -474,7 +474,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(undo,SafeDeleteTests.Git(fixture.Tree,"ls-files","--unmerged"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - failed verification means nonzero exit with the original target retained")]
     [Fact]
     public void ResolveUndoBlobMissingFromProofPack_RefusesBeforePublishingOrDeleting()
     {
@@ -497,7 +497,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.DoesNotContain(Directory.GetDirectories(fixture.ArchiveRoot), p => !Path.GetFileName(p).StartsWith('.'));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - restore fails on corrupt data without overwriting user work")]
     [Fact]
     public void ResolveUndoListingDisagreeingWithTheArchivedIndex_RefusesRestore()
     {
@@ -520,7 +520,7 @@ public sealed class SafeDeleteBoundaryTests
         Path.Combine(Path.GetTempPath(),"dydo-missing-" + Guid.NewGuid().ToString("N"),"child")
     };
 
-    [Trait("Job", "edge: DYD-1029, 6b46ce6b (the default space probe returns figures for a missing target, on the root volume and under the temp path, instead of throwing)")]
+    [Trait("Job", "edge: the default space probe on a target that does not exist yet (6b46ce6b)")]
     [Theory]
     [MemberData(nameof(AllocationTargets))]
     public void DefaultAllocationVolume_IdentifiesTheContainingVolumeOfMissingTargets(string target)
@@ -530,7 +530,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.InRange(total,1,long.MaxValue); Assert.InRange(available,0,total);
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "edge: the default space probe on an unknown Windows UNC share")]
     [Fact]
     public void DefaultAllocationVolume_RefusesAnUnknownVolume()
     {
@@ -538,7 +538,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Throws<IOException>(() => new SafeDeleteDependencies().Space(@"\\dydo-unknown-host\share\child"));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "edge: a Windows file with an alternate data stream")]
     [Fact]
     public void WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams()
     {
@@ -553,7 +553,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Contains("Alternate Windows streams",Assert.Throws<InvalidDataException>(() => SafeDeleteWindowsMetadata.Read(file)).Message);
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - invalid configuration refuses")]
     [Theory]
     [InlineData("{\"archive\":{\"reserveBytes\":1.5}}")]
     [InlineData("{\"archive\":{\"reservePercent\":-1}}")]
@@ -566,7 +566,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.False(Directory.Exists(fixture.ArchiveRoot));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (archive before delete, refuse unproven state)")]
+    [Trait("Job", "contract: DYD-1029 - an empty bundle means nonzero exit with the original target retained")]
     [Fact]
     public void CorruptProofPayload_RefusesBeforePublishingOrDeleting()
     {

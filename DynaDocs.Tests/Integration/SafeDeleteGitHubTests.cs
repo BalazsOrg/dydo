@@ -508,7 +508,7 @@ public sealed class SafeDeleteGitHubTests
         Assert.False(Directory.Exists(fixture.ArchiveRoot));
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029, DYD-1142 (own-PR pagination refuses a late head or base, a repeated or missing cursor, a changing count, a duplicate node or the page limit, and accepts a complete listing)")]
+    [Trait("Job", "contract: DYD-1029 - eligibility follows the exact, paginated own-repository head/base associations")]
     [Theory]
     [InlineData("complete",false,false)]
     [InlineData("late base",true,false)]

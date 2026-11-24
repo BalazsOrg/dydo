@@ -56,7 +56,7 @@ public sealed class SafeDeleteGuardTests : IntegrationTestBase
         return JsonSerializer.Serialize(value);
     }
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (dydo init's Codex rules admit every dydo archive form)")]
+    [Trait("Job", "trap: dydo init writing Codex rules without the archive prefix pattern (DYD-1029)")]
     [Fact]
     public async Task InitGeneratedCodexRules_AdmitAllArchiveForms()
     {

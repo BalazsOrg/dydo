@@ -14,20 +14,15 @@ under `FullyQualifiedName~DynaDocs.Tests.Integration.SafeDelete`, the `safe-dele
 
 | Verdict | Cases |
 |---|---|
-| keep | 66 |
-| rewrite | 243 |
-| remove | 17 |
-| keep `unsure` | 2 |
-| **all** | **328** before, **311** after (all executed here; the Windows-only cases return early on Linux) |
+| keep | 26 |
+| rewrite | 286 |
+| remove | 12 |
+| keep `unsure` | 4 |
+| **all** | **328** before, **316** after (all executed here; the Windows-only cases return early on Linux) |
 
-- **Removed (17), all from `safe-delete.feature`; each one duplicates a kept C# case:**
-  - The 6 `Recover history…` rows `[0]`–`[5]`. Each row's step calls `SafeDeleteTests.Journey` with the
-    same name that one of the six `SafeDeleteTests` Facts uses.
-  - The `Recover files governed by repository-local exclude and attributes` scenario. It has the same
-    fixture and assertions as `SafeDeleteInputsTests.CommonInputs_ArchiveAndRestoreOrdinaryGitBehavior[2]`,
-    which also reads status with `--untracked-files=all`.
-  - Both `Archive an unpushed worktree…` rows. They match
-    `SafeDeleteGitHubTests.InitiallyAbsentClosedWorld_ArchivesWithoutPushAndRestoresIndependently[0]` and `[2]`.
+- **Removed (12), all from `safe-delete.feature`; each one duplicates a kept C# case:**
+  - `Recover history…` rows `[0]`, `[2]`, `[3]` and `[4]`. Each row's step calls `SafeDeleteTests.Journey` with the
+    same name that one of the `SafeDeleteTests` Facts uses.
   - Both `Authoritative remote eligibility…` rows. Their When step is the kept Facts' `Journey` call, and
     their Then step asserts only a flag.
   - Refusal `[18]` (shared bare nested repository). It runs the same helper call as
@@ -37,66 +32,66 @@ under `FullyQualifiedName~DynaDocs.Tests.Integration.SafeDelete`, the `safe-dele
     code, which null-checks it and throws it as the message. Planted bugs `gh-msg` and `t3-msg` replace
     that text, and each turns the kept row red.
   - Policy `[20]` (init archive prefix rules). `SafeDeleteGuardTests.InitGeneratedCodexRules_AdmitAllArchiveForms`
-    asserts the same rule text, more strictly, in the file `dydo init` writes.
-- **Rewritten (243): 242 tag corrections with the assertions unchanged, and 1 body rewrite.** Each tag
-  correction replaces a class or feature tag that claimed more than its case shows (§2 row 2; review
-  lessons 4 and 6). They are:
-  - 61 feature rows. The old feature tag ("safe delete archives unique work before removal") is untrue
-    of refusals, restore policies, retention, dry runs and guard verdicts. The new `# Job:` line names
-    one clause per behaviour, and each row shows one clause.
-  - The 6 `SafeDeleteTests` Facts. The old tag claimed a purge that none of them shows. The new tag
-    claims only the restore after source gc: `UnfetchedRemote` asserts no deletion, because its local
-    ref was already absent.
-  - The 9 `SafeDeletePolicyTests` cases (T3 settings, T3 history paths, redaction). The old tag said
-    "unproven PR heads", and none of them involves a PR.
-  - The 10 `UnsafePaths` rows. The old tag said "colon filenames", and these rows are traversal and
-    separator refusals.
-  - `LegacyBranchArchive`, `InitGeneratedCodexRules`, both `DefaultAllocationVolume_Identifies…` rows,
-    and `UnlinkAll`.
-  - The other 23 `SafeDeleteInputsTests` cases. Their class clause "refusal output complete" is not exhaustive,
-    and DYD-1172 never states it. The class tag is now DYD-1133's inputs plus DYD-1029's refusal rule. Its
-    red proof is `archive-exit0`, `restore-exit0` or `restore-noop`, per row.
-  - The two `LinkSafeDeleteTests` link cases. "never its target" is not exhaustive, so the tag now says
-    "keeps its target". Its red proof is `delete-follows`.
-  - All 126 `SafeDeleteGitHubTests` rows. The class tag's one clause, "remote cleanup only on proved
-    closed-world state", needs an exhaustive assertion for "only". DYD-1029 also makes public remotes
-    eligible by the PR route, not by closed-world proof. In 71 rows (14 methods) no line proves the clause. The eligible cases show a proved state
-    passing, not the refusal that "only" claims. The pagination rows show both verdicts. The
-    post-deletion and initially-absent cases show local targets kept, with no remote ref left to clean
-    up. Each method now carries the narrower tag mapped below. Its red proof is `gh-refuse-all`,
-    `gh-accept-all` or `recheck-off`, as each row's Evidence names. The other 55 refusal rows carry the
-    reworded class tag, "an unproved or changed remote eligibility state refuses remote cleanup". Their
-    red proof is `gh-accept-all` or `recheck-off`.
+    asserts the same rule text in the file `dydo init` writes.
+- **Restored at fix hop 1 (5), byte for byte from base.** Each had a mutant whose kill by its named replacement was a race,
+  or was never observed:
+  - `Recover files governed by repository-local exclude and attributes`, for `SafeDeleteGit.cs:55`.
+  - Both `Archive an unpushed worktree…` rows, for `SafeDeleteHistory.cs:152`.
+  - `Recover history…[1]` (unfetched remote), for `SafeDeleteHistory.cs:152`.
+  - `Recover history…[5]` (detached HEAD), for `SafeDeleteFiles.cs:108`.
 
-  Where a class tag was true of only some methods, it moves to those methods unchanged, and they stay
-  `keep`. The body rewrite is `SafeDeleteBoundaryTests.NestedGitDirectory_ValidatesFileKindsBeforeGitDiscovery`.
+  Their steps are restored too. See [lesson 11](#each-removed-cases-mutants-killed-by-its-replacement-lesson-11). Four are
+  `keep`. `[1]` is a rewrite: its local ref is absent from the start, so it never showed the removal the old feature tag
+  claimed.
+- **Rewritten (286): 285 tag corrections with the assertions unchanged, and 1 body rewrite.** Each tag
+  correction replaces a tag that claimed more than its case shows (§2 row 2; review lessons 4, 6 and 10). Every tag this
+  batch touched now has the minimal form: its kind, one behaviour, and its cite, with a contract's rule in the cite's own
+  words. They are:
+  - **62 feature rows.** The old feature tag ("safe delete archives unique work before removal") is untrue of refusals,
+    restore policies, retention, dry runs and guard verdicts. The rows reach different outcomes, so the one `# Job:` line
+    names what they share: each row gets the outcome DYD-1029, or DYD-1133 for the repository-local inputs, sets for its
+    input. The tag map names each row's outcome in the ticket's words.
+  - **The 6 `SafeDeleteTests` Facts.** The old tag claimed a purge that none of them shows.
+  - **45 `SafeDeleteBoundaryTests` cases.** In 43 the class tag ("archive before delete, refuse unproven state") had moved to
+    the method unchanged. Each method shows only a refusal or only a round trip, and `LinkedIncompleteEntry` shows `list`.
+    Each now has its own tag. The other two are `DefaultAllocationVolume_Identifies…`, and the body rewrite below.
+  - **The 24 `SafeDeleteInputsTests` cases.** Each method now has its own tag: an edge for each injected input change,
+    DYD-1029's manifest-validation rule for the unsupported manifest, DYD-1133's for `CommonInputs`, and DYD-1142's for
+    `LegacyBranchArchive`.
+  - **All 126 `SafeDeleteGitHubTests` rows.** The class tag's "only" needed an exhaustive assertion, and public remotes are
+    eligible by the PR route. Each method has a narrower tag. `OwnPullPagination` now names the rule all its rows share.
+  - **The 9 `SafeDeletePolicyTests` cases, and the 10 `UnsafePaths` rows.** The T3 settings tag no longer claims
+    unreadable settings, because every row writes a readable file.
+  - **`InitGeneratedCodexRules`.** It is now a trap, not DYD-1029's "admit" contract. The test reads the rule text, so a
+    `decision` changed from `allow` to `prompt` would stay green.
+  - **The three `LinkSafeDeleteTests` link cases.** Each carries DYD-362's rule, "the target must survive".
+
+  The body rewrite is `SafeDeleteBoundaryTests.NestedGitDirectory_ValidatesFileKindsBeforeGitDiscovery`.
   It called `SafeDeleteFiles.Capture` directly, and two of its assertions could never fail (§2 rows 3
   and 5). It now drives `dydo archive worktree`. It asserts the hard-link refusal, the refused path, no
   nested-repository refusal, no archive, and the branch and tree bytes kept.
 - **Candidates kept after §5 refused them:**
-  - The 18 `Raw destructive Git…` rows. `SafeDeleteGuardTests` runs the same commands through the hook,
-    but the step reads them in the Unknown shell dialect (both readings), and the hook rows read Posix or
-    PowerShell, so a bug keyed to the dialect would turn no kept case red.
-  - `LinkSafeDeleteTests.DeleteTree_MissingRoot_IsANoOp` and `DeleteTree_ReadOnlyFilesAndLongPaths…`, kept
-    `unsure` (below). `missing-throws` turns no other batch case red.
+  - The 18 `Raw destructive Git…` rows. Their step reads each command in the Unknown shell dialect, and the hook rows
+    read Posix or PowerShell, so a bug keyed to the dialect would turn no kept case red.
+  - The two `LinkSafeDeleteTests` cases kept `unsure` (below).
 
 No CI or `dotnet-platforms.json` line names a removed or renamed case. Every class that `safe-delete-windows`
-requires still has cases. The removals leave no step definition unused: the 6 steps that only the removed
-scenarios used are deleted. The helpers they had shared (`SafeDeleteGitHubTests.Journey`, `PrepareInitiallyAbsent`,
-`SafeDeleteInputsTests.Prepare`, `SafeDeleteBoundaryTests.AssertNestedRepositoryRefused`) still have callers
-in their own classes, and are now private.
+requires still has cases. The removals leave no step definition unused. The 2 steps and 1 field that only the
+`Authoritative…` rows used are deleted. The `Refusal` step loses its shared-bare branch, which only refusal `[18]` reached.
+The shared helpers (`SafeDeleteGitHubTests.Journey`, `PrepareInitiallyAbsent`, `SafeDeleteInputsTests.Prepare`,
+`SafeDeleteBoundaryTests.AssertNestedRepositoryRefused`) keep their base access, and the diff does not touch them.
 
-## Tag clauses and the lines that prove them
+## Tags and the lines that prove them
 
-Every tag in the batch, kept cases included, is split into clauses. Each clause is mapped to the assertion
-line that fails if it were false, in [the tag map](./safe-delete-tag-map.md).
+Every tag in the batch, kept cases included, names one behaviour. [The tag map](./safe-delete-tag-map.md) gives each tag
+the assertion line that fails in each case it covers if that behaviour were false.
 
 ## Mutation
 
 Targeted two-phase mutation (`/var/tmp/dyd1520/tools/stryker-targeted.sh`, Stryker 5.1.0). Phase 1 ran on a
 clean `07642b1f` checkout in two chunks:
 
-- **feature**: the six scenario outlines that lose a row or a tag (64 cases). 1,097 killed, 1,405 survived,
+- **feature**: the six scenarios and outlines that lose a row or a tag (64 cases). 1,097 killed, 1,405 survived,
   8 timeout, 2,850 s.
 - **rest**: the six `SafeDeleteTests` Facts and the other C# methods rewritten or retagged (30 cases).
   878 killed, 1,557 survived, 2 timeout, 1,657 s.
@@ -106,19 +101,16 @@ row, and `DefaultAllocationVolume_Identifies…`, which Stryker cannot run.
 
 Phase 2 ran on the candidate `1c19e068` over the batch's 309 kept cases. The random-row
 `DefaultAllocationVolume_Identifies…` was excluded, because Stryker refuses to start with it. The later
-commits change only `Job` traits and the audit files, not test bodies.
+commits change only `Job` traits, the audit files, and the restores, which are byte for byte from base. A restore adds a
+kept case, so it can only add kills.
 
 - **feature**: exit 0. All 1,097 phase-1 kills are still killed (1,233 killed after). Every removed case
   is in this chunk.
 - **rest**: 878 phase-1 kills, 874 still killed, 997 killed after. Four mutants were Timeout after, not
-  Killed: `SafeDeleteFiles.cs:100` (the `ValidateKind` call removed), `:197` (the Linux guard negated),
-  `:203` (`||` to `&&`) and `:204` (the throw removed). Each disables the Linux file-kind refusal. Which kept case hung was
-  not isolated; Stryker reports a Timeout without naming the test. At base the unit form of `NestedGitDirectory…`
-  killed them quickly. A timeout is not a kill (review lesson 7). So each mutant was planted exactly
-  (`DYD1520_PLANT=m100`, `m197`, `m203`, `m204`, on a scratch copy of `8d2bf92f`). The rewritten,
-  kept `NestedGitDirectory…` case fails on each in about 0.1 s, on
-  `Assert.Contains("Special files and hard links", …)`, and passes with none. Its output is
-  "Initialized nested repository" instead. Results: `/var/tmp/dyd1520/sd/mut-timeouts/result.txt`.
+  Killed: `SafeDeleteFiles.cs:100`, `:197`, `:203` and `:204`, each disabling the Linux file-kind refusal. A timeout is
+  not a kill (review lesson 7), so each was planted exactly (`m100`, `m197`, `m203`, `m204`, on a scratch copy of
+  `8d2bf92f`). The kept `NestedGitDirectory…` case fails on each, on `Assert.Contains("Special files and hard links", …)`,
+  and passes with none (`/var/tmp/dyd1520/sd/mut-timeouts/result.txt`).
 
 Every mutant phase 1 killed is still killed by a kept case.
 
@@ -130,32 +122,32 @@ used `--disable-bail` over the feature chunk's 1,097 killed spans:
 - **A:** at base, the six outlines. 1,744 s.
 - **B:** on `271cd889`, only the named replacements. 1,416 s.
 
-For each of the 17 removed cases, every mutant it killed in A was checked against B, and B had to show the
-named replacement itself killing it (`/var/tmp/dyd1520/sd/replacement_check.py`). 12 removed cases lose
-nothing. The rest:
+For each removed case, every mutant it killed in A was checked against B, and B had to show the named replacement
+itself killing it (`/var/tmp/dyd1520/sd/replacement_check.py`). Three mutants failed that check, all from removed cases now
+restored:
+
+| Mutant | Removed case | Named replacement | Evidence | Now |
+|---|---|---|---|---|
+| `SafeDeleteHistory.cs:152` (a `WaitForExit` removed: a race) | journey `[1]` | `UnfetchedRemote` | exact plant `h152`: 0 of 6 | restored |
+| | unpushed `[0]` (public) | `InitiallyAbsent…[0]` | 3 of 6 | restored |
+| | unpushed `[1]` (private) | `InitiallyAbsent…[1]`, the private worktree row | 0 of 6 | restored |
+| `SafeDeleteGit.cs:55` (a `WaitForExit` removed: a race) | exclude/attributes | `CommonInputs…[2]` | not killed in B; exact plant `g55`: 3 of 3 | restored |
+| `SafeDeleteFiles.cs:108` (the nested-`.git` refusal removed) | journey `[5]` | `DetachedHead` | not killed in B; the removed row's own kill did not reproduce (`f108`, 0 of 3) | restored |
+
+Plant runs: `/var/tmp/dyd1520/sd/parity` and `/var/tmp/dyd1520/sd/race`. The six runs per pair are three at base and three
+on the candidate. In every case B shows the named replacement killing each mutant the removed case killed in A, except
+policy `[20]`:
 
 - **Policy `[20]`** (init rules): 14 mutants not killed by `InitGeneratedCodexRules`. All 14 are in
-  `GitRunner`, `GitResult` and `LinkSafeDelete`. The row hits them through its `SafeDeleteTests` fixture
-  (git setup, `Dispose`), not through its rule assertions. `InitializedNestedGitDirectory…[0]`, on the same
-  fixture, kills all 14 in B. Planted bug `codex-rules` covers the assertions.
-- **`SafeDeleteGit.cs:55`** (a `WaitForExit` removed), from the exclude/attributes scenario. Planted exactly
-  (`g55`), it fails the named `CommonInputs…[2]` on 3 of 3 runs.
-- **`SafeDeleteHistory.cs:152`** (a `WaitForExit` removed), from refusal journey `[1]` and both unpushed
-  rows. It is a race. Planted exactly (`h152`, `/var/tmp/dyd1520/sd/parity`, three runs at base), it fails
-  each removed row and its byte-identical replacement only sometimes:
-
-  | Removed | Failed | Replacement | Failed |
-  |---|---|---|---|
-  | journey `[1]` | 1 of 3 | `UnfetchedRemote` | 0 of 6 (base and candidate) |
-  | unpushed public | 2 of 3 | `InitiallyAbsent…[0]` | 3 of 6 |
-  | unpushed private | 0 of 3 | `…[2]` | 0 of 6 |
-
-  The pairs run the same code, so the protection is the same race either way. Kept cases also catch it:
-  `LocalBranch` and `CommonInputs` in B.
-- **`SafeDeleteFiles.cs:108`** (the nested-`.git` refusal removed from the file walk), from journey `[5]`.
-  The detached-HEAD fixture has no nested `.git` directory. Planted exactly (`f108`), it fails neither the
-  removed row nor `DetachedHead` in 3 runs, so A's kill does not reproduce. All six
-  `InitializedNestedGitDirectory…` rows kill it in B.
+  `GitRunner`, `GitResult` and `LinkSafeDelete`. The row hits them only through its `SafeDeleteTests` fixture
+  (constructor, `Dispose`), not through its rule assertions. `InitializedNested…[0]` runs the same fixture and kills
+  all 14 in B. Planted bug `codex-rules` covers the assertions.
+- **The other process-wait mutant.** The remaining removed cases kill one more `WaitForExit` removal in A,
+  `GitRunner.cs:37`. Each named replacement kills it in B. Each runs the same Git calls as its removed case: the same
+  `Journey`, `Refusal` or helper call. Policy `[20]`'s replacement for it, `InitializedNested…[0]`, runs the same fixture
+  constructor and more Git calls.
+- **`SafeDeleteFiles.cs:108`, from refusal `[18]`.** Its replacement, `InitializedNested…[0]`, makes the same helper call
+  on a fixture that holds a nested repository, and kills it in B.
 
 ## Mutation method (coordinator ruling 1)
 
@@ -164,12 +156,12 @@ nothing. The rest:
 > uses. […] If either condition fails, the batch re-runs phase 2 over every test that uses the changed
 > helper, including untouched ones.
 
-**Condition 1.** `git diff 07642b1f 271cd889 -- DynaDocs.Tests` removes rows from six scenario outlines and
-changes one test method body. All of them are in phase 1:
+**Condition 1.** At the fix-hop candidate, `git diff 07642b1f -- DynaDocs.Tests` removes rows from three scenario outlines,
+removes the `Authoritative…` outline, and changes one test method body. All of them are in phase 1:
 
 | Removed or body-changed | Phase 1 chunk |
 |---|---|
-| `Recover files governed by repository-local exclude and attributes`, `Archive an unpushed worktree…`, `Authoritative remote eligibility…`, `Recover history…`, `Refuse without losing the original target`, `Validate archive policy through the command` | feature (the six outlines) |
+| `Authoritative remote eligibility…`, `Recover history…`, `Refuse without losing the original target`, `Validate archive policy through the command` | feature (the six scenarios and outlines) |
 | `SafeDeleteBoundaryTests.NestedGitDirectory_ValidatesFileKindsBeforeGitDiscovery` | rest |
 
 The rest chunk also covered the retagged `SafeDeleteTests` Facts and these methods: `LegacyBranchArchive`,
@@ -182,8 +174,8 @@ The rest chunk also covered the retagged `SafeDeleteTests` Facts and these metho
 |---|---|---|
 | `Integration/SafeDeleteTests.cs` `Refusal` | case labels for the removed rows `[12]`, `[13]`, `[25]`, `[28]` dropped | none: only the `Refuse…` outline calls it (phase 1) |
 | `Integration/SafeDeleteTests.cs` `Policy` | the removed row `[20]`'s case dropped | none: only the `Validate archive policy…` outline (phase 1) |
-| `Steps/SafeDeleteSteps.cs` | 6 steps, 6 fields and 2 constructors only the removed scenarios used are deleted; the `Refusal` step loses its shared-bare branch | `Raw destructive Git requires the archive command` (18 rows). The steps it uses (`Given`, `Guard`, `Verdict`, `Dispose`) are unchanged, but it uses the changed file, so phase 2 was rerun over it |
-| `Features/safe-delete.feature` | the removed rows and scenarios, and the `# Job:` line | the comment only, for the kept rows |
+| `Steps/SafeDeleteSteps.cs` | the 2 steps and 1 field only the `Authoritative…` rows used are deleted; the `Refusal` step loses its shared-bare branch | the `Refuse…` outline's kept rows and the restored scenarios (phase 1). `Raw destructive Git requires the archive command` (18 rows) uses the unchanged `Given`, `Guard`, `Verdict` and `Dispose` steps, but uses the changed file, so phase 2 was rerun over it |
+| `Features/safe-delete.feature` | the removed rows and the `# Job:` line | the comment only, for the kept rows |
 | helper access modifiers (`Journey`, `PrepareInitiallyAbsent`, `Prepare`, `AssertNestedRepositoryRefused`) | narrowed, then restored to base in `0dff36ab` | none: identical to base |
 
 **Rerun for `Raw destructive Git…`.** Phase 1 ran at base with the filter of that outline: 18 cases,
@@ -196,11 +188,13 @@ killed after).
 |---|---|---|
 | `LinkSafeDeleteTests.DeleteTree_MissingRoot_IsANoOp` | deleting an absent tree is a no-op. Planted bug `missing-throws` fails only this case | No spec, DR or ticket states the behaviour, so no tag can be cited. DYD-362 covers links only. It needs a citable source, or a kept case at a boundary that deletes an absent tree |
 | `LinkSafeDeleteTests.DeleteTree_ReadOnlyFilesAndLongPaths_AreDeleted` | a read-only file deep in a path past 260 characters is deleted with its tree. `readonly-skip` fails it, and fails 290 other cases only in their fixture cleanup | No citable source. It needs one, or a kept assertion on the read-only long-path form |
+| `SafeDeleteBoundaryTests.DefaultAllocationVolume_RefusesAnUnknownVolume` | on Windows, the default space probe throws for a target on an unknown UNC share (`:538`) | Windows-only; tag narrowed; red check owed to a Windows run |
+| `SafeDeleteBoundaryTests.WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams` | on Windows, metadata reads accept default streams and refuse an alternate data stream (`:549`–`:553`) | Windows-only; tag narrowed; red check owed to a Windows run |
 
-Ruling 2 (Windows-only cases whose tag is narrowed become keep `unsure`) matches no case. The two
-Windows-only methods, `DefaultAllocationVolume_RefusesAnUnknownVolume` and `WindowsStreamMetadata…`, keep the
-class tag unchanged. The two Windows-listed Facts and `UnsafePaths` run on every platform with the same
-assertions, so their red checks ran here.
+The last two follow coordinator ruling 2. Three more cases are proved on Windows by a line only Windows runs:
+`AdministrativeNameCasing`, `BranchNameCasing` and policy `[18]`. Their red checks here cover the other platforms' line,
+and the Windows line's red check is owed to a Windows run too. `UnsafePaths` and the two Windows-listed Facts run on every platform
+with the same assertions, so their red checks ran here.
 
 ## Cites
 
@@ -219,9 +213,9 @@ it ran 328 of 328 green at base. `/var/tmp/dyd1520/sd/plants-base` holds the TRX
 | t3-msg | the T3 refusal's text replaced | refusal `[24]`, `[26]`, `[27]` (kept) and `[25]`, `[28]` (removed) |
 | codex-rules | `InitCommand.CodexRules` loses the `dydo.exe` prefix and the `list` form | `InitGeneratedCodexRules…` (kept) and policy `[20]` (removed) |
 | missing-throws | deleting a missing tree throws | only `DeleteTree_MissingRoot_IsANoOp`: kept |
-| archive-exit0 | an archive refusal exits 0 | every kept refusal row and policy `[7]`, `[10]`–`[13]`, `[16]` (162 cases in all) |
-| restore-exit0 | a restore refusal exits 0 | policy `[0]`–`[6]`, `[17]` |
-| restore-noop | restore does nothing and exits 0 | the six `SafeDeleteTests` Facts, journeys `[6]`–`[8]`, policy `[18]` (70 cases in all) |
+| archive-exit0 | an archive refusal exits 0 | every kept archive refusal: the refusal rows, policy `[7]`, `[10]`–`[13]`, `[16]`, and the Boundary, Inputs and GitHub archive refusals (162 cases in all) |
+| restore-exit0 | a restore refusal exits 0 | policy `[0]`–`[6]`, `[17]`, and the Boundary and Inputs restore refusals |
+| restore-noop | restore does nothing and exits 0 | the six `SafeDeleteTests` Facts, journeys `[1]`, `[5]`–`[8]`, the restored exclude and unpushed rows (at base), policy `[18]`, and the Boundary round trips |
 | no-purge, list-purges | purge never deletes; `list` purges expired archives | policy `[8]`; policy `[9]` |
 | dryrun-archives | `--dry-run` archives and deletes | policy `[14]`, `[15]` (and `[9]`) |
 | upstream-unreported, upstream-deleted | the upstream report is dropped; remote deletion also deletes the differently named upstream | policy `[19]` |
@@ -231,11 +225,15 @@ it ran 328 of 328 green at base. `/var/tmp/dyd1520/sd/plants-base` holds the TRX
 | t3-strict, t3-invalid-null | settings without a non-empty `worktreesDirectory` are invalid; invalid settings refuse nothing | `AuthoritativeT3Settings…[0]`, `[1]`; `[2]`–`[6]` |
 | t3-history-off, redact-off | no `.t3/worktrees` path recognition; `Redact` returns its input | `T3HistoryPathRecognition…`; `Redaction…` |
 | readonly-skip | tree deletion skips read-only files | `DeleteTree_ReadOnlyFilesAndLongPaths…` (and 290 more, whose fixture cleanup deletes Git's read-only objects) |
+| delete-follows | tree deletion follows a link and deletes its target's files | the two `LinkSafeDeleteTests` link cases, `LinkedIncompleteEntry…` |
 | unlink-real, unlink-target | `UnlinkAll` also deletes real files; it empties a link's target first | `UnlinkAll_RemovesOnlyLinks` (candidate run) |
 | gh-refuse-all, gh-accept-all | the remote eligibility check refuses everything; it accepts everything | the eligible GitHub rows and pagination's complete rows; the refused pagination rows and the initially-absent refusals it reaches |
-| recheck-off | the final remote and source rechecks before the worktree and local deletion are skipped | the post-deletion recheck rows and the initially-absent final-step rows that `gh-accept-all` does not reach |
+| recheck-off | the final remote and source rechecks before the worktree and local deletion are skipped | the post-deletion recheck rows, `FinalSnapshotRecheck…`, and the initially-absent final-step rows that `gh-accept-all` does not reach |
 | volume-missing | the default space probe throws for a missing target | `DefaultAllocationVolume_Identifies…[0]`, `[1]` |
 | hardlink-unchecked | the Linux file-kind check accepts a hard link | `NestedGitDirectory…` at base and, rewritten, on the candidate |
+
+Each case's own red bug is in its `.tsv` Evidence cell, from `/var/tmp/dyd1520/sd/redmap-cand-all.tsv` (the candidate)
+and, for the restored rows, `/var/tmp/dyd1520/sd/redmap-base.tsv`.
 
 ## Deviations
 
@@ -246,7 +244,8 @@ it ran 328 of 328 green at base. `/var/tmp/dyd1520/sd/plants-base` holds the TRX
 - **`DefaultAllocationVolume_Identifies…` was judged by hand**, as the brief directs: its random row names
   defeat Stryker. It is kept and retagged, and its red proof is the planted bug `volume-missing`.
 - **The red proofs for tag-only rewrites are planted bugs, observed at base and again on the candidate.**
-  Each bug breaks the behaviour the new tag names. Where a tag names two behaviours, each has its own bug.
+  Each case's bug breaks the one behaviour its tag names, and fails that case. The restored row `[1]` was observed at base
+  only, because the earlier candidate did not hold it; the candidate keeps base's production code.
 - **The planted-bug builds ran with analyzers off**, because the planted branches exceed the cognitive
   complexity limit. Only the scratch checkout was built this way.
 

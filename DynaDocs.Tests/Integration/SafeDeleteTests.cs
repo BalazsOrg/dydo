@@ -8,7 +8,7 @@ using DynaDocs.Models;
 using DynaDocs.Serialization;
 
 [Collection("Integration")]
-[Trait("Job", "contract: spec N10; DYD-1029 (an archived branch or worktree restores its unique history and files after the source is garbage-collected)")]
+[Trait("Job", "contract: DYD-1029 - a restore command brings a branch or worktree back from the archive")]
 public sealed class SafeDeleteTests : IDisposable
 {
     internal readonly string Root = Path.Combine(Path.GetTempPath(), "dydo-safe-delete-" + Guid.NewGuid().ToString("N"));

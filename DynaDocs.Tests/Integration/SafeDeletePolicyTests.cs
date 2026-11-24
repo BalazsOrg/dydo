@@ -6,7 +6,7 @@ using DynaDocs.Services;
 public sealed class SafeDeletePolicyTests
 {
 
-    [Trait("Job", "contract: spec N10; DYD-1029 (T3 settings without a worktree root, or with an empty one, leave an ordinary tree unrefused; invalid or unreadable settings refuse it)")]
+    [Trait("Job", "contract: DYD-1029 - T3 settings are validated authoritatively before a target is assumed ordinary")]
     [Theory]
     [InlineData("{}",false)]
     [InlineData("{\"worktreesDirectory\":\"\"}",false)]

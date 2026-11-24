@@ -5,7 +5,7 @@ using DynaDocs.Services;
 [Collection("Integration")]
 public sealed class SafeDeletePathsTests
 {
-    [Trait("Job", "trap: DYD-1029, DYD-1134, DYD-1142 (dot, empty, rooted, drive and backslash archive entry paths are refused)")]
+    [Trait("Job", "contract: DYD-1029 - refuse unsafe paths")]
     [Theory]
     [InlineData("../escape")]
     [InlineData("nested/../../escape")]

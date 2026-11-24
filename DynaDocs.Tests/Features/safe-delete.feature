@@ -1,17 +1,28 @@
-# Job: contract: spec N10; DYD-1029 (through dydo archive and the guard; each case shows one clause: an archived branch
-# or worktree restores its unique state after deletion; a refusal exits 2 and keeps the target; a failure after the
-# remote deletion exits 2 and keeps the complete archive and the local targets; restore refuses a damaged or colliding
-# archive and keeps it; a dry run prints its estimates and neither archives nor deletes; an expired archive is purged
-# by a later archive, not by list, dry-run or restore; a differently named upstream is reported and kept; links round-trip (Windows: refused);
-# the guard refuses raw destructive Git and admits dydo archive)
+# Job: contract: DYD-1029, DYD-1133 - each scenario row gets the outcome these tickets set for its input
 @SafeDelete
 Feature: Safe delete archives unique work before removal
+  Scenario: Recover files governed by repository-local exclude and attributes
+    Given an owned safe-delete repository
+    When I archive a worktree governed by repository-local exclude and attributes
+    Then the archive restores ordinary ignored and attribute behavior after source garbage collection
+
+  Scenario Outline: Archive an unpushed worktree with proved remote absence
+    Given an owned safe-delete repository
+    When I archive the unpushed worktree in a "<visibility>" closed-world repository
+    Then the absent remote ref required no push and the archived worktree restores independently
+    Examples:
+      | visibility |
+      | public |
+      | private |
+
   Scenario Outline: Recover history and every worktree version independently
     Given an owned safe-delete repository
     When I archive and restore the "<journey>" journey
     Then the safe-delete journey preserves all accepted state
     Examples:
       | journey |
+      | unfetched remote |
+      | detached HEAD |
       | local-only restore |
       | explicit remote restore |
       | proof-enabled settled T3 eligibility |

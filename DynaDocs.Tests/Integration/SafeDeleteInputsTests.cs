@@ -5,7 +5,7 @@ using DynaDocs.Services;
 [Collection("Integration")]
 public sealed class SafeDeleteInputsTests
 {
-    [Trait("Job", "trap: DYD-1133, DYD-1029 (repository exclude and attribute inputs survive an archive and restore; a changed or corrupt input refuses with the target kept)")]
+    [Trait("Job", "edge: a proof input that changes during the archive")]
     [Theory]
     [InlineData("exclude", "before-copy", true)]
     [InlineData("attributes", "before-proof", true)]
@@ -33,7 +33,7 @@ public sealed class SafeDeleteInputsTests
     // file.txt is staged as LF under `text eol=lf`; removing the rule leaves CRLF bytes whose
     // stat-clean index entry Git trusts in the source but re-hashes in the proof's fresh files.
     // The bytes and index round-trip, yet Git's view of the worktree cannot be reproduced: refuse.
-    [Trait("Job", "trap: DYD-1133, DYD-1029 (repository exclude and attribute inputs survive an archive and restore; a changed or corrupt input refuses with the target kept)")]
+    [Trait("Job", "edge: a stat-clean index entry the proof cannot reproduce")]
     [Fact]
     public void StatCleanEntryStaleUnderRemovedAttributes_RefusesAtProofAndRetainsTarget()
     {
@@ -62,7 +62,7 @@ public sealed class SafeDeleteInputsTests
         Assert.Equal("base\r\n",File.ReadAllText(Path.Combine(fixture.Tree,"file.txt")));
     }
 
-    [Trait("Job", "trap: DYD-1133, DYD-1029 (repository exclude and attribute inputs survive an archive and restore; a changed or corrupt input refuses with the target kept)")]
+    [Trait("Job", "edge: an archived proof input corrupted during the archive")]
     [Theory]
     [InlineData("exclude", "before-proof")]
     [InlineData("attributes", "before-proof")]
@@ -85,7 +85,7 @@ public sealed class SafeDeleteInputsTests
         Assert.Equal(inputs,ReadInputs(fixture));
     }
 
-    [Trait("Job", "trap: DYD-1133, DYD-1029 (repository exclude and attribute inputs survive an archive and restore; a changed or corrupt input refuses with the target kept)")]
+    [Trait("Job", "edge: proof inputs that change between the archive and its restore")]
     [Theory]
     [InlineData("exclude", false)]
     [InlineData("attributes", false)]
@@ -110,7 +110,7 @@ public sealed class SafeDeleteInputsTests
         Assert.True(Directory.Exists(fixture.Entry));
     }
 
-    [Trait("Job", "trap: DYD-1133, DYD-1029 (repository exclude and attribute inputs survive an archive and restore; a changed or corrupt input refuses with the target kept)")]
+    [Trait("Job", "contract: DYD-1029 - restore validates the manifest and hashes first")]
     [Theory]
     [InlineData("missing")]
     [InlineData("unknown path")]
@@ -155,7 +155,7 @@ public sealed class SafeDeleteInputsTests
         }
     }
 
-    [Trait("Job", "contract: DYD-1133, DYD-1142 (a version-1 branch archive, which holds no repository inputs, still restores)")]
+    [Trait("Job", "contract: DYD-1142 - v1 branch archives stay readable")]
     [Fact]
     public void LegacyBranchArchive_RemainsReadable()
     {
@@ -166,7 +166,7 @@ public sealed class SafeDeleteInputsTests
         Assert.True(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "trap: DYD-1133, DYD-1029 (repository exclude and attribute inputs survive an archive and restore; a changed or corrupt input refuses with the target kept)")]
+    [Trait("Job", "contract: DYD-1133 - preserve ordinary Git behavior during restore")]
     [Theory]
     [InlineData(true, false)]
     [InlineData(false, true)]
