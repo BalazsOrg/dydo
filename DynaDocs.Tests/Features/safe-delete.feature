@@ -1,11 +1,12 @@
-# Job: contract: DYD-1029, DYD-1133 - each scenario row gets the outcome these tickets set for its input
 @SafeDelete
 Feature: Safe delete archives unique work before removal
+  # Job: contract: DYD-1133 - preserve ordinary Git behavior during restore
   Scenario: Recover files governed by repository-local exclude and attributes
     Given an owned safe-delete repository
     When I archive a worktree governed by repository-local exclude and attributes
     Then the archive restores ordinary ignored and attribute behavior after source garbage collection
 
+  # Job: contract: DYD-1029 - a restore command brings a branch or worktree back from the archive
   Scenario Outline: Archive an unpushed worktree with proved remote absence
     Given an owned safe-delete repository
     When I archive the unpushed worktree in a "<visibility>" closed-world repository
@@ -15,6 +16,7 @@ Feature: Safe delete archives unique work before removal
       | public |
       | private |
 
+  # Job: contract: DYD-1029 - a restore command brings a branch or worktree back from the archive
   Scenario Outline: Recover history and every worktree version independently
     Given an owned safe-delete repository
     When I archive and restore the "<journey>" journey
@@ -27,6 +29,7 @@ Feature: Safe delete archives unique work before removal
       | explicit remote restore |
       | proof-enabled settled T3 eligibility |
 
+  # Job: trap: a refused safe delete that exits 0 (DYD-1029)
   Scenario Outline: Refuse without losing the original target
     Given an owned safe-delete repository
     When I exercise the "<refusal>" safe-delete refusal
@@ -85,6 +88,7 @@ Feature: Safe delete archives unique work before removal
       | link round trip or refusal |
       | differently named upstream kept |
 
+  # Job: contract: DYD-1029 - implement and prove the explicit raw-command refusal table
   Scenario Outline: Raw destructive Git requires the archive command
     Given an owned safe-delete repository
     When the safe-delete guard examines "<command>"

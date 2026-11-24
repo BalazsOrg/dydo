@@ -23,7 +23,7 @@ public sealed class SafeDeletePathsTests
         Assert.Throws<InvalidDataException>(() => SafeDeletePaths.Child(root, relative));
     }
 
-    [Trait("Job", "trap: DYD-1134 (native Linux colon filenames)")]
+    [Trait("Job", "contract: DYD-1134 - allow valid native Linux names while rejecting Windows drive/ADS syntax where unsafe")]
     [Theory]
     [InlineData("logs/run-2026-11-16T21:25:15.log")]
     [InlineData("logs:today/run.log")]

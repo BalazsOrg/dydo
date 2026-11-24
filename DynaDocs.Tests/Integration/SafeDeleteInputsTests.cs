@@ -110,7 +110,7 @@ public sealed class SafeDeleteInputsTests
         Assert.True(Directory.Exists(fixture.Entry));
     }
 
-    [Trait("Job", "contract: DYD-1029 - restore validates the manifest and hashes first")]
+    [Trait("Job", "contract: DYD-1029 - restore refuses an invalid manifest before it reconstructs into a new path/ref")]
     [Theory]
     [InlineData("missing")]
     [InlineData("unknown path")]

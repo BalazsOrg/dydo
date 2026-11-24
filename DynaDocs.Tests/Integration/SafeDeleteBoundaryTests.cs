@@ -122,7 +122,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(files,Snapshot(fixture.Tree));
     }
 
-    [Trait("Job", "contract: DYD-1029 - restore recreates the working files and index")]
+    [Trait("Job", "contract: DYD-1029 - restore recreates the working files")]
     [Theory]
     [InlineData("HEAD")]
     [InlineData("objects")]
@@ -144,7 +144,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(before,Snapshot(fixture.Tree));
     }
 
-    [Trait("Job", "contract: DYD-1029 - case collisions round-trip correctly")]
+    [Trait("Job", "contract: DYD-1029 - case collisions must either round-trip correctly or cause a pre-delete refusal")]
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -211,7 +211,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.True(fixture.Manifest().Complete);
     }
 
-    [Trait("Job", "contract: DYD-1029 - case collisions round-trip correctly")]
+    [Trait("Job", "contract: DYD-1029 - case collisions must either round-trip correctly or cause a pre-delete refusal")]
     [Fact]
     public void BranchNameCasing_PreservesDistinctRefsOrRefusesAliases()
     {
@@ -262,7 +262,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.False(Directory.Exists(fixture.ArchiveRoot)); Assert.Contains("volume unavailable",fixture.Output);
     }
 
-    [Trait("Job", "contract: DYD-1029 - restore validates the manifest and hashes first")]
+    [Trait("Job", "contract: DYD-1029 - restore refuses an invalid manifest before it reconstructs into a new path/ref")]
     [Theory]
     [InlineData("files",null)]
     [InlineData("tips",null)]
@@ -278,7 +278,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(2,fixture.Run("restore",fixture.Id)); Assert.False(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "contract: DYD-1029 - archive entries are traversed without following links")]
+    [Trait("Job", "contract: DYD-1029 - refuse unsafe paths")]
     [Fact]
     public void LinkedIncompleteEntry_ListRefusesWithoutFollowingTarget()
     {
@@ -309,7 +309,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.False(fixture.Has("refs/heads/topic"));
     }
 
-    [Trait("Job", "contract: DYD-1029 - restore fails on unsupported metadata without overwriting user work")]
+    [Trait("Job", "contract: DYD-1029 - restore refuses an invalid manifest before it reconstructs into a new path/ref")]
     [Fact]
     public void CorruptManifestGitConfiguration_RefusesWithoutCreatingRefs()
     {
@@ -419,7 +419,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Contains("reserve would be violated",fixture.Output);
     }
 
-    [Trait("Job", "contract: DYD-1029 - restore recreates the working files and index")]
+    [Trait("Job", "contract: DYD-1029 - restore recreates the index")]
     [Fact]
     public void IndexConflictStagesAndIntentToAdd_SurviveSourceGc()
     {
@@ -456,7 +456,7 @@ public sealed class SafeDeleteBoundaryTests
         return oids;
     }
 
-    [Trait("Job", "contract: DYD-1029 - restore recreates the working files and index")]
+    [Trait("Job", "contract: DYD-1029 - restore recreates the index")]
     [Fact]
     public void EveryResolveUndoStage_SurvivesSourceGcAndRecreatesTheConflict()
     {
@@ -497,7 +497,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.DoesNotContain(Directory.GetDirectories(fixture.ArchiveRoot), p => !Path.GetFileName(p).StartsWith('.'));
     }
 
-    [Trait("Job", "contract: DYD-1029 - restore fails on corrupt data without overwriting user work")]
+    [Trait("Job", "contract: DYD-1029 - restore fails on corrupt data")]
     [Fact]
     public void ResolveUndoListingDisagreeingWithTheArchivedIndex_RefusesRestore()
     {

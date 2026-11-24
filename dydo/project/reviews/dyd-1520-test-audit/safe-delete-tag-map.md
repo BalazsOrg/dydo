@@ -6,55 +6,45 @@ type: reference
 # DYD-1520 Safe-Delete Tag Map
 
 One line per job tag in the [safe-delete audit](./safe-delete.md): the tag's one behaviour, and the assertion line that
-proves it in every case the tag covers (review lesson 10).
+fails in every case the tag covers if that behaviour were false (review lesson 10).
 
-Every tag this batch touched has the minimal form: its kind, one behaviour, and its cite. A contract states its rule in
-the cite's own words. An edge names the input or condition its case reaches, here races and probe failures injected at
-a checkpoint, which driving can't reach. A tag claims nothing beyond its one behaviour, and the assertions show what else
-each case checks. Each rewritten case's red check, in its `.tsv` Evidence cell, breaks that one behaviour: a refusal's
-exit, a restore, a recheck, or the rule the tag quotes. Paths are under `DynaDocs.Tests/`, and line numbers are at the
-candidate.
+Every tag has one behaviour and its cite. A contract quotes or closely paraphrases its cite's rule. A trap names its
+pitfall and the ticket that records it. An edge names the input its case reaches. The assertions check more than the tag
+claims; the tag claims only its one behaviour. Each rewritten case's red check, in its `.tsv` Evidence cell, breaks that
+behaviour and fails on the line given here. Paths are under `DynaDocs.Tests/`, and line numbers are at the candidate.
 
 ## Feature file
 
-`Features/safe-delete.feature` has one `# Job:` line: `contract: DYD-1029, DYD-1133 - each scenario row gets the outcome
-these tickets set for its input`. Its rows reach different outcomes, so the one behaviour they share is that each row's
-outcome is the one its ticket sets. The table names each row's outcome in the ticket's words, and the line that asserts it.
-Lines are in `Integration/SafeDeleteTests.cs` unless named.
+`Features/safe-delete.feature` has no file-level header, because no rule holds for every scenario. A `# Job:` line sits
+above each scenario whose rows all assert one rule (the captain's ruling, recorded in the audit). Lines are in
+`Integration/SafeDeleteTests.cs` unless named.
 
-| Rows | Outcome the ticket sets | Proving line |
+| Scenario (rows) | Job line | Proving line |
 |---|---|---|
-| exclude and attributes | DYD-1133: "preserve ordinary Git behavior during restore" | `Steps/SafeDeleteSteps.cs:44` |
-| unpushed worktree `[0]`, `[1]` | DYD-1029: a proved closed-world absence passes; restore is local by default | `Steps/SafeDeleteSteps.cs:73` |
-| recover history `[1]`, `[5]`–`[8]` | "A restore command brings a branch or worktree back from the archive" | `:133`; `[8]`: `:87` |
-| refuse `[0]`–`[11]`, `[14]`–`[17]`, `[19]`–`[24]`, `[26]`, `[27]` | "nonzero exit with the original target retained" | `:309`; current worktree `:221` |
-| policy `[0]`–`[6]`, `[17]` | restore failures "fail without overwriting user work" | `:395`; `[5]`: `:386` |
-| policy `[7]` | "If a later step fails, retain the archive … and return nonzero" | `:361` |
-| policy `[8]` | "retain for 30 calendar days" | `:446` |
-| policy `[9]` | "list, restore, help and dry-run never purge" | `:450` |
-| policy `[10]`–`[13]` | the reserve rule refuses | `:414` |
-| policy `[14]`, `[15]` | "A dry run lists intent but neither fetches, creates an archive, deletes nor purges" | `:432` |
-| policy `[16]` | "Do not follow symlinks/junctions in archive ancestors" | `:368` |
-| policy `[18]` | symlink targets "round-trip correctly" | `:354`; Windows refusal line `:348` asserted but unclaimed; its red check is owed to a Windows run |
-| policy `[19]` | "a differently named upstream is reported as kept" | `:342` |
-| raw destructive Git `[0]`–`[17]` | the raw-command table's verdict | `Steps/SafeDeleteSteps.cs:105` |
+| Recover files governed by repository-local exclude and attributes | contract: DYD-1133 - preserve ordinary Git behavior during restore | `Steps/SafeDeleteSteps.cs:44` (ignored status after restore) |
+| Archive an unpushed worktree with proved remote absence `[0]`, `[1]` | contract: DYD-1029 - a restore command brings a branch or worktree back from the archive | `Steps/SafeDeleteSteps.cs:74` |
+| Recover history and every worktree version independently `[1]`, `[5]`–`[8]` | contract: DYD-1029 - a restore command brings a branch or worktree back from the archive | `:149` for `[1]`, `[6]`, `[7]`; `:142` for `[5]`; `:90` for `[8]` |
+| Refuse without losing the original target (24 rows) | trap: a refused safe delete that exits 0 (DYD-1029) | `:309`; current worktree `:221` |
+| Validate archive policy through the command (20 rows) | none | keep `unsure`: its rows pin different DYD-1029 rules. Each row's protection is in the audit's unsure table |
+| Raw destructive Git requires the archive command (18 rows) | contract: DYD-1029 - implement and prove the explicit raw-command refusal table | `Steps/SafeDeleteSteps.cs:105` |
 
 ## C# tags
 
 | Tag (where) | Proving line |
 |---|---|
-| `SafeDeleteTests`: contract: DYD-1029 - a restore command brings a branch or worktree back from the archive | `Integration/SafeDeleteTests.cs:133`; stash `:185` |
+| `SafeDeleteTests` (6 Facts): contract: DYD-1029 - a restore command brings a branch or worktree back from the archive | `Integration/SafeDeleteTests.cs:149` (local branch, unfetched remote, divergent); `:142` (partially staged, detached HEAD); `:188` (stash) |
 | `InitializedNestedGitDirectory…`: contract: DYD-1029 - initialized nested repositories without complete independent preservation are refused | `Integration/SafeDeleteBoundaryTests.cs:45` |
 | `NestedGitDirectory_ValidatesFileKinds…` (Linux): contract: DYD-1029 - unsupported filesystem objects are refused before any delete | `:116` |
-| `RepositoryFragments…`, `IndexConflictStages…`, `EveryResolveUndoStage…`: contract: DYD-1029 - restore recreates the working files and index | `:144`; `:437`; `:471` |
-| `AdministrativeNameCasing…`, `BranchNameCasing…`: contract: DYD-1029 - case collisions round-trip correctly | `:169`, `:225`; Windows refusal lines `:161`, `:229` asserted but unclaimed; their red check is owed to a Windows run |
+| `RepositoryFragments…`: contract: DYD-1029 - restore recreates the working files | `:144` |
+| `IndexConflictStages…`, `EveryResolveUndoStage…`: contract: DYD-1029 - restore recreates the index | `:437`; `:471` |
+| `AdministrativeNameCasing…`, `BranchNameCasing…`: contract: DYD-1029 - case collisions must either round-trip correctly or cause a pre-delete refusal | Windows refusal `:161`, `:229`; round trip elsewhere `:169`, `:225`. The red check ran on the round trip; the Windows one is owed to a Windows run |
 | `WorktreeFilemodeOverride…` (not Windows): contract: DYD-1029 - Git administrative metadata is preserved | `:192` |
-| `RestoreWithChangedSharedSettings…`, `CorruptManifestGitConfiguration…`: contract: DYD-1029 - restore fails on unsupported metadata without overwriting user work | `:208`; `:319` |
+| `RestoreWithChangedSharedSettings…`: contract: DYD-1029 - restore fails on unsupported metadata without overwriting user work | `:208`; the user's config bytes `:210` |
+| `MalformedManifestFields…`, `CorruptManifestGitConfiguration…`, `UnsupportedInputManifest…`: contract: DYD-1029 - restore refuses an invalid manifest before it reconstructs into a new path/ref | `:278`; `:319`; `Integration/SafeDeleteInputsTests.cs:132`–`:133` |
 | `PerWorktreeRefTip…`: contract: DYD-1029 - a tip named only by a per-worktree ref is recreated under refs/dydo-restored | `:251` |
 | `AllocationVolumeUnavailable…`: edge: an allocation volume whose free space cannot be read | `:261` |
-| `MalformedManifestFields…`, `UnsupportedInputManifest…`: contract: DYD-1029 - restore validates the manifest and hashes first | `:278`; `Integration/SafeDeleteInputsTests.cs:132` |
-| `ResolveUndoListingDisagreeing…`: contract: DYD-1029 - restore fails on corrupt data without overwriting user work | `:511` |
-| `LinkedIncompleteEntry…`: contract: DYD-1029 - archive entries are traversed without following links | `:289` (the sentinel) |
+| `ResolveUndoListingDisagreeing…`: contract: DYD-1029 - restore fails on corrupt data | `:511` |
+| `LinkedIncompleteEntry…`: contract: DYD-1029 - refuse unsafe paths | `:289`, the `list` exit |
 | `ExplicitRemoteRestore…`: contract: DYD-1029 - the original same-name remote tip is the sole source for explicit --remote republishing | `:308` |
 | `RestorePathCollision…`: contract: DYD-1029 - restore fails on existing paths without overwriting user work | `:332` |
 | `FinalBranchRecheck…`: contract: DYD-1029 - branches checked out elsewhere are refused | `:341` |
@@ -62,7 +52,7 @@ Lines are in `Integration/SafeDeleteTests.cs` unless named.
 | `NativeBusyProbe…`: contract: DYD-1029 - in-use worktrees are refused | `:381` |
 | `CompareAndSwap…`: edge: a ref that moves after the final query | `:402` |
 | `PostFetchReserveShortfall…`: edge: a reserve shortfall that appears only after the fetch | `:416` |
-| `ResolveUndoBlobMissing…`: contract: DYD-1029 - failed verification means nonzero exit with the original target retained | `:494` |
+| `ResolveUndoBlobMissing…`: contract: DYD-1029 - failed verification means nonzero exit with the original target retained | `:494`; `:495` |
 | `DefaultAllocationVolume_Identifies…`: edge: the default space probe on a target that does not exist yet (6b46ce6b) | `:530` |
 | `DefaultAllocationVolume_RefusesAnUnknownVolume` (Windows only): edge: the default space probe on an unknown Windows UNC share | `:538` |
 | `WindowsStreamMetadata…` (Windows only): edge: a Windows file with an alternate data stream | `:553` |
@@ -77,10 +67,11 @@ Lines are in `Integration/SafeDeleteTests.cs` unless named.
 | `OwnPullPagination…`: contract: DYD-1029 - eligibility follows the exact, paginated own-repository head/base associations | `Integration/SafeDeleteGitHubTests.cs:546` |
 | `InitGeneratedCodexRules…`: trap: dydo init writing Codex rules without the archive prefix pattern (DYD-1029) | `Integration/SafeDeleteGuardTests.cs:65` |
 | `UnsafePaths…`: contract: DYD-1029 - refuse unsafe paths | `Integration/SafeDeletePathsTests.cs:23` |
+| `ColonPaths…`: contract: DYD-1134 - allow valid native Linux names while rejecting Windows drive/ADS syntax where unsafe | Linux `:41`; Windows `:39`. The red check ran on Linux; the Windows one is owed to a Windows run |
 | `AuthoritativeT3Settings…`: contract: DYD-1029 - T3 settings are validated authoritatively before a target is assumed ordinary | `Integration/SafeDeletePolicyTests.cs:23` |
-| `DeleteTree_LinkInside…`, `DeleteTree_RootThatIsALink…`, `UnlinkAll…`: contract: DYD-362 - the target must survive | `Services/LinkSafeDeleteTests.cs:20`, `:65`, `:33` |
+| `DeleteTree_LinkInside…`, `DeleteTree_RootThatIsALink…`, `UnlinkAll…`: contract: DYD-362 - the target must survive | `Services/LinkSafeDeleteTests.cs:20`, `:65`, `:34` |
 
-The tags this hop did not touch keep their earlier form, mapped the same way:
+These tags keep the form an earlier hop gave them, mapped the same way:
 
 | Tag (where) | Proving line |
 |---|---|
@@ -92,20 +83,36 @@ The tags this hop did not touch keep their earlier form, mapped the same way:
 | `AfterOwnDeletion_RecheckFailure…`, `EveryRemainingDestructiveStep…`, `AfterOwnDeletion_ApiRefSurvives…`: after the remote step, a failed recheck keeps the remaining local targets | `:195`; `:218`; `:260` |
 | the five `InitiallyAbsent…` refusal methods: with the remote ref initially absent, an unproved or changed closed-world state keeps every local target | `:371`; `:389`; `:420`; `:465`; `:506` |
 | `RawDeletionTable…`: safe-delete through the guard | `Integration/SafeDeleteGuardTests.cs:31` |
-| `ColonPaths…`, `LinuxIgnoredTimestamp…`: native Linux colon filenames | `Integration/SafeDeletePathsTests.cs:41`; `:65` |
+| `LinuxIgnoredTimestamp…` (Linux): trap: DYD-1134 (native Linux colon filenames) | `Integration/SafeDeletePathsTests.cs:57`; `:65` |
 | `T3HistoryPathRecognition…`: a tree under a .t3/worktrees path is refused as T3-owned with no settings file | `Integration/SafeDeletePolicyTests.cs:33` |
 | `Redaction…`: Redact drops a remote URL's userinfo and query | `:41` |
 
-**Windows lines.** `AdministrativeNameCasing`, `BranchNameCasing` and policy `[18]` also assert a refusal on a line only
-Windows runs. Their tags and outcomes claim only the round trip that the Linux red check breaks. Each Windows refusal line
-is asserted but unclaimed, and its red check is owed to a Windows run.
-
 ## Cites
 
-Each contract's rule is quoted or closely paraphrased from its cite. DYD-1029's description states every DYD-1029 rule
-above, and its 2026-11-17 ruling states the pagination rule. DYD-1133 says "preserve ordinary Git behavior during restore"
-and "never delete on a failed reconstruction". DYD-1142 says "v1 branch archives stay readable". DYD-362 says "the target
-must survive". Commit `6b46ce6b` ("match root volumes") made the space probe handle a target that does not exist yet.
+Each contract's rule is quoted or closely paraphrased from its cite:
+
+- **DYD-1029's description** states every DYD-1029 rule above, and its 2026-11-17 ruling states the pagination rule. Four
+  rules are narrowed from longer sentences:
+  - "restore recreates the working files" and "restore recreates the index" come from "recreates the working files and
+    index".
+  - "restore refuses an invalid manifest before it reconstructs into a new path/ref" comes from "Restore validates the
+    manifest and hashes first, then reconstructs into a new path/ref". Several rows change only a field or the version,
+    so the tag does not claim the hash check.
+  - "restore fails on corrupt data" comes from "corrupt data … fail without overwriting user work". That case has no user
+    work at the target.
+  - "case collisions must either round-trip correctly or cause a pre-delete refusal" is its Windows and Linux rule.
+- **DYD-1029's three other phrases:**
+  - Its trap cites the "nonzero exit" it requires of failures.
+  - The raw-command line quotes "Implement and prove the explicit raw-command refusal table below".
+  - `LinkedIncompleteEntry` quotes "Do not follow symlinks/junctions in archive ancestors or entries; refuse unsafe paths".
+    Its case pins the refusal: `list` exits 2 on the linked entry.
+- **The other tickets and the commit:**
+  - DYD-1133 says "preserve ordinary Git behavior during restore".
+  - DYD-1134 says "allow valid native Linux names while retaining path traversal protection and rejecting Windows
+    drive/ADS syntax where unsafe".
+  - DYD-1142's record says "v1 branch archives stay readable".
+  - DYD-362 says "the target must survive".
+  - Commit `6b46ce6b` ("match root volumes") made the space probe handle a target that does not exist yet.
 
 DYD-1029 asks for Codex rules that "admit the actual archive forms". `InitGeneratedCodexRules` reads the rule text, and
 does not check whether a rule admits a form, so its tag is a trap, not that contract. No cite states the no-op or read-only
