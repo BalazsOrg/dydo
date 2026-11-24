@@ -45,7 +45,7 @@ public class InstallNudgeTests : GuardHookTestBase
     public static TheoryData<string> OtherCommands => [.. NoInstalls];
 
     [Theory]
-    [Trait("Job", "contract: DYD-499 installing a library or tool needs the user's permission (an install or add meets the nudge once, and the identical retry passes)")]
+    [Trait("Job", "contract: DYD-499 (the library-install warn nudge): each row is a command DYD-499 names or its policy covers, an add, an install of a named package, a fetch-and-run of a package, an update, a link or a uv remove (traced row by row in setup-tags.md), and the guard denies it on the first try and allows the identical retry")]
     [MemberData(nameof(InstallCommands))]
     public async Task Install_MeetsTheNudgeOnce_AndTheSameRetryPasses(string command)
     {
@@ -56,7 +56,7 @@ public class InstallNudgeTests : GuardHookTestBase
     }
 
     [Theory]
-    [Trait("Job", "contract: DYD-499 (a command that restores locked dependencies or installs nothing never meets the library-install nudge)")]
+    [Trait("Job", "contract: DYD-499 (commands that are not installs): each row restores declared or locked dependencies, runs a script, test or build, lists packages, or only mentions an install in text, and the guard allows it on the first try")]
     [MemberData(nameof(OtherCommands))]
     public async Task RestoreOrOtherCommand_NeverMeetsTheNudge(string command)
     {

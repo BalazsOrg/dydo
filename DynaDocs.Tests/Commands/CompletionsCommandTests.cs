@@ -9,7 +9,7 @@ namespace DynaDocs.Tests.Commands;
 public sealed class CompletionsCommandTests
 {
     [Theory]
-    [Trait("Job", "contract: dydo-commands-utilities.md dydo completions (a known shell's script registers completion for dydo and calls dydo _complete); DR 015 (completions keep code)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo completions (a script for bash, zsh or powershell); DR 015 (completions keep code): for each of the three shells, dydo completions exits 0 and prints a script holding that shell's registration command, bound to dydo in the bash and zsh rows, and the word _complete")]
     [InlineData("bash", "complete -F _dydo_completions dydo")]
     [InlineData("zsh", "compdef _dydo_completions dydo")]
     [InlineData("powershell", "Register-ArgumentCompleter")]
@@ -23,7 +23,7 @@ public sealed class CompletionsCommandTests
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-utilities.md dydo completions (bash, zsh and powershell only: another shell exits 2 with no script); DR 015 (completions keep code)")]
+    [Trait("Job", "contract: dydo-commands-utilities.md dydo completions (a script for bash, zsh or powershell; exit 2 is a tool error); DR 015 (completions keep code): dydo completions fish exits 2 and prints nothing to stdout")]
     public void Completions_UnknownShell_IsAToolError()
     {
         var (code, stdout, _) = DydoCli.Run("completions", "fish");
@@ -35,7 +35,7 @@ public sealed class CompletionsCommandTests
     // Completion does not offer every registered command yet (`mode` and `statechart` are missing;
     // reported on DYD-1199), so the first word is checked against the registered commands it does offer.
     [Theory]
-    [Trait("Job", "contract: DR 015 (completions keep code): dydo _complete offers each listed value for the word before it")]
+    [Trait("Job", "contract: DR 015 (completions keep code): dydo _complete exits 0 and offers each listed value for the word before it")]
     [InlineData("1", "dydo", "init", "check", "fix", "graph", "validate", "clean", "completions",
         "index", "adopt", "guard", "version", "help", "map", "survey")]
     [InlineData("2", "init", "claude", "codex", "all", "none")]
@@ -49,7 +49,7 @@ public sealed class CompletionsCommandTests
     }
 
     [Theory]
-    [Trait("Job", "contract: DR 015 (completions keep code): dydo _complete on an unknown command line offers nothing and exits 0")]
+    [Trait("Job", "contract: DR 015 (completions keep code): dydo _complete on an unknown command, at position 2 or past the end, prints nothing and exits 0")]
     [InlineData("2", "dydo", "nonexistent")]
     [InlineData("999", "dydo", "nonexistent", "garbage")]
     public void Complete_UnknownInput_OffersNothingAndExitsZero(params string[] words)

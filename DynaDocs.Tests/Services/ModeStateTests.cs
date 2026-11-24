@@ -7,12 +7,12 @@ using DynaDocs.Services;
 /// The machine's mode store as `dydo mode` shows it: a missing or unusable store reads every flag
 /// at its default, and a set persists for the next reader, even over an unusable store.
 /// </summary>
-[Trait("Job", "contract: DYD-351 (dydo mode show/set; overnight defaults to off)")]
 public sealed class ModeStateTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-mode-" + Guid.NewGuid().ToString("N"));
 
     [Theory]
+    [Trait("Job", "contract: DYD-351; dydo-commands-linear.md dydo mode (overnight defaults to off): show over a missing store, malformed JSON, an unknown value or a JSON null exits 0, and its trimmed output is overnight: off")]
     [InlineData(null)]
     [InlineData("{ not json")]
     [InlineData("""{"overnight":"maybe"}""")]
@@ -29,6 +29,7 @@ public sealed class ModeStateTests : IDisposable
 
     // Over a missing store this is machine-mode.feature's "Set changes a flag" (DYD-1520 setup audit).
     [Fact]
+    [Trait("Job", "contract: DYD-351; dydo-commands-linear.md dydo mode (every run reads the stored flags): after set overnight on over a malformed store, a separate run's show exits 0, and its trimmed output is overnight: on")]
     public async Task Set_PersistsForTheNextReader()
     {
         WriteStore("{ not json");

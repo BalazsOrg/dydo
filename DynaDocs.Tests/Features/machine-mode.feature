@@ -1,4 +1,4 @@
-# Job: contract: DYD-351 (dydo mode show/set; a mode set through the guard is warned once, then its retry passes; a quoted, pathed or indirect mode set is still a mode set, and a command that only mentions mode set passes)
+# Job: contract: DYD-351; dydo-commands-linear.md dydo mode: show prints exactly overnight's line; set changes the flag, or refuses an unknown flag or value with exit 2 naming it and leaves overnight off; the guard allows dydo mode show for an agent and a sub-agent; through the guard a mode set is denied naming dydo mode set and its identical retry is allowed, each direction and full command warned on its own, the stored mode unchanged until the command itself runs; a quoted, pathed or indirect mode set is denied the same way, and a command that only mentions mode set is allowed
 @machine-mode
 Feature: Machine mode
   A machine mode flag is read by every agent on this machine; overnight is the one flag.

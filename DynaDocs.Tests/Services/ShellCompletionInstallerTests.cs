@@ -17,7 +17,7 @@ public sealed class ShellCompletionInstallerTests : IDisposable
     private readonly string _dir = Path.Combine(Path.GetTempPath(), "dydo-profile-" + Guid.NewGuid().ToString("N")[..8]);
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init (appends a dydo completions line to the detected profile, once)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (the dydo completions line in the shell profile): installing into a new bash, zsh or powershell profile creates its folder and writes exactly the marker and that shell's line, and a second install changes no byte")]
     [InlineData("bash", "eval \"$(dydo completions bash)\"")]
     [InlineData("zsh", "eval \"$(dydo completions zsh)\"")]
     [InlineData("powershell", Corrected)]
@@ -34,7 +34,7 @@ public sealed class ShellCompletionInstallerTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init (appends a dydo completions line to the detected profile); trap: profile bytes and encoding must survive")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (the dydo completions line in the shell profile); trap: profile bytes and encoding must survive: an existing bash or powershell profile in UTF-8, UTF-8 with BOM, UTF-16LE or UTF-32BE keeps its bytes and gets the block appended in its own encoding")]
     [InlineData("bash", "utf8")]
     [InlineData("powershell", "utf8-bom")]
     [InlineData("powershell", "utf16-le")]
@@ -54,7 +54,7 @@ public sealed class ShellCompletionInstallerTests : IDisposable
     }
 
     [Theory]
-    [Trait("Job", "trap: profile bytes and encoding must survive (an old-form PowerShell block is repaired in place, every other byte kept, and a second run changes nothing)")]
+    [Trait("Job", "trap: profile bytes and encoding must survive: after two installs, an old-form PowerShell block reads in the corrected form in place and every other byte is kept, in UTF-8 with LF and UTF-16BE with CRLF")]
     [InlineData("utf8", "\n")]
     [InlineData("utf16-be", "\r\n")]
     public void Install_LegacyPowerShellBlock_IsRepairedInPlaceKeepingEveryOtherByte(string encodingName, string newline)
@@ -90,7 +90,7 @@ public sealed class ShellCompletionInstallerTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "contract: dydo-commands-core.md dydo init (the completions line goes to a profile only when a shell is detected: fish writes no profile)")]
+    [Trait("Job", "contract: dydo-commands-core.md dydo init (the dydo completions line in the shell profile): installing for fish, a shell it does not support, writes no profile")]
     public void Install_UnknownShell_WritesNothing()
     {
         var profile = Path.Combine(_dir, ".fishrc");

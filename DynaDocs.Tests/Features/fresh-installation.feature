@@ -1,4 +1,4 @@
-# Job: contract: dydo-commands-core.md dydo init then dydo check; DYD-99 (a fresh installation is usable, and customizing the foundation documents clears its onboarding warnings)
+# Job: contract: dydo-commands-core.md dydo init then dydo check; DYD-99 (a fresh installation is usable): for each integration selection, init exits 0 and records the Claude and Codex integrations; check then exits 0 with warnings and no errors, and once the two foundation documents are customized it exits 0 with neither
 @DYD-99
 Feature: A fresh installation remains usable
   A project can adopt dydo without this repository's private working context.

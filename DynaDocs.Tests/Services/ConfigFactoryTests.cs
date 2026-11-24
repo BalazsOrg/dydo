@@ -38,7 +38,7 @@ public sealed class ConfigFactoryTests : IntegrationTestBase
     }
 
     // Each env option word has one reading, so a long option chain stays inside the guard's match budget.
-    [Trait("Job", "trap: Round 1 N2 regex budget")]
+    [Trait("Job", "trap: DYD-736 review round 1 N2 (a long env -u chain backtracked past the guard's match budget): behind 400 env -u options, a plain word is allowed and gh pr create still meets the review-block warning")]
     [Theory]
     [InlineData("env {0}x", null)]
     [InlineData("env {0}gh pr create --fill", NoReviewBlock)]

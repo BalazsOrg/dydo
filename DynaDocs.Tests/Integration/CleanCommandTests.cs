@@ -11,7 +11,7 @@ using DynaDocs.Services;
 /// under <c>main/.claude/worktrees/</c>, the layout agents use.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-worktrees.md dydo clean; spec N10 (archive before delete)")]
+[Trait("Job", "contract: dydo-commands-worktrees.md dydo clean")]
 public sealed class CleanCommandTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-clean-" + Guid.NewGuid().ToString("N")[..8]);
@@ -160,7 +160,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.Equal("origin/master", Git(_main, "symbolic-ref", "--short", "refs/remotes/origin/HEAD").Text.Trim());
     }
 
-    [Trait("Job", "trap: DYD-363 (a branch moved after the verdict must not be deleted)")]
+    [Trait("Job", "trap: DYD-363 (a branch moved after the verdict must not be deleted): the fallback delete of a verified tip returns false once the branch has moved, and the branch stays at its new tip")]
     [Fact]
     public void BranchFallback_DeletesOnlyTheVerifiedTip_AMovedRefIsKept()
     {
@@ -180,7 +180,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.Equal(moved, Git(_main, "rev-parse", "refs/heads/feature").Text.Trim());
     }
 
-    [Trait("Job", "trap: DYD-363 (unpushed commits are never deleted)")]
+    [Trait("Job", "trap: DYD-363 (unpushed commits deleted with their branch): clean exits 0 and a branch with an unpushed commit stays at its tip")]
     [Fact]
     public async Task UnpushedCommits_KeepTheBranchAtItsTip()
     {
@@ -214,7 +214,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.False(HasBranch("feature"));
     }
 
-    [Trait("Job", "trap: DYD-363 (work after a squash merge is not merged)")]
+    [Trait("Job", "trap: DYD-363 (work after a squash merge judged merged): clean exits 0 and a branch with a commit after its squash merge stays at its tip")]
     [Fact]
     public async Task SquashMergedThenAnUnmergedCommit_KeepsTheBranch()
     {
@@ -250,7 +250,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.False(HasBranch("feature"));
     }
 
-    [Trait("Job", "trap: DYD-363 (work after a squash merge is not merged, SHA-256)")]
+    [Trait("Job", "trap: DYD-363 (work after a squash merge judged merged): in a SHA-256 repository, clean exits 0 and a branch with a commit after its squash merge stays at its tip")]
     [SkippableFact]
     public async Task SquashMergedThenAnUnmergedCommit_InASha256Repository_KeepsTheBranch()
     {
@@ -290,7 +290,7 @@ public sealed class CleanCommandTests : IDisposable
     }
 
     // A "keep mine" merge driver would resolve the branch's edit away and make the merge look empty.
-    [Trait("Job", "trap: DYD-363 (a keep-mine merge driver makes an unmerged change look merged)")]
+    [Trait("Job", "trap: DYD-363 (a keep-mine merge driver makes an unmerged change look merged): with the driver configured and named in committed or info attributes, clean exits 0 and keeps the branch")]
     [Theory]
     [InlineData(true)]
     [InlineData(false)]
@@ -318,7 +318,7 @@ public sealed class CleanCommandTests : IDisposable
     }
 
     // Config dydo's own environment carries (GIT_CONFIG_COUNT or GIT_CONFIG_PARAMETERS) must not reach the squash check.
-    [Trait("Job", "trap: DYD-363 (inherited GIT_CONFIG_* reaches the squash check)")]
+    [Trait("Job", "trap: DYD-363 (inherited GIT_CONFIG_* reaches the squash check): with a keep-mine driver in GIT_CONFIG_COUNT or GIT_CONFIG_PARAMETERS, clean exits 0 and keeps the branch, and a dry run prints branch feature would be kept")]
     [Theory]
     [InlineData("count", true)]
     [InlineData("count", false)]
@@ -360,7 +360,7 @@ public sealed class CleanCommandTests : IDisposable
 
     // A builtin driver needs no config, so system gitattributes ($(prefix)/etc/gitattributes) must be shut out too:
     // the scratch git carries exactly these GIT_* variables, whatever dydo inherits.
-    [Trait("Job", "trap: DYD-363 (system gitattributes reach the scratch merge)")]
+    [Trait("Job", "trap: DYD-363 (system gitattributes reach the scratch merge): whatever GIT_* variables are inherited, the scratch git's environment holds exactly GIT_ATTR_NOSYSTEM=1, GIT_CONFIG_NOSYSTEM=1, GIT_CONFIG_GLOBAL in the scratch folder, GIT_TERMINAL_PROMPT=0 and GIT_OPTIONAL_LOCKS=0, and XDG_CONFIG_HOME is the scratch folder")]
     [Fact]
     public async Task ScratchGitEnvironment_ShutsOutSystemAttributesAndConfig_WhateverIsInherited()
     {
@@ -410,7 +410,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.False(HasBranch("feature"));
     }
 
-    [Trait("Job", "trap: DYD-363 (a reverted squash is not merged)")]
+    [Trait("Job", "trap: DYD-363 (a reverted squash judged merged): clean exits 0 and keeps a branch whose squash origin has reverted")]
     [Fact]
     public async Task SquashedThenRevertedOnOrigin_KeepsTheBranch()
     {
@@ -453,7 +453,7 @@ public sealed class CleanCommandTests : IDisposable
     }
 
     // One branch merges to origin's tree, the other to a new tree: neither verdict may write an object.
-    [Trait("Job", "trap: DYD-376 (a dry run writes objects)")]
+    [Trait("Job", "trap: DYD-376 (a dry run writes objects): a dry run judging a squashed and an extended branch exits 0, writes no object and moves no ref")]
     [Fact]
     public async Task DryRun_JudgingASquash_WritesNoObject_AndMovesNoRef()
     {
@@ -479,7 +479,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.Equal(refsBefore, Git(_main, "for-each-ref").Text);
     }
 
-    [Trait("Job", "trap: DYD-362 (uncommitted work is archived before removal)")]
+    [Trait("Job", "trap: DYD-362 (uncommitted work lost with its tree): clean exits 0 and removes the tree, and its one archive entry holds a tracked.patch that reapplies the staged text and unstaged binary change on HEAD, and a manifest naming HEAD, the branch and two files")]
     [Fact]
     public async Task DirtyTrackedChanges_AreArchivedAsAPatchThatReapplies()
     {
@@ -507,7 +507,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.Equal(2, manifest.RootElement.GetProperty("files").GetArrayLength());
     }
 
-    [Trait("Job", "trap: DYD-362 untracked files survive clean")]
+    [Trait("Job", "trap: DYD-362 (untracked files lost with their tree): clean exits 0 and removes the tree, and an untracked binary file's bytes are under untracked/ in its one archive entry")]
     [Fact]
     public async Task UntrackedFile_SurvivesCleanInTheArchive()
     {
@@ -531,6 +531,9 @@ public sealed class CleanCommandTests : IDisposable
 
         var list = await ListOutput();
 
+        // A missing entry's index is -1, so both must be listed before their order means anything.
+        Assert.Contains(Path.GetFileName(newer), list);
+        Assert.Contains(Path.GetFileName(older), list);
         Assert.True(list.IndexOf(Path.GetFileName(newer), StringComparison.Ordinal)
             < list.IndexOf(Path.GetFileName(older), StringComparison.Ordinal), list);
     }
@@ -565,6 +568,7 @@ public sealed class CleanCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: configuration.md clean (an invalid clean.archiveSizeCapMb): with archiveSizeCapMb 0, clean --all exits 2 and keeps the tree")]
     public async Task InvalidSizeCap_IsRefused()
     {
         File.WriteAllText(Path.Combine(_main, "dydo.json"), """{ "clean": { "archiveSizeCapMb": 0 } }""");
@@ -576,7 +580,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.True(Directory.Exists(tree));
     }
 
-    [Trait("Job", "trap: DYD-362 (deleting a tree follows a link into its target)")]
+    [Trait("Job", "trap: DYD-362 (deleting a tree follows a link into its target): clean exits 0 and removes a tree holding a link to an outside folder, whose file keeps its text")]
     [Fact]
     public async Task LinkInsideTheTree_IsUnlinked_ItsTargetSurvives()
     {
@@ -592,7 +596,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.Equal("keep me\n", File.ReadAllText(Path.Combine(outside, "keep.txt")));
     }
 
-    [Trait("Job", "trap: DYD-362 (archiving copies a linked folder from outside the tree)")]
+    [Trait("Job", "trap: DYD-362 (archiving copies a linked folder from outside the tree): clean exits 0, its one archive entry holds no copy of the outside file, and that file keeps its text")]
     [Fact]
     public async Task UntrackedLink_IsNotFollowed()
     {
@@ -644,7 +648,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.DoesNotContain("feature", Git(_main, "worktree", "list").Text);
     }
 
-    [Trait("Job", "trap: DYD-362 (the main checkout is never removed)")]
+    [Trait("Job", "trap: DYD-362 (removing the main checkout): naming the main checkout exits 2 and its readme.md is still there")]
     [Fact]
     public async Task MainCheckout_IsRefused()
     {
@@ -654,7 +658,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.True(File.Exists(Path.Combine(_main, "readme.md")));
     }
 
-    [Trait("Job", "trap: DYD-362 (removing the tree the shell stands in)")]
+    [Trait("Job", "trap: DYD-362 (removing the tree the shell stands in): naming the tree that holds the current directory exits 2 and keeps the tree")]
     [Fact]
     public async Task TreeHoldingTheCurrentDirectory_IsRefused()
     {
@@ -670,7 +674,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.True(Directory.Exists(tree));
     }
 
-    [Trait("Job", "trap: DYD-407 (T3 worktrees are T3's); DYD-362 (locked trees)")]
+    [Trait("Job", "trap: DYD-407 (T3 worktrees are T3's); DYD-362 (locked trees): clean --all exits 0, keeps a locked tree and a tree under the T3 root, and removes a plain tree")]
     [Fact]
     public async Task All_SkipsTheMainCheckout_LockedTrees_AndT3Trees()
     {
@@ -689,7 +693,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.False(Directory.Exists(plain));
     }
 
-    [Trait("Job", "trap: DYD-362 (a tree a process still uses)")]
+    [Trait("Job", "trap: DYD-362 (removing a tree a process still uses): on Windows or Linux, naming a tree a live git process has as its working directory exits 2 and keeps the tree")]
     [Fact]
     public async Task RunningProcessInside_IsSkipped()
     {
@@ -721,7 +725,7 @@ public sealed class CleanCommandTests : IDisposable
         }
     }
 
-    [Trait("Job", "trap: DYD-362 (a dry run removes or prunes)")]
+    [Trait("Job", "trap: DYD-362 (a dry run removes or prunes): clean --all --dry-run exits 0, keeps the tree's file and the branch, and leaves the archive as only its 100-day-old entry")]
     [Fact]
     public async Task DryRun_ChangesNothing()
     {
@@ -751,7 +755,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.True(Directory.Exists(tree));
     }
 
-    [Trait("Job", "trap: DYD-362 (a probe that strands a tree fails that tree with exit 2, locks it with its files kept in the probe folder, and the run goes on)")]
+    [Trait("Job", "trap: DYD-362 (a busy probe that strands a tree): with an injected mover whose move back fails, the run exits 2, the stranded tree's files are in its one probe folder, git lists it locked, and the other named tree is still removed")]
     [Fact]
     public async Task BusyProbeThatCannotMoveTheTreeBack_FailsThatTree_LocksIt_AndTheRunGoesOn()
     {
@@ -777,7 +781,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.True(File.Exists(Path.Combine(probe, "readme.md")));
     }
 
-    [Trait("Job", "trap: DYD-362 (submodule work is lost with its tree)")]
+    [Trait("Job", "trap: DYD-362 (submodule work lost with its tree): with untracked, modified or unpushed work in a submodule, clean exits 2, keeps the submodule and the branch, and writes no archive entry")]
     [Theory]
     [InlineData("untracked")]
     [InlineData("modified")]
@@ -815,7 +819,7 @@ public sealed class CleanCommandTests : IDisposable
     }
 
     // HEAD is clean and pushed; the unpushed commit sits on a ref HEAD does not reach.
-    [Trait("Job", "trap: DYD-362 (submodule commits off HEAD are lost)")]
+    [Trait("Job", "trap: DYD-362 (submodule commits off HEAD lost): with an unpushed submodule commit on a side branch, a tag or the stash, clean exits 2 and keeps the submodule")]
     [Theory]
     [InlineData("branch")]
     [InlineData("tag")]
@@ -849,7 +853,7 @@ public sealed class CleanCommandTests : IDisposable
 
     // The stat cache is stale (a tracked file touched, content unchanged) in the tree and its submodule,
     // so a git call that refreshes the index would rewrite it.
-    [Trait("Job", "trap: DYD-362 (a dry run refreshes the index)")]
+    [Trait("Job", "trap: DYD-362 (a dry run refreshes the index): over a stale stat cache, a dry run exits 0 and leaves the bytes and write time of the tree's and its submodule's index")]
     [Fact]
     public async Task DryRun_LeavesTheIndexOfTheTreeAndItsSubmoduleUnchanged()
     {
@@ -877,7 +881,7 @@ public sealed class CleanCommandTests : IDisposable
 
     // The archive root, or the folder above it inside the git directory, links outside: nothing behind
     // the link is pruned, and no work is archived there.
-    [Trait("Job", "trap: DYD-362 (pruning follows a link out of the archive)")]
+    [Trait("Job", "trap: DYD-362 (pruning follows a link out of the archive): with the archive or the dydo folder above it linked outside, clean exits 2, the old entry behind the link keeps its text and stays the only entry there, and the tree's file is kept")]
     [Theory]
     [InlineData("clean-archive")]
     [InlineData("dydo")]
@@ -916,7 +920,7 @@ public sealed class CleanCommandTests : IDisposable
         Assert.True(Directory.Exists(locked) && Directory.Exists(detached));
     }
 
-    [Trait("Job", "trap: DYD-362 (a failed archive must remove nothing)")]
+    [Trait("Job", "trap: DYD-362 (removal after a failed archive): when the archive folder cannot be created, clean exits 2, keeps the tree's file, its link and the link's target, keeps the branch, and git still lists the tree and an unpruned stale entry")]
     [Fact]
     public async Task ArchiveThatCannotBeWritten_FailsClosed_AndRemovesNothing()
     {

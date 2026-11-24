@@ -11,7 +11,7 @@ using DynaDocs.Services;
 /// </summary>
 public class ConfigServiceTests : IDisposable
 {
-    private const string FailedSave = "trap: DYD-134 (atomic save boundaries: a failed save must keep dydo.json); edge: one injected failure, which driving the CLI cannot stage, keeps the original bytes and leaves no temporary sibling";
+    private const string FailedSave = "trap: DYD-134 (atomic save boundaries): one injected failure, which driving the CLI cannot stage, fails the save with its own error, keeps the target file's bytes and leaves no temporary sibling";
 
     private readonly string _testDir;
 
@@ -35,7 +35,7 @@ public class ConfigServiceTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "trap: a malformed dydo.json read as absent would silently drop the project's configuration (the strict load fails naming the file and its JSON error)")]
+    [Trait("Job", "trap: a malformed dydo.json read as absent would silently drop the project's configuration: the strict load throws, naming dydo.json and saying Invalid JSON")]
     public void LoadConfigStrict_DistinguishesMalformedFromMissingConfiguration()
     {
         File.WriteAllText(Path.Combine(_testDir, "dydo.json"), "{ not-json");
@@ -48,7 +48,7 @@ public class ConfigServiceTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "trap: DYD-134 (atomic save boundaries): a save that changes nothing writes nothing")]
+    [Trait("Job", "trap: DYD-134 (atomic save boundaries): a save of the unchanged config never creates a temporary sibling")]
     public void SaveConfig_UnchangedConfig_WritesNothing()
     {
         var path = Path.Combine(_testDir, "dydo.json");
@@ -68,7 +68,7 @@ public class ConfigServiceTests : IDisposable
     [InlineData("{\"testing\":{\"runner\":[\"\"]}}")]
     [InlineData("{\"testing\":{\"runner\":[1]}}")]
     [InlineData("{\"testing\":{\"runner\":[\"runner\",\"\\u0000\"]}}")]
-    [Trait("Job", "contract: configuration.md testing.runner (a nonempty string array; anything else is refused, naming the key)")]
+    [Trait("Job", "contract: configuration.md testing.runner (an object holding a nonempty string array whose first item is a nonblank executable); DYD-117 (no NUL in an argument): each row breaks one rule (testing not an object, runner missing, an empty array, a blank executable, a non-string item, an argument holding NUL), and the strict load refuses it naming dydo.json testing.runner")]
     public void LoadConfigStrict_RejectsInvalidTestingRunner(string json)
     {
         File.WriteAllText(Path.Combine(_testDir, "dydo.json"), json);
@@ -79,7 +79,7 @@ public class ConfigServiceTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "trap: an unreadable dydo.json read as absent would silently drop the project's configuration (the strict load propagates the IO error)")]
+    [Trait("Job", "trap: an unreadable dydo.json read as absent would silently drop the project's configuration: with the file held exclusively, the strict load throws IOException")]
     public void LoadConfigStrict_PropagatesAnUnreadableConfiguration()
     {
         var path = Path.Combine(_testDir, "dydo.json");
@@ -195,7 +195,7 @@ public class ConfigServiceTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "trap: DYD-134 (atomic save boundaries: a failed save must keep dydo.json): a temporary-name collision fails the save and keeps both files")]
+    [Trait("Job", "trap: DYD-134 (atomic save boundaries): a save whose temporary name is taken throws saying it already exists and keeps both files' bytes")]
     public void SaveConfig_TemporaryNameCollision_PreservesBothFiles()
     {
         var path = Path.Combine(_testDir, "collision.json");
@@ -215,7 +215,7 @@ public class ConfigServiceTests : IDisposable
     // The two production boundaries the injected tests above cannot reach: where the sibling
     // goes, and how it is opened.
     [Fact]
-    [Trait("Job", "edge: DYD-134 (atomic save boundaries): the temporary sibling is unique and beside the target, so the replace stays on one volume")]
+    [Trait("Job", "edge: DYD-134 (atomic save boundaries): the temporary sibling is a <name>.<32 hex digits>.tmp file in the target's folder, and two calls give different names")]
     public void TemporarySiblingPath_IsAUniqueTmpBesideTheTarget()
     {
         var target = Path.Combine(_testDir, "dydo.json");
@@ -229,7 +229,7 @@ public class ConfigServiceTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "edge: DYD-134 (atomic save boundaries): the temporary sibling is created new, never over an existing file")]
+    [Trait("Job", "edge: DYD-134 (atomic save boundaries): creating the temporary sibling over an existing file throws and keeps that file's bytes")]
     public void CreateNewSibling_RefusesAnExistingFile()
     {
         var sibling = Path.Combine(_testDir, "dydo.json.taken.tmp");
@@ -241,7 +241,7 @@ public class ConfigServiceTests : IDisposable
     }
 
     [Fact]
-    [Trait("Job", "edge: DYD-134 (atomic save boundaries): the temporary sibling's handle is write-only and exclusive")]
+    [Trait("Job", "edge: DYD-134 (atomic save boundaries): the temporary sibling's handle can write and cannot read, and opening the file to read is refused while it is held")]
     public void CreateNewSibling_OpensWriteOnlyAndExcludesOtherHandles()
     {
         var sibling = Path.Combine(_testDir, "dydo.json.fresh.tmp");

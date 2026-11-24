@@ -3,7 +3,6 @@ namespace DynaDocs.Tests.Commands;
 using DynaDocs.Commands;
 using DynaDocs.Services;
 
-[Trait("Job", "contract: DYD-351 (dydo mode set: a valid set prints every flag, a refused or failed set exits nonzero and writes nothing); dydo-commands-linear.md dydo mode; DYD-644 (an unwritable store fails with one error)")]
 public sealed class ModeCommandTests : IDisposable
 {
     private readonly string _root = Path.Combine(Path.GetTempPath(), "dydo-mode-cmd-" + Guid.NewGuid().ToString("N"));
@@ -18,6 +17,7 @@ public sealed class ModeCommandTests : IDisposable
         await ConsoleCapture.AllAsync(() => ModeCommand.Create(new ModeState(_root)).Parse(args).InvokeAsync());
 
     [Fact]
+    [Trait("Job", "contract: DYD-351; dydo-commands-linear.md dydo mode (on success set prints every flag): set overnight on exits 0, its trimmed output is overnight: on, and stderr is empty")]
     public async Task Set_PrintsEveryFlagAfterTheChange()
     {
         var (exitCode, stdout, stderr) = await Run("set", "overnight", "on");
@@ -28,6 +28,7 @@ public sealed class ModeCommandTests : IDisposable
     }
 
     [Theory]
+    [Trait("Job", "contract: DYD-351; dydo-commands-linear.md dydo mode (set refuses an unknown flag or value with exit 2 and changes nothing): Overnight and ON are refused with exit 2, exactly the unknown-flag or invalid-value error, no stdout and no store folder")]
     [InlineData("Overnight", "on", "Unknown mode flag 'Overnight'. Flags: overnight.")]
     [InlineData("overnight", "ON", "Invalid value 'ON' for overnight. Values: off, on.")]
     public async Task Set_IsCaseSensitive_AndRefusalsWriteNothing(string flag, string value, string error)
@@ -41,6 +42,7 @@ public sealed class ModeCommandTests : IDisposable
     }
 
     [SkippableTheory]
+    [Trait("Job", "trap: DYD-644 (an unwritable mode store): with the store file read-only or the store folder inaccessible, set exits 2 with no stdout and exactly one error line naming the store and the denied access, and the stored text is unchanged")]
     [InlineData("file", "off", "on")]
     [InlineData("file", "on", "off")]
     [InlineData("folder", "off", "on")]
@@ -73,6 +75,7 @@ public sealed class ModeCommandTests : IDisposable
     }
 
     [Fact]
+    [Trait("Job", "contract: dydo-commands-linear.md dydo mode (set takes a flag and a value): set with no value exits nonzero and creates no store folder")]
     public async Task Set_WithoutAValue_IsAParseError()
     {
         var (exitCode, _, _) = await Run("set", "overnight");
