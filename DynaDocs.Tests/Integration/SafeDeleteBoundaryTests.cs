@@ -144,7 +144,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.Equal(before,Snapshot(fixture.Tree));
     }
 
-    [Trait("Job", "contract: DYD-1029 - case collisions round-trip correctly or cause a pre-delete refusal")]
+    [Trait("Job", "contract: DYD-1029 - case collisions round-trip correctly")]
     [Theory]
     [InlineData(false)]
     [InlineData(true)]
@@ -211,7 +211,7 @@ public sealed class SafeDeleteBoundaryTests
         Assert.True(fixture.Manifest().Complete);
     }
 
-    [Trait("Job", "contract: DYD-1029 - case collisions round-trip correctly or cause a pre-delete refusal")]
+    [Trait("Job", "contract: DYD-1029 - case collisions round-trip correctly")]
     [Fact]
     public void BranchNameCasing_PreservesDistinctRefsOrRefusesAliases()
     {

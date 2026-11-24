@@ -35,7 +35,7 @@ Lines are in `Integration/SafeDeleteTests.cs` unless named.
 | policy `[10]`–`[13]` | the reserve rule refuses | `:414` |
 | policy `[14]`, `[15]` | "A dry run lists intent but neither fetches, creates an archive, deletes nor purges" | `:432` |
 | policy `[16]` | "Do not follow symlinks/junctions in archive ancestors" | `:368` |
-| policy `[18]` | symlink targets "round-trip correctly or cause a pre-delete refusal" | `:354`; on Windows `:348` |
+| policy `[18]` | symlink targets "round-trip correctly" | `:354`; Windows refusal line `:348` asserted but unclaimed; its red check is owed to a Windows run |
 | policy `[19]` | "a differently named upstream is reported as kept" | `:342` |
 | raw destructive Git `[0]`–`[17]` | the raw-command table's verdict | `Steps/SafeDeleteSteps.cs:105` |
 
@@ -47,7 +47,7 @@ Lines are in `Integration/SafeDeleteTests.cs` unless named.
 | `InitializedNestedGitDirectory…`: contract: DYD-1029 - initialized nested repositories without complete independent preservation are refused | `Integration/SafeDeleteBoundaryTests.cs:45` |
 | `NestedGitDirectory_ValidatesFileKinds…` (Linux): contract: DYD-1029 - unsupported filesystem objects are refused before any delete | `:116` |
 | `RepositoryFragments…`, `IndexConflictStages…`, `EveryResolveUndoStage…`: contract: DYD-1029 - restore recreates the working files and index | `:144`; `:437`; `:471` |
-| `AdministrativeNameCasing…`, `BranchNameCasing…`: contract: DYD-1029 - case collisions round-trip correctly or cause a pre-delete refusal | `:169`, `:225`; on Windows `:161`, `:229` |
+| `AdministrativeNameCasing…`, `BranchNameCasing…`: contract: DYD-1029 - case collisions round-trip correctly | `:169`, `:225`; Windows refusal lines `:161`, `:229` asserted but unclaimed; their red check is owed to a Windows run |
 | `WorktreeFilemodeOverride…` (not Windows): contract: DYD-1029 - Git administrative metadata is preserved | `:192` |
 | `RestoreWithChangedSharedSettings…`, `CorruptManifestGitConfiguration…`: contract: DYD-1029 - restore fails on unsupported metadata without overwriting user work | `:208`; `:319` |
 | `PerWorktreeRefTip…`: contract: DYD-1029 - a tip named only by a per-worktree ref is recreated under refs/dydo-restored | `:251` |
@@ -96,9 +96,9 @@ The tags this hop did not touch keep their earlier form, mapped the same way:
 | `T3HistoryPathRecognition…`: a tree under a .t3/worktrees path is refused as T3-owned with no settings file | `Integration/SafeDeletePolicyTests.cs:33` |
 | `Redaction…`: Redact drops a remote URL's userinfo and query | `:41` |
 
-**Windows lines.** The case-collision tags and policy `[18]` are proved on Windows by a line only Windows runs. Their red
-checks here cover the other platforms' line, and the Windows line's red check is owed to a Windows run, as for the two
-Windows-only methods (coordinator ruling 2).
+**Windows lines.** `AdministrativeNameCasing`, `BranchNameCasing` and policy `[18]` also assert a refusal on a line only
+Windows runs. Their tags and outcomes claim only the round trip that the Linux red check breaks. Each Windows refusal line
+is asserted but unclaimed, and its red check is owed to a Windows run.
 
 ## Cites
 

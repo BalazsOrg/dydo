@@ -191,9 +191,9 @@ killed after).
 | `SafeDeleteBoundaryTests.DefaultAllocationVolume_RefusesAnUnknownVolume` | on Windows, the default space probe throws for a target on an unknown UNC share (`:538`) | Windows-only; tag narrowed; red check owed to a Windows run |
 | `SafeDeleteBoundaryTests.WindowsStreamMetadata_AcceptsDefaultStreamsAndRefusesAlternateStreams` | on Windows, metadata reads accept default streams and refuse an alternate data stream (`:549`–`:553`) | Windows-only; tag narrowed; red check owed to a Windows run |
 
-The last two follow coordinator ruling 2. Three more cases are proved on Windows by a line only Windows runs:
-`AdministrativeNameCasing`, `BranchNameCasing` and policy `[18]`. Their red checks here cover the other platforms' line,
-and the Windows line's red check is owed to a Windows run too. `UnsafePaths` and the two Windows-listed Facts run on every platform
+The last two follow coordinator ruling 2. Three more cases also assert a refusal on a line only Windows runs:
+`AdministrativeNameCasing`, `BranchNameCasing` and policy `[18]`. Their tags claim only the round trip their Linux red
+check breaks. The Windows refusal line is asserted but unclaimed, and its red check is owed to a Windows run. `UnsafePaths` and the two Windows-listed Facts run on every platform
 with the same assertions, so their red checks ran here.
 
 ## Cites
