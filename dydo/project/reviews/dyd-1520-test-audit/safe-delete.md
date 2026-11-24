@@ -14,8 +14,8 @@ under `FullyQualifiedName~DynaDocs.Tests.Integration.SafeDelete`, the `safe-dele
 
 | Verdict | Cases |
 |---|---|
-| keep | 217 |
-| rewrite | 94 |
+| keep | 146 |
+| rewrite | 165 |
 | remove | 17 |
 | keep `unsure` | 0 |
 | **all** | **328** before, **311** after (all executed here; the Windows-only cases return early on Linux) |
@@ -38,7 +38,7 @@ under `FullyQualifiedName~DynaDocs.Tests.Integration.SafeDelete`, the `safe-dele
     that text, and each turns the kept row red.
   - Policy `[20]` (init archive prefix rules). `SafeDeleteGuardTests.InitGeneratedCodexRules_AdmitAllArchiveForms`
     asserts the same rule text, more strictly, in the file `dydo init` writes.
-- **Rewritten (94): 93 tag corrections with the assertions unchanged, and 1 body rewrite.** Each tag
+- **Rewritten (165): 164 tag corrections with the assertions unchanged, and 1 body rewrite.** Each tag
   correction replaces a class or feature tag that claimed more than its case shows (§2 row 2; review
   lessons 4 and 6). They are:
   - 61 feature rows. The old feature tag ("safe delete archives unique work before removal") is untrue
@@ -53,6 +53,13 @@ under `FullyQualifiedName~DynaDocs.Tests.Integration.SafeDelete`, the `safe-dele
     separator refusals.
   - `LegacyBranchArchive`, `InitGeneratedCodexRules`, both `DefaultAllocationVolume_Identifies…` rows,
     and the `LinkSafeDeleteTests` cases for read-only files, a missing root and `UnlinkAll`.
+  - 71 `SafeDeleteGitHubTests` rows in 14 methods. The class tag's one clause, "remote cleanup only on
+    proved closed-world state", has no proving line in them. The eligible cases show a proved state
+    passing, not the refusal that "only" claims. The pagination rows show both verdicts. The
+    post-deletion and initially-absent cases show local targets kept, with no remote ref left to clean
+    up. Each method now carries the narrower tag mapped below. Its red proof is `gh-refuse-all`,
+    `gh-accept-all` or `recheck-off`, as each row's Evidence names. The 55 refusal rows that keep the
+    remote ref keep the class tag.
 
   Where a class tag was true of only some methods, it moves to those methods unchanged, and they stay
   `keep`. The body rewrite is `SafeDeleteBoundaryTests.NestedGitDirectory_ValidatesFileKindsBeforeGitDiscovery`.
@@ -71,6 +78,60 @@ requires still has cases. The removals leave no step definition unused: the 6 st
 scenarios used are deleted. The helpers they had shared (`SafeDeleteGitHubTests.Journey`, `PrepareInitiallyAbsent`,
 `SafeDeleteInputsTests.Prepare`, `SafeDeleteBoundaryTests.AssertNestedRepositoryRefused`) still have callers
 in their own classes, and are now private.
+
+## Tag clauses and the lines that prove them
+
+Every job tag in the batch, kept cases included, split into its clauses. Each clause names the assertion
+line, at the candidate, that fails in each case it covers if that clause were false. A tag that lists
+behaviours separated by commas or semicolons (the feature `# Job:` line, `SafeDeleteBoundaryTests`,
+`SafeDeleteInputsTests`) claims for each case only the clause mapped to it below. Each of the other tags
+is one clause, and every case under it proves that clause. Clauses that no line proved were dropped
+before the map was written:
+
+- `UnlinkAll`: "removes each link" (its link assertion had no planted bug of its own).
+- `SafeDeleteTests`: "is deleted" (`UnfetchedRemote` asserts no deletion).
+- `SafeDeleteGitHubTests`: "only" on the eligible cases. Those cases now carry tags of their own.
+
+Paths are under `DynaDocs.Tests/`.
+
+| Tag (where) | Clause | Cases and proving lines |
+|---|---|---|
+| feature `# Job:` (`Features/safe-delete.feature`) | an archived branch or worktree restores its unique state after deletion | journeys `[6]`, `[7]`: `Integration/SafeDeleteTests.cs:126` (deleted), `:133` (restore exit 0), `:149` (tip back), `:159` (remote absent or present as asked); `[8]`: `:86`, `:87`, `:90`–`:92` |
+| | a refusal exits 2 and keeps the target | refusal rows: `SafeDeleteTests.cs:309` (exit 2), `:311`–`:318` (refs, tree, bytes); current worktree `:221`–`:224`; reserve rows `:414`; archive symlink `:368` |
+| | a failure after the remote deletion exits 2 and keeps the complete archive and the local targets | policy `[7]`: `:361`, `:362` |
+| | restore refuses a damaged or colliding archive and keeps it | policy `[0]`–`[4]`, `[6]`, `[17]`: `:395` (exit 2, entry kept), `:396` (no ref); `[5]`: `:386` |
+| | a dry run prints its estimates and neither archives nor deletes | policy `[14]`, `[15]`: `:431`–`:434` |
+| | archives expire only when a later archive purges them | policy `[8]`: `:446` (kept at 30 days), `:458` (purged after); `[9]`: `:450`–`:453` |
+| | a differently named upstream is reported and kept | policy `[19]`: `:342`, `:343` |
+| | links round-trip (Windows: refused) | policy `[18]`: `:353`, `:354`; on Windows `:348` |
+| | the guard refuses raw destructive Git and admits dydo archive | guard rows `[0]`–`[17]`: `Steps/SafeDeleteSteps.cs:39` |
+| `SafeDeleteTests` class | an archived branch or worktree restores its unique history and files after source gc | `SafeDeleteTests.cs:133` (restore exit 0) with `:142`–`:149` and `:154`–`:156` per journey; stash `:185`, `:188`–`:193` |
+| `SafeDeleteBoundaryTests` (per method) | archive before delete: the archived state restores | `RepositoryFragments` `:143` (create-only restore, so it also proves the deletion), `:144`; `AdministrativeNameCasing` `:166`–`:169`; `WorktreeFilemode` `:190`–`:194`; `BranchNameCasing` `:224`, `:225`; `PerWorktreeRefTip` `:250`–`:252`; `ExplicitRemoteRestore` `:306`–`:309`; `IndexConflictStages` `:436`–`:438`; `EveryResolveUndoStage` `:470`–`:474` |
+| | refuse unproven state | `InitializedNested…` `:45`–`:56`; `NestedGitDirectory…` `:116`–`:122`; `RestoreWithChangedSharedSettings` `:208`–`:211`; `AllocationVolumeUnavailable` `:261`, `:262`; `MalformedManifestFields` `:278`; `LinkedIncompleteEntry` `:289`, `:290`; `CorruptManifestGitConfiguration` `:319`; `RestorePathCollision` `:331`, `:332`; `FinalBranchRecheck` `:341`, `:342`; `FinalSnapshotRecheck` `:365`, `:366`; `NativeBusyProbe` `:381`–`:383`; `CompareAndSwap` `:402`–`:406`; `PostFetchReserveShortfall` `:416`–`:419`; `ResolveUndoBlobMissing…` `:494`–`:497`; `ResolveUndoListing…` `:511`–`:513`; `DefaultAllocationVolume_RefusesAnUnknownVolume` `:538`; `WindowsStreamMetadata` `:553`; `InvalidReserveConfiguration` `:565`, `:566`; `CorruptProofPayload` `:578`, `:579` |
+| `DefaultAllocationVolume_Identifies…` | finds the containing volume of a missing target, on the root volume and under the temp path | `[0]`, `[1]`: `SafeDeleteBoundaryTests.cs:530` |
+| `SafeDeleteGitHubTests` refusal methods (class tag, unchanged) | remote cleanup only on proved closed-world state | `Refusal` helper `:659` (exit 2), `:670` (remote tip kept); `FinalPrePushChange` `:139`, `:140`→`:670`; `FinalMetadataRead` `:157`, `:159`→`:670`; `OwnDeletionReceipt` `:284`; `ProcessFailures…` `:571`–`:577` |
+| `PublicExactRef…`, `InitiallyAbsentClosedWorld_CompleteOwn…` | a proved closed-world state passes the remote eligibility check | `:19`; `:295` |
+| `PrivateClosedWorld_RealCli…`, `PublicFork_Leased…` | on a proved closed-world state the remote ref is deleted with the archived worktree | `Journey` `:36` (exit 0), `:39` (remote ref gone) |
+| `InitiallyAbsentClosedWorld_ArchivesWithoutPush…` | a proved closed-world absence of the remote ref lets the local targets be deleted | `:310`–`:312` |
+| `OwnPullPagination…` | own-PR pagination proves eligibility only when it is terminal, unique and complete | every row `:546` |
+| `AfterOwnDeletion_RecheckFailure…`, `EveryRemainingDestructiveStep…`, `AfterOwnDeletion_ApiRefSurvives…` | after the remote step, a failed recheck keeps the remaining local targets | `:195`; `:218`, `:219`; `:260`, `:261` |
+| the five `InitiallyAbsent…` refusal methods | with the remote ref initially absent, an unproved or changed closed-world state keeps every local target | `:371`; `:389`; `:420`, `:421`; `:465`, `:466`; `:506` (`AssertInitiallyAbsentLocalIntact` asserts at `:473`–`:481`) |
+| `SafeDeleteInputsTests` (per method) | repository exclude and attribute inputs survive | `ChangedCommonInput` `:28`, `:30`; `CorruptInputPayload` `:85`; `ChangedRestoreInputs` `:109`; `CommonInputs` `:187`, `:192`–`:197` |
+| | refusal output complete (names its cause) | `ChangedCommonInput` `:29`; `StatCleanEntry…` `:57`, `:58`; `ChangedRestoreInputs` `:105`; `UnsupportedInputManifest` `:140` |
+| `LegacyBranchArchive_RemainsReadable` | a version-1 branch archive still restores | `:165`, `:166` |
+| `RawDeletionTable…` | safe-delete through the guard | `SafeDeleteGuardTests.cs:31` (denied, names dydo archive), `:34` (allowed), `:36` (the compound command denied) |
+| `InitGeneratedCodexRules…` | dydo init's Codex rules admit every dydo archive form | `:65`, `:67` |
+| `UnsafePaths…` | an archive entry path never resolves outside its root | `SafeDeletePathsTests.cs:23` |
+| `ColonPaths…`, `LinuxIgnoredTimestamp…` | native Linux colon filenames | `:41`; `:57`–`:66` |
+| `AuthoritativeT3Settings…` | no or an empty worktree root refuses nothing | `[0]`, `[1]`: `SafeDeletePolicyTests.cs:23` |
+| | invalid or unreadable settings refuse an ordinary tree | `[2]`–`[6]`: `:23`, `:24` |
+| `T3HistoryPathRecognition…` | a `.t3/worktrees` path is refused as T3-owned with no settings file | `:33` |
+| `Redaction…` | userinfo, query and fragment are dropped from a printed URL | `:41` |
+| `LinkSafeDeleteTests` link cases | deleting a tree removes a link, never its target | `DeleteTree_LinkInside` `Services/LinkSafeDeleteTests.cs:19`, `:20`; `RootThatIsALink` `:65`, `:66` |
+| `UnlinkAll_RemovesOnlyLinks` | never touches a link's target | `:34` |
+| | never touches a real file | `:33` |
+| `DeleteTree_ReadOnlyFilesAndLongPaths…` | removes read-only files, deep in a long path | `:50` |
+| `DeleteTree_MissingRoot_IsANoOp` | deleting an absent tree is a no-op, not an error | the call at `:73` (a throw fails the case), `:75` |
 
 ## Mutation
 
@@ -113,6 +174,8 @@ it ran 328 of 328 green at base. `/var/tmp/dyd1520/sd/plants-base` holds the TRX
 | t3-history-off, redact-off | no `.t3/worktrees` path recognition; `Redact` returns its input | `T3HistoryPathRecognition…`; `Redaction…` |
 | readonly-skip | tree deletion skips read-only files | `DeleteTree_ReadOnlyFilesAndLongPaths…` (and 290 more, whose fixture cleanup deletes Git's read-only objects) |
 | unlink-real, unlink-target | `UnlinkAll` also deletes real files; it empties a link's target first | `UnlinkAll_RemovesOnlyLinks` (candidate run) |
+| gh-refuse-all, gh-accept-all | the remote eligibility check refuses everything; it accepts everything | the eligible GitHub rows and pagination's complete rows; the refused pagination rows and the initially-absent refusals it reaches |
+| recheck-off | the final remote and source rechecks before the worktree and local deletion are skipped | the post-deletion recheck rows and the initially-absent final-step rows that `gh-accept-all` does not reach |
 | volume-missing | the default space probe throws for a missing target | `DefaultAllocationVolume_Identifies…[0]`, `[1]` |
 | hardlink-unchecked | the Linux file-kind check accepts a hard link | `NestedGitDirectory…` at base and, rewritten, on the candidate |
 
