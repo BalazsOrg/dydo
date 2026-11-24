@@ -9,6 +9,11 @@ namespace DynaDocs.Tests.Services;
 public sealed class LinkResolverTests : IDisposable
 {
     private const string Frontmatter = "---\narea: guides\ntype: guide\n---\n";
+
+    // Markdig reads a frontmatter block's closing `---` right after its last field as a setext
+    // heading, which gives the page one more anchor; a blank line before the closer leaves the
+    // page's anchors exactly its headings.
+    private const string FrontmatterWithoutAnchor = "---\narea: guides\ntype: guide\n\n---\n";
     private const string AgreementJob = "trap: #0187 (check and graph resolved the same relative link to different documents)";
     private readonly DocsProject _project = new();
 
@@ -35,8 +40,8 @@ public sealed class LinkResolverTests : IDisposable
     [InlineData("../sibling.md#anchor", "sibling.md")]
     public void Resolve_AgreesOnAnchoredCrossFolderLinks(string target, string expectedKey)
     {
-        // The target's one heading gives it exactly the rule case's anchors: ["anchor"].
-        _project.Write(expectedKey, Frontmatter + "\n# Anchor\n");
+        // The target's anchors are exactly the rule case's: ["anchor"].
+        _project.Write(expectedKey, FrontmatterWithoutAnchor + "\n# Anchor\n");
         _project.Write("a/source.md", Frontmatter + $"\n# Source\n\n[Target]({target})\n");
 
         AssertCheckPasses();
@@ -47,8 +52,8 @@ public sealed class LinkResolverTests : IDisposable
     [Trait("Job", "trap: #0186 (an anchor-only link to a heading on its own page was an empty-target broken link; it passes check, exit 0, and is no graph edge)")]
     public void Resolve_DisagreesIntentionallyOnAnchorOnlyLinks()
     {
-        // The page's one heading gives it exactly the rule case's anchors: ["section"].
-        _project.Write("guide.md", Frontmatter + "\n# Section\n\n[Here](#section)\n");
+        // The page's anchors are exactly the rule case's: ["section"].
+        _project.Write("guide.md", FrontmatterWithoutAnchor + "\n# Section\n\n[Here](#section)\n");
 
         AssertCheckPasses();
         var (code, output) = DydoCli.RunCombined("graph", "guide.md");
