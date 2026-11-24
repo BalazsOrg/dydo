@@ -25,7 +25,7 @@ Each batch's PR replaces its own line with a link to its audit.
 
 - safe-delete: audit pending
 
-- setup: audit pending
+- [Setup audit](./setup.md) - init, clean, adopt, dydo.json, mode and completion: 429 cases kept, rewritten or removed
 
 - docs: audit pending
 
