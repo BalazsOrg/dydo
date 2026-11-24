@@ -65,18 +65,47 @@ another platform.
 Targeted two-phase Stryker.NET (`/var/tmp/dyd1520/tools/stryker-targeted.sh`). Phase 1 ran on a
 clean detached checkout of the base `07642b1f3` over every method that loses a case or is rewritten
 (35 executed cases, including the kept rows of those methods): 700 mutants Killed, 7 Timeout, wall
-1067 s. Phase 2 is pending at the audit commit.
+1067 s. Phase 2 ran on a clean detached checkout of the candidate `8d6424f04` (production code
+identical), mutating the 239 line spans of those 700 kills and running all 408 kept cases of the
+batch: 750 Killed, wall 774 s, `compare exit=1` with two mutants not killed after:
+
+| Mutant | Where | After | Justification |
+|---|---|---|---|
+| #12522 statement removal | `Services/ScaffoldTree.cs:36`, the empty-set `throw` | NoCoverage | unreachable: only the removed `WriteDydoTree_WithoutEmbeddedScaffold_Throws` passes an empty resource set; the one production caller passes the compiled manifest, which `EmbeddedScaffoldResources_AreExactlyTheTreeOnDisk` pins to the non-empty `Scaffold/` tree |
+| #12523 string mutation | the same `throw`'s message | NoCoverage | the same |
+
+Every other phase-1 kill is Killed on the candidate. Stryker stops a mutant's run at its first
+failing test, so a report's `killedBy` names only some killers; the status comparison is exact, and
+each removal's named kept test is backed by a planted bug or by a mutant whose phase-2 `killedBy`
+names that test. `fresh-installation.feature` runs dydo as a child process, which mutation cannot
+see, so its coverage of `FreshInit_PassesCheck[0]` rests on PB4.
+
+| Run | Cases | Summed test duration | Command |
+|---|---|---|---|
+| base `07642b1f3` | 429 passed | 15.06 s | batch filter, `--logger trx`, `MaxCpuCount=2` |
+| candidate `8d6424f04` | 408 passed | 16.28 s | the same |
+
+The cases removed here were cheap ones, so the summed time does not drop measurably; the
+difference is the shared host's load.
 
 ## Red proofs and planted bugs
 
-Each ran against the candidate's tests with one local production edit, then the edit was restored
-(`git diff --stat` empty on production code afterwards).
+Two runs of all 408 kept cases on the candidate's tests: PB1-PB4 together, then PB2' and PB5-PB7
+together. Each planted bug touches a different observable, so each failure is attributed by its
+assertion.
 
-Pending at the audit commit. Planned: PB1 `dydo mode show` prints a second line; PB2 a fresh Claude
-guard entry also carries the bare `dydo guard`; PB3 completion drops the seven rewritten words; PB4
-`dydo check` fails when no file exists under `dydo/agents/`; and, for the `unsure` cases, PB5
-completion also offers `task`, PB6 completion drops `complete`, PB7 a default nudge on
-`git worktree add` without a word boundary.
+| Bug | Production edit | Kept cases red | What it proves |
+|---|---|---|---|
+| PB1 | `ModeCommand.Print` writes a second line | machine-mode.feature: Show lists every flag, Set changes a flag, Set refuses [0] and [1], Warning and retry [0] and [1]; ModeStateTests rows; ModeCommandTests.Set_PrintsEveryFlagAfterTheChange | red proof of the exact show step; covers the removed exact-output assertions of ModeStateTests [0] rows and VerificationModeTests |
+| PB2 | a fresh Claude guard entry (no earlier guard) also carries `dydo guard` | Init_WritesEachHostsFiles [1] and [3], Init_HostAgentSettings_PreserveSatisfyingValuesAndRepeatBytes | red at the repeat-join byte check, not at the new count line, so PB2' below |
+| PB2' | every Claude guard entry also carries `dydo guard` | Init_WritesEachHostsFiles [1] and [3] red at the new `Count(CodexGuard) == 0` line (`InitCommandTests.cs:936`, expected 0, actual 1), and six other Claude wiring cases | red proof of the strengthened guard counts; covers both removed host-marker cases |
+| PB3 | `TopLevelCommands` drops index, adopt, guard, version, help, map and survey | Complete_OffersTheWordsValues[0]: `Assert.All` 7 of 14 not found, exactly those seven | red proof of the seven rewritten rows |
+| PB4 | `dydo check` exits 1 when `dydo/agents/` holds no file | fresh-installation.feature [0]-[3]; the kept scratch-file `FreshInit_PassesCheck` stays green | keyed to the removed row's input (no scratch file): the kept scenario covers it |
+| PB5 | `TopLevelCommands` also lists `task` | only TopLevelCommands_ExcludesRetiredWorkCommands | the `unsure` case's `only` |
+| PB6 | `TopLevelCommands` drops `complete` | only TopLevelCommands_ContainsCommand (`complete`) | the `unsure` case's `only` |
+| PB7 | a default warn nudge `git\s+worktree\s+add` | only Guard_DefaultNudges_WarnOnTheCommand (`digit worktree add foo`) | the `unsure` case's `only` |
+
+Afterwards `git checkout -- Commands Services` restored production code and `git status` was clean.
 
 ## Kept `unsure`
 
