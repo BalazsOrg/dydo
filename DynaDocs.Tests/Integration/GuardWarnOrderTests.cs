@@ -10,7 +10,7 @@ using DynaDocs.Commands;
 /// warn's once-only marker. When nothing hard-blocks, the warn blocks once and passes the rerun.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: DYD-386 warn nudges run after every hard block")]
+[Trait("Job", "contract: DYD-386 a warn runs only after every hard block, and a call's warns block and pass together")]
 public sealed class GuardWarnOrderTests : IntegrationTestBase
 {
     // Matches every command, so each hard block below meets a warn on the same call.
@@ -66,23 +66,16 @@ public sealed class GuardWarnOrderTests : IntegrationTestBase
     }
 
     // Each hard block on the shell path, with a warn matching the same command: the hard block wins
-    // every try, and the warn marker keeps whatever state it had before the first try.
+    // every try, and the warn marker keeps whatever state it had before the first try. Each block
+    // runs once, the marker states alternating, so both states meet blocks of every kind.
     [Theory]
     [InlineData("dydo init", true, "BLOCKED: Sub-agents may run only these dydo commands", false)]
-    [InlineData("dydo init", true, "BLOCKED: Sub-agents may run only these dydo commands", true)]
-    [InlineData("rm -rf /", false, "BLOCKED: Dangerous command pattern detected.", false)]
     [InlineData("rm -rf /", false, "BLOCKED: Dangerous command pattern detected.", true)]
     [InlineData("risky-gamma --now", false, "BLOCKED: " + BlockMessage, false)]
-    [InlineData("risky-gamma --now", false, "BLOCKED: " + BlockMessage, true)]
-    [InlineData("cd tools && echo hi", false, "BLOCKED: Don't chain cd / Set-Location", false)]
     [InlineData("cd tools && echo hi", false, "BLOCKED: Don't chain cd / Set-Location", true)]
     [InlineData("echo x > $OUT", false, "BLOCKED: Command contains bypass patterns", false)]
-    [InlineData("echo x > $OUT", false, "BLOCKED: Command contains bypass patterns", true)]
-    [InlineData("rm .claude/agent-memory/reviewer/MEMORY.md", false, "BLOCKED: Agents do not write host memory", false)]
     [InlineData("rm .claude/agent-memory/reviewer/MEMORY.md", false, "BLOCKED: Agents do not write host memory", true)]
     [InlineData("cat .env", false, "BLOCKED: Command references off-limits path.", false)]
-    [InlineData("cat .env", false, "BLOCKED: Command references off-limits path.", true)]
-    [InlineData("rm dydo.json", false, "BLOCKED: Path is protected", false)]
     [InlineData("rm dydo.json", false, "BLOCKED: Path is protected", true)]
     public async Task HardBlock_WithAMatchingWarn_RefusesEveryTryAndLeavesTheWarnMarker(
         string command, bool worker, string refusal, bool markerBefore)
@@ -150,20 +143,6 @@ public sealed class GuardWarnOrderTests : IntegrationTestBase
             decisions.Add(Decision(await GuardWithStdinAsync(Hook("dydo mode set overnight on"), ClaudeHook)));
 
         Assert.Equal(["deny", "allow", "deny", "allow"], decisions);
-    }
-
-    // DYD-503 through the hook: the shipped install warn passes only the same command retried; a
-    // different install after a warn is warned on its own.
-    [Fact]
-    public async Task InstallWarn_ADifferentInstallAfterAWarn_IsWarnedToo_AndEachRetryPasses()
-    {
-        await InitProjectAsync("none");
-        var decisions = new List<string>();
-
-        foreach (var command in new[] { "pnpm add left-pad", "pnpm add other", "pnpm add left-pad", "pnpm add other" })
-            decisions.Add(Decision(await GuardWithStdinAsync(Hook(command))));
-
-        Assert.Equal(["deny", "deny", "allow", "allow"], decisions);
     }
 
     [Fact]

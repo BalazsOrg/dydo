@@ -11,7 +11,7 @@ using DynaDocs.Commands;
 /// (`dydo guard --host claude`, Codex's `dydo guard`) carry the command in stdin JSON.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "trap: DYD-675 a command starting with @ was read as a response file")]
+[Trait("Job", "trap: DYD-675 a guard input starting with @ got a response-file error, not a verdict")]
 public class GuardAtCommandTests : IntegrationTestBase
 {
     private const string HarmlessHereString = "@'\nWrite-Output hi\n'@";
@@ -92,22 +92,7 @@ public class GuardAtCommandTests : IntegrationTestBase
         Assert.Equal("", result.Stderr);
     }
 
-    [Fact]
-    public async Task CliCommand_AtExistingFileOfOptions_IsNotSplicedIntoArguments()
-    {
-        // Spliced, these lines would turn the call into `--action write --path .env`, which the
-        // off-limits tier denies. They are never read.
-        await InitProjectAsync("none");
-        WriteFile("options.rsp", "--action\nwrite\n--path\n.env\n");
-
-        var result = await RunAsync(GuardCommand.Create(), "--command", "@" + Path.Combine(TestDir, "options.rsp"));
-
-        AssertNotResponseFileRead(result);
-        result.AssertExitCode(0);
-        Assert.Equal("", result.Stderr);
-    }
-
-    // ---- argv lane: --path and --action ----
+    // ---- argv lane: --path ----
 
     [Fact]
     public async Task CliPath_StartingWithAt_IsEvaluatedAsAPath()
@@ -118,29 +103,6 @@ public class GuardAtCommandTests : IntegrationTestBase
 
         AssertNotResponseFileRead(result);
         result.AssertExitCode(0);
-    }
-
-    [Fact]
-    public async Task CliPath_AtExistingFileOfOptions_IsNotSplicedIntoArguments()
-    {
-        await InitProjectAsync("none");
-        WriteFile("options.rsp", "--action\nwrite\n--path\n.env\n");
-
-        var result = await RunAsync(GuardCommand.Create(), "--action", "read", "--path", "@" + Path.Combine(TestDir, "options.rsp"));
-
-        AssertNotResponseFileRead(result);
-        result.AssertExitCode(0);
-    }
-
-    [Fact]
-    public async Task CliAction_StartingWithAt_IsNotAResponseFile()
-    {
-        await InitProjectAsync("none");
-
-        var result = await RunAsync(GuardCommand.Create(), "--action", "@nofile", "--path", "src/file.cs");
-
-        AssertNotResponseFileRead(result);
-        Assert.Contains(result.ExitCode, new[] { 0, 2 });
     }
 
     // ---- hook lanes: the command is stdin JSON, never argv ----

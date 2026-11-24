@@ -9,7 +9,7 @@ using DynaDocs.Services;
 /// including Codex's real apply_patch shape: the whole patch in tool_input.command, no file_path.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: new-file nudges, the new-file match lane of dydo.json nudges")]
+[Trait("Job", "contract: dydo-commands-core.md, a new-file nudge matches a file a tool is about to create, after the path tiers")]
 public class GuardNewFileNudgeIntegrationTests : IntegrationTestBase
 {
     private const string ToolsPattern = "^tools/(?!one-off/)";
@@ -157,6 +157,24 @@ public class GuardNewFileNudgeIntegrationTests : IntegrationTestBase
 
     private static NudgeConfig AnyNewFileBlock() =>
         new() { Pattern = ".", Message = AnyPathMessage, Severity = "block", Match = "new-file" };
+
+    // A patch the grammar cannot read names no target, and its file_path is never one: nothing
+    // reaches the any-new-file block.
+    [Theory]
+    [Trait("Job", "contract: DYD-396 a patch line is a target only by Codex's patch grammar")]
+    [InlineData(null)]
+    [InlineData("not a patch")]
+    [InlineData("*** Add File:")]
+    [InlineData("*** Update File:   \r\n*** Delete File:")]
+    public async Task UnparseablePatch_NamesNoTarget(string? patch)
+    {
+        await InitWithNudges(AnyNewFileBlock());
+
+        var result = await GuardWithStdinAsync(Payload("apply_patch", new { file_path = "tools/x.py", command = patch }));
+
+        result.AssertPreToolUseAllowed();
+        Assert.DoesNotContain(AnyPathMessage, result.Stderr);
+    }
 
     [Theory]
     [InlineData(null, ".env", "off-limits")]

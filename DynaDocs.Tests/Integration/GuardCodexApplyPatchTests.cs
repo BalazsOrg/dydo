@@ -49,8 +49,6 @@ public class GuardCodexApplyPatchTests : IntegrationTestBase
 
     [Theory]
     [InlineData("lf", null)]
-    [InlineData("crlf", null)]
-    [InlineData("lf", "wkr-1")]
     [InlineData("crlf", "wkr-1")]
     public async Task UpdateFileIntoCodexMemories_Denied(string newline, string? agentId)
     {
@@ -97,15 +95,13 @@ public class GuardCodexApplyPatchTests : IntegrationTestBase
         result.AssertStderrContains("protected");
     }
 
-    [Theory]
-    [InlineData(null)]
-    [InlineData("wkr-1")]
-    public async Task UpdateFileOfOffLimitsPath_Denied(string? agentId)
+    [Fact]
+    public async Task UpdateFileOfOffLimitsPath_Denied()
     {
         await InitProjectAsync("none");
 
         var result = await GuardWithStdinAsync(CodexApplyPatch(
-            Patch("\n", "*** Update File: .env", "@@", "-A=1", "+A=2"), agentId));
+            Patch("\n", "*** Update File: .env", "@@", "-A=1", "+A=2")));
 
         result.AssertPreToolUseDenied();
         result.AssertStderrContains("off-limits");
@@ -126,7 +122,6 @@ public class GuardCodexApplyPatchTests : IntegrationTestBase
 
     [Theory]
     [InlineData("lf", null)]
-    [InlineData("crlf", null)]
     [InlineData("crlf", "wkr-1")]
     public async Task UpdateFileOfOrdinaryFile_Allowed(string newline, string? agentId)
     {
@@ -145,8 +140,6 @@ public class GuardCodexApplyPatchTests : IntegrationTestBase
     // CODEX_HOME through '..', or from CODEX_HOME itself.
     [Theory]
     [InlineData("sibling", "lf", null)]
-    [InlineData("sibling", "crlf", "wkr-1")]
-    [InlineData("codex-home", "crlf", null)]
     [InlineData("codex-home", "lf", "wkr-1")]
     public async Task RelativeUpdateFileIntoCodexMemories_Denied(string from, string newline, string? agentId)
     {
@@ -167,8 +160,6 @@ public class GuardCodexApplyPatchTests : IntegrationTestBase
     // collapsed, as Codex would apply it there.
     [Theory]
     [InlineData("src", "*** Delete File: ../dydo/index.md", "lf", null)]
-    [InlineData("src", "*** Delete File: ../dydo/index.md", "crlf", "wkr-1")]
-    [InlineData("dydo", "*** Update File: index.md", "crlf", null)]
     [InlineData("dydo", "*** Update File: index.md", "lf", "wkr-1")]
     public async Task OmittedCwd_RelativeTargetResolvesAgainstProcessDirectory_Denied(
         string processDir, string header, string newline, string? agentId)
@@ -200,5 +191,40 @@ public class GuardCodexApplyPatchTests : IntegrationTestBase
             Patch(Newline(newline), "*** Update File: notes.md", "@@", quoted, "-old", "+new"), agentId));
 
         result.AssertPreToolUseAllowed();
+    }
+
+    // Codex's grammar decides which lines are targets: a header line, trimmed, outside a hunk body;
+    // an Add File body line starts with '+', an Update File hunk line with ' ', '+' or '-'. A
+    // refusal names the protected target it met, so a body line misread as a header shows.
+    private const string AfterAQuotingHunk = "*** Update File: notes.md\n@@ example\n{0}\n-old\n+new\n*** End of File\n*** Delete File: dydo.json";
+
+    [Theory]
+    [Trait("Job", "contract: DYD-396 a patch line is a target only by Codex's patch grammar")]
+    [InlineData("*** Environment ID: env-1\n*** Delete File: dydo/index.md", "lf", "index.md")]
+    [InlineData("*** Add File: notes.txt\n+x\n  *** Delete File: dydo/index.md  ", "lf", "index.md")]
+    [InlineData("*** Delete File: dydo.json\t", "lf", "dydo.json")]
+    [InlineData("*** Add File: notes.txt\n+*** Delete File: dydo/index.md", "lf", null)]
+    [InlineData(" *** Update File: dydo/index.md", "lf", "dydo.json")]
+    [InlineData(" *** Update File: dydo/index.md", "crlf", "dydo.json")]
+    [InlineData(" *** Delete File: dydo/index.md", "lf", "dydo.json")]
+    [InlineData("+*** Update File: dydo/index.md", "crlf", "dydo.json")]
+    [InlineData("-*** Add File: dydo/index.md", "lf", "dydo.json")]
+    public async Task PatchGrammar_DecidesWhichLinesAreTargets(string lines, string newline, string? refusedTarget)
+    {
+        await InitProjectAsync("none");
+        var body = lines.StartsWith("*** ", StringComparison.Ordinal) ? lines : string.Format(AfterAQuotingHunk, lines);
+
+        var result = await GuardWithStdinAsync(CodexApplyPatch(Patch(Newline(newline), body.Split('\n'))));
+
+        if (refusedTarget == null)
+        {
+            result.AssertPreToolUseAllowed();
+            return;
+        }
+        var reason = result.AssertPreToolUseDenied();
+        Assert.Contains("protected", reason);
+        Assert.Contains(refusedTarget, reason);
+        if (refusedTarget == "dydo.json")
+            Assert.DoesNotContain("index.md", reason);
     }
 }

@@ -192,7 +192,7 @@ public class GuardCommandTests : GuardHookTestBase
     // Forward-slash UNC forms are absolute on every platform; backslash ones and a share root's '..'
     // are Windows forms, run where they mean a UNC path.
     [SkippableTheory]
-    [Trait("Job", "edge: DYD-396 a patch target on a UNC checkout keeps its share root through '..'")]
+    [Trait("Job", "edge: DYD-396 a patch target on a UNC checkout is judged against the share, '..' included")]
     [InlineData("//server/share/repo", "dydo.json", true, false)]
     [InlineData("//server/share/repo/src", "../dydo/_system/x.md", true, false)]
     [InlineData(@"\\server\share\repo", "dydo.json", true, true)]

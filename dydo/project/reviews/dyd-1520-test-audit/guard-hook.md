@@ -15,10 +15,15 @@ order, new-file nudges, host memory and the Claude guard wiring). One line per c
 
 | Verdict | Cases |
 |---|---|
-| keep | 97 |
+| keep | 98 |
 | rewrite | 147 |
-| remove | 44 |
+| remove | 43 |
 | keep `unsure` | 0 |
+
+Three removals are recorded but not applied: `DeleteFileOfProtectedIndex_Denied[1]`, `[3]` and
+`[4]`. Their evidence holds (PB01, PB03, PB04), but the host's permission classifier refused the
+edit that deletes those protected-file rows. They stay in the candidate for the captain to
+decide.
 
 Most rewrites are tag fixes. A tag is true only when it is true of every case it covers, and
 seven class tags were not:
@@ -44,7 +49,7 @@ Four rewrites change a body:
 - The three `HookInputExtensionsTests` methods: a unit test of the patch parser, which the hook
   reaches cheaply. They move to `GuardCodexApplyPatchTests` as Codex payloads.
 
-The 44 removals:
+The 43 removals:
 
 - 16 `GuardIntegrationTests` cases. These are role-era read and write must-allows, a duplicate
   read, two zero-kill CLI and dydo must-allows, the git stash and merge must-allows for rules DR
@@ -54,7 +59,13 @@ The 44 removals:
   `GuardCommandTests` covers.
 - 3 `GuardAtCommandTests` and 4 `GuardAtCommandProcessTests` cases that repeated a stricter
   kept case.
-- 1 `ClaudeGuardWiringTests` fact that the Gherkin scenario walks more strictly.
+
+`ClaudeGuardWiringTests.RejoiningClaude_ClearsTheReportedMissingGuard` is kept. The Gherkin
+scenario walks the same journey more strictly, but it runs dydo as a child process
+(`CliScenario.RunProcessAsync`), so mutation cannot see it. In a run that mutated only the 19
+mutants the fact alone killed, with coverage analysis off and only the scenario as the test,
+all 19 survived. That includes the warning string the scenario asserts exactly. Proving the
+scenario covers them would take 19 planted bugs.
 
 ## How redundancy was shown
 
@@ -119,13 +130,9 @@ or CI run is available to this hop. Their red check is owed to `guard-windows`.
 
 The baseline is Stryker.NET 5.1.0 over the whole product at `4fff1ad3`, filtered to this batch,
 with an 11.52% score. Production code is the same at `3f248ab5`. `redundancy.py --remove` on
-the 44 removals plus the replaced parser tests lists 25 mutants that would lose their last
-recorded killer:
-
-- 19 that only `RejoiningClaude_ClearsTheReportedMissingGuard` killed. Stryker found the
-  scenario but captured no coverage for it, so it ran the scenario against no mutant. A separate
-  run with coverage analysis off checks these against the scenario.
-- 6 recorded against one removed case. Stryker bails at a mutant's first failing test, so
+the removals plus the replaced parser tests lists 6 mutants that would lose their last recorded
+killer (25 while the Rejoining fact was a candidate; the 19 above were its own). All 6 are
+recorded against one removed case. Stryker bails at a mutant's first failing test, so
   `killedBy` names one killer where several fail: install-nudge pinning, `GuardCommand.cs`
   lines 967 and 968; three patch-header strings, `HookInputExtensions.cs` lines 37 to 39; and
   the host-memory word, `BashCommandAnalyzer.cs` line 99. Each one's kept cases run the same

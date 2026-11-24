@@ -7,7 +7,7 @@ using System.Diagnostics;
 /// a '@' text reaching `dydo guard` must be shown to survive the real parse, not only a test's.
 /// </summary>
 [Collection("EndToEnd")]
-[Trait("Job", "edge: DYD-675 the @ argument through a real dydo process")]
+[Trait("Job", "edge: DYD-675 text starting with @ through Program.cs's own parse in a real dydo process")]
 public class GuardAtCommandProcessTests : IDisposable
 {
     private readonly string _projectDir;
@@ -51,17 +51,15 @@ public class GuardAtCommandProcessTests : IDisposable
         return (process.ExitCode, stdout.Result, stderr.Result);
     }
 
-    [Theory]
-    [InlineData("@'\nWrite-Output hi\n'@", 0, "")]
-    [InlineData("@nofile", 0, "")]
-    [InlineData("@'\ngit push --force origin main\n'@", 2, "Force push")]
-    public void GuardCommand_TextStartingWithAt_GetsAVerdictNotAResponseFileError(string command, int exitCode, string blockedFor)
+    // The refusal's exit 2 must survive Program.cs too: a host may read exit 1 as a non-blocking error.
+    [Fact]
+    public void GuardCommand_TextStartingWithAt_GetsAVerdictNotAResponseFileError()
     {
-        var result = Run("", "guard", "--command", command);
+        var result = Run("", "guard", "--command", "@'\ngit push --force origin main\n'@");
 
         Assert.DoesNotContain("Response file", result.Stderr);
-        Assert.Equal(exitCode, result.ExitCode);
-        Assert.Contains(blockedFor, result.Stderr);
+        Assert.Equal(2, result.ExitCode);
+        Assert.Contains("Force push", result.Stderr);
     }
 
     [Fact]
@@ -74,21 +72,6 @@ public class GuardAtCommandProcessTests : IDisposable
 
         Assert.Equal(0, result.ExitCode);
         Assert.Equal("", result.Stderr);
-    }
-
-    [Theory]
-    [InlineData("--path")]
-    [InlineData("--action")]
-    public void GuardPathAndAction_TextStartingWithAt_IsNotAResponseFile(string option)
-    {
-        var arguments = option == "--path"
-            ? new[] { "guard", "--action", "read", "--path", "@nofile" }
-            : ["guard", "--action", "@nofile", "--path", "src/file.cs"];
-
-        var result = Run("", arguments);
-
-        Assert.DoesNotContain("Response file", result.Stderr);
-        Assert.Contains(result.ExitCode, new[] { 0, 2 });
     }
 
     [Fact]

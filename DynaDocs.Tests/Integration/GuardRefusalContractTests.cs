@@ -6,7 +6,7 @@ namespace DynaDocs.Tests.Integration;
 /// exits 0 with one deny-decision object on stdout, which Codex and Claude Code both honour.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: LC-1021 a PreToolUse refusal is exit 0 with one deny object")]
+[Trait("Job", "contract: LC-1021 the hook's answer: a PreToolUse refusal is exit 0 with one ASCII deny object, an allow is exit 0 with empty stdout, another event keeps exit 2")]
 public class GuardRefusalContractTests : IntegrationTestBase
 {
     private static string Hook(string tool, string toolInput, string? eventName = "PreToolUse") =>

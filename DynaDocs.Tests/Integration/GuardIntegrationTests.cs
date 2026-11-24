@@ -7,12 +7,12 @@ using DynaDocs.Commands;
 /// need no claim, role or must-read setup.
 /// </summary>
 [Collection("Integration")]
-[Trait("Job", "contract: files-off-limits.md tiers, DR 045 §10, issue #64 indirect dydo, the cd-chain coaching")]
 public class GuardIntegrationTests : IntegrationTestBase
 {
     #region Off-Limits
 
     [Fact]
+    [Trait("Job", "contract: guard-system-paths.md, an off-limits path blocks every operation, CLI lane included")]
     public async Task Guard_OffLimitsPath_Blocks()
     {
         await InitProjectAsync("none");
@@ -23,6 +23,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 045 §10, a CLI edit of a protected path is refused")]
     public async Task Guard_DydoSystemFile_Blocks()
     {
         await InitProjectAsync("none");
@@ -33,31 +34,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
-    public async Task Guard_DydoSystemFile_ReadAllows()
-    {
-        await InitProjectAsync("none");
-
-        // …and read, because every entry prompt orders agents to read it (DR 045 §10).
-        var result = await GuardAsync("read", "dydo/index.md");
-
-        result.AssertSuccess();
-    }
-
-    [Fact]
-    public async Task Guard_StdinHook_DirectReadOffLimits_Blocks()
-    {
-        await InitProjectAsync("none");
-
-        // Off-limits binds on every direct file op, reads included, not just writes.
-        var json = "{\"session_id\":\"" + TestSessionId
-            + "\",\"tool_name\":\"Read\",\"tool_input\":{\"file_path\":\"config/secrets.json\"}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseDenied();
-    }
-
-
-    [Fact]
+    [Trait("Job", "contract: dydo-commands-core.md, diagnostic mode exits 0 for an ordinary path")]
     public async Task Guard_AllowedPath_Passes()
     {
         await InitProjectAsync("none");
@@ -72,6 +49,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     #region Protected Tier - readable by every tool, writable by none (DR 045 §10)
 
     [Theory]
+    [Trait("Job", "contract: DR 045 §10, every tool may read a protected path")]
     [InlineData("dydo/index.md")]
     [InlineData("dydo/files-off-limits.md")]
     [InlineData("dydo.json")]
@@ -79,6 +57,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     {
         await InitProjectAsync("none");
 
+        // Read, because every entry prompt orders agents to read these (DR 045 §10).
         var argMode = await GuardAsync("read", path);
         var hookMode = await GuardWithStdinAsync(
             $"{{\"session_id\":\"{TestSessionId}\",\"tool_name\":\"Read\",\"tool_input\":{{\"file_path\":\"{path}\"}}}}");
@@ -88,6 +67,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 045 §10, no write tool writes a protected path, apply_patch included")]
     [InlineData("Edit", "dydo/index.md")]
     [InlineData("Write", "dydo/files-off-limits.md")]
     [InlineData("NotebookEdit", "dydo.json")]
@@ -105,6 +85,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 045 §10, no shell operation mutates a protected path")]
     [InlineData("sed -i 's/a/b/' dydo/index.md")]
     [InlineData("echo broken > dydo/files-off-limits.md")]
     [InlineData("rm dydo.json")]
@@ -132,6 +113,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: DR 045 §10, a shell read of a protected path is allowed")]
     [InlineData("cat dydo/index.md")]
     [InlineData("head -n 5 dydo.json")]
     public async Task Guard_ProtectedPath_BashReadAllowed(string command)
@@ -145,6 +127,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "contract: DR 045 §10, the protected tier leaves ordinary source writable on both lanes")]
     public async Task Guard_UnprotectedPath_WriteToolsStillPass()
     {
         await InitProjectAsync("none");
@@ -161,82 +144,10 @@ public class GuardIntegrationTests : IntegrationTestBase
 
     #endregion
 
-    #region Reads allowed unless off-limits
+    #region Bash Commands (CLI lane)
 
     [Fact]
-    public async Task Guard_ReadRootFile_Allows()
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardAsync("read", "CLAUDE.md");
-
-        result.AssertSuccess();
-    }
-
-
-    [Fact]
-    public async Task Guard_ReadSourceFile_Allows()
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardAsync("read", "src/code.cs");
-
-        result.AssertSuccess();
-    }
-
-
-    [Fact]
-    public async Task Guard_ReadNonAgentWorkflow_Allows()
-    {
-        await InitProjectAsync("none");
-
-        var result = await GuardAsync("read", "docs/workflow.md");
-
-        result.AssertSuccess();
-    }
-
-    #endregion
-
-    #region Stdin Hook Mode
-
-    [Fact]
-    public async Task Guard_StdinHook_ReadBootstrapFile_Allows()
-    {
-        await InitProjectAsync("none");
-
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Read\",\"tool_input\":{\"file_path\":\"CLAUDE.md\"}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    [Fact]
-    public async Task Guard_StdinHook_Write_Allows()
-    {
-        await InitProjectAsync("none");
-
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"src/test.cs\"}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    #endregion
-
-    #region Bash Commands (Hook Mode)
-
-    [Fact]
-    public async Task Guard_CommandOption_Parses()
-    {
-        await InitProjectAsync("none");
-
-        var cmd = GuardCommand.Create();
-        var result = await RunAsync(cmd, "--command", "dotnet build");
-
-        result.AssertSuccess();
-    }
-
-    [Fact]
+    [Trait("Job", "trap: issue 0302, a CLI --command never reached the shell analyzer")]
     public async Task Guard_CommandOption_AppliesShellAnalysis()
     {
         // Issue 0302: arg mode carries no tool name, yet a CLI --command is a shell command by
@@ -250,6 +161,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Fact]
+    [Trait("Job", "trap: issue 0302, a CLI --command skipped the off-limits check")]
     public async Task Guard_CommandOption_BlocksOffLimitsReference()
     {
         await InitProjectAsync("none");
@@ -265,6 +177,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     #region Indirect Dydo Invocation
 
     [Theory]
+    [Trait("Job", "contract: issue #64, the shipped nudges block every indirect dydo invocation")]
     [InlineData("npx dydo check")]
     [InlineData("npx -q dydo check")]
     [InlineData("npx --yes dydo check")]
@@ -290,6 +203,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "trap: issue #64, an indirect-dydo nudge blocked an ordinary npx, dotnet or interpreter call")]
     [InlineData("npx prettier --write .")]
     [InlineData("dotnet build")]
     [InlineData("dotnet run")]
@@ -312,26 +226,18 @@ public class GuardIntegrationTests : IntegrationTestBase
         result.AssertPreToolUseAllowed();
     }
 
+    // No cd in front: the cd-chain rule refuses that command on its own, so only the nudge's
+    // separator arm can refuse this one, and the reason names it.
     [Fact]
-    public async Task Guard_DirectDydo_StillWorks()
-    {
-        await InitProjectAsync("none");
-
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"dydo check\"}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    [Fact]
+    [Trait("Job", "contract: issue #64, an indirect dydo invocation after a command separator is blocked")]
     public async Task Guard_ChainedIndirectDydo_StillCaught()
     {
         await InitProjectAsync("none");
 
-        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cd /tmp && npx dydo check\"}}";
+        var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"git status && npx dydo check\"}}";
         var result = await GuardWithStdinAsync(json);
 
-        result.AssertPreToolUseDenied();
+        Assert.Contains("Don't use npx to run dydo", result.AssertPreToolUseDenied());
     }
 
     #endregion
@@ -339,17 +245,20 @@ public class GuardIntegrationTests : IntegrationTestBase
     #region Coaching: cd Compound
 
     [Fact]
+    [Trait("Job", "contract: guard-system-bash.md, a chained cd is refused with the command to run instead")]
     public async Task Guard_CdGitCompound_BlocksWithCoachingMessage()
     {
         await InitProjectAsync("none");
 
         var json = "{\"session_id\":\"" + TestSessionId + "\",\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cd /c/Users/User/Desktop/Projects && git diff --name-only\"}}";
-        var result = await GuardWithStdinAsync(json);
+        var reason = (await GuardWithStdinAsync(json)).AssertPreToolUseDenied();
 
-        result.AssertPreToolUseDenied();
+        Assert.Contains("BLOCKED: Don't chain cd / Set-Location", reason);
+        Assert.Contains("Otherwise just run: git diff --name-only", reason);
     }
 
     [Fact]
+    [Trait("Job", "contract: guard-system-bash.md, a chained cd is refused")]
     public async Task Guard_CdNonGitCompound_Blocked()
     {
         await InitProjectAsync("none");
@@ -365,6 +274,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     #region Search Tools (Glob/Grep)
 
     [Theory]
+    [Trait("Job", "contract: guard-system-paths.md, only the off-limits tier refuses a search")]
     [InlineData("Glob")]
     [InlineData("Grep")]
     public async Task Guard_SearchTool_WithPath_Allows(string toolName)
@@ -378,6 +288,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: guard-system-paths.md, only the off-limits tier refuses a search")]
     [InlineData("Glob")]
     [InlineData("Grep")]
     public async Task Guard_SearchTool_NoPath_Allows(string toolName)
@@ -391,6 +302,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "contract: guard-system-paths.md, an off-limits path blocks a search")]
     [InlineData("Glob")]
     [InlineData("Grep")]
     public async Task Guard_SearchTool_OffLimitsPath_Blocks(string toolName)
@@ -404,6 +316,7 @@ public class GuardIntegrationTests : IntegrationTestBase
     }
 
     [Theory]
+    [Trait("Job", "trap: DYD-96 a '..' path escaped the off-limits block its direct form meets")]
     [InlineData("Read", "file_path")]
     [InlineData("Glob", "path")]
     public async Task Guard_NonWorkerTraversalPath_MatchesDirectOffLimitsBlock(
@@ -428,26 +341,9 @@ public class GuardIntegrationTests : IntegrationTestBase
     #region Git commands
 
     [Theory]
-    [InlineData("git stash")]
-    [InlineData("git stash pop")]
-    [InlineData("git stash apply")]
-    [InlineData("git merge feature-branch")]
-    [InlineData("git merge --no-ff main")]
-    public async Task Guard_GitStashAndMerge_NotBlocked(string command)
-    {
-        await InitProjectAsync("none");
-
-        var json = $"{{\"session_id\":\"{TestSessionId}\",\"tool_name\":\"Bash\",\"tool_input\":{{\"command\":\"{command}\"}}}}";
-        var result = await GuardWithStdinAsync(json);
-
-        result.AssertPreToolUseAllowed();
-    }
-
-    [Theory]
+    [Trait("Job", "contract: guard-system-enforcement.md, only the named destructive and merge-route git calls are refused")]
     [InlineData("git status")]
     [InlineData("git commit -m 'test'")]
-    [InlineData("git diff")]
-    [InlineData("git log")]
     public async Task Guard_OtherGitCommands_NotBlocked(string command)
     {
         await InitProjectAsync("none");
@@ -464,6 +360,7 @@ public class GuardIntegrationTests : IntegrationTestBase
 
     // Claude Code's built-in plan mode is refused: dydo plans live in the repo or Linear.
     [Theory]
+    [Trait("Job", "contract: guard-system-enforcement.md, Claude Code's plan-mode tools are blocked")]
     [InlineData("EnterPlanMode")]
     [InlineData("ExitPlanMode")]
     public async Task Guard_PlanModeTools_AreRefused(string tool)
