@@ -1,6 +1,6 @@
 # Engineering
 
-13 skills for the craft: diagnosing, shaping and designing code.
+14 skills for the craft: diagnosing, shaping, designing and testing code.
 
 - **codebase-design** (model-invoked): Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.
 - **create-formal-verification-skill** (user-invoked): Generate a project-local skill that formally verifies the code where a bug costs the most and tests reach the least, in any language, with whichever verification tool fits.
@@ -13,5 +13,6 @@
 - **pr** (model-invoked): Use when writing a PR body.
 - **prototype** (model-invoked): Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
 - **statechart** (user-invoked): Draw a checked TLA+ model and its shortest bug paths as a statechart.
+- **tdd** (model-invoked): Which tests to write, which earn a place in the suite, and how to prove them. Use when a change needs tests, a bug needs a failing reproduction, a test is up for the suite, or a review reads tests.
 - **verify-dydo** (model-invoked): Verify DynaDocs CLI and guard journeys in owned disposable projects, with retained evidence. Use for runtime proof, release inquisition or a mapped regression.
 - **wizard** (model-invoked): User-only setup, credentials or cutover steps need a repeatable interactive bash procedure; the Enablement captain uses this method.

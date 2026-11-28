@@ -89,7 +89,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
 - **Agent** - a native-platform instance of a spawned role: a crew member, or a Ticket Captain that
   the coordinator or the user's session keeps in flight.
 - **Method** - a plain skill used inside other work, carrying no identity of its own: co-thinker,
-  grilling, wayfinder, domain-modeling, codebase-design, diagnosing-bugs, prototype, show-me,
+  grilling, wayfinder, domain-modeling, codebase-design, diagnosing-bugs, tdd, prototype, show-me,
   writing-for-agents, writing-for-humans, retro, wizard, overnight-mode, maintain-verification-skill,
   maintain-formal-verification-skill. These load only when the user asks: to-project, to-ticket,
   in-your-own-words, catch-up, teach, walkthrough (also at the map holder's Milestone and landing steps) and handoff (also
