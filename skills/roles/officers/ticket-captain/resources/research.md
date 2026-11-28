@@ -1,6 +1,6 @@
 # Research
 
-Your ticket's result is an answer that other work waits on: a fact, or a call that another captain may not decide. Deciding the answer is your job, unless the call is the user's.
+Your ticket's result is an answer: a fact, or a call that another captain may not decide. Deciding the answer is your job, unless the call is the user's.
 
 **What you owe when the ticket closes**
 
@@ -8,9 +8,10 @@ On your ticket, in this order:
 
 1. The answer, first.
 2. Each claim the answer rests on, with its source, a path at its commit or a link, and the exact passage. You opened every passage yourself.
-3. What stayed unsettled, and why.
-4. Where you looked: every source you searched, the ones that held nothing included.
-5. For a call, the reason you decided it as you did, or the user's question made ready by "A call for the user".
+3. Where sources disagreed: what each says, which one governs, and why.
+4. What stayed unsettled, and why.
+5. Where you looked: every source you searched, the ones that held nothing included, and each one you left out, with the reason.
+6. For a call, the reason you decided it as you did, or the user's question made ready by "A call for the user".
 
 **Take the question**
 
@@ -18,9 +19,9 @@ Restate the question in one sentence, and say what would count as its answer.
 
 **Research first**
 
-1. Look where the answer may already be: the user's recorded words, the truth documents your brief names, the statechart, the spec, decision records, other docs, the code and its tests, git history, the tickets, and outside sources such as official docs, published release notes, standards and library source. Mark each source in or out, with a reason.
+1. Look where the answer may already be: the user's recorded words, the truth documents your brief names, the statechart, the spec, decision records, other docs, the code and its tests, git history, the tickets, and outside sources such as official docs, published release notes, standards and library source.
 2. Read a governing doc on the branch the waiting work targets as well as on yours: a branch can lag.
-3. For a wide search, send one native helper to each source in play, side by side, with the helper prompt below. Search a lone source yourself.
+3. A wide search can go to native helpers side by side, one source each, with the helper prompt below.
 4. Open the passage behind every claim your answer rests on, and confirm that it says what you think.
 5. Take each claim from the source that owns it. A doc or report that describes code, data or another system is a lead to that thing, not its proof.
 6. Where sources disagree, the truth wins in the order "While you work" in the `ticket-captain` skill gives. Where they are silent, mark the point unsettled. Never reason your way to a fact.
@@ -42,13 +43,13 @@ Paste this into each helper's prompt, with its brackets filled:
 Take the first case that fits. A call goes to the user only when neither of the first two fits:
 
 1. The truth, as in "While you work" in the `ticket-captain` skill, settles the call: that is the answer, even when the call looks like the user's.
-2. The call is another agent's job, such as a reviewer's ruling on a nit or a Wayfinding captain's cut: ask the agent that holds that job, on its thread with `t3_thread_send`. When none holds it, open a sub-ticket of your ticket for it (for a nit, a Review ticket that asks only for its ruling) and dispatch a fresh agent onto it by [Brief](brief.md); if it comes back without its result, dispatch a fresh agent again. Wait for the result, and answer with it, a FAIL and its blockers included.
+2. The call is another agent's job, such as a reviewer's ruling on a nit or a Wayfinding captain's cut: ask the agent that holds that job, on its thread with `t3_thread_send`. When none holds it, open a sub-ticket of your ticket for it (for a nit, a Review ticket that asks only for its ruling) and dispatch a fresh agent onto it by [Brief](brief.md); if it comes back without its result, go on as [Ask](ask.md) says for a Question that comes back without its answer. Wait for the result, and answer with it, a FAIL and its blockers included.
 3. The call cannot be undone, or a record keeps it for the user: decide nothing, and go by "A call for the user".
 4. Otherwise decide it yourself, and give your reason.
 
-A fact needs only the first case: the sources settle it, or the answer says what stayed unsettled.
+A fact needs only the first case.
 
-Write what you owe on your ticket, set it Done, and end with `done <KEY>: <the answer in a few words>`.
+Write what you owe on your ticket. When the answer meets the contract, set the ticket Done and end with `done <KEY>: <the answer in a few words>`. When what the contract needs stays unsettled, leave the ticket open and end with `handed back <KEY>: <what stayed unsettled>`.
 
 **A call for the user**
 
