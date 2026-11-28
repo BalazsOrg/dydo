@@ -5,13 +5,8 @@ type: reference
 
 # Glossary
 
-Terms specific to this repository's documentation. The dydo product's locked Linear, knowledge, and
-execution vocabulary lives in the [dydo glossary](./reference/dydo-glossary.md).
-
-Keep it around 15-20 terms max. Each term is an alphabetized `##` heading, its anchor the term's
-kebab-case name, followed by its definition; link to one as `[Term](./glossary.md#term-name)`. When
-several words exist for one concept, pick one and list the others on an `_Avoid_:` line under the
-term.
+Universal terms for this repository. Read this glossary, then only the area glossaries below that
+your topic touches. The `domain-modeling` skill holds the format and placement rules.
 
 ## HCRAP
 
@@ -31,14 +26,14 @@ the documentation model requires one.
 Just-In-Time Information: agents navigate to the context needed for the current ticket instead of reading
 the entire repository upfront.
 
-## Off-Limits
-
-Patterns in `dydo/files-off-limits.md` that block agent access to secrets, credentials, and protected
-system files. Explicit allow rules can carve narrowly scoped exceptions.
-
 ## Template Addition
 
 Retired with the compiler by Decision 049. Customization is a direct edit to the skill folder; a project document linked under ## Must-Reads carries shared context.
+
+## Area glossaries
+
+- [dydo Glossary](./reference/dydo-glossary.md) - how work is named: the Linear, knowledge and execution vocabulary; its terms are locked
+- [Guard Glossary](./glossary-guard.md) - the guard: which paths agents may read or write, and the rules that warn them
 
 ## Related
 

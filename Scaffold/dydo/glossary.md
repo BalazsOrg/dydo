@@ -9,6 +9,15 @@ Definitions of domain-specific terms used throughout this project.
 Only the most important, frequently used terms and concepts should be placed here.
 It's purpose is to provide a quick context for the agents reading the docs about terms which are not immediately obvious.
 Keep it around 15-20 terms max, don't make this an encylopedia, the rest of the docs are discoverable through normal search.
+Read this glossary, then only the area glossaries below that your topic touches.
+
+---
+
+## Area glossaries
+
+- [dydo Glossary](./reference/dydo-glossary.md) - how work is named; its terms are locked
+
+<!-- Add one line per area glossary when you create it: its name linked to ./glossary-<area>.md, then what it covers. -->
 
 ---
 

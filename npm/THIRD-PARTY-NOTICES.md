@@ -12,7 +12,6 @@ header in the canonical `skills/<category>/<name>/` folders (`engineering/`,
 |---|---|
 | `codebase-design` | `skills/engineering/codebase-design/SKILL.md`, `skills/engineering/codebase-design/resources/deepening.md`, `skills/engineering/codebase-design/resources/design-it-twice.md` |
 | `diagnosing-bugs` | `skills/engineering/diagnosing-bugs/SKILL.md` |
-| `domain-modeling` | `skills/engineering/domain-modeling/SKILL.md` |
 | `grill-me` | `skills/productivity/grill-me/SKILL.md` |
 | `grilling` | `skills/productivity/grilling/SKILL.md` |
 | `handoff` | `skills/productivity/handoff/SKILL.md` |
@@ -41,6 +40,13 @@ The `pr` files above retain the pinned upstream baseline, credits and metadata, 
 independent-review and glossary-path adaptations in `SKILL.md`; their attribution is recorded here
 rather than inserted into the skill. Upstream `CREDITS.md` preserves the attribution to Dex Horthy’s
 `show-me` material.
+
+The following are adapted from commit `6f7f7831a625f040a8e06a0e7954826b87ce775a`. Each adapted file
+records the attribution in its own header.
+
+| Upstream skill | Adapted in |
+|---|---|
+| `domain-modeling` and its `GLOSSARY-FORMAT.md` | `skills/engineering/domain-modeling/SKILL.md`, `skills/engineering/domain-modeling/resources/glossary-format.md` |
 
 MIT License
 
