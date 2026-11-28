@@ -8,7 +8,7 @@ Your ticket is a change. How you build it is yours. It is done when you have see
 - Proof on your last commit that it works the way it will be used: run the command, drive the app, open the page.
 - Every check green. Fix a failing check in the code; never weaken or skip it. A test goes when `/tdd` or a decision record says it goes; say why in the commit.
 - Each test you add to the suite, move or rewrite, meeting `/tdd`, with its red check on the ticket.
-- Your result: your last commit, named `<KEY> <hop>: <what>`, where `<hop>` is `implement`, `fix` or `merge`; its SHA, and the commands that prove it with what each printed. A receipt for the same tree counts.
+- Your result: your last commit, named `<KEY> <hop>: <what>`, where `<hop>` is `implement`, `fix` or `merge`; its SHA, and the commands that prove it with what each printed. A receipt for the same tree counts while no later change puts it in doubt.
 
 **The rules the change meets**
 
@@ -21,9 +21,9 @@ Your ticket is a change. How you build it is yours. It is done when you have see
 
 Start from a failing reproduction, by "A bug starts red" in `/tdd`.
 
-**A removal**
+**Dead code**
 
-Show that nothing calls the code you remove: a reference search of the repository, and for a public API or an entry point, its outside callers too. Its tests go by the check line above.
+Show that nothing calls the dead code you remove: a reference search of the repository, and for a public API or an entry point, its outside callers too. Its tests go by the check line above.
 
 **A fix after review**
 
@@ -31,7 +31,7 @@ Fix every blocker your Fix ticket lists, and nothing else.
 
 **A merge conflict**
 
-Resolve it as a merge commit on the ticket's branch. A resolution that refactors leaves the code no worse than either side. A hunk that needs a decision neither side made is a call: settle it by "While you work" in `/ticket-captain`.
+Resolve it as a merge commit on the ticket's branch. A resolution that refactors leaves the code no worse than either side. A hunk that needs a decision neither side made is a call: decide it when it is obvious and you can undo it, and otherwise pass it up to your officer.
 
 **Often, not always**
 
