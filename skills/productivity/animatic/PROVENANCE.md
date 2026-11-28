@@ -8,9 +8,9 @@ text is in the repository's `THIRD-PARTY-NOTICES.md`.
 
 `scripts/` and `kit/` are byte-identical to upstream. The Markdown files outside `kit/` carry an
 adapted-from header and light dydo tailoring: the config path `dydo/reference/animatic.md`,
-reading and posting a PR on GitHub and a ticket in Linear, the PR's merger as its viewer, and
-`setup-animatic` referenced only where a project has it installed. The upstream
-`skills/in-progress/setup-animatic/` is not adopted here.
+reading and posting a PR on GitHub and a ticket in Linear, and the PR's merger as its viewer. The
+upstream `skills/in-progress/setup-animatic/` is adopted beside it, at the same commit, as
+`skills/productivity/setup-animatic/`; its own `PROVENANCE.md` records its tailoring.
 
 ## Upstream JavaScript blobs
 

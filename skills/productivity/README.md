@@ -1,6 +1,6 @@
 # Productivity
 
-20 skills for thinking, writing, and moving work along with the user.
+21 skills for thinking, writing, and moving work along with the user.
 
 - **animatic** (model-invoked): Make an animatic, a narrated video of still frames. Use when the user asks for an animatic or a narrated explainer, a video for a pull request or a tour of several, or gives feedback on one they have watched.
 - **bro** (user-invoked): Stop. That last message did not land: re-pitch it.
@@ -12,6 +12,7 @@
 - **overnight-mode** (model-invoked): Overnight mode, the user away while the chief of staff keeps the night watch. Load only on the chief of staff's muster or morning-brief announcement, or when the user calls overnight mode.
 - **papercut** (model-invoked): Report a papercut: something slowed you down, such as a missing lever, misleading output, a guard or harness obstacle, or a wrong or stale instruction. Small ones count.
 - **retro** (user-invoked): Kaizen for the harness: turn friction that keeps returning into one small, testable improvement.
+- **setup-animatic** (user-invoked): Choose the tools the animatic skill uses in this repo (voice, renderer, style, stitcher), test each one, and record them in dydo/reference/animatic.md. Run once before the first animatic, or to change a tool.
 - **show-me** (model-invoked): Help the user understand the current topic visually with concise diagrams, code-shape sketches, and focused HTML artifacts.
 - **catch-up** (model-invoked): Catch the user up on the work you hold: each deliverable's purpose, progress, current work and next steps, and what needs him. Load only when the user asks.
 - **teach** (model-invoked): Teach the user a new skill or concept, within this workspace. Load only when the user asks.

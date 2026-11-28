@@ -17,14 +17,14 @@ stitch  PNG + speech -> MP4        ffmpeg
 
 ## 1. Read the toolchain
 
-The project's choice of tools lives in `dydo/reference/animatic.md`, written by the `setup-animatic` skill when the project has it installed. Read it when it exists. Its **Flags** go on every `animatic.mjs` command, unchanged, and its **Stages** say what runs each stage:
+The project's choice of tools lives in `dydo/reference/animatic.md`: `dydo init` writes dydo's default there, and the `setup-animatic` skill tests and changes it. Read it when it exists. Its **Flags** go on every `animatic.mjs` command, unchanged, and its **Stages** say what runs each stage:
 
 - **Stitcher**: the user's own editor: build as usual for a draft, then also hand over `build/timeline.json` (each moment's start, length, line and frame) with the PNGs and voice files in `build/`.
 - **Renderer**: another tool for some frames: render those to PNGs with its recorded command, as `"image"` entries.
 
-**No config** (or no repo): build with no flags, on the defaults: the machine's built-in voice (Kokoro where it has none) and the plain kit. At hand-over, say which voice spoke, and, when the project has the `setup-animatic` skill installed, that `/setup-animatic` picks a better one.
+**No config** (or no repo): build with no flags, on the defaults: the machine's built-in voice (Kokoro where it has none) and the plain kit. At hand-over, say which voice spoke and that `/setup-animatic` picks a better one.
 
-**The user's tools win.** A tool the user names in this request beats the config for this run. When the project has the `setup-animatic` skill installed, its recipes are there: its `VOICE.md` for a voice, its `RENDERER.md` for a renderer or a style. Without it, the voice flags in the header of `scripts/animatic.mjs` (`--engine`, `--voice`, `--tts-command`) and `--css` for a style are the whole interface. Test it with one line or frame first (`animatic.mjs say "<a line>" <flags>` for a voice). If it fails, show the error and ask; falling back is the user's call.
+**The user's tools win.** A tool the user names in this request beats the config for this run. Its recipe is in the `setup-animatic` skill, beside this one: [`../setup-animatic/VOICE.md`](../setup-animatic/VOICE.md) for a voice, [`../setup-animatic/RENDERER.md`](../setup-animatic/RENDERER.md) for a renderer or a style. Test it with one line or frame first (`animatic.mjs say "<a line>" <flags>` for a voice). If it fails, show the error and ask; falling back is the user's call.
 
 Images or recorded speech the user already has: read [`OWN-MEDIA.md`](OWN-MEDIA.md).
 

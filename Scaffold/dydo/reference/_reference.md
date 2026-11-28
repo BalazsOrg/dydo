@@ -20,6 +20,7 @@ This folder answers "What are the exact specs?" - detailed reference material fo
 - **dydo-commands.md** - CLI command reference
 - **linear-workspace-standard.md** - Canonical Linear workspace setup (reserved for its HITL pass)
 - **about-dynadocs.md** - About the DynaDocs system
+- [Animatic](./animatic.md) - the animatic skill's voice, renderer, style and stitcher
 - [CLI Commands: Setup, Documentation and Guard](./dydo-commands-core.md)
 - [CLI Commands: Linear and Mode](./dydo-commands-linear.md)
 - [CLI Commands: Archive and Clean](./dydo-commands-worktrees.md)

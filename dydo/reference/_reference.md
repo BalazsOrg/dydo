@@ -21,6 +21,7 @@ This folder answers "What are the exact specs?" - detailed reference material fo
 - **dydo-glossary.md** - The dydo system's locked terms
 - **about-dynadocs.md** - About the DynaDocs system
 - **configuration.md** - dydo.json schema and all config options
+- [Animatic](./animatic.md) - the animatic skill's voice, renderer, style and stitcher
 - [Coverage Tools: Platform Measurement](./coverage-tools-platforms.md)
 - [Coverage Tools: Provisioning](./coverage-tools-provisioning.md)
 - [Coverage Tools: Operations and Declared Rows](./coverage-tools-running.md)

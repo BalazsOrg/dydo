@@ -51,14 +51,17 @@ header.
 | `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
 | `tdd` and its `mocking.md` | `skills/engineering/tdd/SKILL.md`, `skills/engineering/tdd/resources/mocking.md` |
 
-The following skill comes from none of the commits above: it is on no upstream release or `main`,
-only on the open pull request [#1422](https://github.com/mattpocock/skills/pull/1422), adopted at its
-head, commit `71009050da79506823464512ee76d71bbc014ce1`. Its `scripts/` and `kit/` files are
-byte-identical copies; its `PROVENANCE.md` records the commit and the scripts' blob hashes.
+The following skills come from none of the commits above: they are on no upstream release or
+`main`, only on the open pull request [#1422](https://github.com/mattpocock/skills/pull/1422),
+adopted at its head, commit `71009050da79506823464512ee76d71bbc014ce1`. The animatic skill's
+`scripts/` and `kit/` files are byte-identical copies; each skill's `PROVENANCE.md` records the
+commit, and the animatic one the scripts' blob hashes. dydo's shipped animatic config is built from
+the setup-animatic seed.
 
 | Upstream portion | Adapted in |
 |---|---|
 | `skills/in-progress/animatic` | `skills/productivity/animatic/SKILL.md`, `skills/productivity/animatic/PR.md`, `skills/productivity/animatic/STYLE.md`, `skills/productivity/animatic/FRAMES.md`, `skills/productivity/animatic/OWN-MEDIA.md`, `skills/productivity/animatic/agents/openai.yaml`, `skills/productivity/animatic/kit/`, `skills/productivity/animatic/scripts/` |
+| `skills/in-progress/setup-animatic` | `skills/productivity/setup-animatic/SKILL.md`, `skills/productivity/setup-animatic/VOICE.md`, `skills/productivity/setup-animatic/RENDERER.md`, `skills/productivity/setup-animatic/animatic.md`, `skills/productivity/setup-animatic/agents/openai.yaml`, `Scaffold/dydo/reference/animatic.md`, `dydo/reference/animatic.md` |
 
 MIT License
 
