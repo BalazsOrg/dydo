@@ -21,7 +21,7 @@ You look at a candidate for what is wrong with it. Each problem you find is a fi
 - Local: read each changed file, and each function in it, on its own, for what is plainly wrong: a bug, waste, and at every level a security hole.
 - Against the spec: read the change beside the spec and the code around it, for anything built on an assumption the spec does not make.
 - The whole: read the folders and the structure together, for what no single file shows.
-- Read the tests as part of the change. A test is a finding if it can never fail, changes whenever the code does, or pins a rule no spec states.
+- Read the tests as part of the change, by "In review" in `/tdd`.
 
 **Trying to break it** (the Run tests and Hypothesis columns)
 

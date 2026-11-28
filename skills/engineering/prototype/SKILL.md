@@ -3,7 +3,7 @@ name: prototype
 description: Build a throwaway prototype to answer a design question. Use when the user wants to sanity-check whether a state model or logic feels right, or explore what a UI should look like.
 ---
 
-<!-- Adapted from mattpocock/skills prototype at 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76 (MIT). -->
+<!-- Adapted from mattpocock/skills prototype at 6f7f7831a625f040a8e06a0e7954826b87ce775a (MIT). -->
 
 # Prototype
 
@@ -11,8 +11,8 @@ A prototype is **throwaway code that answers a question**. The question decides 
 
 ## Pick a branch
 
-Identify which question is being answered, using the Prototype Ticket, the prompt and surrounding
-code. A crew member returns a missing choice to the Captain, whose HITL session reaches the user:
+Identify which question is being answered, using the user's prompt, the surrounding code, or by
+asking if the user is around:
 
 - **"Does this logic / state model feel right?"** → [logic](resources/logic.md). Build a single
   shareable HTML file (free-play buttons plus tabbed guided walkthroughs) that pushes the state
@@ -21,8 +21,9 @@ code. A crew member returns a missing choice to the Captain, whose HITL session 
   UI variations on a single route, switchable via a URL search param and a floating bottom bar.
 
 The two branches produce very different artifacts, so getting this wrong wastes the whole prototype.
-If the question is ambiguous, return the missing choice and available evidence to the Captain;
-their HITL session resolves it with the user before the prototype proceeds.
+If the question is genuinely ambiguous and the user isn't reachable, default to whichever branch
+better matches the surrounding code (a backend module → logic; a page or component → UI) and state
+the assumption at the top of the prototype.
 
 ## Rules that apply to both
 
@@ -33,8 +34,8 @@ their HITL session resolves it with the user before the prototype proceeds.
    UI routes, obey whatever routing convention the project already uses; don't invent a new
    top-level structure.
 2. **Trivial to run.** A UI prototype starts from one command in the project's task runner:
-   `pnpm <name>`. A logic demo is a single HTML file the user double-clicks. Either way, no
-   thinking required to start it.
+   `pnpm <name>`, `python <path>`, `bun <path>`, etc. A logic demo is a single HTML file the user
+   double-clicks. Either way, no thinking required to start it.
 3. **No persistence by default.** State lives in memory. Persistence is the thing the prototype is
    _checking_, not something it should depend on. If the question explicitly involves a database,
    hit a scratch DB or a local file with a clear "PROTOTYPE, wipe me" name.
@@ -42,8 +43,14 @@ their HITL session resolves it with the user before the prototype proceeds.
    abstractions. The point is to learn something fast.
 5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or
    render the full relevant state so the user can see what changed.
-6. **Capture it when done.** Record the user's verdict and the winning commit on the Prototype
-   Ticket. The `prototype/<name>` branch is a **primary source**, linked and never submitted or
-   merged. A delivery ticket's `implementer` reads it as the template for a fresh rewrite, never as a
-   base or a copy; retain it until that delivery ticket is `Done`, or until feature cleanup. Only the
-   idea survives: the delivery crew implements the decision.
+6. **Capture it when done.** Capture the prototype itself as a **primary source**: commit it to its
+   `prototype/<name>` branch, link the branch from the Prototype Ticket, and record there the
+   user's verdict, the question it settled and the winning commit. The delivery ticket that uses it
+   carries a context pointer to the branch. The branch is never merged or submitted; retain it
+   until that delivery ticket is `Done`, or until feature cleanup. That delivery ticket folds the
+   validated decision into the real code. Only validated logic may be lifted from the branch into
+   the real module, where it is refactored to production standards (tests, error handling, the
+   project's conventions) and passes that delivery ticket's normal review before it merges. A
+   winning UI design is rewritten properly in the real code, not copied. The HTML shell, the
+   variant switcher and the losing variants never reach production. The main branch keeps only the
+   validated decision.
