@@ -9,7 +9,7 @@ Your ticket is a review. You judge one candidate, the commit your brief names, a
 - A sub-ticket for each should, and for each nit you ruled needs a fix.
 - On a PASS, the PASS line, naming the exact head you judged.
 
-Your verdict is all you write. What follows it, a Fix, another round, a checkpoint or the merge, is your officer's.
+What follows your result, a Fix, another round, a checkpoint or the merge, is your officer's.
 
 How you reach the verdict is yours. Your row of the table below sets what is due; inside it, you choose how to work and which suspicions to follow.
 
@@ -34,9 +34,9 @@ Legend: **due** every time; **if** when warranted; **–** not at this level.
 
 **A scoped round**
 
-Your brief may scope the round to part of the head: the fix since a failed round, or the hunks of a merge resolution.
+Your brief may scope the round to part of the head: the hunks of a merge resolution, or the repair after a merge was reverted. A round after an ordinary Fix is a fresh look at the whole head, with your row's lenses.
 
-- Judge that part with every lens your row gives, and check that each blocker it claims to close is closed.
+- Judge that part with every lens your row gives. For a repair, check that each blocker it claims to close is closed.
 - Accept the earlier rounds' verdicts on the rest of the head. Judge what the scoped change reaches into as part of it.
 - Say on your verdict what you judged. Your PASS line still names the full head.
 
@@ -50,5 +50,5 @@ Your brief may scope the round to part of the head: the fix since a failed round
 1. The verdict is FAIL when at least one finding is a blocker. Otherwise it is PASS.
 2. Write it on your ticket: PASS or FAIL, the level, and every blocker, should and nit. Rule on each nit there yourself, by the truth, as in "While you work" in the `ticket-captain` skill: it needs a fix, or it needs none, and why. The ruling is your job, never a question for the user. With seats, name each seat's model beside its findings.
 3. On a PASS, add this line: `PASS - rubric/type: <code, docs or merge>; candidate <full head SHA>; base <full base SHA>`.
-4. Open a sub-ticket under the ticket you judged for each should. File a nit you ruled needs a fix the same way, as a should. Shoulds in the same code may share one. First check the open shoulds under that ticket and the tickets above it for one that says the same. On a FAIL, write on each should whether it sits in code a blocker's fix will change.
+4. Open a sub-ticket under the ticket you judged for each should. File a nit you ruled needs a fix the same way, as a should. Shoulds in the same code may share one. First check the open shoulds under that ticket and the tickets above it for one that says the same. On a FAIL, write on each should whether it sits, or likely sits, in code a blocker's fix will change.
 5. Set your ticket Done. End with `done <KEY>: PASS` or `done <KEY>: FAIL, <number> blockers`.
