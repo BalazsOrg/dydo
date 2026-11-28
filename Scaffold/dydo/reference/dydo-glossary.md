@@ -98,7 +98,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   when an officer briefs an agent it dispatches).
 - **User command** - a skill only the user invokes by name, never reached for by a model:
   grill-me, bro, improve-codebase-architecture, create-verification-skill,
-  create-formal-verification-skill, statechart, update-dydo, retro.
+  create-formal-verification-skill, statechart, update-dydo, retro, to-spec.
 - **Rubric** - the one named standard a reviewer judges a candidate against: code or docs (D6). A
   spec gets no review, only an optional scout pass that returns Questions (R4).
 

@@ -50,6 +50,7 @@ header.
 | `domain-modeling` and its `GLOSSARY-FORMAT.md` | `skills/engineering/domain-modeling/SKILL.md`, `skills/engineering/domain-modeling/resources/glossary-format.md` |
 | `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
 | `tdd` and its `mocking.md` | `skills/engineering/tdd/SKILL.md`, `skills/engineering/tdd/resources/mocking.md` |
+| `to-spec` | `skills/productivity/to-spec/SKILL.md`, `skills/productivity/to-spec/agents/openai.yaml` |
 
 MIT License
 

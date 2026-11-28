@@ -10,6 +10,11 @@ description: Turn this co-think into a Linear Project, with its settled intent a
 Synthesize the conversation into one Linear Project. The co-think supplies the intent; this command
 records it without another interview.
 
+Use `to-project` when the intent should become a Linear Project the factory runs: intent only, the
+coordinator and map holder take it from there, and the map holder writes its spec later. When the
+user wants the whole spec written now, for work he will drive more hands-on or that fits under one
+ticket tree without a Project, he invokes `to-spec` instead.
+
 1. Read the settled context and any linked Decision Records, glossary entries and source
    FutureFeature. Use the project's words. Done when the problem, solution, decisions taken and out
    of scope can be stated without inventing an answer.
