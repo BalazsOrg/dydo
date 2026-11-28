@@ -9,7 +9,7 @@ A **papercut** is one small thing that slowed you down. Report it in a minute, t
 task. One occurrence is enough. Your part is the report; the user's retro decides what to change.
 
 1. **Find the Papercuts project.** In Linear, find the project named `Papercuts` on the team of the
-   repository you are working in. A pointer your repository gives, such as its ID, is a shortcut.
+   repository you are working in. A pointer your repository gives, such as the project's ID, is a shortcut.
 2. **Search it.** If this papercut is already there, comment your case on it in the fields below.
    Repeat comments are its severity. Then go to step 5.
 3. **File it.** Otherwise file one short ticket in that project, titled with the symptom:

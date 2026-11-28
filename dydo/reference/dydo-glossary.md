@@ -25,8 +25,7 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   deliverables. The lane ledger is retired (S25). Distinct from a Lane Sub-ticket, a captain's parallel child ticket.
 - **Filler** - small, ready work, such as review `should` tickets, that an officer takes into a lane
   when the next core ticket is blocked, toward a soft goal of four occupied lanes, not a cap (H10).
-- **Papercut** - one small thing that slowed an agent down, filed through the papercut skill in its
-  team's `Papercuts` grouping; the user's retro reads them as evidence.
+- **Papercut** - one small thing that slowed an agent down.
 - **Cycle** - an optional team capacity timebox, orthogonal to Projects.
 - **Label** - restrained cross-cutting routing metadata, never a shadow work-type hierarchy.
 

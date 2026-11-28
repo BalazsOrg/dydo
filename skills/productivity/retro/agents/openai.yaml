@@ -1,2 +1,5 @@
+interface:
+  display_name: "Retro"
+  short_description: "Conduct a retrospective on a session, reading its papercuts."
 policy:
   allow_implicit_invocation: false
