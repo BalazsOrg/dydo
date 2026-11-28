@@ -21,7 +21,6 @@ header in the canonical `skills/<category>/<name>/` folders (`engineering/`,
 | `to-spec` | `skills/productivity/to-project/SKILL.md` |
 | `to-tickets` | `skills/productivity/to-ticket/SKILL.md` |
 | `wizard` and its `template.sh` | `skills/engineering/wizard/SKILL.md`, `skills/engineering/wizard/resources/template.md` |
-| `wait-what` | `skills/productivity/bro/SKILL.md` |
 | `wayfinder` | `skills/productivity/wayfinder/SKILL.md` |
 | `writing-for-agents` | `skills/productivity/writing-for-agents/SKILL.md` |
 | `writing-for-agents/SKILL-MECHANICS` | `skills/productivity/writing-for-agents/resources/skill-mechanics.md` |
@@ -50,6 +49,7 @@ header.
 | `domain-modeling` and its `GLOSSARY-FORMAT.md` | `skills/engineering/domain-modeling/SKILL.md`, `skills/engineering/domain-modeling/resources/glossary-format.md` |
 | `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
 | `tdd` and its `mocking.md` | `skills/engineering/tdd/SKILL.md`, `skills/engineering/tdd/resources/mocking.md` |
+| `wait-what` | `skills/productivity/bro/SKILL.md` |
 
 The following skill comes from none of the commits above: it is on no upstream release or `main`,
 only on the open pull request [#1422](https://github.com/mattpocock/skills/pull/1422), adopted at its
