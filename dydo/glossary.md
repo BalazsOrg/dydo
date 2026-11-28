@@ -32,7 +32,7 @@ Retired with the compiler by Decision 049. Customization is a direct edit to the
 
 ## Area glossaries
 
-- [dydo Glossary](./reference/dydo-glossary.md) - how work is named: the Linear, knowledge and execution vocabulary; its terms are locked
+- [dydo Glossary](./reference/dydo-glossary.md) - how work is named: the Linear, knowledge and execution vocabulary; authored here, read-only for adopters
 - [Guard Glossary](./glossary-guard.md) - the guard: which paths agents may read or write, and the rules that warn them
 
 ## Related
