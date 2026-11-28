@@ -1,6 +1,6 @@
 # Productivity
 
-20 skills for thinking, writing, and moving work along with the user.
+21 skills for thinking, writing, and moving work along with the user.
 
 - **animatic** (model-invoked): Make an animatic, a narrated video of still frames. Use when the user asks for an animatic or a narrated explainer, a video for a pull request or a tour of several, or gives feedback on one they have watched.
 - **bro** (user-invoked): Stop. That last message did not land: re-pitch it.
@@ -17,6 +17,7 @@
 - **teach** (model-invoked): Teach the user a new skill or concept, within this workspace. Load only when the user asks.
 - **to-ticket** (model-invoked): Break a plan, spec, or this conversation into pickable Linear tickets, tracer-bullet slices wired with native blocking relations. Load only when the user asks.
 - **to-project** (model-invoked): Turn this co-think into a Linear Project, with its settled intent and links. Load only when the user asks.
+- **to-spec** (user-invoked): Turn the current conversation into a spec and publish it to Linear: no interview, just synthesis of what you've already discussed.
 - **update-dydo** (user-invoked): Update this project's dydo to the latest release, keeping every project tweak, and prove the update took effect.
 - **walkthrough** (model-invoked): Show me the product as it stands - what changed since the last walkthrough, where to look first, and how to try it. Load only when the user asks, or at the map holder's Milestone or landing step.
 - **wayfinder** (model-invoked): Fog in a Project map or inside one ticket. Chart the visible route as Wayfinding Tickets and resolve them one at a time until the destination is reached.

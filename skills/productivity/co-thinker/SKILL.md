@@ -50,6 +50,7 @@ what he alone has the authority to settle.
 | An unscheduled strategic possibility worth preserving | a Linear ticket in `FutureFeature` |
 | Shared feature intent within a Project | the map holder maintains its anchor following `dydo/reference/feature-spec-convention.md`, read from the repository root |
 | Project intent after the homework | the user invokes `to-project`, creating a Project in `Backlog` |
+| A full spec now, for work the user drives more hands-on | the user invokes `to-spec`, filing the spec as one ticket in `Todo` |
 | Ripe atomic ticket intent | file the ticket in `Todo` with one Type, one Mode, outcome, owned paths, blockers, exact gates and base branch; the user opens a captain session or spawns one from their session; this session does not become the captain |
 
 A FutureFeature stays one until the user promotes it. Hand over what is written down, the Linear

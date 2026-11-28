@@ -48,6 +48,7 @@ header.
 | `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
 | `retro` | `skills/productivity/retro/SKILL.md`, `skills/productivity/retro/agents/openai.yaml` |
 | `tdd` and its `mocking.md` | `skills/engineering/tdd/SKILL.md`, `skills/engineering/tdd/resources/mocking.md` |
+| `to-spec` | `skills/productivity/to-spec/SKILL.md`, `skills/productivity/to-spec/agents/openai.yaml` |
 | `wait-what` | `skills/productivity/bro/SKILL.md` |
 
 The following skill comes from none of the commits above: it is on no upstream release or `main`,
