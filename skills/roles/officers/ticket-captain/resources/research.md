@@ -1,12 +1,41 @@
 # Research
 
-Your ticket is a Question: a call that another captain may not decide, and that waits on your answer. Deciding the answer is your job, unless the call is the user's.
+Your ticket's result is an answer that other work waits on: a fact, or a call that another captain may not decide. Deciding the answer is your job, unless the call is the user's.
+
+**What you owe when the ticket closes**
+
+On your ticket, in this order:
+
+1. The answer, first.
+2. Each claim the answer rests on, with its source, a path at its commit or a link, and the exact passage. You opened every passage yourself.
+3. What stayed unsettled, and why.
+4. Where you looked: every source you searched, the ones that held nothing included.
+5. For a call, the reason you decided it as you did, or the user's question made ready by "A call for the user".
+
+**Take the question**
+
+Restate the question in one sentence, and say what would count as its answer.
 
 **Research first**
 
-1. Look where the answer may already be: the user's recorded words, the truth documents your brief names, the statechart, the spec, decision records, other docs, the code and its tests, git history, the tickets. For a wide search, send one native helper to each place, and ask each for exact passages.
-2. Open the passage behind every claim your answer rests on, and confirm that it says what you think.
-3. Where sources disagree, the truth wins in the order "While you work" in the `ticket-captain` skill gives.
+1. Look where the answer may already be: the user's recorded words, the truth documents your brief names, the statechart, the spec, decision records, other docs, the code and its tests, git history, the tickets, and outside sources such as official docs, published release notes, standards and library source. Mark each source in or out, with a reason.
+2. Read a governing doc on the branch the waiting work targets as well as on yours: a branch can lag.
+3. For a wide search, send one native helper to each source in play, side by side, with the helper prompt below. Search a lone source yourself.
+4. Open the passage behind every claim your answer rests on, and confirm that it says what you think.
+5. Take each claim from the source that owns it. A doc or report that describes code, data or another system is a lead to that thing, not its proof.
+6. Where sources disagree, the truth wins in the order "While you work" in the `ticket-captain` skill gives. Where they are silent, mark the point unsettled. Never reason your way to a fact.
+
+**Native helpers and captains**
+
+A lookup goes to a native helper: it holds no ticket, reads only the prompt you write, shares your checkout, and returns its passages to you. Work that needs its own ticket, such as another agent's ruling, goes to a fresh captain, as in "Then answer".
+
+Paste this into each helper's prompt, with its brackets filled:
+
+> Find what one source says about one question. Question: [the question]. Source: [the one source to search].
+> - Search that source to its end, and follow its references inside it.
+> - Copy each finding as its exact passage, with its citation: a path at its commit, or a link. Take it from the source that owns the claim; a doc's account of the code is a lead to the code.
+> - When the source holds nothing, say so, and list what you searched.
+> - Return passages and citations only. Draw no conclusion.
 
 **Then answer**
 
@@ -17,12 +46,12 @@ Take the first case that fits. A call goes to the user only when neither of the 
 3. The call cannot be undone, or a record keeps it for the user: decide nothing, and go by "A call for the user".
 4. Otherwise decide it yourself, and give your reason.
 
-**Write the answer**
+A fact needs only the first case: the sources settle it, or the answer says what stayed unsettled.
 
-Write on your ticket the answer first. Then give each claim with its source, a path at its commit or a link, and the exact passage. Then say what stayed unsettled.
+Write what you owe on your ticket, set it Done, and end with `done <KEY>: <the answer in a few words>`.
 
 **A call for the user**
 
-1. Make the user's question ready on your ticket: every option, each option's trade-off, and your recommendation. Give the facts you found with their sources, as in "Write the answer".
+1. Make the user's question ready on your ticket: every option, each option's trade-off, and your recommendation. Give the facts you found with their sources, as in "What you owe when the ticket closes".
 2. State each item in plain words: what it does, or what it changes. A decision record's number, a rule ID, a state name, a finding number or a ticket key may follow that, never stand in its place.
 3. Leave the ticket open, and end with `handed back <KEY>: a call for the user`.
