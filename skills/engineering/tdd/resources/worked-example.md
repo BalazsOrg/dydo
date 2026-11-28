@@ -27,9 +27,33 @@ public sealed class OffLimitsRuleTests
 }
 ```
 
-The unclosed-fence row is a trap. With an unclosed fence, the guard reads every line after it as code, so `dydo check` must report that as an error and exit 1, not as a warning. The red check below measures exactly that: the severity and the exit code.
+The unclosed-fence row guards a trap: `dydo check` must report an unclosed fence as an error and exit 1, not as a warning with exit 0. The red check below measures exactly that, the severity and the exit code.
 
-**Reading its tag.** The class-level tag names that trap, but the class's other rows (a missing file, a duplicate pattern, a missing literal path, a clean file) do not guard it, and a tag must be true of every case it covers. A true tag needs the unclosed fence in a test of its own, a `[Fact]` tagged `trap: an unclosed fence makes check exit 1`, with `contract` alone on the theory. A review of this test would find its tag too broad.
+**Its tag is too broad.** The class-level tag names that trap, but the class's other rows (a missing file, a duplicate pattern, a missing literal path, a clean file) do not guard it. A tag must be true of every case it covers, so a review of this test finds the tag false. The true shape gives the trap a test of its own and leaves `contract` alone on the class:
+
+```csharp
+[Collection("Integration")]
+[Trait("Job", "contract: dydo-commands-core.md dydo check (validates the off-limits file)")]
+public sealed class OffLimitsRuleTests
+{
+    [Fact]
+    [Trait("Job", "trap: dydo check reported an unclosed fence as a warning and exited 0")]
+    public void Check_UnclosedFence_FailsWithExit1()
+    {
+        using var project = new DocsProject();
+        project.Write("files-off-limits.md", Head + "```\n.env*\n");
+
+        var (code, output) = DydoCli.RunCombined("check");
+
+        Assert.True(code == 1, $"exit {code}, expected 1:\n{output}");
+        Assert.Contains("Unclosed code block", output);
+    }
+
+    // The theory keeps its other four rows.
+}
+```
+
+The three runs below were recorded on the test as it stands, with the trap as a theory row. A scratch copy of the split test, run the same way on 2026-11-28, passed 1 of 1, then failed under the same plant with `exit 0, expected 1`.
 
 ## The runner
 
