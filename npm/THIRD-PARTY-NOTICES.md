@@ -42,6 +42,15 @@ independent-review and glossary-path adaptations in `SKILL.md`; their attributio
 rather than inserted into the skill. Upstream `CREDITS.md` preserves the attribution to Dex Horthy’s
 `show-me` material.
 
+The following skill comes from neither commit above: it is on no upstream release or `main`, only
+on the open pull request [#1422](https://github.com/mattpocock/skills/pull/1422), adopted at its
+head, commit `71009050da79506823464512ee76d71bbc014ce1`. Its `scripts/` and `kit/` files are
+byte-identical copies; its `PROVENANCE.md` records the commit and the scripts' blob hashes.
+
+| Upstream portion | Adapted in |
+|---|---|
+| `skills/in-progress/animatic` | `skills/productivity/animatic/SKILL.md`, `skills/productivity/animatic/PR.md`, `skills/productivity/animatic/STYLE.md`, `skills/productivity/animatic/FRAMES.md`, `skills/productivity/animatic/OWN-MEDIA.md`, `skills/productivity/animatic/agents/openai.yaml`, `skills/productivity/animatic/kit/`, `skills/productivity/animatic/scripts/` |
+
 MIT License
 
 Copyright (c) 2026 Matt Pocock

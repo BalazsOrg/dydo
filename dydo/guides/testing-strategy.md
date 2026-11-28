@@ -388,6 +388,14 @@ under the strict typecheck, but its own unused bindings are listed rather than j
 lacks is the walker, the clone and cycle gates, coverage, and the unused-binding gate.
 The moment its bytes change, it leaves this gap and becomes a measured target.
 
+The `animatic` skill's JavaScript under `skills/productivity/animatic/scripts/` is vendored upstream
+code, which DR 048 excludes; it is not a gap. The same rule decides it: the skill's `PROVENANCE.md`
+pins the upstream commit and lists each script's Git blob hash, and the inventory lists a script
+still byte-identical to its line in `excluded` with the reason `vendored-upstream`, its `origin`
+carrying the record, commit, upstream path and blob. No node static or coverage row reads it, knip's
+graph included. The moment its bytes change, or a script with no line appears, it is a measured
+JavaScript target.
+
 A viewer module absent from the LCOV report passes only if the walker proves it declarative, with
 every top-level statement a type, an interface or a type-only import or export, as
 `viewer/src/api/types.ts` is. Any other absent module is a measurement gap.

@@ -42,8 +42,15 @@ _DERIVED_PRODUCER = 'DynaDocs.Tests/coverage/sync_testing_example.py'
 _NATIVE_EVIDENCE = 'dydo/agents/workspace/dyd96-portable-wip/native-altcover-evidence'
 _TYPESCRIPT_ROOT = 'viewer/src/'
 STATECHART_ROOT = 'skills/engineering/statechart/scripts/'
-_PROVENANCE = 'skills/engineering/statechart/PROVENANCE.md'
-_UPSTREAM_SKILL = 'pstack/skills/statechart/'
+# Vendored upstream scripts: each root's PROVENANCE pins the upstream commit and lists the blob of
+# every upstream file in one language; a local file is excluded exactly while its bytes match its line.
+_VENDORED = {STATECHART_ROOT: {'language': 'typescript', 'record': 'skills/engineering/statechart/PROVENANCE.md',
+                               'upstream': 'pstack/skills/statechart/'},
+             'skills/productivity/animatic/scripts/': {'language': 'javascript',
+                                                       'record': 'skills/productivity/animatic/PROVENANCE.md',
+                                                       'upstream': 'skills/in-progress/animatic/'}}
+_SUFFIXES = {'typescript': ('.ts', '.tsx'), 'javascript': ('.js', '.cjs', '.mjs')}
+_VENDORED_UPSTREAM = 'vendored-upstream'
 _UPSTREAM_BLOBS = re.compile(r'^```upstream-blobs\n(?P<body>.*?)^```$', re.MULTILINE | re.DOTALL)
 _UPSTREAM_PIN = re.compile(r'commit `(?P<commit>[0-9a-f]{40})`')
 TYPESCRIPT_OUTSIDE_ROOT = 'typescript-outside-viewer-src'
@@ -73,15 +80,40 @@ def upstream_blobs(text):
     return {'commit': pin['commit'], 'blobs': blobs}
 
 
-def _statechart_upstream(root, paths):
-    """The upstream record, when statechart TypeScript exists; unreadable, every file is measured."""
-    if not any(path.startswith(STATECHART_ROOT) and path.endswith(('.ts', '.tsx')) for path in paths):
-        return {'commit': None, 'blobs': {}}, None
-    try:
-        return upstream_blobs((Path(root) / _PROVENANCE).read_text(encoding='utf-8')), None
-    except (ValueError, OSError) as error:
-        return {'commit': None, 'blobs': {}}, {'path': _PROVENANCE, 'type': 'upstream-provenance-unreadable',
-                                              'message': str(error)}
+def _upstream_records(root, paths):
+    """Each vendored root's record, read when that root holds a file of its language; an unreadable
+    record lists no blob, so every file under its root is measured, and names the gap."""
+    records, errors = {}, []
+    for folder, vendored in _VENDORED.items():
+        records[folder] = {'commit': None, 'blobs': {}}
+        if not any(path.startswith(folder) and path.endswith(_SUFFIXES[vendored['language']]) for path in paths):
+            continue
+        try:
+            records[folder] = upstream_blobs((Path(root) / vendored['record']).read_text(encoding='utf-8'))
+        except (ValueError, OSError) as error:
+            errors.append({'path': vendored['record'], 'type': 'upstream-provenance-unreadable',
+                           'message': str(error)})
+    return records, errors
+
+
+def _upstream_origin(relative, path, records):
+    """The vendored root and upstream identity a file still matches byte for byte, else None."""
+    for folder, vendored in _VENDORED.items():
+        if relative.startswith(folder) and relative.endswith(_SUFFIXES[vendored['language']]):
+            local = 'scripts/' + relative.removeprefix(folder)
+            blob = records[folder]['blobs'].get(local)
+            if blob is not None and blob == git_blob(path.read_bytes()):
+                return folder, {'record': vendored['record'], 'commit': records[folder]['commit'],
+                                'path': vendored['upstream'] + local, 'blob': blob}
+    return None, None
+
+
+def _vendored_scope(relative, path, records):
+    """A byte-identical vendored script outside TypeScript is recorded with its upstream origin."""
+    folder, upstream = _upstream_origin(relative, path, records)
+    if upstream is None:
+        return None
+    return {'path': relative, 'reason': _VENDORED_UPSTREAM, 'origin': {'root': folder, 'upstream': upstream}}
 
 
 def _manifest_digests(text):
@@ -142,7 +174,7 @@ def _structural_exclusion(root, relative, paths):
     return None, None
 
 
-def _typescript_scope(relative, path, upstream):
+def _typescript_scope(relative, path, records):
     """The viewer's application source and the statechart runtime's dydo-written or adapted files are
     the TypeScript the gates measure. The viewer's Playwright specs, fixtures and tool configs, and the
     statechart files still byte-identical to their pinned upstream blob, are recorded, never dropped."""
@@ -151,14 +183,12 @@ def _typescript_scope(relative, path, upstream):
     if not relative.startswith(STATECHART_ROOT):
         return {'path': relative, 'reason': TYPESCRIPT_OUTSIDE_ROOT,
                 'origin': {'root': _TYPESCRIPT_ROOT, 'gap': 'dydo/guides/testing-strategy.md', 'issue': 'DYD-276'}}
-    local = 'scripts/' + relative.removeprefix(STATECHART_ROOT)
-    blob = upstream['blobs'].get(local)
-    if blob is None or blob != git_blob(path.read_bytes()):
+    _folder, upstream = _upstream_origin(relative, path, records)
+    if upstream is None:
         return None
     return {'path': relative, 'reason': TYPESCRIPT_OUTSIDE_ROOT,
             'origin': {'root': STATECHART_ROOT, 'gap': 'dydo/guides/testing-strategy.md', 'issue': 'DYD-590',
-                       'upstream': {'record': _PROVENANCE, 'commit': upstream['commit'],
-                                    'path': _UPSTREAM_SKILL + local, 'blob': blob}}}
+                       'upstream': upstream}}
 
 
 def _discovered_test_files(paths, discovery):
@@ -193,10 +223,11 @@ def _source_row(root, relative, path, existing, projects, test_files):
 
 
 def _source_rows(root, existing, projects, test_files):
-    upstream, upstream_error = _statechart_upstream(root, existing)
-    sources, excluded, errors = [], [], [upstream_error] if upstream_error else []
+    records, errors = _upstream_records(root, existing)
+    sources, excluded = [], []
     for relative, path in checked_paths(root, existing):
-        scope = _typescript_scope(relative, path, upstream) if language_of(path) == 'typescript' else None
+        scope = (_typescript_scope(relative, path, records) if language_of(path) == 'typescript'
+                 else _vendored_scope(relative, path, records))
         if scope:
             excluded.append(scope)
             continue
