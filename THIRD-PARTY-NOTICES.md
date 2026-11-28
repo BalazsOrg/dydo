@@ -12,7 +12,6 @@ header in the canonical `skills/<category>/<name>/` folders (`engineering/`,
 |---|---|
 | `codebase-design` | `skills/engineering/codebase-design/SKILL.md`, `skills/engineering/codebase-design/resources/deepening.md`, `skills/engineering/codebase-design/resources/design-it-twice.md` |
 | `diagnosing-bugs` | `skills/engineering/diagnosing-bugs/SKILL.md` |
-| `domain-modeling` | `skills/engineering/domain-modeling/SKILL.md` |
 | `grill-me` | `skills/productivity/grill-me/SKILL.md` |
 | `grilling` | `skills/productivity/grilling/SKILL.md` |
 | `handoff` | `skills/productivity/handoff/SKILL.md` |
@@ -42,11 +41,13 @@ rather than inserted into the skill. Upstream `CREDITS.md` preserves the attribu
 `show-me` material.
 
 The following portions are imported, updated or adapted from commit
-`6f7f7831a625f040a8e06a0e7954826b87ce775a`.
+`6f7f7831a625f040a8e06a0e7954826b87ce775a`. Each adapted file records the attribution in its own
+header.
 
 | Upstream portion | Adapted in |
 |---|---|
 | `diagnosing-bugs` | `skills/engineering/diagnosing-bugs/SKILL.md` |
+| `domain-modeling` and its `GLOSSARY-FORMAT.md` | `skills/engineering/domain-modeling/SKILL.md`, `skills/engineering/domain-modeling/resources/glossary-format.md` |
 | `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
 | `tdd` and its `mocking.md` | `skills/engineering/tdd/SKILL.md`, `skills/engineering/tdd/resources/mocking.md` |
 
