@@ -10,11 +10,11 @@ your topic touches. The `domain-modeling` skill holds the format and placement r
 
 ## HCRAP
 
-Hybrid CRAP, the per-method change-risk score of
-[Decision 048](./project/decisions/048-one-level-static-gates-certainly-wrong-no-escape-hatch.md):
-`CC² × (1 − line coverage)³ + cognitive complexity`. The coverage term uses cyclomatic complexity,
-the floor uses cognitive complexity, so at full coverage the score is the cognitive complexity. The
-one threshold is 20.
+Retired as a gate by
+[Decision 068](./project/decisions/068-gate-set-mutation-over-coverage-changed-files-only.md) G2;
+cognitive complexity carries the structure part. It was Hybrid CRAP, the per-method change-risk
+score of [Decision 048](./project/decisions/048-one-level-static-gates-certainly-wrong-no-escape-hatch.md):
+`CC² × (1 − line coverage)³ + cognitive complexity`.
 
 ## Hub File
 
@@ -37,4 +37,4 @@ Retired with the compiler by Decision 049. Customization is a direct edit to the
 
 ## Related
 
-- [dydo Glossary](./reference/dydo-glossary.md)
+- [Guard Glossary](./glossary-guard.md)

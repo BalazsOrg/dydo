@@ -10,8 +10,9 @@ rules that warn them.
 
 ## Nudge
 
-A project-configurable guard rule in `dydo.json`: a pattern plus a message, at one of three
-severities, `notice`, `warn` or `block`.
+A guard rule: a pattern plus a message, at one of three severities, `notice`, `warn` or `block`. A
+project configures its nudges in `dydo.json`, and the guard merges dydo's shipped `block` nudges in
+memory on every evaluation, so `dydo.json` can neither remove nor downgrade them.
 
 **See also:** [Guard System: Nudges](./understand/guard-system-nudges.md#layer-3-nudges)
 
@@ -32,9 +33,10 @@ both binding every agent.
 
 ## Protected
 
-The **Path Tier** that every agent may read and none may write or delete: dydo's own system files,
-`dydo/index.md`, `dydo/files-off-limits.md` and `dydo.json`. dydo's own commands still rewrite what
-they manage.
+The **Path Tier** that every agent may read and none may write or delete. Its patterns sit under
+`## Protected Patterns` in `dydo/files-off-limits.md`, which a project may extend. dydo's own
+members are `dydo/index.md`, `dydo/files-off-limits.md` and `dydo.json`, the last always protected;
+dydo's own commands still rewrite what they manage.
 
 **See also:** [Guard System: Path Tiers](./understand/guard-system-paths.md#layer-1-path-tiers)
 

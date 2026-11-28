@@ -13,6 +13,17 @@ Read this glossary, then only the area glossaries below that your topic touches.
 
 ---
 
+<!-- Add your project-specific terms here, each a `##` heading, alphabetized, above the sections below. Example format:
+
+## Term Name
+
+Brief definition (1-2 sentences). Include context about when/where this concept applies.
+_Avoid_: Synonym, other synonym
+
+**See also:** Related Doc (link to relevant documentation)
+
+-->
+
 ## Area glossaries
 
 - [dydo Glossary](./reference/dydo-glossary.md) - how work is named; its terms are locked
@@ -27,20 +38,3 @@ Read this glossary, then only the area glossaries below that your topic touches.
 - Terms are alphabetized
 - Each term has an anchor matching its kebab-case name
 - When several words exist for one concept, pick one and list the others on an `_Avoid_:` line under the term
-
----
-
-## Project Terms
-
-_Add your project-specific terms below, alphabetized._
-
-<!-- Example format:
-
-### Term Name
-
-Brief definition (1-2 sentences). Include context about when/where this concept applies.
-_Avoid_: Synonym, other synonym
-
-**See also:** Related Doc (link to relevant documentation)
-
--->

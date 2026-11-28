@@ -22,7 +22,9 @@ Paths are read from the repository root:
 - `dydo/glossary-<area>.md`: one glossary per major area of the project, created with its first
   resolved term.
 - `dydo/reference/dydo-glossary.md`: the work-model glossary, for how work is named. It ships
-  with dydo and its terms are locked: challenge against it, never edit it.
+  with dydo and is read-only in a project that adopts dydo: challenge against it, never edit it.
+  In the dydo repository itself it is where that vocabulary is authored, so a resolved work-model
+  term is recorded there.
 - `dydo/project/decisions/`: one Decision Record per choice, governed by
   `dydo/project/decisions/_decisions.md` and shaped like the records already there. Scaffolded in
   every project.
@@ -67,6 +69,13 @@ scratch pad, or a repository for implementation decisions. It is a glossary and 
 
 ### Offer Decision Records sparingly
 
-Only offer to create a Decision Record when all three conditions under "When to Write a Decision
-Record" in `_decisions.md` are true. If any is missing, skip it. Follow `_decisions.md`, number the
-file after the highest existing record, and update authored navigation when the record needs a link.
+Only offer to create a Decision Record when all three are true:
+
+1. **Hard to reverse**: the cost of changing your mind later is meaningful
+2. **Surprising without context**: a future reader will wonder "why did they do it this way?"
+3. **The result of a real trade-off**: there were genuine alternatives and you picked one for
+   specific reasons
+
+If any of the three is missing, skip the Decision Record. `_decisions.md` governs its numbering and
+shape: number the file after the highest existing record, and update authored navigation when the
+record needs a link.
