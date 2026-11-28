@@ -1,0 +1,432 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PROTOTYPE: Review Loop</title>
+<style>
+  :root {
+    --bg: #fbfaf8; --panel: #ffffff; --ink: #1d1d1f; --muted: #6b6b70; --line: #e4e2dd;
+    --accent: #2f5bd3; --accent-soft: #e8eefc; --bad: #b3261e; --bad-soft: #fbeaea; --good: #1f7a3d; --good-soft: #e6f4ea;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1100px; margin: 0 auto; padding: 28px 16px 64px; }
+  h1 { font-size: 26px; margin: 0 0 4px; }
+  h2 { font-size: 17px; margin: 0 0 12px; }
+  .tag { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: .04em; color: var(--bad); border: 1px solid var(--bad); border-radius: 4px; padding: 1px 6px; margin-bottom: 10px; }
+  .intro { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin: 14px 0 22px; }
+  .intro p { margin: 0 0 10px; } .intro p:last-child { margin: 0; }
+  .note { color: var(--muted); font-size: 13.5px; }
+  .grid { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 18px; }
+  @media (max-width: 860px) { .grid { grid-template-columns: 1fr; } }
+  section.card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; padding: 16px 18px; margin-bottom: 18px; }
+  dl { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 6px 12px; margin: 0; }
+  dt { color: var(--muted); } dd { margin: 0; overflow-wrap: anywhere; }
+  .changed { background: var(--accent-soft); border-radius: 4px; padding: 0 4px; margin: 0 -4px; }
+  code { font: 12.5px ui-monospace, SFMono-Regular, Menlo, monospace; }
+  .phase { font-weight: 600; color: var(--accent); }
+  .banner { border-radius: 8px; padding: 10px 12px; margin-bottom: 12px; font-size: 14px; }
+  .banner.bad { background: var(--bad-soft); color: var(--bad); border: 1px solid #f1c4c1; }
+  .banner.good { background: var(--good-soft); color: var(--good); border: 1px solid #bfe3c9; }
+  .banner.info { background: var(--accent-soft); color: var(--accent); border: 1px solid #c9d7f8; }
+  ul.plain { margin: 0; padding-left: 18px; } ul.plain li { margin: 2px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; }
+  th, td { text-align: left; border-bottom: 1px solid var(--line); padding: 5px 6px; vertical-align: top; }
+  th { color: var(--muted); font-weight: 500; }
+  .pass { color: var(--good); font-weight: 600; } .fail { color: var(--bad); font-weight: 600; }
+  .btns { display: flex; flex-wrap: wrap; gap: 8px; }
+  .group { margin-bottom: 12px; } .group h3 { font-size: 13px; color: var(--muted); font-weight: 500; margin: 0 0 6px; }
+  button { font: inherit; font-size: 13.5px; background: #fff; color: var(--ink); border: 1px solid #cfccc5; border-radius: 7px; padding: 6px 10px; cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  button.done { color: var(--muted); background: #f3f2ef; }
+  .tabs { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+  .tabs button.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  ol.steps { padding-left: 22px; margin: 10px 0 0; } ol.steps li { margin: 6px 0; }
+  ol.steps .why { color: var(--muted); font-size: 13px; margin-left: 6px; }
+  .log { max-height: 240px; overflow: auto; font-size: 13px; }
+  .log li.rej { color: var(--bad); }
+</style>
+</head>
+<body>
+<main>
+  <span class="tag">PROTOTYPE · THROWAWAY · NEVER MERGED</span>
+  <h1>Does the ticket captain's review loop feel right?</h1>
+  <p class="note">A clickable model of what happens to a change between "the writer has a candidate" and "it is merged".</p>
+
+  <div class="intro">
+    <p><strong>The question.</strong> When a captain's change is finished, it goes to review. A reviewer can split the review into two seats, one Claude and one Codex. Each seat comes back with findings, and the reviewer combines them into one verdict, which is FAIL if either seat found a blocker. A FAIL becomes a Fix ticket. The fix gets its own commit, and a fresh reviewer looks at it in a new round. Shoulds become tickets of their own, and each nit gets one line with a ruling. A PASS names the exact commit it judged, and only that commit may be merged. After that come the pull request, CI and the merge. Do these rules hold up when the awkward cases arrive: a split verdict, failure after failure, a merge without a PASS on the head?</p>
+    <p><strong>What this models.</strong> The rules as written today in <code>ticket-captain/resources/merge.md</code>, <code>review.md</code>, <code>dydo/reference/linear-workspace-standard.md</code> and <code>statechart/captain/register.md</code>. Two of today's rules differ from the brief this demo was built from: (1) <em>the fifth-FAIL stop is gone</em> (register RM10). A third FAIL now leads to a checkpoint, where the captain writes "one more round, because …" or "escalated: …". (2) The Fix goes back to <em>the writer who wrote the change</em> by default. A fresh writer takes it only when the original writer's context is full or a blocker says the approach was wrong. The demo follows today's rules, and the "Five FAILs in a row" tab shows the difference.</p>
+    <p class="note"><strong>One assumption.</strong> The rules call for a checkpoint "after a third FAIL", but they don't say whether the fourth and fifth FAILs need one too. Here, every FAIL from the third onward stops at a checkpoint.</p>
+  </div>
+
+  <div class="grid">
+    <div>
+      <section class="card">
+        <h2>Where things stand</h2>
+        <div id="banner"></div>
+        <div id="state"></div>
+      </section>
+      <section class="card">
+        <h2>Rounds so far</h2>
+        <div id="rounds"></div>
+      </section>
+      <section class="card">
+        <h2>What happened</h2>
+        <ol class="log" id="log"></ol>
+      </section>
+    </div>
+    <div>
+      <section class="card">
+        <h2>Guided walkthroughs</h2>
+        <div class="tabs" id="tabs"></div>
+        <div id="scenario"></div>
+      </section>
+      <section class="card">
+        <h2>Free play</h2>
+        <p class="note" style="margin-top:0">Every action is always clickable. If the rules forbid it right now, the model refuses it and says why.</p>
+        <div id="free"></div>
+        <div class="btns" style="margin-top:10px"><button id="reset">Start over</button></div>
+      </section>
+    </div>
+  </div>
+</main>
+
+<!-- ============================================================
+     THE PURE MODULE. No DOM, no document, no handlers.
+     ReviewLoop.initial() -> state
+     ReviewLoop.step(state, action) -> { state, ok, reason, changed }
+     ============================================================ -->
+<script>
+const ReviewLoop = (() => {
+  const SEATS = ['Claude', 'Codex'];
+
+  function sha(n) {
+    let h = (n * 2654435761) >>> 0, s = '';
+    while (s.length < 40) { h = (Math.imul(h, 1103515245) + 12345) >>> 0; s += (h >>> 8).toString(16).padStart(6, '0'); }
+    return s.slice(0, 40);
+  }
+
+  function initial() {
+    return {
+      phase: 'Writing',          // Writing | Fixing | InReview | Checkpoint | Passed | PrOpen | AwaitingCI | Repairing | Done | HandedBack
+      writer: 'original writer',
+      commits: [],               // { sha, by, why }
+      head: null,
+      base: sha(999),            // tip of the feature/* target
+      commitCounter: 0,
+      rounds: [],                // { n, candidate, base, seats: { Claude: null | findings[], Codex: ... }, verdict: null | 'PASS' | 'FAIL', passLine }
+      failsInARow: 0,
+      fixes: [],                 // { key, blockers[], holder, done, kind }
+      shoulds: [],               // { key, text, round }
+      nitLines: [],              // { text, ruling, round }
+      checkpoints: [],           // line text
+      question: null,
+      pr: null,                  // { number }
+      ciRuns: 0,
+      mergeCommit: null,
+    };
+  }
+
+  const clone = s => JSON.parse(JSON.stringify(s));
+  const latestRound = s => s.rounds[s.rounds.length - 1] || null;
+  const latestPass = s => [...s.rounds].reverse().find(r => r.verdict === 'PASS') || null;
+  const reviewedHeads = s => s.rounds.map(r => r.candidate);
+  const short = x => x ? x.slice(0, 7) : '—';
+
+  function commit(s, by, why) {
+    s.commitCounter += 1;
+    const c = { sha: sha(s.commitCounter), by, why };
+    s.commits.push(c); s.head = c.sha;
+    return c;
+  }
+
+  const refuse = (state, reason) => ({ state, ok: false, reason, changed: [] });
+  const accept = (state, reason, changed) => ({ state, ok: true, reason, changed });
+
+  const handlers = {
+    'write-candidate'(s0) {
+      if (s0.phase !== 'Writing') return refuse(s0, 'The writer is not writing right now. The change is at "' + s0.phase + '".');
+      if (s0.head) return refuse(s0, 'The candidate is already committed. Send it to review.');
+      const s = clone(s0); const c = commit(s, s.writer, 'the change');
+      return accept(s, 'The writer committed the candidate ' + short(c.sha) + '.', ['head', 'commits']);
+    },
+
+    'commit-fix'(s0) {
+      const fix = s0.fixes[s0.fixes.length - 1];
+      if (!(s0.phase === 'Fixing' || s0.phase === 'Repairing') || !fix || fix.done)
+        return refuse(s0, 'No Fix is open, so there is nothing to commit a fix for.');
+      if (s0.question && !s0.question.answered)
+        return refuse(s0, 'The Fix waits on a Question for Balazs.');
+      const s = clone(s0); const f = s.fixes[s.fixes.length - 1];
+      const c = commit(s, f.holder, f.key + ': ' + f.blockers.length + ' blocker(s)');
+      f.done = true;
+      return accept(s, f.holder + ' committed the fix ' + short(c.sha) + ' and set ' + f.key + ' Done. It needs a fresh review.', ['head', 'commits', 'fixes']);
+    },
+
+    'stray-push'(s0) {
+      if (!s0.head) return refuse(s0, 'There is no branch to push to yet.');
+      if (s0.phase === 'Done' || s0.phase === 'HandedBack') return refuse(s0, 'The ticket is closed.');
+      const s = clone(s0); const c = commit(s, 'someone', 'an unreviewed push (e.g. the scratch merge pushed by mistake)');
+      return accept(s, 'Someone pushed ' + short(c.sha) + ' to the branch. The head has moved past whatever was reviewed.', ['head', 'commits']);
+    },
+
+    'request-review'(s0) {
+      const okPhase = ['Writing', 'Fixing', 'Repairing', 'Passed', 'PrOpen'].includes(s0.phase);
+      if (!okPhase) return refuse(s0, 'A review can only be requested once a candidate is ready. The change is at "' + s0.phase + '".');
+      if (!s0.head) return refuse(s0, 'There is no candidate commit to review yet.');
+      if (reviewedHeads(s0).includes(s0.head)) return refuse(s0, 'This exact commit (' + short(s0.head) + ') was already judged. A verdict is not reviewed again; only a new commit gets a new round.');
+      const fix = s0.fixes[s0.fixes.length - 1];
+      if ((s0.phase === 'Fixing' || s0.phase === 'Repairing') && fix && !fix.done) return refuse(s0, 'The Fix ' + fix.key + ' is not done yet.');
+      const s = clone(s0); const n = s.rounds.length + 1;
+      s.rounds.push({ n, candidate: s.head, base: s.base, seats: Object.fromEntries(SEATS.map(x => [x, null])), verdict: null, passLine: null });
+      s.phase = 'InReview';
+      return accept(s, 'Review round ' + n + ' opened on ' + short(s.head) + '. A fresh reviewer seats Claude and Codex.', ['phase', 'rounds']);
+    },
+
+    'seat-returns'(s0, a) {
+      const r = latestRound(s0);
+      if (s0.phase !== 'InReview' || !r) return refuse(s0, 'No review round is running.');
+      if (r.seats[a.seat]) return refuse(s0, 'The ' + a.seat + ' seat already came back this round.');
+      const s = clone(s0); latestRound(s).seats[a.seat] = a.findings;
+      const desc = a.findings.length ? a.findings.map(f => f.severity).join(' + ') : 'nothing to report';
+      return accept(s, 'The ' + a.seat + ' seat came back: ' + desc + '.', ['rounds']);
+    },
+
+    'give-verdict'(s0) {
+      const r = latestRound(s0);
+      if (s0.phase !== 'InReview' || !r) return refuse(s0, 'No review round is running.');
+      const missing = SEATS.filter(x => !r.seats[x]);
+      if (missing.length) return refuse(s0, 'The verdict comes once all seats are back. Still waiting on: ' + missing.join(', ') + '.');
+      const s = clone(s0); const R = latestRound(s);
+      const all = SEATS.flatMap(x => R.seats[x].map(f => ({ ...f, seat: x })));
+      const blockers = all.filter(f => f.severity === 'blocker');
+      all.filter(f => f.severity === 'should').forEach(f => {
+        s.shoulds.push({ key: 'should-' + (s.shoulds.length + 1), text: f.text + ' (' + f.seat + ')', round: R.n });
+      });
+      all.filter(f => f.severity === 'nit').forEach(f => {
+        if (f.ruling === 'fix') s.shoulds.push({ key: 'should-' + (s.shoulds.length + 1), text: '[nit ruled: fix] ' + f.text + ' (' + f.seat + ')', round: R.n });
+        else s.nitLines.push({ text: f.text + ' (' + f.seat + ')', ruling: 'no fix needed', round: R.n });
+      });
+      const changed = ['rounds', 'shoulds', 'nitLines', 'phase', 'failsInARow'];
+      if (blockers.length === 0) {
+        R.verdict = 'PASS';
+        R.passLine = 'PASS - rubric/type: code; candidate ' + R.candidate + '; base ' + R.base;
+        s.failsInARow = 0;
+        if (s.pr) {
+          // Underspecified in the rules: the open PR's body still carries the older PASS line.
+          s.phase = 'PrOpen';
+          return accept(s, 'Verdict for round ' + R.n + ': PASS on ' + short(R.candidate) + '. The PR is already open, so its body has to be rewritten with the new PASS line; the rules do not say who does that.', changed);
+        }
+        s.phase = 'Passed';
+        return accept(s, 'Verdict for round ' + R.n + ': PASS on ' + short(R.candidate) + '.', changed);
+      }
+      R.verdict = 'FAIL'; s.failsInARow += 1;
+      const fresh = blockers.some(b => b.wrongApproach);
+      s.fixes.push({ key: 'Fix-' + (s.fixes.length + 1), kind: 'fix', blockers: blockers.map(b => b.text + ' (' + b.seat + ')'), holder: fresh ? 'a fresh writer' : s.writer, done: false });
+      changed.push('fixes');
+      if (blockers.some(b => b.needsBalazs)) { s.question = { text: 'A blocker needs a call only Balazs can make', answered: false }; changed.push('question'); }
+      if (s.failsInARow >= 3) {
+        s.phase = 'Checkpoint';
+        return accept(s, 'Verdict for round ' + R.n + ': FAIL (' + blockers.length + ' blocker). This is FAIL number ' + s.failsInARow + ' in a row, so the captain stops at a checkpoint.', changed);
+      }
+      s.phase = 'Fixing';
+      return accept(s, 'Verdict for round ' + R.n + ': FAIL (' + blockers.length + ' blocker). One Fix ticket takes every blocker.', changed);
+    },
+
+    'checkpoint'(s0, a) {
+      if (s0.phase !== 'Checkpoint') return refuse(s0, 'There is no checkpoint to decide. It comes after the third FAIL in a row.');
+      const s = clone(s0); const n = latestRound(s).n;
+      if (a.choice === 'one-more') {
+        s.checkpoints.push('r' + n + ' checkpoint: one more round, because ' + (a.because || 'the blockers are local and the fix is clear'));
+        s.phase = 'Fixing';
+        return accept(s, 'The checkpoint line is written: one more round.', ['checkpoints', 'phase']);
+      }
+      s.checkpoints.push('r' + n + ' escalated: ' + (a.because || 'the loop is not converging'));
+      s.question = { text: 'Prepared for the officer: ' + s.failsInARow + ' FAILs in a row on this ticket. Re-plan, or decide the open call?', answered: false };
+      s.phase = 'HandedBack';
+      return accept(s, 'Escalated. The ticket is handed back to the officer, who opens the Question.', ['checkpoints', 'phase', 'question']);
+    },
+
+    'open-pr'(s0) {
+      const p = latestPass(s0);
+      if (s0.pr) return refuse(s0, 'The pull request is already open.');
+      if (!p) return refuse(s0, 'No PASS yet. The PR body must carry the PASS line, word for word.');
+      if (latestRound(s0).verdict !== 'PASS') return refuse(s0, 'The latest round is not a PASS.');
+      const s = clone(s0); s.pr = { number: 400 + s.rounds.length }; s.phase = 'PrOpen';
+      return accept(s, 'Pull request #' + s.pr.number + ' opened. Its body holds: ' + p.passLine.slice(0, 60) + '…', ['pr', 'phase']);
+    },
+
+    'merge'(s0) {
+      if (!s0.pr) return refuse(s0, 'There is no pull request to merge. A merge needs a PASS, then a PR.');
+      const p = latestPass(s0);
+      if (!p) return refuse(s0, 'Merge refused: no review has passed.');
+      if (latestRound(s0).verdict !== 'PASS') return refuse(s0, 'Merge refused: the latest round is a ' + (latestRound(s0).verdict || 'review still running') + ', not a PASS.');
+      if (p.candidate !== s0.head) return refuse(s0, 'Merge refused: --match-head-commit names ' + short(p.candidate) + ' (the commit the PASS judged), but the PR head is now ' + short(s0.head) + '. That newer commit has never been reviewed.');
+      if (s0.phase !== 'PrOpen') return refuse(s0, 'Not ready to merge from "' + s0.phase + '".');
+      const s = clone(s0); s.mergeCommit = sha(500 + s.rounds.length); s.phase = 'AwaitingCI'; s.ciRuns = 0;
+      return accept(s, 'Merged with --match-head-commit ' + short(p.candidate) + '. Waiting for hosted CI.', ['mergeCommit', 'phase']);
+    },
+
+    'ci'(s0, a) {
+      if (s0.phase !== 'AwaitingCI') return refuse(s0, 'Nothing is waiting on CI.');
+      const s = clone(s0); s.ciRuns += 1;
+      if (a.result === 'green') { s.phase = 'Done'; return accept(s, 'CI is green on the merge. The ticket is Done.', ['phase', 'ciRuns']); }
+      if (s.ciRuns === 1) return accept(s, 'CI is red. It is rerun once.', ['ciRuns']);
+      s.phase = 'Repairing'; s.pr = null;
+      s.fixes.push({ key: 'Fix-' + (s.fixes.length + 1), kind: 'repair', blockers: ['red CI on the merge, twice'], holder: s.writer, done: false });
+      return accept(s, 'CI is red again. The merge is reverted, and a repair Fix opens. The repair needs its own review round.', ['phase', 'fixes', 'pr']);
+    },
+  };
+
+  function step(state, action) {
+    const h = handlers[action.type];
+    if (!h) return refuse(state, 'Unknown action.');
+    return h(state, action);
+  }
+
+  return { initial, step, SEATS, short, latestPass, latestRound };
+})();
+</script>
+
+<!-- ============================================================
+     THE THROWAWAY PAGE. Calls into ReviewLoop; nothing flows back.
+     ============================================================ -->
+<script>
+const F = {
+  clean: [],
+  blocker: [{ severity: 'blocker', text: 'the intended case is wrong' }],
+  shouldNit: [{ severity: 'should', text: 'a real bug callers will hit' }, { severity: 'nit', text: 'naming', ruling: 'none' }],
+  wrongApproach: [{ severity: 'blocker', text: 'the approach is wrong', wrongApproach: true }],
+};
+
+const ACTIONS = {
+  write: { label: 'Writer commits the candidate', a: { type: 'write-candidate' } },
+  review: { label: 'Send to review (fresh reviewer)', a: { type: 'request-review' } },
+  claudeClean: { label: 'Claude seat: nothing found', a: { type: 'seat-returns', seat: 'Claude', findings: F.clean } },
+  claudeBlocker: { label: 'Claude seat: a blocker', a: { type: 'seat-returns', seat: 'Claude', findings: F.blocker } },
+  claudeShould: { label: 'Claude seat: a should + a nit', a: { type: 'seat-returns', seat: 'Claude', findings: F.shouldNit } },
+  codexClean: { label: 'Codex seat: nothing found', a: { type: 'seat-returns', seat: 'Codex', findings: F.clean } },
+  codexBlocker: { label: 'Codex seat: a blocker', a: { type: 'seat-returns', seat: 'Codex', findings: F.blocker } },
+  codexShould: { label: 'Codex seat: a should + a nit', a: { type: 'seat-returns', seat: 'Codex', findings: F.shouldNit } },
+  verdict: { label: 'Reviewer gives the verdict', a: { type: 'give-verdict' } },
+  fix: { label: 'Fix holder commits the fix', a: { type: 'commit-fix' } },
+  oneMore: { label: 'Checkpoint: one more round', a: { type: 'checkpoint', choice: 'one-more' } },
+  escalate: { label: 'Checkpoint: escalate', a: { type: 'checkpoint', choice: 'escalate' } },
+  stray: { label: 'Someone pushes a commit to the branch', a: { type: 'stray-push' } },
+  pr: { label: 'Open the pull request', a: { type: 'open-pr' } },
+  merge: { label: 'Merge the pull request', a: { type: 'merge' } },
+  green: { label: 'CI goes green', a: { type: 'ci', result: 'green' } },
+  red: { label: 'CI goes red', a: { type: 'ci', result: 'red' } },
+};
+
+const FREE_GROUPS = [
+  ['The writer', ['write', 'fix', 'stray']],
+  ['The review', ['review', 'claudeClean', 'claudeBlocker', 'claudeShould', 'codexClean', 'codexBlocker', 'codexShould', 'verdict']],
+  ['After three FAILs in a row', ['oneMore', 'escalate']],
+  ['Landing', ['pr', 'merge', 'green', 'red']],
+];
+
+const round = ['review', 'claudeBlocker', 'codexClean', 'verdict'];
+const SCENARIOS = [
+  { id: 'happy', title: 'Happy path',
+    text: 'The candidate goes to review, both seats find nothing, and the verdict is PASS. The PASS names the exact commit, and that commit is merged. Watch the PASS line: it carries the full head and base SHAs, and the merge has to match them.',
+    steps: [['write'], ['review'], ['claudeClean'], ['codexClean'], ['verdict'], ['pr'], ['merge'], ['green', 'The ticket is Done.']] },
+  { id: 'split', title: 'Split verdict',
+    text: 'Claude finds a blocker, and Codex finds only a should and a nit. One blocker from either seat makes the verdict FAIL. The should still becomes its own ticket even though the round failed, and the nit gets one line with a ruling. One Fix ticket takes the blocker, the writer commits the fix, and a fresh reviewer judges the new commit.',
+    steps: [['write'], ['review'], ['claudeBlocker', 'One seat finds a blocker…'], ['codexShould', '…the other would have passed.'], ['verdict', 'Combined verdict: FAIL. Look at Fixes, Shoulds and Nit lines.'], ['fix'], ['review', 'Round 2: a new reviewer, a new commit.'], ['claudeClean'], ['codexClean'], ['verdict'], ['pr'], ['merge'], ['green']] },
+  { id: 'five', title: 'Five FAILs in a row',
+    text: 'Every round fails. The brief expected an automatic stop at the fifth FAIL, but under today\'s rules (register RM10) there is none. After the third FAIL the captain stops at a checkpoint and writes a line. The demo assumes a checkpoint after every FAIL from then on. At the fifth FAIL the captain escalates, and the ticket goes back to the officer with a Question prepared. Nothing in the rules forces that escalation; it is the captain\'s judgment.',
+    steps: [['write'],
+      ...round.map(x => [x, x === 'verdict' ? 'FAIL 1' : '']), ['fix'],
+      ...round.map(x => [x, x === 'verdict' ? 'FAIL 2' : '']), ['fix'],
+      ...round.map(x => [x, x === 'verdict' ? 'FAIL 3: checkpoint' : '']), ['oneMore'], ['fix'],
+      ...round.map(x => [x, x === 'verdict' ? 'FAIL 4: checkpoint again (assumed)' : '']), ['oneMore'], ['fix'],
+      ...round.map(x => [x, x === 'verdict' ? 'FAIL 5: no automatic stop' : '']), ['escalate', 'The captain\'s choice, not a rule.']] },
+  { id: 'illegal', title: 'Illegal moves',
+    text: 'Three things the rules forbid. First, merging before any review. Second, giving the verdict before every seat is back. Third, merging after someone pushed a commit on top of the PASS: the PASS judged an older commit, so the merge is refused. The way out is a fresh review round on the new head.',
+    steps: [['merge', 'Refused: no PASS, no PR.'], ['write'], ['review'], ['claudeClean'], ['verdict', 'Refused: Codex is not back yet.'], ['codexClean'], ['verdict'], ['pr'], ['stray', 'The head moves past the PASS.'], ['merge', 'Refused: the PASS names an older commit.'], ['review', 'A fresh round on the new head.'], ['claudeClean'], ['codexClean'], ['verdict'], ['merge'], ['green']] },
+];
+
+let S = ReviewLoop.initial();
+let last = null;          // last step result
+let changed = [];
+let log = [];
+let active = SCENARIOS[0].id;
+let progress = 0;
+
+function dispatch(key) {
+  const res = ReviewLoop.step(S, ACTIONS[key].a);
+  last = res; changed = res.changed;
+  if (res.ok) S = res.state;
+  log.push({ ok: res.ok, text: (res.ok ? '' : 'Refused: ') + res.reason });
+  render();
+}
+
+function reset() { S = ReviewLoop.initial(); last = null; changed = []; log = []; render(); }
+
+const PHASES = {
+  Writing: 'The writer is writing the change', Fixing: 'A Fix is open', InReview: 'In review',
+  Checkpoint: 'At the checkpoint: one more round, or escalate?', Passed: 'Passed review', PrOpen: 'Pull request open',
+  AwaitingCI: 'Merged, waiting for CI', Repairing: 'Reverted, repair Fix open', Done: 'Done', HandedBack: 'Handed back to the officer',
+};
+
+const esc = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+const ch = (k, html) => changed.includes(k) ? '<span class="changed">' + html + '</span>' : html;
+
+function render() {
+  const sh = ReviewLoop.short;
+  const b = document.getElementById('banner');
+  if (!last) b.innerHTML = '<div class="banner info">Nothing has happened yet. Pick a walkthrough, or press any button.</div>';
+  else b.innerHTML = '<div class="banner ' + (last.ok ? 'good' : 'bad') + '">' + (last.ok ? 'Just happened: ' : 'Refused, nothing changed: ') + esc(last.reason) + '</div>';
+
+  const p = ReviewLoop.latestPass(S);
+  const fix = S.fixes[S.fixes.length - 1];
+  document.getElementById('state').innerHTML = '<dl>' +
+    '<dt>Stage</dt><dd>' + ch('phase', '<span class="phase">' + PHASES[S.phase] + '</span>') + '</dd>' +
+    '<dt>Branch head</dt><dd>' + ch('head', S.head ? '<code>' + sh(S.head) + '</code>' : '—') + '</dd>' +
+    '<dt>Latest PASS judged</dt><dd>' + (p ? '<code>' + sh(p.candidate) + '</code>' + (p.candidate === S.head ? ' <span class="pass">= head</span>' : ' <span class="fail">≠ head</span>') : '—') + '</dd>' +
+    '<dt>FAILs in a row</dt><dd>' + ch('failsInARow', String(S.failsInARow)) + (S.failsInARow >= 3 ? ' <span class="note">(checkpoint territory)</span>' : '') + '</dd>' +
+    '<dt>Fix tickets</dt><dd>' + ch('fixes', S.fixes.length ? '<ul class="plain">' + S.fixes.map(f => '<li>' + f.key + (f.kind === 'repair' ? ' (repair)' : '') + ': ' + esc(f.blockers.join('; ')) + ' · held by ' + f.holder + ' · ' + (f.done ? 'Done' : 'open') + '</li>').join('') + '</ul>' : 'none') + '</dd>' +
+    '<dt>Should tickets</dt><dd>' + ch('shoulds', S.shoulds.length ? '<ul class="plain">' + S.shoulds.map(x => '<li>' + x.key + ': ' + esc(x.text) + ' · found in r' + x.round + ' · waits</li>').join('') + '</ul>' : 'none') + '</dd>' +
+    '<dt>Nit lines</dt><dd>' + ch('nitLines', S.nitLines.length ? '<ul class="plain">' + S.nitLines.map(x => '<li>r' + x.round + ': ' + esc(x.text) + ', ruled ' + x.ruling + '</li>').join('') + '</ul>' : 'none') + '</dd>' +
+    '<dt>Checkpoint lines</dt><dd>' + ch('checkpoints', S.checkpoints.length ? '<ul class="plain">' + S.checkpoints.map(x => '<li>' + esc(x) + '</li>').join('') + '</ul>' : 'none') + '</dd>' +
+    '<dt>Question</dt><dd>' + ch('question', S.question ? esc(S.question.text) : 'none') + '</dd>' +
+    '<dt>Pull request</dt><dd>' + ch('pr', S.pr ? '#' + S.pr.number : '—') + '</dd>' +
+    '<dt>Merge</dt><dd>' + ch('mergeCommit', S.mergeCommit ? '<code>' + sh(S.mergeCommit) + '</code>' + (S.ciRuns ? ' · CI runs: ' + S.ciRuns : '') : '—') + '</dd>' +
+    '</dl>';
+
+  const seatCell = f => f === null ? '<span class="note">not back</span>' : (f.length ? f.map(x => x.severity).join(', ') : 'nothing');
+  document.getElementById('rounds').innerHTML = S.rounds.length ? ch('rounds',
+    '<table><tr><th>Round</th><th>Candidate</th><th>Claude</th><th>Codex</th><th>Verdict</th></tr>' +
+    S.rounds.map(r => '<tr><td>r' + r.n + '</td><td><code>' + sh(r.candidate) + '</code></td><td>' + seatCell(r.seats.Claude) + '</td><td>' + seatCell(r.seats.Codex) + '</td><td>' +
+      (r.verdict ? '<span class="' + r.verdict.toLowerCase() + '">' + r.verdict + '</span>' : '<span class="note">pending</span>') + '</td></tr>').join('') + '</table>' +
+    (p ? '<p class="note" style="margin-bottom:0">PASS line: <code>' + esc(p.passLine) + '</code></p>' : '')) : '<p class="note" style="margin:0">No review yet.</p>';
+
+  document.getElementById('log').innerHTML = log.map(l => '<li class="' + (l.ok ? '' : 'rej') + '">' + esc(l.text) + '</li>').join('') || '<li class="note">—</li>';
+  const lg = document.getElementById('log'); lg.scrollTop = lg.scrollHeight;
+
+  document.getElementById('tabs').innerHTML = SCENARIOS.map(s => '<button data-tab="' + s.id + '" class="' + (s.id === active ? 'active' : '') + '">' + s.title + '</button>').join('');
+  const sc = SCENARIOS.find(s => s.id === active);
+  document.getElementById('scenario').innerHTML = '<p style="margin-top:0">' + esc(sc.text) + '</p>' +
+    '<div class="btns"><button data-start="1">Reset and start this walkthrough</button></div>' +
+    '<ol class="steps">' + sc.steps.map((st, i) => '<li><button data-step="' + i + '" class="' + (i === progress ? 'primary' : i < progress ? 'done' : '') + '"' + (i === progress ? '' : ' disabled') + '>' + ACTIONS[st[0]].label + '</button>' + (st[1] ? '<span class="why">' + esc(st[1]) + '</span>' : '') + '</li>').join('') + '</ol>' +
+    (progress >= sc.steps.length ? '<p class="pass">Walkthrough finished.</p>' : '');
+
+  document.getElementById('free').innerHTML = FREE_GROUPS.map(([t, keys]) => '<div class="group"><h3>' + t + '</h3><div class="btns">' + keys.map(k => '<button data-act="' + k + '">' + ACTIONS[k].label + '</button>').join('') + '</div></div>').join('');
+}
+
+document.addEventListener('click', e => {
+  const t = e.target.closest('button'); if (!t) return;
+  if (t.dataset.tab) { active = t.dataset.tab; progress = 0; reset(); }
+  else if (t.dataset.start) { progress = 0; reset(); }
+  else if (t.dataset.step !== undefined) { const sc = SCENARIOS.find(s => s.id === active); dispatch(sc.steps[progress][0]); progress += 1; render(); }
+  else if (t.dataset.act) dispatch(t.dataset.act);
+  else if (t.id === 'reset') { progress = 0; reset(); }
+});
+
+render();
+</script>
+</body>
+</html>
