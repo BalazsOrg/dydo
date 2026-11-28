@@ -10,7 +10,7 @@ type: reference
 ## Setting up
 
 - Seven statuses only: FutureFeature, Backlog, Todo, In Progress, Done, Canceled, Duplicate. The Enablement at ship deletes `Implementing`, `In Review` and `Ready to Merge`, and Sub-issue auto-close stays off.
-- Each project (team) gets its continuous pair, `CI findings` and `Agent friction`: a Linear grouping of tickets, not a Project with an outcome; nobody oversees it or sends envoys for it.
+- Each project (team) gets its continuous pair, `CI findings` and `Papercuts`: a Linear grouping of tickets, not a Project with an outcome; nobody oversees it or sends envoys for it.
 
 ## Statuses
 

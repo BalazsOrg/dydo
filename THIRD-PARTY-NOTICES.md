@@ -12,12 +12,10 @@ header in the canonical `skills/<category>/<name>/` folders (`engineering/`,
 |---|---|
 | `codebase-design` | `skills/engineering/codebase-design/SKILL.md`, `skills/engineering/codebase-design/resources/deepening.md`, `skills/engineering/codebase-design/resources/design-it-twice.md` |
 | `diagnosing-bugs` | `skills/engineering/diagnosing-bugs/SKILL.md` |
-| `domain-modeling` | `skills/engineering/domain-modeling/SKILL.md` |
 | `grill-me` | `skills/productivity/grill-me/SKILL.md` |
 | `grilling` | `skills/productivity/grilling/SKILL.md` |
 | `handoff` | `skills/productivity/handoff/SKILL.md` |
 | `improve-codebase-architecture` | `skills/engineering/improve-codebase-architecture/SKILL.md`, `skills/engineering/improve-codebase-architecture/resources/html-report.md` |
-| `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
 | `retro` | `skills/productivity/retro/SKILL.md` |
 | `teach` | `skills/productivity/teach/SKILL.md`, `skills/productivity/teach/resources/mission-format.md`, `skills/productivity/teach/resources/glossary-format.md`, `skills/productivity/teach/resources/learning-record-format.md`, `skills/productivity/teach/resources/resources-format.md` |
 | `to-spec` | `skills/productivity/to-project/SKILL.md` |
@@ -42,8 +40,19 @@ independent-review and glossary-path adaptations in `SKILL.md`; their attributio
 rather than inserted into the skill. Upstream `CREDITS.md` preserves the attribution to Dex Horthy’s
 `show-me` material.
 
-The following skill comes from neither commit above: it is on no upstream release or `main`, only
-on the open pull request [#1422](https://github.com/mattpocock/skills/pull/1422), adopted at its
+The following portions are imported, updated or adapted from commit
+`6f7f7831a625f040a8e06a0e7954826b87ce775a`. Each adapted file records the attribution in its own
+header.
+
+| Upstream portion | Adapted in |
+|---|---|
+| `diagnosing-bugs` | `skills/engineering/diagnosing-bugs/SKILL.md` |
+| `domain-modeling` and its `GLOSSARY-FORMAT.md` | `skills/engineering/domain-modeling/SKILL.md`, `skills/engineering/domain-modeling/resources/glossary-format.md` |
+| `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
+| `tdd` and its `mocking.md` | `skills/engineering/tdd/SKILL.md`, `skills/engineering/tdd/resources/mocking.md` |
+
+The following skill comes from none of the commits above: it is on no upstream release or `main`,
+only on the open pull request [#1422](https://github.com/mattpocock/skills/pull/1422), adopted at its
 head, commit `71009050da79506823464512ee76d71bbc014ce1`. Its `scripts/` and `kit/` files are
 byte-identical copies; its `PROVENANCE.md` records the commit and the scripts' blob hashes.
 

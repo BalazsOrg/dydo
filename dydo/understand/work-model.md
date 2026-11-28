@@ -28,8 +28,8 @@ officer never becomes another officer ([Decision 050](../project/decisions/050-o
 | Land | the coordinator paces it (H5) | the feature branch, with master merged in, merged into main (N6) | a merge review, then his acceptance at the landing walkthrough, then an AFK merge when two-way or his click when one-way (N6, R26, R27) |
 
 Some work has no stage of its own: chief-of-staff triages the user's attention and never delivers,
-and any session may reach for retro, writing-for-agents and diagnosing-bugs; bro is the user's
-corrective for agent-speak, at any stage.
+and any session may reach for papercut, writing-for-agents and diagnosing-bugs; retro is the user's
+harness improvement, read from the papercuts, and bro his corrective for agent-speak, at any stage.
 
 ## Officers, crew, and skills
 

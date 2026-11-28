@@ -1,4 +1,4 @@
-<!-- Adapted from mattpocock/skills prototype at 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76 (MIT). -->
+<!-- Adapted from mattpocock/skills prototype at 6f7f7831a625f040a8e06a0e7954826b87ce775a (MIT). -->
 
 # Logic Prototype
 
@@ -11,14 +11,14 @@ Because it's one file with nothing to install, you can hand it to a non-develope
 a domain expert) and let them feel the model for themselves. So it speaks their language, not the
 code's.
 
-If the question is "what should this look like," this is the wrong branch. Use [ui](ui.md).
-
 ## When this is the right shape
 
 - "I'm not sure if this state machine handles the edge case where X then Y."
 - "Does this data model actually let me represent the case where..."
 - "I want to feel out what the API should look like before writing it."
 - Anything where someone wants to **press buttons and watch state change**.
+
+If the question is "what should this look like," this is the wrong branch. Use [ui](ui.md).
 
 ## Process
 
@@ -32,8 +32,8 @@ later, whether the user is watching now or returning to it AFK.
 ### 2. Isolate the logic in a portable module
 
 Put the actual logic (the bit that's answering the question) in a single `<script>` block written as
-a small, pure module that reads cleanly as the template for a fresh rewrite in the real codebase
-later. The page around it is throwaway; this module is the template.
+a small, pure module that could be lifted out into the real codebase later. The page around it is
+throwaway; this module isn't.
 
 The right shape depends on the question:
 
@@ -49,8 +49,8 @@ The right shape depends on the question:
 Pick whichever shape best fits the question being asked, *not* whichever is easiest to wire to a
 page. Keep it pure: no DOM, no `document`, no button handlers reaching inside it. The page calls
 into it; nothing flows the other direction. This is what makes the prototype useful past its own
-lifetime: once the question's answered, the validated reducer / machine / function set is the
-template the delivery crew rewrites fresh in the real module.
+lifetime: once the question's answered, the validated reducer / machine / function set lifts into
+the real module on its own.
 
 ### 3. Build the shareable HTML file
 
@@ -90,11 +90,11 @@ whole point. If they want new actions or a new scenario, add them. Prototypes ev
 ### 5. Capture the answer and the prototype
 
 Once the prototype has answered its question, capture the answer, then capture the prototype the way
-rule 6 describes. The logic-specific mapping: the validated reducer / machine / function set and
-the HTML shell stay together on the `prototype/<name>` branch that keeps the prototype as a primary
-source, and being one self-contained file, it stays trivially re-runnable there. Nothing is merged
-or copied into the real module: the delivery crew rewrites the validated logic fresh, with this as
-its template.
+rule 6 describes. The logic-specific mapping: the HTML shell and the validated reducer / machine /
+function set stay together on the `prototype/<name>` branch that keeps the prototype as a primary
+source, and being one self-contained file, it stays trivially re-runnable there. The delivery ticket
+may lift the validated set into the real module (the decision, absorbed), where it is refactored to
+production standards and passes that ticket's review; the HTML shell stays on the branch.
 
 ## Anti-patterns
 
@@ -104,9 +104,8 @@ its template.
 - **Don't generalise.** No "what if we wanted to support X later." The prototype answers one
   question.
 - **Don't blur the logic and the page together.** If the pure module references the DOM, `document`,
-  or button handlers, it's no longer a clean template. Keep the page as a thin shell over a pure
-  module.
+  or button handlers, it's no longer liftable. Keep the page as a thin shell over a pure module.
 - **Don't reach for a framework, bundler, or server.** One file the recipient double-clicks; a React
   app or a dev server defeats "shareable".
 - **Don't ship the HTML shell into production.** The page is optimised for being clicked through by
-  hand. The logic module behind it is the template worth keeping.
+  hand. The logic module behind it is the bit worth keeping.
