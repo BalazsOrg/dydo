@@ -94,7 +94,8 @@ return (
 For sub-shape A (existing page): keep all the existing data fetching above the switcher; only the
 rendered subtree changes per variant.
 
-For sub-shape B (new page): the throwaway route under `/prototype/<name>` mounts the same switcher.
+For sub-shape B (new page): the throwaway route (for example under `/prototype/<name>`, if the
+project's routing convention allows) mounts the same switcher.
 
 ### 4. Build the floating switcher
 
@@ -129,8 +130,8 @@ actual design they want.
 
 Once a variant has won, capture the answer (which variant and why), then capture the prototype the
 way rule 6 describes. The full set of variants and the switcher stay on the `prototype/<name>`
-branch, not in main. The delivery ticket may fold the winner into the real code, refactored to
-production standards and through that ticket's review:
+branch, not in main. The delivery ticket folds the winning design into the real code by rewriting
+it properly, not by copying the variant code, and the rewrite passes that ticket's review:
 
 - **Sub-shape A**: fold the winner into the existing page; the losing variants and the switcher
   never reach main.
@@ -151,5 +152,4 @@ next reader.
   mutate, point it at a stub: the question is "what should this look like", not "does the backend
   work".
 - **Promoting the prototype directly to production.** The variant code was written under prototype
-  constraints (no tests, minimal error handling). Refactor it to production standards when you fold
-  it in.
+  constraints (no tests, minimal error handling). Rewrite it properly when you fold it in.

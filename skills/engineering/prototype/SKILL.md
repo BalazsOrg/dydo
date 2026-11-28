@@ -44,11 +44,13 @@ the assumption at the top of the prototype.
 5. **Surface the state.** After every action (logic) or on every variant switch (UI), print or
    render the full relevant state so the user can see what changed.
 6. **Capture it when done.** Capture the prototype itself as a **primary source**: commit it to its
-   `prototype/<name>` branch and record the user's verdict, the question it settled and the winning
-   commit on the Prototype Ticket. The branch is never merged or submitted; retain it until the
-   delivery ticket that uses it is `Done`, or until feature cleanup. That delivery ticket folds the
-   validated decision into the real code, and may lift the validated logic or the winning variant
-   from the branch into the real module. There it is refactored to production standards (tests,
-   error handling, the project's conventions) and passes that delivery ticket's normal review
-   before it merges. The HTML shell, the variant switcher and the losing variants never reach
-   production. The main branch keeps only the validated decision.
+   `prototype/<name>` branch, link the branch from the Prototype Ticket, and record there the
+   user's verdict, the question it settled and the winning commit. The delivery ticket that uses it
+   carries a context pointer to the branch. The branch is never merged or submitted; retain it
+   until that delivery ticket is `Done`, or until feature cleanup. That delivery ticket folds the
+   validated decision into the real code. Only validated logic may be lifted from the branch into
+   the real module, where it is refactored to production standards (tests, error handling, the
+   project's conventions) and passes that delivery ticket's normal review before it merges. A
+   winning UI design is rewritten properly in the real code, not copied. The HTML shell, the
+   variant switcher and the losing variants never reach production. The main branch keeps only the
+   validated decision.
