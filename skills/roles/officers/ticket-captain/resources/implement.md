@@ -9,8 +9,7 @@ Read the rules for code, comments and tests that your brief names. They differ f
 **While you build**
 
 - Prove the change the way it will be used: run the command, drive the app, open the page.
-- Test through the public interface: the command, the endpoint, the exported function.
-- Watch every new test fail before you make it pass.
+- Choose, write and prove your tests by `/tdd`.
 - Change only what your ticket needs.
 - Fix a failing check in the code. Never weaken, skip or delete the check.
 
@@ -20,7 +19,7 @@ When the change is a doc, state only what you checked against its source: the co
 
 **A bug**
 
-Write a test that fails because of the bug. Then fix the bug.
+Start from a failing reproduction, by "A bug starts red" in `/tdd`. Then fix the bug.
 
 **A fix after review**
 

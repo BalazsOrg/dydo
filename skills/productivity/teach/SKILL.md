@@ -4,7 +4,7 @@ description: Teach the user a new skill or concept, within this workspace. Load 
 argument-hint: "What would you like to learn about?"
 ---
 
-<!-- Adapted from mattpocock/skills teach at 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76 (MIT). -->
+<!-- Adapted from mattpocock/skills teach at 6f7f7831a625f040a8e06a0e7954826b87ce775a (MIT). -->
 
 # Teach
 
@@ -13,8 +13,9 @@ the topic over multiple sessions.
 
 ## Teaching Workspace
 
-Treat the current directory as a teaching workspace. The state of his learning is captured in this
-directory in several files:
+Treat the current directory as a teaching workspace. Workspace paths (`./lessons/` and the rest)
+resolve from the directory `/teach` was run in; only the `resources/*-format.md` links resolve from
+this skill's folder. The state of his learning is captured in this directory in several files:
 
 - `MISSION.md`: A document capturing the _reason_ the user is interested in the topic. This should
   be used to ground all teaching. Use the format in [mission-format](resources/mission-format.md).
@@ -158,7 +159,8 @@ performance. This feedback loop should be as tight as possible, giving feedback 
 ideally automatically.
 
 For quizzes, each answer should be exactly the same number of words (and characters, if possible).
-Don't give the user any clues about the answer through formatting.
+Vary which position holds the correct answer across questions. Don't give the user any clues about
+the answer through formatting or order.
 
 ## Acquiring Wisdom
 
