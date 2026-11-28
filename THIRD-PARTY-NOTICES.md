@@ -42,6 +42,12 @@ independent-review and glossary-path adaptations in `SKILL.md`; their attributio
 rather than inserted into the skill. Upstream `CREDITS.md` preserves the attribution to Dex Horthy’s
 `show-me` material.
 
+The following portion is updated from commit `6f7f7831a625f040a8e06a0e7954826b87ce775a`.
+
+| Upstream skill | Adapted in |
+|---|---|
+| `diagnosing-bugs` | `skills/engineering/diagnosing-bugs/SKILL.md` |
+
 MIT License
 
 Copyright (c) 2026 Matt Pocock
