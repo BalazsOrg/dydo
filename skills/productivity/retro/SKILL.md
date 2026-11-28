@@ -30,7 +30,7 @@ Agents file papercuts; you read them and file none. A papercut's suggested fix i
 - **No-ops**: look for instructions in steering files that don't modify the agent's behaviour. _Use when_ the steering files are large and unwieldy.
 - **Information access**: look for opportunities to increase the agent's access to information. Teeing dev server logs, read-only access to third-party services. _Use when_ a crucial piece of information was not available to the agent.
 
-4. Search every candidate against the existing homes and tickets (see Files). When a remedy already exists, point to it instead of proposing a new one.
+4. Search every candidate against the existing homes and tickets you can reach (see Files). When a remedy already exists, point to it instead of proposing a new one. With Linear unreachable, say on each candidate that ticket deduplication was unavailable.
 
 5. Present these candidates to the user, in order of severity, each with its citation. Repeat comments raise a papercut's severity; a symptom seen twice is a pattern.
 
