@@ -29,13 +29,17 @@ public sealed class OffLimitsRuleTests
 
 The unclosed-fence row guards a trap: `dydo check` must report an unclosed fence as an error and exit 1, not as a warning with exit 0. The red check below measures exactly that, the severity and the exit code.
 
-**Its tag is too broad.** The class-level tag names that trap, but the class's other rows (a missing file, a duplicate pattern, a missing literal path, a clean file) do not guard it. A tag must be true of every case it covers, so a review of this test finds the tag false. The true shape gives the trap a test of its own and leaves `contract` alone on the class:
+**Its tag is false twice.** It sits on the class, so it covers every case, and the class's other rows (a missing file, a duplicate pattern, a missing literal path, a clean file) do not guard the trap. And its wording, "an unclosed fence silently drops off-limits patterns", names a failure the test never shows: the red check shows `dydo check` warning and exiting 0, not patterns going missing. A tag must be true of every case it covers and name the failure its test catches. xUnit adds a class's traits to every test in it, so the true shape puts each tag on the test it describes:
 
 ```csharp
 [Collection("Integration")]
-[Trait("Job", "contract: dydo-commands-core.md dydo check (validates the off-limits file)")]
 public sealed class OffLimitsRuleTests
 {
+    [Theory]
+    [Trait("Job", "contract: dydo-commands-core.md dydo check (validates the off-limits file)")]
+    // ... the other four rows, unchanged ...
+    public void Check_ReportsTheOffLimitsFinding(string? offLimits, int expectedExit, string? expectedFinding) { /* as above */ }
+
     [Fact]
     [Trait("Job", "trap: dydo check reported an unclosed fence as a warning and exited 0")]
     public void Check_UnclosedFence_FailsWithExit1()
@@ -48,8 +52,6 @@ public sealed class OffLimitsRuleTests
         Assert.True(code == 1, $"exit {code}, expected 1:\n{output}");
         Assert.Contains("Unclosed code block", output);
     }
-
-    // The theory keeps its other four rows.
 }
 ```
 

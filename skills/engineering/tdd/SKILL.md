@@ -63,7 +63,7 @@ Record the command and what each run printed on your ticket. The [worked example
 
 The order you work in is yours. The red check is what makes a kept test count, whatever the order. One strong way to work is in **vertical slices**: one test, then the code that passes it, each test a **tracer bullet** that answers to what the last one taught you. Tests written in a batch ahead of the code tend to test the code's imagined shape; tracer bullets test what it turned out to do.
 
-**A bug starts red.** Before you change the code, have a test that fails because of the bug, at the boundary where the bug shows; a test that is already red on the bug counts. Fix the bug and watch it go green. Then revert the fix once, watch the test fail again, and restore the fix. When the bug resists a reproduction, load `diagnosing-bugs`. For a race, fake timers or a forced interleaving make the reproduction fail every time, where a sleep makes it flaky.
+**A bug starts red.** Before you change the code, have a test that fails because of the bug, at the boundary where the bug shows; a test that is already red on the bug counts. Fix the bug and watch it go green. Then revert the fix once, watch the test fail again, and restore the fix. When the bug resists a reproduction, load `diagnosing-bugs`. For a race, fake timers, a forced interleaving or a narrowed timing window are options for making the reproduction fail reliably.
 
 ## Smells
 
