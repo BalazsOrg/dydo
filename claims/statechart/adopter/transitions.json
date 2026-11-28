@@ -57,7 +57,7 @@
     },
     {
       "id": "Harvested",
-      "title": "Friction and local patches harvested for the next release",
+      "title": "Papercuts and local patches harvested for the next release",
       "spec": [
         "H9"
       ]
@@ -108,7 +108,7 @@
       "claim": "claim:Adopter.Harvest",
       "from": "Current",
       "to": "Harvested",
-      "arrow": "a release is planned: its map holder harvests their Agent friction queues and local patches",
+      "arrow": "a release is planned: its map holder harvests their Papercuts and local patches",
       "spec": [
         "H9"
       ],
