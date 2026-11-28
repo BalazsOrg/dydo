@@ -24,11 +24,7 @@ The project's choice of tools lives in `dydo/reference/animatic.md`: `dydo init`
 
 **No config** (or no repo): build with no flags, on the defaults: the machine's built-in voice (Kokoro where it has none) and the plain kit. At hand-over, say which voice spoke and that `/setup-animatic` picks a better one.
 
-**The user's tools win.** A tool the user names in this request beats the config for this run. Its recipe is in the `setup-animatic` skill, beside this one: [`../setup-animatic/VOICE.md`](../setup-animatic/VOICE.md) for a voice, [`../setup-animatic/RENDERER.md`](../setup-animatic/RENDERER.md) for a renderer or a style. Test it with one line or frame first (`animatic.mjs say "<a line>" <flags>` for a voice). If it fails, show the error and ask; falling back is the user's call.
-
-Images or recorded speech the user already has: read [`OWN-MEDIA.md`](OWN-MEDIA.md).
-
-**The first build installs, so ask first.** `build` runs `setup` itself when its dependencies are missing, and `setup` installs Playwright and Shiki into `$ANIMATIC_HOME` (default `~/.cache/animatic`, about 35MB), Chromium into Playwright's browser cache (about 700MB on Linux), and, when the voice is Kokoro, kokoro-js with its runtime and model (about 470MB more). When `$ANIMATIC_HOME/node_modules/playwright` is missing, or the voice is Kokoro and `$ANIMATIC_HOME/node_modules/kokoro-js` is, tell the user what it installs, where and how big, and ask. On their yes, run `setup` yourself with the flags; it ends with `Ready`. On Linux x64, Kokoro's runtime install fails on a CUDA download that returns 404, so skip it there:
+**Ask, then run `setup` yourself, before the first `say` or `build`.** `build` installs whatever is missing and `say` fetches Kokoro's model, neither asking, so `setup` goes first, with the user's yes: once per session, and again when the voice flags change. Tell the user that `setup` may install Playwright and Shiki into `$ANIMATIC_HOME` (default `~/.cache/animatic`, about 35MB), Chromium into Playwright's browser cache (about 700MB on Linux) and, for a Kokoro voice, kokoro-js with its runtime and model (about 470MB more), and that it installs nothing already there. On their yes, run it with this run's flags, a tool the user names below included. On Linux x64 (`uname -sm` prints `Linux x86_64`), Kokoro's runtime install fails on a CUDA download that returns 404, so skip it:
 
 ```
 npm_config_onnxruntime_node_install_cuda=skip node <skill>/scripts/animatic.mjs setup <flags>
@@ -40,9 +36,13 @@ Elsewhere:
 node <skill>/scripts/animatic.mjs setup <flags>
 ```
 
-On a no, stop and say what is missing.
+Go on only once it prints `Ready`; from then on `say` and `build` install nothing. On a no, stop and say what is missing. Anything else that installs (ffmpeg, a recipe's install line) is asked the same way.
 
-Done when you hold the flags for this run, the user agreed to anything that installs, and each tool the user named has turned one test line or frame into a file.
+**The user's tools win.** A tool the user names in this request beats the config for this run. Its recipe is in the `setup-animatic` skill, beside this one: [`../setup-animatic/VOICE.md`](../setup-animatic/VOICE.md) for a voice, [`../setup-animatic/RENDERER.md`](../setup-animatic/RENDERER.md) for a renderer or a style. Test it with one line or frame first (`animatic.mjs say "<a line>" <flags>` for a voice). If it fails, show the error and ask; falling back is the user's call.
+
+Images or recorded speech the user already has: read [`OWN-MEDIA.md`](OWN-MEDIA.md).
+
+Done when you hold the flags for this run, `setup` printed `Ready` with them after the user agreed, and each tool the user named has turned one test line or frame into a file.
 
 ## 2. Gather the source
 

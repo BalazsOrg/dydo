@@ -9,8 +9,8 @@ text is in the repository's `THIRD-PARTY-NOTICES.md`.
 `scripts/` and `kit/` are byte-identical to upstream. The Markdown files outside `kit/` carry an
 adapted-from header and light dydo tailoring: the config path `dydo/reference/animatic.md`,
 reading and posting a PR on GitHub and a ticket in Linear, the PR's merger as its viewer, a
-first build that asks before it installs (with Kokoro's CUDA download skipped on Linux x64), and
-`<repo>` in the config's flags for the repository root. The
+`setup` run with the user's consent before the first `say` or `build` (with Kokoro's CUDA
+download skipped on Linux x64), and `<repo>` in the config's flags for the repository root. The
 upstream `skills/in-progress/setup-animatic/` is adopted beside it, at the same commit, as
 `skills/productivity/setup-animatic/`; its own `PROVENANCE.md` records its tailoring.
 
