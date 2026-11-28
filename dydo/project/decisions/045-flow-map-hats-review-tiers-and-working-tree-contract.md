@@ -5,6 +5,7 @@ status: accepted
 date: 2026-08-30
 accepted: 2026-08-30
 participants: [balazs, Claude (Fable)]
+applies: [dydo-scarce-attention]
 ---
 
 # 045 - Flow Map, Hats and Workers, Review Tiers, and the Working-Tree Contract

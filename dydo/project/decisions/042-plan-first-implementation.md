@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-17
 participants: [balazs, Adele (Fable)]
+applies: [dydo-verification-independent-evidence]
 ---
 
 # 042 - Plan-First Implementation: the Spec + Plan Record, and the No-Code-Without-Plan Rule

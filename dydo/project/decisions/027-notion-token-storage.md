@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-03
 participants: [balazs, Adele]
+applies: [new-ground]
 ---
 
 # 027 - Notion Token Storage: Project-Scoped, Local-Only Default + Opt-In Encrypted Vault

@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-04-20
 area: platform
+applies: [new-ground]
 ---
 
 # 019 - Reviewer Verdict Routing and Subject-Aware Send Diagnostics

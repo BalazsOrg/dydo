@@ -3,6 +3,7 @@ area: general
 type: decision
 status: accepted
 date: 2026-10-29
+applies: [new-ground]
 ---
 
 # 061 - Agents Merge Only into Feature Branches, Only through dydo merge

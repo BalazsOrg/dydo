@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-03-09
 area: project
+applies: [dydo-effort-right-sized-bureaucracy]
 ---
 
 # 007 - Oversight Roles: Orchestrator, Inquisitor, Judge

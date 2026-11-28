@@ -5,6 +5,7 @@ type: decision
 status: accepted
 date: 2026-07-09
 participants: [balazs, Brian]
+applies: [new-ground]
 ---
 
 # 040 - Spine Completion Shapes: Changelog Record Type, FutureFeature Confirmed, Default Pitfall DB, Sprint Vocab Encoding, Model Regen Path

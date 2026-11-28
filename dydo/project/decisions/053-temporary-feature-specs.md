@@ -3,6 +3,7 @@ area: project
 type: decision
 status: accepted
 date: 2026-10-13
+applies: [dydo-aligned-intent]
 ---
 
 # 053 - Temporary Feature Specs

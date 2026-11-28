@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-03-25
 participants: [balazs, Brian]
+applies: [new-ground]
 ---
 
 # 012 - Dispatch Queue: Deferred Terminal Launch

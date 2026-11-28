@@ -5,6 +5,7 @@ status: accepted
 date: 2026-09-25
 accepted: 2026-09-25
 participants: [balazs, Claude admiral]
+applies: [new-ground]
 ---
 
 # 052 - `dydo map`: a Read-Only Linear View

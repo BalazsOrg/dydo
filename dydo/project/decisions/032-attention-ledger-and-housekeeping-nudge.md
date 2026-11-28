@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-03
 participants: [balazs, Adele]
+applies: [dydo-effort-right-sized-bureaucracy]
 ---
 
 # 032 - Attention Ledger and Housekeeping Nudge: Artifact-Derived Coverage, Folder-Anchored Areas, Human-Gated Escalation

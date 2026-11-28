@@ -4,6 +4,7 @@ type: decision
 status: accepted
 date: 2026-07-08
 participants: [balazs, Mia, Adele (relay)]
+applies: [dydo-review-high-impact]
 ---
 
 # 039 - Planner Role, Review-Target Subskills, and the Plan Gate

@@ -3,6 +3,7 @@ type: decision
 status: accepted
 date: 2026-04-18
 area: platform
+applies: [new-ground]
 ---
 
 # 017 - Stale-Free Semantics: Narrow Launcher-Alive Gate to Reservation Only
