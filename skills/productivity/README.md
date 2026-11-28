@@ -1,7 +1,8 @@
 # Productivity
 
-19 skills for thinking, writing, and moving work along with the user.
+20 skills for thinking, writing, and moving work along with the user.
 
+- **animatic** (model-invoked): Make an animatic, a narrated video of still frames. Use when the user asks for an animatic or a narrated explainer, a video for a pull request or a tour of several, or gives feedback on one they have watched.
 - **bro** (user-invoked): Stop. That last message did not land: re-pitch it.
 - **co-thinker** (model-invoked): An idea not ripe yet. Use when a thought, a doubt or a preference is still open, when a question surfaces that is not yet a ticket, or when a trade-off needs testing before intent hardens into a plan or a Decision Record.
 - **grill-me** (user-invoked): A relentless interview to sharpen a plan or design, which also creates docs (Decision Records and glossary) as we go.
