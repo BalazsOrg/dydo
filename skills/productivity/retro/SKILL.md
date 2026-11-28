@@ -1,6 +1,7 @@
 ---
 name: retro
-description: Kaizen for the harness. Use when the same friction, correction, or workaround returns a second time; when a mistake could have been caught by a check that does not exist; when a run burns its budget finding what it should have been handed.
+description: "Kaizen for the harness: turn friction that keeps returning into one small, testable improvement."
+disable-model-invocation: true
 ---
 
 <!-- Lenses adapted from mattpocock/skills retro at 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76 (MIT); Automated checks and Coding standards updated from 24fe0ef7737efae15c87225755e9f6f5965e4888 (v1.3.1). -->
@@ -13,10 +14,10 @@ it rather than ship it. Product behaviour changes through its own ticket.
 
 ## Boundary
 
-The chief-of-staff reaches for this when the board shows the same friction across sessions; any session
-may reach for it mid-run, then return to its work. The output is a suggestion. The user decides: an
-accepted change becomes a ticket, or lands directly only when it is tiny and inside the scope the
-current ticket already grants.
+The user runs this, on friction seen in a run or as routine tidying; the chief-of-staff says when one
+is due. It reads the papercuts as its evidence: the tickets in the `Papercuts` Linear project and
+their repeat comments. The output is a suggestion. The user decides: an accepted change becomes a
+ticket, or lands directly only when it is tiny and inside the scope the current ticket already grants.
 
 ## Threshold
 

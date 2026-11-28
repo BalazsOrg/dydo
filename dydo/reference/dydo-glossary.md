@@ -25,6 +25,9 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   deliverables. The lane ledger is retired (S25). Distinct from a Lane Sub-ticket, a captain's parallel child ticket.
 - **Filler** - small, ready work, such as review `should` tickets, that an officer takes into a lane
   when the next core ticket is blocked, toward a soft goal of four occupied lanes, not a cap (H10).
+- **Papercut** - one small thing that slowed an agent down, which the agent files through the
+  papercut skill as a ticket in its project's `Papercuts` grouping, or as a comment on the papercut
+  already there; repeat comments are its severity. The user's retro reads papercuts as its evidence.
 - **Cycle** - an optional team capacity timebox, orthogonal to Projects.
 - **Label** - restrained cross-cutting routing metadata, never a shadow work-type hierarchy.
 
@@ -90,13 +93,13 @@ Project-domain terms belong in the separate [glossary.md](../glossary.md).
   the coordinator or the user's session keeps in flight.
 - **Method** - a plain skill used inside other work, carrying no identity of its own: co-thinker,
   grilling, wayfinder, domain-modeling, codebase-design, diagnosing-bugs, prototype, show-me,
-  writing-for-agents, writing-for-humans, retro, wizard, overnight-mode, maintain-verification-skill,
+  writing-for-agents, writing-for-humans, papercut, wizard, overnight-mode, maintain-verification-skill,
   maintain-formal-verification-skill. These load only when the user asks: to-project, to-ticket,
   in-your-own-words, catch-up, teach, walkthrough (also at the map holder's Milestone and landing steps) and handoff (also
   when an officer briefs an agent it dispatches).
 - **User command** - a skill only the user invokes by name, never reached for by a model:
   grill-me, bro, improve-codebase-architecture, create-verification-skill,
-  create-formal-verification-skill, statechart, update-dydo.
+  create-formal-verification-skill, statechart, update-dydo, retro.
 - **Rubric** - the one named standard a reviewer judges a candidate against: code or docs (D6). A
   spec gets no review, only an optional scout pass that returns Questions (R4).
 

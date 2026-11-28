@@ -1,6 +1,6 @@
 # Productivity
 
-18 skills for thinking, writing, and moving work along with the user.
+19 skills for thinking, writing, and moving work along with the user.
 
 - **bro** (user-invoked): Stop. That last message did not land: re-pitch it.
 - **co-thinker** (model-invoked): An idea not ripe yet. Use when a thought, a doubt or a preference is still open, when a question surfaces that is not yet a ticket, or when a trade-off needs testing before intent hardens into a plan or a Decision Record.
@@ -9,7 +9,8 @@
 - **handoff** (model-invoked): Compact the current conversation into a handoff document for another agent to pick up. Load only when the user asks, or when an officer briefs an agent it dispatches.
 - **in-your-own-words** (model-invoked): Restate in your own words what you think the user's goals are and what problem they're trying to solve. Load when the user asks, including the user's muster request relayed by the chief of staff.
 - **overnight-mode** (model-invoked): Overnight mode, the user away while the chief of staff keeps the night watch. Load only on the chief of staff's muster or morning-brief announcement, or when the user calls overnight mode.
-- **retro** (model-invoked): Kaizen for the harness. Use when the same friction, correction, or workaround returns a second time; when a mistake could have been caught by a check that does not exist; when a run burns its budget finding what it should have been handed.
+- **papercut** (model-invoked): Something slowed you down: a missing lever, misleading output, a guard or harness obstacle, a wrong or stale instruction. Small ones count.
+- **retro** (user-invoked): Kaizen for the harness: turn friction that keeps returning into one small, testable improvement.
 - **show-me** (model-invoked): Help the user understand the current topic visually with concise diagrams, code-shape sketches, and focused HTML artifacts.
 - **catch-up** (model-invoked): Catch the user up on the work you hold: each deliverable's purpose, progress, current work and next steps, and what needs him. Load only when the user asks.
 - **teach** (model-invoked): Teach the user a new skill or concept, within this workspace. Load only when the user asks.
