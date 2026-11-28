@@ -11,7 +11,7 @@
 - **in-your-own-words** (model-invoked): Restate in your own words what you think the user's goals are and what problem they're trying to solve. Load when the user asks, including the user's muster request relayed by the chief of staff.
 - **overnight-mode** (model-invoked): Overnight mode, the user away while the chief of staff keeps the night watch. Load only on the chief of staff's muster or morning-brief announcement, or when the user calls overnight mode.
 - **papercut** (model-invoked): Report a papercut: something slowed you down, such as a missing lever, misleading output, a guard or harness obstacle, or a wrong or stale instruction. Small ones count.
-- **retro** (user-invoked): Kaizen for the harness: turn friction that keeps returning into one small, testable improvement.
+- **retro** (user-invoked): Conduct a retrospective on a session, reading its papercuts.
 - **show-me** (model-invoked): Help the user understand the current topic visually with concise diagrams, code-shape sketches, and focused HTML artifacts.
 - **catch-up** (model-invoked): Catch the user up on the work you hold: each deliverable's purpose, progress, current work and next steps, and what needs him. Load only when the user asks.
 - **teach** (model-invoked): Teach the user a new skill or concept, within this workspace. Load only when the user asks.

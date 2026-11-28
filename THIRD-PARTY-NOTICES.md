@@ -16,7 +16,6 @@ header in the canonical `skills/<category>/<name>/` folders (`engineering/`,
 | `grilling` | `skills/productivity/grilling/SKILL.md` |
 | `handoff` | `skills/productivity/handoff/SKILL.md` |
 | `improve-codebase-architecture` | `skills/engineering/improve-codebase-architecture/SKILL.md`, `skills/engineering/improve-codebase-architecture/resources/html-report.md` |
-| `retro` | `skills/productivity/retro/SKILL.md` |
 | `teach` | `skills/productivity/teach/SKILL.md`, `skills/productivity/teach/resources/mission-format.md`, `skills/productivity/teach/resources/glossary-format.md`, `skills/productivity/teach/resources/learning-record-format.md`, `skills/productivity/teach/resources/resources-format.md` |
 | `to-spec` | `skills/productivity/to-project/SKILL.md` |
 | `to-tickets` | `skills/productivity/to-ticket/SKILL.md` |
@@ -33,7 +32,6 @@ the original baseline; correcting the local glossary path in `design-it-twice.md
 | Upstream portion | Adapted in |
 |---|---|
 | `pr` | `skills/engineering/pr/SKILL.md`, `skills/engineering/pr/agents/openai.yaml`, `skills/engineering/pr/CREDITS.md` |
-| `retro` Automated checks and Coding standards lenses | `skills/productivity/retro/SKILL.md` |
 
 The `pr` files above retain the pinned upstream baseline, credits and metadata, with local
 independent-review and glossary-path adaptations in `SKILL.md`; their attribution is recorded here
@@ -49,6 +47,7 @@ header.
 | `diagnosing-bugs` | `skills/engineering/diagnosing-bugs/SKILL.md` |
 | `domain-modeling` and its `GLOSSARY-FORMAT.md` | `skills/engineering/domain-modeling/SKILL.md`, `skills/engineering/domain-modeling/resources/glossary-format.md` |
 | `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
+| `retro` | `skills/productivity/retro/SKILL.md`, `skills/productivity/retro/agents/openai.yaml` |
 | `tdd` and its `mocking.md` | `skills/engineering/tdd/SKILL.md`, `skills/engineering/tdd/resources/mocking.md` |
 
 The following skill comes from none of the commits above: it is on no upstream release or `main`,

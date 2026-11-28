@@ -1,67 +1,52 @@
 ---
 name: retro
-description: "Kaizen for the harness: turn friction that keeps returning into one small, testable improvement."
+description: "Conduct a retrospective on a session, reading its papercuts."
 disable-model-invocation: true
 ---
 
-<!-- Lenses adapted from mattpocock/skills retro at 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76 (MIT); Automated checks and Coding standards updated from 24fe0ef7737efae15c87225755e9f6f5965e4888 (v1.3.1). -->
+<!-- Adapted from mattpocock/skills retro at 6f7f7831a625f040a8e06a0e7954826b87ce775a (MIT). -->
 
 # Retro
 
-**Kaizen**: turn friction that keeps returning into one small, incremental, testable improvement to
-the harness - prompts, skills, guides, nudges, hooks, checks, and the code behind them - and suggest
-it rather than ship it. Product behaviour changes through its own ticket.
+The user has asked for a **retrospective**. You are suggesting improvements to the coding agent's **environment** to improve future runs.
 
 ## Boundary
 
-It reads the papercuts as its evidence: the tickets in the team's `Papercuts` Linear project and
-their repeat comments. The output is a suggestion. The user decides: an accepted change becomes a
-ticket, or lands directly only when it is tiny and inside the scope the current ticket already grants.
+Agents file papercuts; you read them and file none. A papercut's suggested fix is a hint, and the remedy is yours to propose. An accepted change becomes a ticket, or lands directly only when it is tiny and inside the scope the current ticket grants.
 
-## Threshold
+## Steps
 
-Twice. The same failure, correction, workaround, or avoidable friction appears at least twice in
-evidence you can cite, or a reviewed record already establishes the recurrence. One bad run is a
-story; the second occurrence is the pattern that earns a change.
+1. Call the Skill tool with `writing-for-agents` for the writing style guide.
 
-## Method
+2. Read the primary sources for the session the user specifies. This may mean searching through session logs on this machine. If the user doesn't specify a session, default to the current one. Read alongside it the team's `Papercuts` Linear project: its tickets and the repeat comments on them.
 
-1. **Establish the recurrence.** Read the primary sources - session logs, ticket comments, review
-   blocks, the diff - and name the repeated symptom, its occurrences, the work it costs, and the
-   likely cause. Done when two occurrences are cited by location.
-2. **Deduplicate.** Search the tickets, Decision Records, guides, pitfalls, prompts, skills, nudges and
-   hooks that already speak to this cause. The existing canonical surface wins; a second one splits it.
-3. **Choose one lever.** Scan the lenses for the surface that reaches the cause, then take the smallest
-   durable change on it: a deterministic check for a mechanical violation; otherwise wording first,
-   then a warn-level nudge, then a hook where behaviour must
-   change at action time, then harness code when no earlier layer can express it. A blocking rule
-   earns its place only after the warn level has been seen to fail. When the lever is a prompt file,
-   write it under `writing-for-agents`.
-4. **State proof and rollback.** One sentence for the recurrence that should stop and the observation
-   that would show it stopped; one sentence for removing the change cleanly if it turns into noise.
+3. Look for candidates for improvement in these categories. Every candidate traces to a cited papercut or session moment.
 
-## Lenses
+- **Navigation**: how easy was it for the agent to find the right files? Are there hidden dependencies between files? Would a **navigation pointer** make it easier? _Use when_ the session took a long time to find a piece of information.
+- **Automated checks**: are there automated checks that could catch errors the agent made? Linting, typing, tests, `dydo check`? Read the repo's own check command first (its `package.json`/build-tool `lint`/`check` scripts, its CI workflow), so a check that already exists but sits unwired or silently broken is the finding, not a reinvention. A repo with no **guardrail** (no pre-commit hook and no CI job running its lint/typecheck/test command) is itself a finding: an un-linted repo is a standing missed opportunity, not a neutral default. _Use when_ the agent made a mistake an automated check could have caught, or the repo has no guardrail at all.
+- **Coding standards**: should the **reviewer agent** be given a new rule to enforce? Should an existing rule be removed or clarified? Classify the violation first: a **mechanical** one (a fixed syntactic pattern, a banned API, an import shape, a file-location rule) gets a deterministic check, full stop: a custom rule in the repo's own linter, a new pre-commit hook, or a new CI job, whichever the repo's language and existing guardrail make cheapest. Default to the check over the rule. Reserve `dydo/guides/coding-standards.md` for genuine **judgement calls** (cross-file consistency, "matches the surrounding style," anything no guardrail could ever substitute for). _Use when_ the reviewer agent failed to catch a mistake.
+- **Entry points**: are there steering instructions in `AGENTS.md`/`CLAUDE.md` that should move to coding standards (or automated checks) instead? _Use when_ the entry point is particularly large, in the repo or in the user's global scope.
+- **Tool economy**: did the agent make expensive tool calls that could be streamlined? Is there any custom tooling (CLIs, MCPs) that is particularly token-inefficient? _Use when_ the agent made an expensive tool call.
+- **No-ops**: look for instructions in steering files that don't modify the agent's behaviour. _Use when_ the steering files are large and unwieldy.
+- **Information access**: look for opportunities to increase the agent's access to information. Teeing dev server logs, read-only access to third-party services. _Use when_ a crucial piece of information was not available to the agent.
 
-Where the lever usually sits:
+4. Present these candidates to the user, in order of severity, each with its citation. Repeat comments raise a papercut's severity; a symptom seen twice is a pattern.
 
-- **Navigation**: how easy was it for the agent to find the right files? Are there hidden dependencies
-  between files? Would a **navigation pointer** make it easier? _Use when_ the session took a long time
-  to find a piece of information.
-- **Automated checks**: are there automated checks that could catch errors the agent made? Linting, typing, tests, `dydo check`? Read the repo's own check command first (its `package.json`/build-tool `lint`/`check` scripts, its CI workflow), so a check that already exists but sits unwired or silently broken is the finding, not a reinvention. Once the recurrence threshold is met, a repo with no **guardrail** (no pre-commit hook and no CI job running its lint/typecheck/test command) is itself a finding: an un-linted repo is a standing missed opportunity, not a neutral default. _Use when_ the agent made a mistake an automated check could have caught, or the repo has no guardrail at all.
-- **Coding standards**: should the **reviewer agent** be given a new rule to enforce? Should an existing rule be removed or clarified? Classify the violation first: a **mechanical** one (a fixed syntactic pattern, a banned API, an import shape, a file-location rule) gets a deterministic check, full stop: a custom rule in the repo's own linter, a new pre-commit hook, or a new CI job, whichever the repo's language and existing guardrail make cheapest. Default to suggesting the check over writing the rule. Reserve `dydo/guides/coding-standards.md` for genuine **judgement calls** (cross-file consistency, "matches the surrounding style," anything no guardrail could ever substitute for). _Use when_ the reviewer agent failed to catch a mistake.
-- **Entry point size**: are there steering instructions that should move to a guide or an automated
-  check instead? _Use when_ the always-loaded entry point is particularly large, in the repo or in the
-  user's global scope.
-- **Tool economy**: did the agent make expensive tool calls that could be streamlined? Is there any
-  custom tooling (CLIs, MCPs) that is particularly token-inefficient? _Use when_ the agent made an
-  expensive tool call.
-- **No-ops**: look for instructions in prompt files that don't modify the agent's behaviour. _Use when_
-  the prompt files are large and unwieldy.
-- **Information access**: look for opportunities to increase the agent's access to information. Teed
-  dev server logs, read-only access to third-party services. _Use when_ a crucial piece of information
-  was not available to the agent.
+## Reference
 
-## Return
+### Implementation vs Review
 
-Candidates in severity order, each one line: recurrence with its two occurrences → lever → proof →
-rollback. When no small credible change survives the checks, the pattern itself is the return.
+Remember that all work goes through two stages: implementation and review. The implementation agent has the most **context pressure**. They are responsible for exploration, writing code, and debugging failures.
+
+The review agent has the least context pressure - it receives a diff, so no exploration needed. It often does not need to write code or debug.
+
+This means that the review agent should be responsible for imposing coding standards, not the implementation agent.
+
+### Files
+
+Before proposing a new home, search the existing ones that already speak to the cause: tickets, Decision Records, guides, skills, nudges, hooks. The existing canonical home wins; a second one splits it.
+
+- `AGENTS.md`/`CLAUDE.md`: these files are pushed to the context window of any agent working in this repo. They should be used incredibly sparingly, usually only for **navigation pointers** to other files.
+- `dydo/guides/coding-standards.md`: the rules for review, not implementation. Add **navigation pointers** to docs if the file gets more than 1,000 lines long.
+- `dydo/` docs: use docs as reference files, pointed to by other files.
+- Skills: use skills for docs (since their description goes into the agent's context window), or for user-invoked commands. Follow the advice in the `writing-for-agents` skill.
