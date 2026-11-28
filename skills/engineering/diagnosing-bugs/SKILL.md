@@ -3,7 +3,7 @@ name: diagnosing-bugs
 description: Diagnosis loop for hard bugs and performance regressions. Use when the user says "diagnose"/"debug this", or a ticket reports something broken/throwing/failing/slow.
 ---
 
-<!-- Adapted from mattpocock/skills diagnosing-bugs at 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76 (MIT). -->
+<!-- Adapted from mattpocock/skills diagnosing-bugs at 6f7f7831a625f040a8e06a0e7954826b87ce775a (MIT). -->
 
 # Diagnosing Bugs
 
@@ -180,7 +180,8 @@ captain before any fix.
 If a correct seam exists:
 
 1. Turn the minimised repro into a failing test at that seam.
-2. Watch it fail.
+2. Watch it fail. If you forced the red by mutating code or a fixture, `diff` against a pristine
+   copy to prove the mutation landed before you trust it.
 3. Apply the fix.
 4. Watch it pass.
 5. Re-run the Phase 1 feedback loop against the original (un-minimised) scenario.

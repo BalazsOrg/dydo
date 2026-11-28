@@ -1,22 +1,22 @@
 # Skills
 
-The 39 canonical dydo skills, sorted by kind:
+The 40 canonical dydo skills, sorted by kind:
 
 - [`roles/`](roles/README.md) - 7 skills. The skills that carry an identity: `roles/officers/`
   hold something and never switch (coordinator, ticket-captain, chief-of-staff); `roles/crew/` are
   spawned for one bounded job and return their result to whoever sent them (implementer, reviewer,
   research, scout).
-- [`engineering/`](engineering/README.md) - 13 skills. The craft: diagnosing, shaping and designing
-  code.
+- [`engineering/`](engineering/README.md) - 14 skills. The craft: diagnosing, shaping, designing
+  and testing code.
 - [`productivity/`](productivity/README.md) - 19 skills. Thinking, writing, and moving work along
   with the user.
 
-7 + 13 + 19 = 39, the full canonical set.
+7 + 14 + 19 = 40, the full canonical set.
 
 `setup-skills.mjs` walks the tree by rule, not by depth: a folder holding `SKILL.md` is a skill, and
 any other folder under `skills/` is a category to walk into. It still projects every skill flat into
 `.claude/skills/<skill>` and `.agents/skills/<skill>` - the category folders are a source-tree
-convenience only; each host still sees 39 flat entries with no category level.
+convenience only; each host still sees 40 flat entries with no category level.
 
 Each skill's frontmatter carries `disable-model-invocation: true` when it is **user-invoked** (the
 user names it explicitly); otherwise it is **model-invoked** (an agent may load it on its own

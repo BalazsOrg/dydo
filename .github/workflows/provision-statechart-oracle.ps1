@@ -3,18 +3,19 @@ param([string]$JavaHome = '/usr/lib/jvm/temurin-21-jdk-amd64')
 $ErrorActionPreference = 'Stop'
 $ProgressPreference = 'SilentlyContinue'
 
-# runner-images 42d27e4a lists Temurin 21.0.13+9 on ubuntu-24.04. Fail on image drift;
+# runner-images ubuntu24/20261122.23 (710e8ff2) lists Java 21.0.13+2 on ubuntu-24.04: Temurin
+# jdk-21.0.13.1+2, its readme dropping the fourth component. Fail on image drift;
 # updating this CI-only pin requires checking the runner metadata, never installing a JDK.
 $java = Join-Path $JavaHome 'bin/java'
 if (-not (Test-Path $java -PathType Leaf)) { throw 'The runner-provided JDK is missing.' }
 $version = & $java --version
 if ($LASTEXITCODE -ne 0) { throw 'The runner JDK version check failed.' }
-if ($version -cnotcontains 'OpenJDK Runtime Environment Temurin-21.0.13+9 (build 21.0.13+9-LTS)') {
-  throw 'The runner JDK must be Temurin 21.0.13+9; review the hosted image and update the CI pin.'
+if ($version -cnotcontains 'OpenJDK Runtime Environment Temurin-21.0.13.1+2 (build 21.0.13.1+2-LTS)') {
+  throw 'The runner JDK must be Temurin 21.0.13.1+2; review the hosted image and update the CI pin.'
 }
 $modules = & $java --list-modules
-if ($LASTEXITCODE -ne 0 -or $modules -cnotcontains 'jdk.compiler@21.0.13') {
-  throw 'The runner JDK must provide jdk.compiler@21.0.13.'
+if ($LASTEXITCODE -ne 0 -or $modules -cnotcontains 'jdk.compiler@21.0.13.1') {
+  throw 'The runner JDK must provide jdk.compiler@21.0.13.1.'
 }
 Write-Output $version
 
