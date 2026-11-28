@@ -20,7 +20,7 @@ Restate the question in one sentence, and say what would count as its answer.
 **Research first**
 
 1. Look where the answer may already be: the user's recorded words, the truth documents your brief names, the statechart, the spec, decision records, other docs, the code and its tests, git history, the tickets, and outside sources such as official docs, published release notes, standards and library source.
-2. Read a governing doc on the branch the waiting work targets as well as on yours: a branch can lag.
+2. When the answer serves work on another branch, read a governing doc there as well as on yours: a branch can lag.
 3. A wide search can go to native helpers side by side, one source each, with the helper prompt below.
 4. Open the passage behind every claim your answer rests on, and confirm that it says what you think.
 5. Take each claim from the source that owns it. A doc or report that describes code, data or another system is a lead to that thing, not its proof.
@@ -28,7 +28,7 @@ Restate the question in one sentence, and say what would count as its answer.
 
 **Native helpers and captains**
 
-A lookup goes to a native helper: it holds no ticket, reads only the prompt you write, shares your checkout, and returns its passages to you. Work that needs its own ticket, such as another agent's ruling, goes to a fresh captain, as in "Then answer".
+A lookup you hand off goes to a native helper: it holds no ticket, reads only the prompt you write, shares your checkout, and returns its passages to you. Work that needs its own ticket, such as another agent's ruling, goes to a fresh captain, as in "Then answer".
 
 Paste this into each helper's prompt, with its brackets filled:
 
