@@ -31,7 +31,7 @@ Fix every blocker your Fix ticket lists, and nothing else.
 
 **A merge conflict**
 
-Resolve it as a merge commit on the ticket's branch. A resolution that refactors leaves the code no worse than either side. A hunk that needs a decision neither side made is a call: decide it when it is obvious and you can undo it, and otherwise pass it up to your officer.
+Resolve it as a merge commit on the ticket's branch. A resolution that refactors leaves the code no worse than either side. A hunk that needs a decision neither side made is a call: decide it when your ticket makes it yours, or when it is obvious and you can undo it; otherwise pass it up to your officer.
 
 **Often, not always**
 
