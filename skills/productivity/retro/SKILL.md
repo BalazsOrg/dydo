@@ -14,8 +14,7 @@ it rather than ship it. Product behaviour changes through its own ticket.
 
 ## Boundary
 
-The user runs this, on friction seen in a run or as routine tidying; the chief-of-staff says when one
-is due. It reads the papercuts as its evidence: the tickets in the `Papercuts` Linear project and
+It reads the papercuts as its evidence: the tickets in the team's `Papercuts` Linear project and
 their repeat comments. The output is a suggestion. The user decides: an accepted change becomes a
 ticket, or lands directly only when it is tiny and inside the scope the current ticket already grants.
 
