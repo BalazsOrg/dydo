@@ -22,6 +22,8 @@ Use this template for writing the PR body:
 
 <Only when attached: App recording: <link> · Explainer: <link>>
 
+<Only when this merger needs one visual to decide: that visual, lifted from the Summary>
+
 <Only when this merger needs more to decide: what to check, in plain words>
 
 <details>
@@ -44,7 +46,7 @@ Use this template for writing the PR body:
 
 ## Independent review
 
-<reviewer PASS block, verbatim>
+PASS - rubric/type: <docs|code|merge>; candidate <SHA>; base <SHA>; review <Review ticket link, when one exists>
 
 **Deferred:** <should-tickets filed and nits recorded, or none>
 
@@ -59,25 +61,24 @@ Skip all preambles and keep prose brief. Use the user's domain language from `dy
 
 ### The top
 
-The door line comes first, then the sentence; nothing precedes them. A human merger may read only these two lines, and merge a two-way door on them.
+The door line comes first, then the sentence; nothing precedes them. A human merger may decide on these two lines only when they hold everything that merger needs; the merge gates (review, gates on the combined tree, CI) still apply.
 
-- **Door.** You can walk back through a two-way door, but not a one-way door. A PR that is cheap to roll back is lower risk. Changes that involve destructive actions or hard-to-reverse decisions are one-way doors. For one-way, say in plain words what a revert would not undo, and how to recover.
+- **Door.** A two-way door is one a revert walks back through; a one-way door is one a revert cannot undo. The one-way kinds in the Merging section of `dydo/guides/working-tree-standard.md` (from the repository root) are one-way however easy their revert; that list overrides the revert test. For one-way, say in plain words what a revert would not undo, and how to recover.
 - **Sentence.** One sentence on what changed, in the merger's terms.
 - **Decision context.** Add lines only for what this merger must inspect that the door and sentence do not show. Give the reader everything needed to decide, in plain words. A ticket key or Decision Record number appears only as a link beside the meaning it stands for: "the merge guard still reads the review line ([ABC-123](<ticket URL>))", never "per ABC-123 and DR 52".
 
 ### Videos
 
-Pick by what the merger will inspect. Most PRs get neither video.
+Videos are optional help for the merger. Attach both, one or neither, by what this merger will inspect; that holds for a big PR too, and most PRs need none.
 
-- **App recording**: someone or something driving the app through the change, as evidence of how the feature actually behaves. Attach one when the PR builds a bigger user-visible thing; Evidence names it too.
-- **Explainer**: a narrated walk through the problem and how it was solved, made with the `animatic` skill. Attach one when the why and how outgrow the sentence; it carries the explanation the Summary would.
-- **Both** for a big feature whose behaviour and reasoning each need showing.
+- **App recording**: someone or something driving the app through the change, showing how the feature actually behaves. Evidence names it too.
+- **Explainer**: a narrated walk through the problem and how it was solved, made with the `animatic` skill. It goes alongside the Summary, not in place of it.
 
 Link them on the line under the sentence.
 
 ### For agents
 
-The `<details>` block holds the proof and review notes. Keep `## Independent review` a level-two heading and the last section in the block: `dydo pr-ready` and `dydo merge` read it up to the next level-one or level-two heading. Keep a blank line after `<summary>` and before `</details>` so the markdown inside renders.
+The `<details>` block holds the proof and review notes. Keep `## Independent review` a level-two heading and the last section in the block: `dydo pr-ready` and `dydo merge` read it up to the next level-one or level-two heading. It holds one PASS line in the template's form, written with the verdict, then `**Deferred:**`. Keep a blank line after `<summary>` and before `</details>` so the markdown inside renders.
 
 #### Summary
 
@@ -194,7 +195,7 @@ function expandSkill(command: string): string {
 
 Place each visual next to the short text it supports. Keep only the calls, files, props, states, and boundaries needed to answer the user's current question or the options to resolve the current discussion point.
 
-You may use one of these, you may use several, it is unlikely you will use all of them. Use your judgement and don't overwhelm the user. When the merger needs one visual to decide, lift it to the top under the sentence.
+You may use one of these, you may use several, it is unlikely you will use all of them. Use your judgement and don't overwhelm the user. When the merger needs one visual to decide, lift it to its slot at the top, after the video line.
 
 #### Evidence
 
