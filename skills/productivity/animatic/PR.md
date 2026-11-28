@@ -64,6 +64,6 @@ Save each PR's diff as `pr-<n>.diff` (for a merged one, `git diff <commit>^1 <co
 The animatic goes on the PR as a comment with the MP4 attached, posted as SKILL.md step 6 says, with a one-line body: "A 90-second animatic of this PR: why, the shape, where to start reading."
 
 - **When the user asks you to post it**, post it and give them the comment's link.
-- **Otherwise**, give them the MP4's path, and the `gh pr comment` command filled in for this PR, ready to run.
+- **Otherwise**, give them the MP4's path, and the `gh pr comment` command of SKILL.md step 6 filled in for this PR, its `-R <owner>/<repo>` and quoted MP4 path included, ready to run from any folder.
 
 The upload is how the MP4 reaches the PR; the PR's branch stays free of it. `build` warns past 10MB, the smallest common upload limit (GitHub's free plan).

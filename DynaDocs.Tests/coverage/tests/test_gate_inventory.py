@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-from gate_inventory import assemble_inventory
+from gate_inventory import assemble_inventory, upstream_blobs
 
 _REPOSITORY = Path(__file__).resolve().parents[3]
 _ANIMATIC = 'skills/productivity/animatic/scripts'
@@ -105,18 +105,52 @@ class VendoredUpstreamInventoryTests(unittest.TestCase):
                                           'blob': _blob(upstream['ir.ts'])}}}],
                          report['excluded'])
 
-    def test_the_committed_animatic_scripts_are_excluded_by_the_committed_record(self):
-        """Job: contract: skills/productivity/animatic/PROVENANCE.md, the adopted scripts are still
-        byte-identical to the blobs the record lists"""
-        paths = sorted(path.relative_to(_REPOSITORY).as_posix()
-                       for path in (_REPOSITORY / _ANIMATIC).glob('*.mjs'))
+    def test_the_scripts_the_committed_record_lists_are_excluded_while_byte_identical(self):
+        """Job: contract: skills/productivity/animatic/PROVENANCE.md, every script the record lists
+        is checked out byte-identical to its blob and excluded; any other script is not vendored"""
+        listed = _listed(_REPOSITORY)
+        on_disk = _scripts(_REPOSITORY)
 
-        report = assemble_inventory(_REPOSITORY, paths, [], [])
+        report = assemble_inventory(_REPOSITORY, on_disk, [], [])
 
-        self.assertEqual(2, len(paths))
+        self.assertTrue(listed)
         self.assertEqual([], report['errors'])
-        self.assertEqual([], report['sources'])
-        self.assertEqual(paths, sorted(row['path'] for row in report['excluded']))
+        self.assertEqual(listed, sorted(row['path'] for row in report['excluded']
+                                        if row['reason'] == 'vendored-upstream'))
+
+    def test_a_changed_or_unlisted_script_beside_the_committed_record_is_measured(self):
+        """Job: trap: skills/productivity/animatic/PROVENANCE.md, the committed record excludes no
+        script it does not list and none whose bytes left its blob"""
+        listed = _listed(_REPOSITORY)
+        changed, unlisted = listed[0], f'{_ANIMATIC}/dydo-local.mjs'
+        with tempfile.TemporaryDirectory() as scratch:
+            root = Path(scratch)
+            for relative in [*_scripts(_REPOSITORY), _ANIMATIC_RECORD]:
+                (root / relative).parent.mkdir(parents=True, exist_ok=True)
+                (root / relative).write_bytes((_REPOSITORY / relative).read_bytes())
+            with (root / changed).open('ab') as script:
+                script.write(b'// dydo edit\n')
+            (root / unlisted).write_text('export const local = 1;\n', encoding='utf-8', newline='\n')
+
+            report = assemble_inventory(root, _scripts(root), [], [])
+
+        measured = [row['path'] for row in report['sources']]
+        excluded = [row['path'] for row in report['excluded']]
+        self.assertEqual([], report['errors'])
+        self.assertIn(changed, measured)
+        self.assertIn(unlisted, measured)
+        self.assertEqual(sorted(set(listed) - {changed}), sorted(excluded))
+
+
+def _listed(root):
+    """The repository paths of the scripts the animatic PROVENANCE record lists."""
+    record = upstream_blobs((root / _ANIMATIC_RECORD).read_text(encoding='utf-8'))
+    return sorted(f'{_ANIMATIC}/{path.removeprefix("scripts/")}' for path in record['blobs'])
+
+
+def _scripts(root):
+    """Every file under the animatic scripts folder, as repository paths."""
+    return sorted(path.relative_to(root).as_posix() for path in (root / _ANIMATIC).rglob('*') if path.is_file())
 
 
 if __name__ == '__main__':

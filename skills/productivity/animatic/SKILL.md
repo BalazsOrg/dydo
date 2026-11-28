@@ -87,7 +87,7 @@ Give the user the MP4's path, its run time, the moment count and the Cut count.
 
 Post it only when the user asks, and give them the comment's link:
 
-- **On a GitHub PR**: a PR comment with the MP4 attached, through the host's PR tools where they can attach a file, else `gh pr comment <number> --body "<body>" --attach <work folder>/animatic.mp4`.
+- **On a GitHub PR**: a PR comment with the MP4 attached, through the host's PR tools where they can attach a file, else `gh pr comment <number> -R <owner>/<repo> --body "<body>" --attach "<work folder>/animatic.mp4"`. The work folder is outside the repository, so `gh` cannot infer it: name it with `-R`.
 - **On a ticket**: Linear holds the tickets. Upload the MP4 to the ticket, as a comment carrying the file or as an attachment, with Linear's file upload.
 
 Where neither can attach, hand over the path and say so. PR.md, "Hand it over" has the comment's wording and the size limit.
