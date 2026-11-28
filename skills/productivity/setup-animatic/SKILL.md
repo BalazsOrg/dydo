@@ -80,7 +80,7 @@ Done when `say` wrote a file in the chosen voice, `setup` printed `Ready`, and t
 
 ## 4. Write the config
 
-Write `dydo/reference/animatic.md` from [`animatic.md`](animatic.md), the seed template: its frontmatter, the flags exactly as tested, one line per stage, and each secret's variable name. A key's value lives only in the environment; the config names the variable (`$ELEVENLABS_API_KEY`), and the command reads it from there. Show the user the file before writing it, and update an existing one in place.
+Write `dydo/reference/animatic.md` from [`animatic.md`](animatic.md), the seed template: its frontmatter, the flags exactly as tested with the repository root written as `<repo>`, one line per stage, and each secret's variable name. A key's value lives only in the environment; the config names the variable (`$ELEVENLABS_API_KEY`), and the command reads it from there. Show the user the file before writing it, and update an existing one in place.
 
 Then add this line under `## Contents` in `dydo/reference/_reference.md` when it is missing:
 

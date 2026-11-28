@@ -17,7 +17,7 @@ stitch  PNG + speech -> MP4        ffmpeg
 
 ## 1. Read the toolchain
 
-The project's choice of tools lives in `dydo/reference/animatic.md`: `dydo init` writes dydo's default there, and the `setup-animatic` skill tests and changes it. Read it when it exists. Its **Flags** go on every `animatic.mjs` command, unchanged, and its **Stages** say what runs each stage:
+The project's choice of tools lives in `dydo/reference/animatic.md`: `dydo init` writes dydo's default there, and the `setup-animatic` skill tests and changes it. Read it when it exists. Its **Flags** go on every `animatic.mjs` command, unchanged but for `<repo>`, which stands for the repository root's absolute path, and its **Stages** say what runs each stage:
 
 - **Stitcher**: the user's own editor: build as usual for a draft, then also hand over `build/timeline.json` (each moment's start, length, line and frame) with the PNGs and voice files in `build/`.
 - **Renderer**: another tool for some frames: render those to PNGs with its recorded command, as `"image"` entries.
@@ -28,9 +28,21 @@ The project's choice of tools lives in `dydo/reference/animatic.md`: `dydo init`
 
 Images or recorded speech the user already has: read [`OWN-MEDIA.md`](OWN-MEDIA.md).
 
-`build` installs what it needs and measures the voice the first time it meets them, so there is no setup step.
+**The first build installs, so ask first.** `build` runs `setup` itself when its dependencies are missing, and `setup` installs Playwright and Shiki into `$ANIMATIC_HOME` (default `~/.cache/animatic`, about 35MB), Chromium into Playwright's browser cache (about 700MB on Linux), and, when the voice is Kokoro, kokoro-js with its runtime and model (about 470MB more). When `$ANIMATIC_HOME/node_modules/playwright` is missing, or the voice is Kokoro and `$ANIMATIC_HOME/node_modules/kokoro-js` is, tell the user what it installs, where and how big, and ask. On their yes, run `setup` yourself with the flags; it ends with `Ready`. On Linux x64, Kokoro's runtime install fails on a CUDA download that returns 404, so skip it there:
 
-Done when you hold the flags for this run, and each tool the user named has turned one test line or frame into a file.
+```
+npm_config_onnxruntime_node_install_cuda=skip node <skill>/scripts/animatic.mjs setup <flags>
+```
+
+Elsewhere:
+
+```
+node <skill>/scripts/animatic.mjs setup <flags>
+```
+
+On a no, stop and say what is missing.
+
+Done when you hold the flags for this run, the user agreed to anything that installs, and each tool the user named has turned one test line or frame into a file.
 
 ## 2. Gather the source
 

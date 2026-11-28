@@ -16,6 +16,6 @@ npx --prefix ~/.cache/animatic playwright screenshot --viewport-size=1920,1080 h
 
 ## A style of their own
 
-The user has a brand, a stylesheet or a slide template. Write a stylesheet in the repo (say `dydo/reference/animatic.css`) that sets the custom properties at the top of the kit's `house.css` (`<animatic>/kit/house.css`: `--ground`, `--accent`, `--sans`, `--mono` and their neighbours) to their colours and fonts, and add `--css dydo/reference/animatic.css` to the config's flags. `build` layers it over `house.css` on every generated frame. Leave the kit's own files untouched, so the skill updates cleanly.
+The user has a brand, a stylesheet or a slide template. Write a stylesheet in the repo (say `dydo/reference/animatic.css`) that sets the custom properties at the top of the kit's `house.css` (`<animatic>/kit/house.css`: `--ground`, `--accent`, `--sans`, `--mono` and their neighbours) to their colours and fonts, and add `--css <repo>/dydo/reference/animatic.css` to the config's flags. `--css` resolves against the working directory, and every command runs in a folder outside the repo, so each one passes the repository root's absolute path for `<repo>`. `build` layers it over `house.css` on every generated frame. Leave the kit's own files untouched, so the skill updates cleanly.
 
 Their look replaces the kit's look. The legibility rules in the animatic skill's `STYLE.md` (the 28px floor, words off the frame, one lit thing) still apply, because they are about being watched, not about taste.

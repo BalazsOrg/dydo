@@ -11,7 +11,7 @@ The `animatic` skill's toolchain for this repo, chosen and tested with `setup-an
 
 ## Flags
 
-Pass these, unchanged, to every `animatic.mjs` command (`build`, `say`, `setup`). Speech is cached per voice flag, so a run with different flags re-voices every line.
+Pass these, unchanged but for `<repo>` (the repository root's absolute path), to every `animatic.mjs` command (`build`, `say`, `setup`). Speech is cached per voice flag, so a run with different flags re-voices every line.
 
 ```
 --tts-command 'edge-tts --voice en-GB-RyanNeural --text {text} --write-media {out}.mp3'

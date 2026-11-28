@@ -10,7 +10,8 @@ and light dydo tailoring, nothing more:
 
 - The config lives at `dydo/reference/animatic.md`, in place of `docs/agents/animatic.md`, and the
   seed `animatic.md` carries dydo frontmatter so `dydo check` passes. A style sheet moves to
-  `dydo/reference/animatic.css` with it.
+  `dydo/reference/animatic.css` with it, recorded as `--css <repo>/dydo/reference/animatic.css`,
+  since every command runs outside the repo and `--css` resolves against the working directory.
 - In place of the `## Agent skills` pointer in `CLAUDE.md` or `AGENTS.md`, the skill adds one
   Contents line to `dydo/reference/_reference.md` when it is missing.
 - An existing config, dydo's shipped default included, gives the recommended answers.
