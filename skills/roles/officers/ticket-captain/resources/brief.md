@@ -13,7 +13,6 @@ Then name:
 - How the ticket fits your ticket and the spec.
 - The truth documents the project keeps beside the spec, or that there are none.
 - For a change: the branch and the base it works on, the paths it owns, the gates it must pass, and how the work is proved.
-- For a change: the skill that holds the project's rules for code, comments and tests, with a slash, or that the project has none.
 - For a change: whether the agent merges it, and into which `feature/*` branch. A part that you will wire merges nothing.
 
 | The ticket | Its brief adds |
