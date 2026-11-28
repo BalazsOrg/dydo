@@ -27,6 +27,7 @@ You look at a candidate for what is wrong with it. Each problem you find is a fi
 
 - Run the tests your row names that no receipt you accepted already covers.
 - Name what you suspect is wrong, then write a test of your own on the candidate's commit. If it fails for the reason you named, put the test and its failing output in the finding.
+- Such a test is a proof test, by "Two kinds of test" in `/tdd`. It lives in your finding. Whether it joins the suite is the Fix author's call, by the same skill.
 
 **Driving** (the Drive column)
 
