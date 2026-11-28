@@ -63,7 +63,7 @@ Skip all preambles and keep prose brief. Use the user's domain language from `dy
 
 The door line comes first, then the sentence; nothing precedes them. A human merger may decide on these two lines only when they hold everything that merger needs; the merge gates (review, gates on the combined tree, CI) still apply.
 
-- **Door.** A two-way door is one a revert walks back through; a one-way door is one a revert cannot undo. The one-way kinds in the Merging section of `dydo/guides/working-tree-standard.md` (from the repository root) are one-way however easy their revert; that list overrides the revert test. For one-way, say in plain words what a revert would not undo, and how to recover.
+- **Door.** A two-way door is one a revert walks back through; a one-way door is one a revert cannot undo. These kinds are one-way however easy their revert, and this list overrides the revert test: data migrations; publishing a package or a public API; anything sent outside the repo; secrets; history rewrites; changes to what guards main (CI, branch protection, release workflows, the guard). The list's home is the Merging section of `dydo/guides/working-tree-standard.md`, from the repository root; where the two differ, that file wins. For one-way, say in plain words what a revert would not undo, and how to recover.
 - **Sentence.** One sentence on what changed, in the merger's terms.
 - **Decision context.** Add lines only for what this merger must inspect that the door and sentence do not show. Give the reader everything needed to decide, in plain words. A ticket key or Decision Record number appears only as a link beside the meaning it stands for: "the merge guard still reads the review line ([ABC-123](<ticket URL>))", never "per ABC-123 and DR 52".
 
@@ -71,8 +71,9 @@ The door line comes first, then the sentence; nothing precedes them. A human mer
 
 Videos are optional help for the merger. Attach both, one or neither, by what this merger will inspect; that holds for a big PR too, and most PRs need none.
 
-- **App recording**: someone or something driving the app through the change, showing how the feature actually behaves. Evidence names it too.
-- **Explainer**: a narrated walk through the problem and how it was solved, made with the `animatic` skill. It goes alongside the Summary, not in place of it.
+- **App recording**: someone or something driving the app through the change, showing how the feature actually behaves. Consider one when seeing the feature driven helps this merger decide, typically for a bigger user-visible change. Evidence names it too.
+- **Explainer**: a narrated walk through the problem and how it was solved, made with the `animatic` skill. Consider one when hearing the reasoning helps this merger more than reading it. It goes alongside the Summary, not in place of it.
+- **Both** when each adds something the other does not; **neither** when the body already gives the merger enough.
 
 Link them on the line under the sentence.
 
