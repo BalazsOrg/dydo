@@ -17,7 +17,6 @@ header in the canonical `skills/<category>/<name>/` folders (`engineering/`,
 | `grilling` | `skills/productivity/grilling/SKILL.md` |
 | `handoff` | `skills/productivity/handoff/SKILL.md` |
 | `improve-codebase-architecture` | `skills/engineering/improve-codebase-architecture/SKILL.md`, `skills/engineering/improve-codebase-architecture/resources/html-report.md` |
-| `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
 | `retro` | `skills/productivity/retro/SKILL.md` |
 | `teach` | `skills/productivity/teach/SKILL.md`, `skills/productivity/teach/resources/mission-format.md`, `skills/productivity/teach/resources/glossary-format.md`, `skills/productivity/teach/resources/learning-record-format.md`, `skills/productivity/teach/resources/resources-format.md` |
 | `to-spec` | `skills/productivity/to-project/SKILL.md` |
@@ -41,6 +40,13 @@ The `pr` files above retain the pinned upstream baseline, credits and metadata, 
 independent-review and glossary-path adaptations in `SKILL.md`; their attribution is recorded here
 rather than inserted into the skill. Upstream `CREDITS.md` preserves the attribution to Dex Horthy’s
 `show-me` material.
+
+The following portion is imported or updated from commit
+`6f7f7831a625f040a8e06a0e7954826b87ce775a`.
+
+| Upstream portion | Adapted in |
+|---|---|
+| `prototype` | `skills/engineering/prototype/SKILL.md`, `skills/engineering/prototype/resources/logic.md`, `skills/engineering/prototype/resources/ui.md` |
 
 MIT License
 

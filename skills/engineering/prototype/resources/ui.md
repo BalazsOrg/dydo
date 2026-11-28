@@ -1,4 +1,4 @@
-<!-- Adapted from mattpocock/skills prototype at 6654f6b60cd9d5be8b54c6fafe44346dabeb3b76 (MIT). -->
+<!-- Adapted from mattpocock/skills prototype at 6f7f7831a625f040a8e06a0e7954826b87ce775a (MIT). -->
 
 # UI Prototype
 
@@ -14,7 +14,7 @@ Use [logic](logic.md).
 - "What should this page look like?"
 - "I want to see a few options for this dashboard before committing."
 - "Try a different layout for the settings screen."
-- Any time the user would otherwise spend a day picking between three vague mockups in his head.
+- Any time the user would otherwise spend a day picking between three vague mockups in their head.
 
 ## Two sub-shapes: strongly prefer sub-shape A
 
@@ -25,22 +25,25 @@ to host the variants. Only reach for sub-shape B if the prototype genuinely has 
 
 ### Sub-shape A: adjustment to an existing page (preferred)
 
-The route already exists. Variants are
-rendered **on the same route**, gated by a `?variant=` URL search param. The existing data fetching,
-params, and auth all stay. Only the rendering swaps. This is the default; pick it unless there's a
-specific reason not to. If the prototype is for something that doesn't yet have a page but *would
-naturally live inside one* (a new section of the dashboard, a new card on the settings screen, a new
-step in an existing flow), it's still sub-shape A. Mount the variants inside the host page.
+The route already exists. Variants are rendered **on the same route**, gated by a `?variant=` URL
+search param. The existing data fetching, params, and auth all stay. Only the rendering swaps. This
+is the default; pick it unless there's a specific reason not to.
+
+If the prototype is for something that doesn't yet have a page but *would naturally live inside
+one* (a new section of the dashboard, a new card on the settings screen, a new step in an existing
+flow), it's still sub-shape A. Mount the variants inside the host page.
 
 ### Sub-shape B: a new page (last resort)
 
-Only use this when the thing being prototyped genuinely
-has no existing page to live inside (e.g. an entirely new top-level surface, or a flow that can't be
-embedded anywhere sensible). Create a **throwaway route** following whatever routing convention the
-project already uses. Don't invent a new top-level structure. Name it so it's obviously a prototype
-(e.g. include the word `prototype` in the path or filename). Same `?variant=` pattern. Before
-committing to sub-shape B, sanity-check: is there really no existing page this could be embedded in?
-An empty route hides design problems that a populated one would expose.
+Only use this when the thing being prototyped genuinely has no existing page to live inside (e.g.
+an entirely new top-level surface, or a flow that can't be embedded anywhere sensible).
+
+Create a **throwaway route** following whatever routing convention the project already uses. Don't
+invent a new top-level structure. Name it so it's obviously a prototype (e.g. include the word
+`prototype` in the path or filename). Same `?variant=` pattern.
+
+Before committing to sub-shape B, sanity-check: is there really no existing page this could be
+embedded in? An empty route hides design problems that a populated one would expose.
 
 In both sub-shapes the floating bottom bar is identical.
 
@@ -91,7 +94,7 @@ return (
 For sub-shape A (existing page): keep all the existing data fetching above the switcher; only the
 rendered subtree changes per variant.
 
-For sub-shape B (new page): the throwaway route, chosen by the project's routing convention, mounts the same switcher.
+For sub-shape B (new page): the throwaway route under `/prototype/<name>` mounts the same switcher.
 
 ### 4. Build the floating switcher
 
@@ -118,19 +121,25 @@ shared UI lives in the project.
 
 ### 5. Hand it over
 
-Surface the URL (and the `?variant=` keys). The user will flip through whenever he gets to it. The
+Surface the URL (and the `?variant=` keys). The user will flip through whenever they get to it. The
 interesting feedback is usually **"I want the header from B with the sidebar from C"**, which is the
-actual design he wants.
+actual design they want.
 
 ### 6. Capture the answer and clean up
 
 Once a variant has won, capture the answer (which variant and why), then capture the prototype the
-way rule 6 describes. Nothing is folded into the real code: the winner, the losing variants and the
-switcher all stay on the `prototype/<name>` branch, never merged. The winning variant is the
-template the delivery crew rewrites fresh, never copied one to one.
+way rule 6 describes. The full set of variants and the switcher stay on the `prototype/<name>`
+branch, not in main. The delivery ticket may fold the winner into the real code, refactored to
+production standards and through that ticket's review:
 
-The full set of variants is the primary source, so it lands on the branch, not the bin, since
-variant components and the switcher left in the main branch rot fast and confuse the next reader.
+- **Sub-shape A**: fold the winner into the existing page; the losing variants and the switcher
+  never reach main.
+- **Sub-shape B**: promote the winning variant to a real route; the throwaway route and the switcher
+  never reach main.
+
+The full set of variants is the primary source, so it lands on the `prototype/<name>` branch, not
+the bin, since variant components and the switcher left in the main branch rot fast and confuse the
+next reader.
 
 ## Anti-patterns
 
@@ -142,5 +151,5 @@ variant components and the switcher left in the main branch rot fast and confuse
   mutate, point it at a stub: the question is "what should this look like", not "does the backend
   work".
 - **Promoting the prototype directly to production.** The variant code was written under prototype
-  constraints (no tests, minimal error handling). The delivery crew rewrites the winning design
-  properly from scratch.
+  constraints (no tests, minimal error handling). Refactor it to production standards when you fold
+  it in.
