@@ -27,7 +27,9 @@ public sealed class OffLimitsRuleTests
 }
 ```
 
-The unclosed-fence row is a trap: an unclosed fence hides every pattern after it from the guard, so `dydo check` must fail on it with exit 1, not warn.
+The unclosed-fence row is a trap. With an unclosed fence, the guard reads every line after it as code, so `dydo check` must report that as an error and exit 1, not as a warning. The red check below measures exactly that: the severity and the exit code.
+
+**Reading its tag.** The class-level tag names that trap, but the class's other rows (a missing file, a duplicate pattern, a missing literal path, a clean file) do not guard it, and a tag must be true of every case it covers. A true tag needs the unclosed fence in a test of its own, a `[Fact]` tagged `trap: an unclosed fence makes check exit 1`, with `contract` alone on the theory. A review of this test would find its tag too broad.
 
 ## The runner
 
@@ -59,7 +61,7 @@ Aggregate: 0
 +                ViolationSeverity.Warning
 ```
 
-The same command fails on the trap row, for the reason its job names:
+The same command fails on the trap row, for the reason the trap names: exit 0 where 1 was due.
 
 ```text
 Failed DynaDocs.Tests.Rules.OffLimitsRuleTests.Check_ReportsTheOffLimitsFinding(offLimits: "---\ntype: config\n---\n\n# Files Off-Limits\n\n``"···, expectedExit: 1, expectedFinding: "Unclosed code block") [2 ms]
@@ -76,18 +78,18 @@ Aggregate: 1
 
 The other five rows stay green: they guard other findings. A row that stays green under every plausible break of its code can never fail, and that is a finding.
 
-**3. Green again** after `git checkout -- Rules/OffLimitsRule.cs`:
+**3. Green again** after undoing the planted line by hand. Undo only your own plant: a `git checkout --` of the file would also throw away any other uncommitted edit in it.
 
 ```text
 Passed!  - Failed:     0, Passed:     6, Skipped:     0, Total:     6, Duration: 97 ms - DynaDocs.Tests.dll (net10.0)
 Aggregate: 0
 ```
 
-On your ticket, record the command, the commit, and what runs 2 and 3 printed.
+On your ticket, record the command, the commit, the planted edit, and what each of the three runs printed.
 
 ## As a bug
 
-Had the severity bug shipped, the same row is the reproduction. Write it before the fix, watch it fail as in run 2, fix the code, and watch it pass. To graduate it as the bug's trap, revert the fix once, watch it fail, and restore the fix.
+Had the severity bug shipped, the same row is the reproduction: red as in run 2 before any fix. Fix the code and watch it go green. Then revert the fix once, watch the row fail again, and restore the fix.
 
 ## dydo's job tags
 
